@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+[![header.jpg](https://raw.githubusercontent.com/atompie/tracardi/master/screenshots/github-splash.png)](https://raw.githubusercontent.com/atompie/tracardi/master/screenshots/github-splash.png)
 
-Node version: 10.24.0
+# Tracardi GUI
+
+Node version: 14.17.0
 
 ## Download
 
