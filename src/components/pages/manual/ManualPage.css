@@ -1,0 +1,25 @@
+.ManualPage {
+    width: inherit;
+    height: calc(100% - 46px);
+    overflow: auto;
+    background: white;
+}
+.ManualPage A {
+    color: rgb(0, 105, 192);
+}
+
+.ManualPage H1 {
+    color: rgb(0, 105, 192);
+    text-decoration: underline;
+    margin: 0;
+}
+
+.ManualPage CODE {
+    background: #eee;
+    display: inline-flex;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 8px;
+    border: solid 1px #ccc;
+    color: rgb(0, 105, 192);
+}

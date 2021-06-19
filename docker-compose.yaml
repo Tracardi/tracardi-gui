@@ -1,0 +1,9 @@
+version: "3.7"
+services:
+  tracardi-gui:
+#    build: .
+    image: tracardi-gui
+    environment:
+      API_URL: http://192.168.1.103:8001
+    ports:
+      - 8787:80

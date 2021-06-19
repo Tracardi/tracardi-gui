@@ -1,0 +1,13 @@
+.FilterAddForm {
+    padding: 10px;
+    width: 100%;
+}
+.FilterAddForm > DIV {
+    display: grid;
+    grid-template-columns: auto 190px;
+    width: inherit;
+    align-items: center;
+    padding: 10px;
+    background-color: whitesmoke;
+    grid-gap: 5px;
+}

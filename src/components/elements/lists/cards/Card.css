@@ -1,0 +1,92 @@
+.Card .Avatar {
+    border: 2px solid;
+    font-size: .8em;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:  10px;
+    color: #555;
+}
+
+.Card {
+    display: flex;
+    align-items: center;
+    width:100%;
+    background: white;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    max-height: 50px;
+    animation-name: cardVisible;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.5s;
+}
+
+@keyframes cardVisible {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.Card:hover {
+    background: #EEE;
+    color: black;
+}
+
+.Card .scope {
+    margin: 0 5px;
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.Card SPAN.timestamp {
+    font-size: 90%;
+}
+.Card SPAN.timestamp,
+.Card SPAN.scope {
+    font-weight: 300;
+}
+
+.Card SPAN.timestamp,
+.Card SPAN.scope,
+.Card SPAN.type {
+    flex: 1;
+    padding: 0 4px;
+}
+
+.Card SPAN.name {
+    flex: 2;
+    padding: 0 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.Card SPAN.enabled {
+    display: flex;
+    margin: 4px;
+    margin-left: 10px;
+}
+.Card SPAN.hidden {
+    display: flex;
+    margin: 4px;
+}
+
+.Card SPAN.readonly {
+    display: flex;
+    margin: 4px;
+}
+
+.Card SPAN.missing {
+    width: 24px;
+    display: flex;
+    margin: 4px;
+}

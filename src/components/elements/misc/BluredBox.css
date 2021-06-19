@@ -1,0 +1,4 @@
+.BluredBox {
+    backdrop-filter: blur(15px);
+    z-index: 10;
+}

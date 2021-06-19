@@ -1,0 +1,8 @@
+.MiniHeader {
+    text-transform: uppercase;
+    font-size: 12px;
+    width: 100%;
+    color: black;
+    padding: 8px 0;
+    letter-spacing: 0.10em
+}

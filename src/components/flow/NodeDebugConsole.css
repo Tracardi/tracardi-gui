@@ -1,0 +1,26 @@
+.Debug .RowContent {
+    display:flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.Debug > .DebugTitle {
+    display: flex;
+    align-items: center;
+    padding: 5px 5px 5px 15px;
+    color: #000;
+    background-color: #ddd;
+    font-size: 12px;
+    justify-content: space-between;
+}
+
+.Debug .PortInfo {
+    margin-left: 20px;
+}
+
+.Debug H3 {
+    font-size: 16px;
+    font-weight: 300;
+    text-transform: uppercase;
+    margin: 5px 0 10px 10px;
+}

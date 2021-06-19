@@ -1,0 +1,32 @@
+.JsonStringify {
+
+}
+
+.JsonStringify SPAN.JsonItem {
+    margin-right: 7px;
+    padding-left: 2px;
+}
+.JsonStringify SPAN.JsonItem:hover SPAN.JsonValue {
+    text-decoration: underline;
+}
+
+.JsonStringify SPAN.JsonItem:hover SPAN.JsonKey {
+    background-color: #666;
+    color: white;
+}
+
+.JsonStringify SPAN.JsonItem > SPAN.JsonValue {
+    color: #555;
+    padding: 1px 1px;
+    border-radius: 3px;
+    word-wrap: anywhere;
+    color: rgb(0, 105, 192);
+}
+
+.JsonStringify SPAN.JsonItem > SPAN.JsonKey {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 1px 4px;
+    border-radius: 3px;
+    margin:0 2px 0 0px;
+}

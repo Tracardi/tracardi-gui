@@ -1,0 +1,12 @@
+.RightTabScroller {
+    height: calc(100% - 109px);
+    overflow-y: scroll;
+    padding: 5px 8px;
+    overflow-x: hidden;
+}
+.DetailActionButtons {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    margin-top: 15px;
+}

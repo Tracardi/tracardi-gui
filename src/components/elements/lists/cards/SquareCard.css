@@ -1,0 +1,55 @@
+.SquareCard {
+    display: inline-flex;
+    align-items: center;
+    background: white;
+    border: 2px solid #ddd;
+    cursor: pointer;
+    width: 220px;
+    height: 220px;
+    max-height: 220px;
+    margin: 6px;
+    padding: 10px;
+    border-radius: 15px;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 120%;
+    font-weight: 400;
+    position: relative;
+}
+
+.SquareCard:hover {
+    color: #333;
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.46);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.46);
+    box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.46);
+}
+
+.SquareCard .name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    text-align: center;
+}
+
+.SquareCard .desc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    font-size: 80%;
+    font-weight: 300;
+    text-align: center;
+    max-height: 60px;
+}
+
+.SquareCard .icon {
+    margin: 10px;
+}
+
+.SquareCard .enabled {
+    border-bottom: #00c853 solid 7px;
+}
+
+.SquareCard .disabled {
+    border-bottom: #d81b60 solid 7px;
+}

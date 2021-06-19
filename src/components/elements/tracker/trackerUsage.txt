@@ -1,0 +1,3 @@
+<script>
+   window.tracker.track("event-type", {"propery": "value"})
+</script>

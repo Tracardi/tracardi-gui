@@ -1,0 +1,27 @@
+.MdManual {
+    width: inherit;
+    height: inherit;
+    overflow: auto;
+    background: white;
+    padding: 10px;
+}
+.MdManual A {
+    color: rgb(0, 105, 192);
+}
+
+.MdManual H1 {
+    color: rgb(0, 105, 192);
+    text-decoration: underline;
+    margin: 0;
+    font-size: 18px;
+}
+
+.MdManual CODE {
+    background: #eee;
+    display: inline-flex;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 8px;
+    border: solid 1px #ccc;
+    color: rgb(0, 105, 192);
+}

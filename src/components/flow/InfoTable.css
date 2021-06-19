@@ -1,0 +1,25 @@
+.InfoTable {
+    display: flex;
+    flex-direction: column;
+}
+
+.InfoTable > .InfoRow {
+    display: grid;
+    grid-template-columns: 160px auto;
+}
+
+.InfoTable > .InfoRow > DIV {
+    padding: 10px;
+    border-bottom: solid 1px #ddd;
+    display: flex;
+    align-items: center;
+}
+
+.InfoTable > .InfoRow:hover {
+    background-color: whitesmoke;
+}
+
+.InfoTable > .InfoRow > DIV:first-child {
+    text-transform: uppercase;
+    color: #444;
+}

@@ -1,0 +1,47 @@
+.RulePane {
+    margin-top: 20px;
+    margin-left: 50px;
+}
+
+.RuleDescription {
+    font-weight: 300;
+}
+
+.RuleChip {
+    line-height: 2.5em;
+    margin: 0 10px;
+    font-weight: 500;
+}
+
+.RuleRawData H1 {
+    font-size: 140%;
+    font-weight: 300;
+    text-transform: uppercase;
+}
+
+.RuleSwitch {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 5px ;
+    margin: -1px 0;
+}
+.RuleSwitch DIV.RuleSwitchLabel {
+    padding-left: 10px;
+}
+.RuleSwitch .RuleSwitchDescription{
+    line-height: 2em;
+}
+.RuleSwitch .RuleSwitch{
+    line-height: 1em;
+}
+
+.SmallTitle {
+    font-size: 12px;
+}
+
+.SmallTitle PRE {
+    margin:0
+}

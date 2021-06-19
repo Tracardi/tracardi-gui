@@ -1,0 +1,8 @@
+.PagePane {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: inherit;
+    width: inherit;
+    overflow: hidden;
+}

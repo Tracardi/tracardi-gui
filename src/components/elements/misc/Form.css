@@ -1,0 +1,6 @@
+.Form {
+    height: inherit;
+    width: inherit;
+    overflow-y: auto;
+    padding: 10px;
+}

@@ -1,0 +1,12 @@
+.Head {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.Head H1 {
+    margin: 0 0 0 10px;
+    font-size: 160%;
+    font-weight: 300;
+    text-transform: uppercase;
+}

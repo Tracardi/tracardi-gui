@@ -1,0 +1,34 @@
+.PayloadDebug > .Pane {
+    display: flex;
+    flex-direction: column;
+    background-color: whitesmoke;
+    width: 100%;
+}
+
+.PayloadDebug .PayloadDebugTitle {
+    display: flex;
+    align-items: center;
+    padding: 5px 5px 5px 15px;
+    color: #000;
+    background-color: #ddd;
+    font-size: 15px;
+    justify-content: space-between;
+}
+
+.PayloadDebug .PayloadDebugTitle > SPAN {
+    display: flex;
+    align-items: center;
+}
+
+.PayloadDebug .Description {
+    display: flex;
+    padding: 5px 5px 5px 15px;
+    font-size: 12px;
+}
+
+.PayloadDebug .Content {
+    padding: 10px;
+    font-weight: 300;
+    font-size: 13px;
+    overflow-y: auto;
+}

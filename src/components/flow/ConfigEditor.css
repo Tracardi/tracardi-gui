@@ -1,0 +1,11 @@
+.FlowEditor > .WorkArea  .TaskDetails > .Pane .Content .SaveConfigButton {
+    position: absolute;
+    z-index: 10;
+    right: 10px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 4px;
+}
+.FlowEditor > .WorkArea  .TaskDetails > .Pane .Content .SaveConfigButton:hover {
+    background-color: rgb(0, 105, 192);
+}

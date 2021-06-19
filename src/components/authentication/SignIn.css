@@ -1,0 +1,19 @@
+.paper {
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar {
+    background-color: darkred;
+}
+
+.form {
+    width: 100%;
+    color: white;
+}
+
+.button {
+    margin: 10px 0;
+}

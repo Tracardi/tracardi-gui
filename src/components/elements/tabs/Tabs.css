@@ -1,0 +1,25 @@
+.Tabs {
+    width: inherit;
+}
+
+.Tabs > .Navigation {
+    border-bottom: solid 1px #ccc;
+    display: flex;
+}
+
+.Tabs > .Navigation > .Tab {
+    padding: 10px;
+    flex: 1;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    text-transform: uppercase;
+}
+
+.Tabs > .Navigation > .Selected {
+    border-bottom: solid 3px rgb(0, 105, 192);
+}
+
+.Tabs .TabContent {
+    height: inherit;
+}

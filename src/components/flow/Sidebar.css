@@ -1,0 +1,35 @@
+.menuNode {
+    padding: 3px;
+    border: solid 2px transparent;
+    border-radius: 3px;
+    margin: 3px 0px;
+    color: inherit;
+    display: flex;
+    align-items: center;
+}
+
+.menuNode:hover {
+    background-color: white;
+    border: solid 2px rgb(0, 105, 192) !important;
+    color: rgb(0, 105, 192);
+    cursor: grab;
+}
+
+.FlowEditor > .WorkArea > .RightColumn .TaskFilter {
+    padding: 0px 10px 0 10px
+}
+
+.FlowEditor > .WorkArea > .RightColumn .TaskNodes {
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: inherit;
+}
+.FlowEditor > .WorkArea > .RightColumn .TaskNodes P
+{
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: solid 2px #444;
+}

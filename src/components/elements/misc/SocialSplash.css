@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Montserrat&family=Playfair+Display:wght@500&display=swap');
+.SocialSplashRoot {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.SocialSplash {
+    display: flex;
+    flex-direction: row;
+    background: linear-gradient(45deg, #9c27b0 30%, #03a9f4  90%);
+    height: inherit;
+    width: 85%;
+    height: 90%;
+    border-radius: 20px;
+    -webkit-box-shadow: 0px 0px 17px -4px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 17px -4px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 17px -4px rgba(0,0,0,0.75);
+    animation-name: splashVisible;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: .8s;
+}
+
+@keyframes splashVisible {
+    0% {
+        opacity: 0;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+.SocialSplash .Image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex:1;
+}
+
+.SocialSplash .Image IMG {
+    width:80%;
+    height: 80%;
+}
+
+.SocialSplash .Content {
+    flex:1;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 1.1vw;
+    margin: 20px 40px 20px 20px;
+}
+
+.SocialSplash .Content .Message P {
+    line-height: 2.5em;
+    font-family: "Lato";
+
+}
+
+.SocialSplash .Content .Message P:first-child {
+    line-height: 2em;
+    margin-bottom: 40px;
+}
+
+
+.SocialSplash .Content .Title {
+    font-size: 3.3vw;
+    text-align: center;
+    font-family: "Playfair Display";
+
+}
+.SocialSplash .Content .Title .Brand {
+
+    text-transform: uppercase;
+}
+.SocialSplash .Content .Tag {
+    letter-spacing: 0.05em;
+    margin-bottom: 2vw;
+    font-size: 1.3vw;
+    text-align: center;
+    font-family: "Playfair Display";
+}
+
+.SocialSplash .Content .Continue {
+    text-align: right;
+    margin-top: 1vw;
+    margin-right: 40px;
+}

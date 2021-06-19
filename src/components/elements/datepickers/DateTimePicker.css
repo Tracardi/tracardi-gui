@@ -1,0 +1,95 @@
+.DateTimePicker {
+    margin: 10px;
+    background-color: white;
+    z-index: 10;
+    right:5px;
+    width:520px;
+    overflow: hidden;
+}
+
+.DateTimePicker .PeriodPicker {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.DateTimePicker .PeriodPicker > .PeriodForm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+}
+
+.DateTimePicker .PeriodPicker > .PeriodHeader {
+    display: flex;
+    font-size: 100%;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.DateTimePicker .PeriodPicker > .PeriodsList {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    margin: 10px 0 20px 0;
+    color: rgb(0, 105, 192);
+    font-size: 110%;
+}
+
+.DateTimePicker .PeriodPicker .PeriodsList > DIV  {
+    flex: 1;
+    margin-left: 60px;
+    display: flex;
+    flex-direction: column;
+}
+
+.DateTimePicker .PeriodPicker .PeriodsList > DIV SPAN {
+    cursor: pointer;
+}
+.DateTimePicker .PeriodPicker .PeriodsList > DIV SPAN:hover {
+    text-decoration: underline;
+}
+
+.DateTimePicker .DateNow {
+    display: flex;
+    margin: 10px;
+    align-items: center;
+}
+.DateTimePicker .DateNow > DIV {
+    color: #333333;
+}
+
+
+
+.DateTimePicker .picky-date-time {
+    box-sizing: content-box;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    padding: 5px;
+}
+
+.DateTimePicker .picky-date-time__close {
+    display: none;
+}
+
+.DateTimePicker .picky-date-time-calendar__table-cel.active:not(.today) {
+    background: rgb(0, 105, 192);
+}
+
+.DateTimePicker .picky-date-time__calendar, .picky-date-time__clock {
+    margin-bottom: 40px;
+}
+
+.DateTimePicker .picky-date-time-calendar {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.DateTimePicker .picky-date-time__col {
+    cursor: pointer;
+}

@@ -1,0 +1,28 @@
+.ObjectList {
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+    width: inherit;
+    padding: 10px;
+}
+
+.ObjectList > .Header {
+    display: flex;
+    flex-direction: row;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.ObjectList .Header > .Timestamp {
+    width: 230px;
+    padding: 2px 5px 5px 15px;
+}
+
+.ObjectList .Header > .Data {
+    padding: 2px 5px 5px 15px;
+}
+
+.ObjectListStatus {
+    height: 21px;
+    border-top: 1px solid #ccc;
+}

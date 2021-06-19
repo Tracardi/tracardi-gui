@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap');
+
+.EventRow {
+    font-family: "Roboto Mono", "Consolas";
+    font-weight: 400;
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+    border-top: 1px solid #cecece;
+    animation-name: moveUpAndOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: .3s;
+}
+
+.EventRow:hover {
+    background-color: #eee;
+}
+
+.EventRow .Header {
+    display: flex;
+    flex-direction: row;
+}
+
+.EventRow .Header > DIV {
+    padding: 3px;
+    line-height: 1.7em;
+}
+
+.EventRow .Header DIV.Toggle {
+    padding-top: 5px;
+    cursor: pointer;
+    width: 30px;
+}
+
+.EventRow .Header > DIV.Timestamp {
+    display: flex;
+    flex-direction: column;
+    padding-top: 6px;
+    min-width: 200px;
+    max-width: 200px;
+    border-right: solid 1px #cecece;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.EventRow .Header > DIV.Timestamp DIV {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.EventRow .Header > DIV.Data {
+    font-size: 90%;
+}

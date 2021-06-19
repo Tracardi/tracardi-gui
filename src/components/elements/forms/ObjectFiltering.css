@@ -1,0 +1,17 @@
+.ObjectFiltering {
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.ObjectFiltering > .Input {
+    flex: 1;
+}
+.ObjectFiltering > .Date {
+    width: 245px;
+}
+.ObjectFiltering > .Action {
+    width: 100px;
+}

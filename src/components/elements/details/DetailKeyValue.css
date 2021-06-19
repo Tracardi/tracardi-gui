@@ -1,0 +1,30 @@
+.DetailKeyValue {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 5px ;
+    margin: -1px 0;
+}
+
+.DetailKeyValue .DetailValue {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    padding-left: 10px;
+    border-bottom: solid 1px #ddd;
+}
+
+.DetailKeyValue .DetailKey {
+    flex: .5;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 10px;
+    border-bottom: solid 1px #ddd;
+}
+

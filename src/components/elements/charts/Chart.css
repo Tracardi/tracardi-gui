@@ -1,0 +1,11 @@
+.ChartToolTip {
+    background-color: #888;
+    color: #eee;
+    padding: 8px;
+    border-radius: 5px;
+    opacity: .8;
+}
+
+.ChartToolTip > P {
+    margin:0
+}
