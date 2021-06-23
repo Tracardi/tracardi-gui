@@ -15,7 +15,6 @@ import {request} from "../../remote_api/uql_api_endpoint";
 import NodeDetails from "./NodeDetails";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {useParams} from "react-router-dom";
-import {VscDebugStart} from "@react-icons/all-files/vsc/VscDebugStart";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import {FiEdit3} from "@react-icons/all-files/fi/FiEdit3";
@@ -27,7 +26,6 @@ import FlowForm from "../elements/forms/FlowForm";
 import {VscDebugStepBack} from "@react-icons/all-files/vsc/VscDebugStepBack";
 import {VscDebugStepOver} from "@react-icons/all-files/vsc/VscDebugStepOver";
 import {VscActivateBreakpoints} from "@react-icons/all-files/vsc/VscActivateBreakpoints";
-import {VscRocket} from "@react-icons/all-files/vsc/VscRocket";
 import {BiRun} from "@react-icons/all-files/bi/BiRun";
 
 const snapGrid = [20, 20];
@@ -50,6 +48,7 @@ const FlowEditor = ({showAlert}) => {
     const [flowFormOpened, setFlowFormOpened] = useState(false);
     const [flowMetaData, setFlowMetaData] = useState({})
     const [draft, setDraft] = useState(false);
+    const [locked, setLocked] = useState(false);
 
     const onSaveDraft = (deploy = false) => {
 
@@ -117,6 +116,7 @@ const FlowEditor = ({showAlert}) => {
                 enabled: response?.data?.enabled,
                 projects: response?.data?.projects,
             });
+            setLocked(response.data.lock)
             let flowGraph = []
             if (response?.data?.flowGraph) {
                 flowGraph = response.data.flowGraph.nodes.slice();
@@ -320,7 +320,8 @@ const FlowEditor = ({showAlert}) => {
                             {elements && <ReactFlow
                                 elements={elements}
                                 zoomOnDoubleClick={false}
-                                zoomOnScroll={true}
+                                zoomOnScroll={false}
+                                panOnScroll={true}
                                 onElementsRemove={onElementsRemove}
                                 onElementClick={onElementClick}
                                 onNodeDoubleClick={onNodeDoubleClick}
@@ -335,6 +336,7 @@ const FlowEditor = ({showAlert}) => {
                                 onDragOver={onDragOver}
                                 snapToGrid={true}
                                 snapGrid={snapGrid}
+                                nodesDraggable={!locked}
                                 style={{background: "white"}}
                                 defaultZoom={1}
                             >
