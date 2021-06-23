@@ -6,17 +6,14 @@ import SubContent from "./SubContent";
 import SubMenu from "./menu/SubMenu";
 import SubMenuItem from "./menu/SubMenuItem";
 import MainMenuItem from "./menu/MainMenuItem";
-import {Route, Redirect} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import PrivateRoute from "./authentication/PrivateRoute";
 import Sources from "./pages/Sources";
 import Rules from "./pages/Rules";
-import ManualPage from "./pages/manual/ManualPage";
-import {RouteCase, RouteSwitch} from "./elements/misc/RouteCase";
 import EventsAnalytics from "./pages/EventsAnalytics";
 import ProfilesAnalytics from "./pages/ProfilesAnalytics";
 import SessionsAnalytics from "./pages/SessionsAnalytics";
 import {GoDatabase} from "@react-icons/all-files/go/GoDatabase";
-import {VscDebugConsole} from "@react-icons/all-files/vsc/VscDebugConsole";
 import {FaTools} from "@react-icons/all-files/fa/FaTools";
 import {ImExit} from "@react-icons/all-files/im/ImExit";
 import FlowEditor from "./flow/FlowEditor";
@@ -24,6 +21,7 @@ import Flows from "./pages/Flows";
 import urlPrefix from "../misc/UrlPrefix";
 import ActionPlugins from "./pages/ActionPlugins";
 import Credentials from "./pages/Credentials";
+import Segments from "./pages/Segments";
 
 const AppBox = () => {
 
@@ -32,7 +30,6 @@ const AppBox = () => {
         <MainMenu>
             <MainMenuItem icon={<GoDatabase size={20}/>} title={"Data"} link={urlPrefix("/home")} defaultLink={urlPrefix("/home")}/>
             <MainMenuItem icon={<FaTools size={20}/>} title={"Set-up"} link={urlPrefix("/setup")}/>
-            <MainMenuItem icon={<VscDebugConsole size={20}/>} title={"Manual"} link={urlPrefix("/manual")}/>
             <MainMenuItem icon={<ImExit size={20}/>} title={"Logout"} link={urlPrefix("/logout")}/>
         </MainMenu>
 
@@ -58,19 +55,6 @@ const AppBox = () => {
                 <SubMenuItem link={urlPrefix("/setup/flow-actions")}>Flow actions</SubMenuItem>
                 <SubMenuItem link={urlPrefix("/setup/credentials")}>Credentials</SubMenuItem>
                 <SubMenuItem link={urlPrefix("/setup/segments")}>Segments</SubMenuItem>
-            </SubMenu>
-        </PrivateRoute>
-
-        <PrivateRoute path={urlPrefix("/manual")} roles={["admin"]}>
-            <SubMenu title="Dev">
-                <SubMenuItem link={urlPrefix("/manual/uql")}>UQL Manual</SubMenuItem>
-                <RouteSwitch>
-                    <RouteCase link={urlPrefix("/manual/uql")}>
-                        <SubMenuItem link={urlPrefix("/manual/uql/select")}>&gt; Select UQL</SubMenuItem>
-                        <SubMenuItem link={urlPrefix("/manual/uql/create")}>&gt; Create UQL</SubMenuItem>
-                        <SubMenuItem link={urlPrefix("/manual/uql/delete")}>&gt; Delete UQL</SubMenuItem>
-                    </RouteCase>
-                </RouteSwitch>
             </SubMenu>
         </PrivateRoute>
 
@@ -114,6 +98,7 @@ const AppBox = () => {
                         <Rules/>
                     </PrivateRoute>
                     <PrivateRoute path={urlPrefix("/setup/segments")} roles={["admin"]}>
+                        <Segments/>
                     </PrivateRoute>
                     <PrivateRoute path={urlPrefix("/setup/credentials")} roles={["admin"]}>
                         <Credentials/>
@@ -121,19 +106,6 @@ const AppBox = () => {
                     <PrivateRoute exact path={urlPrefix("/setup")} roles={["admin"]}>
                         <Flows/>
                     </PrivateRoute>
-
-                    <Route exact path={urlPrefix("/manual/uql/select")}>
-                        <ManualPage mdFile="uql/select"/>
-                    </Route>
-                    <Route exact path={urlPrefix("/manual/uql/create")}>
-                        <ManualPage mdFile="uql/create"/>
-                    </Route>
-                    <Route exact path={urlPrefix("/manual/uql/delete")}>
-                        <ManualPage mdFile="uql/delete"/>
-                    </Route>
-                    <Route exact path={urlPrefix("/manual/uql")}>
-                        <ManualPage mdFile="start"/>
-                    </Route>
                 </div>
             </div>
         </SubContent>

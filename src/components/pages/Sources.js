@@ -37,6 +37,6 @@ export default function Sources() {
         detailsFunc={(id, close) => <SourceDetails id={id} onDeleteComplete={close}/>}
         drawerAddTitle="New source"
         drawerAddWidth={800}
-        addFunc={(close) => <SourceAddForm/>}
+        addFunc={(close) => <SourceAddForm onClose={close}/>}
     />
 }

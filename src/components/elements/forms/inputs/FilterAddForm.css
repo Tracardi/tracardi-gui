@@ -11,3 +11,8 @@
     background-color: whitesmoke;
     grid-gap: 5px;
 }
+
+.FilterAddForm > DIV.FullGrid {
+    display: flex !important;
+    grid-template-columns: none;
+}

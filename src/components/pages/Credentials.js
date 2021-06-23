@@ -1,11 +1,10 @@
 import React from "react";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
-import FlowForm from "../elements/forms/FlowForm";
-import FlowDetails from "../elements/details/FlowDetails";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {BsShieldLock} from "@react-icons/all-files/bs/BsShieldLock";
+import CredentialDetails from "../elements/details/CredentialsDetails";
 
 
 export default function Credentials() {
@@ -32,13 +31,8 @@ export default function Credentials() {
     return <CardBrowser
         urlFunc={(query) => ('/credentials/by_type' + ((query) ? "?query=" + query : ""))}
         cardFunc={credentials}
-        buttomLabel="New credential"
-        buttonIcon={<IoGitNetworkSharp size={20} style={{marginRight: 10}}/>}
         drawerDetailsTitle="Credential details"
         drawerDetailsWidth={800}
-        detailsFunc={(id, close) => {}}
-        drawerAddTitle="New credential"
-        drawerAddWidth={800}
-        addFunc={(close) => {}}
+        detailsFunc={(id, close) => <CredentialDetails id={id}/>}
     />
 }

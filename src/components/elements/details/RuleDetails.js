@@ -1,12 +1,9 @@
 import React from "react";
-import theme from "../../../themes/inspector_light_theme";
-import {ObjectInspector} from "react-inspector";
 import DetailHeader from "./DetailHeader";
 import "./Details.css";
 import "./RuleDetails.css";
 import ConfirmationDialog from "../misc/ConfirmationDialog";
 import Button from "../forms/Button";
-import Tabs, {TabCase} from "../tabs/Tabs";
 import BluredBox from "../misc/BluredBox";
 import UqlDetails from "./UqlDetails";
 import {useHistory} from "react-router-dom";
@@ -97,22 +94,6 @@ function RuleDetails({data, onDelete, onEdit}) {
                     </ElevatedBox>
 
             </BluredBox>
-
-            <div style={{margin: "10px"}}>
-                <Tabs tabs={["Triggered by", "Raw"]}>
-                    <TabCase id={0}>
-                        <div style={{margin: "0 10px"}}>
-                            <TriggeredEvents data={data}/>
-                        </div>
-                    </TabCase>
-                    <TabCase id={1}>
-                        <div style={{margin: "20px"}} className="MoveUpOpacity">
-                            <ObjectInspector data={data} theme={theme} expandLevel={2}/>
-                        </div>
-                    </TabCase>
-                </Tabs>
-            </div>
-
 
         </div>
 

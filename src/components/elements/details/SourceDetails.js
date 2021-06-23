@@ -107,7 +107,7 @@ export default function SourceDetails({id, onDeleteComplete}) {
             label="Edit Source"
             onClose={()=>{setEditData(null)}}
             open={editData !== null}>
-            <SourceAddForm init={editData}/>
+            <SourceAddForm init={editData} onClose={()=>{setEditData(null)}}/>
         </FormDrawer>
     </div>
 

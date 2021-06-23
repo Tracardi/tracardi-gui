@@ -11,14 +11,15 @@ const CardBrowser = ({
                          showAlert,
                          urlFunc,
                          cardFunc,
-                         buttomLabel = "Add",
+                         buttomLabel = null,
                          buttonIcon,
                          drawerDetailsTitle = "Details",
                          drawerDetailsWidth = 600,
                          detailsFunc = () => {},
                          drawerAddWidth = 600,
                          drawerAddTitle = "New",
-                         addFunc = () => {}
+                         addFunc = () => {},
+                         className
                      }) => {
 
     const [cards, setCards] = useState(null);
@@ -59,8 +60,8 @@ const CardBrowser = ({
     }
 
     const closeDetails = () => {
-        setRefresh(Math.random());
         setCardId(null);
+        setRefresh(Math.random());
     }
 
     const onFilter = (query) => {
@@ -78,7 +79,7 @@ const CardBrowser = ({
             buttonIcon={buttonIcon}
             onFilter={onFilter}
             onAdd={onAdd}/>
-        <section>
+        <section className={className}>
             {loading && <CenteredCircularProgress/>}
             {cards && cardFunc(cards, onClick)}
         </section>
@@ -94,7 +95,7 @@ const CardBrowser = ({
             {cardId && detailsFunc(cardId, closeDetails)}
         </FormDrawer>
 
-        <FormDrawer
+        {addFunc && buttomLabel && <FormDrawer
             width={drawerAddWidth}
             label={drawerAddTitle}
             onClose={() => {
@@ -102,7 +103,7 @@ const CardBrowser = ({
             }}
             open={displayAddForm}>
             {addFunc(closeEdit)}
-        </FormDrawer>
+        </FormDrawer>}
 
     </div>
 }

@@ -12,6 +12,9 @@ import Rows from "../misc/Rows";
 import Form from "../misc/Form";
 import FormHeader from "../misc/FormHeader";
 import JsonEditor from "../misc/JsonEditor";
+import MenuItem from "@material-ui/core/MenuItem";
+import SelectItems from "./SelectItems";
+
 
 export default function SourceForm({onSubmit, init}) {
 
@@ -21,19 +24,20 @@ export default function SourceForm({onSubmit, init}) {
             type: {name: "", id: ""},
             description: "",
             config: {},
+            origin: "event",
             consent: false
         }
     }
 
-
-    const [requiresConsent, _setRequiresConsent] = useState(init.consent);
-    const [enabledSource, setEnabledSource] = useState(init.enabled);
-    const [type, setType] = useState(init.type);
-    const [name, setName] = useState(init.name);
-    const [description, setDescription] = useState(init.description);
+    const [requiresConsent, _setRequiresConsent] = useState(init?.consent);
+    const [enabledSource, setEnabledSource] = useState(init?.enabled);
+    const [type, setType] = useState(init?.type);
+    const [name, setName] = useState(init?.name);
+    const [origin, setOrigin] = useState(init?.origin)
+    const [description, setDescription] = useState(init?.description);
     const [errorTypeMessage, setTypeErrorMessage] = useState('');
     const [errorNameMessage, setNameErrorMessage] = useState('');
-    const [config, setConfig] = useState(JSON.stringify(init.config, null, '  '));
+    const [config, setConfig] = useState(JSON.stringify(init?.config, null, '  '));
 
     const setRequiresConsent = (ev) => {
         _setRequiresConsent(ev.target.checked)
@@ -55,24 +59,42 @@ export default function SourceForm({onSubmit, init}) {
             return;
         }
 
+        try {
+            const payload = {
+                id: (!init?.id) ? uuid4() : init.id,
+                name: name,
+                description: description,
+                type: type.name,
+                origin: origin,
+                config: (config === "") ? {} : JSON.parse(config),
+                consent: requiresConsent,
+                enabled: enabledSource
+            };
+            onSubmit(payload)
+        } catch (e) {
+            alert("Invalid JSON in field CONFIG.")
+        }
 
-        const payload = {
-            id: (!init?.id) ? uuid4() : init.id,
-            name: name,
-            description: description,
-            type: type.name,
-            config: (config === "") ? {} : JSON.parse(config),
-            consent: requiresConsent,
-            enabled: enabledSource
-        };
-        onSubmit(payload)
+
+    }
+
+    const _setOrigin = (ev) => {
+        setOrigin(ev.target.value)
     }
 
     return <Form>
         <Columns>
             <FormHeader>Source</FormHeader>
             <ElevatedBox className="Elevate">
+                <FormSubHeader>Source data origin</FormSubHeader>
+                <FormDescription>Data origin defines what is the primary source of data. Is it event or database query. </FormDescription>
+                <SelectItems label="Origin" value={origin} onChange={_setOrigin}>
+                    <MenuItem value="event">Event</MenuItem>
+                    <MenuItem value="query">Query</MenuItem>
+                </SelectItems>
+
                 <FormSubHeader>Source type</FormSubHeader>
+                <FormDescription>Source type defines soft of storage or endpoint. </FormDescription>
                 <AutoComplete
                     solo={true}
                     disabled={false}
