@@ -24,6 +24,8 @@ import {RiExchangeFundsFill} from "@react-icons/all-files/ri/RiExchangeFundsFill
 import {VscDebugAlt} from "@react-icons/all-files/vsc/VscDebugAlt";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import FlowForm from "../elements/forms/FlowForm";
+import {VscDebugStepBack} from "@react-icons/all-files/vsc/VscDebugStepBack";
+import {VscDebugStepOver} from "@react-icons/all-files/vsc/VscDebugStepOver";
 
 const snapGrid = [20, 20];
 const nodeTypes = {
@@ -45,10 +47,9 @@ const FlowEditor = ({showAlert}) => {
     const [flowFormOpened, setFlowFormOpened] = useState(false);
     const [flowMetaData, setFlowMetaData] = useState({})
 
+    const onSaveDraft = (deploy = false) => {
 
-    const onSave = () => {
-
-        if(reactFlowInstance) {
+        if (reactFlowInstance) {
             const flow = reactFlowInstance.toObject();
             let payload = {
                 id: id,
@@ -61,8 +62,6 @@ const FlowEditor = ({showAlert}) => {
                 projects: flowMetaData.projects
             }
 
-            console.log("paylaod", payload)
-
             flow.elements.map((element) => {
                 if (isNode(element)) {
                     return payload.flowGraph.nodes.push(element)
@@ -73,7 +72,7 @@ const FlowEditor = ({showAlert}) => {
 
             request(
                 {
-                    url: "/flow",
+                    url: (deploy === false) ? "/flow/draft" : "/flow",
                     method: "POST",
                     data: payload
                 },
@@ -98,18 +97,37 @@ const FlowEditor = ({showAlert}) => {
 
     const onElementsRemove = (elementsToRemove) => {
         setElements((els) => removeElements(elementsToRemove, els));
-        onSave();
+        onSaveDraft(false);
     }
 
     const onConnect = (params) => {
         setElements((els) => addEdge(params, els));
-        onSave();
+        onSaveDraft(false);
     }
 
-    useEffect(() => {
-        setFlowLoading(true);
+    const updateFlow = (response) => {
+        if (response?.data) {
+            setFlowMetaData({
+                name: response?.data?.name,
+                description: response?.data?.description,
+                enabled: response?.data?.enabled,
+                projects: response?.data?.projects,
+            });
+            let flowGraph = []
+            if (response?.data?.flowGraph) {
+                flowGraph = response.data.flowGraph.nodes.slice();
+                flowGraph = flowGraph.concat(response.data.flowGraph.edges.slice())
+            }
+            setElements(flowGraph);
+        } else if (response.data === null) {
+            // Missing flow
+            showAlert({message: "This work flow is missing", type: "warning", hideAfter: 2000});
+        }
+    }
+
+    const load = (id, origin=true) => {
         request({
-                url: "/flow/" + id,
+                url: (origin) ? "/flow/" + id : "/flow/draft/" + id ,
             },
             setFlowLoading,
             (e) => {
@@ -118,23 +136,23 @@ const FlowEditor = ({showAlert}) => {
                 }
             },
             (response) => {
-                if (response?.data) {
-                    setFlowMetaData({
-                        name: response?.data?.name,
-                        description: response?.data?.description,
-                        enabled: response?.data?.enabled,
-                        projects: response?.data?.projects,
-                    });
-                    let flowGraph = []
-                    if (response?.data?.flowGraph) {
-                        flowGraph = response.data.flowGraph.nodes.slice();
-                        flowGraph = flowGraph.concat(response.data.flowGraph.edges.slice())
-                    }
-                    setElements(flowGraph);
-                } else if (response.data === null) {
-                    // Missing flow
-                    showAlert({message: "This work flow is missing", type: "warning", hideAfter: 2000});
+                updateFlow(response);
+            })
+    }
+
+    useEffect(() => {
+        setFlowLoading(true);
+        request({
+                url: "/flow/draft/" + id,
+            },
+            setFlowLoading,
+            (e) => {
+                if (e) {
+                    showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
                 }
+            },
+            (response) => {
+                updateFlow(response);
             })
     }, [id, showAlert])
 
@@ -165,7 +183,7 @@ const FlowEditor = ({showAlert}) => {
             data: data
         };
         setElements((es) => es.concat(newNode));
-        onSave();
+        onSaveDraft(false);
     };
 
     const onElementClick = (event, element) => {
@@ -192,11 +210,11 @@ const FlowEditor = ({showAlert}) => {
     }
 
     const onConfig = (config) => {
-        onSave();
+        onSaveDraft(false);
     }
 
     const onDebug = () => {
-        onSave()
+        onSaveDraft(false)
         request(
             {
                 url: "/flow/" + id + "/debug",
@@ -210,7 +228,7 @@ const FlowEditor = ({showAlert}) => {
                 }
             },
             (data) => {
-                if(data) {
+                if (data) {
                     const flow = reactFlowInstance.toObject();
                     flow.elements.map((element) => {
                         if (isNode(element)) {
@@ -228,7 +246,8 @@ const FlowEditor = ({showAlert}) => {
     }
 
     const Saved = () => {
-        return (flowSaved) ? <TiTickOutline size={20} style={{marginLeft: 5, color: "darkgreen"}}/> : <RiExchangeFundsFill size={20} style={{marginLeft: 5}}/>
+        return (flowSaved) ? <TiTickOutline size={20} style={{marginLeft: 5, color: "darkgreen"}}/> :
+            <RiExchangeFundsFill size={20} style={{marginLeft: 5}}/>
     }
 
     return (
@@ -240,10 +259,10 @@ const FlowEditor = ({showAlert}) => {
                     </aside>
                     <div className="LeftColumn">
                         <div className="FlowTitle">
-                            <span style={{display: "flex", alignItems: "center"}}>{flowMetaData.name} <Saved /></span>
+                            <span style={{display: "flex", alignItems: "center"}}>{flowMetaData.name} <Saved/></span>
                             <span style={{display: "flex"}}>
                                 <Button label="Edit"
-                                        onClick={()=>setFlowFormOpened(true)}
+                                        onClick={() => setFlowFormOpened(true)}
                                         disabled={reactFlowInstance === null}
                                         icon={<FiEdit3 size={14} style={{marginRight: 8}}/>}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
@@ -254,12 +273,29 @@ const FlowEditor = ({showAlert}) => {
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                                 <Button label="Save"
                                         disabled={reactFlowInstance === null}
-                                        onClick={onSave}
+                                        onClick={() => onSaveDraft(false)}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                                 <Button label="Save & Deploy"
                                         disabled={reactFlowInstance === null}
                                         icon={<VscDebugStart size={15} style={{marginRight: 5}}/>}
+                                        onClick={() => {
+                                            onSaveDraft(true)
+                                        }}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
+                                <Button label="Revert"
+                                                disabled={reactFlowInstance === null}
+                                                icon={<VscDebugStepBack size={15} style={{marginRight: 5}}/>}
+                                                onClick={() => {
+                                                    load(id, true)
+                                                }}
+                                                style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
+                                <Button label="Draft"
+                                                         disabled={reactFlowInstance === null}
+                                                         icon={<VscDebugStepOver size={15} style={{marginRight: 5}}/>}
+                                                         onClick={() => {
+                                                             load(id, false)
+                                                         }}
+                                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                             </span>
 
                         </div>
@@ -300,17 +336,19 @@ const FlowEditor = ({showAlert}) => {
             <FormDrawer
                 width={800}
                 label="Flow details"
-                onClose={()=>{setFlowFormOpened(false)}}
+                onClose={() => {
+                    setFlowFormOpened(false)
+                }}
                 open={flowFormOpened}>
                 <FlowForm id={id}
                           name={flowMetaData?.name}
                           description={flowMetaData?.description}
                           enabled={flowMetaData?.enabled}
                           projects={flowMetaData?.projects}
-                          onFlowSaveComplete={({name, description, enabled, projects})=> {
-                            setFlowMetaData({name, description, enabled, projects});
-                            setFlowFormOpened(false)
-                }}/>
+                          onFlowSaveComplete={({name, description, enabled, projects}) => {
+                              setFlowMetaData({name, description, enabled, projects});
+                              setFlowFormOpened(false)
+                          }}/>
             </FormDrawer>
         </ReactFlowProvider>
     );
