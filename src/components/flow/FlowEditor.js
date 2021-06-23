@@ -26,6 +26,9 @@ import FormDrawer from "../elements/drawers/FormDrawer";
 import FlowForm from "../elements/forms/FlowForm";
 import {VscDebugStepBack} from "@react-icons/all-files/vsc/VscDebugStepBack";
 import {VscDebugStepOver} from "@react-icons/all-files/vsc/VscDebugStepOver";
+import {VscActivateBreakpoints} from "@react-icons/all-files/vsc/VscActivateBreakpoints";
+import {VscRocket} from "@react-icons/all-files/vsc/VscRocket";
+import {BiRun} from "@react-icons/all-files/bi/BiRun";
 
 const snapGrid = [20, 20];
 const nodeTypes = {
@@ -46,6 +49,7 @@ const FlowEditor = ({showAlert}) => {
     const [flowSaved, setFlowSaved] = useState(true);
     const [flowFormOpened, setFlowFormOpened] = useState(false);
     const [flowMetaData, setFlowMetaData] = useState({})
+    const [draft, setDraft] = useState(false);
 
     const onSaveDraft = (deploy = false) => {
 
@@ -125,9 +129,9 @@ const FlowEditor = ({showAlert}) => {
         }
     }
 
-    const load = (id, origin=true) => {
+    const load = (id, origin = true) => {
         request({
-                url: (origin) ? "/flow/" + id : "/flow/draft/" + id ,
+                url: (origin) ? "/flow/" + id : "/flow/draft/" + id,
             },
             setFlowLoading,
             (e) => {
@@ -137,6 +141,7 @@ const FlowEditor = ({showAlert}) => {
             },
             (response) => {
                 updateFlow(response);
+                setDraft(!origin);
             })
     }
 
@@ -152,6 +157,7 @@ const FlowEditor = ({showAlert}) => {
                 }
             },
             (response) => {
+                setDraft(true);
                 updateFlow(response);
             })
     }, [id, showAlert])
@@ -246,8 +252,9 @@ const FlowEditor = ({showAlert}) => {
     }
 
     const Saved = () => {
-        return (flowSaved) ? <TiTickOutline size={20} style={{marginLeft: 5, color: "darkgreen"}}/> :
-            <RiExchangeFundsFill size={20} style={{marginLeft: 5}}/>
+        return(flowSaved) ? <span className="OKTag"><TiTickOutline size={20} style={{marginRight:5}} />Saved</span> :
+                <span className="AlertTag"><RiExchangeFundsFill size={20} style={{marginRight: 5}}/>Modified</span>
+
     }
 
     return (
@@ -259,7 +266,15 @@ const FlowEditor = ({showAlert}) => {
                     </aside>
                     <div className="LeftColumn">
                         <div className="FlowTitle">
-                            <span style={{display: "flex", alignItems: "center"}}>{flowMetaData.name} <Saved/></span>
+                            <span style={{display: "flex", alignItems: "center"}}>
+                                {draft && <span className="NormalTag">
+                                    <VscActivateBreakpoints size={20} style={{marginRight:5}}/>
+                                    <span> This is a draft of workflow:&nbsp;</span>
+                                    {flowMetaData.name}
+                                </span>}
+                                {!draft && flowMetaData.name}
+                                <Saved/>
+                            </span>
                             <span style={{display: "flex"}}>
                                 <Button label="Edit"
                                         onClick={() => setFlowFormOpened(true)}
@@ -271,31 +286,32 @@ const FlowEditor = ({showAlert}) => {
                                         icon={<VscDebugAlt size={14} style={{marginRight: 8}}/>}
                                         onClick={onDebug}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
-                                <Button label="Save"
+                                <Button label="Save draft"
+                                        icon={<VscActivateBreakpoints size={20} style={{marginRight:5}}/>}
                                         disabled={reactFlowInstance === null}
                                         onClick={() => onSaveDraft(false)}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                                 <Button label="Save & Deploy"
                                         disabled={reactFlowInstance === null}
-                                        icon={<VscDebugStart size={15} style={{marginRight: 5}}/>}
+                                        icon={<BiRun size={20} style={{marginRight: 5}}/>}
                                         onClick={() => {
                                             onSaveDraft(true)
                                         }}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                                 <Button label="Revert"
-                                                disabled={reactFlowInstance === null}
-                                                icon={<VscDebugStepBack size={15} style={{marginRight: 5}}/>}
-                                                onClick={() => {
-                                                    load(id, true)
-                                                }}
-                                                style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
+                                        disabled={reactFlowInstance === null}
+                                        icon={<VscDebugStepBack size={15} style={{marginRight: 5}}/>}
+                                        onClick={() => {
+                                            load(id, true)
+                                        }}
+                                        style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                                 <Button label="Draft"
-                                                         disabled={reactFlowInstance === null}
-                                                         icon={<VscDebugStepOver size={15} style={{marginRight: 5}}/>}
-                                                         onClick={() => {
-                                                             load(id, false)
-                                                         }}
-                                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
+                                        disabled={reactFlowInstance === null}
+                                        icon={<VscDebugStepOver size={15} style={{marginRight: 5}}/>}
+                                        onClick={() => {
+                                            load(id, false)
+                                        }}
+                                        style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                             </span>
 
                         </div>
@@ -345,6 +361,7 @@ const FlowEditor = ({showAlert}) => {
                           description={flowMetaData?.description}
                           enabled={flowMetaData?.enabled}
                           projects={flowMetaData?.projects}
+                          draft={true}
                           onFlowSaveComplete={({name, description, enabled, projects}) => {
                               setFlowMetaData({name, description, enabled, projects});
                               setFlowFormOpened(false)

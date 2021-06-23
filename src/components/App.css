@@ -17,6 +17,36 @@
   padding: 10px;
 }
 
+.AlertTag {
+  padding: 4px 8px;
+  background-color: #ef6c00;
+  color: white;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  margin: 2px;
+}
+
+.OKTag {
+  padding: 4px 8px;
+  background-color: #43a047;
+  color: white;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  margin: 2px;
+}
+
+.NormalTag {
+  padding: 4px 8px;
+  background-color: #1565c0;
+  color: white;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  margin: 2px;
+}
+
 .Elevate {
   border-radius: 15px;
   -webkit-box-shadow: 0px 0px 10px -1px rgba(176,176,176,1);

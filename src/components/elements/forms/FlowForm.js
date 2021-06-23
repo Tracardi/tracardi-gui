@@ -13,7 +13,7 @@ import FormHeader from "../misc/FormHeader";
 import Rows from "../misc/Rows";
 import TagTextFieldForProjects from "./inputs/TagTextFieldForProjects";
 
-export default function FlowForm({id, name, description, enabled, projects, onFlowSaveComplete}) {
+export default function FlowForm({id, name, description, enabled, projects, onFlowSaveComplete, draft = false}) {
 
     const [flowName, setFlowName] = useState((name) ? name : "");
     const [flowDescription, setFlowDescription] = useState((description) ? description : "");
@@ -31,7 +31,7 @@ export default function FlowForm({id, name, description, enabled, projects, onFl
         }
 
         request({
-                url: '/flow/description',
+                url: (draft) ? '/flow/draft/metadata' : '/flow/metadata',
                 method: 'post',
                 data: payload
             },
@@ -40,13 +40,13 @@ export default function FlowForm({id, name, description, enabled, projects, onFl
             () => {
             },
             (data) => {
-                if(onFlowSaveComplete) {
+                if (onFlowSaveComplete) {
                     onFlowSaveComplete(payload)
                 }
             })
     }
 
-    const onTagChange= (values) => {
+    const onTagChange = (values) => {
         setFlowTags(values)
         console.log(flowTags)
     }
@@ -77,36 +77,36 @@ export default function FlowForm({id, name, description, enabled, projects, onFl
 
         <FormHeader>Description</FormHeader>
         <ElevatedBox>
-                <FormSubHeader>Name</FormSubHeader>
-                <FormDescription>Edit flow name. Be as descriptive as possible.</FormDescription>
-                <div style={{marginTop: 20}}>
-                    <TextField id="flow-name"
-                               variant="outlined"
-                               label="Flow name"
-                               value={flowName}
-                               onChange={(ev) => {
-                                   setFlowName(ev.target.value)
-                               }}
-                               size="small"
-                               style={{width: "70%"}}
-                    />
-                </div>
-                <FormSubHeader>Description <sup style={{fontSize: "70%"}}>* optional</sup></FormSubHeader>
-                <FormDescription>Flow description. Be as descriptive as possible.</FormDescription>
-                <div style={{marginTop: 20}}>
-                    <TextField id="flow-description"
-                               variant="outlined"
-                               label="Flow description"
-                               multiline
-                               rows={5}
-                               value={flowDescription}
-                               onChange={(ev) => {
-                                   setFlowDescription(ev.target.value)
-                               }}
-                               size="small"
-                               style={{width: "70%"}}
-                    />
-                </div>
+            <FormSubHeader>Name</FormSubHeader>
+            <FormDescription>Edit flow name. Be as descriptive as possible.</FormDescription>
+            <div style={{marginTop: 20}}>
+                <TextField id="flow-name"
+                           variant="outlined"
+                           label="Flow name"
+                           value={flowName}
+                           onChange={(ev) => {
+                               setFlowName(ev.target.value)
+                           }}
+                           size="small"
+                           style={{width: "70%"}}
+                />
+            </div>
+            <FormSubHeader>Description <sup style={{fontSize: "70%"}}>* optional</sup></FormSubHeader>
+            <FormDescription>Flow description. Be as descriptive as possible.</FormDescription>
+            <div style={{marginTop: 20}}>
+                <TextField id="flow-description"
+                           variant="outlined"
+                           label="Flow description"
+                           multiline
+                           rows={5}
+                           value={flowDescription}
+                           onChange={(ev) => {
+                               setFlowDescription(ev.target.value)
+                           }}
+                           size="small"
+                           style={{width: "70%"}}
+                />
+            </div>
         </ElevatedBox>
 
         <Rows style={{marginLeft: 20}}>
