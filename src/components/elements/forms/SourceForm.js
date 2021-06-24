@@ -38,6 +38,7 @@ export default function SourceForm({onSubmit, init}) {
     const [errorTypeMessage, setTypeErrorMessage] = useState('');
     const [errorNameMessage, setNameErrorMessage] = useState('');
     const [config, setConfig] = useState(JSON.stringify(init?.config, null, '  '));
+    const [saving, setSaving] = useState(false);
 
     const setRequiresConsent = (ev) => {
         _setRequiresConsent(ev.target.checked)
@@ -74,8 +75,6 @@ export default function SourceForm({onSubmit, init}) {
         } catch (e) {
             alert("Invalid JSON in field CONFIG.")
         }
-
-
     }
 
     const _setOrigin = (ev) => {
@@ -87,7 +86,8 @@ export default function SourceForm({onSubmit, init}) {
             <FormHeader>Source</FormHeader>
             <ElevatedBox className="Elevate">
                 <FormSubHeader>Source data origin</FormSubHeader>
-                <FormDescription>Data origin defines what is the primary source of data. Is it event or database query. </FormDescription>
+                <FormDescription>Data origin defines what is the primary source of data. Is it event or database
+                    query. </FormDescription>
                 <SelectItems label="Origin" value={origin} onChange={_setOrigin}>
                     <MenuItem value="event">Event</MenuItem>
                     <MenuItem value="query">Query</MenuItem>
@@ -102,13 +102,15 @@ export default function SourceForm({onSubmit, init}) {
                     placeholder="Source type"
                     url="/sources/types"
                     initValue={type}
-                    onSetValue={setType} onDataLoaded={
-                    (result) => {
-                        return result.data?.result.map((key) => {
-                            return {name: key, id: key}
-                        });
+                    onSetValue={setType}
+                    onDataLoaded={
+                        (result) => {
+                            return result.data?.result.map((key) => {
+                                return {name: key, id: key}
+                            });
+                        }
                     }
-                }/>
+                />
 
                 <FormSubHeader>Consent</FormSubHeader>
                 <FormDescription>Check if this source requires user consent? Web pages
@@ -184,7 +186,9 @@ export default function SourceForm({onSubmit, init}) {
             </ElevatedBox>
         </Columns>
         <Rows style={{paddingLeft: 30}}>
-            <Button label="Save" onClick={_onSubmit}/>
+            <Button label="Save"
+                    progress={saving}
+                    onClick={_onSubmit}/>
         </Rows>
     </Form>
 }

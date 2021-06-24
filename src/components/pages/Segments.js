@@ -5,18 +5,24 @@ import {VscOrganization} from "@react-icons/all-files/vsc/VscOrganization";
 import SegmentForm from "../elements/forms/SegmentForm";
 import SegmentDetails from "../elements/details/SegmentDetails";
 
-
 export default function Segments() {
 
     const segments = (data, onClick) => {
-        return data?.result && data?.result.map((row, index) => {
-            return <SquareCard key={index}
-                               id={row?.id}
-                               icon={<VscOrganization size={45}/>}
-                               status={row?.enabled}
-                               name={row?.name}
-                               description={row?.description}
-                               onClick={() => onClick(row?.id)}/>
+        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
+            return <div className="CardGroup" key={index}>
+                <header>{category}</header>
+                <div>
+                    {plugs.map((row, subIndex) => {
+                        return <SquareCard key={index + "-" + subIndex}
+                                           id={row?.id}
+                                           icon={<VscOrganization size={45}/>}
+                                           status={row?.enabled}
+                                           name={row?.name}
+                                           description={row?.description}
+                                           onClick={() => onClick(row?.id)}/>
+                    })}
+                </div>
+            </div>
         })
     }
 

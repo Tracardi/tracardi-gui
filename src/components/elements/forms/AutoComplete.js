@@ -16,6 +16,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, onDataLoaded, initVal
     const [value, _setValue] = React.useState(initValue);
     const [options, setOptions] = React.useState([]);
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
+    const [progress, setProgress] = React.useState(false);
 
     React.useEffect(() => {
         let active = true;
@@ -23,11 +24,10 @@ const AutoComplete = ({showAlert, placeholder, error, url, onDataLoaded, initVal
         if (!loading) {
             return undefined;
         }
-
+        setProgress(true);
         request(
             {url},
-            () => {
-            },
+            setProgress,
             (e) => {
                 if(e) {
                     showAlert({message: e[0].msg, type: "error", hideAfter:2000});
@@ -89,7 +89,6 @@ const AutoComplete = ({showAlert, placeholder, error, url, onDataLoaded, initVal
                 setValue(newValue);
             }}
             onInputChange={(event, newInputValue) => {
-                console.log(newInputValue)
                 newInputValue = {name: newInputValue, id: newInputValue}
                 setValue(newInputValue);
             }}
@@ -105,7 +104,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, onDataLoaded, initVal
                         ...params.InputProps,
                         endAdornment: (
                             <React.Fragment>
-                                {loading ? <CircularProgress color="inherit" size={20}/> : null}
+                                {progress ? <CircularProgress color="inherit" size={20}/> : null}
                                 {params.InputProps.endAdornment}
                             </React.Fragment>
                         ),

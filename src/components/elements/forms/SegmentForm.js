@@ -11,12 +11,15 @@ import FormHeader from "../misc/FormHeader";
 import Switch from "@material-ui/core/Switch";
 import {v4 as uuid4} from "uuid";
 import {request} from "../../../remote_api/uql_api_endpoint";
+import {remote} from "../../../remote_api/entrypoint";
+import AutoComplete from "./AutoComplete";
 
 export default function SegmentForm({onSubmit, init}) {
 
     if (!init) {
         init = {
             id: (!init?.id) ? uuid4() : init.id,
+            eventType: "",
             condition: "",
             name: "",
             description: "",
@@ -31,8 +34,28 @@ export default function SegmentForm({onSubmit, init}) {
     const [conditionErrorMessage, setConditionErrorMessage] = useState(null);
     const [enabled, setEnabled] = useState(true);
     const [processing, setProcessing] = useState(false);
+    const [type, setType] = useState(init.eventType);
 
-    const _onSubmit = () => {
+    const onTqlValidate = async () => {
+        try {
+            const response = await remote({
+                    url: '/tql/validate',
+                    method: 'post',
+                    data: condition
+                }
+            );
+            if (response) {
+                setConditionErrorMessage(null)
+            }
+            return true;
+        } catch (e) {
+            setConditionErrorMessage("Could not parse condition.")
+            return false;
+        }
+
+    }
+
+    const _onSubmit = async () => {
 
         if (!name || name.length === 0) {
             if (!name || name.length === 0) {
@@ -48,13 +71,19 @@ export default function SegmentForm({onSubmit, init}) {
             return;
         }
 
+        if (!await onTqlValidate()) {
+            return;
+        }
+
         const payload = {
             id: (!init?.id) ? uuid4() : init.id,
             name: name,
             description: description,
+            eventType: type.id,
             condition: condition,
             enabled: enabled,
         }
+
         setProcessing(true);
         request({
                 url: '/segment',
@@ -62,9 +91,10 @@ export default function SegmentForm({onSubmit, init}) {
                 data: payload
             },
             setProcessing,
-            (e) => {},
+            (e) => {
+            },
             (response) => {
-                if(response) {
+                if (response) {
                     onSubmit(payload)
                 }
             },
@@ -76,6 +106,23 @@ export default function SegmentForm({onSubmit, init}) {
         <Columns>
             <FormHeader>Segmentation</FormHeader>
             <ElevatedBox>
+                <FormSubHeader>Event type</FormSubHeader>
+                <FormDescription>Bind this segment event type. You can select None then segment will be checked at every
+                    event.
+                    against all events.</FormDescription>
+                <AutoComplete
+                    disabled={false}
+                    placeholder="Event type"
+                    url="/events/metadata/type"
+                    initValue={{name:type,id:type}}
+                    onSetValue={setType}
+                    onDataLoaded={
+                        (result) => {
+                            return result.data?.result.map((key) => {
+                                return {name: key, id: key}
+                            });
+                        }
+                    }/>
 
                 <FormSubHeader>Condition</FormSubHeader>
                 <FormDescription>Segments are created after the event is processed.
@@ -87,10 +134,11 @@ export default function SegmentForm({onSubmit, init}) {
                     multiline
                     rows={3}
                     error={conditionErrorMessage}
-                    helperText="Condition example: stats.visits>10 AND properties.public.boughtProducts>1"
+                    helperText={conditionErrorMessage ? conditionErrorMessage : "Condition example: stats.visits>10 AND properties.public.boughtProducts>1"}
                     onChange={(ev) => {
                         setCondition(ev.target.value)
                     }}
+                    onBlurCapture={onTqlValidate}
                     variant="outlined"
                     fullWidth
                 />
