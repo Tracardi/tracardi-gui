@@ -30,7 +30,7 @@ export default function ActionPlugins() {
         urlFunc={(query) => ('/flow/action/plugins' + ((query) ? "?query=" + query : ""))}
         cardFunc={plugins}
         drawerDetailsTitle="Edit Plugin Action"
-        drawerDetailsWidth={600}
+        drawerDetailsWidth={800}
         detailsFunc={(id) => <PluginForm id={id}/>}
     />
 }

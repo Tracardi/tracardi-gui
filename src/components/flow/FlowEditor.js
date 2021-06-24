@@ -49,6 +49,8 @@ const FlowEditor = ({showAlert}) => {
     const [flowMetaData, setFlowMetaData] = useState({})
     const [draft, setDraft] = useState(false);
     const [locked, setLocked] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [debugging, setDebugging] = useState(false);
 
     const onSaveDraft = (deploy = false) => {
 
@@ -72,15 +74,14 @@ const FlowEditor = ({showAlert}) => {
                     return payload.flowGraph.edges.push(element)
                 }
             });
-
+            setSaving(true);
             request(
                 {
                     url: (deploy === false) ? "/flow/draft" : "/flow",
                     method: "POST",
                     data: payload
                 },
-                () => {
-                },
+                setSaving,
                 (e) => {
                     if (e) {
                         showAlert({message: e[0].msg, type: "error", hideAfter: 2000});
@@ -130,10 +131,11 @@ const FlowEditor = ({showAlert}) => {
     }
 
     const load = (id, origin = true) => {
+        setSaving(true);
         request({
                 url: (origin) ? "/flow/" + id : "/flow/draft/" + id,
             },
-            setFlowLoading,
+            (status) => {setFlowLoading(status); setSaving(status)},
             (e) => {
                 if (e) {
                     showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
@@ -220,14 +222,14 @@ const FlowEditor = ({showAlert}) => {
     }
 
     const onDebug = () => {
-        onSaveDraft(false)
+        onSaveDraft(false);
+        setDebugging(true);
         request(
             {
                 url: "/flow/" + id + "/debug",
                 method: "POST",
             },
-            () => {
-            },
+            setDebugging,
             (e) => {
                 if (e) {
                     showAlert({message: e[0].msg, type: "error", hideAfter: 2000});
@@ -287,6 +289,7 @@ const FlowEditor = ({showAlert}) => {
                                         onClick={onDebug}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                                 <Button label="Save draft"
+                                        progress={saving}
                                         icon={<VscActivateBreakpoints size={20} style={{marginRight:5}}/>}
                                         disabled={reactFlowInstance === null}
                                         onClick={() => onSaveDraft(false)}
@@ -299,6 +302,7 @@ const FlowEditor = ({showAlert}) => {
                                         }}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                                 <Button label="Revert"
+                                        progress={saving}
                                         disabled={reactFlowInstance === null}
                                         icon={<VscDebugStepBack size={15} style={{marginRight: 5}}/>}
                                         onClick={() => {
@@ -306,6 +310,7 @@ const FlowEditor = ({showAlert}) => {
                                         }}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                                 <Button label="Draft"
+                                        progress={saving}
                                         disabled={reactFlowInstance === null}
                                         icon={<VscDebugStepOver size={15} style={{marginRight: 5}}/>}
                                         onClick={() => {

@@ -8,11 +8,12 @@ import BluredBox from "../misc/BluredBox";
 import UqlDetails from "./UqlDetails";
 import {useHistory} from "react-router-dom";
 import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
-import {IoTrashOutline} from "@react-icons/all-files/io5/IoTrashOutline";
 import urlPrefix from "../../../misc/UrlPrefix";
 import ElevatedBox from "../misc/ElevatedBox";
 import Rows from "../misc/Rows";
 import FormDescription from "../misc/FormDescription";
+import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
+import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
 
 
 function RuleDetails({data, onDelete, onEdit}) {
@@ -54,7 +55,8 @@ function RuleDetails({data, onDelete, onEdit}) {
         : {zIndex: 5, marginBottom: 0};
 
     const TriggeredEvents = ({data}) => {
-        return <div style={{margin: 5}}>This rule was not created in TRACARDI. Therefore there is no information on events triggering this rule.</div>
+        return <div style={{margin: 5}}>This rule was not created in TRACARDI. Therefore there is no information on
+            events triggering this rule.</div>
     }
 
     return <div style={{height: "inherit"}}>
@@ -64,34 +66,35 @@ function RuleDetails({data, onDelete, onEdit}) {
 
             <BluredBox style={{position: "sticky", top: 8}}>
 
-                    <ElevatedBox style={detailBoxStyle}>
+                <ElevatedBox style={detailBoxStyle}>
 
-                        {data && <UqlDetails data={data} type="Rule"/>}
+                    {data && <UqlDetails data={data} type="Rule"/>}
 
-                        {data.description && <FormDescription style={{marginTop: 20}}>
-                            {data.description}
-                        </FormDescription>}
+                    {data.description && <FormDescription style={{marginTop: 20}}>
+                        {data.description}
+                    </FormDescription>}
 
-                        <Rows style={{marginTop: 20}}>
-                            {onEditClick && <Button onClick={onEditClick}
-                                    label="Edit"
-                                    disabled={typeof data === "undefined"}/>}
-                            <Button onClick={onGoToFlow}
-                                    icon={<IoGitNetworkSharp size={20} style={{marginRight: 5}}/>}
-                                    label="Go to FLOW"
-                                    disabled={typeof data === "undefined"}/>
-                            {onDeleteClick && <Button onClick={onDeleteClick}
-                                    label="Delete"
-                                    icon={<IoTrashOutline size={20} style={{marginRight: 5}}/>}
-                                    disabled={typeof data === "undefined"}/>}
-                        </Rows>
+                    <Rows style={{marginTop: 20}}>
+                        {onEditClick && <Button onClick={onEditClick}
+                                                icon={<VscEdit size={20}/>}
+                                                label="Edit"
+                                                disabled={typeof data === "undefined"}/>}
+                        <Button onClick={onGoToFlow}
+                                icon={<IoGitNetworkSharp size={20} style={{marginRight: 5}}/>}
+                                label="Go to FLOW"
+                                disabled={typeof data === "undefined"}/>
+                        {onDeleteClick && <Button onClick={onDeleteClick}
+                                                  label="Delete"
+                                                  icon={<VscTrash size={20} style={{marginRight: 5}}/>}
+                                                  disabled={typeof data === "undefined"}/>}
+                    </Rows>
 
-                        <ConfirmationDialog open={openConfirmation} title="Do you want to delete this rule?"
-                                            content="This action can not be undone." onClose={onDeleteClose}
-                                            onAgree={onConfirmedDelete}
-                        />
+                    <ConfirmationDialog open={openConfirmation} title="Do you want to delete this rule?"
+                                        content="This action can not be undone." onClose={onDeleteClose}
+                                        onAgree={onConfirmedDelete}
+                    />
 
-                    </ElevatedBox>
+                </ElevatedBox>
 
             </BluredBox>
 

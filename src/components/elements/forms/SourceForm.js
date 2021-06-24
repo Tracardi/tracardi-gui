@@ -130,8 +130,8 @@ export default function SourceForm({onSubmit, init}) {
                         name="enabledSource"
                     />
                     <span>
-                            This source is enabled
-                        </span>
+                        This source is enabled
+                    </span>
                 </div>
             </ElevatedBox>
 

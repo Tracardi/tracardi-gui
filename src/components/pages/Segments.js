@@ -2,6 +2,8 @@ import React from "react";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {VscOrganization} from "@react-icons/all-files/vsc/VscOrganization";
+import SegmentForm from "../elements/forms/SegmentForm";
+import SegmentDetails from "../elements/details/SegmentDetails";
 
 
 export default function Segments() {
@@ -25,10 +27,10 @@ export default function Segments() {
             buttonIcon={<VscOrganization size={20} style={{marginRight: 10}}/>}
             drawerDetailsTitle="Source details"
             drawerDetailsWidth={800}
-            detailsFunc={(id, close) => {}}
+            detailsFunc={(id, close) => <SegmentDetails id={id} onDeleteComplete={close}/>}
             drawerAddTitle="New segment"
             drawerAddWidth={800}
-            addFunc={(close) => {}}
+            addFunc={(close) => <SegmentForm onSubmit={close}/>}
             className="Pad10"
         />
 

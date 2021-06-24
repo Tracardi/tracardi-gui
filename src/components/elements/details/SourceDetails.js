@@ -14,6 +14,8 @@ import {useConfirm} from "material-ui-confirm";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import SourceAddForm from "../forms/SourceAddForm";
 import FormDrawer from "../drawers/FormDrawer";
+import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
+import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -78,8 +80,14 @@ export default function SourceDetails({id, onDeleteComplete}) {
             <FormSubHeader>Data</FormSubHeader>
             <Properties properties={data}/>
             <Rows style={{marginTop: 20}}>
-                <Button onClick={onEdit} label="Edit" disabled={typeof data === "undefined"}/>
-                <Button onClick={onDelete} label="Delete" disabled={typeof data === "undefined"}/>
+                <Button onClick={onEdit}
+                        icon={<VscEdit size={20}/>}
+                        label="Edit"
+                        disabled={typeof data === "undefined"}/>
+                <Button onClick={onDelete}
+                        icon={<VscTrash size={20}/>}
+                        label="Delete"
+                        disabled={typeof data === "undefined"}/>
             </Rows>
         </ElevatedBox>
 
