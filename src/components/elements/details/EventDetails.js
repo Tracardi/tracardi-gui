@@ -12,7 +12,7 @@ export default function EventDetails({data}) {
     console.log(data)
     return <div style={{height: "inherit"}}>
         <div className="RightTabScroller">
-            <Tabs tabs={["Event", "Context", "Result", "Raw"]}>
+            <Tabs tabs={["Event", "Context", "Result", "Raw", "Process"]}>
                 <TabCase id={0}>
                     <div className="Box10">
                         <div className="Bottom20">
