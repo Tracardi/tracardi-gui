@@ -36,12 +36,11 @@ export default function EventsAnalytics() {
         detailsLabel="Event details"
         timeFieldLabel = "timestamp"
         filterFields={[
-            'context.page.path',
-            'context.page.history.length',
-            'context.page.hash',
-            'context.page.search',
-            'context.page.referer',
-            'context.screen',
+            'session.profile',
+            'session.context',
+            'session.operation',
+            'context.config',
+            'profile.operation',
             'metadata.time'
         ]}
         timeField={(row) => [row.metadata.time.insert, row.type]}

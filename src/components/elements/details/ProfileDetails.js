@@ -70,19 +70,27 @@ export default function ProfileDetails({data}) {
         <DetailHeader label={data.id}/>
         <div className="RightTabScroller">
 
-            <Tabs tabs={["Properties", "Segments", "Events", "Sessions", "Raw"]}>
+            <Tabs tabs={["Personal Data","Traits", "Segments", "Events", "Sessions", "Raw"]}>
                 <TabCase id={0}>
                     <div className="Box10">
-                        <MiniHeader>Properties</MiniHeader>
-                        <Properties properties={data.properties}/>
+                        <MiniHeader>Personal Information</MiniHeader>
+                        <Properties properties={data.pii}/>
                     </div>
                 </TabCase>
                 <TabCase id={1}>
                     <div className="Box10">
-                        <Properties properties={data.segments}/>
+                        <MiniHeader>Private</MiniHeader>
+                        <Properties properties={data.traits.private}/>
+                        <MiniHeader>Public</MiniHeader>
+                        <Properties properties={data.traits.public}/>
                     </div>
                 </TabCase>
                 <TabCase id={2}>
+                    <div className="Box10">
+                        <Properties properties={data.segments}/>
+                    </div>
+                </TabCase>
+                <TabCase id={3}>
                     <DataBrowsingList
                         onLoadDataRequest={onLoadEventDataRequest}
                         timeFieldLabel="timestamp"
@@ -94,7 +102,7 @@ export default function ProfileDetails({data}) {
                                           columns={[{label: "events", color: "#039be5", stackId: "events"}]}/>
                     </DataBrowsingList>
                 </TabCase>
-                <TabCase id={3}>
+                <TabCase id={4}>
                     <DataBrowsingList
                         onLoadDataRequest={onLoadSessionDataRequest}
                         timeFieldLabel="timestamp"
@@ -106,7 +114,7 @@ export default function ProfileDetails({data}) {
                                           columns={[{label: "events", color: "#039be5", stackId: "events"}]}/>
                     </DataBrowsingList>
                 </TabCase>
-                <TabCase id={4}>
+                <TabCase id={5}>
                     <div className="Box10">
                         <ObjectInspector data={data} theme={theme} expandLevel={3}/>
                     </div>

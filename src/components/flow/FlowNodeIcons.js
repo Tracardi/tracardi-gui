@@ -35,6 +35,8 @@ import {VscDebugAlt2} from "@react-icons/all-files/vsc/VscDebugAlt2";
 import {VscCompareChanges} from "@react-icons/all-files/vsc/VscCompareChanges";
 import {RiScissorsCutFill} from "@react-icons/all-files/ri/RiScissorsCutFill";
 import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
+import {VscGitMerge} from "@react-icons/all-files/vsc/VscGitMerge";
+import {VscOrganization} from "@react-icons/all-files/vsc/VscOrganization";
 
 export default function FlowNodeIcons({icon}) {
 
@@ -77,6 +79,8 @@ export default function FlowNodeIcons({icon}) {
         'minus': <VscRemove size={20}/>,
         'arrow-up': <VscArrowUp size={20}/>,
         'arrow-down': <VscArrowDown size={20}/>,
+        'merge': <VscGitMerge size={20}/>,
+        'segment': <VscOrganization size={20}/>,
     }
 
     const renderIcon = () => {
