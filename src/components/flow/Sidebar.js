@@ -72,12 +72,12 @@ function Sidebar({filter, showAlert}) {
                     {pluginsLoading && <CenteredCircularProgress/>}
                     {
                         plugins?.total > 0 && Object.entries(plugins?.grouped).map(([category,plugs], index) => {
-                            return <>
-                                <p key={index}>{category}</p>
+                            return <div key={index}>
+                                <p>{category}</p>
                                 {plugs.map((row, subIndex) => {
                                     return <FlowMenuNode key={index+"-"+subIndex} data={row.plugin} onDragStart={onDragStart} draggable/>
                                 })}
-                            </>
+                            </div>
                         })
                     }
                 </div>

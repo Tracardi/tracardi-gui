@@ -1,19 +1,13 @@
 import React, {useEffect, useRef, useState} from 'react';
-import ReactFlow, {
-    removeElements,
-    addEdge,
-    Controls,
-    Background,
+import {
     ReactFlowProvider, isNode
 } from 'react-flow-renderer';
 import './FlowEditor.css'
 import Sidebar from "./Sidebar";
 import Button from "../elements/forms/Button";
 import FlowNode from "./FlowNode";
-import {v4 as uuid4} from 'uuid';
 import {request} from "../../remote_api/uql_api_endpoint";
 import NodeDetails from "./NodeDetails";
-import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {useParams} from "react-router-dom";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
@@ -27,11 +21,7 @@ import {VscDebugStepBack} from "@react-icons/all-files/vsc/VscDebugStepBack";
 import {VscDebugStepOver} from "@react-icons/all-files/vsc/VscDebugStepOver";
 import {VscActivateBreakpoints} from "@react-icons/all-files/vsc/VscActivateBreakpoints";
 import {BiRun} from "@react-icons/all-files/bi/BiRun";
-
-const snapGrid = [20, 20];
-const nodeTypes = {
-    flowNode: FlowNode
-};
+import FlowEditorPane, {prepareFlowPayload, save} from "./FlowEditorPane";
 
 const FlowEditor = ({showAlert}) => {
 
@@ -42,183 +32,100 @@ const FlowEditor = ({showAlert}) => {
     const [filterTask, setFilterTask] = useState("");
     const [currentNode, setCurrentNode] = useState({});
     const [elements, setElements] = useState(null);
-    const [flowLoading, setFlowLoading] = useState(false);
     const [displayDetails, setDisplayDetails] = useState(false);
-    const [flowSaved, setFlowSaved] = useState(true);
     const [flowFormOpened, setFlowFormOpened] = useState(false);
-    const [flowMetaData, setFlowMetaData] = useState({})
-    const [draft, setDraft] = useState(false);
-    const [locked, setLocked] = useState(false);
+    const [flowMetaData, setFlowMetaData] = useState(null)
+    const [draft, setDraft] = useState(true);
+    const [activeButtons, setActiveButtons] = useState(false);
     const [saving, setSaving] = useState(false);
     const [debugging, setDebugging] = useState(false);
+
+    let modified
+    modified = modified || false
+
+    console.log("modified start", modified)
 
     const onSaveDraft = (deploy = false) => {
 
         if (reactFlowInstance) {
-            const flow = reactFlowInstance.toObject();
-            let payload = {
-                id: id,
-                name: flowMetaData.name,
-                description: flowMetaData.description,
-                flowGraph: {
-                    nodes: [],
-                    edges: []
-                },
-                projects: flowMetaData.projects
-            }
-
-            flow.elements.map((element) => {
-                if (isNode(element)) {
-                    return payload.flowGraph.nodes.push(element)
-                } else {
-                    return payload.flowGraph.edges.push(element)
-                }
-            });
-            setSaving(true);
-            request(
-                {
-                    url: (deploy === false) ? "/flow/draft" : "/flow",
-                    method: "POST",
-                    data: payload
-                },
+            save(id,
+                flowMetaData,
+                reactFlowInstance,
+                (e) => {showAlert(e)},
+                ()=>{},
                 setSaving,
-                (e) => {
-                    if (e) {
-                        showAlert({message: e[0].msg, type: "error", hideAfter: 2000});
-                    }
-
-                },
-                (data) => {
-                    if (data) {
-                        setFlowSaved(true);
-                    }
-                }
-            )
+                deploy);
+            // const payload = prepareFlowPayload(id, flowMetaData, reactFlowInstance)
+            // // const flow = reactFlowInstance.toObject();
+            // // let payload = {
+            // //     id: id,
+            // //     name: flowMetaData.name,
+            // //     description: flowMetaData.description,
+            // //     enabled: flowMetaData.enabled,
+            // //     flowGraph: {
+            // //         nodes: [],
+            // //         edges: []
+            // //     },
+            // //     projects: flowMetaData.projects
+            // // }
+            // //
+            // // flow.elements.map((element) => {
+            // //     if (isNode(element)) {
+            // //         return payload.flowGraph.nodes.push(element)
+            // //     } else {
+            // //         return payload.flowGraph.edges.push(element)
+            // //     }
+            // // });
+            // setSaving(true);
+            // request(
+            //     {
+            //         url: (deploy === false) ? "/flow/draft" : "/flow",
+            //         method: "POST",
+            //         data: payload
+            //     },
+            //     setSaving,
+            //     (e) => {
+            //         if (e) {
+            //             showAlert({message: e[0].msg, type: "error", hideAfter: 2000});
+            //         }
+            //     },
+            //     (data) => {
+            //         if (data) {
+            //             modified = false;
+            //             console.log("mofidies after save", modified)
+            //         }
+            //     }
+            // )
         } else {
             console.error("Can not save Editor not ready.");
         }
     }
 
-    const onElementsRemove = (elementsToRemove) => {
-        setElements((els) => removeElements(elementsToRemove, els));
-        onSaveDraft(false);
-    }
-
-    const onConnect = (params) => {
-        setElements((els) => addEdge(params, els));
-        onSaveDraft(false);
-    }
-
-    const updateFlow = (response) => {
-        if (response?.data) {
-            setFlowMetaData({
-                name: response?.data?.name,
-                description: response?.data?.description,
-                enabled: response?.data?.enabled,
-                projects: response?.data?.projects,
-            });
-            setLocked(response.data.lock)
-            let flowGraph = []
-            if (response?.data?.flowGraph) {
-                flowGraph = response.data.flowGraph.nodes.slice();
-                flowGraph = flowGraph.concat(response.data.flowGraph.edges.slice())
-            }
-            setElements(flowGraph);
-        } else if (response.data === null) {
-            // Missing flow
-            showAlert({message: "This work flow is missing", type: "warning", hideAfter: 2000});
+    const onBackgroundSave = () => {
+        console.log("modified before save", modified)
+        if (modified) {
+            onSaveDraft(false);
+        } else {
+            console.log("not changed")
         }
     }
 
-    const load = (id, origin = true) => {
-        setSaving(true);
-        request({
-                url: (origin) ? "/flow/" + id : "/flow/draft/" + id,
-            },
-            (status) => {setFlowLoading(status); setSaving(status)},
-            (e) => {
-                if (e) {
-                    showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
-                }
-            },
-            (response) => {
-                updateFlow(response);
-                setDraft(!origin);
-            })
-    }
-
-    useEffect(() => {
-        setFlowLoading(true);
-        request({
-                url: "/flow/draft/" + id,
-            },
-            setFlowLoading,
-            (e) => {
-                if (e) {
-                    showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
-                }
-            },
-            (response) => {
-                setDraft(true);
-                updateFlow(response);
-            })
-    }, [id, showAlert])
-
-    const onLoad = (reactFlowInstance) => {
-        setReactFlowInstance(reactFlowInstance);
-    };
-
-    const onDragOver = (event) => {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = 'move';
-    };
-
-    const onDrop = (event) => {
-        event.preventDefault();
-
-        const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-        const position = reactFlowInstance.project({
-            x: event.clientX - reactFlowBounds.left,
-            y: event.clientY - reactFlowBounds.top,
-        });
-
-        const payload = event.dataTransfer.getData('application/json');
-        const data = JSON.parse(payload)
-        const newNode = {
-            id: uuid4(),
-            type: data.metadata.type,
-            position,
-            data: data
-        };
-        setElements((es) => es.concat(newNode));
-        onSaveDraft(false);
-    };
-
-    const onElementClick = (event, element) => {
-        setCurrentNode(element);
-    }
-
-    const onNodeDoubleClick = (event, element) => {
-        setCurrentNode(element)
-        setDisplayDetails(true);
-    }
-
-    const onSelectionChange = (elements) => {
-        setFlowSaved(false);
-    }
-
-    const onPaneClick = () => {
-        setDisplayDetails(false);
-    }
-
-    const onNodeContextMenu = (event, element) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setDisplayDetails(false);
-    }
+    // useEffect(() => {
+    //     const timer = setInterval(
+    //         onBackgroundSave,
+    //             5000
+    //         );
+    //
+    //     return () => {
+    //         if (timer) {
+    //             clearInterval(timer);
+    //         }
+    //
+    //     };
+    // }, [])
 
     const onConfig = (config) => {
-        onSaveDraft(false);
+        // modified = true;
     }
 
     const onDebug = () => {
@@ -254,9 +161,36 @@ const FlowEditor = ({showAlert}) => {
     }
 
     const Saved = () => {
-        return(flowSaved) ? <span className="OKTag"><TiTickOutline size={20} style={{marginRight:5}} />Saved</span> :
-                <span className="AlertTag"><RiExchangeFundsFill size={20} style={{marginRight: 5}}/>Modified</span>
+        return (modified)
+            ? <span className="AlertTag"><RiExchangeFundsFill size={20} style={{marginRight: 5}}/>Modified</span>
+            : <span className="OKTag"><TiTickOutline size={20} style={{marginRight: 5}}/>Saved</span>
 
+    }
+
+    const onNodeClick = (element) => {
+        setCurrentNode(element)
+    }
+
+    const onEditorReady = (reactFlowInstance) => {
+        setActiveButtons(true);
+        setReactFlowInstance(reactFlowInstance);
+    }
+
+    const onFlowLoad = (flowMetadata) => {
+        setFlowMetaData(flowMetadata);
+    }
+
+    const onFlowLoadError = (e) => {
+        showAlert(e);
+    }
+
+    const onDisplayDetails = (element) => {
+        setCurrentNode(element);
+        setDisplayDetails(true);
+    }
+
+    const onHideDetails = () => {
+        setDisplayDetails(false);
     }
 
     return (
@@ -270,32 +204,32 @@ const FlowEditor = ({showAlert}) => {
                         <div className="FlowTitle">
                             <span style={{display: "flex", alignItems: "center"}}>
                                 {draft && <span className="NormalTag">
-                                    <VscActivateBreakpoints size={20} style={{marginRight:5}}/>
+                                    <VscActivateBreakpoints size={20} style={{marginRight: 5}}/>
                                     <span> This is a draft of workflow:&nbsp;</span>
-                                    {flowMetaData.name}
+                                    {flowMetaData?.name}
                                 </span>}
-                                {!draft && flowMetaData.name}
+                                {!draft && flowMetaData?.name}
                                 <Saved/>
                             </span>
                             <span style={{display: "flex"}}>
                                 <Button label="Edit"
                                         onClick={() => setFlowFormOpened(true)}
-                                        disabled={reactFlowInstance === null}
+                                        disabled={!activeButtons}
                                         icon={<FiEdit3 size={14} style={{marginRight: 8}}/>}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                                 <Button label="Debug"
-                                        disabled={reactFlowInstance === null}
+                                        disabled={!activeButtons}
                                         icon={<VscDebugAlt size={14} style={{marginRight: 8}}/>}
                                         onClick={onDebug}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                                 <Button label="Save draft"
                                         progress={saving}
-                                        icon={<VscActivateBreakpoints size={20} style={{marginRight:5}}/>}
-                                        disabled={reactFlowInstance === null}
+                                        icon={<VscActivateBreakpoints size={20} style={{marginRight: 5}}/>}
+                                        disabled={!activeButtons}
                                         onClick={() => onSaveDraft(false)}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                                 <Button label="Save & Deploy"
-                                        disabled={reactFlowInstance === null}
+                                        disabled={!activeButtons}
                                         icon={<BiRun size={20} style={{marginRight: 5}}/>}
                                         onClick={() => {
                                             onSaveDraft(true)
@@ -303,52 +237,32 @@ const FlowEditor = ({showAlert}) => {
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                                 <Button label="Revert"
                                         progress={saving}
-                                        disabled={reactFlowInstance === null}
+                                        disabled={!activeButtons}
                                         icon={<VscDebugStepBack size={15} style={{marginRight: 5}}/>}
                                         onClick={() => {
-                                            load(id, true)
+                                            setDraft(false)
                                         }}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                                 <Button label="Draft"
                                         progress={saving}
-                                        disabled={reactFlowInstance === null}
+                                        disabled={!activeButtons}
                                         icon={<VscDebugStepOver size={15} style={{marginRight: 5}}/>}
                                         onClick={() => {
-                                            load(id, false)
+                                            setDraft(true)
                                         }}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                             </span>
 
                         </div>
-                        <div className="FlowPane" ref={reactFlowWrapper}>
-                            {flowLoading && <CenteredCircularProgress/>}
-                            {elements && <ReactFlow
-                                elements={elements}
-                                zoomOnDoubleClick={false}
-                                zoomOnScroll={false}
-                                panOnScroll={true}
-                                onElementsRemove={onElementsRemove}
-                                onElementClick={onElementClick}
-                                onNodeDoubleClick={onNodeDoubleClick}
-                                onSelectionChange={onSelectionChange}
-                                onNodeContextMenu={onNodeContextMenu}
-                                onPaneClick={onPaneClick}
-                                nodeTypes={nodeTypes}
-                                onConnect={onConnect}
-                                deleteKeyCode={46}
-                                onLoad={onLoad}
-                                onDrop={onDrop}
-                                onDragOver={onDragOver}
-                                snapToGrid={true}
-                                snapGrid={snapGrid}
-                                nodesDraggable={!locked}
-                                style={{background: "white"}}
-                                defaultZoom={1}
-                            >
-                                <Controls/>
-                                <Background color="#555" gap={16}/>
-                            </ReactFlow>}
-                        </div>
+                        <FlowEditorPane id={id}
+                                        onEditorReady={onEditorReady}
+                                        onNodeClick={onNodeClick}
+                                        onFlowLoad={onFlowLoad}
+                                        onFlowLoadError={onFlowLoadError}
+                                        onDisplayDetails={onDisplayDetails}
+                                        onHideDetails={onHideDetails}
+                                        draft={draft}
+                        />
                         {displayDetails && <NodeDetails
                             node={currentNode}
                             onConfig={onConfig}
