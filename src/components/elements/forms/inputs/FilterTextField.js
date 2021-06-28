@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import TextField from "@material-ui/core/TextField";
 
-const FilterTextField = ({label, onChange, onSubmit}) => {
+const FilterTextField = ({label, onChange, onSubmit, variant="outlined"}) => {
 
     const [value, setValue] = useState("");
 
@@ -24,7 +24,7 @@ const FilterTextField = ({label, onChange, onSubmit}) => {
                       value={value}
                       onChange={handleChange}
                       onKeyPressCapture={handleKeyPress}
-                      variant="outlined"
+                      variant={variant}
                       fullWidth
                       size="small"
     />

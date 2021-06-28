@@ -2,7 +2,6 @@ import React from "react";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import {VscPlug} from "@react-icons/all-files/vsc/VscPlug";
 import PluginForm from "../elements/forms/PluginForm";
-import {BsFolderPlus} from "@react-icons/all-files/bs/BsFolderPlus";
 import CardBrowser from "../elements/lists/CardBrowser";
 
 export default function ActionPlugins() {

@@ -10,9 +10,11 @@ import {request} from "../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
+import FilterTextField from "../elements/forms/inputs/FilterTextField";
 
-function Sidebar({filter, showAlert}) {
+function Sidebar({showAlert}) {
 
+    const [filterActions, setFilterActions] = useState("*not-hidden");
     const [showResisterPopOver, setShowResisterPopOver] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [plugins, setPlugins] = useState(null);
@@ -22,7 +24,7 @@ function Sidebar({filter, showAlert}) {
     useEffect(() => {
         setPluginsLoading(true);
         request({
-                url: "/flow/action/plugins?query=*not-hidden" + refresh,
+                url: "/flow/action/plugins?rnd=" + refresh + "&query=" + filterActions
             },
             setPluginsLoading,
             (e) => {
@@ -31,12 +33,11 @@ function Sidebar({filter, showAlert}) {
                 }
             },
             (response) => {
-                console.log(response.data)
-                if(response) {
+                if (response) {
                     setPlugins(response.data);
                 }
             })
-    }, [showAlert, refresh])
+    }, [showAlert, refresh, filterActions])
 
     const onDragStart = (event, data) => {
         event.dataTransfer.setData('application/json', JSON.stringify(data));
@@ -44,7 +45,6 @@ function Sidebar({filter, showAlert}) {
     };
 
     const onRegisterClick = (event) => {
-        console.log(event);
         setAnchorEl(event.currentTarget);
         setShowResisterPopOver(true);
     }
@@ -59,23 +59,18 @@ function Sidebar({filter, showAlert}) {
     return (
         <React.Fragment>
             <div className="TaskFilter">
-                <TextField id="actions" label="Action filter"
-                    // value={filterTask}
-                    // onChange={(ev) => setFilterTask(ev.target.value)}
-                           size="small"
-                           fullWidth
-                           style={{width: "100%"}}
-                />
+                <FilterTextField label="Action filter" variant="standard" onSubmit={setFilterActions}/>
             </div>
             <div className="TaskNodes">
                 <div>
                     {pluginsLoading && <CenteredCircularProgress/>}
                     {
-                        plugins?.total > 0 && Object.entries(plugins?.grouped).map(([category,plugs], index) => {
+                        plugins?.total > 0 && Object.entries(plugins?.grouped).map(([category, plugs], index) => {
                             return <div key={index}>
                                 <p>{category}</p>
                                 {plugs.map((row, subIndex) => {
-                                    return <FlowMenuNode key={index+"-"+subIndex} data={row.plugin} onDragStart={onDragStart} draggable/>
+                                    return <FlowMenuNode key={index + "-" + subIndex} data={row.plugin}
+                                                         onDragStart={onDragStart} draggable/>
                                 })}
                             </div>
                         })
@@ -83,7 +78,7 @@ function Sidebar({filter, showAlert}) {
                 </div>
                 <div style={{textAlign: "right"}}>
                     <IconButton onClick={onRegisterClick} label="Register action">
-                        <BsPlusCircle size={20} />
+                        <BsPlusCircle size={20}/>
                     </IconButton>
                     <Popover
                         id="register"

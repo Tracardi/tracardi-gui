@@ -15,12 +15,10 @@ import {RiExchangeFundsFill} from "@react-icons/all-files/ri/RiExchangeFundsFill
 import {VscDebugAlt} from "@react-icons/all-files/vsc/VscDebugAlt";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import FlowForm from "../elements/forms/FlowForm";
-import {VscActivateBreakpoints} from "@react-icons/all-files/vsc/VscActivateBreakpoints";
-import {BiRun} from "@react-icons/all-files/bi/BiRun";
 import FlowEditorPane from "./FlowEditorPane";
 import {save, debug} from "./FlowEditorOps";
-import MenuItem from "@material-ui/core/MenuItem";
-import SelectItems from "../elements/forms/SelectItems";
+import {BsToggleOn} from "@react-icons/all-files/bs/BsToggleOn";
+import {BsToggleOff} from "@react-icons/all-files/bs/BsToggleOff";
 
 const FlowEditor = ({showAlert}) => {
 
@@ -28,7 +26,6 @@ const FlowEditor = ({showAlert}) => {
 
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
     const [elements, setElements] = useState(null);
-    const [filterTask, setFilterTask] = useState("");
     const [currentNode, setCurrentNode] = useState({});
     const [displayDetails, setDisplayDetails] = useState(false);
     const [flowFormOpened, setFlowFormOpened] = useState(false);
@@ -36,6 +33,7 @@ const FlowEditor = ({showAlert}) => {
     const [activeButtons, setActiveButtons] = useState(false);
     const [saving, setSaving] = useState(false);
     const [modified, setModified] = useState(false);
+    const [deployed, setDeployed] = useState(false);
     const [debugging, setDebugging] = useState(false);
 
     const onSaveDraft = (deploy = false) => {
@@ -49,6 +47,9 @@ const FlowEditor = ({showAlert}) => {
                 },
                 () => {
                     setModified(false);
+                    if(deploy) {
+                        setDeployed(true);
+                    }
                 },
                 setSaving,
                 deploy);
@@ -77,6 +78,7 @@ const FlowEditor = ({showAlert}) => {
 
     const onConfig = (config) => {
         setModified(true);
+        setDeployed(false);
     }
 
     const onDebug = () => {
@@ -89,10 +91,21 @@ const FlowEditor = ({showAlert}) => {
         )
     }
 
-    const Saved = () => {
-        return (modified)
+    const Saved = ({onClick}) => {
+        const button = () => (modified)
             ? <span className="AlertTag"><RiExchangeFundsFill size={20} style={{marginRight: 5}}/>Modified</span>
             : <span className="OKTag"><TiTickOutline size={20} style={{marginRight: 5}}/>Saved</span>
+
+        return <span onClick={onClick} style={{cursor: "pointer"}}>{button()}</span>
+
+    }
+
+    const Deployed = ({onClick}) => {
+        const button = () => (deployed)
+            ? <span className="OKTag"><BsToggleOn size={20} style={{marginRight: 5}}/>Deployed</span>
+            : <span className="AlertTag"><BsToggleOff size={20} style={{marginRight: 5}}/>Draft</span>
+
+        return <span onClick={onClick} style={{cursor: "pointer"}}>{button()}</span>
 
     }
 
@@ -126,6 +139,7 @@ const FlowEditor = ({showAlert}) => {
 
     const onChange = () => {
         setModified(true);
+        setDeployed(false);
     }
 
     return (
@@ -138,8 +152,9 @@ const FlowEditor = ({showAlert}) => {
                     <div className="LeftColumn">
                         <div className="FlowTitle">
                             <span style={{display: "flex", alignItems: "center"}}>
-                                    {flowMetaData?.name}
-                                <Saved/>
+                                <span style={{marginRight:10}}>{flowMetaData?.name}</span>
+                                <Saved onClick={() => onSaveDraft(false)} />
+                                <Deployed onClick={() => {onSaveDraft(true);}}/>
                             </span>
                             <span style={{display: "flex"}}>
                                 <Button label="Edit"
@@ -152,19 +167,6 @@ const FlowEditor = ({showAlert}) => {
                                         disabled={!activeButtons}
                                         icon={<VscDebugAlt size={14} style={{marginRight: 8}}/>}
                                         onClick={onDebug}
-                                        style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
-                                <Button label="Save draft"
-                                        progress={saving}
-                                        icon={<VscActivateBreakpoints size={20} style={{marginRight: 5}}/>}
-                                        disabled={!activeButtons}
-                                        onClick={() => onSaveDraft(false)}
-                                        style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
-                                <Button label="Save & Deploy"
-                                        disabled={!activeButtons}
-                                        icon={<BiRun size={20} style={{marginRight: 5}}/>}
-                                        onClick={() => {
-                                            onSaveDraft(true)
-                                        }}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                             </span>
 
