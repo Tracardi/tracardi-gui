@@ -12,8 +12,8 @@ export default function Flows() {
 
     const flows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup">
-                <header key={index}>{category}</header>
+            return <div className="CardGroup" key={index}>
+                <header>{category}</header>
                 <div>
                     {plugs.map((row, subIndex) => {
                         return <SquareCard key={index + "-" + subIndex}

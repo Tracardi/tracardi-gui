@@ -1,12 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-    ReactFlowProvider, isNode
+    ReactFlowProvider
 } from 'react-flow-renderer';
 import './FlowEditor.css'
 import Sidebar from "./Sidebar";
 import Button from "../elements/forms/Button";
-import FlowNode from "./FlowNode";
-import {request} from "../../remote_api/uql_api_endpoint";
 import NodeDetails from "./NodeDetails";
 import {useParams} from "react-router-dom";
 import {connect} from "react-redux";
@@ -17,33 +15,28 @@ import {RiExchangeFundsFill} from "@react-icons/all-files/ri/RiExchangeFundsFill
 import {VscDebugAlt} from "@react-icons/all-files/vsc/VscDebugAlt";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import FlowForm from "../elements/forms/FlowForm";
-import {VscDebugStepBack} from "@react-icons/all-files/vsc/VscDebugStepBack";
-import {VscDebugStepOver} from "@react-icons/all-files/vsc/VscDebugStepOver";
 import {VscActivateBreakpoints} from "@react-icons/all-files/vsc/VscActivateBreakpoints";
 import {BiRun} from "@react-icons/all-files/bi/BiRun";
-import FlowEditorPane, {prepareFlowPayload, save} from "./FlowEditorPane";
+import FlowEditorPane from "./FlowEditorPane";
+import {save, debug} from "./FlowEditorOps";
+import MenuItem from "@material-ui/core/MenuItem";
+import SelectItems from "../elements/forms/SelectItems";
 
 const FlowEditor = ({showAlert}) => {
 
     let {id} = useParams();
 
-    const reactFlowWrapper = useRef(null);
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
+    const [elements, setElements] = useState(null);
     const [filterTask, setFilterTask] = useState("");
     const [currentNode, setCurrentNode] = useState({});
-    const [elements, setElements] = useState(null);
     const [displayDetails, setDisplayDetails] = useState(false);
     const [flowFormOpened, setFlowFormOpened] = useState(false);
     const [flowMetaData, setFlowMetaData] = useState(null)
-    const [draft, setDraft] = useState(true);
     const [activeButtons, setActiveButtons] = useState(false);
     const [saving, setSaving] = useState(false);
+    const [modified, setModified] = useState(false);
     const [debugging, setDebugging] = useState(false);
-
-    let modified
-    modified = modified || false
-
-    console.log("modified start", modified)
 
     const onSaveDraft = (deploy = false) => {
 
@@ -51,118 +44,49 @@ const FlowEditor = ({showAlert}) => {
             save(id,
                 flowMetaData,
                 reactFlowInstance,
-                (e) => {showAlert(e)},
-                ()=>{},
+                (e) => {
+                    showAlert(e)
+                },
+                () => {
+                    setModified(false);
+                },
                 setSaving,
                 deploy);
-            // const payload = prepareFlowPayload(id, flowMetaData, reactFlowInstance)
-            // // const flow = reactFlowInstance.toObject();
-            // // let payload = {
-            // //     id: id,
-            // //     name: flowMetaData.name,
-            // //     description: flowMetaData.description,
-            // //     enabled: flowMetaData.enabled,
-            // //     flowGraph: {
-            // //         nodes: [],
-            // //         edges: []
-            // //     },
-            // //     projects: flowMetaData.projects
-            // // }
-            // //
-            // // flow.elements.map((element) => {
-            // //     if (isNode(element)) {
-            // //         return payload.flowGraph.nodes.push(element)
-            // //     } else {
-            // //         return payload.flowGraph.edges.push(element)
-            // //     }
-            // // });
-            // setSaving(true);
-            // request(
-            //     {
-            //         url: (deploy === false) ? "/flow/draft" : "/flow",
-            //         method: "POST",
-            //         data: payload
-            //     },
-            //     setSaving,
-            //     (e) => {
-            //         if (e) {
-            //             showAlert({message: e[0].msg, type: "error", hideAfter: 2000});
-            //         }
-            //     },
-            //     (data) => {
-            //         if (data) {
-            //             modified = false;
-            //             console.log("mofidies after save", modified)
-            //         }
-            //     }
-            // )
         } else {
             console.error("Can not save Editor not ready.");
         }
     }
 
-    const onBackgroundSave = () => {
-        console.log("modified before save", modified)
-        if (modified) {
-            onSaveDraft(false);
-        } else {
-            console.log("not changed")
-        }
-    }
+    useEffect(() => {
+        const timer = setInterval(
+            () => {
+                if (modified === true) {
+                    onSaveDraft(false);
+                }
+            },
+            5000
+        );
 
-    // useEffect(() => {
-    //     const timer = setInterval(
-    //         onBackgroundSave,
-    //             5000
-    //         );
-    //
-    //     return () => {
-    //         if (timer) {
-    //             clearInterval(timer);
-    //         }
-    //
-    //     };
-    // }, [])
+        return () => {
+            if (timer) {
+                clearInterval(timer);
+            }
+
+        };
+    }, [modified])
 
     const onConfig = (config) => {
-        // modified = true;
+        setModified(true);
     }
 
     const onDebug = () => {
-        onSaveDraft(false);
-        debug(id,
+        debug(
+            id,
             reactFlowInstance,
-            (e)=>showAlert({message: e[0].msg, type: "error", hideAfter: 2000}),
+            (e) => showAlert(e),
             setDebugging,
-            (elements)=>setElements(elements))
-        // setDebugging(true);
-        // request(
-        //     {
-        //         url: "/flow/" + id + "/debug",
-        //         method: "POST",
-        //     },
-        //     setDebugging,
-        //     (e) => {
-        //         if (e) {
-        //             showAlert({message: e[0].msg, type: "error", hideAfter: 2000});
-        //         }
-        //     },
-        //     (data) => {
-        //         if (data) {
-        //             const flow = reactFlowInstance.toObject();
-        //             flow.elements.map((element) => {
-        //                 if (isNode(element)) {
-        //                     if (data.data.calls[element.id]) {
-        //                         element.data['debugging'] = data.data.calls[element.id]
-        //                     } else {
-        //                         delete element.data.debugging
-        //                     }
-        //                 }
-        //             });
-        //             setElements(flow.elements || []);
-        //         }
-        //     }
-        // )
+            (elements) => setElements(elements)
+        )
     }
 
     const Saved = () => {
@@ -171,6 +95,8 @@ const FlowEditor = ({showAlert}) => {
             : <span className="OKTag"><TiTickOutline size={20} style={{marginRight: 5}}/>Saved</span>
 
     }
+
+    // --- Editor ---
 
     const onNodeClick = (element) => {
         setCurrentNode(element)
@@ -198,6 +124,10 @@ const FlowEditor = ({showAlert}) => {
         setDisplayDetails(false);
     }
 
+    const onChange = () => {
+        setModified(true);
+    }
+
     return (
         <ReactFlowProvider>
             <div className="FlowEditor">
@@ -208,12 +138,7 @@ const FlowEditor = ({showAlert}) => {
                     <div className="LeftColumn">
                         <div className="FlowTitle">
                             <span style={{display: "flex", alignItems: "center"}}>
-                                {draft && <span className="NormalTag">
-                                    <VscActivateBreakpoints size={20} style={{marginRight: 5}}/>
-                                    <span> This is a draft of workflow:&nbsp;</span>
                                     {flowMetaData?.name}
-                                </span>}
-                                {!draft && flowMetaData?.name}
                                 <Saved/>
                             </span>
                             <span style={{display: "flex"}}>
@@ -223,6 +148,7 @@ const FlowEditor = ({showAlert}) => {
                                         icon={<FiEdit3 size={14} style={{marginRight: 8}}/>}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                                 <Button label="Debug"
+                                        progress={debugging}
                                         disabled={!activeButtons}
                                         icon={<VscDebugAlt size={14} style={{marginRight: 8}}/>}
                                         onClick={onDebug}
@@ -240,33 +166,21 @@ const FlowEditor = ({showAlert}) => {
                                             onSaveDraft(true)
                                         }}
                                         style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
-                                <Button label="Revert"
-                                        progress={saving}
-                                        disabled={!activeButtons}
-                                        icon={<VscDebugStepBack size={15} style={{marginRight: 5}}/>}
-                                        onClick={() => {
-                                            setDraft(false)
-                                        }}
-                                        style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
-                                <Button label="Draft"
-                                        progress={saving}
-                                        disabled={!activeButtons}
-                                        icon={<VscDebugStepOver size={15} style={{marginRight: 5}}/>}
-                                        onClick={() => {
-                                            setDraft(true)
-                                        }}
-                                        style={{padding: "5px 10px", margin: 1, fontSize: 14}}/>
                             </span>
 
                         </div>
                         <FlowEditorPane id={id}
+                                        reactFlowInstance={reactFlowInstance}
+                                        elements={elements}
+                                        setElements={setElements}
                                         onEditorReady={onEditorReady}
                                         onNodeClick={onNodeClick}
                                         onFlowLoad={onFlowLoad}
                                         onFlowLoadError={onFlowLoadError}
                                         onDisplayDetails={onDisplayDetails}
                                         onHideDetails={onHideDetails}
-                                        draft={draft}
+                                        onChange={onChange}
+                                        draft={true}
                         />
                         {displayDetails && <NodeDetails
                             node={currentNode}

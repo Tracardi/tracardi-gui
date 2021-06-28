@@ -22,6 +22,7 @@ import urlPrefix from "../misc/UrlPrefix";
 import ActionPlugins from "./pages/ActionPlugins";
 import Credentials from "./pages/Credentials";
 import Segments from "./pages/Segments";
+import FlowReader from "./flow/FlowReader";
 
 const AppBox = () => {
 
@@ -88,8 +89,11 @@ const AppBox = () => {
                     <PrivateRoute path={urlPrefix("/setup/flows")} roles={["admin"]}>
                         <Flows/>
                     </PrivateRoute>
-                    <PrivateRoute path={urlPrefix("/setup/flow/:id")} roles={["admin"]}>
+                    <PrivateRoute exact path={urlPrefix("/setup/flow/edit/:id")} roles={["admin"]}>
                         <FlowEditor/>
+                    </PrivateRoute>
+                    <PrivateRoute exact path={urlPrefix("/setup/flow/:id")} roles={["admin"]}>
+                        <FlowReader/>
                     </PrivateRoute>
                     <PrivateRoute path={urlPrefix("/setup/flow-actions")} roles={["admin"]}>
                         <ActionPlugins/>

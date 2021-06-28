@@ -6,94 +6,18 @@ import FlowNode from "./FlowNode";
 import {v4 as uuid4} from "uuid";
 import {request} from "../../remote_api/uql_api_endpoint";
 
-export function prepareFlowPayload(id, flowMetaData, reactFlowInstance) {
-
-    const flow = reactFlowInstance.toObject();
-    let payload = {
-        id: id,
-        name: flowMetaData.name,
-        description: flowMetaData.description,
-        enabled: flowMetaData.enabled,
-        flowGraph: {
-            nodes: [],
-            edges: []
-        },
-        projects: flowMetaData.projects
-    }
-
-    flow.elements.map((element) => {
-        if (isNode(element)) {
-            return payload.flowGraph.nodes.push(element)
-        } else {
-            return payload.flowGraph.edges.push(element)
-        }
-    });
-
-    return payload;
-}
-
-export function save(id, flowMetaData, reactFlowInstance, onError, onReady, progress, deploy=false) {
-    const payload = prepareFlowPayload(id, flowMetaData, reactFlowInstance)
-    progress(true);
-    request(
-        {
-            url: (deploy === false) ? "/flow/draft" : "/flow",
-            method: "POST",
-            data: payload
-        },
-        progress,
-        (e) => {
-            if (e) {
-                onError({message: e[0].msg, type: "error", hideAfter: 2000});
-            }
-        },
-        (data) => {
-            if (data) {
-                onReady(data);
-            }
-        }
-    )
-}
-
-export function debug(id, reactFlowInstance, onError, progress, onReady) {
-    progress(true);
-    request(
-        {
-            url: "/flow/" + id + "/debug",
-            method: "POST",
-        },
-        progress,
-        (e) => {
-            if (e) {
-                onError({message: e[0].msg, type: "error", hideAfter: 2000});
-            }
-        },
-        (data) => {
-            if (data) {
-                const flow = reactFlowInstance.toObject();
-                flow.elements.map((element) => {
-                    if (isNode(element)) {
-                        if (data.data.calls[element.id]) {
-                            element.data['debugging'] = data.data.calls[element.id]
-                        } else {
-                            delete element.data.debugging
-                        }
-                    }
-                });
-                onReady(flow.elements || []);
-            }
-        }
-    )
-}
-
 export default function FlowEditorPane({
                                            id,
+                                           elements = null,
+                                           setElements,
+                                           reactFlowInstance = null,
                                            onDisplayDetails,
                                            onHideDetails,
                                            onNodeClick,
                                            onFlowLoad,
                                            onFlowLoadError,
                                            onEditorReady,
+                                           onChange,
                                            locked = false,
                                            draft = true
                                        }) {
@@ -104,10 +28,7 @@ export default function FlowEditorPane({
     };
 
     const reactFlowWrapper = useRef(null);
-    const [reactFlowInstance, setReactFlowInstance] = useState(null);
-    const [elements, setElements] = useState(null);
     const [flowLoading, setFlowLoading] = useState(false);
-
 
     useEffect(() => {
         setFlowLoading(true);
@@ -122,14 +43,12 @@ export default function FlowEditorPane({
                     } else {
                         alert(e[0].msg)
                     }
-
                 }
             },
             (response) => {
                 updateFlow(response?.data);
             })
     }, [id, draft])
-
 
 
     const updateFlow = (data) => {
@@ -154,24 +73,29 @@ export default function FlowEditorPane({
         } else if (data === null) {
             // Missing flow
             if (onFlowLoadError) {
-                onFlowLoadError({message: "This work flow is missing", type: "warning", hideAfter: 2000});
+                onFlowLoadError({message: "This workflow is missing", type: "warning", hideAfter: 2000});
             } else {
-                alert("This work flow is missing")
+                alert("This workflow is missing")
             }
         }
     }
 
     const onLoad = (reactFlowInstance) => {
-        setReactFlowInstance(reactFlowInstance);
         onEditorReady(reactFlowInstance)
     };
 
     const onElementsRemove = (elementsToRemove) => {
         setElements((els) => removeElements(elementsToRemove, els));
+        if(onChange) {
+            onChange();
+        }
     }
 
     const onConnect = (params) => {
         setElements((els) => addEdge(params, els));
+        if(onChange) {
+            onChange();
+        }
     }
 
     const onDrop = (event) => {
@@ -193,6 +117,10 @@ export default function FlowEditorPane({
             data: data
         };
         setElements((es) => es.concat(newNode));
+        if(onChange) {
+            console.log('changed')
+            onChange();
+        }
     };
 
     const onDragOver = (event) => {
@@ -265,6 +193,10 @@ FlowEditorPane.propTypes = {
     onFlowLoad: PropTypes.func.isRequired,
     onFlowLoadError: PropTypes.func.isRequired,
     onEditorReady: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
+    elements: PropTypes.array,
+    setElements: PropTypes.func.isRequired,
+    reactFlowInstance: PropTypes.object,
     locked: PropTypes.bool,
     draft: PropTypes.bool
 };
