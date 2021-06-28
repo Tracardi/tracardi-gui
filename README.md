@@ -26,7 +26,7 @@ Than run
 
 Or if you prefer to run it with docker
 
-##```docker run -p 7777:80 -e API_URL=http://127.0.0.1:7676 tracardi-gui```
+##```docker run -p 8787:80 -e API_URL=http://127.0.0.1:8686 tracardi-gui```
 
 It open pot 8787 on your localhost and connects to API at localhost: 8686.
 

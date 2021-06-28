@@ -130,34 +130,39 @@ const FlowEditor = ({showAlert}) => {
 
     const onDebug = () => {
         onSaveDraft(false);
-        setDebugging(true);
-        request(
-            {
-                url: "/flow/" + id + "/debug",
-                method: "POST",
-            },
+        debug(id,
+            reactFlowInstance,
+            (e)=>showAlert({message: e[0].msg, type: "error", hideAfter: 2000}),
             setDebugging,
-            (e) => {
-                if (e) {
-                    showAlert({message: e[0].msg, type: "error", hideAfter: 2000});
-                }
-            },
-            (data) => {
-                if (data) {
-                    const flow = reactFlowInstance.toObject();
-                    flow.elements.map((element) => {
-                        if (isNode(element)) {
-                            if (data.data.calls[element.id]) {
-                                element.data['debugging'] = data.data.calls[element.id]
-                            } else {
-                                delete element.data.debugging
-                            }
-                        }
-                    });
-                    setElements(flow.elements || []);
-                }
-            }
-        )
+            (elements)=>setElements(elements))
+        // setDebugging(true);
+        // request(
+        //     {
+        //         url: "/flow/" + id + "/debug",
+        //         method: "POST",
+        //     },
+        //     setDebugging,
+        //     (e) => {
+        //         if (e) {
+        //             showAlert({message: e[0].msg, type: "error", hideAfter: 2000});
+        //         }
+        //     },
+        //     (data) => {
+        //         if (data) {
+        //             const flow = reactFlowInstance.toObject();
+        //             flow.elements.map((element) => {
+        //                 if (isNode(element)) {
+        //                     if (data.data.calls[element.id]) {
+        //                         element.data['debugging'] = data.data.calls[element.id]
+        //                     } else {
+        //                         delete element.data.debugging
+        //                     }
+        //                 }
+        //             });
+        //             setElements(flow.elements || []);
+        //         }
+        //     }
+        // )
     }
 
     const Saved = () => {

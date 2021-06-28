@@ -55,13 +55,14 @@ export function save(id, flowMetaData, reactFlowInstance, onError, onReady, prog
     )
 }
 
-export function debug(id, reactFlowInstance, onError, onReady) {
+export function debug(id, reactFlowInstance, onError, progress, onReady) {
+    progress(true);
     request(
         {
             url: "/flow/" + id + "/debug",
             method: "POST",
         },
-        ()=>{},
+        progress,
         (e) => {
             if (e) {
                 onError({message: e[0].msg, type: "error", hideAfter: 2000});
