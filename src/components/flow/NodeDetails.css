@@ -4,13 +4,13 @@
     top: 15px;
     z-index: 50;
     width: 40%;
-    padding:0;
-    background-color: rgba(235,235,235,0.85);
+    padding: 0;
+    background-color: rgba(235, 235, 235, 0.85);
     height: calc(100% - 30px);
     border-radius: 5px;
     display: flex;
     flex-direction: column;
-    border: rgba(220,220,220,1) 1px solid;
+    border: rgba(220, 220, 220, 1) 1px solid;
 }
 
 .NodeDetails > .Title {
@@ -23,33 +23,32 @@
     font-weight: 400;
     justify-content: space-between;
     padding: 10px;
-    -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.28);
-    -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.28);
-    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.28);
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.28);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.28);
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.28);
     border-radius: 5px;
 }
 
 .NodeDetails > .Title:hover {
     background-color: white;
-    -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.28);
-    -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.28);
-    box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.28);
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.28);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.28);
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.28);
 }
 
-.NodeDetails .Title .TitleText
-{
+.NodeDetails .Title .TitleText {
     display: flex;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.NodeDetails  .TaskDetails {
+.NodeDetails .TaskDetails {
     position: absolute;
     height: 300px;
     width: 100%;
     bottom: 0;
-    z-index:9;
+    z-index: 9;
     display: none;
     flex-direction: row;
 }
@@ -60,17 +59,10 @@
     width: 100%;
     margin-top: 5px;
     height: calc(100% - 70px);
-    padding:10px;
+    padding: 10px;
 }
 
-.NodeDetails > .Pane .Content {
-    font-size: 14px;
-    overflow-y: auto;
-    border-radius: 5px;
-}
-
-
-.NodeDetails > .Pane .Content .SubTitle {
+.NodeDetails > .Pane .SubTitle {
     display: flex;
     align-items: center;
     padding: 10px;
@@ -81,29 +73,28 @@
 }
 
 
-
-.NodeDetails > .Pane .Content  TABLE {
+.NodeDetails > .Pane TABLE {
     width: 100%;
     border: solid 1px #ccc;
     border-collapse: collapse;
     border-spacing: 0;
 }
 
-.NodeDetails > .Pane .Content  TD:first-child {
+.NodeDetails > .Pane TD:first-child {
     border-right: solid 1px #ccc;
     background-color: #f5f5f5;
 }
 
-.NodeDetails > .Pane .Content  TD {
+.NodeDetails > .Pane TD {
     padding: 7px 15px;
 }
 
-.NodeDetails > .Pane .Content  .InfoBox {
+.NodeDetails > .Pane .InfoBox {
     padding: 15px 5px;
     font-size: 120%;
 }
 
-.NodeDetails > .Pane .Content  TR {
+.NodeDetails > .Pane TR {
     border-top: solid 1px #ccc;
     border-bottom: solid 1px #ccc;
 }

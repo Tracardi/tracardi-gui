@@ -8,9 +8,9 @@ import {ObjectInspector} from "react-inspector";
 import {CgListTree} from "@react-icons/all-files/cg/CgListTree";
 import Properties from "../elements/details/DetailProperties";
 import ConfigEditor from "./ConfigEditor";
-import NodeDebugConsole from "./NodeDebugConsole";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {VscBook} from "@react-icons/all-files/vsc/VscBook";
+import ActionDebugBox from "./ActionDebugBox";
 
 const MdManual = React.lazy(() => import('./actions/MdManual'));
 
@@ -114,20 +114,18 @@ export default function NodeDetails({node, onConfig}) {
                 </span>
         </div>
         <div className="Pane">
-            <div className="Content">
-                {tab === 0 && renderInfo()}
-                {tab === 1 && <NodeDebugConsole nodes={node?.data?.debugging}/>}
-                {tab === 2 && node?.data?.spec?.init &&
-                <ConfigEditor config={node?.data?.spec?.init} onConfig={onConfigSave}/>}
-                {tab === 3 && <div style={{margin: 10, fontSize: 16}}><ObjectInspector
-                    data={node}
-                    expandLevel={5}
-                    theme="chromeLight"
-                /></div>}
-                {tab === 4 && <Suspense fallback={<CenteredCircularProgress/>}>
-                    <MdManual mdFile={node?.data?.spec?.manual}/>
-                </Suspense>}
-            </div>
+            {tab === 0 && renderInfo()}
+            {tab === 1 && <ActionDebugBox calls={node?.data?.debugging}/>}
+            {tab === 2 && node?.data?.spec?.init &&
+            <ConfigEditor config={node?.data?.spec?.init} onConfig={onConfigSave}/>}
+            {tab === 3 && <div style={{margin: 10, fontSize: 16}}><ObjectInspector
+                data={node}
+                expandLevel={5}
+                theme="chromeLight"
+            /></div>}
+            {tab === 4 && <Suspense fallback={<CenteredCircularProgress/>}>
+                <MdManual mdFile={node?.data?.spec?.manual}/>
+            </Suspense>}
         </div>
     </aside>
 }
