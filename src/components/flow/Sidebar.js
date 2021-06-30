@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './Sidebar.css';
 import FlowMenuNode from "./FlowMenuNode";
-import TextField from "@material-ui/core/TextField";
 import {BsPlusCircle} from "@react-icons/all-files/bs/BsPlusCircle";
 import IconButton from "../elements/misc/IconButton";
 import Popover from "@material-ui/core/Popover";
@@ -11,8 +10,9 @@ import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
+import {FlowEditorIcons} from "./FlowEditorButtons";
 
-function Sidebar({showAlert}) {
+function Sidebar({showAlert, onEdit, onDebug}) {
 
     const [filterActions, setFilterActions] = useState("*not-hidden");
     const [showResisterPopOver, setShowResisterPopOver] = useState(false);
@@ -44,21 +44,20 @@ function Sidebar({showAlert}) {
         event.dataTransfer.effectAllowed = 'move';
     };
 
-    const onRegisterClick = (event) => {
-        setAnchorEl(event.currentTarget);
-        setShowResisterPopOver(true);
-    }
+    // const onRegisterClick = (event) => {
+    //     setAnchorEl(event.currentTarget);
+    //     setShowResisterPopOver(true);
+    // }
 
-    const handlePopoverClose = () => {
-        setShowResisterPopOver(false);
-        setAnchorEl(null);
+    const onRegister = () => {
         setPlugins(null);
         setRefresh(Math.random);
     };
 
     return (
-        <React.Fragment>
+        <div className="SidebarSection">
             <div className="TaskFilter">
+                <FlowEditorIcons onEdit={onEdit} onDebug={onDebug} onRegister={onRegister}/>
                 <FilterTextField label="Action filter" variant="standard" onSubmit={setFilterActions}/>
             </div>
             <div className="TaskNodes">
@@ -76,29 +75,29 @@ function Sidebar({showAlert}) {
                         })
                     }
                 </div>
-                <div style={{textAlign: "right"}}>
-                    <IconButton onClick={onRegisterClick} label="Register action">
-                        <BsPlusCircle size={20}/>
-                    </IconButton>
-                    <Popover
-                        id="register"
-                        open={showResisterPopOver}
-                        anchorEl={anchorEl}
-                        onClose={handlePopoverClose}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'left',
-                        }}
-                        transformOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                    >
-                        <ModuleRegisterForm onReady={handlePopoverClose}/>
-                    </Popover>
-                </div>
+                {/*<div style={{textAlign: "right"}}>*/}
+                {/*    <IconButton onClick={onRegisterClick} label="Register action">*/}
+                {/*        <BsPlusCircle size={20}/>*/}
+                {/*    </IconButton>*/}
+                {/*    <Popover*/}
+                {/*        id="register"*/}
+                {/*        open={showResisterPopOver}*/}
+                {/*        anchorEl={anchorEl}*/}
+                {/*        onClose={handlePopoverClose}*/}
+                {/*        anchorOrigin={{*/}
+                {/*            vertical: 'top',*/}
+                {/*            horizontal: 'left',*/}
+                {/*        }}*/}
+                {/*        transformOrigin={{*/}
+                {/*            vertical: 'bottom',*/}
+                {/*            horizontal: 'left',*/}
+                {/*        }}*/}
+                {/*    >*/}
+                {/*        <ModuleRegisterForm onReady={handlePopoverClose}/>*/}
+                {/*    </Popover>*/}
+                {/*</div>*/}
             </div>
-        </React.Fragment>
+        </div>
     );
 };
 

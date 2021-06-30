@@ -1,11 +1,12 @@
 .menuNode {
-    padding: 3px;
+    padding: 5px;
     border: solid 2px transparent;
     border-radius: 3px;
     margin: 3px 0px;
     color: inherit;
     display: flex;
     align-items: center;
+    font-size: 15px;
 }
 
 .menuNode:hover {
@@ -15,19 +16,31 @@
     cursor: grab;
 }
 
-.FlowEditor > .WorkArea > .RightColumn .TaskFilter {
-    padding: 0px 10px 0 10px
+.FlowEditor > .WorkArea .TaskFilter {
+    padding: 5px 10px 10px 10px;
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.28);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.28);
+    box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.28);
+    border-radius: 5px;
 }
 
-.FlowEditor > .WorkArea > .RightColumn .TaskNodes {
-    padding: 10px;
+.FlowEditor > .WorkArea .TaskFilter:hover {
+    background-color: white;
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.28);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.28);
+    box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.28);
+}
+
+.FlowEditor > .WorkArea .TaskNodes {
+    padding: 15px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: inherit;
+    height: calc(100% - 110px);
+    margin-top: 4px;
 }
-.FlowEditor > .WorkArea > .RightColumn .TaskNodes P
+.FlowEditor > .WorkArea .TaskNodes P
 {
     font-weight: 600;
     text-transform: uppercase;

@@ -1,0 +1,19 @@
+.FlowEditorButtons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.CircleIcon {
+    margin: 1px;
+    padding: 6px;
+    color: #1565c0;
+}
+
+.CircleIcon:hover {
+    margin: 1px;
+    padding: 8px;
+    background-color: #1565c0;
+    color: white;
+    border-radius: 50%;
+    cursor: pointer;
+}

@@ -18,33 +18,36 @@
 }
 
 .AlertTag {
-  padding: 4px 8px;
+  padding: 5px 8px;
   background-color: #ef6c00;
   color: white;
   display: flex;
   align-items: center;
   border-radius: 5px;
   margin: 2px;
+  font-size: 14px;
 }
 
 .OKTag {
-  padding: 4px 8px;
+  padding: 5px 8px;
   background-color: #43a047;
   color: white;
   display: flex;
   align-items: center;
   border-radius: 5px;
   margin: 2px;
+  font-size: 14px;
 }
 
 .NormalTag {
-  padding: 4px 8px;
+  padding: 5px 8px;
   background-color: #1565c0;
   color: white;
   display: flex;
   align-items: center;
   border-radius: 5px;
   margin: 2px;
+  font-size: 14px;
 }
 
 .Elevate {

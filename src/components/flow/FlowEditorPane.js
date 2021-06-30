@@ -5,22 +5,26 @@ import PropTypes from 'prop-types';
 import FlowNode from "./FlowNode";
 import {v4 as uuid4} from "uuid";
 import {request} from "../../remote_api/uql_api_endpoint";
+import Sidebar from "./Sidebar";
+import NodeDetails from "./NodeDetails";
 
-export default function FlowEditorPane({
-                                           id,
-                                           elements = null,
-                                           setElements,
-                                           reactFlowInstance = null,
-                                           onDisplayDetails,
-                                           onHideDetails,
-                                           onNodeClick,
-                                           onFlowLoad,
-                                           onFlowLoadError,
-                                           onEditorReady,
-                                           onChange,
-                                           locked = false,
-                                           draft = true
-                                       }) {
+export default function FlowEditorPane(
+    {
+        id,
+        title,
+        elements = null,
+        setElements,
+        reactFlowInstance = null,
+        onFlowLoad,
+        onFlowLoadError,
+        onEditorReady,
+        onChange,
+        onEdit,
+        onDebug,
+        onConfig,
+        locked = false,
+        draft = true
+    }) {
 
     const snapGrid = [20, 20];
     const nodeTypes = {
@@ -29,6 +33,8 @@ export default function FlowEditorPane({
 
     const reactFlowWrapper = useRef(null);
     const [flowLoading, setFlowLoading] = useState(false);
+    const [currentNode, setCurrentNode] = useState({});
+    const [displayDetails, setDisplayDetails] = useState(false);
 
     useEffect(() => {
         setFlowLoading(true);
@@ -86,14 +92,14 @@ export default function FlowEditorPane({
 
     const onElementsRemove = (elementsToRemove) => {
         setElements((els) => removeElements(elementsToRemove, els));
-        if(onChange) {
+        if (onChange) {
             onChange();
         }
     }
 
     const onConnect = (params) => {
         setElements((els) => addEdge(params, els));
-        if(onChange) {
+        if (onChange) {
             onChange();
         }
     }
@@ -117,8 +123,7 @@ export default function FlowEditorPane({
             data: data
         };
         setElements((es) => es.concat(newNode));
-        if(onChange) {
-            console.log('changed')
+        if (onChange) {
             onChange();
         }
     };
@@ -141,17 +146,25 @@ export default function FlowEditorPane({
     }
 
     const onPaneClick = () => {
-        if (onHideDetails) {
-            onHideDetails();
-        }
+        setDisplayDetails(false);
     }
 
     const onNodeContextMenu = (event, element) => {
         event.preventDefault();
         event.stopPropagation();
-        if (onHideDetails) {
-            onHideDetails(element);
-        }
+        setDisplayDetails(false);
+    }
+
+    const onNodeClick = (element) => {
+        setCurrentNode(element)
+    }
+    const onDisplayDetails = (element) => {
+        setCurrentNode(element);
+        setDisplayDetails(true);
+    }
+
+    const onConfigSave = () => {
+        onConfig()
     }
 
     return <div className="FlowPane" ref={reactFlowWrapper}>
@@ -179,8 +192,14 @@ export default function FlowEditorPane({
             style={{background: "white"}}
             defaultZoom={1}
         >
-            <Controls/>
-            <Background color="#555" gap={16}/>
+            {title}
+            <Sidebar onEdit={onEdit}
+                     onDebug={onDebug}/>
+            {displayDetails && <NodeDetails
+                node={currentNode}
+                onConfig={onConfigSave}
+            />}
+            <Background color="#444" gap={16}/>
         </ReactFlow>}
     </div>
 }
@@ -188,7 +207,6 @@ export default function FlowEditorPane({
 FlowEditorPane.propTypes = {
     id: PropTypes.string.isRequired,
     onDisplayDetails: PropTypes.func.isRequired,
-    onHideDetails: PropTypes.func.isRequired,
     onNodeClick: PropTypes.func.isRequired,
     onFlowLoad: PropTypes.func.isRequired,
     onFlowLoadError: PropTypes.func.isRequired,

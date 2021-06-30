@@ -34,14 +34,10 @@ const ConfigEditor = ({showAlert, config, onConfig}) => {
     }
 
     return <>
-        <Button label="Save"
-                disabled={!saveEnabled}
-                className="SaveConfigButton"
-                onClick={() => onConfigSave(eventPayload)}/>
         <AceEditor
             mode="json"
             theme="tomorrow"
-            fontSize={14}
+            fontSize={16}
             // onLoad={(d)=>console.log(d)}
             onChange={(d) => _setEventPayload(d)}
             name="payload_editor"
@@ -50,6 +46,10 @@ const ConfigEditor = ({showAlert, config, onConfig}) => {
             width="100%"
             height="260px"
         />
+        <Button label="Save"
+                disabled={!saveEnabled}
+                className="SaveConfigButton"
+                onClick={() => onConfigSave(eventPayload)}/>
     </>
 }
 
