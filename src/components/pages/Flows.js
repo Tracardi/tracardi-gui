@@ -5,7 +5,6 @@ import FlowForm from "../elements/forms/FlowForm";
 import FlowDetails from "../elements/details/FlowDetails";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
-import {VscCircuitBoard} from "@react-icons/all-files/vsc/VscCircuitBoard";
 
 
 export default function Flows() {
@@ -18,7 +17,7 @@ export default function Flows() {
                     {plugs.map((row, subIndex) => {
                         return <SquareCard key={index + "-" + subIndex}
                                            id={row?.id}
-                                           icon={<VscCircuitBoard size={45}/>}
+                                           icon={<IoGitNetworkSharp size={45}/>}
                                            status={row?.enabled}
                                            name={row?.name}
                                            description={row?.description}

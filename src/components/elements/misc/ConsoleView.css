@@ -1,0 +1,24 @@
+.ConsoleView {
+    padding: 0px 10px 10px 10px;
+    background-color: white;
+    border-radius: 10px;
+    border: solid #eee 1px;
+    margin: 5px;
+    height: 100%;
+}
+
+.ConsoleView >.Title {
+    margin: 5px 5px 10px 5px;
+    padding: 5px 0 ;
+    font-weight: 600;
+    font-family: "Roboto Mono";
+    font-size: 16px;
+    border-bottom: #ccc 1px solid;
+    color: #333
+}
+
+.ConsoleView >.Content {
+    padding: 10px;
+    height: calc(100% - 45px);
+    overflow-y: auto;
+}

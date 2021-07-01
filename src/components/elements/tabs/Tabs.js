@@ -38,7 +38,7 @@ export default function Tabs({tabs, children, defaultTab, onTabSelect}) {
         return <span className={(selected) ? "Tab Selected" : "Tab"} onClick={() => onTabClick(index)}>{label}</span>
     }
 
-    return <nav className="Tabs">
+    return <section className="Tabs">
         <nav className="Navigation">
             {tabs.map((label, key) => {
                     if (tabId === key) {
@@ -53,6 +53,6 @@ export default function Tabs({tabs, children, defaultTab, onTabSelect}) {
                 {children}
             </TabCases>
         </div>
-    </nav>
+    </section>
 
 }

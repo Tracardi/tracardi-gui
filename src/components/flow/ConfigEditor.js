@@ -35,21 +35,24 @@ const ConfigEditor = ({showAlert, config, onConfig}) => {
 
     return <>
         <AceEditor
-            mode="json"
-            theme="tomorrow"
-            fontSize={16}
-            // onLoad={(d)=>console.log(d)}
-            onChange={(d) => _setEventPayload(d)}
-            name="payload_editor"
-            value={eventPayload}
-            editorProps={{$blockScrolling: true}}
-            width="100%"
-            height="260px"
-        />
-        <Button label="Save"
-                disabled={!saveEnabled}
-                className="SaveConfigButton"
-                onClick={() => onConfigSave(eventPayload)}/>
+                mode="json"
+                theme="tomorrow"
+                fontSize={16}
+                // onLoad={(d)=>console.log(d)}
+                onChange={(d) => _setEventPayload(d)}
+                name="payload_editor"
+                value={eventPayload}
+                editorProps={{$blockScrolling: true}}
+                width="100%"
+                height="300px"
+            />
+
+        <div style={{display: "flex", margin: "10px 0"}}>
+            <Button label="Save"
+                    disabled={!saveEnabled}
+                    onClick={() => onConfigSave(eventPayload)}/>
+        </div>
+
     </>
 }
 

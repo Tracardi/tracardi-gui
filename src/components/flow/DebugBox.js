@@ -1,10 +1,8 @@
 import React from "react";
 import Tabs, {TabCase} from "../elements/tabs/Tabs";
 import {DebugPortDetails} from "./DebugPortDetails";
-
-export function NoData() {
-    return "Port has no data. It means that with provided payload this port will not execute."
-}
+import {NoPortData} from "./NoPortData";
+import ConsoleView from "../elements/misc/ConsoleView";
 
 export default function DebugBox({call}) {
 
@@ -13,22 +11,40 @@ export default function DebugBox({call}) {
             return messages.map((message, index) => {
                 return <DebugPortDetails port={message} key={index}/>
             })
+        } else {
+            return <NoPortData />
         }
     }
 
-    return <>
-        <Tabs tabs={["Input", "Output", "Global"]}>
+    const Padder = ({children}) => {
+        return <div style={{height: "calc(100% - 40px)"}}>
+            {children}
+        </div>
+    }
+
+    return <div style={{height: "calc(100% - 45px)"}}>
+        {call.error && <div className="Errors">{call.error}</div>}
+        {!call.error && <Tabs tabs={["Input", "Output", "Profile", "Event"]}>
             <TabCase id={0}>
-                <div style={{height: 200}}>
-                    {call.input && renderPorts([call.input])}
-                </div>
+                <Padder>
+                    {renderPorts([call?.input])}
+                </Padder>
             </TabCase>
             <TabCase id={1}>
-                {call.output && call.output.length > 0 && renderPorts(call.output)}
+                <Padder>
+                    {renderPorts(call?.output)}
+                </Padder>
+            </TabCase>
+            <TabCase id={2}>
+                <Padder>
+                    <ConsoleView data={call?.profile} label="Profile"/>
+                </Padder>
             </TabCase>
             <TabCase id={3}>
-
+                <Padder>
+                    <ConsoleView data={call?.event} label="Event"/>
+                </Padder>
             </TabCase>
-        </Tabs>
-    </>
+        </Tabs>}
+    </div>
 }

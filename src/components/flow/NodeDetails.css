@@ -17,7 +17,6 @@
     display: flex;
     align-items: center;
     align-content: center;
-    color: #000;
     font-size: 20px;
     text-transform: uppercase;
     font-weight: 400;
@@ -27,6 +26,8 @@
     -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.28);
     box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.28);
     border-radius: 5px;
+    font-family: Viga, Roboto, serif;
+    color: #444;
 }
 
 .NodeDetails > .Title:hover {

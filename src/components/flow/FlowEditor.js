@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import ReactFlow, {
+import {
     ReactFlowProvider
 } from 'react-flow-renderer';
 import './FlowEditor.css'
@@ -11,6 +11,7 @@ import FlowForm from "../elements/forms/FlowForm";
 import FlowEditorPane from "./FlowEditorPane";
 import {save, debug} from "./FlowEditorOps";
 import FlowEditorTitle from "./FlowEditorTitle";
+import {useConfirm} from "material-ui-confirm";
 
 const FlowEditor = ({showAlert}) => {
 
@@ -22,6 +23,8 @@ const FlowEditor = ({showAlert}) => {
     const [flowMetaData, setFlowMetaData] = useState(null)
     const [modified, setModified] = useState(false);
     const [deployed, setDeployed] = useState(false);
+
+    const confirm = useConfirm();
 
     const onSaveDraft = (deploy = false) => {
 
@@ -80,8 +83,6 @@ const FlowEditor = ({showAlert}) => {
 
     // --- Editor ---
 
-
-
     const onEditorReady = (reactFlowInstance) => {
         setReactFlowInstance(reactFlowInstance);
     }
@@ -99,13 +100,28 @@ const FlowEditor = ({showAlert}) => {
         setDeployed(false);
     }
 
+    const onDeploy = () => {
+        confirm({title: "Do you want to deploy this flow?",
+            description: "After deployment this flow will be used in production.\n" +
+                "This action can not be undone."}).then(
+            () => onSaveDraft(true)
+        ). catch(()=>{})
+
+    }
+
     return (
         <ReactFlowProvider>
             <div className="FlowEditor">
                 <div className="WorkArea">
                     <div className="LeftColumn">
                         <FlowEditorPane id={id}
-                                        title={<FlowEditorTitle title={flowMetaData?.name} modified={modified} deployed={deployed}/>}
+                                        title={<FlowEditorTitle
+                                            title={flowMetaData?.name}
+                                            modified={modified}
+                                            deployed={deployed}
+                                            onSave={() => onSaveDraft(false)}
+                                            onDeploy={() => onDeploy()}
+                                        />}
                                         onEdit={() => setFlowFormOpened(true)}
                                         onDebug={onDebug}
                                         reactFlowInstance={reactFlowInstance}

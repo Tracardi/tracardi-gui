@@ -1,4 +1,4 @@
-NAV.Button {
+BUTTON.Button {
     display: flex;
     align-items: center;
     padding: 9px 15px;
@@ -7,9 +7,11 @@ NAV.Button {
     border-radius: 5px;
     text-transform: uppercase;
     user-select: none;
+    font-weight: 400;
+    background-color: inherit;
 }
 
-NAV.EnabledButton {
+BUTTON.EnabledButton {
     border: solid 2px #006db3;
     color: #006db3;
     text-transform: uppercase;
@@ -20,12 +22,16 @@ NAV.EnabledButton {
     -ms-user-select: none;
 }
 
-NAV.DisabledButton {
+BUTTON.DisabledButton {
     border: solid 2px #888;
     color: #888;
 }
+BUTTON.ButtonSelected {
+    background-color: #006db3;
+    color: white;
+}
 
-NAV.EnabledButton:hover {
+BUTTON.EnabledButton:hover {
     background-color: #006db3;
     color: white;
     -webkit-box-shadow: 0px 0px 8px -1px rgba(0,0,0,0.75);

@@ -5,12 +5,15 @@ import {VscDebug} from "@react-icons/all-files/vsc/VscDebug";
 import IconButton from "../elements/misc/IconButton";
 import {GoSettings} from "@react-icons/all-files/go/GoSettings";
 import {ObjectInspector} from "react-inspector";
-import {CgListTree} from "@react-icons/all-files/cg/CgListTree";
 import Properties from "../elements/details/DetailProperties";
 import ConfigEditor from "./ConfigEditor";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {VscBook} from "@react-icons/all-files/vsc/VscBook";
 import ActionDebugBox from "./ActionDebugBox";
+import theme from "../../themes/inspector_light_theme";
+import {VscListTree} from "@react-icons/all-files/vsc/VscListTree";
+import ConsoleView from "../elements/misc/ConsoleView";
+
 
 const MdManual = React.lazy(() => import('./actions/MdManual'));
 
@@ -90,7 +93,7 @@ export default function NodeDetails({node, onConfig}) {
                     label="Manual"
                     onClick={() => setTab(4)}
                     selected={tab === 4}>
-                    <VscBook size={25}/>
+                    <VscBook size={22}/>
                 </IconButton>}
                 {node?.data?.spec?.init && <IconButton
                     label="Config"
@@ -98,17 +101,17 @@ export default function NodeDetails({node, onConfig}) {
                     selected={tab === 2}>
                     <GoSettings size={22}/>
                 </IconButton>}
-                <IconButton
+                {node?.data?.debugging && <IconButton
                     label="Debug"
                     onClick={() => setTab(1)}
                     selected={tab === 1}>
                         <VscDebug size={22}/>
-                </IconButton>
+                </IconButton>}
                 <IconButton
                     label="Raw"
                     onClick={() => setTab(3)}
                     selected={tab === 3}>
-                        <CgListTree size={22}/>
+                        <VscListTree size={22}/>
                 </IconButton>
 
                 </span>
@@ -118,11 +121,7 @@ export default function NodeDetails({node, onConfig}) {
             {tab === 1 && <ActionDebugBox calls={node?.data?.debugging}/>}
             {tab === 2 && node?.data?.spec?.init &&
             <ConfigEditor config={node?.data?.spec?.init} onConfig={onConfigSave}/>}
-            {tab === 3 && <div style={{margin: 10, fontSize: 16}}><ObjectInspector
-                data={node}
-                expandLevel={5}
-                theme="chromeLight"
-            /></div>}
+            {tab === 3 && <ConsoleView label="Action raw data" data={node} />}
             {tab === 4 && <Suspense fallback={<CenteredCircularProgress/>}>
                 <MdManual mdFile={node?.data?.spec?.manual}/>
             </Suspense>}

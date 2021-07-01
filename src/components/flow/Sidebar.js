@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './Sidebar.css';
 import FlowMenuNode from "./FlowMenuNode";
-import {BsPlusCircle} from "@react-icons/all-files/bs/BsPlusCircle";
-import IconButton from "../elements/misc/IconButton";
-import Popover from "@material-ui/core/Popover";
-import ModuleRegisterForm from "./ModuleRegisterForm";
 import {request} from "../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
@@ -15,8 +11,6 @@ import {FlowEditorIcons} from "./FlowEditorButtons";
 function Sidebar({showAlert, onEdit, onDebug}) {
 
     const [filterActions, setFilterActions] = useState("*not-hidden");
-    const [showResisterPopOver, setShowResisterPopOver] = useState(false);
-    const [anchorEl, setAnchorEl] = React.useState(null);
     const [plugins, setPlugins] = useState(null);
     const [pluginsLoading, setPluginsLoading] = useState(false);
     const [refresh, setRefresh] = useState(Math.random)

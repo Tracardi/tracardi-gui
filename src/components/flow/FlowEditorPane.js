@@ -206,8 +206,6 @@ export default function FlowEditorPane(
 
 FlowEditorPane.propTypes = {
     id: PropTypes.string.isRequired,
-    onDisplayDetails: PropTypes.func.isRequired,
-    onNodeClick: PropTypes.func.isRequired,
     onFlowLoad: PropTypes.func.isRequired,
     onFlowLoadError: PropTypes.func.isRequired,
     onEditorReady: PropTypes.func.isRequired,

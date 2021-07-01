@@ -6,9 +6,10 @@ import {VscCheck} from "@react-icons/all-files/vsc/VscCheck";
 import {BsCheck} from "@react-icons/all-files/bs/BsCheck";
 import {AiOutlineCheckCircle} from "@react-icons/all-files/ai/AiOutlineCheckCircle";
 
-export default function Button({label, onClick, className, style, icon, disabled, progress=false}) {
+export default function Button({label, onClick, className, style, icon, disabled, selected=false, progress=false}) {
 
-    let visuals = (className) ? className : "Button";
+    let visuals = (selected) ? "ButtonSelected Button" : "Button";
+    visuals = (className) ? className : visuals;
     if (progress === true) {
         visuals += " DisabledButton";
     } else if (typeof disabled === "undefined") {
@@ -41,7 +42,7 @@ export default function Button({label, onClick, className, style, icon, disabled
         </>
     }
 
-    return <nav onClickCapture={onButtonClick} className={visuals} style={style}>
+    return <button onClickCapture={onButtonClick} className={visuals} style={style}>
         <RenderContent processing={progress}/>
-    </nav>
+    </button>
 }

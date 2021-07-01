@@ -82,16 +82,3 @@
     flex: 1;
     height: inherit;
 }
-
-.FlowEditor .SidebarSection {
-    position: absolute;
-    height: calc(100% - 115px);
-    top: 75px;
-    left: 15px;
-    width: 235px;
-    border-radius: 4px;
-    background: rgba(235,235,235,0.85);
-    border: 1px solid rgba(220,220,220,1);
-    z-index: 50;
-    padding: 0px;
-}
