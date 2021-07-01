@@ -7,14 +7,13 @@ import "./Chart.css";
 export default function LineChartElement({onLoadRequest, columns}) {
 
     const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState(false);
     const [ready, setReady] = React.useState(false);
 
     useEffect(() => {
         request(
             onLoadRequest,
             (value)=> {setLoading(value);},
-            (value) => {setError(value);},
+            () => {},
             (value) => {setReady(value);}
         );
     }, [onLoadRequest])

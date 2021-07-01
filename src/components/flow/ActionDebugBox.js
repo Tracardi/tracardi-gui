@@ -31,6 +31,7 @@ export default function ActionDebugBox({calls}) {
                         onClick={()=>{setCall(call); setSelectedButton(index)}}
                     />
                 }
+                return ""
 
             });
         }

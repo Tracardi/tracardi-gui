@@ -1,4 +1,4 @@
-import React, {Suspense, useEffect} from "react";
+import React, {useEffect} from "react";
 import "../lists/cards/SourceCard.css";
 import "./SourceDetails.css";
 import "./Details.css";

@@ -5,7 +5,6 @@ import DataAnalytics from "./DataAnalytics";
 
 export default function EventsAnalytics() {
 
-
     const onLoadDataRequest = (query) => {
         return {
             url: '/event/select/range',

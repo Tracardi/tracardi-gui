@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
     ReactFlowProvider
 } from 'react-flow-renderer';
@@ -48,6 +48,8 @@ const FlowEditor = ({showAlert}) => {
             console.error("Can not save Editor not ready.");
         }
     }
+
+    // const onSaveCallback = useCallback(()=> onSaveDraft(deployed), [deployed])
 
     useEffect(() => {
         const timer = setInterval(

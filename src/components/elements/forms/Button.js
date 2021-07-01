@@ -1,9 +1,6 @@
-import React, {useState} from "react";
+import React from "react";
 import "./Button.css";
-import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import IconCircularProgress from "../progress/IconCircularProgress";
-import {VscCheck} from "@react-icons/all-files/vsc/VscCheck";
-import {BsCheck} from "@react-icons/all-files/bs/BsCheck";
 import {AiOutlineCheckCircle} from "@react-icons/all-files/ai/AiOutlineCheckCircle";
 
 export default function Button({label, onClick, className, style, icon, disabled, selected=false, progress=false}) {

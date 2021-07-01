@@ -10,7 +10,7 @@ import {VscBook} from "@react-icons/all-files/vsc/VscBook";
 import ActionDebugBox from "./ActionDebugBox";
 import {VscListTree} from "@react-icons/all-files/vsc/VscListTree";
 import ConsoleView from "../elements/misc/ConsoleView";
-import EditorRouter from "./EditorRouter";
+import ConfigEditor from "./editors/ConfigEditor";
 
 const MdManual = React.lazy(() => import('./actions/MdManual'));
 
@@ -132,7 +132,7 @@ export default function NodeDetails({node, onConfig}) {
             {tab === 0 && renderInfo()}
             {tab === 1 && <ActionDebugBox calls={node?.data?.debugging}/>}
             {tab === 2 && node?.data?.spec?.init &&
-            <EditorRouter
+            <ConfigEditor
                 config={node?.data?.spec?.init}
                 manual={node?.data?.spec?.manual}
                 onConfig={onConfigSave}

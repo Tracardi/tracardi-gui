@@ -54,11 +54,6 @@ function RuleDetails({data, onDelete, onEdit}) {
         ? {zIndex: 5, backgroundColor: "rgba(255,255,255,.3)", marginBottom: 0}
         : {zIndex: 5, marginBottom: 0};
 
-    const TriggeredEvents = ({data}) => {
-        return <div style={{margin: 5}}>This rule was not created in TRACARDI. Therefore there is no information on
-            events triggering this rule.</div>
-    }
-
     return <div style={{height: "inherit"}}>
         <DetailHeader label={data.name}/>
 

@@ -38,7 +38,6 @@ export default function SourceForm({onSubmit, init}) {
     const [errorTypeMessage, setTypeErrorMessage] = useState('');
     const [errorNameMessage, setNameErrorMessage] = useState('');
     const [config, setConfig] = useState(JSON.stringify(init?.config, null, '  '));
-    const [saving, setSaving] = useState(false);
 
     const setRequiresConsent = (ev) => {
         _setRequiresConsent(ev.target.checked)
@@ -187,7 +186,6 @@ export default function SourceForm({onSubmit, init}) {
         </Columns>
         <Rows style={{paddingLeft: 30}}>
             <Button label="Save"
-                    progress={saving}
                     onClick={_onSubmit}/>
         </Rows>
     </Form>
