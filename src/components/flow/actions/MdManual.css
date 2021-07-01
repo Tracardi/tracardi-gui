@@ -10,10 +10,13 @@
 }
 
 .MdManual H1 {
-    color: rgb(0, 105, 192);
-    text-decoration: underline;
     margin: 0;
-    font-size: 18px;
+    font-size: 20px;
+}
+
+.MdManual H2 {
+    margin: 0;
+    font-size: 17px;
 }
 
 .MdManual CODE {
@@ -23,5 +26,5 @@
     margin-left: 10px;
     border-radius: 8px;
     border: solid 1px #ccc;
-    color: rgb(0, 105, 192);
+    color: #43a047;
 }

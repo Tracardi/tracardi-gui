@@ -1,25 +1,37 @@
-import React, {Suspense, useState} from "react";
+import React, {Suspense, useEffect, useState} from "react";
 import './NodeDetails.css';
 import {BsInfoCircle} from "@react-icons/all-files/bs/BsInfoCircle";
 import {VscDebug} from "@react-icons/all-files/vsc/VscDebug";
 import IconButton from "../elements/misc/IconButton";
 import {GoSettings} from "@react-icons/all-files/go/GoSettings";
-import {ObjectInspector} from "react-inspector";
 import Properties from "../elements/details/DetailProperties";
 import ConfigEditor from "./ConfigEditor";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {VscBook} from "@react-icons/all-files/vsc/VscBook";
 import ActionDebugBox from "./ActionDebugBox";
-import theme from "../../themes/inspector_light_theme";
 import {VscListTree} from "@react-icons/all-files/vsc/VscListTree";
 import ConsoleView from "../elements/misc/ConsoleView";
-
 
 const MdManual = React.lazy(() => import('./actions/MdManual'));
 
 export default function NodeDetails({node, onConfig}) {
-    console.log(node)
+
     const [tab, setTab] = useState(0);
+
+    useEffect(() => {
+            if(tab === 1 && !node?.data?.debugging) {
+                setTab(0)
+            }
+
+            if(tab === 4 && !node?.data?.spec?.manual) {
+                setTab(0)
+            }
+
+            if(tab === 2 && !node?.data?.spec?.init) {
+                setTab(0)
+            }
+        },
+        [node])
 
     const onConfigSave = (config) => {
         node.data.spec.init = config
