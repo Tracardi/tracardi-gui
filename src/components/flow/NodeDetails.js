@@ -5,12 +5,12 @@ import {VscDebug} from "@react-icons/all-files/vsc/VscDebug";
 import IconButton from "../elements/misc/IconButton";
 import {GoSettings} from "@react-icons/all-files/go/GoSettings";
 import Properties from "../elements/details/DetailProperties";
-import ConfigEditor from "./ConfigEditor";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {VscBook} from "@react-icons/all-files/vsc/VscBook";
 import ActionDebugBox from "./ActionDebugBox";
 import {VscListTree} from "@react-icons/all-files/vsc/VscListTree";
 import ConsoleView from "../elements/misc/ConsoleView";
+import EditorRouter from "./EditorRouter";
 
 const MdManual = React.lazy(() => import('./actions/MdManual'));
 
@@ -31,7 +31,7 @@ export default function NodeDetails({node, onConfig}) {
                 setTab(0)
             }
         },
-        [node])
+        [node, tab])
 
     const onConfigSave = (config) => {
         node.data.spec.init = config
@@ -132,7 +132,11 @@ export default function NodeDetails({node, onConfig}) {
             {tab === 0 && renderInfo()}
             {tab === 1 && <ActionDebugBox calls={node?.data?.debugging}/>}
             {tab === 2 && node?.data?.spec?.init &&
-            <ConfigEditor config={node?.data?.spec?.init} onConfig={onConfigSave}/>}
+            <EditorRouter
+                config={node?.data?.spec?.init}
+                manual={node?.data?.spec?.manual}
+                onConfig={onConfigSave}
+            />}
             {tab === 3 && <ConsoleView label="Action raw data" data={node} />}
             {tab === 4 && <Suspense fallback={<CenteredCircularProgress/>}>
                 <MdManual mdFile={node?.data?.spec?.manual}/>

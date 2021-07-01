@@ -1,5 +1,5 @@
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
-import ReactFlow, {addEdge, Background, Controls, isNode, removeElements} from "react-flow-renderer";
+import ReactFlow, {addEdge, Background, removeElements} from "react-flow-renderer";
 import React, {useEffect, useRef, useState} from "react";
 import PropTypes from 'prop-types';
 import FlowNode from "./FlowNode";

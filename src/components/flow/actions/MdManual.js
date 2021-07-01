@@ -6,8 +6,6 @@ const MdManual = ({mdFile}) => {
 
     const [page,setPage] = useState('');
 
-
-
     async function loadMdFile(fileName) {
         const response = await fetch('http://localhost:8001/manual/en/docs/flow/actions/'+fileName+'.md?'+ Math.random());
         return await response.text();

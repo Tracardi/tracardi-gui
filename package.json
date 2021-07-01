@@ -22,7 +22,6 @@
     "date-fns": "^2.20.0",
     "dot-object": "^2.1.4",
     "history": "^4.10.1",
-    "marked": "^2.0.1",
     "material-ui-confirm": "^2.1.2",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
@@ -43,6 +42,7 @@
     "recharts": "^2.0.9",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "safe-marked": "^5.0.0",
     "uuid": "^8.3.2",
     "web-vitals": "^0.2.4"
   },

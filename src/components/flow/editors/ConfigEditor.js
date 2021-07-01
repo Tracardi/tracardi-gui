@@ -1,13 +1,12 @@
-import Button from "../elements/forms/Button";
-import AceEditor from "react-ace";
-import "ace-builds/src-noconflict/mode-json";
-import "ace-builds/src-noconflict/theme-tomorrow";
+import Button from "../../elements/forms/Button";
 import React, {useEffect, useState} from "react";
-import './ConfigEditor.css';
+import '../ConfigEditor.css';
 import {connect} from "react-redux";
-import {showAlert} from "../../redux/reducers/alertSlice";
+import {showAlert} from "../../../redux/reducers/alertSlice";
+import MdManual from "../actions/MdManual";
+import JsonEditor from "../../elements/misc/JsonEditor";
 
-const ConfigEditor = ({showAlert, config, onConfig}) => {
+const ConfigEditor = ({showAlert, config, manual, onConfig}) => {
 
     const initConfig = JSON.stringify(config, null, '  ')
     const [eventPayload, setEventPayload] = useState(initConfig);
@@ -34,24 +33,17 @@ const ConfigEditor = ({showAlert, config, onConfig}) => {
     }
 
     return <>
-        <AceEditor
-                mode="json"
-                theme="tomorrow"
-                fontSize={16}
-                // onLoad={(d)=>console.log(d)}
-                onChange={(d) => _setEventPayload(d)}
-                name="payload_editor"
-                value={eventPayload}
-                editorProps={{$blockScrolling: true}}
-                width="100%"
-                height="300px"
-            />
+        <JsonEditor value={eventPayload}
+                    onChange={(d) => _setEventPayload(d)}
+                    />
 
         <div style={{display: "flex", margin: "10px 0"}}>
             <Button label="Save"
                     disabled={!saveEnabled}
                     onClick={() => onConfigSave(eventPayload)}/>
         </div>
+
+        {manual && <MdManual mdFile={manual}/>}
 
     </>
 }

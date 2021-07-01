@@ -38,7 +38,7 @@ export function FlowReader({showAlert}) {
                 }
                 setElements(flowGraph);
             })
-    }, [id])
+    }, [id, showAlert])
 
     return <div style={{flex: 1,height: "inherit"}}>
         {flowLoading && <CenteredCircularProgress/>}

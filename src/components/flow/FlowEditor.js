@@ -37,11 +37,12 @@ const FlowEditor = ({showAlert}) => {
                 },
                 () => {
                     setModified(false);
-                    if(deploy) {
+                    if (deploy) {
                         setDeployed(true);
                     }
                 },
-                ()=>{},
+                () => {
+                },
                 deploy);
         } else {
             console.error("Can not save Editor not ready.");
@@ -76,7 +77,8 @@ const FlowEditor = ({showAlert}) => {
             id,
             reactFlowInstance,
             (e) => showAlert(e),
-            ()=>{},
+            () => {
+            },
             (elements) => setElements(elements)
         )
     }
@@ -101,11 +103,14 @@ const FlowEditor = ({showAlert}) => {
     }
 
     const onDeploy = () => {
-        confirm({title: "Do you want to deploy this flow?",
+        confirm({
+            title: "Do you want to deploy this flow?",
             description: "After deployment this flow will be used in production.\n" +
-                "This action can not be undone."}).then(
+                "This action can not be undone."
+        }).then(
             () => onSaveDraft(true)
-        ). catch(()=>{})
+        ).catch(() => {
+        })
 
     }
 
