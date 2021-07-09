@@ -24,7 +24,7 @@ export default function DebugBox({call}) {
 
     return <div style={{height: "calc(100% - 45px)"}}>
         {call.error && <div className="Errors">{call.error}</div>}
-        {!call.error && <Tabs tabs={["Input", "Output", "Profile", "Event"]}>
+        {!call.error && <Tabs tabs={["Input", "Output", "Profile", "Event", "Session"]}>
             <TabCase id={0}>
                 <Padder>
                     {renderPorts([call?.input])}
@@ -43,6 +43,11 @@ export default function DebugBox({call}) {
             <TabCase id={3}>
                 <Padder>
                     <ConsoleView data={call?.event} label="Event"/>
+                </Padder>
+            </TabCase>
+            <TabCase id={4}>
+                <Padder>
+                    <ConsoleView data={call?.session} label="Session"/>
                 </Padder>
             </TabCase>
         </Tabs>}
