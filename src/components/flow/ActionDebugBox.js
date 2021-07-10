@@ -6,11 +6,12 @@ import {AiOutlineNodeIndex} from "@react-icons/all-files/ai/AiOutlineNodeIndex";
 
 export default function ActionDebugBox({calls, onConnectionDetails}) {
 
-    const [call,setCall] = useState(null);
-    const [selectedButton,setSelectedButton] = useState(null);
+    const [call, setCall] = useState(null);
+    const [selectedButton, setSelectedButton] = useState(null);
+    const [selectedTab, setSelectedTab] = useState(0);
 
-    useEffect(()=>{
-        if(calls && Array.isArray(calls) && calls.length > 0) {
+    useEffect(() => {
+        if (calls && Array.isArray(calls) && calls.length > 0) {
             setCall(calls[0]);
             setSelectedButton(0);
         } else {
@@ -23,20 +24,28 @@ export default function ActionDebugBox({calls, onConnectionDetails}) {
     const onConnectionClick = (call, index) => {
         setCall(call);
         setSelectedButton(index);
-        if(onConnectionDetails) {
-            onConnectionDetails(call?.edge?.id)
+        if (onConnectionDetails) {
+            onConnectionDetails(call?.input?.edge?.id)
+            console.log(call)
+        }
+    }
+
+    const onTabSelect = (tabId) => {
+        setSelectedTab(tabId);
+        if (tabId !== 0) {
+            onConnectionDetails(null)
         }
     }
 
     const RenderConnections = ({calls}) => {
         if (calls && Array.isArray(calls)) {
             return calls.map((call, index) => {
-                if(call.edge) {
+                if (call.input?.edge) {
                     return <Button
                         key={index}
-                        selected={index===selectedButton}
+                        selected={index === selectedButton}
                         icon={<AiOutlineNodeIndex size={20} style={{marginRight: 5}}/>}
-                        label={"Connection: " + (index + 1)}
+                        label={"Connection - " + (index + 1)}
                         onClick={
                             () => onConnectionClick(call, index)
                         }
@@ -50,10 +59,12 @@ export default function ActionDebugBox({calls, onConnectionDetails}) {
     }
 
     return <div className="ActionDebugBox">
-        <div style={{display: "flex"}}>
+        <div style={{display: "flex", flexFlow: "wrap"}}>
             <RenderConnections calls={calls}/>
         </div>
-        {call && <DebugBox call={call}/>}
+        {call && <DebugBox call={call} onTabSelect={
+            onTabSelect
+        }/>}
     </div>
 
 }
