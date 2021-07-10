@@ -14,7 +14,7 @@ import ConfigEditor from "./editors/ConfigEditor";
 
 const MdManual = React.lazy(() => import('./actions/MdManual'));
 
-export default function NodeDetails({node, onConfig}) {
+export default function NodeDetails({node, onConfig, onConnectionDetails}) {
 
     const [tab, setTab] = useState(0);
 
@@ -130,7 +130,10 @@ export default function NodeDetails({node, onConfig}) {
         </div>
         <div className="Pane">
             {tab === 0 && renderInfo()}
-            {tab === 1 && <ActionDebugBox calls={node?.data?.debugging}/>}
+            {tab === 1 && <ActionDebugBox
+                calls={node?.data?.debugging}
+                onConnectionDetails={onConnectionDetails}
+            />}
             {tab === 2 && node?.data?.spec?.init &&
             <ConfigEditor
                 config={node?.data?.spec?.init}

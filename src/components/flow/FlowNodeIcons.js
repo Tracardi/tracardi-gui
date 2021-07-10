@@ -37,6 +37,8 @@ import {RiScissorsCutFill} from "@react-icons/all-files/ri/RiScissorsCutFill";
 import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import {VscGitMerge} from "@react-icons/all-files/vsc/VscGitMerge";
 import {VscOrganization} from "@react-icons/all-files/vsc/VscOrganization";
+import {MdLibraryAdd} from "@react-icons/all-files/md/MdLibraryAdd";
+import {GoBrowser} from "@react-icons/all-files/go/GoBrowser";
 
 export default function FlowNodeIcons({icon}) {
 
@@ -81,6 +83,8 @@ export default function FlowNodeIcons({icon}) {
         'arrow-down': <VscArrowDown size={20}/>,
         'merge': <VscGitMerge size={20}/>,
         'segment': <VscOrganization size={20}/>,
+        'append': <MdLibraryAdd size={20}/>,
+        'browser': <GoBrowser size={20}/>
     }
 
     const renderIcon = () => {

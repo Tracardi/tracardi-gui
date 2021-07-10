@@ -1,5 +1,5 @@
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
-import ReactFlow, {addEdge, Background, removeElements} from "react-flow-renderer";
+import ReactFlow, {addEdge, Background, isEdge, removeElements} from "react-flow-renderer";
 import React, {useEffect, useRef, useState} from "react";
 import PropTypes from 'prop-types';
 import FlowNode from "./FlowNode";
@@ -35,6 +35,7 @@ export default function FlowEditorPane(
     const [flowLoading, setFlowLoading] = useState(false);
     const [currentNode, setCurrentNode] = useState({});
     const [displayDetails, setDisplayDetails] = useState(false);
+    const [animatedEdge, setAnimatedEdge] = useState(null);
 
     useEffect(() => {
         setFlowLoading(true);
@@ -56,6 +57,23 @@ export default function FlowEditorPane(
             })
     }, [id, draft])
 
+    useEffect(() => {
+        if(elements) {
+            setElements((els) => els.map((el) => {
+                    if (isEdge(el)) {
+                        if (animatedEdge === null && el.animated === true) {
+                            el.animated = false;
+                        } else if (el.id === animatedEdge) {
+                            el.animated = true;
+                        } else {
+                            el.animated = false;
+                        }
+                    }
+                    return el;
+                })
+            );
+        }
+    }, [animatedEdge])
 
     const updateFlow = (data) => {
         if (data) {
@@ -94,6 +112,12 @@ export default function FlowEditorPane(
         setElements((els) => removeElements(elementsToRemove, els));
         if (onChange) {
             onChange();
+        }
+    }
+
+    const onDebugClick = (data) => {
+        if(onDebug) {
+            onDebug(data)
         }
     }
 
@@ -147,6 +171,7 @@ export default function FlowEditorPane(
 
     const onPaneClick = () => {
         setDisplayDetails(false);
+        setAnimatedEdge(null);
     }
 
     const onNodeContextMenu = (event, element) => {
@@ -156,7 +181,13 @@ export default function FlowEditorPane(
     }
 
     const onNodeClick = (element) => {
-        setCurrentNode(element)
+        setCurrentNode(element);
+        if(element.data?.debugging && Array.isArray(element.data?.debugging)
+            && element.data?.debugging.length>0 && element.data?.debugging[0]?.edge?.id) {
+            setAnimatedEdge(element.data.debugging[0].edge.id);
+        } else {
+            setAnimatedEdge(null);
+        }
     }
     const onDisplayDetails = (element) => {
         setCurrentNode(element);
@@ -165,6 +196,16 @@ export default function FlowEditorPane(
 
     const onConfigSave = () => {
         onConfig()
+    }
+
+    const onConnectionDetails = (edge_id) => {
+        setAnimatedEdge(edge_id);
+    }
+
+    const onEditClick =(data)=> {
+        if(onEdit) {
+            onEdit(data);
+        }
     }
 
     return <div className="FlowPane" ref={reactFlowWrapper}>
@@ -193,11 +234,12 @@ export default function FlowEditorPane(
             defaultZoom={1}
         >
             {title}
-            <Sidebar onEdit={onEdit}
-                     onDebug={onDebug}/>
+            <Sidebar onEdit={onEditClick}
+                     onDebug={onDebugClick}/>
             {displayDetails && <NodeDetails
                 node={currentNode}
                 onConfig={onConfigSave}
+                onConnectionDetails={onConnectionDetails}
             />}
             <Background color="#444" gap={16}/>
         </ReactFlow>}

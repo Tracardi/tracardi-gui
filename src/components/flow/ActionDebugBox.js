@@ -4,7 +4,7 @@ import DebugBox from "./DebugBox";
 import Button from "../elements/forms/Button";
 import {AiOutlineNodeIndex} from "@react-icons/all-files/ai/AiOutlineNodeIndex";
 
-export default function ActionDebugBox({calls}) {
+export default function ActionDebugBox({calls, onConnectionDetails}) {
 
     const [call,setCall] = useState(null);
     const [selectedButton,setSelectedButton] = useState(null);
@@ -20,15 +20,26 @@ export default function ActionDebugBox({calls}) {
 
     }, [calls])
 
-    const RenderActions = ({calls}) => {
+    const onConnectionClick = (call, index) => {
+        setCall(call);
+        setSelectedButton(index);
+        if(onConnectionDetails) {
+            onConnectionDetails(call?.edge?.id)
+        }
+    }
+
+    const RenderConnections = ({calls}) => {
         if (calls && Array.isArray(calls)) {
             return calls.map((call, index) => {
                 if(call.edge) {
                     return <Button
+                        key={index}
                         selected={index===selectedButton}
                         icon={<AiOutlineNodeIndex size={20} style={{marginRight: 5}}/>}
                         label={"Connection: " + (index + 1)}
-                        onClick={()=>{setCall(call); setSelectedButton(index)}}
+                        onClick={
+                            () => onConnectionClick(call, index)
+                        }
                     />
                 }
                 return ""
@@ -40,7 +51,7 @@ export default function ActionDebugBox({calls}) {
 
     return <div className="ActionDebugBox">
         <div style={{display: "flex"}}>
-            <RenderActions calls={calls}/>
+            <RenderConnections calls={calls}/>
         </div>
         {call && <DebugBox call={call}/>}
     </div>
