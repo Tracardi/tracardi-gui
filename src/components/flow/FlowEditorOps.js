@@ -75,12 +75,14 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
         },
         (data) => {
             if (data) {
-                console.log(data)
                 const flow = reactFlowInstance.toObject();
+
                 flow.elements.map((element) => {
                     if (isNode(element)) {
                         if (data.data?.debugInfo?.nodes[element.id]) {
-                            element.data['debugging'] = data.data.debugInfo.nodes[element.id]
+                            element.data['debugging'] = {
+                                node: data.data.debugInfo.nodes[element.id]
+                            }
                         } else {
                             delete element.data.debugging
                         }

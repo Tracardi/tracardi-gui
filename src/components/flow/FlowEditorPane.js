@@ -7,23 +7,24 @@ import {v4 as uuid4} from "uuid";
 import {request} from "../../remote_api/uql_api_endpoint";
 import Sidebar from "./Sidebar";
 import NodeDetails from "./NodeDetails";
+import {debug} from "./FlowEditorOps";
+import {connect} from "react-redux";
+import {showAlert} from "../../redux/reducers/alertSlice";
 
-export default function FlowEditorPane(
+export function FlowEditorPane(
     {
         id,
         title,
-        elements = null,
-        setElements,
         reactFlowInstance = null,
         onFlowLoad,
         onFlowLoadError,
         onEditorReady,
         onChange,
         onEdit,
-        onDebug,
         onConfig,
         locked = false,
-        draft = true
+        draft = true,
+        showAlert
     }) {
 
     const snapGrid = [20, 20];
@@ -36,6 +37,7 @@ export default function FlowEditorPane(
     const [currentNode, setCurrentNode] = useState({});
     const [displayDetails, setDisplayDetails] = useState(false);
     const [animatedEdge, setAnimatedEdge] = useState(null);
+    const [elements, setElements] = useState(null);
 
     useEffect(() => {
         setFlowLoading(true);
@@ -107,6 +109,17 @@ export default function FlowEditorPane(
     const onLoad = (reactFlowInstance) => {
         onEditorReady(reactFlowInstance)
     };
+
+    const onDebug = () => {
+        debug(
+            id,
+            reactFlowInstance,
+            (e) => showAlert(e),
+            () => {
+            },
+            (elements) => setElements(elements)
+        )
+    }
 
     const onElementsRemove = (elementsToRemove) => {
         setElements((els) => removeElements(elementsToRemove, els));
@@ -258,3 +271,13 @@ FlowEditorPane.propTypes = {
     locked: PropTypes.bool,
     draft: PropTypes.bool
 };
+
+const mapProps = (state) => {
+    return {
+        notification: state.notificationReducer,
+    }
+};
+export default connect(
+    mapProps,
+    {showAlert}
+)(FlowEditorPane)

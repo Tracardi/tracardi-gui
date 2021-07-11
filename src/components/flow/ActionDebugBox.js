@@ -11,8 +11,8 @@ export default function ActionDebugBox({debugging, onConnectionDetails}) {
     const [selectedTab, setSelectedTab] = useState(0);
 
     useEffect(() => {
-        if (debugging && Array.isArray(debugging.calls) && debugging.calls.length > 0) {
-            setCall(debugging.calls[0]);
+        if (debugging?.node && Array.isArray(debugging.node.calls) && debugging.node.calls.length > 0) {
+            setCall(debugging.node.calls[0]);
             setSelectedButton(0);
         } else {
             setCall(null);
@@ -36,9 +36,9 @@ export default function ActionDebugBox({debugging, onConnectionDetails}) {
         }
     }
 
-    const RenderConnections = ({debugging}) => {
-        if (debugging && Array.isArray(debugging.calls)) {
-            return debugging.calls.map((call, index) => {
+    const RenderConnections = ({node}) => {
+        if (node && Array.isArray(node?.calls)) {
+            return node?.calls.map((call, index) => {
                 if (call.input?.edge) {
                     return <Button
                         key={index}
@@ -59,11 +59,12 @@ export default function ActionDebugBox({debugging, onConnectionDetails}) {
 
     return <div className="ActionDebugBox">
         <div style={{display: "flex", flexFlow: "wrap"}}>
-            <RenderConnections debugging={debugging}/>
+            <RenderConnections node={debugging?.node}/>
         </div>
-        {call && <DebugBox call={call} onTabSelect={
-            onTabSelect
-        }/>}
+        {call && <DebugBox call={call}
+                           event={debugging?.event}
+                           session={debugging?.session}
+                           onTabSelect={onTabSelect}/>}
     </div>
 
 }

@@ -50,9 +50,9 @@ export default memo (({data}) => {
             return false
         }
 
-        if(data.debugging?.sequenceNumber) {
-            let status = hasError(data.debugging?.calls) ? " Error": " Ok"
-            return <div className={"SequenceNumber" + status}>{data.debugging.sequenceNumber}</div>
+        if(data.debugging?.node?.sequenceNumber) {
+            let status = hasError(data.debugging?.node?.calls) ? " Error": " Ok"
+            return <div className={"SequenceNumber" + status}>{data.debugging.node.sequenceNumber}</div>
         } else {
             return ""
         }

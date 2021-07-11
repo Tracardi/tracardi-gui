@@ -4,7 +4,7 @@ import {DebugPortDetails} from "./DebugPortDetails";
 import {NoPortData} from "./NoPortData";
 import ConsoleView from "../elements/misc/ConsoleView";
 
-export default function DebugBox({call,onTabSelect}) {
+export default function DebugBox({call, event, session, onTabSelect}) {
 
     const renderPorts = (messages) => {
         if (messages) {
@@ -25,7 +25,7 @@ export default function DebugBox({call,onTabSelect}) {
     return <div style={{height: "calc(100% - 45px)"}}>
         {call.error && <div className="Errors">{call.error}</div>}
         {!call.error && <Tabs
-            tabs={["Input", "Output", "Profile", "Event", "Session"]}
+            tabs={["Input", "Output", "Profile"]}
             onTabSelect={onTabSelect}
         >
             <TabCase id={0}>
@@ -41,16 +41,6 @@ export default function DebugBox({call,onTabSelect}) {
             <TabCase id={2}>
                 <Padder>
                     <ConsoleView data={call?.profile} label="Profile"/>
-                </Padder>
-            </TabCase>
-            <TabCase id={3}>
-                <Padder>
-                    <ConsoleView data={call?.event} label="Event"/>
-                </Padder>
-            </TabCase>
-            <TabCase id={4}>
-                <Padder>
-                    <ConsoleView data={call?.session} label="Session"/>
                 </Padder>
             </TabCase>
         </Tabs>}

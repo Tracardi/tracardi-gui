@@ -18,7 +18,6 @@ const FlowEditor = ({showAlert}) => {
     let {id} = useParams();
 
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
-    const [elements, setElements] = useState(null);
     const [flowFormOpened, setFlowFormOpened] = useState(false);
     const [flowMetaData, setFlowMetaData] = useState(null)
     const [modified, setModified] = useState(false);
@@ -74,17 +73,6 @@ const FlowEditor = ({showAlert}) => {
         setDeployed(false);
     }
 
-    const onDebug = () => {
-        debug(
-            id,
-            reactFlowInstance,
-            (e) => showAlert(e),
-            () => {
-            },
-            (elements) => setElements(elements)
-        )
-    }
-
     // --- Editor ---
 
     const onEditorReady = (reactFlowInstance) => {
@@ -130,10 +118,7 @@ const FlowEditor = ({showAlert}) => {
                                             onDeploy={() => onDeploy()}
                                         />}
                                         onEdit={() => setFlowFormOpened(true)}
-                                        onDebug={onDebug}
                                         reactFlowInstance={reactFlowInstance}
-                                        elements={elements}
-                                        setElements={setElements}
                                         onEditorReady={onEditorReady}
                                         onFlowLoad={onFlowLoad}
                                         onFlowLoadError={onFlowLoadError}
@@ -141,10 +126,6 @@ const FlowEditor = ({showAlert}) => {
                                         onConfig={onConfig}
                                         draft={true}
                         />
-                        {/*{displayDetails && <NodeDetails*/}
-                        {/*    node={currentNode}*/}
-                        {/*    onConfig={onConfig}*/}
-                        {/*/>}*/}
                     </div>
                 </div>
             </div>
