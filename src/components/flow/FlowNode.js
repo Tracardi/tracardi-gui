@@ -41,8 +41,26 @@ export default memo (({data}) => {
         }
     }
 
+    const SequenceNumber = ({data}) => {
+
+        const hasError = (calls) => {
+            if(Array.isArray(calls)) {
+                return calls.some((call) => call.error !== null)
+            }
+            return false
+        }
+
+        if(data.debugging?.sequenceNumber) {
+            let status = hasError(data.debugging?.calls) ? " Error": " Ok"
+            return <div className={"SequenceNumber" + status}>{data.debugging.sequenceNumber}</div>
+        } else {
+            return ""
+        }
+    }
+
     return (
         <>
+            <SequenceNumber data={data}/>
             {renderInputs(data?.spec)}
             <div className="NodePanel">
                 <div className="NodeIcon"><FlowNodeIcons icon={data?.metadata?.icon}/></div>

@@ -131,7 +131,7 @@ export default function NodeDetails({node, onConfig, onConnectionDetails}) {
         <div className="Pane">
             {tab === 0 && renderInfo()}
             {tab === 1 && <ActionDebugBox
-                calls={node?.data?.debugging}
+                debugging={node?.data?.debugging}
                 onConnectionDetails={onConnectionDetails}
             />}
             {tab === 2 && node?.data?.spec?.init &&

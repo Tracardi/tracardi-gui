@@ -35,7 +35,7 @@ export default function DebugBox({call,onTabSelect}) {
             </TabCase>
             <TabCase id={1}>
                 <Padder>
-                    {renderPorts(call?.output?.params)}
+                    {renderPorts(call?.output?.results)}
                 </Padder>
             </TabCase>
             <TabCase id={2}>

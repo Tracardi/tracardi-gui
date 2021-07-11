@@ -4,29 +4,28 @@ import DebugBox from "./DebugBox";
 import Button from "../elements/forms/Button";
 import {AiOutlineNodeIndex} from "@react-icons/all-files/ai/AiOutlineNodeIndex";
 
-export default function ActionDebugBox({calls, onConnectionDetails}) {
+export default function ActionDebugBox({debugging, onConnectionDetails}) {
 
     const [call, setCall] = useState(null);
     const [selectedButton, setSelectedButton] = useState(null);
     const [selectedTab, setSelectedTab] = useState(0);
 
     useEffect(() => {
-        if (calls && Array.isArray(calls) && calls.length > 0) {
-            setCall(calls[0]);
+        if (debugging && Array.isArray(debugging.calls) && debugging.calls.length > 0) {
+            setCall(debugging.calls[0]);
             setSelectedButton(0);
         } else {
             setCall(null);
             setSelectedButton(null);
         }
 
-    }, [calls])
+    }, [debugging])
 
     const onConnectionClick = (call, index) => {
         setCall(call);
         setSelectedButton(index);
         if (onConnectionDetails) {
             onConnectionDetails(call?.input?.edge?.id)
-            console.log(call)
         }
     }
 
@@ -37,9 +36,9 @@ export default function ActionDebugBox({calls, onConnectionDetails}) {
         }
     }
 
-    const RenderConnections = ({calls}) => {
-        if (calls && Array.isArray(calls)) {
-            return calls.map((call, index) => {
+    const RenderConnections = ({debugging}) => {
+        if (debugging && Array.isArray(debugging.calls)) {
+            return debugging.calls.map((call, index) => {
                 if (call.input?.edge) {
                     return <Button
                         key={index}
@@ -60,7 +59,7 @@ export default function ActionDebugBox({calls, onConnectionDetails}) {
 
     return <div className="ActionDebugBox">
         <div style={{display: "flex", flexFlow: "wrap"}}>
-            <RenderConnections calls={calls}/>
+            <RenderConnections debugging={debugging}/>
         </div>
         {call && <DebugBox call={call} onTabSelect={
             onTabSelect
