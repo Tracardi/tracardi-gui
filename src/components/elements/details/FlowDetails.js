@@ -88,15 +88,21 @@ export default function FlowDetails({id, onDeleteComplete}) {
                             url: '/flow/' + id,
                             method: "delete"
                         },
-                        () => {
-                        },
-                        () => {
-                        },
+                        () => {},
+                        () => {},
                         (result) => {
-                            if (result) {
-                                if (onDeleteComplete) {
-                                    onDeleteComplete(data.id)
-                                }
+                            if (result !== false) {
+                                request({
+                                        url: '/flow/metadata/refresh'
+                                    },
+                                    ()=>{},
+                                    ()=>{},
+                                    ()=>{
+                                        if (onDeleteComplete) {
+                                            onDeleteComplete(data.id)
+                                        }
+                                    }
+                                )
                             }
                         }
                     );

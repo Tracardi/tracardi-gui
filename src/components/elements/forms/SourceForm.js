@@ -14,9 +14,10 @@ import FormHeader from "../misc/FormHeader";
 import JsonEditor from "../misc/JsonEditor";
 import MenuItem from "@material-ui/core/MenuItem";
 import SelectItems from "./SelectItems";
+import {request} from "../../../remote_api/uql_api_endpoint";
 
 
-export default function SourceForm({onSubmit, init}) {
+export default function SourceForm({init, onClose}) {
 
     if (!init) {
         init = {
@@ -25,7 +26,8 @@ export default function SourceForm({onSubmit, init}) {
             description: "",
             config: {},
             origin: "event",
-            consent: false
+            consent: false,
+            enabled: false
         }
     }
 
@@ -38,9 +40,39 @@ export default function SourceForm({onSubmit, init}) {
     const [errorTypeMessage, setTypeErrorMessage] = useState('');
     const [errorNameMessage, setNameErrorMessage] = useState('');
     const [config, setConfig] = useState(JSON.stringify(init?.config, null, '  '));
+    const [processing, setProcessing] = useState(false);
 
     const setRequiresConsent = (ev) => {
         _setRequiresConsent(ev.target.checked)
+    }
+
+    const onSubmit = (payload) => {
+        setProcessing(true);
+        request({
+                url: "/source",
+                method: "post",
+                data: payload
+            },
+            setProcessing,
+            () => {
+
+            },
+            (data) => {
+                if (data) {
+                    request({
+                            url: '/sources/refresh'
+                        },
+                        setProcessing,
+                        ()=>{},
+                        ()=>{
+                            if (onClose) {
+                                onClose(data)
+                            }
+                        }
+                    )
+                }
+            }
+        )
     }
 
     const _onSubmit = () => {
@@ -186,7 +218,9 @@ export default function SourceForm({onSubmit, init}) {
         </Columns>
         <Rows style={{paddingLeft: 30}}>
             <Button label="Save"
-                    onClick={_onSubmit}/>
+                    onClick={_onSubmit}
+                    progress={processing}
+            />
         </Rows>
     </Form>
 }

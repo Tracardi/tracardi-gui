@@ -12,10 +12,10 @@ import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
 import {request} from "../../../remote_api/uql_api_endpoint";
-import SourceAddForm from "../forms/SourceAddForm";
 import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
+import SourceForm from "../forms/SourceForm";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -65,9 +65,17 @@ export default function SourceDetails({id, onDeleteComplete}) {
                 () => {
                 }, () => {
                 }, (reponse) => {
-                    if (onDeleteComplete) {
-                        onDeleteComplete(reponse)
-                    }
+                    request({
+                            url: '/sources/refresh'
+                        },
+                        ()=>{},
+                        ()=>{},
+                        ()=>{
+                            if (onDeleteComplete) {
+                                onDeleteComplete(reponse)
+                            }
+                        }
+                    )
                 }
             )
         }).catch(() => {
@@ -115,7 +123,7 @@ export default function SourceDetails({id, onDeleteComplete}) {
             label="Edit Source"
             onClose={()=>{setEditData(null)}}
             open={editData !== null}>
-            <SourceAddForm init={editData} onClose={()=>{setEditData(null)}}/>
+            <SourceForm init={editData} onClose={()=>{setEditData(null)}}/>
         </FormDrawer>
     </div>
 

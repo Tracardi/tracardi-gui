@@ -32,7 +32,7 @@ export default function SegmentForm({onSubmit, init}) {
     const [condition, setCondition] = useState(init.condition);
     const [nameErrorMessage, setNameErrorMessage] = useState(null);
     const [conditionErrorMessage, setConditionErrorMessage] = useState(null);
-    const [enabled, setEnabled] = useState(true);
+    const [enabled, setEnabled] = useState(false);
     const [processing, setProcessing] = useState(false);
     const [type, setType] = useState(init.eventType);
 
@@ -94,8 +94,18 @@ export default function SegmentForm({onSubmit, init}) {
             (e) => {
             },
             (response) => {
-                if (response) {
-                    onSubmit(payload)
+                if (response!==false) {
+                    request({
+                            url: '/segments/refresh'
+                        },
+                        setProcessing,
+                        ()=>{},
+                        ()=>{
+                            if (onSubmit) {
+                                onSubmit(payload)
+                            }
+                        }
+                    )
                 }
             },
         )

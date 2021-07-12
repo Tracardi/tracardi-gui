@@ -19,6 +19,7 @@ export default function FlowForm({id, name, description, enabled, projects, onFl
     const [flowDescription, setFlowDescription] = useState((description) ? description : "");
     const [flowEnabled, setFlowEnabled] = useState((typeof enabled === "boolean") ? enabled : true);
     const [flowTags, setFlowTags] = useState(projects);
+    const [processing, setProcessing] = useState(false);
 
     const onSave = () => {
 
@@ -27,28 +28,36 @@ export default function FlowForm({id, name, description, enabled, projects, onFl
             name: flowName,
             description: flowDescription,
             enabled: flowEnabled,
-            projects: flowTags
+            projects: flowTags && Array.isArray(flowTags) && flowTags.length>0 ? flowTags : ["General"]
         }
-
+        setProcessing(true);
         request({
                 url: (draft) ? '/flow/draft/metadata' : '/flow/metadata',
                 method: 'post',
                 data: payload
             },
-            () => {
-            },
+            setProcessing,
             () => {
             },
             (data) => {
-                if (onFlowSaveComplete) {
-                    onFlowSaveComplete(payload)
+                if(data!==false) {
+                    request({
+                        url: '/flow/metadata/refresh'
+                    },
+                        setProcessing,
+                        ()=>{},
+                        ()=>{
+                            if (onFlowSaveComplete) {
+                                onFlowSaveComplete(payload)
+                            }
+                        }
+                    )
                 }
             })
     }
 
     const onTagChange = (values) => {
         setFlowTags(values)
-        console.log(flowTags)
     }
 
     return <div className="FlowForm">
@@ -110,7 +119,7 @@ export default function FlowForm({id, name, description, enabled, projects, onFl
         </ElevatedBox>
 
         <Rows style={{marginLeft: 20}}>
-            <Button label="Save" onClick={onSave}/>
+            <Button label="Save" onClick={onSave} progress={processing}/>
         </Rows>
 
     </div>

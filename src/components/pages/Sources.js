@@ -1,9 +1,9 @@
 import React from "react";
 import SourceDetails from "../elements/details/SourceDetails";
 import SquareCard from "../elements/lists/cards/SquareCard";
-import SourceAddForm from "../elements/forms/SourceAddForm";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {VscRadioTower} from "@react-icons/all-files/vsc/VscRadioTower";
+import SourceForm from "../elements/forms/SourceForm";
 
 
 export default function Sources() {
@@ -37,6 +37,6 @@ export default function Sources() {
         detailsFunc={(id, close) => <SourceDetails id={id} onDeleteComplete={close}/>}
         drawerAddTitle="New source"
         drawerAddWidth={800}
-        addFunc={(close) => <SourceAddForm onClose={close}/>}
+        addFunc={(close) => <SourceForm onClose={close}/>}
     />
 }

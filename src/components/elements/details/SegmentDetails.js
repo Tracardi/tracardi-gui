@@ -61,9 +61,17 @@ export default function SegmentDetails({id, onDeleteComplete}) {
                         },
                         (result) => {
                             if (result) {
-                                if (onDeleteComplete) {
-                                    onDeleteComplete(data.id)
-                                }
+                                request({
+                                        url: '/segments/refresh'
+                                    },
+                                    ()=>{},
+                                    ()=>{},
+                                    ()=>{
+                                        if (onDeleteComplete) {
+                                            onDeleteComplete(data.id)
+                                        }
+                                    }
+                                )
                             }
                         }
                     );
