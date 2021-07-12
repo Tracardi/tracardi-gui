@@ -8,7 +8,6 @@ export default function ActionDebugBox({debugging, onConnectionDetails}) {
 
     const [call, setCall] = useState(null);
     const [selectedButton, setSelectedButton] = useState(null);
-    const [selectedTab, setSelectedTab] = useState(0);
 
     useEffect(() => {
         if (debugging?.node && Array.isArray(debugging.node.calls) && debugging.node.calls.length > 0) {
@@ -29,12 +28,7 @@ export default function ActionDebugBox({debugging, onConnectionDetails}) {
         }
     }
 
-    const onTabSelect = (tabId) => {
-        setSelectedTab(tabId);
-        if (tabId !== 0) {
-            onConnectionDetails(null)
-        }
-    }
+    const onTabSelect = (tabId) => {}
 
     const RenderConnections = ({node}) => {
         if (node && Array.isArray(node?.calls)) {

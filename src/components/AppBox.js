@@ -1,6 +1,5 @@
 import React from "react";
 import "./AppBox.css";
-import MainMenu from "./menu/MainMenu";
 import MainContent from "./MainContent";
 import {Redirect} from "react-router-dom";
 import PrivateRoute from "./authentication/PrivateRoute";
@@ -21,136 +20,63 @@ import '@szhsin/react-menu/dist/index.css';
 const AppBox = () => {
 
     return <MainContent>
-        <MainMenu>
-
-
-
-
-        </MainMenu>
-
 
         <PrivateRoute exact path={urlPrefix("")} roles={["admin"]}>
             <Redirect to={urlPrefix("/home/events")}/>
         </PrivateRoute>
 
+        <PrivateRoute exact path={urlPrefix("/home")} roles={["admin"]}>
+            <Redirect to={urlPrefix("/home/events")}/>
+        </PrivateRoute>
 
-        {/*<PrivateRoute path={urlPrefix("/setup")} roles={["admin"]}>*/}
-        {/*    <SubMenu title="Set-up">*/}
+        <div className="Content">
+            <PrivateRoute path={urlPrefix("/home/events")} roles={["admin"]}>
+                <EventsAnalytics/>
+            </PrivateRoute>
 
-        {/*        <SubMenuItem link={urlPrefix("/setup/sources")}>Sources</SubMenuItem>*/}
-        {/*        <SubMenuItem link={urlPrefix("/setup/rules")}>Rules</SubMenuItem>*/}
-        {/*        <SubMenuItem link={urlPrefix("/setup/flows")} defaultLink={[urlPrefix("/setup")]}>Flows</SubMenuItem>*/}
-        {/*        <SubMenuItem link={urlPrefix("/setup/flow-actions")}>Flow actions</SubMenuItem>*/}
-        {/*        <SubMenuItem link={urlPrefix("/setup/credentials")}>Credentials</SubMenuItem>*/}
-        {/*        <SubMenuItem link={urlPrefix("/setup/segments")}>Segments</SubMenuItem>*/}
-        {/*    </SubMenu>*/}
-        {/*</PrivateRoute>*/}
+            <PrivateRoute path={urlPrefix("/home/profiles")} roles={["admin"]}>
+                <ProfilesAnalytics/>
+            </PrivateRoute>
 
-        {/*<SubContent>*/}
-        {/*    <div className="contentPane">*/}
-        {/*        <div className="content">*/}
+            <PrivateRoute path={urlPrefix("/home/sessions")} roles={["admin"]}>
+                <SessionsAnalytics/>
+            </PrivateRoute>
 
-        {/*            <PrivateRoute path={urlPrefix("/home/events")} roles={["admin"]}>*/}
-        {/*                <EventsAnalytics/>*/}
-        {/*            </PrivateRoute>*/}
 
-        {/*            <PrivateRoute path={urlPrefix("/home/profiles")} roles={["admin"]}>*/}
-        {/*                <ProfilesAnalytics/>*/}
-        {/*            </PrivateRoute>*/}
 
-        {/*            <PrivateRoute path={urlPrefix("/home/sessions")} roles={["admin"]}>*/}
-        {/*                <SessionsAnalytics/>*/}
-        {/*            </PrivateRoute>*/}
+            <PrivateRoute exact path={urlPrefix("")} roles={["admin"]}>
 
-        {/*            <PrivateRoute exact path={urlPrefix("/home")} roles={["admin"]}>*/}
+            </PrivateRoute>
 
-        {/*            </PrivateRoute>*/}
+            <PrivateRoute path={urlPrefix("/setup/sources")} roles={["admin"]}>
+                <Sources/>
+            </PrivateRoute>
+            <PrivateRoute path={urlPrefix("/setup/flows")} roles={["admin"]}>
+                <Flows/>
+            </PrivateRoute>
+            <PrivateRoute exact path={urlPrefix("/setup/flow/edit/:id")} roles={["admin"]}>
+                <FlowEditor/>
+            </PrivateRoute>
+            <PrivateRoute exact path={urlPrefix("/setup/flow/:id")} roles={["admin"]}>
+                <FlowReader/>
+            </PrivateRoute>
+            <PrivateRoute path={urlPrefix("/setup/flow-actions")} roles={["admin"]}>
+                <ActionPlugins/>
+            </PrivateRoute>
+            <PrivateRoute path={urlPrefix("/setup/rules")} roles={["admin"]}>
+                <Rules/>
+            </PrivateRoute>
+            <PrivateRoute path={urlPrefix("/setup/segments")} roles={["admin"]}>
+                <Segments/>
+            </PrivateRoute>
+            <PrivateRoute path={urlPrefix("/setup/credentials")} roles={["admin"]}>
+                <Credentials/>
+            </PrivateRoute>
+            <PrivateRoute exact path={urlPrefix("/setup")} roles={["admin"]}>
+                <Flows/>
+            </PrivateRoute>
+        </div>
 
-        {/*            <PrivateRoute exact path={urlPrefix("")} roles={["admin"]}>*/}
-
-        {/*            </PrivateRoute>*/}
-
-        {/*            <PrivateRoute path={urlPrefix("/setup/sources")} roles={["admin"]}>*/}
-        {/*                <Sources/>*/}
-        {/*            </PrivateRoute>*/}
-        {/*            <PrivateRoute path={urlPrefix("/setup/flows")} roles={["admin"]}>*/}
-        {/*                <Flows/>*/}
-        {/*            </PrivateRoute>*/}
-        {/*            <PrivateRoute exact path={urlPrefix("/setup/flow/edit/:id")} roles={["admin"]}>*/}
-        {/*                <FlowEditor/>*/}
-        {/*            </PrivateRoute>*/}
-        {/*            <PrivateRoute exact path={urlPrefix("/setup/flow/:id")} roles={["admin"]}>*/}
-        {/*                <FlowReader/>*/}
-        {/*            </PrivateRoute>*/}
-        {/*            <PrivateRoute path={urlPrefix("/setup/flow-actions")} roles={["admin"]}>*/}
-        {/*                <ActionPlugins/>*/}
-        {/*            </PrivateRoute>*/}
-        {/*            <PrivateRoute path={urlPrefix("/setup/rules")} roles={["admin"]}>*/}
-        {/*                <Rules/>*/}
-        {/*            </PrivateRoute>*/}
-        {/*            <PrivateRoute path={urlPrefix("/setup/segments")} roles={["admin"]}>*/}
-        {/*                <Segments/>*/}
-        {/*            </PrivateRoute>*/}
-        {/*            <PrivateRoute path={urlPrefix("/setup/credentials")} roles={["admin"]}>*/}
-        {/*                <Credentials/>*/}
-        {/*            </PrivateRoute>*/}
-        {/*            <PrivateRoute exact path={urlPrefix("/setup")} roles={["admin"]}>*/}
-        {/*                <Flows/>*/}
-        {/*            </PrivateRoute>*/}
-        {/*        </div>*/}
-        {/*    </div>*/}
-        {/*</SubContent>*/}
-            <div className="contentPane">
-                <div className="content">
-                    <PrivateRoute path={urlPrefix("/home/events")} roles={["admin"]}>
-                        <EventsAnalytics/>
-                    </PrivateRoute>
-
-                    <PrivateRoute path={urlPrefix("/home/profiles")} roles={["admin"]}>
-                        <ProfilesAnalytics/>
-                    </PrivateRoute>
-
-                    <PrivateRoute path={urlPrefix("/home/sessions")} roles={["admin"]}>
-                        <SessionsAnalytics/>
-                    </PrivateRoute>
-
-                    <PrivateRoute exact path={urlPrefix("/home")} roles={["admin"]}>
-
-                    </PrivateRoute>
-
-                    <PrivateRoute exact path={urlPrefix("")} roles={["admin"]}>
-
-                    </PrivateRoute>
-
-                    <PrivateRoute path={urlPrefix("/setup/sources")} roles={["admin"]}>
-                        <Sources/>
-                    </PrivateRoute>
-                    <PrivateRoute path={urlPrefix("/setup/flows")} roles={["admin"]}>
-                        <Flows/>
-                    </PrivateRoute>
-                    <PrivateRoute exact path={urlPrefix("/setup/flow/edit/:id")} roles={["admin"]}>
-                        <FlowEditor/>
-                    </PrivateRoute>
-                    <PrivateRoute exact path={urlPrefix("/setup/flow/:id")} roles={["admin"]}>
-                        <FlowReader/>
-                    </PrivateRoute>
-                    <PrivateRoute path={urlPrefix("/setup/flow-actions")} roles={["admin"]}>
-                        <ActionPlugins/>
-                    </PrivateRoute>
-                    <PrivateRoute path={urlPrefix("/setup/rules")} roles={["admin"]}>
-                        <Rules/>
-                    </PrivateRoute>
-                    <PrivateRoute path={urlPrefix("/setup/segments")} roles={["admin"]}>
-                        <Segments/>
-                    </PrivateRoute>
-                    <PrivateRoute path={urlPrefix("/setup/credentials")} roles={["admin"]}>
-                        <Credentials/>
-                    </PrivateRoute>
-                    <PrivateRoute exact path={urlPrefix("/setup")} roles={["admin"]}>
-                        <Flows/>
-                    </PrivateRoute>
-                </div>
-            </div>
     </MainContent>
 }
 

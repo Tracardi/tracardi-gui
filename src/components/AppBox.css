@@ -1,15 +1,8 @@
-.contentPane {
+.Content {
     color: #333;
-    width: 100%;
-    height: inherit;
-    overflow: hidden;
-}
-
-.content {
     overflow: hidden;
     height: 100%;
     width: inherit;
-    background-color: whitesmoke;
 }
 
 .rc-menu-button {

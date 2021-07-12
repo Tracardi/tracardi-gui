@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content: space-between;
     color: white;
-    background: rgb(0, 105, 192);
+    background: #004A98;
     -webkit-box-shadow: inset -10px -1px 10px -13px rgba(0,0,0,0.75);
     -moz-box-shadow: inset -10px -1px 10px -13px rgba(0,0,0,0.75);
     box-shadow: inset -10px -1px 10px -13px rgba(0,0,0,0.75);
@@ -13,7 +13,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    padding: 10px 5px 10px 0;
+    padding: 40px 5px 10px 0;
 }
 
 .MainMenu > DIV {
