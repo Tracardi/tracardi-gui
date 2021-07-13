@@ -124,7 +124,7 @@ export default function SegmentForm({onSubmit, init}) {
                     disabled={false}
                     placeholder="Event type"
                     url="/events/metadata/type"
-                    initValue={{name:type,id:type}}
+                    initValue={{name:type, id:type}}
                     onSetValue={setType}
                     onDataLoaded={
                         (result) => {
@@ -143,7 +143,7 @@ export default function SegmentForm({onSubmit, init}) {
                     value={condition}
                     multiline
                     rows={3}
-                    error={conditionErrorMessage}
+                    error={(typeof conditionErrorMessage !== "undefined" && conditionErrorMessage !== '' && conditionErrorMessage !== null )}
                     helperText={conditionErrorMessage ? conditionErrorMessage : "Condition example: stats.visits>10 AND properties.public.boughtProducts>1"}
                     onChange={(ev) => {
                         setCondition(ev.target.value)
@@ -173,7 +173,7 @@ export default function SegmentForm({onSubmit, init}) {
                 </FormDescription>
                 <TextField
                     label={"Segment name"}
-                    error={nameErrorMessage}
+                    error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null )}
                     helperText={nameErrorMessage}
                     value={name}
                     onChange={(ev) => {

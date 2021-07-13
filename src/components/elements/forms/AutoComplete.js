@@ -6,7 +6,6 @@ import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
-import {FlowEditorPane} from "../../flow/FlowEditorPane";
 
 const AutoComplete = ({showAlert, placeholder, error, url, onDataLoaded, initValue, onSetValue, solo, disabled}) => {
 

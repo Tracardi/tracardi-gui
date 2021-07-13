@@ -188,7 +188,7 @@ export default function SourceForm({init, onClose}) {
                 <TextField
                     label={"Source name"}
                     value={name}
-                    error={errorNameMessage}
+                    error={(typeof errorNameMessage !== "undefined" && errorNameMessage !== '' && errorNameMessage !== null )}
                     helperText={errorNameMessage}
                     onChange={(ev) => {
                         setName(ev.target.value)
