@@ -1,7 +1,7 @@
 import {red} from '@material-ui/core/colors';
-import {createMuiTheme} from '@material-ui/core/styles';
+import {createTheme} from '@material-ui/core/styles';
 
-export const mainTheme = createMuiTheme({
+export const mainTheme = createTheme({
     // typography: {
     //     fontFamily: [
     //         'Lato',
@@ -26,7 +26,7 @@ export const mainTheme = createMuiTheme({
     },
 });
 
-export const signInTheme = createMuiTheme({
+export const signInTheme = createTheme({
     palette: {
         primary: {
             // light: will be calculated from palette.primary.main,
@@ -49,7 +49,7 @@ export const signInTheme = createMuiTheme({
     },
 });
 
-export const plusPopOverTheme = createMuiTheme({
+export const plusPopOverTheme = createTheme({
     palette: {
         primary: {
             // light: will be calculated from palette.primary.main,
