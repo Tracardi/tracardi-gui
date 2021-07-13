@@ -30,7 +30,6 @@ export function FlowReader({showAlert}) {
                 }
             },
             (response) => {
-            console.log(response)
                 let flowGraph = []
                 if (response?.data?.flowGraph) {
                     flowGraph = response?.data?.flowGraph.nodes.slice();

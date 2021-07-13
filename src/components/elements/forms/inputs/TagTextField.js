@@ -40,13 +40,9 @@ export default function TagTextForm({label, placeholder, defaultTags, tags, onCh
                                 name: value[value.length - 1]
                             }
                         },
-                        () => {
-                        },
-                        () => {
-                        },
-                        (response) => {
-                            console.log("Create-project", response)
-                        }
+                        () => {},
+                        () => {},
+                        () => {}
                     )
                 })
                 .catch(() => {});

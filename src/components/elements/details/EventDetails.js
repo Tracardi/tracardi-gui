@@ -9,7 +9,6 @@ import "./Details.css";
 import Tabs, {TabCase} from "../tabs/Tabs";
 
 export default function EventDetails({data}) {
-    console.log(data)
     return <div style={{height: "inherit"}}>
         <div className="RightTabScroller">
             <Tabs tabs={["Event", "Context", "Result", "Raw", "Process"]}>

@@ -51,7 +51,6 @@ export default function RuleForm({onSubmit, init}) {
     const _onSubmit = () => {
 
         if (!flow || !type || !name) {
-            console.log(!flow || !type || !name)
             if (!name || name.length === 0) {
                 setNameErrorMessage("Rule name can not be empty");
             } else {

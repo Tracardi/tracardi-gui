@@ -25,7 +25,6 @@ export default function PluginForm({id}) {
                     () => {
                     },
                     (response) => {
-                        console.log(response)
                         if (response) {
                             setEnabled(response?.data?.settings?.enabled);
                             setHidden(response?.data?.settings?.hidden);
@@ -45,9 +44,7 @@ export default function PluginForm({id}) {
             },
             () => {},
             () => {},
-            (response) => {
-                console.log(response)
-            }
+            () => {}
         )
         setEnabled(!enabled)
     }
@@ -59,9 +56,7 @@ export default function PluginForm({id}) {
             },
             () => {},
             () => {},
-            (response) => {
-                console.log(response)
-            }
+            () => {}
         )
         setHidden(!hidden)
     }

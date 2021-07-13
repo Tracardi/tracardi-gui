@@ -18,7 +18,6 @@ const Events = ({showAlert}) => {
     const [ready, setReady] = React.useState(false);
 
     const onClick = (id) => {
-        console.log(id);
         getData('/event/' + id, setLoading, setError, setReady)
     }
 
