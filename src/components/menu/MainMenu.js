@@ -8,10 +8,6 @@ import {VscServerProcess} from "@react-icons/all-files/vsc/VscServerProcess";
 import {VscOrganization} from "@react-icons/all-files/vsc/VscOrganization";
 import {useHistory} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
-import {FaFacebookSquare} from "@react-icons/all-files/fa/FaFacebookSquare";
-import {GrTwitter} from "@react-icons/all-files/gr/GrTwitter";
-import {IoLogoYoutube} from "@react-icons/all-files/io/IoLogoYoutube";
-import {FiShare2} from "@react-icons/all-files/fi/FiShare2";
 import {VscPlug} from "@react-icons/all-files/vsc/VscPlug";
 import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
 import {BsShieldLock} from "@react-icons/all-files/bs/BsShieldLock";
@@ -25,10 +21,6 @@ export default function MainMenu() {
     const history = useHistory();
     const go = (url) => {
         return () => history.push(urlPrefix(url));
-    }
-
-    const external = (url) => {
-        return () => window.location.href = url;
     }
 
     return <div className="MainMenu">
@@ -70,17 +62,7 @@ export default function MainMenu() {
             </MenuIcon>
         </div>
         <div>
-            <MenuIcon icon={<FiShare2 size={25}/>} label="Share">
-                <MenuItem onClick={external("https://twitter.com/tracardi")}>
-                    <GrTwitter size={20} style={{marginRight: 8}}/> Twitter
-                </MenuItem>
-                <MenuItem onClick={external("https://www.facebook.com/TRACARDI/")}>
-                    <FaFacebookSquare size={20} style={{marginRight: 8}}/> Facebook
-                </MenuItem>
-                <MenuItem onClick={external("https://www.youtube.com/channel/UC0atjYqW43MdqNiSJBvN__Q")}>
-                    <IoLogoYoutube size={20} style={{marginRight: 8}}/> Youtube
-                </MenuItem>
-            </MenuIcon>
+
         </div>
 
     </div>

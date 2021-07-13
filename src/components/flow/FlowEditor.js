@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     ReactFlowProvider
 } from 'react-flow-renderer';
@@ -9,7 +9,7 @@ import {showAlert} from "../../redux/reducers/alertSlice";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import FlowForm from "../elements/forms/FlowForm";
 import FlowEditorPane from "./FlowEditorPane";
-import {save, debug} from "./FlowEditorOps";
+import {save} from "./FlowEditorOps";
 import FlowEditorTitle from "./FlowEditorTitle";
 import {useConfirm} from "material-ui-confirm";
 

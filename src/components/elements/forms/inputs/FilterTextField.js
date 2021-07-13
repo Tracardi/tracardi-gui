@@ -1,9 +1,13 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import TextField from "@material-ui/core/TextField";
 
-const FilterTextField = ({label, onChange, onSubmit, variant="outlined"}) => {
+const FilterTextField = ({label, onChange, onSubmit, initValue="", variant="outlined"}) => {
 
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState(initValue);
+
+    useEffect(()=> {
+        setValue(initValue);
+    }, [initValue])
 
     const handleChange = (event) => {
         if (typeof (onChange) != "undefined") {
@@ -20,9 +24,17 @@ const FilterTextField = ({label, onChange, onSubmit, variant="outlined"}) => {
         }
     };
 
+    const handleBlur = (ev) => {
+        if (typeof (onSubmit) != "undefined") {
+            onSubmit(ev.target.value);
+            ev.preventDefault();
+        }
+    };
+
     return <TextField id="filter-input" label={label}
                       value={value}
                       onChange={handleChange}
+                      onBlurCapture={handleBlur}
                       onKeyPressCapture={handleKeyPress}
                       variant={variant}
                       fullWidth

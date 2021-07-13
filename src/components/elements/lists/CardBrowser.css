@@ -12,6 +12,8 @@
     justify-content: flex-start;
     flex-direction: row;
     flex-wrap: wrap;
+    width: 100%;
+    height: inherit;
 }
 .CardBrowser .CardGroup {
     display: flex;

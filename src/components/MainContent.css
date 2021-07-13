@@ -57,6 +57,7 @@
 
 .MainPane > .Top > .User {
     margin: 7px;
-    display: grid;
+    display: flex;
+    flex-direction: row;
     cursor: pointer;
 }

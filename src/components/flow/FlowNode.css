@@ -38,6 +38,7 @@ DIV.NodeIcon {
 DIV.NodeLabel {
     display: flex;
     align-items: center;
+    overflow: hidden;
 }
 
 DIV.SequenceNumber {

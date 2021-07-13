@@ -15,6 +15,7 @@ import SocialSplash from "./elements/misc/SocialSplash";
 import PrivateRoute from "./authentication/PrivateRoute";
 import "./App.css";
 import urlPrefix from "../misc/UrlPrefix";
+import AlertTitle from "@material-ui/lab/AlertTitle";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -52,10 +53,10 @@ const App = ({alert}) => {
                     </Switch>
                     <Snackbar open={alert.show} autoHideDuration={alert.hideAfter} onClose={handleClose}>
                         <Alert onClose={handleClose} severity={alert.type}>
-                            <pre style={{margin: 0, overflow: "auto", maxWidth: "500px"}}>{alert.message}</pre>
+                            <AlertTitle style={{textTransform: "uppercase"}}>{alert.type}</AlertTitle>
+                            <span style={{fontWeight: 400}}>{alert.message}</span>
                         </Alert>
                     </Snackbar>
-
                 </Router>
             );
         }

@@ -70,7 +70,7 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
         progress,
         (e) => {
             if (e) {
-                onError({message: e[0].msg, type: "error", hideAfter: 2000});
+                onError({message: e[0].msg, type: "error", hideAfter: 5000});
             }
         },
         (data) => {
@@ -80,8 +80,9 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                 flow.elements.map((element) => {
                     if (isNode(element)) {
                         if (data.data?.debugInfo?.nodes[element.id]) {
-                            element.data['debugging'] = {
-                                node: data.data.debugInfo.nodes[element.id]
+                            element.data = {...element.data, debugging: {
+                                    node: data.data.debugInfo.nodes[element.id]
+                                }
                             }
                         } else {
                             delete element.data.debugging

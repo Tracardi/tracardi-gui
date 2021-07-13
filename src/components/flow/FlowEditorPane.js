@@ -1,5 +1,5 @@
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
-import ReactFlow, {addEdge, Background, isEdge, removeElements} from "react-flow-renderer";
+import ReactFlow, {addEdge, Background, isEdge, isNode, removeElements} from "react-flow-renderer";
 import React, {useEffect, useRef, useState} from "react";
 import PropTypes from 'prop-types';
 import FlowNode from "./FlowNode";
@@ -37,7 +37,8 @@ export function FlowEditorPane(
     const [currentNode, setCurrentNode] = useState({});
     const [displayDetails, setDisplayDetails] = useState(false);
     const [animatedEdge, setAnimatedEdge] = useState(null);
-    const [elements, setElements] = useState(null);
+    const [elements, setElements] = useState([]);
+    const [label, setLabel] = useState({name: "", id: null});
 
     useEffect(() => {
         setFlowLoading(true);
@@ -60,22 +61,35 @@ export function FlowEditorPane(
     }, [id, draft])
 
     useEffect(() => {
-        if(elements) {
-            setElements((els) => els.map((el) => {
-                    if (isEdge(el)) {
-                        if (animatedEdge === null && el.animated === true) {
-                            el.animated = false;
-                        } else if (el.id === animatedEdge) {
-                            el.animated = true;
-                        } else {
-                            el.animated = false;
-                        }
+        setElements((els) => els.map((el) => {
+                if (isEdge(el)) {
+                    if (animatedEdge === null && el.animated === true) {
+                        el.animated = false;
+                    } else if (el.id === animatedEdge) {
+                        el.animated = true;
+                    } else {
+                        el.animated = false;
                     }
-                    return el;
-                })
-            );
-        }
+                }
+                return el;
+            })
+        );
+
     }, [animatedEdge])
+
+    useEffect(() => {
+        setElements((els) => els.map((el) => {
+                if (isNode(el) && el.id === label.id) {
+                    el.data = {
+                        ...el.data,
+                        metadata: {...el.data.metadata, name: label.name},
+                    }
+                }
+                return el;
+            })
+        );
+
+    }, [label, setElements]);
 
     const updateFlow = (data) => {
         if (data) {
@@ -129,7 +143,7 @@ export function FlowEditorPane(
     }
 
     const onDebugClick = (data) => {
-        if(onDebug) {
+        if (onDebug) {
             onDebug(data)
         }
     }
@@ -195,8 +209,8 @@ export function FlowEditorPane(
 
     const onNodeClick = (element) => {
         setCurrentNode(element);
-        if(element.data?.debugging && Array.isArray(element.data?.debugging)
-            && element.data?.debugging.length>0 && element.data?.debugging[0]?.edge?.id) {
+        if (element.data?.debugging && Array.isArray(element.data?.debugging)
+            && element.data?.debugging.length > 0 && element.data?.debugging[0]?.edge?.id) {
             setAnimatedEdge(element.data.debugging[0].edge.id);
         } else {
             setAnimatedEdge(null);
@@ -208,16 +222,27 @@ export function FlowEditorPane(
     }
 
     const onConfigSave = () => {
-        onConfig()
+        if (onConfig) {
+            onConfig()
+        }
     }
 
     const onConnectionDetails = (edge_id) => {
         setAnimatedEdge(edge_id);
     }
 
-    const onEditClick =(data)=> {
-        if(onEdit) {
+    const onEditClick = (data) => {
+        if (onEdit) {
             onEdit(data);
+        }
+    }
+
+    const handleLabelSet = (label) => {
+        if (elements) {
+            setLabel({id: currentNode.id, name: label})
+        }
+        if (onConfig) {
+            onConfig()
         }
     }
 
@@ -250,6 +275,7 @@ export function FlowEditorPane(
             <Sidebar onEdit={onEditClick}
                      onDebug={onDebugClick}/>
             {displayDetails && <NodeDetails
+                onLabelSet={handleLabelSet}
                 node={currentNode}
                 onConfig={onConfigSave}
                 onConnectionDetails={onConnectionDetails}
@@ -265,8 +291,6 @@ FlowEditorPane.propTypes = {
     onFlowLoadError: PropTypes.func.isRequired,
     onEditorReady: PropTypes.func.isRequired,
     onChange: PropTypes.func,
-    elements: PropTypes.array,
-    setElements: PropTypes.func.isRequired,
     reactFlowInstance: PropTypes.object,
     locked: PropTypes.bool,
     draft: PropTypes.bool
