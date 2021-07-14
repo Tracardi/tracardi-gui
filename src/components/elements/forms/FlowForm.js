@@ -20,8 +20,18 @@ export default function FlowForm({id, name, description, enabled, projects, onFl
     const [flowEnabled, setFlowEnabled] = useState((typeof enabled === "boolean") ? enabled : true);
     const [flowTags, setFlowTags] = useState(projects);
     const [processing, setProcessing] = useState(false);
+    const [nameErrorMessage, setNameErrorMessage] = useState("");
 
     const onSave = () => {
+
+        if (!flowName) {
+            if (flowName.length === 0) {
+                setNameErrorMessage("Flow name can not be empty");
+            } else {
+                setNameErrorMessage("");
+            }
+            return;
+        }
 
         const payload = {
             id: (id) ? id : uuid4(),
@@ -93,6 +103,8 @@ export default function FlowForm({id, name, description, enabled, projects, onFl
                            variant="outlined"
                            label="Flow name"
                            value={flowName}
+                           error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null )}
+                           helperText={nameErrorMessage}
                            onChange={(ev) => {
                                setFlowName(ev.target.value)
                            }}

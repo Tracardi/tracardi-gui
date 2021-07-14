@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
 .MainContent {
     display: flex;
     flex-direction: row;
@@ -31,6 +33,34 @@
     width:100%;
     flex-direction: row;
     height: calc(100% - 45px);
+}
+
+.About {
+    font-family: "Lato";
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(45deg, #1565c0 30%, #03a9f4  90%);
+    position: absolute;
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    -webkit-box-shadow: 0px 0px 11px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 0px 11px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 11px 0px rgba(0,0,0,0.5);
+}
+
+.About > SECTION {
+    padding: 20px;
+}
+
+.About > SECTION > .H1 {
+    font-size: 18px;
+}
+
+
+.About > SECTION > P {
+    line-height: 1em;
 }
 
 .Brand {

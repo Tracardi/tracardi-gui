@@ -164,7 +164,7 @@ export default function RuleForm({onSubmit, init}) {
                 </FormDescription>
                 <TextField
                     label={"Rule name"}
-                    error={nameErrorMessage}
+                    error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null )}
                     helperText={nameErrorMessage}
                     value={name}
                     onChange={(ev) => {
