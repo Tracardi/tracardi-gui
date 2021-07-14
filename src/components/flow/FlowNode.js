@@ -7,7 +7,7 @@ export default memo (({data}) => {
 
     const renderOutputs = (spec) => {
         if(spec?.outputs) {
-            return <div className="NodePorts" style={{bottom: "-10px"}}>
+            return <div className="NodePorts" style={{bottom: "-5px"}}>
                 {
                     spec.outputs.map((value, index)=>{
                         return <Handle
@@ -15,7 +15,7 @@ export default memo (({data}) => {
                             type="source"
                             position="bottom"
                             id={value}
-                            style={{position: "unset"}}
+
                         />
                     })
                 }
@@ -25,7 +25,7 @@ export default memo (({data}) => {
 
     const renderInputs = (spec) => {
         if(spec?.inputs) {
-            return <div className="NodePorts" style={{top: "-8px"}}>
+            return <div className="NodePorts" style={{top: "-5px"}}>
                 {
                     spec.inputs.map((value, index)=>{
                         return <Handle
@@ -33,7 +33,6 @@ export default memo (({data}) => {
                             type="target"
                             position="top"
                             id={value}
-                            style={{position: "unset"}}
                         />
                     })
                 }
@@ -68,7 +67,6 @@ export default memo (({data}) => {
                     {data?.metadata?.name}
                 </div>
             </div>
-
             {renderOutputs(data?.spec)}
         </>
     );

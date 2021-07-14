@@ -8,48 +8,7 @@
     stroke-width: 4;
 }
 
-.react-flow__handle {
-    width: 12px;
-    height: 8px;
-    border-radius: 0;
-    border: 1px solid #000;
-    background-color: white;
-    border-radius: 2px;
-}
 
-.react-flow__node-default {
-    border-width: 2px;
-    border-color: #1565c0;
-    padding: 6px;
-}
-
-.react-flow__node-default .react-flow__handle {
-    background-color: white;
-}
-
-.react-flow__handle-bottom {
-    bottom: -6px;
-    border-width: 2px;
-    border-color: #1565c0;
-}
-
-.react-flow__handle-top {
-    top: -6px;
-    border-width: 2px;
-    border-color: #1565c0;
-}
-
-.react-flow__node-default.selected {
-    box-shadow: 0 0 0 0;
-    cursor: grab;
-    background-color: rgb(0, 105, 192);
-    color: white;
-}
-
-.react-flow__node {
-    color: #1565c0;
-    text-transform: none;
-}
 
 .react-flow__node .react-flow__node-default.selected {
     background-color: rgb(0, 105, 192);
