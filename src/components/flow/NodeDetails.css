@@ -60,7 +60,6 @@
     margin-top: 5px;
     height: calc(100% - 70px);
     padding: 10px;
-    overflow-y: auto;
 }
 
 .NodeDetails > .Pane .SubTitle {

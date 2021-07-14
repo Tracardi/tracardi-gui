@@ -52,12 +52,11 @@ export default function ActionDebugBox({debugging, onConnectionDetails}) {
     }
 
     return <div className="ActionDebugBox">
-        <div style={{display: "flex", flexFlow: "wrap"}}>
+        <div style={{display: "flex", flexFlow: "wrap", height: "45px"}}>
+
             <RenderConnections node={debugging?.node}/>
         </div>
         {call && <DebugBox call={call}
-                           event={debugging?.event}
-                           session={debugging?.session}
                            onTabSelect={onTabSelect}/>}
     </div>
 

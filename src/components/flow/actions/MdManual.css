@@ -1,9 +1,10 @@
 .MdManual {
     width: inherit;
-    height: inherit;
+    height: 100%;
     overflow: auto;
     background: white;
     padding: 10px;
+    border-radius: 5px;
 }
 .MdManual A {
     color: rgb(0, 105, 192);

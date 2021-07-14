@@ -69,27 +69,6 @@ function Sidebar({showAlert, onEdit, onDebug}) {
                         })
                     }
                 </div>
-                {/*<div style={{textAlign: "right"}}>*/}
-                {/*    <IconButton onClick={onRegisterClick} label="Register action">*/}
-                {/*        <BsPlusCircle size={20}/>*/}
-                {/*    </IconButton>*/}
-                {/*    <Popover*/}
-                {/*        id="register"*/}
-                {/*        open={showResisterPopOver}*/}
-                {/*        anchorEl={anchorEl}*/}
-                {/*        onClose={handlePopoverClose}*/}
-                {/*        anchorOrigin={{*/}
-                {/*            vertical: 'top',*/}
-                {/*            horizontal: 'left',*/}
-                {/*        }}*/}
-                {/*        transformOrigin={{*/}
-                {/*            vertical: 'bottom',*/}
-                {/*            horizontal: 'left',*/}
-                {/*        }}*/}
-                {/*    >*/}
-                {/*        <ModuleRegisterForm onReady={handlePopoverClose}/>*/}
-                {/*    </Popover>*/}
-                {/*</div>*/}
             </div>
         </div>
     );

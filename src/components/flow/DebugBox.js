@@ -4,7 +4,7 @@ import {DebugPortDetails} from "./DebugPortDetails";
 import {NoPortData} from "./NoPortData";
 import ConsoleView from "../elements/misc/ConsoleView";
 
-export default function DebugBox({call, event, session, onTabSelect}) {
+export default function DebugBox({call, onTabSelect}) {
 
     const renderPorts = (messages) => {
         if (messages) {

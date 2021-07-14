@@ -13,6 +13,15 @@
   padding: 10px;
 }
 
+.ScrollablePaper {
+  width: inherit;
+  height: 100%;
+  overflow: auto;
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+
 .Pad10 {
   padding: 10px;
 }
