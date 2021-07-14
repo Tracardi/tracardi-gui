@@ -1,27 +1,18 @@
-.react-flow {
-    font-family: inherit;
-    height: inherit;
+.FlowPane .react-flow {
+    font-family: inherit !important;
+    height: inherit !important;
 }
 
-.react-flow__edge-path {
-    stroke: #1565c0;
-    stroke-width: 4;
+.FlowPane .react-flow .react-flow__edge-path {
+    stroke: #1565c0 !important;
+    stroke-width: 4 !important;
 }
-
-
-
-.react-flow__node .react-flow__node-default.selected {
-    background-color: rgb(0, 105, 192);
-    color: white;
-}
-
 
 .FlowEditor {
     display: flex;
     flex-direction: column;
     height: inherit;
 }
-
 
 .FlowEditor > .WorkArea {
     display: flex;

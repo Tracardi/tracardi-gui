@@ -15,7 +15,6 @@ export default memo (({data}) => {
                             type="source"
                             position="bottom"
                             id={value}
-
                         />
                     })
                 }
