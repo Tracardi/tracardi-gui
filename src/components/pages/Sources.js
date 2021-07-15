@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback} from "react";
 import SourceDetails from "../elements/details/SourceDetails";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
@@ -7,6 +7,10 @@ import SourceForm from "../elements/forms/SourceForm";
 
 
 export default function Sources() {
+
+    const urlFunc = useCallback((query) => ('/sources/by_tag' + ((query) ? "?query=" + query : "")), []);
+    const addFunc = useCallback((close) => <SourceForm onClose={close}/>, []);
+    const detailsFunc = useCallback((id, close) => <SourceDetails id={id} onDeleteComplete={close}/>, []);
 
     const sources = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
@@ -28,15 +32,15 @@ export default function Sources() {
     }
 
     return <CardBrowser
-        urlFunc={(query) => ('/sources/by_tag' + ((query) ? "?query=" + query : ""))}
+        urlFunc={urlFunc}
         cardFunc={sources}
         buttomLabel="New source"
         buttonIcon={<VscRadioTower size={20} style={{marginRight: 10}}/>}
         drawerDetailsTitle="Source details"
         drawerDetailsWidth={800}
-        detailsFunc={(id, close) => <SourceDetails id={id} onDeleteComplete={close}/>}
+        detailsFunc={detailsFunc}
         drawerAddTitle="New source"
         drawerAddWidth={800}
-        addFunc={(close) => <SourceForm onClose={close}/>}
+        addFunc={addFunc}
     />
 }

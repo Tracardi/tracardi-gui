@@ -48,7 +48,7 @@ const CardBrowser = ({
                 }
             }
         )
-    }, [query, refresh])
+    }, [query, refresh, showAlert, urlFunc])
 
     const onClick = (id) => {
         setCardId(id);

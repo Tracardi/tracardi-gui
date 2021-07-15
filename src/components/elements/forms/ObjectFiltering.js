@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "./Button";
 import "./ObjectFiltering.css";
@@ -12,18 +12,18 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
     const [toDate, setToDate] = useState(initDate.maxDate);
     const [query, setQuery] = useState(initDate.where);
 
-    function setRefreshRate(rate) {
-        onRefreshChange(rate);
-    }
-
-    function onSetDateFrom(date) {
+    const onSetDateFrom = useCallback((date) => {
         localStorage.setItem(type+"DateFrom", JSON.stringify(date));
         setFromDate(date)
-    }
+    }, [type])
 
-    function onSetDateTo(date) {
+    const onSetDateTo= useCallback((date) => {
         localStorage.setItem(type+"DateTo", JSON.stringify(date));
         setToDate(date)
+    }, [type]);
+
+    function setRefreshRate(rate) {
+        onRefreshChange(rate);
     }
 
     function setQueryChange(ev) {

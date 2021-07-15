@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
 
-const AutoComplete = ({showAlert, placeholder, error, url, onDataLoaded, initValue, onSetValue, solo, disabled}) => {
+const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoaded,  onSetValue, solo, disabled}) => {
 
     if(typeof solo == "undefined") {
         solo = true
@@ -18,6 +18,16 @@ const AutoComplete = ({showAlert, placeholder, error, url, onDataLoaded, initVal
     const [options, setOptions] = React.useState([]);
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
     const [progress, setProgress] = React.useState(false);
+
+    const handleDataLoaded = useCallback((result, onDataLoaded) => {
+        if(!onDataLoaded) {
+            return result.data?.result.map((key) => {
+                return {name: key, id: key}
+            });
+        } else {
+            return onDataLoaded(result)
+        }
+    }, [])
 
     React.useEffect(() => {
         let active = true;
@@ -35,9 +45,9 @@ const AutoComplete = ({showAlert, placeholder, error, url, onDataLoaded, initVal
                 }
             },
             (result) => {
-
                 if (active) {
-                    const options = onDataLoaded(result)
+                    const options = handleDataLoaded(result, onDataLoaded)
+
                     if(typeof options !== "undefined" && options !== null) {
                         if(Array.isArray(options) && options.length === 0) {
                             setOptions([{name: "None", key: "none"}])
@@ -52,7 +62,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, onDataLoaded, initVal
         return () => {
             active = false;
         };
-    }, [loading]);
+    }, [loading, url, handleDataLoaded, onDataLoaded, showAlert]);
 
     React.useEffect(() => {
         if (!open) {

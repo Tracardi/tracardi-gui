@@ -126,13 +126,7 @@ export default function SegmentForm({onSubmit, init}) {
                     url="/events/metadata/type"
                     initValue={{name:type, id:type}}
                     onSetValue={setType}
-                    onDataLoaded={
-                        (result) => {
-                            return result.data?.result.map((key) => {
-                                return {name: key, id: key}
-                            });
-                        }
-                    }/>
+                />
 
                 <FormSubHeader>Condition</FormSubHeader>
                 <FormDescription>Segments are created after the event is processed.

@@ -41,7 +41,7 @@ export default function CalendarPicker({onDateSelect, datetime}) {
             now: null
         }
         onDateSelect(date);
-    },[year, month, day, hour, minute, second, meridiem])
+    },[year, month, day, hour, minute, second, meridiem, onDateSelect])
 
     const onResetTime = (d) => {
         setHour(d?.clockHandHour?.value);

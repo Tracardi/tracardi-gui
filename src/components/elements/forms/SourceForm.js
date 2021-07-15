@@ -134,13 +134,6 @@ export default function SourceForm({init, onClose}) {
                     url="/sources/types"
                     initValue={type}
                     onSetValue={setType}
-                    onDataLoaded={
-                        (result) => {
-                            return result.data?.result.map((key) => {
-                                return {name: key, id: key}
-                            });
-                        }
-                    }
                 />
 
                 <FormSubHeader>Consent</FormSubHeader>

@@ -26,9 +26,9 @@ export default function DataTimePicker({type, datetime, onDatetimeSelect}) {
     const [anchorEl, setAnchorEl] = useState(null);
     const [tab, setTab] = useState(activeTab(datetime));
 
-    const onDateTimeSet = (datetime) => {
-        onDatetimeSelect(datetime);
-    }
+    // const onDateTimeSet = (datetime) => {
+    //     onDatetimeSelect(datetime);
+    // }
 
     const handleDisplay = (event) => {
         setAnchorEl(event.currentTarget);
@@ -93,13 +93,13 @@ export default function DataTimePicker({type, datetime, onDatetimeSelect}) {
             <div className="DateTimePicker">
                 <Tabs tabs={["Date & time", "Relative", "Now"]} defaultTab={tab} onTabSelect={setTab}>
                     <TabCase id={0}>
-                        <CalendarPicker onDateSelect={onDateTimeSet} datetime={datetime}/>
+                        <CalendarPicker onDateSelect={onDatetimeSelect} datetime={datetime}/>
                     </TabCase>
                     <TabCase id={1}>
-                        <RelativePicker type={type} onDateSelect={onDateTimeSet} datetime={datetime}/>
+                        <RelativePicker type={type} onDateSelect={onDatetimeSelect} datetime={datetime}/>
                     </TabCase>
                     <TabCase id={2}>
-                        <NowDateTime onDateSelect={onDateTimeSet} />
+                        <NowDateTime onDateSelect={onDatetimeSelect} />
                     </TabCase>
                 </Tabs>
             </div>

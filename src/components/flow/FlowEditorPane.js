@@ -1,6 +1,6 @@
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import ReactFlow, {addEdge, Background, isEdge, isNode, removeElements} from "react-flow-renderer";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import PropTypes from 'prop-types';
 import FlowNode from "./FlowNode";
 import {v4 as uuid4} from "uuid";
@@ -17,7 +17,6 @@ export function FlowEditorPane(
         title,
         reactFlowInstance = null,
         onFlowLoad,
-        onFlowLoadError,
         onEditorReady,
         onChange,
         onEdit,
@@ -40,6 +39,34 @@ export function FlowEditorPane(
     const [elements, setElements] = useState([]);
     const [label, setLabel] = useState({name: "", id: null});
 
+    const updateFlow = useCallback((data) => {
+        if (data) {
+            if (onFlowLoad) {
+                const payload = {
+                    name: data?.name,
+                    description: data?.description,
+                    enabled: data?.enabled,
+                    projects: data?.projects,
+                }
+                onFlowLoad(payload);
+            }
+
+            let flowGraph = []
+            if (data?.flowGraph) {
+                flowGraph = data.flowGraph.nodes.slice();
+                flowGraph = flowGraph.concat(data.flowGraph.edges.slice())
+            }
+            setElements(flowGraph);
+        } else if (data === null) {
+            // Missing flow
+            if (showAlert) {
+                showAlert({message: "This workflow is missing", type: "warning", hideAfter: 2000});
+            } else {
+                alert("This workflow is missing")
+            }
+        }
+    }, [showAlert, onFlowLoad]);
+
     useEffect(() => {
         setFlowLoading(true);
         request({
@@ -48,8 +75,8 @@ export function FlowEditorPane(
             setFlowLoading,
             (e) => {
                 if (e) {
-                    if (onFlowLoadError) {
-                        onFlowLoadError({message: e[0].msg, type: "error", hideAfter: 4000});
+                    if (showAlert) {
+                        showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
                     } else {
                         alert(e[0].msg)
                     }
@@ -58,7 +85,7 @@ export function FlowEditorPane(
             (response) => {
                 updateFlow(response?.data);
             })
-    }, [id, draft])
+    }, [id, draft, showAlert, updateFlow])
 
     useEffect(() => {
         setElements((els) => els.map((el) => {
@@ -90,35 +117,6 @@ export function FlowEditorPane(
         );
 
     }, [label, setElements]);
-
-    const updateFlow = (data) => {
-        if (data) {
-            if (onFlowLoad) {
-                const payload = {
-                    name: data?.name,
-                    description: data?.description,
-                    enabled: data?.enabled,
-                    projects: data?.projects,
-                }
-                onFlowLoad(payload);
-                locked = data.lock
-            }
-
-            let flowGraph = []
-            if (data?.flowGraph) {
-                flowGraph = data.flowGraph.nodes.slice();
-                flowGraph = flowGraph.concat(data.flowGraph.edges.slice())
-            }
-            setElements(flowGraph);
-        } else if (data === null) {
-            // Missing flow
-            if (onFlowLoadError) {
-                onFlowLoadError({message: "This workflow is missing", type: "warning", hideAfter: 2000});
-            } else {
-                alert("This workflow is missing")
-            }
-        }
-    }
 
     const onLoad = (reactFlowInstance) => {
         onEditorReady(reactFlowInstance)
@@ -288,7 +286,6 @@ export function FlowEditorPane(
 FlowEditorPane.propTypes = {
     id: PropTypes.string.isRequired,
     onFlowLoad: PropTypes.func.isRequired,
-    onFlowLoadError: PropTypes.func.isRequired,
     onEditorReady: PropTypes.func.isRequired,
     onChange: PropTypes.func,
     reactFlowInstance: PropTypes.object,

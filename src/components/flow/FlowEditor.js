@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
     ReactFlowProvider
 } from 'react-flow-renderer';
@@ -25,7 +25,11 @@ const FlowEditor = ({showAlert}) => {
 
     const confirm = useConfirm();
 
-    const onSaveDraft = (deploy = false) => {
+    const onFlowLoad = useCallback((flowMetadata) => {
+        setFlowMetaData(flowMetadata);
+    }, []);
+
+    const onSaveDraft = useCallback((deploy = false) => {
 
         if (reactFlowInstance) {
             save(id,
@@ -46,9 +50,7 @@ const FlowEditor = ({showAlert}) => {
         } else {
             console.error("Can not save Editor not ready.");
         }
-    }
-
-    // const onSaveCallback = useCallback(()=> onSaveDraft(deployed), [deployed])
+    }, [flowMetaData, reactFlowInstance, id, showAlert]);
 
     useEffect(() => {
         const timer = setInterval(
@@ -66,9 +68,9 @@ const FlowEditor = ({showAlert}) => {
             }
 
         };
-    }, [modified])
+    }, [modified, onSaveDraft])
 
-    const onConfig = (config) => {
+    const onConfig = () => {
         setModified(true);
         setDeployed(false);
     }
@@ -77,14 +79,6 @@ const FlowEditor = ({showAlert}) => {
 
     const onEditorReady = (reactFlowInstance) => {
         setReactFlowInstance(reactFlowInstance);
-    }
-
-    const onFlowLoad = (flowMetadata) => {
-        setFlowMetaData(flowMetadata);
-    }
-
-    const onFlowLoadError = (e) => {
-        showAlert(e);
     }
 
     const onChange = () => {
@@ -121,7 +115,6 @@ const FlowEditor = ({showAlert}) => {
                                         reactFlowInstance={reactFlowInstance}
                                         onEditorReady={onEditorReady}
                                         onFlowLoad={onFlowLoad}
-                                        onFlowLoadError={onFlowLoadError}
                                         onChange={onChange}
                                         onConfig={onConfig}
                                         draft={true}

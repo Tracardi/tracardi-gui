@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {request} from "../../remote_api/uql_api_endpoint";
 import Input from "./forms/inputs/Input";
 import "./FilterListWrapper.css";
@@ -16,11 +16,11 @@ export function FilterListWrapper({filterLabel, filterKey, endPoinyUrl, renderLi
     const [inputError, setInputError] = React.useState(false);
     const [rerender, setReRender] = React.useState(0);
 
-    const fetchData = (withLoading) => {
-
+    const fetchData = useCallback((withLoading) => {
         return () => {
 
-            let load = () => { }
+            let load = () => {
+            }
 
             if (withLoading) {
                 load = (value) => {
@@ -50,8 +50,7 @@ export function FilterListWrapper({filterLabel, filterKey, endPoinyUrl, renderLi
                 withLoading
             );
         }
-
-    }
+    }, [searchQuery, endPoinyUrl]);
 
     useEffect(() => {
         fetchData(true)();
@@ -59,7 +58,7 @@ export function FilterListWrapper({filterLabel, filterKey, endPoinyUrl, renderLi
         const interval = setInterval(fetchData(false), 5000);
         return () => clearInterval(interval);
 
-    }, [searchQuery, rerender, forceReload])
+    }, [searchQuery, rerender, forceReload, fetchData])
 
     const onSearch = (value) => {
         localStorage.setItem(filterKey, value);

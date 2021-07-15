@@ -13,11 +13,10 @@ import {ConfirmProvider} from "material-ui-confirm";
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-
             <ThemeProvider theme={mainTheme}>
                 <CssBaseline/>
                 <ConfirmProvider>
-                <App/>
+                    <App/>
                 </ConfirmProvider>
             </ThemeProvider>
         </Provider>

@@ -20,7 +20,7 @@ export default function RelativePicker({type, onDateSelect, datetime}) {
             now: null
         }
         onDateSelect(date);
-    }, [periodType, period, periodEntity])
+    }, [periodType, period, periodEntity, onDateSelect])
 
     return <div className="PeriodPicker">
         <div className="PeriodHeader">

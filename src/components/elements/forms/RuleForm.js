@@ -99,13 +99,8 @@ export default function RuleForm({onSubmit, init}) {
                     placeholder="Event type"
                     url="/events/metadata/type"
                     initValue={type}
-                    onSetValue={setType} onDataLoaded={
-                    (result) => {
-                        return result.data?.result.map((key) => {
-                            return {name: key, id: key}
-                        });
-                    }
-                }/>
+                    onSetValue={setType}
+                />
                 <FormSubHeader>Source <sup style={{fontSize: "70%"}}>* optional</sup></FormSubHeader>
                 <FormDescription>Type source or leave it blank if this trigger refers to all sources. Source can be set
                     only if event type is set. </FormDescription>
