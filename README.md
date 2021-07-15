@@ -20,11 +20,7 @@ Go to root directory ant build docker image
 
 It may take some time ~ 15min. 
 
-Than run
-
-##```docker-compose up```
-
-Or if you prefer to run it with docker
+Then
 
 ##```docker run -p 8787:80 -e API_URL=http://127.0.0.1:8686 tracardi-gui```
 
