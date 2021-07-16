@@ -13,8 +13,10 @@ import {v4 as uuid4} from "uuid";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import {remote} from "../../../remote_api/entrypoint";
 import AutoComplete from "./AutoComplete";
+import {connect} from "react-redux";
+import {showAlert} from "../../../redux/reducers/alertSlice";
 
-export default function SegmentForm({onSubmit, init}) {
+function SegmentForm({onSubmit, init, showAlert}) {
 
     if (!init) {
         init = {
@@ -92,6 +94,9 @@ export default function SegmentForm({onSubmit, init}) {
             },
             setProcessing,
             (e) => {
+                if(e) {
+                    showAlert({message: e[0].msg, type: "error", hideAfter: 5000});
+                }
             },
             (response) => {
                 if (response!==false) {
@@ -201,3 +206,13 @@ export default function SegmentForm({onSubmit, init}) {
 
     </Form>
 }
+
+const mapProps = (state) => {
+    return {
+        notification: state.notificationReducer,
+    }
+};
+export default connect(
+    mapProps,
+    {showAlert}
+)(SegmentForm)

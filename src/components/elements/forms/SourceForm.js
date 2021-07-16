@@ -15,9 +15,11 @@ import JsonEditor from "../misc/JsonEditor";
 import MenuItem from "@material-ui/core/MenuItem";
 import SelectItems from "./SelectItems";
 import {request} from "../../../remote_api/uql_api_endpoint";
+import {connect} from "react-redux";
+import {showAlert} from "../../../redux/reducers/alertSlice";
 
 
-export default function SourceForm({init, onClose}) {
+function SourceForm({init, onClose,showAlert}) {
 
     if (!init) {
         init = {
@@ -54,8 +56,10 @@ export default function SourceForm({init, onClose}) {
                 data: payload
             },
             setProcessing,
-            () => {
-
+            (e) => {
+                if(e) {
+                    showAlert({message: e[0].msg, type: "error", hideAfter: 5000});
+                }
             },
             (data) => {
                 if (data) {
@@ -217,3 +221,13 @@ export default function SourceForm({init, onClose}) {
         </Rows>
     </Form>
 }
+
+const mapProps = (state) => {
+    return {
+        notification: state.notificationReducer,
+    }
+};
+export default connect(
+    mapProps,
+    {showAlert}
+)(SourceForm)

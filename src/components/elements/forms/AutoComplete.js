@@ -41,7 +41,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
             setProgress,
             (e) => {
                 if(e) {
-                    showAlert({message: e[0].msg, type: "error", hideAfter:2000});
+                    showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
                 }
             },
             (result) => {

@@ -1,3 +1,4 @@
 <script>
-   window.tracker.track("event-type", {"propery": "value"})
+   window.tracker.track("event-type", {"propery": "value"});
+   window.tracker.track("other-event-type", {"propery1": "value", "property2": 1});
 </script>

@@ -2,8 +2,9 @@
     const options = {
         tracker: {
             url: {
-                script: 'http://localhost/tracker',
-                api: 'http://localhost'
+                // This is url to tracardi backend.
+                script: 'http://localhost:80/tracker',
+                api: 'http://localhost:80'
             },
             source: {
                 id: "<paste-your-source-id>"

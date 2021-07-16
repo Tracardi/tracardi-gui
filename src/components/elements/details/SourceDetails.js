@@ -36,7 +36,10 @@ export default function SourceDetails({id, onDeleteComplete}) {
                 method: "GET"
             },
             setLoading,
-            () => {
+            (e) => {
+                if(e) {
+                    console.error(e)
+                }
             },
             (response) => {
                 if (response) {
@@ -63,13 +66,21 @@ export default function SourceDetails({id, onDeleteComplete}) {
                     method: "DELETE"
                 },
                 () => {
-                }, () => {
+                },
+                (e) => {
+                    if(e) {
+                        console.error(e);
+                    }
                 }, (reponse) => {
                     request({
                             url: '/sources/refresh'
                         },
                         ()=>{},
-                        ()=>{},
+                        (e)=>{
+                            if(e) {
+                                console.error(e);
+                            }
+                        },
                         ()=>{
                             if (onDeleteComplete) {
                                 onDeleteComplete(reponse)
@@ -101,14 +112,19 @@ export default function SourceDetails({id, onDeleteComplete}) {
 
         {data.type === "web-page" && <React.Fragment><FormHeader>Integration</FormHeader><ElevatedBox>
             <FormSubHeader>Javascript code</FormSubHeader>
-            <FormDescription>Please paste this code into your web page</FormDescription>
+            <FormDescription>Please paste this code into your web page. This code should appear on every page.</FormDescription>
             <Suspense fallback={<CenteredCircularProgress/>}><TrackerScript sourceId={data.id}/></Suspense>
         </ElevatedBox>
             <FormHeader>Javascript event sending</FormHeader>
             <ElevatedBox>
                 <FormSubHeader>Javascript example</FormSubHeader>
-                <FormDescription>Than send event with the folowing code.</FormDescription>
+                <FormDescription>
+                    Than send multiple events with the following code.
+                </FormDescription>
                 <Suspense fallback={<CenteredCircularProgress/>}><TrackerUseScript/></Suspense>
+                <FormDescription>
+                    Please refer to Tracardi documentation on more complex configuration.
+                </FormDescription>
             </ElevatedBox>
         </React.Fragment>}
 

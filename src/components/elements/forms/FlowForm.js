@@ -12,8 +12,10 @@ import FormDescription from "../misc/FormDescription";
 import FormHeader from "../misc/FormHeader";
 import Rows from "../misc/Rows";
 import TagTextFieldForProjects from "./inputs/TagTextFieldForProjects";
+import {connect} from "react-redux";
+import {showAlert} from "../../../redux/reducers/alertSlice";
 
-export default function FlowForm({id, name, description, enabled, projects, onFlowSaveComplete, draft = false}) {
+function FlowForm({id, name, description, enabled, projects, onFlowSaveComplete, showAlert, draft = false}) {
 
     const [flowName, setFlowName] = useState((name) ? name : "");
     const [flowDescription, setFlowDescription] = useState((description) ? description : "");
@@ -47,7 +49,10 @@ export default function FlowForm({id, name, description, enabled, projects, onFl
                 data: payload
             },
             setProcessing,
-            () => {
+            (e) => {
+                if(e) {
+                    showAlert({message: e[0].msg, type: "error", hideAfter: 5000});
+                }
             },
             (data) => {
                 if(data!==false) {
@@ -136,3 +141,14 @@ export default function FlowForm({id, name, description, enabled, projects, onFl
 
     </div>
 }
+
+
+const mapProps = (state) => {
+    return {
+        notification: state.notificationReducer,
+    }
+};
+export default connect(
+    mapProps,
+    {showAlert}
+)(FlowForm)

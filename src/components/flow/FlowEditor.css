@@ -4,8 +4,18 @@
 }
 
 .FlowPane .react-flow .react-flow__edge-path {
-    stroke: #1565c0 !important;
     stroke-width: 4 !important;
+}
+
+.FlowPane .react-flow__edge-default .react-flow__edge-path {
+    stroke: #1565c0 !important;
+}
+.FlowPane .react-flow__edge-default.selected .react-flow__edge-path {
+    stroke: #444 !important;
+}
+
+.FlowPane .react-flow__edge.react-flow__edge-default.selected {
+
 }
 
 .FlowEditor {
