@@ -25,4 +25,5 @@
 
 .Tabs .TabContent {
     height: inherit;
+    overflow-y: auto;
 }
