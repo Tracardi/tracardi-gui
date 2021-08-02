@@ -2,18 +2,24 @@ import TextField from "@material-ui/core/TextField";
 import React, {useState} from "react";
 import "./ModuleRegisterForm.css";
 import {request} from "../../remote_api/uql_api_endpoint";
+import Checkbox from "@material-ui/core/Checkbox";
 
 export default function ModuleRegisterForm({onReady}) {
 
     const defaultHelperText = "eg. app.process_engine.action.copy_property_action"
 
     const [module, setModule] = useState("");
+    const [upgrade, setUpgrade] = useState(false);
     const [error, setError] = useState(false);
     const [helperText, setHelperText] = useState(defaultHelperText)
     const onEnterPressed = (module) => {
         request({
-                url: '/flow/action/plugin/register?module='+module,
-                method: 'post'
+                url: '/flow/action/plugin/register',
+                method: 'post',
+                data: {
+                    module: module,
+                    upgrade: upgrade
+                }
             },
             () => {
                 setError(false);
@@ -44,6 +50,7 @@ export default function ModuleRegisterForm({onReady}) {
     function render() {
         return <div className="ModuleRegisterForm">
             <div className="ModuleName">Type module you would like to register and hit ENTER to register.</div>
+
             <TextField id="tasks" label="Action module"
                        value={module}
                        onChange={(ev) => {
@@ -56,6 +63,11 @@ export default function ModuleRegisterForm({onReady}) {
                        fullWidth
                        style={{width: "100%"}}
             />
+            <Checkbox
+                checked={upgrade}
+                onChange={() => setUpgrade(!upgrade)}
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+            /> Upgrade module package
         </div>
     }
 
