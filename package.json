@@ -56,7 +56,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "chmod +x ./env.sh && ./env.sh && mv env-config.js ./public/ && react-scripts start",
+    "start": "react-scripts start",
+    "env": "chmod +x ./env.sh && ./env.sh && mv env-config.js ./public/ && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
