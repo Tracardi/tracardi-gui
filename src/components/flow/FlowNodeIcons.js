@@ -40,6 +40,7 @@ import {VscOrganization} from "@react-icons/all-files/vsc/VscOrganization";
 import {MdLibraryAdd} from "@react-icons/all-files/md/MdLibraryAdd";
 import {GoBrowser} from "@react-icons/all-files/go/GoBrowser";
 import {VscQuestion} from "@react-icons/all-files/vsc/VscQuestion";
+import {VscColorMode} from "@react-icons/all-files/vsc/VscColorMode";
 
 export default function FlowNodeIcons({icon}) {
 
@@ -86,7 +87,8 @@ export default function FlowNodeIcons({icon}) {
         'segment': <VscOrganization size={20}/>,
         'append': <MdLibraryAdd size={20}/>,
         'browser': <GoBrowser size={20}/>,
-        'question': <VscQuestion size={20}/>
+        'question': <VscQuestion size={20}/>,
+        'dark-light': <VscColorMode size={20}/>
     }
 
     const renderIcon = () => {
