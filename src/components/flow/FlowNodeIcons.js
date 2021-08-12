@@ -1,11 +1,9 @@
 import {BiGitRepoForked} from "@react-icons/all-files/bi/BiGitRepoForked";
 import React from "react";
-import {VscRunAll} from "@react-icons/all-files/vsc/VscRunAll";
 import {VscJson} from "@react-icons/all-files/vsc/VscJson";
 import {FiDatabase} from "@react-icons/all-files/fi/FiDatabase";
 import {VscSymbolEvent} from "@react-icons/all-files/vsc/VscSymbolEvent";
 import {BsDiamond} from "@react-icons/all-files/bs/BsDiamond";
-import {AiOutlineApi} from "@react-icons/all-files/ai/AiOutlineApi";
 import {AiOutlineSisternode} from "@react-icons/all-files/ai/AiOutlineSisternode";
 import {MdTimelapse} from "@react-icons/all-files/md/MdTimelapse";
 import {BiTimeFive} from "@react-icons/all-files/bi/BiTimeFive";
@@ -41,10 +39,21 @@ import {MdLibraryAdd} from "@react-icons/all-files/md/MdLibraryAdd";
 import {GoBrowser} from "@react-icons/all-files/go/GoBrowser";
 import {VscQuestion} from "@react-icons/all-files/vsc/VscQuestion";
 import {VscColorMode} from "@react-icons/all-files/vsc/VscColorMode";
+import {SiZapier} from "@react-icons/all-files/si/SiZapier";
+import {AiOutlineWhatsApp} from "@react-icons/all-files/ai/AiOutlineWhatsApp";
+import {SiRabbitmq} from "@react-icons/all-files/si/SiRabbitmq";
+import {VscPlug} from "@react-icons/all-files/vsc/VscPlug";
+import {SiMongodb} from "@react-icons/all-files/si/SiMongodb";
+import {VscMail} from "@react-icons/all-files/vsc/VscMail";
+import {GrMysql} from "@react-icons/all-files/gr/GrMysql";
+import {AiOutlineSlack} from "@react-icons/all-files/ai/AiOutlineSlack";
+import {FaDiscord} from "@react-icons/all-files/fa/FaDiscord";
+import {VscTwitter} from "@react-icons/all-files/vsc/VscTwitter";
+import {FaFacebookSquare} from "@react-icons/all-files/fa/FaFacebookSquare";
 
 export default function FlowNodeIcons({icon}) {
 
-    const defaultIcon = <VscRunAll size={20}/>
+    const defaultIcon = <VscPlug size={20}/>
     const icons = {
         "store": <FiDatabase size={20}/>,
         "json": <VscJson size={20}/>,
@@ -58,7 +67,7 @@ export default function FlowNodeIcons({icon}) {
         "start": <VscDebugStart size={20} />,
         'profile': <BsPerson size={20}/>,
         "stop": <VscDebugStop size={20}/>,
-        'plugin': <AiOutlineApi size={20}/>,
+        'plugin': <VscPlug size={20}/>,
         "copy-property": <AiOutlineSisternode size={20} />,
         'location': <FiMapPin size={20} />,
         'time-schedule': <AiOutlineFieldTime size={20} />,
@@ -88,7 +97,18 @@ export default function FlowNodeIcons({icon}) {
         'append': <MdLibraryAdd size={20}/>,
         'browser': <GoBrowser size={20}/>,
         'question': <VscQuestion size={20}/>,
-        'dark-light': <VscColorMode size={20}/>
+        'dark-light': <VscColorMode size={20}/>,
+        'zapier': <SiZapier size={20}/>,
+        'whatsapp': <AiOutlineWhatsApp size={20}/>,
+        "rabbitmq": <SiRabbitmq size={20}/>,
+        'mongo': <SiMongodb size={20}/>,
+        'email': <VscMail size={20}/>,
+        'mysql': <GrMysql size={20}/>,
+        'discord': <FaDiscord size={20}/>,
+        'slack': <AiOutlineSlack size={20}/>,
+        'facebook': <FaFacebookSquare size={20}/>,
+        'twitter': <VscTwitter size={20}/>
+
     }
 
     const renderIcon = () => {
