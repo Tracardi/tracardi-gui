@@ -61,7 +61,8 @@ export default function DataAnalytics(
             }
 
             if (label === "DateTo") {
-                initDate.now = "now"
+                initDate.absolute = null;
+                initDate.delta = null
             }
 
             if (label === "DateFrom") {
