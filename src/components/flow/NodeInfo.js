@@ -46,15 +46,15 @@ const NodeInfo = ({node}) => {
                 </tr>
                 <tr>
                     <td>Author</td>
-                    <td><Properties properties={node?.data?.spec?.author}/></td>
+                    <td>{node?.data?.spec?.author}</td>
                 </tr>
                 <tr>
                     <td>License</td>
-                    <td><Properties properties={node?.data?.spec?.license}/></td>
+                    <td>{node?.data?.spec?.license}</td>
                 </tr>
                 <tr>
                     <td>Version</td>
-                    <td><Properties properties={node?.data?.spec?.version}/></td>
+                    <td>{node?.data?.spec?.version}</td>
                 </tr>
                 <tr>
                     <td>Config</td>
