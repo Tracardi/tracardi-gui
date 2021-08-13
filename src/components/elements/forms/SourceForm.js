@@ -98,7 +98,8 @@ function SourceForm({init, onClose,showAlert}) {
 
             case "mongodb":
                 template = {
-                    uri: 'mongodb://127.0.0.1:27017/'
+                    uri: 'mongodb://127.0.0.1:27017/',
+                    timeout: 5000
                 }
                 break;
 
