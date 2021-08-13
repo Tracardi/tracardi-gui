@@ -79,6 +79,55 @@ function SourceForm({init, onClose,showAlert}) {
         )
     }
 
+    const setTypeAndDefineCredentialsTemplate = (type) => {
+        setType(type)
+
+        let template = {}
+
+        switch (type.id)
+        {
+            case "mysql":
+                template = {
+                    host: null,
+                    port: 3306,
+                    user: null,
+                    password: null,
+                    database: null
+                }
+                break;
+
+            case "mongodb":
+                template = {
+                    uri: 'mongodb://127.0.0.1:27017/'
+                }
+                break;
+
+            case "rabbitmq":
+                template = {
+                    uri: 'amqp://127.0.0.1:5672//',
+                    timeout: 5,
+                    virtual_host: null,
+                    port: null
+                }
+                break;
+
+            case "smtp-server":
+                template = {
+                    smtp: null,
+                    port: null,
+                    username: null,
+                    password: null
+                }
+                break;
+
+            default:
+                template = {}
+        }
+
+        template = JSON.stringify(template, null, '  ')
+        setConfig(template)
+    }
+
     const _onSubmit = () => {
 
         if (!name || name.length === 0 || !type?.name) {
@@ -121,11 +170,12 @@ function SourceForm({init, onClose,showAlert}) {
             <FormHeader>Source</FormHeader>
             <ElevatedBox className="Elevate">
                 <FormSubHeader>Source data origin</FormSubHeader>
-                <FormDescription>Data origin defines what is the primary source of data. Is it event or database
-                    query. </FormDescription>
+                <FormDescription>Data origin defines what is the primary source of data. Is it event or storage
+                    read or write. </FormDescription>
                 <SelectItems label="Origin" value={origin} onChange={_setOrigin}>
                     <MenuItem value="event">Event</MenuItem>
-                    <MenuItem value="query">Query</MenuItem>
+                    <MenuItem value="read">Read</MenuItem>
+                    <MenuItem value="write">Write</MenuItem>
                 </SelectItems>
 
                 <FormSubHeader>Source type</FormSubHeader>
@@ -137,7 +187,7 @@ function SourceForm({init, onClose,showAlert}) {
                     placeholder="Source type"
                     url="/sources/types"
                     initValue={type}
-                    onSetValue={setType}
+                    onSetValue={setTypeAndDefineCredentialsTemplate}
                 />
 
                 <FormSubHeader>Consent</FormSubHeader>
