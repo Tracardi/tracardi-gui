@@ -78,24 +78,53 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                 const flow = reactFlowInstance.toObject();
 
                 flow.elements.map((element) => {
-                    if (isEdge(element)) {
-                        const edge_info = data.data?.debugInfo?.edges[element.id]
-                        if (edge_info) {
-                            console.log(element)
-                            if(edge_info.active === false) {
-                                element.label = "inactive"
-                            }
+
+                    element.data = {...element.data,
+                        debugging: {
+                            node: {},
+                            edge: {}
                         }
                     }
 
                     if (isNode(element)) {
                         if (data.data?.debugInfo?.nodes[element.id]) {
-                            element.data = {...element.data, debugging: {
-                                    node: data.data.debugInfo.nodes[element.id]
-                                }
+                            element.data.debugging = {
+                                ...element.data.debugging,
+                                node: data.data.debugInfo.nodes[element.id]
                             }
                         } else {
                             delete element.data.debugging
+                        }
+                    }
+
+                    if (isEdge(element)) {
+                        const edge_info = data.data?.debugInfo?.edges[element.id]
+                        if (edge_info) {
+                            console.log(element)
+                            element.style = {
+                                stroke: '#f00'
+                            }
+                            element.data.debugging = {
+                                ...element.data.debugging,
+                                edge: edge_info
+                            }
+                            if(edge_info.active.includes(false) && !edge_info.active.includes(true)) {
+                                element.label = "inactive";
+                                element.animated = false;
+                                element.style = {
+                                    stroke: '#f00'
+                                }
+                            } else if (edge_info.active.includes(true) && !edge_info.active.includes(false)) {
+                                element.label = null
+                                element.animated = true
+                                element.style = {};
+                            } else {
+                                element.label = "partial-active"
+                                element.animated = true
+                                element.style = {
+                                    stroke: '#444'
+                                }
+                            }
                         }
                     }
 
