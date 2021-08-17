@@ -1,4 +1,4 @@
-import {isNode} from "react-flow-renderer";
+import {isEdge, isNode} from "react-flow-renderer";
 import {request} from "../../remote_api/uql_api_endpoint";
 
 export function prepareGraph(reactFlowInstance) {
@@ -78,6 +78,16 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                 const flow = reactFlowInstance.toObject();
 
                 flow.elements.map((element) => {
+                    if (isEdge(element)) {
+                        const edge_info = data.data?.debugInfo?.edges[element.id]
+                        if (edge_info) {
+                            console.log(element)
+                            if(edge_info.active === false) {
+                                element.label = "inactive"
+                            }
+                        }
+                    }
+
                     if (isNode(element)) {
                         if (data.data?.debugInfo?.nodes[element.id]) {
                             element.data = {...element.data, debugging: {
@@ -88,6 +98,7 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                             delete element.data.debugging
                         }
                     }
+
                     return element;
                 });
                 onReady(flow.elements || []);

@@ -31,6 +31,10 @@ export function FlowEditorPane(
         flowNode: FlowNode
     };
 
+    // const edgeTypes = {
+    //     flowEdge: FlowEdge
+    // }
+
     const reactFlowWrapper = useRef(null);
     const [flowLoading, setFlowLoading] = useState(false);
     const [currentNode, setCurrentNode] = useState({});
