@@ -39,7 +39,7 @@ export default memo (({data}) => {
         }
     }
 
-    const SequenceNumber = ({data}) => {
+    const ExecutionNumber = ({data}) => {
 
         const hasError = (calls) => {
             if(Array.isArray(calls)) {
@@ -48,9 +48,9 @@ export default memo (({data}) => {
             return false
         }
 
-        if(data.debugging?.node?.sequenceNumber) {
+        if(data.debugging?.node?.executionNumber) {
             let status = hasError(data.debugging?.node?.calls) ? " Error": " Ok"
-            return <div className={"SequenceNumber" + status}>{data.debugging.node.sequenceNumber}</div>
+            return <div className={"ExecutionNumber" + status}>{data.debugging.node.executionNumber}</div>
         } else {
             return ""
         }
@@ -58,7 +58,7 @@ export default memo (({data}) => {
 
     return (
         <>
-            <SequenceNumber data={data}/>
+            <ExecutionNumber data={data}/>
             {renderInputs(data?.spec)}
             <div className="NodePanel">
                 <div className="NodeIcon"><FlowNodeIcons icon={data?.metadata?.icon}/></div>

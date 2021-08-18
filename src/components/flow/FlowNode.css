@@ -67,7 +67,7 @@ DIV.NodeLabel {
     overflow: hidden;
 }
 
-DIV.SequenceNumber {
+DIV.ExecutionNumber {
     border-radius: 50%;
     background-color: #999;
     color: white;
