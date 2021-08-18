@@ -52,8 +52,7 @@ export default function ActionDebugBox({debugging, onConnectionDetails}) {
     }
 
     return <div className="ActionDebugBox">
-        <div style={{display: "flex", flexFlow: "wrap", height: "45px"}}>
-
+        <div style={{display: "flex", flexFlow: "wrap"}}>
             <RenderConnections node={debugging?.node}/>
         </div>
         {call && <DebugBox call={call}

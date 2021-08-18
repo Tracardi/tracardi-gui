@@ -4,7 +4,7 @@
 }
 
 .FlowPane .react-flow .react-flow__edge-path {
-    stroke-width: 4 !important;
+    stroke-width: 4;
 }
 
 .FlowPane .react-flow__edge-default .react-flow__edge-path {

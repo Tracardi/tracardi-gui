@@ -115,10 +115,12 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                                 }
                             } else if (edge_info.active.includes(true) && !edge_info.active.includes(false)) {
                                 element.label = null
+                                // element.label = edge_info.active.toString();
                                 element.animated = true
                                 element.style = {};
                             } else {
                                 element.label = null
+                                // element.label = edge_info.active.toString();
                                 element.animated = true
                                 element.style = {
                                     stroke: '#aaa'
@@ -127,8 +129,11 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                         } else {
                             // no debug info
                             element.label = null
-                            element.animated = true
-                            element.style = {};
+                            element.animated = false
+                            element.style = {
+                                stroke: '#ddd',
+                                strokeWidth: 1
+                            };
                             element.labelStyle = {
                                 fontSize: 14
                             }
