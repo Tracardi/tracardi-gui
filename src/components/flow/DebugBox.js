@@ -6,13 +6,13 @@ import ConsoleView from "../elements/misc/ConsoleView";
 
 export default function DebugBox({call, onTabSelect}) {
 
-    const renderPorts = (messages) => {
+    const renderPorts = (messages, input) => {
         if (messages) {
             return messages.map((message, index) => {
-                return <DebugPortDetails port={message} key={index}/>
+                return <DebugPortDetails port={message} key={index} input={input}/>
             })
         } else {
-            return <NoPortData />
+            return <NoPortData input={input}/>
         }
     }
 
@@ -30,12 +30,12 @@ export default function DebugBox({call, onTabSelect}) {
         >
             <TabCase id={0}>
                 <Padder>
-                    {renderPorts([call?.input?.params])}
+                    {renderPorts([call?.input?.params], true)}
                 </Padder>
             </TabCase>
             <TabCase id={1}>
                 <Padder>
-                    {renderPorts(call?.output?.results)}
+                    {renderPorts(call?.output?.results, false)}
                 </Padder>
             </TabCase>
             <TabCase id={2}>

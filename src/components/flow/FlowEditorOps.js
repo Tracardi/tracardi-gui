@@ -100,31 +100,39 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                     if (isEdge(element)) {
                         const edge_info = data.data?.debugInfo?.edges[element.id]
                         if (edge_info) {
-                            console.log(element)
-                            element.style = {
-                                stroke: '#f00'
-                            }
                             element.data.debugging = {
                                 ...element.data.debugging,
                                 edge: edge_info
                             }
                             if(edge_info.active.includes(false) && !edge_info.active.includes(true)) {
-                                element.label = "inactive";
+                                element.label = "Inactive";
+                                element.labelStyle = {
+                                    fontSize: 14
+                                }
                                 element.animated = false;
                                 element.style = {
-                                    stroke: '#f00'
+                                    stroke: '#aaa'
                                 }
                             } else if (edge_info.active.includes(true) && !edge_info.active.includes(false)) {
                                 element.label = null
                                 element.animated = true
                                 element.style = {};
                             } else {
-                                element.label = "partial-active"
+                                element.label = null
                                 element.animated = true
                                 element.style = {
-                                    stroke: '#444'
+                                    stroke: '#aaa'
                                 }
                             }
+                        } else {
+                            // no debug info
+                            element.label = null
+                            element.animated = true
+                            element.style = {};
+                            element.labelStyle = {
+                                fontSize: 14
+                            }
+                            element.label = "?"
                         }
                     }
 
