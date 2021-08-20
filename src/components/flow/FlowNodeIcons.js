@@ -19,7 +19,6 @@ import {FaRegDotCircle} from "@react-icons/all-files/fa/FaRegDotCircle";
 import {IoIosAttach} from "@react-icons/all-files/io/IoIosAttach";
 import {RiIncreaseDecreaseLine} from "@react-icons/all-files/ri/RiIncreaseDecreaseLine";
 import {IoCloudOutline} from "@react-icons/all-files/io5/IoCloudOutline";
-import {TiWeatherSunny} from "@react-icons/all-files/ti/TiWeatherSunny";
 import {TiFlowSwitch} from "@react-icons/all-files/ti/TiFlowSwitch";
 import {VscCircuitBoard} from "@react-icons/all-files/vsc/VscCircuitBoard";
 import {VscRemove} from "@react-icons/all-files/vsc/VscRemove";
@@ -50,6 +49,8 @@ import {AiOutlineSlack} from "@react-icons/all-files/ai/AiOutlineSlack";
 import {FaDiscord} from "@react-icons/all-files/fa/FaDiscord";
 import {VscTwitter} from "@react-icons/all-files/vsc/VscTwitter";
 import {FaFacebookSquare} from "@react-icons/all-files/fa/FaFacebookSquare";
+import {BiBarChartAlt} from "@react-icons/all-files/bi/BiBarChartAlt";
+import {BiCloudRain} from "@react-icons/all-files/bi/BiCloudRain";
 
 export default function FlowNodeIcons({icon}) {
 
@@ -83,7 +84,7 @@ export default function FlowNodeIcons({icon}) {
         'attach': <IoIosAttach size={20}/>,
         'plus-minus': <RiIncreaseDecreaseLine size={20} />,
         'cloud': <IoCloudOutline size={20} />,
-        'weather': <TiWeatherSunny size={20} />,
+        'weather': <BiCloudRain size={20} />,
         'map-properties': <TiFlowSwitch size={20}/>,
         'circut': <VscCircuitBoard size={20}/>,
         'add': <VscAdd size={20}/>,
@@ -107,7 +108,8 @@ export default function FlowNodeIcons({icon}) {
         'discord': <FaDiscord size={20}/>,
         'slack': <AiOutlineSlack size={20}/>,
         'facebook': <FaFacebookSquare size={20}/>,
-        'twitter': <VscTwitter size={20}/>
+        'twitter': <VscTwitter size={20}/>,
+        'bar-chart': <BiBarChartAlt size={20}/>
 
     }
 

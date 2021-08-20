@@ -1,0 +1,31 @@
+.Profiling {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.TaskRow {
+    position: relative;
+    height: 22px;
+    display: flex;
+    flex-direction: row;
+}
+
+.TaskRow .TaskName {
+    width: 100px;
+}
+
+.TaskRow .TaskRunTime {
+    position: relative;
+    height: 22px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.TaskRow .TaskRunTime .Task {
+    position: absolute;
+    background-color: #d81b60;
+    border-radius: 3px;
+    height: 10px;
+}

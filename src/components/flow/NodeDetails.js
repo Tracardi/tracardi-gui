@@ -12,6 +12,7 @@ import ConsoleView from "../elements/misc/ConsoleView";
 import ConfigEditor from "./editors/ConfigEditor";
 import NodeInfo from "./NodeInfo";
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
+import {FlowProfiling} from "./FlowProfiling";
 
 const MdManual = React.lazy(() => import('./actions/MdManual'));
 
@@ -72,6 +73,12 @@ export default function NodeDetails({node, onConfig, onLabelSet, onConnectionDet
                     selected={tab === 1}>
                         <VscDebug size={22}/>
                 </IconButton>}
+                {node?.data?.debugging && <IconButton
+                    label="Profile"
+                    onClick={() => setTab(5)}
+                    selected={tab === 5}>
+                    <VscDebug size={22}/>
+                </IconButton>}
                 <IconButton
                     label="Raw"
                     onClick={() => setTab(3)}
@@ -94,6 +101,7 @@ export default function NodeDetails({node, onConfig, onLabelSet, onConnectionDet
                 onConfig={onConfigSave}
             />}
             {tab === 3 && <ConsoleView label="Action raw data" data={node} />}
+            {tab ===5 && <FlowProfiling/>}
             {tab === 4 && <Suspense fallback={<CenteredCircularProgress/>}>
                 <MdManual mdFile={node?.data?.spec?.manual}/>
             </Suspense>}

@@ -31,10 +31,6 @@ export function FlowEditorPane(
         flowNode: FlowNode
     };
 
-    // const edgeTypes = {
-    //     flowEdge: FlowEdge
-    // }
-
     const reactFlowWrapper = useRef(null);
     const [flowLoading, setFlowLoading] = useState(false);
     const [currentNode, setCurrentNode] = useState({});
@@ -60,6 +56,7 @@ export function FlowEditorPane(
                 flowGraph = data.flowGraph.nodes.slice();
                 flowGraph = flowGraph.concat(data.flowGraph.edges.slice())
             }
+            console.log(flowGraph)
             setElements(flowGraph);
         } else if (data === null) {
             // Missing flow
