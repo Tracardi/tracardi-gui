@@ -70,7 +70,7 @@ export function FlowProfiling({nodes, node}) {
         const exNo = (error===true) ? <span className="FailStatus">{sq}</span> : <span className="OKStatus">{sq}</span>
 
         return <div className={rowClass}>
-            <div className="TaskSq">{(sq) ? exNo : ""}</div>
+            <div className="TaskSq">{(sq) ? exNo : "No."}</div>
             <div className="TaskName">{name}</div>
             <div className="TaskRunTime">{runTime}</div>
             <div className="TaskBar">
@@ -80,38 +80,41 @@ export function FlowProfiling({nodes, node}) {
     }
 
     return <div className="Profiling">
-        <Row name="Action" runTime="Time">Profiling</Row>
-        {
-            profilingData.calls.map((obj, index) => {
-                    return <Row name={obj.name}
-                                sq={obj.sq}
-                                error={obj.error}
-                                runTime={obj.absoluteRunTime.toString() + 's'}
-                                highlighed={node.id === obj.id}
-                    >
+        <div style={{width: 1000, margin: 10}}>
+            <Row name="Action" runTime="Time">Profiling</Row>
+            {
+                profilingData.calls.map((obj, index) => {
+                        return <Row name={obj.name}
+                                    sq={obj.sq}
+                                    error={obj.error}
+                                    runTime={obj.absoluteRunTime.toString() + 's'}
+                                    highlighed={node.id === obj.id}
+                        >
 
-                        <div
-                            title={obj.runTime}
-                            className="Task"
-                            key={index}
-                            style={{
-                                left: obj.startTime + "%",
-                                width: obj.runTime + "%"
-                        }}>
                             <div
-                                className="TaskBall"
-                                title={obj.absoluteStartTime}
-                            ></div>
-                            <div
-                                className="TaskBall"
-                                title={obj.absoluteEndTime}
-                            ></div>
+                                title={obj.runTime}
+                                className="Task"
+                                key={index}
+                                style={{
+                                    left: obj.startTime + "%",
+                                    width: obj.runTime + "%"
+                                }}>
+                                <div
+                                    className="TaskBall"
+                                    title={obj.absoluteStartTime}
+                                ></div>
+                                <div
+                                    className="TaskBall"
+                                    title={obj.absoluteEndTime}
+                                ></div>
 
-                        </div>
+                            </div>
 
-                    </Row>
-                }
-            )
-        }
+                        </Row>
+                    }
+                )
+            }
+        </div>
+
     </div>
 }

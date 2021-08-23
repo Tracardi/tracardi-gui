@@ -2,31 +2,46 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    font-size: 120%;
+    font-size: 115%;
     overflow-y: auto;
+    background-color: white;
+    border-radius: 5px;
 }
 
 .TaskRow {
     position: relative;
-    height: 30px;
+    height: 35px;
     display: flex;
     flex-direction: row;
     align-items: center;
     border-top: dashed 1px #ccc;
     padding: 2px;
     border-radius: 4px;
+    background-color: white;
 }
 
 .HighRow {
     background-color: #cccccc;
 }
 .TaskRow .TaskSq {
-    min-width: 25px;
+    min-width: 30px;
+    padding: 5px;
+    position: sticky;
+    left: 0px;
+    z-index: 2;
+    background-color: inherit;
 }
 .TaskRow .TaskName {
     min-width: 130px;
     border-right: solid 1px #ccc;
-    padding-right: 5px;
+    padding: 0 5px;
+    position: sticky;
+    left: 30px;
+    z-index: 2;
+    background-color: inherit;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .TaskRow .TaskRunTime {
     padding: 0 5px;
