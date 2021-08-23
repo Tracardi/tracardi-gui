@@ -56,7 +56,6 @@ export function FlowEditorPane(
                 flowGraph = data.flowGraph.nodes.slice();
                 flowGraph = flowGraph.concat(data.flowGraph.edges.slice())
             }
-            console.log(flowGraph)
             setElements(flowGraph);
         } else if (data === null) {
             // Missing flow
@@ -261,6 +260,7 @@ export function FlowEditorPane(
             nodeTypes={nodeTypes}
             onConnect={onConnect}
             deleteKeyCode={46}
+            zoomActivationKeyCode={32}
             onLoad={onLoad}
             onDrop={onDrop}
             onDragOver={onDragOver}
@@ -274,6 +274,7 @@ export function FlowEditorPane(
             <Sidebar onEdit={onEditClick}
                      onDebug={onDebugClick}/>
             {displayDetails && <NodeDetails
+                nodes={elements}
                 onLabelSet={handleLabelSet}
                 node={currentNode}
                 onConfig={onConfigSave}

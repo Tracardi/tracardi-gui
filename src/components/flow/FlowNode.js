@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import {Handle} from 'react-flow-renderer';
 import './FlowNode.css';
 import FlowNodeIcons from "./FlowNodeIcons";
+import ExecutionNumber from "./ExecutionNumber";
 
 export default memo (({data}) => {
 
@@ -36,23 +37,6 @@ export default memo (({data}) => {
                     })
                 }
             </div>
-        }
-    }
-
-    const ExecutionNumber = ({data}) => {
-
-        const hasError = (calls) => {
-            if(Array.isArray(calls)) {
-                return calls.some((call) => call.error !== null)
-            }
-            return false
-        }
-
-        if(data.debugging?.node?.executionNumber) {
-            let status = hasError(data.debugging?.node?.calls) ? " Error": " Ok"
-            return <div className={"ExecutionNumber" + status}>{data.debugging.node.executionNumber}</div>
-        } else {
-            return ""
         }
     }
 

@@ -4,7 +4,7 @@ import ConsoleView from "../elements/misc/ConsoleView";
 
 export function DebugPortDetails({port, input}) {
     return <>
-        {port?.value && <ConsoleView data={port?.value} label={"Port: " + port?.port}/>}
-        {!port?.value && <NoPortData input={input}/>}
+        {port?.value && <ConsoleView data={port?.value} label={"Port name: " + port?.port}/>}
+        {!port?.value && <NoPortData input={input} label={"Port name: " + port?.port}/>}
     </>
 }

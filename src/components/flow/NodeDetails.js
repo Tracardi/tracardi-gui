@@ -13,10 +13,11 @@ import ConfigEditor from "./editors/ConfigEditor";
 import NodeInfo from "./NodeInfo";
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
 import {FlowProfiling} from "./FlowProfiling";
+import {IoIosTimer} from "@react-icons/all-files/io/IoIosTimer";
 
 const MdManual = React.lazy(() => import('./actions/MdManual'));
 
-export default function NodeDetails({node, onConfig, onLabelSet, onConnectionDetails}) {
+export default function NodeDetails({node, nodes, onConfig, onLabelSet, onConnectionDetails}) {
 
     const [tab, setTab] = useState(0);
 
@@ -77,7 +78,7 @@ export default function NodeDetails({node, onConfig, onLabelSet, onConnectionDet
                     label="Profile"
                     onClick={() => setTab(5)}
                     selected={tab === 5}>
-                    <VscDebug size={22}/>
+                    <IoIosTimer size={22}/>
                 </IconButton>}
                 <IconButton
                     label="Raw"
@@ -101,7 +102,7 @@ export default function NodeDetails({node, onConfig, onLabelSet, onConnectionDet
                 onConfig={onConfigSave}
             />}
             {tab === 3 && <ConsoleView label="Action raw data" data={node} />}
-            {tab ===5 && <FlowProfiling/>}
+            {tab === 5 && <FlowProfiling nodes={nodes} node={node}/>}
             {tab === 4 && <Suspense fallback={<CenteredCircularProgress/>}>
                 <MdManual mdFile={node?.data?.spec?.manual}/>
             </Suspense>}

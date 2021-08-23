@@ -66,23 +66,3 @@ DIV.NodeLabel {
     align-items: center;
     overflow: hidden;
 }
-
-DIV.ExecutionNumber {
-    border-radius: 50%;
-    background-color: #999;
-    color: white;
-    padding: 1px 5px;
-    position: absolute;
-    top: -10px;
-    right: 4px;
-    font-size: 70%;
-    display: grid;
-}
-
-DIV.Ok {
-    background-color: #43a047 !important;
-}
-
-DIV.Error {
-    background-color: #d81b60 !important;
-}

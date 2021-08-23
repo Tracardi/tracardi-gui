@@ -8,8 +8,8 @@ export default function DebugBox({call, onTabSelect}) {
 
     const renderPorts = (messages, input) => {
         if (messages) {
-            return messages.map((message, index) => {
-                return <DebugPortDetails port={message} key={index} input={input}/>
+            return messages.map((result, index) => {
+                return <DebugPortDetails port={result} key={index} input={input}/>
             })
         } else {
             return <NoPortData input={input}/>

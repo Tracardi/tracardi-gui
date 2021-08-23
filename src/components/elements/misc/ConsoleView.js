@@ -3,7 +3,6 @@ import theme from "../../../themes/inspector_light_theme";
 import React from "react";
 import './ConsoleView.css';
 
-
 const ConsoleView = ({label, data}) => {
     return <section className="ConsoleView">
         <div className="Title">

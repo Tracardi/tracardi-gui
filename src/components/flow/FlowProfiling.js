@@ -1,75 +1,115 @@
 import React from "react";
 import './FlowProfiling.css';
+import {isNode} from "react-flow-renderer";
 
-export function FlowProfiling() {
+export function FlowProfiling({nodes, node}) {
 
-    const profilingData = {
-        startTime: 0,
-        endTime: 15,
-        calls:[
-            {
-                name: "node1",
-                startTime: 0,
-                runTime: 10,
-                endTime: 10
-            },
-            {
-                name: "node2",
-                startTime: 5,
-                runTime: 10,
-                endTime: 15
-            },
-            {
-                name: "node3",
-                startTime: 10,
-                runTime: 2,
-                endTime: 12
-            },
-            {
-                name: "node4",
-                startTime: 2,
-                runTime: 1,
-                endTime: 4
-            }
-        ]
-    }
-
-    function compare(a, b) {
-        if ( a.startTime < b.startTime ){
+    const compare = (a, b) => {
+        if (a.startTime < b.startTime) {
             return -1;
         }
-        if ( a.startTime > b.startTime ){
+        if (a.startTime > b.startTime) {
             return 1;
         }
         return 0;
     }
 
-    profilingData.calls.sort(compare)
+    let profilingData = {
+        startTime: 0,
+        endTime: 0,
+        calls: []
+    }
 
-    const maxTime = profilingData.endTime
+    nodes.map((node) => {
+        if (isNode(node)) {
+            if (node.data?.debugging?.node?.calls) {
+                node.data?.debugging?.node?.calls.map((call) => {
+                    if (call.run === true) {
+                        profilingData.calls.push(
+                            {
+                                id: node.id,
+                                sq: node.data?.debugging?.node?.executionNumber,
+                                error: call.error !== null,
+                                name: node.data?.debugging?.node?.name,
+                                startTime: call.profiler.startTime,
+                                runTime: call.profiler.runTime,
+                                endTime: call.profiler.endTime
+                            }
+                        )
+                    }
 
-    profilingData.calls.map((obj)=>{
-        obj.startTime = (obj.startTime/maxTime)*100
-        obj.endTime = (obj.endTime/maxTime)*100
-        obj.runTime = (obj.runTime/maxTime)*100
+                    return null;
+                })
+            }
+        }
+        return null;
+    });
+
+    let calls = profilingData.calls.map((call) => {
+        return call.endTime
     })
 
-    console.log(profilingData)
+    const maxTime = Math.max(...calls);
+    profilingData.endTime = maxTime
+    profilingData.calls.sort(compare)
+    const extTime = maxTime * 1.1
+
+    profilingData.calls.map((obj) => {
+        obj.absoluteRunTime = obj.runTime.toFixed(3)
+        obj.absoluteStartTime = obj.startTime.toFixed(3)
+        obj.absoluteEndTime = obj.endTime.toFixed(3)
+        obj.startTime = (obj.startTime / extTime) * 100
+        obj.endTime = (obj.endTime / extTime) * 100
+        obj.runTime = (obj.runTime / extTime) * 100
+        return null;
+    })
+
+    const Row = ({sq, error, name, runTime, children, highlighed}) => {
+
+        const rowClass = (highlighed === true) ? "TaskRow HighRow " : "TaskRow";
+        const exNo = (error===true) ? <span className="FailStatus">{sq}</span> : <span className="OKStatus">{sq}</span>
+
+        return <div className={rowClass}>
+            <div className="TaskSq">{(sq) ? exNo : ""}</div>
+            <div className="TaskName">{name}</div>
+            <div className="TaskRunTime">{runTime}</div>
+            <div className="TaskBar">
+                {children}
+            </div>
+        </div>
+    }
 
     return <div className="Profiling">
+        <Row name="Action" runTime="Time">Profiling</Row>
         {
             profilingData.calls.map((obj, index) => {
-                return <div className="TaskRow">
-                    <div className="TaskName">{obj.name}</div>
-                    <div className="TaskRunTime">
+                    return <Row name={obj.name}
+                                sq={obj.sq}
+                                error={obj.error}
+                                runTime={obj.absoluteRunTime.toString() + 's'}
+                                highlighed={node.id === obj.id}
+                    >
+
                         <div
                             title={obj.runTime}
                             className="Task"
-                            key={index} style={{
-                            left: obj.startTime + "%",
-                            width: obj.runTime + "%"}}></div>
-                    </div>
-                </div>
+                            key={index}
+                            style={{
+                                left: obj.startTime + "%",
+                                width: obj.runTime + "%"
+                        }}>
+                            <div
+                                className="TaskBall"
+                                title={obj.absoluteStartTime}
+                            ></div>
+                            <div
+                                className="TaskBall"
+                                title={obj.absoluteEndTime}
+                            ></div>
+
+                        </div>
+
+                    </Row>
                 }
             )
         }
