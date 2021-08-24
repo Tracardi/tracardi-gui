@@ -1,8 +1,7 @@
 import React from "react";
 import './FlowProfiling.css';
-import {isNode} from "react-flow-renderer";
 
-export function FlowProfiling({nodes, node}) {
+export function FlowProfiling({profilingData, node}) {
 
     const compare = (a, b) => {
         if (a.startTime < b.startTime) {
@@ -14,55 +13,29 @@ export function FlowProfiling({nodes, node}) {
         return 0;
     }
 
-    let profilingData = {
-        startTime: 0,
-        endTime: 0,
-        calls: []
+    const convert = (profilingData) => {
+        let calls = profilingData.calls.map((call) => {
+            return call.endTime
+        })
+
+        const maxTime = Math.max(...calls);
+        profilingData.endTime = maxTime
+        profilingData.calls.sort(compare)
+        const extTime = maxTime * 1.1
+
+        profilingData.calls.map((obj) => {
+            obj.absoluteRunTime = obj.runTime.toFixed(3)
+            obj.absoluteStartTime = obj.startTime.toFixed(3)
+            obj.absoluteEndTime = obj.endTime.toFixed(3)
+            obj.startTime = (obj.startTime / extTime) * 100
+            obj.endTime = (obj.endTime / extTime) * 100
+            obj.runTime = (obj.runTime / extTime) * 100
+            return null;
+        })
+
+        return profilingData;
     }
 
-    nodes.map((node) => {
-        if (isNode(node)) {
-            if (node.data?.debugging?.node?.calls) {
-                node.data?.debugging?.node?.calls.map((call) => {
-                    if (call.run === true) {
-                        profilingData.calls.push(
-                            {
-                                id: node.id,
-                                sq: node.data?.debugging?.node?.executionNumber,
-                                error: call.error !== null,
-                                name: node.data?.debugging?.node?.name,
-                                startTime: call.profiler.startTime,
-                                runTime: call.profiler.runTime,
-                                endTime: call.profiler.endTime
-                            }
-                        )
-                    }
-
-                    return null;
-                })
-            }
-        }
-        return null;
-    });
-
-    let calls = profilingData.calls.map((call) => {
-        return call.endTime
-    })
-
-    const maxTime = Math.max(...calls);
-    profilingData.endTime = maxTime
-    profilingData.calls.sort(compare)
-    const extTime = maxTime * 1.1
-
-    profilingData.calls.map((obj) => {
-        obj.absoluteRunTime = obj.runTime.toFixed(3)
-        obj.absoluteStartTime = obj.startTime.toFixed(3)
-        obj.absoluteEndTime = obj.endTime.toFixed(3)
-        obj.startTime = (obj.startTime / extTime) * 100
-        obj.endTime = (obj.endTime / extTime) * 100
-        obj.runTime = (obj.runTime / extTime) * 100
-        return null;
-    })
 
     const Row = ({sq, error, name, runTime, children, highlighed}) => {
 
@@ -83,12 +56,12 @@ export function FlowProfiling({nodes, node}) {
         <div style={{width: 1000, margin: 10}}>
             <Row name="Action" runTime="Time">Profiling</Row>
             {
-                profilingData.calls.map((obj, index) => {
+                profilingData && convert(profilingData).calls.map((obj, index) => {
                         return <Row name={obj.name}
                                     sq={obj.sq}
                                     error={obj.error}
                                     runTime={obj.absoluteRunTime.toString() + 's'}
-                                    highlighed={node.id === obj.id}
+                                    highlighed={node && node.id === obj.id}
                         >
 
                             <div

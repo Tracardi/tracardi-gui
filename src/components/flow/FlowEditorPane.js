@@ -38,6 +38,7 @@ export function FlowEditorPane(
     const [animatedEdge, setAnimatedEdge] = useState(null);
     const [elements, setElements] = useState([]);
     const [label, setLabel] = useState({name: "", id: null});
+    const [debugInProgress, setDebugInProgress] = useState(false);
 
     const updateFlow = useCallback((data) => {
         if (data) {
@@ -127,8 +128,7 @@ export function FlowEditorPane(
             id,
             reactFlowInstance,
             (e) => showAlert(e),
-            () => {
-            },
+            setDebugInProgress,
             (elements) => setElements(elements)
         )
     }
@@ -272,7 +272,9 @@ export function FlowEditorPane(
         >
             {title}
             <Sidebar onEdit={onEditClick}
-                     onDebug={onDebugClick}/>
+                     onDebug={onDebugClick}
+                     debugInProgress={debugInProgress}
+            />
             {displayDetails && <NodeDetails
                 nodes={elements}
                 onLabelSet={handleLabelSet}

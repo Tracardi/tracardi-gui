@@ -15,6 +15,7 @@ import {BsPerson} from "@react-icons/all-files/bs/BsPerson";
 import {BsLightning} from "@react-icons/all-files/bs/BsLightning";
 import {BsGear} from "@react-icons/all-files/bs/BsGear";
 import {VscJson} from "@react-icons/all-files/vsc/VscJson";
+import {VscAdd} from "@react-icons/all-files/vsc/VscAdd";
 
 export default function MainMenu() {
 
@@ -58,6 +59,11 @@ export default function MainMenu() {
             <MenuIcon icon={<VscOrganization size={25}/>} label="Segments">
                 <MenuItem onClick={go("/setup/segments")}>
                     <VscOrganization size={20} style={{marginRight: 8}}/> Segments
+                </MenuItem>
+            </MenuIcon>
+            <MenuIcon icon={<VscAdd size={25}/>} label="Segments">
+                <MenuItem onClick={go("/setup/process")}>
+                    <VscAdd size={20} style={{marginRight: 8}}/> Add process
                 </MenuItem>
             </MenuIcon>
         </div>

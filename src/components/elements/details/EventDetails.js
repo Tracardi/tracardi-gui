@@ -7,6 +7,7 @@ import {MiniHeader} from "../Headers";
 import Properties from "./DetailProperties";
 import "./Details.css";
 import Tabs, {TabCase} from "../tabs/Tabs";
+import EventProfilingDetails from "./EventProfilingDetails";
 
 export default function EventDetails({data}) {
     return <div style={{height: "inherit"}}>
@@ -83,7 +84,9 @@ export default function EventDetails({data}) {
                         <ObjectInspector data={data} theme={theme} expandLevel={3}/>
                     </div>
                 </TabCase>
-
+                <TabCase id={4}>
+                    <EventProfilingDetails eventId={data.event.id}/>
+                </TabCase>
             </Tabs>
 
         </div>

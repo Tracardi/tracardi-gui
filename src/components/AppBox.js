@@ -69,6 +69,7 @@ const AppBox = () => {
             <PrivateRoute path={urlPrefix("/setup/segments")} roles={["admin"]}>
                 <Segments/>
             </PrivateRoute>
+
             <PrivateRoute path={urlPrefix("/setup/credentials")} roles={["admin"]}>
                 <Credentials/>
             </PrivateRoute>
