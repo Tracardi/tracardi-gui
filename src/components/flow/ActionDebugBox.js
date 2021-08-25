@@ -5,7 +5,7 @@ import Button from "../elements/forms/Button";
 import {AiOutlineNodeIndex} from "@react-icons/all-files/ai/AiOutlineNodeIndex";
 
 export default function ActionDebugBox({debugging, onConnectionDetails}) {
-
+    console.log(debugging)
     const [call, setCall] = useState(null);
     const [selectedButton, setSelectedButton] = useState(null);
 

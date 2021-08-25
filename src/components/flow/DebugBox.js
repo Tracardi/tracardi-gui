@@ -5,7 +5,7 @@ import {NoPortData} from "./NoPortData";
 import ConsoleView from "../elements/misc/ConsoleView";
 
 export default function DebugBox({call, onTabSelect}) {
-
+    console.log("box", call)
     const renderPorts = (messages, input) => {
         if (messages) {
             return messages.map((result, index) => {
@@ -23,8 +23,8 @@ export default function DebugBox({call, onTabSelect}) {
     }
 
     return <div style={{height: "calc(100% - 45px)"}}>
-        {call.error && <div className="Errors">{call.error}</div>}
-        {!call.error && <Tabs
+        {call?.error && <div className="Errors">{call.error}</div>}
+        {!call?.error && <Tabs
             tabs={["Input", "Output", "Profile"]}
             onTabSelect={onTabSelect}
         >

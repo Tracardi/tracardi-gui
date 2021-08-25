@@ -1,7 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 import './FlowProfiling.css';
+import DebugBox from "./DebugBox";
 
 export function FlowProfiling({profilingData, node}) {
+
+    const [currentCall, setCurrentCall] = useState(null);
 
     const compare = (a, b) => {
         if (a.startTime < b.startTime) {
@@ -36,13 +39,19 @@ export function FlowProfiling({profilingData, node}) {
         return profilingData;
     }
 
+    const handleClick = (call) => {
+        setCurrentCall(call)
+    }
 
-    const Row = ({sq, error, name, runTime, children, highlighed}) => {
+    const Row = ({sq, error, name, runTime, children, highlighed = false, currentCall = false, onClick}) => {
 
-        const rowClass = (highlighed === true) ? "TaskRow HighRow " : "TaskRow";
-        const exNo = (error===true) ? <span className="FailStatus">{sq}</span> : <span className="OKStatus">{sq}</span>
+        let rowClass = (highlighed === true) ? "TaskRow HighRow " : "TaskRow";
+        rowClass = currentCall ? "TaskRow CurrentCall" : rowClass;
 
-        return <div className={rowClass}>
+        const exNo = (error === true) ? <span className="FailStatus">{sq}</span> :
+            <span className="OKStatus">{sq}</span>
+
+        return <div className={rowClass} onClick={onClick}>
             <div className="TaskSq">{(sq) ? exNo : "No."}</div>
             <div className="TaskName">{name}</div>
             <div className="TaskRunTime">{runTime}</div>
@@ -52,42 +61,53 @@ export function FlowProfiling({profilingData, node}) {
         </div>
     }
 
-    return <div className="Profiling">
-        <div style={{width: 1000, margin: 10}}>
-            <Row name="Action" runTime="Time">Profiling</Row>
-            {
-                profilingData && convert(profilingData).calls.map((obj, index) => {
-                        return <Row name={obj.name}
-                                    sq={obj.sq}
-                                    error={obj.error}
-                                    runTime={obj.absoluteRunTime.toString() + 's'}
-                                    highlighed={node && node.id === obj.id}
-                        >
+    return <div className="DebugAndProfile">
+        <div className="Profiling">
+            <div style={{width: 1000, margin: 10}}>
+                <div className="TaskHeader" style={{position: "sticky", top: 0, zIndex: 3}}>
+                    <div className="TaskSq">&nbsp;</div>
+                    <div className="TaskName">Action</div>
+                    <div className="TaskRunTime">Time</div>
+                    <div className="TaskBar">Profiling</div>
+                </div>
+                {
+                    profilingData && convert(profilingData).calls.map((obj, index) => {
+                            return <Row name={obj.name}
+                                        sq={obj.sq}
+                                        error={obj.error}
+                                        runTime={obj.absoluteRunTime.toString() + 's'}
+                                        highlighed={node && node.id === obj.id}
+                                        currentCall={currentCall === obj}
+                                        onClick={() => handleClick(obj)}
+                            >
 
-                            <div
-                                title={obj.runTime}
-                                className="Task"
-                                key={index}
-                                style={{
-                                    left: obj.startTime + "%",
-                                    width: obj.runTime + "%"
-                                }}>
                                 <div
-                                    className="TaskBall"
-                                    title={obj.absoluteStartTime}
-                                ></div>
-                                <div
-                                    className="TaskBall"
-                                    title={obj.absoluteEndTime}
-                                ></div>
+                                    title={obj.runTime}
+                                    className="Task"
+                                    key={index}
+                                    style={{
+                                        left: obj.startTime + "%",
+                                        width: obj.runTime + "%"
+                                    }}>
+                                    <div
+                                        className="TaskBall"
+                                        title={obj.absoluteStartTime}
+                                    ></div>
+                                    <div
+                                        className="TaskBall"
+                                        title={obj.absoluteEndTime}
+                                    ></div>
 
-                            </div>
+                                </div>
 
-                        </Row>
-                    }
-                )
-            }
+                            </Row>
+                        }
+                    )
+                }
+            </div>
+
         </div>
 
+        {currentCall && <div className="Debugging"><DebugBox call={currentCall?.call}/></div>}
     </div>
 }

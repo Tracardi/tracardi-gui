@@ -1,3 +1,11 @@
+.DebugAndProfile {
+    display: grid;
+    grid-template-rows: [profiling] 30% [debugging] 70%;
+    height: 100%;
+}
+.Debugging {
+    grid-area: debugging;
+}
 .Profiling {
     position: relative;
     display: flex;
@@ -6,6 +14,22 @@
     overflow-y: auto;
     background-color: white;
     border-radius: 5px;
+    grid-area: profiling
+}
+
+.TaskHeader {
+    position: relative;
+    height: 35px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-top: dashed 1px #ccc;
+    padding: 2px;
+    border-radius: 4px;
+    background-color: white;
+    color: black;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .TaskRow {
@@ -18,11 +42,24 @@
     padding: 2px;
     border-radius: 4px;
     background-color: white;
+    cursor: pointer;
+}
+
+.TaskRow:hover {
+    background-color: #eee;
+    color: black;
 }
 
 .HighRow {
-    background-color: #cccccc;
+    background-color: #ddd;
 }
+
+.CurrentCall {
+    background-color: #03a9f4 !important;
+    color: white !important;
+}
+
+.TaskHeader .TaskSq,
 .TaskRow .TaskSq {
     min-width: 30px;
     padding: 5px;
@@ -31,6 +68,7 @@
     z-index: 2;
     background-color: inherit;
 }
+.TaskHeader .TaskName,
 .TaskRow .TaskName {
     min-width: 130px;
     border-right: solid 1px #ccc;
@@ -43,11 +81,13 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.TaskHeader .TaskRunTime,
 .TaskRow .TaskRunTime {
     padding: 0 5px;
     border-right: solid 1px #ccc;
     min-width: 65px;
 }
+.TaskHeader .TaskBar,
 .TaskRow .TaskBar {
     position: relative;
     height: 22px;

@@ -12,7 +12,7 @@ import EventProfilingDetails from "./EventProfilingDetails";
 export default function EventDetails({data}) {
     return <div style={{height: "inherit"}}>
         <div className="RightTabScroller">
-            <Tabs tabs={["Event", "Context", "Result", "Raw", "Process"]}>
+            <Tabs tabs={["Event", "Context", "Result", "Raw", "Flow result"]}>
                 <TabCase id={0}>
                     <div className="Box10">
                         <div className="Bottom20">
