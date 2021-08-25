@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react';
 import {request} from "../../remote_api/uql_api_endpoint";
 import Input from "./forms/inputs/Input";
 import "./FilterListWrapper.css";
-import ErrorBox from "../errors/ErrorBox";
+import ErrorsBox from "../errors/ErrorsBox";
 import CenteredCircularProgress from "./progress/CenteredCircularProgress";
 
 export function FilterListWrapper({filterLabel, filterKey, endPoinyUrl, renderList, forceReload}) {
@@ -68,7 +68,7 @@ export function FilterListWrapper({filterLabel, filterKey, endPoinyUrl, renderLi
 
     const render = () => {
         if (error !== false) {
-            return <ErrorBox errorList={error}/>
+            return <ErrorsBox errorList={error}/>
         } else if (ready !== false) {
             return renderList(ready.data)
         } else if (loading) {

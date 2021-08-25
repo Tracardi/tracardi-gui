@@ -3,7 +3,7 @@ import React, {useEffect} from "react";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import "./Chart.css";
-import ErrorBox from "../../errors/ErrorBox";
+import ErrorsBox from "../../errors/ErrorsBox";
 
 export default function BarChartElement({onLoadRequest, columns}) {
 
@@ -36,7 +36,7 @@ export default function BarChartElement({onLoadRequest, columns}) {
     return (
         <div style={{height: 200, width: '100%'}}>
             {loading === true && <CenteredCircularProgress/>}
-            {error !== false && <ErrorBox errorList={error}/>}
+            {error !== false && <ErrorsBox errorList={error}/>}
             {ready !== false && <ResponsiveContainer>
                 <BarChart data={ready.data.result} margin={{top: 15, right: 20, bottom: 5, left: 0}}>
                     <CartesianGrid strokeDasharray="3 3"/>

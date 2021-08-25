@@ -85,7 +85,10 @@ export default function EventDetails({data}) {
                     </div>
                 </TabCase>
                 <TabCase id={4}>
-                    <EventProfilingDetails eventId={data.event.id}/>
+                    <div style={{paddingTop: 10, height: 'inherit'}}>
+                        <EventProfilingDetails eventId={data.event.id}/>
+                    </div>
+
                 </TabCase>
             </Tabs>
 

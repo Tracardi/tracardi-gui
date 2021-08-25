@@ -1,7 +1,7 @@
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import ReactFlow, {addEdge, Background, isEdge, isNode, removeElements} from "react-flow-renderer";
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import PropTypes, {node} from 'prop-types';
+import PropTypes from 'prop-types';
 import FlowNode from "./FlowNode";
 import {v4 as uuid4} from "uuid";
 import {request} from "../../remote_api/uql_api_endpoint";
@@ -10,6 +10,7 @@ import NodeDetails from "./NodeDetails";
 import {debug} from "./FlowEditorOps";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
+import DebugDetails from "./DebugDetails";
 
 export function FlowEditorPane(
     {
@@ -36,6 +37,7 @@ export function FlowEditorPane(
     const [currentNode, setCurrentNode] = useState({});
     const [debugNodeId, setDebugNode] = useState(null);
     const [displayDetails, setDisplayDetails] = useState(false);
+    const [displayDebug, setDisplayDebug] = useState(false);
     const [animatedEdge, setAnimatedEdge] = useState(null);
     const [elements, setElements] = useState([]);
     const [label, setLabel] = useState({name: "", id: null});
@@ -92,17 +94,21 @@ export function FlowEditorPane(
     useEffect(() => {
         setElements((els) => els.map((el) => {
                 if (isEdge(el)) {
-                    if (animatedEdge === null && el.animated === true) {
-                        // el.animated = false;
-                        el.style = {}
+                    if (animatedEdge === null) {
+                        if(el?.style?.stroke === '#ad1457') {
+                            const { stroke, ...newStyle } = el.style
+                            el.style = newStyle
+                        }
+
                     } else if (el.id === animatedEdge) {
                         el.style = {
-                            stroke: '#ef6c00'
+                            stroke: '#ad1457'
                         }
-                        // el.animated = true;
                     } else {
-                        // el.animated = false;
-                        el.style = {}
+                        if(el?.style?.stroke === '#ad1457') {
+                            const { stroke, ...newStyle } = el.style
+                            el.style = newStyle
+                        }
                     }
                 }
 
@@ -139,12 +145,18 @@ export function FlowEditorPane(
     };
 
     const onDebug = () => {
+        setDebugNode(null);
+        setAnimatedEdge(null);
         debug(
             id,
             reactFlowInstance,
             (e) => showAlert(e),
             setDebugInProgress,
-            (elements) => setElements(elements)
+            (elements) => {
+                setElements(elements);
+                setDisplayDebug(true);
+                setDisplayDetails(false);
+            }
         )
     }
 
@@ -236,6 +248,7 @@ export function FlowEditorPane(
     const onDisplayDetails = (element) => {
         setCurrentNode(element);
         setDisplayDetails(true);
+        setDisplayDebug(false);
     }
 
     const onConfigSave = () => {
@@ -247,8 +260,6 @@ export function FlowEditorPane(
     const onConnectionDetails = (nodeId, edgeId) => {
         setDebugNode(nodeId)
         setAnimatedEdge(edgeId);
-        console.log('edgeId', edgeId);
-        console.log('nodeId', nodeId);
     }
 
     const onEditClick = (data) => {
@@ -264,6 +275,12 @@ export function FlowEditorPane(
         if (onConfig) {
             onConfig()
         }
+    }
+
+    const handleDebugClose = () => {
+        setDisplayDebug(false)
+        setDebugNode(null);
+        setAnimatedEdge(null);
     }
 
     return <div className="FlowPane" ref={reactFlowWrapper}>
@@ -298,11 +315,15 @@ export function FlowEditorPane(
                      debugInProgress={debugInProgress}
             />
             {displayDetails && <NodeDetails
-                nodes={elements}
                 onLabelSet={handleLabelSet}
                 node={currentNode}
                 onConfig={onConfigSave}
+            />}
+            {displayDebug && <DebugDetails
+                nodes={elements}
+                node={currentNode}
                 onConnectionDetails={onConnectionDetails}
+                onClose={handleDebugClose}
             />}
             <Background color="#444" gap={16}/>
         </ReactFlow>}

@@ -37,7 +37,6 @@ export default function convertNodesToProfilingData(nodes) {
         }
         return null;
     });
-    console.log("datax",profilingData)
     return profilingData
 }
 
@@ -48,6 +47,7 @@ export function convertDebugInfoToProfilingData(debugInfo) {
         endTime: 0,
         calls: []
     }
+
     if(debugInfo?.nodes) {
         Object.entries(debugInfo.nodes).map(([key, node]) => {
             if (isNode(node)) {
@@ -62,7 +62,13 @@ export function convertDebugInfoToProfilingData(debugInfo) {
                                     name: node.name,
                                     startTime: call.profiler.startTime,
                                     runTime: call.profiler.runTime,
-                                    endTime: call.profiler.endTime
+                                    endTime: call.profiler.endTime,
+                                    call: {
+                                        input: call.input,
+                                        output: call.output,
+                                        error: call.error,
+                                        profile: call.profile
+                                    }
                                 }
                             )
                         }

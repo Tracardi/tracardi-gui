@@ -17,33 +17,18 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
     }
 
     const convert = (profilingData) => {
-        console.log("xxx1",profilingData)
+
         let calls = profilingData.calls.map((call) => {
             return call.endTime
         })
 
-        const maxTime = Math.max(...calls);
-        profilingData.endTime = maxTime
+        profilingData.endTime = Math.max(...calls);
         profilingData.calls.sort(compare)
-        console.log("xxx2",profilingData)
-
-        // profilingData.calls = profilingData.calls.map((obj) => {
-        //     return {
-        //         ...obj,
-        //         // runTime: obj.runTime.toFixed(3),
-        //         // startTime: obj.startTime.toFixed(3),
-        //         // endTime: obj.endTime.toFixed(3),
-        //         relativeStartTime: (obj.startTime / extTime) * 100,
-        //         relativeEndTime: (obj.endTime / extTime) * 100,
-        //         relativeRunTime: (obj.runTime / extTime) * 100
-        //     }
-        // })
 
         return profilingData;
     }
 
     const handleClick = (debugProfile) => {
-        // console.log("debugProfile", debugProfile)
         setCurrentCall(debugProfile)
         if(onCallSelect) {
             onCallSelect(
@@ -72,44 +57,48 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
     }
 
     const Rows = ({profilingData}) => {
-        const wholeTime = profilingData.endTime * 1.1;
-        return profilingData && convert(profilingData).calls.map((obj, index) => {
+        if(profilingData && Array.isArray(profilingData.calls)) {
+            const wholeTime = profilingData.endTime * 1.1;
+            return convert(profilingData).calls.map((obj, index) => {
+                    const relativeStartTime = (obj.startTime / wholeTime) * 100;
+                    const _relativeRunTime = (obj.runTime / wholeTime) * 100;
+                    const relativeRunTime = (_relativeRunTime<2) ? 2 :  _relativeRunTime;
 
-                const relativeStartTime = (obj.startTime / wholeTime) * 100;
-                const _relativeRunTime = (obj.runTime / wholeTime) * 100;
-                const relativeRunTime = (_relativeRunTime<2) ? 2 :  _relativeRunTime;
-
-                return <Row name={obj.name}
-                            sq={obj.sq}
-                            error={obj.error}
-                            runTime={obj.runTime.toFixed(3) + 's'}
-                            highlighed={node && node.id === obj.id}
-                            currentCall={isCurrentCall(obj)}
-                            onClick={() => handleClick(obj)}
+                    return <Row name={obj.name}
+                                sq={obj.sq}
+                                error={obj.error}
+                                runTime={obj.runTime.toFixed(3) + 's'}
+                                highlighed={node && node.id === obj.id}
+                                currentCall={isCurrentCall(obj)}
+                                onClick={() => handleClick(obj)}
+                                key={index}
+                    >
+                        <div
+                            title={obj.runTime}
+                            className="Task"
                             key={index}
-                >
-                    <div
-                        title={obj.runTime}
-                        className="Task"
-                        key={index}
-                        style={{
-                            left: relativeStartTime + "%",
-                            width: relativeRunTime + "%"
-                        }}>
-                        <div
-                            className="TaskBall"
-                            title={obj.startTime}
-                        ></div>
-                        <div
-                            className="TaskBall"
-                            title={obj.endTime}
-                        ></div>
+                            style={{
+                                left: relativeStartTime + "%",
+                                width: relativeRunTime + "%"
+                            }}>
+                            <div
+                                className="TaskBall"
+                                title={obj.startTime}
+                            ></div>
+                            <div
+                                className="TaskBall"
+                                title={obj.endTime}
+                            ></div>
 
-                    </div>
+                        </div>
 
-                </Row>
-            }
-        )
+                    </Row>
+                }
+            )
+        }
+
+        return ""
+
     }
 
     const isCurrentCall = (obj) => {
@@ -118,7 +107,7 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
 
     return <div className="DebugAndProfile">
         <div className="Profiling">
-            <div style={{width: 1000, margin: 10}}>
+            <div style={{width: 960, padding: 6}}>
                 <div className="TaskHeader" style={{position: "sticky", top: 0, zIndex: 3}}>
                     <div className="TaskSq">&nbsp;</div>
                     <div className="TaskName">Action</div>

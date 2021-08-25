@@ -1,0 +1,40 @@
+.DebugDetails {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    z-index: 50;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 40%;
+    padding: 0;
+    background-color: rgba(235, 235, 235, 0.85);
+    height: calc(100% - 30px);
+    border-radius: 5px;
+    border: rgba(220, 220, 220, 1) 1px solid;
+}
+
+.DebugDetails > .DebugTitle {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 400;
+    justify-content: space-between;
+    padding: 10px;
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.28);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.28);
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.28);
+    border-radius: 5px;
+    font-family: Viga, Roboto, serif;
+    color: #444;
+    height: 50px;
+}
+
+.DebugDetails > .DebugContent {
+    padding: 10px;
+    width: 100%;
+    height: calc(100% - 50px);
+}

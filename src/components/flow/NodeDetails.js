@@ -1,24 +1,19 @@
 import React, {Suspense, useEffect, useState} from "react";
 import './NodeDetails.css';
 import {BsInfoCircle} from "@react-icons/all-files/bs/BsInfoCircle";
-import {VscDebug} from "@react-icons/all-files/vsc/VscDebug";
 import IconButton from "../elements/misc/IconButton";
 import {GoSettings} from "@react-icons/all-files/go/GoSettings";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {VscBook} from "@react-icons/all-files/vsc/VscBook";
-import ActionDebugBox from "./ActionDebugBox";
 import {VscListTree} from "@react-icons/all-files/vsc/VscListTree";
 import ConsoleView from "../elements/misc/ConsoleView";
 import ConfigEditor from "./editors/ConfigEditor";
 import NodeInfo from "./NodeInfo";
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
-import {FlowProfiling} from "./FlowProfiling";
-import {IoIosTimer} from "@react-icons/all-files/io/IoIosTimer";
-import convertNodesToProfilingData from "./profilingConverter";
 
 const MdManual = React.lazy(() => import('./actions/MdManual'));
 
-export default function NodeDetails({node, nodes, onConfig, onLabelSet, onConnectionDetails}) {
+export default function NodeDetails({node, onConfig, onLabelSet}) {
 
     const [tab, setTab] = useState(0);
 
@@ -69,18 +64,6 @@ export default function NodeDetails({node, nodes, onConfig, onLabelSet, onConnec
                     selected={tab === 2}>
                     <GoSettings size={22}/>
                 </IconButton>}
-                {node?.data?.debugging && <IconButton
-                    label="Debug"
-                    onClick={() => setTab(1)}
-                    selected={tab === 1}>
-                        <VscDebug size={22}/>
-                </IconButton>}
-                {node?.data?.debugging && <IconButton
-                    label="Profile"
-                    onClick={() => setTab(5)}
-                    selected={tab === 5}>
-                    <IoIosTimer size={22}/>
-                </IconButton>}
                 <IconButton
                     label="Raw"
                     onClick={() => setTab(3)}
@@ -92,10 +75,6 @@ export default function NodeDetails({node, nodes, onConfig, onLabelSet, onConnec
         </div>
         <div className="Pane">
             {tab === 0 && <NodeInfo node={node} onLabelSet={onLabelSet}/>}
-            {tab === 1 && <ActionDebugBox
-                debugging={node?.data?.debugging}
-                onConnectionDetails={onConnectionDetails}
-            />}
             {tab === 2 && node?.data?.spec?.init &&
             <ConfigEditor
                 config={node?.data?.spec?.init}
@@ -103,15 +82,6 @@ export default function NodeDetails({node, nodes, onConfig, onLabelSet, onConnec
                 onConfig={onConfigSave}
             />}
             {tab === 3 && <ConsoleView label="Action raw data" data={node} />}
-            {tab === 5 && <FlowProfiling
-                profilingData={convertNodesToProfilingData(nodes)}
-                node={node}
-                onCallSelect={(nodeId, edgeId) => {
-                    if(onConnectionDetails) {
-                        onConnectionDetails(nodeId, edgeId)
-                    }
-                }}
-            />}
             {tab === 4 && <Suspense fallback={<CenteredCircularProgress/>}>
                 <MdManual mdFile={node?.data?.spec?.manual}/>
             </Suspense>}

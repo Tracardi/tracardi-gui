@@ -3,6 +3,7 @@ import Tabs, {TabCase} from "../elements/tabs/Tabs";
 import {DebugPortDetails} from "./DebugPortDetails";
 import {NoPortData} from "./NoPortData";
 import ConsoleView from "../elements/misc/ConsoleView";
+import ErrorBox from "../errors/ErrorBox";
 
 export default function DebugBox({call, onTabSelect}) {
     const renderPorts = (messages, input) => {
@@ -21,8 +22,8 @@ export default function DebugBox({call, onTabSelect}) {
         </div>
     }
 
-    return <div style={{height: "inherit"}}>
-        {call?.error && <div className="Errors">{call.error}</div>}
+    return <>
+        {call?.error && <ErrorBox>{call.error}</ErrorBox>}
         {!call?.error && <Tabs
             tabs={["Input", "Output", "Profile"]}
             onTabSelect={onTabSelect}
@@ -43,5 +44,5 @@ export default function DebugBox({call, onTabSelect}) {
                 </Padder>
             </TabCase>
         </Tabs>}
-    </div>
+    </>
 }

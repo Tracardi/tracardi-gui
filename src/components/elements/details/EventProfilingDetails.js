@@ -27,11 +27,12 @@ const EventProfilingDetails = ({eventId, showAlert}) => {
             },
             (response) => {
                 if(response !== null) {
-                    setProfilingData(convertDebugInfoToProfilingData(response.data));
+                    const profiling = convertDebugInfoToProfilingData(response.data);
+                    setProfilingData(profiling);
                 }
             })
 
-    }, [setProfilingData, eventId, showAlert]);
+    }, [eventId, showAlert]);
 
     if(loading) {
         return <CenteredCircularProgress/>

@@ -1,36 +1,43 @@
 .DebugAndProfile {
     display: grid;
-    grid-template-rows: [profiling] 30% [debugging] 70%;
+    grid-template-rows: [profilling] 30% [debugging] 70%;
     height: 100%;
+    user-select: none;
 }
 .Debugging {
     grid-area: debugging;
     height: 100%;
+    overflow: auto;
+    padding-top: 10px;
 }
 .Profiling {
+    grid-area: profilling;
     position: relative;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     background-color: white;
     border-radius: 5px;
-    grid-area: profiling;
+    margin: 0 5px;
     height: 100%;
+    webkit-box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 6px 1px rgba(0,0,0,0.5);
 }
 
 .TaskHeader {
     position: relative;
-    height: 35px;
+    height: 40px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    border-top: dashed 1px #ccc;
     padding: 2px;
-    border-radius: 4px;
     background-color: white;
     color: black;
     font-weight: 600;
-    cursor: pointer;
+    -webkit-box-shadow: 0px 9px 6px -6px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0px 9px 6px -6px rgba(0,0,0,0.3);
+    box-shadow: 0px 9px 6px -6px rgba(0,0,0,0.3);
 }
 
 .TaskRow {
@@ -40,7 +47,6 @@
     flex-direction: row;
     align-items: center;
     border-top: dashed 1px #ccc;
-    padding: 2px;
     border-radius: 4px;
     background-color: white;
     cursor: pointer;
@@ -56,14 +62,14 @@
 }
 
 .CurrentCall {
-    background-color: #ef6c00 !important;
+    background-color: #ad1457 !important;
     color: white !important;
 }
 
 .TaskHeader .TaskSq,
 .TaskRow .TaskSq {
     min-width: 30px;
-    padding: 5px;
+    padding: 5px 5px 5px 10px;
     position: sticky;
     left: 0px;
     z-index: 2;
@@ -71,11 +77,11 @@
 }
 .TaskHeader .TaskName,
 .TaskRow .TaskName {
-    min-width: 130px;
+    width: 130px;
     border-right: solid 1px #ccc;
     padding: 0 5px;
     position: sticky;
-    left: 30px;
+    left: 31px;
     z-index: 2;
     background-color: inherit;
     overflow: hidden;
