@@ -20,11 +20,12 @@ export default function ActionDebugBox({debugging, onConnectionDetails}) {
 
     }, [debugging])
 
-    const onConnectionClick = (call, index) => {
+    const onConnectionClick = (call, nodeId, index) => {
+        console.log(nodeId)
         setCall(call);
         setSelectedButton(index);
         if (onConnectionDetails) {
-            onConnectionDetails(call?.input?.edge?.id)
+            onConnectionDetails(nodeId, call?.input?.edge?.id)
         }
     }
 
@@ -40,7 +41,7 @@ export default function ActionDebugBox({debugging, onConnectionDetails}) {
                         icon={<AiOutlineNodeIndex size={20} style={{marginRight: 5}}/>}
                         label={"Connection - " + (index + 1)}
                         onClick={
-                            () => onConnectionClick(call, index)
+                            () => onConnectionClick(call, node.id, index)
                         }
                     />
                 }

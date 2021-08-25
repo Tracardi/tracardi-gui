@@ -5,16 +5,17 @@
 }
 .Debugging {
     grid-area: debugging;
+    height: 100%;
 }
 .Profiling {
     position: relative;
     display: flex;
     flex-direction: column;
-    font-size: 115%;
     overflow-y: auto;
     background-color: white;
     border-radius: 5px;
-    grid-area: profiling
+    grid-area: profiling;
+    height: 100%;
 }
 
 .TaskHeader {
@@ -55,7 +56,7 @@
 }
 
 .CurrentCall {
-    background-color: #03a9f4 !important;
+    background-color: #ef6c00 !important;
     color: white !important;
 }
 
@@ -85,7 +86,7 @@
 .TaskRow .TaskRunTime {
     padding: 0 5px;
     border-right: solid 1px #ccc;
-    min-width: 65px;
+    min-width: 70px;
 }
 .TaskHeader .TaskBar,
 .TaskRow .TaskBar {
@@ -100,9 +101,9 @@
 
 .TaskRow .TaskBar .Task {
     position: absolute;
-    background-color: #ef6c00;
-    border-radius: 3px;
-    height: 8px;
+    background-color: #d81b60;
+    border-radius: 5px;
+    height: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -111,10 +112,10 @@
 .TaskRow .TaskBar .Task .TaskBall {
     background-color: white;
     z-index: 1;
-    border: 2px solid #ef6c00;
+    border: 2px solid #d81b60;
     border-radius: 50%;
-    min-height: 14px;
-    min-width: 14px;
+    min-height: 10px;
+    min-width: 10px;
 }
 
 .TaskRow .FailStatus {

@@ -55,6 +55,12 @@ DIV.NodePanel {
     font-size: 14px;
 }
 
+DIV.DebugNode {
+    background-color: #ef6c00 !important;
+    border-color: #ef6c00 !important;
+    color: white !important;
+}
+
 DIV.NodeIcon {
     width: 24px;
     display: grid;

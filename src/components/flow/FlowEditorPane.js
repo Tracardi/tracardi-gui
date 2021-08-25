@@ -1,7 +1,7 @@
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import ReactFlow, {addEdge, Background, isEdge, isNode, removeElements} from "react-flow-renderer";
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import PropTypes from 'prop-types';
+import PropTypes, {node} from 'prop-types';
 import FlowNode from "./FlowNode";
 import {v4 as uuid4} from "uuid";
 import {request} from "../../remote_api/uql_api_endpoint";
@@ -34,6 +34,7 @@ export function FlowEditorPane(
     const reactFlowWrapper = useRef(null);
     const [flowLoading, setFlowLoading] = useState(false);
     const [currentNode, setCurrentNode] = useState({});
+    const [debugNodeId, setDebugNode] = useState(null);
     const [displayDetails, setDisplayDetails] = useState(false);
     const [animatedEdge, setAnimatedEdge] = useState(null);
     const [elements, setElements] = useState([]);
@@ -92,18 +93,31 @@ export function FlowEditorPane(
         setElements((els) => els.map((el) => {
                 if (isEdge(el)) {
                     if (animatedEdge === null && el.animated === true) {
-                        el.animated = false;
+                        // el.animated = false;
+                        el.style = {}
                     } else if (el.id === animatedEdge) {
-                        el.animated = true;
+                        el.style = {
+                            stroke: '#ef6c00'
+                        }
+                        // el.animated = true;
                     } else {
-                        el.animated = false;
+                        // el.animated = false;
+                        el.style = {}
                     }
                 }
+
+                if (isNode(el)) {
+                    el.data = {
+                        ...el.data,
+                        metadata: {...el.data.metadata, selected: el.id === debugNodeId},
+                    }
+                }
+
                 return el;
             })
         );
 
-    }, [animatedEdge])
+    }, [animatedEdge, debugNodeId])
 
     useEffect(() => {
         setElements((els) => els.map((el) => {
@@ -120,6 +134,7 @@ export function FlowEditorPane(
     }, [label, setElements]);
 
     const onLoad = (reactFlowInstance) => {
+        reactFlowInstance.fitView();
         onEditorReady(reactFlowInstance)
     };
 
@@ -154,27 +169,31 @@ export function FlowEditorPane(
     }
 
     const onDrop = (event) => {
+        try {
+            event.preventDefault();
 
-        event.preventDefault();
+            const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+            const position = reactFlowInstance.project({
+                x: event.clientX - reactFlowBounds.left,
+                y: event.clientY - reactFlowBounds.top,
+            });
 
-        const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-        const position = reactFlowInstance.project({
-            x: event.clientX - reactFlowBounds.left,
-            y: event.clientY - reactFlowBounds.top,
-        });
-
-        const payload = event.dataTransfer.getData('application/json');
-        const data = JSON.parse(payload)
-        const newNode = {
-            id: uuid4(),
-            type: data.metadata.type,
-            position,
-            data: data
-        };
-        setElements((es) => es.concat(newNode));
-        if (onChange) {
-            onChange();
+            const payload = event.dataTransfer.getData('application/json');
+            const data = JSON.parse(payload)
+            const newNode = {
+                id: uuid4(),
+                type: data.metadata.type,
+                position,
+                data: data
+            };
+            setElements((es) => es.concat(newNode));
+            if (onChange) {
+                onChange();
+            }
+        } catch (e) {
+            alert("Json error. Droped element without json.");
         }
+
     };
 
     const onDragOver = (event) => {
@@ -225,8 +244,11 @@ export function FlowEditorPane(
         }
     }
 
-    const onConnectionDetails = (edge_id) => {
-        setAnimatedEdge(edge_id);
+    const onConnectionDetails = (nodeId, edgeId) => {
+        setDebugNode(nodeId)
+        setAnimatedEdge(edgeId);
+        console.log('edgeId', edgeId);
+        console.log('nodeId', nodeId);
     }
 
     const onEditClick = (data) => {

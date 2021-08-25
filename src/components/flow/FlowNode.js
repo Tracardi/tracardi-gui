@@ -40,11 +40,13 @@ export default memo (({data}) => {
         }
     }
 
+    const nodeClass = (data?.metadata?.selected === true) ? "NodePanel DebugNode" : "NodePanel"
+
     return (
         <>
             <ExecutionNumber data={data}/>
             {renderInputs(data?.spec)}
-            <div className="NodePanel">
+            <div className={nodeClass}>
                 <div className="NodeIcon"><FlowNodeIcons icon={data?.metadata?.icon}/></div>
                 <div className="NodeLabel" style={{maxWidth: data?.metadata?.width, maxHeight: data?.metadata?.height}}>
                     {data?.metadata?.name}

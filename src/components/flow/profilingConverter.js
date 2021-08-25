@@ -1,7 +1,6 @@
 import {isNode} from "react-flow-renderer";
 
 export default function convertNodesToProfilingData(nodes) {
-    console.log(nodes)
     let profilingData = {
         startTime: 0,
         endTime: 0,
@@ -38,7 +37,7 @@ export default function convertNodesToProfilingData(nodes) {
         }
         return null;
     });
-
+    console.log("datax",profilingData)
     return profilingData
 }
 

@@ -103,7 +103,15 @@ export default function NodeDetails({node, nodes, onConfig, onLabelSet, onConnec
                 onConfig={onConfigSave}
             />}
             {tab === 3 && <ConsoleView label="Action raw data" data={node} />}
-            {tab === 5 && <FlowProfiling profilingData={convertNodesToProfilingData(nodes)} node={node}/>}
+            {tab === 5 && <FlowProfiling
+                profilingData={convertNodesToProfilingData(nodes)}
+                node={node}
+                onCallSelect={(nodeId, edgeId) => {
+                    if(onConnectionDetails) {
+                        onConnectionDetails(nodeId, edgeId)
+                    }
+                }}
+            />}
             {tab === 4 && <Suspense fallback={<CenteredCircularProgress/>}>
                 <MdManual mdFile={node?.data?.spec?.manual}/>
             </Suspense>}
