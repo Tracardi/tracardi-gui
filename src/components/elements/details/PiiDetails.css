@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap');
+
+.PiiDetails {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    color: #fff;
+    background: #006db3;
+    font-family: 'Poppins', cursive;
+}
+
+.PiiBox {
+    display: flex;
+}
+
+.PiiIcon {
+    border: solid #64acff 6px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 50px 0 0;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    color: #64acff;
+}
+
+.PiiData {
+    display: flex;
+    flex-direction: row;
+}
+
+.PiiData SECTION {
+    display: flex;
+    flex-direction: column;
+}
+.PiiData ASIDE > DIV,
+.PiiData SECTION > DIV {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+    font-size: 120%;
+}
+
+.PiiCard .Name {
+    font-size: 300%;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+    background: -webkit-linear-gradient(-70deg,#fff,#64acff);;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+
+}
+
+.PiiData ASIDE {
+    margin-left: 100px;
+}
