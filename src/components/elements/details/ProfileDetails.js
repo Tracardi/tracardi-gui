@@ -4,7 +4,6 @@ import {ObjectInspector} from "react-inspector";
 import "../lists/cards/SourceCard.css";
 import "./RuleDetails.css";
 import {MiniHeader} from "../Headers";
-import DetailHeader from "./DetailHeader";
 import "./Details.css";
 import Properties from "./DetailProperties";
 import Tabs, {TabCase} from "../tabs/Tabs";
