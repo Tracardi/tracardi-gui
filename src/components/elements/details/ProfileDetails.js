@@ -22,7 +22,7 @@ export default function ProfileDetails({data}) {
             }
         },
         where: 'profile.id="' + data.id + '"',
-        limit: 10
+        limit: 30
     }
 
     const encodeParams = () => {
@@ -86,6 +86,7 @@ export default function ProfileDetails({data}) {
                 </TabCase>
                 <TabCase id={2}>
                     <DataBrowsingList
+                        label="List of Profiles"
                         onLoadDataRequest={onLoadEventDataRequest}
                         timeFieldLabel="timestamp"
                         filterFields={['metadata.time.utc']}
@@ -98,6 +99,7 @@ export default function ProfileDetails({data}) {
                 </TabCase>
                 <TabCase id={3}>
                     <DataBrowsingList
+                        label="List of Sessions"
                         onLoadDataRequest={onLoadSessionDataRequest}
                         timeFieldLabel="timestamp"
                         filterFields={['metadata.time.utc']}

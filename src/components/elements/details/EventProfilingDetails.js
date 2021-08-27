@@ -12,6 +12,7 @@ const EventProfilingDetails = ({eventId, showAlert}) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         request({
                 url: "/event/debug/" + eventId,
             },

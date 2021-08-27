@@ -7,7 +7,7 @@ COPY yarn.lock ./
 COPY src ./src
 COPY public ./public
 
-RUN yarn install
+RUN yarn install --network-timeout 180000
 COPY . ./
 RUN yarn build
 

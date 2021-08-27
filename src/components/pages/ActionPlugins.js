@@ -29,6 +29,7 @@ export default function ActionPlugins() {
     }
 
     return <CardBrowser
+        label="Action plugins"
         urlFunc={urlFunc}
         cardFunc={plugins}
         drawerDetailsTitle="Edit Plugin Action"

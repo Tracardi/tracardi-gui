@@ -15,7 +15,17 @@ import TagTextFieldForProjects from "./inputs/TagTextFieldForProjects";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 
-function FlowForm({id, name, description, enabled, projects, onFlowSaveComplete, showAlert, draft = false}) {
+function FlowForm({
+                      id,
+                      name,
+                      description,
+                      enabled,
+                      projects,
+                      onFlowSaveComplete,
+                      showAlert,
+                      draft = false,
+                      refreshMetaData = true
+                  }) {
 
     const [flowName, setFlowName] = useState((name) ? name : "");
     const [flowDescription, setFlowDescription] = useState((description) ? description : "");
@@ -40,7 +50,7 @@ function FlowForm({id, name, description, enabled, projects, onFlowSaveComplete,
             name: flowName,
             description: flowDescription,
             enabled: flowEnabled,
-            projects: flowTags && Array.isArray(flowTags) && flowTags.length>0 ? flowTags : ["General"]
+            projects: flowTags && Array.isArray(flowTags) && flowTags.length > 0 ? flowTags : ["General"]
         }
         setProcessing(true);
         request({
@@ -50,23 +60,33 @@ function FlowForm({id, name, description, enabled, projects, onFlowSaveComplete,
             },
             setProcessing,
             (e) => {
-                if(e) {
+                if (e) {
                     showAlert({message: e[0].msg, type: "error", hideAfter: 5000});
                 }
             },
             (data) => {
-                if(data!==false) {
-                    request({
-                        url: '/flow/metadata/refresh'
-                    },
-                        setProcessing,
-                        ()=>{},
-                        ()=>{
-                            if (onFlowSaveComplete) {
-                                onFlowSaveComplete(payload)
+                if (data !== false) {
+                    if(refreshMetaData === true) {
+                        setProcessing(true);
+                        // Refresh index in elastic so we can see it in the list.
+                        request({
+                                url: '/flow/metadata/refresh'
+                            },
+                            setProcessing,
+                            () => {
+                            },
+                            () => {
+                                if (onFlowSaveComplete) {
+                                    onFlowSaveComplete(payload)
+                                }
                             }
+                        )
+                    } else {
+                        if (onFlowSaveComplete) {
+                            onFlowSaveComplete(payload)
                         }
-                    )
+                    }
+
                 }
             })
     }
@@ -108,7 +128,7 @@ function FlowForm({id, name, description, enabled, projects, onFlowSaveComplete,
                            variant="outlined"
                            label="Flow name"
                            value={flowName}
-                           error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null )}
+                           error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null)}
                            helperText={nameErrorMessage}
                            onChange={(ev) => {
                                setFlowName(ev.target.value)

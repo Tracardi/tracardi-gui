@@ -31,6 +31,7 @@ export default function Credentials() {
     }
 
     return <CardBrowser
+        label="Credentials"
         urlFunc={urlFunc}
         cardFunc={credentials}
         drawerDetailsTitle="Credential details"

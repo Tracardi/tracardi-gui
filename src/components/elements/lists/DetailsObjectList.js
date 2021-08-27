@@ -5,8 +5,10 @@ import Drawer from "@material-ui/core/Drawer";
 import RightPaperHeader from "../RightPaperHeader";
 import ObjectList from "./ObjectList";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 
 function DetailsObjectList({
+                               label,
                                filterFields,
                                detailsLabel,
                                timeFieldLabel,
@@ -18,22 +20,22 @@ function DetailsObjectList({
                            }) {
 
     const [loading, setLoading] = React.useState(false);
+    const [loadingDetails, setLoadingDetails] = React.useState(false);
     const [error, setError] = React.useState(false);
     const [ready, setReady] = React.useState(false);
     const [detailsToggle, setDetailsToggle] = React.useState(false);
     const [detailsData, setDetailsData] = React.useState(null);
 
     useEffect(() => {
+        setLoading(true);
         request(
             onLoadRequest,
+            setLoading,
+            setError,
             (value) => {
-                setLoading(value);
-            },
-            (ex) => {
-                setError(ex);
-            },
-            (value) => {
-                setReady(value);
+                if(value !== null) {
+                    setReady(value);
+                }
             }
         );
     }, [onLoadRequest])
@@ -41,6 +43,7 @@ function DetailsObjectList({
     const drawerWidth = (detailsDrawerWidth) ? detailsDrawerWidth : 600;
 
     const openDetails = () => {
+        setDetailsData(null);
         setDetailsToggle(true);
     }
 
@@ -56,14 +59,15 @@ function DetailsObjectList({
     }
 
     const onDetails = (id) => {
-        if(typeof id === "undefined") {
+        if (typeof id === "undefined") {
             console.error("Undefined id in onDetails")
         } else if (onLoadDetails) {
+            setLoadingDetails(true);
             openDetails();
             request(
                 onLoadDetails(id),
-                none,
-                none,
+                setLoadingDetails,
+                setError,
                 onReady
             );
         }
@@ -80,6 +84,7 @@ function DetailsObjectList({
     return <React.Fragment>
 
         <ObjectList data={ready.data}
+                    label={label}
                     loading={loading}
                     errors={error}
                     timeField={timeField}
@@ -94,7 +99,8 @@ function DetailsObjectList({
                 <RightPaperHeader onClose={closeDetails}>
                     <span style={{fontWeight: 600}}>{detailsLabel}</span>
                 </RightPaperHeader>
-                {displayDetails && detailsData && displayDetails(detailsData.data)}
+                {loadingDetails && <CenteredCircularProgress/>}
+                {detailsData && displayDetails && displayDetails(detailsData.data)}
             </div>
         </Drawer>}
     </React.Fragment>

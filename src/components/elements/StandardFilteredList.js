@@ -45,7 +45,7 @@ export function StandardFilteredList({
                     method: "post",
                     data: {
                         where: searchQuery,
-                        limit: 20
+                        limit: 30
                     }
                 },
                 load,

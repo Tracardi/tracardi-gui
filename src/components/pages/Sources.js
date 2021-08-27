@@ -32,6 +32,7 @@ export default function Sources() {
     }
 
     return <CardBrowser
+        label="Sources"
         urlFunc={urlFunc}
         cardFunc={sources}
         buttomLabel="New source"

@@ -8,6 +8,7 @@ import {showAlert} from "../../../redux/reducers/alertSlice";
 import {connect} from "react-redux";
 
 const CardBrowser = ({
+                         label,
                          showAlert,
                          urlFunc,
                          cardFunc,
@@ -38,7 +39,7 @@ const CardBrowser = ({
             },
             setLoading,
             (e) => {
-                if(e) {
+                if (e) {
                     showAlert({message: e[0].msg, type: "error", hideAfter: 3000});
                 }
             },
@@ -72,6 +73,10 @@ const CardBrowser = ({
         setDisplayAddForm(true)
     }
 
+    const Label = ({children}) => {
+        return <h3>{children}</h3>
+    }
+
     return <div className="CardBrowser">
         <FilterAddForm
             textFieldLabel="Type to filter"
@@ -79,6 +84,7 @@ const CardBrowser = ({
             buttonIcon={buttonIcon}
             onFilter={onFilter}
             onAdd={onAdd}/>
+        {label && <Label>{label}</Label>}
         <section className={className}>
             {loading && <CenteredCircularProgress/>}
             {cards && cardFunc(cards, onClick)}

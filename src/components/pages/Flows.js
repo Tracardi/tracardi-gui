@@ -33,6 +33,7 @@ export default function Flows() {
     }
 
     return <CardBrowser
+        label="Workflows"
         urlFunc={urlFunc}
         cardFunc={flows}
         buttomLabel="New flow"

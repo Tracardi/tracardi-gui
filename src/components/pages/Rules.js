@@ -17,7 +17,7 @@ const Rules = ({showAlert}) => {
 
     const [editInitData, setEditInitData] = React.useState(null);
     const [formToggle, setFormToggle] = React.useState(false);
-    const [loadingDetails, setLoadingDetails] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
     const [errorDetails, setErrorDetails] = React.useState(false);
     const [ready, setReady] = React.useState(false);
 
@@ -29,11 +29,14 @@ const Rules = ({showAlert}) => {
     }
 
     const onClick = (id) => {
+        setLoading(true);
         request({
                 url: '/rule/' + id,
                 method: "get"
             },
-            setLoadingDetails, setErrorDetails, setReady
+            setLoading,
+            setErrorDetails,
+            setReady
         )
     }
 
@@ -65,7 +68,7 @@ const Rules = ({showAlert}) => {
                                 onDelete={onDelete}
                                 onEdit={onEdit}
             />
-        } else if (loadingDetails === true) {
+        } else if (loading === true) {
             return <CenteredCircularProgress/>
         } else if (errorDetails !== false) {
             showAlert({message: errorDetails[0].msg, type: "error", hideAfter: 2000});
