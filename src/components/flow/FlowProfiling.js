@@ -73,7 +73,7 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
                     return <Row name={obj.name}
                                 sq={obj.sq}
                                 error={obj.error}
-                                runTime={obj.runTime.toFixed(3) + 's'}
+                                runTime={(obj.runTime * 1000).toFixed(2) + 'ms'}
                                 relativeRunTime={obj.runTime.toFixed(3) + " from " + wholeTime.toFixed(2) +
                                 " makes " + relativeRunTime.toFixed(1) + "%"}
                                 highlighed={node && node.id === obj.id}
@@ -96,9 +96,7 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
                                 className="TaskBall"
                                 title={obj.endTime}
                             ></div>
-
                         </div>
-
                     </Row>
                 }
             )

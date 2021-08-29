@@ -148,7 +148,10 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
 
                     return element;
                 });
-                onReady(flow.elements || []);
+                onReady({
+                    elements: flow.elements || [],
+                    logs: data?.data?.logs
+                });
             }
         }
     )

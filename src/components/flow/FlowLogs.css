@@ -1,0 +1,27 @@
+.FlowLog {
+    margin: 10px;
+    padding: 5px;
+    border-radius: 6px;
+    border: solid #ccc 1px;
+    background-color: white;
+}
+
+.FlowLogRow {
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    padding: 5px;
+    border-bottom: solid #ccc 1px;
+    background-color: white;
+}
+
+.FlowLogHeader {
+    font-weight: 600;
+    position: sticky;
+    top: 0
+}
+
+.FlowLogRow .FlowLogMessage {
+    display: flex;
+    align-content: center;
+}

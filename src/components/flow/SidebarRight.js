@@ -2,10 +2,10 @@ import Tabs, {TabCase} from "../elements/tabs/Tabs";
 import React from "react";
 import './SidebarRight.css';
 
-const SidebarRight = ({defaultTab, onTabSelect, debugTab, inspectTab}) => {
+const SidebarRight = ({defaultTab, onTabSelect, debugTab, inspectTab, logTab}) => {
     return <aside className="SidebarRight">
         <Tabs
-            tabs={["Inspect", "Debugging", "Logs"]}
+            tabs={["Inspector", "Debugger", "Logs"]}
             defaultTab={defaultTab}
             onTabSelect={onTabSelect}
         >
@@ -16,7 +16,7 @@ const SidebarRight = ({defaultTab, onTabSelect, debugTab, inspectTab}) => {
                 {debugTab}
             </TabCase>
             <TabCase id={2}>
-                None
+                {logTab}
             </TabCase>
         </Tabs>
     </aside>

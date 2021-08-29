@@ -12,6 +12,7 @@ import {debug} from "./FlowEditorOps";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import DebugDetails from "./DebugDetails";
+import FlowLogs from "./FlowLogs";
 
 export function FlowEditorPane(
     {
@@ -41,6 +42,7 @@ export function FlowEditorPane(
     const [rightSidebarTab, setRightSidebarTab] = useState(0);
     const [animatedEdge, setAnimatedEdge] = useState(null);
     const [elements, setElements] = useState([]);
+    const [logs, setLogs] = useState([]);
     const [label, setLabel] = useState({name: "", id: null});
     const [debugInProgress, setDebugInProgress] = useState(false);
 
@@ -154,8 +156,9 @@ export function FlowEditorPane(
             reactFlowInstance,
             (e) => showAlert(e),
             setDebugInProgress,
-            (elements) => {
+            ({elements, logs}) => {
                 setElements(elements);
+                setLogs(logs);
                 setDisplayRightSidebar(true);
             }
         )
@@ -322,6 +325,9 @@ export function FlowEditorPane(
                     node={currentNode}
                     onConnectionDetails={onConnectionDetails}
                 />}
+                logTab={
+                    <FlowLogs logs={logs}/>
+                }
             />
             }
             <Background color="#444" gap={16}/>

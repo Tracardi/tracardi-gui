@@ -51,9 +51,6 @@ function DetailsObjectList({
         setDetailsToggle(false);
     }
 
-    const none = () => {
-    }
-
     const onReady = (data) => {
         setDetailsData(data)
     }
