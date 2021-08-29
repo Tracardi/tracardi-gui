@@ -39,7 +39,7 @@ export default function NodeDetails({node, onConfig, onLabelSet}) {
         }
     }
 
-    return <aside className="NodeDetails">
+    return <div className="NodeDetails">
         <div className="Title">
             <FilterTextField label={null}
                                  initValue={node?.data?.metadata?.name}
@@ -86,5 +86,5 @@ export default function NodeDetails({node, onConfig, onLabelSet}) {
                 <MdManual mdFile={node?.data?.spec?.manual}/>
             </Suspense>}
         </div>
-    </aside>
+    </div>
 }

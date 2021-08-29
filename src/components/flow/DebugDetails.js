@@ -2,21 +2,10 @@ import React from "react";
 import './DebugDetails.css';
 import convertNodesToProfilingData from "./profilingConverter";
 import {FlowProfiling} from "./FlowProfiling";
-import {HighlightOff} from "@material-ui/icons";
 
-const DebugDetails = ({nodes, node, onConnectionDetails, onClose}) => {
-
-    const handleClose = () => {
-        if(onClose) {
-            onClose()
-        }
-    }
+const DebugDetails = ({nodes, node, onConnectionDetails}) => {
 
     return <section className="DebugDetails">
-        <div className="DebugTitle">
-            Debugging
-            <HighlightOff onClick={handleClose} style={{cursor: "pointer"}}/>
-        </div>
         <div className="DebugContent">
             <FlowProfiling
                 profilingData={convertNodesToProfilingData(nodes)}

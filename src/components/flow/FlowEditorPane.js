@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import FlowNode from "./FlowNode";
 import {v4 as uuid4} from "uuid";
 import {request} from "../../remote_api/uql_api_endpoint";
-import Sidebar from "./Sidebar";
+import SidebarLeft from "./SidebarLeft";
+import SidebarRight from "./SidebarRight";
 import NodeDetails from "./NodeDetails";
 import {debug} from "./FlowEditorOps";
 import {connect} from "react-redux";
@@ -36,8 +37,8 @@ export function FlowEditorPane(
     const [flowLoading, setFlowLoading] = useState(false);
     const [currentNode, setCurrentNode] = useState({});
     const [debugNodeId, setDebugNode] = useState(null);
-    const [displayDetails, setDisplayDetails] = useState(false);
-    const [displayDebug, setDisplayDebug] = useState(false);
+    const [displayRightSidebar, setDisplayRightSidebar] = useState(false);
+    const [rightSidebarTab, setRightSidebarTab] = useState(0);
     const [animatedEdge, setAnimatedEdge] = useState(null);
     const [elements, setElements] = useState([]);
     const [label, setLabel] = useState({name: "", id: null});
@@ -147,6 +148,7 @@ export function FlowEditorPane(
     const onDebug = () => {
         setDebugNode(null);
         setAnimatedEdge(null);
+        setRightSidebarTab(1);
         debug(
             id,
             reactFlowInstance,
@@ -154,8 +156,7 @@ export function FlowEditorPane(
             setDebugInProgress,
             (elements) => {
                 setElements(elements);
-                setDisplayDebug(true);
-                setDisplayDetails(false);
+                setDisplayRightSidebar(true);
             }
         )
     }
@@ -226,14 +227,15 @@ export function FlowEditorPane(
     }
 
     const onPaneClick = () => {
-        setDisplayDetails(false);
+        setDisplayRightSidebar(false);
+        setDebugNode(null);
         setAnimatedEdge(null);
     }
 
     const onNodeContextMenu = (event, element) => {
         event.preventDefault();
         event.stopPropagation();
-        setDisplayDetails(false);
+        setDisplayRightSidebar(false);
     }
 
     const onNodeClick = (element) => {
@@ -247,8 +249,7 @@ export function FlowEditorPane(
     }
     const onDisplayDetails = (element) => {
         setCurrentNode(element);
-        setDisplayDetails(true);
-        setDisplayDebug(false);
+        setDisplayRightSidebar(true);
     }
 
     const onConfigSave = () => {
@@ -275,12 +276,6 @@ export function FlowEditorPane(
         if (onConfig) {
             onConfig()
         }
-    }
-
-    const handleDebugClose = () => {
-        setDisplayDebug(false)
-        setDebugNode(null);
-        setAnimatedEdge(null);
     }
 
     return <div className="FlowPane" ref={reactFlowWrapper}>
@@ -310,21 +305,25 @@ export function FlowEditorPane(
             defaultZoom={1}
         >
             {title}
-            <Sidebar onEdit={onEditClick}
+            <SidebarLeft onEdit={onEditClick}
                      onDebug={onDebugClick}
                      debugInProgress={debugInProgress}
             />
-            {displayDetails && <NodeDetails
-                onLabelSet={handleLabelSet}
-                node={currentNode}
-                onConfig={onConfigSave}
-            />}
-            {displayDebug && <DebugDetails
-                nodes={elements}
-                node={currentNode}
-                onConnectionDetails={onConnectionDetails}
-                onClose={handleDebugClose}
-            />}
+            {displayRightSidebar && <SidebarRight
+                defaultTab={rightSidebarTab}
+                onTabSelect={setRightSidebarTab}
+                inspectTab={<NodeDetails
+                    onLabelSet={handleLabelSet}
+                    node={currentNode}
+                    onConfig={onConfigSave}
+                />}
+                debugTab={<DebugDetails
+                    nodes={elements}
+                    node={currentNode}
+                    onConnectionDetails={onConnectionDetails}
+                />}
+            />
+            }
             <Background color="#444" gap={16}/>
         </ReactFlow>}
     </div>
