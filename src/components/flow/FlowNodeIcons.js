@@ -58,6 +58,7 @@ import {SiRedis} from "@react-icons/all-files/si/SiRedis";
 import {VscGlobe} from "@react-icons/all-files/vsc/VscGlobe";
 import {IoIosTimer} from "@react-icons/all-files/io/IoIosTimer";
 import {VscError} from "@react-icons/all-files/vsc/VscError";
+import {SiPostgresql} from "@react-icons/all-files/si/SiPostgresql";
 
 export default function FlowNodeIcons({icon}) {
 
@@ -123,7 +124,8 @@ export default function FlowNodeIcons({icon}) {
         'redis': <SiRedis size={20}/>,
         'globe': <VscGlobe size={20}/>,
         'profiler': <IoIosTimer size={20}/>,
-        'error': <VscError size={20}/>
+        'error': <VscError size={20}/>,
+        'postgres': <SiPostgresql size={20}/>
     }
 
     const renderIcon = () => {
