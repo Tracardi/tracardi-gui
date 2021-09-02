@@ -88,8 +88,28 @@ function SourceForm({init, onClose,showAlert}) {
         {
             case "mysql":
                 template = {
-                    host: null,
+                    host: 'localhost',
                     port: 3306,
+                    user: null,
+                    password: null,
+                    database: null
+                }
+                break;
+
+            case "postgresql":
+                template = {
+                    host: 'localhost',
+                    port: 5439,
+                    user: null,
+                    password: null,
+                    database: null
+                }
+                break;
+
+            case "redshift":
+                template = {
+                    host: 'localhost',
+                    port: 5439,
                     user: null,
                     password: null,
                     database: null
