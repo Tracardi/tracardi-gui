@@ -27,11 +27,11 @@ export default function MainMenu() {
     return <div className="MainMenu">
         <div>
             <MenuIcon icon={<VscRadioTower size={25}/>} label="Sources">
-                <MenuItem onClick={go("/setup/sources")}>
-                    <VscRadioTower size={20} style={{marginRight: 8}}/>Sources
+                <MenuItem onClick={go("/setup/resources")}>
+                    <VscRadioTower size={20} style={{marginRight: 8}}/>Resources
                 </MenuItem>
                 <MenuItem onClick={go("/setup/credentials")}>
-                    <BsShieldLock size={20} style={{marginRight: 8}}/> Sources configurations
+                    <BsShieldLock size={20} style={{marginRight: 8}}/> Resource's configurations
                 </MenuItem>
             </MenuIcon>
             <MenuIcon icon={<BsFolder size={25}/>} label="Data">

@@ -101,13 +101,13 @@ export default function RuleForm({onSubmit, init}) {
                     initValue={type}
                     onSetValue={setType}
                 />
-                <FormSubHeader>Source <sup style={{fontSize: "70%"}}>* optional</sup></FormSubHeader>
-                <FormDescription>Type source or leave it blank if this trigger refers to all sources. Source can be set
-                    only if event type is set. </FormDescription>
+                <FormSubHeader>Resource <sup style={{fontSize: "70%"}}>* optional</sup></FormSubHeader>
+                <FormDescription>Type event resource or leave it blank if this trigger refers to all available event sources.
+                    Resource can be set only if event type is set. </FormDescription>
                 <AutoComplete disabled={sourceDisabled}
                               solo={false}
-                              placeholder="Source"
-                              url="/sources"
+                              placeholder="Resource"
+                              url="/resources"
                               initValue={source}
                               onSetValue={setSource}
                               onDataLoaded={
@@ -125,8 +125,7 @@ export default function RuleForm({onSubmit, init}) {
                               }/>
 
                 <FormSubHeader>Flow name</FormSubHeader>
-                <FormDescription>Select existing flow name or type new flow name. Later on find your flow by this name
-                    and set-up flow graph.</FormDescription>
+                <FormDescription>Select existing flow name or type new flow name. New flow will be automatically created.</FormDescription>
                 <div className="SearchInput">
                     <AutoComplete
                         disabled={false}

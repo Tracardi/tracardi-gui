@@ -1,16 +1,16 @@
 import React, {useCallback} from "react";
-import SourceDetails from "../elements/details/SourceDetails";
+import ResourceDetails from "../elements/details/ResourceDetails";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {VscRadioTower} from "@react-icons/all-files/vsc/VscRadioTower";
-import SourceForm from "../elements/forms/SourceForm";
+import SourceForm from "../elements/forms/ResourceForm";
 
 
-export default function Sources() {
+export default function Resources() {
 
-    const urlFunc = useCallback((query) => ('/sources/by_tag' + ((query) ? "?query=" + query : "")), []);
+    const urlFunc = useCallback((query) => ('/resources/by_tag' + ((query) ? "?query=" + query : "")), []);
     const addFunc = useCallback((close) => <SourceForm onClose={close}/>, []);
-    const detailsFunc = useCallback((id, close) => <SourceDetails id={id} onDeleteComplete={close}/>, []);
+    const detailsFunc = useCallback((id, close) => <ResourceDetails id={id} onDeleteComplete={close}/>, []);
 
     const sources = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
@@ -32,15 +32,15 @@ export default function Sources() {
     }
 
     return <CardBrowser
-        label="Sources"
+        label="Resources"
         urlFunc={urlFunc}
         cardFunc={sources}
-        buttomLabel="New source"
+        buttomLabel="New resource"
         buttonIcon={<VscRadioTower size={20} style={{marginRight: 10}}/>}
-        drawerDetailsTitle="Source details"
+        drawerDetailsTitle="Resource details"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
-        drawerAddTitle="New source"
+        drawerAddTitle="New resource"
         drawerAddWidth={800}
         addFunc={addFunc}
     />

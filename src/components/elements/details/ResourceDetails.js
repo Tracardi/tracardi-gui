@@ -1,6 +1,6 @@
 import React, {Suspense, useEffect} from "react";
 import "../lists/cards/SourceCard.css";
-import "./SourceDetails.css";
+import "./ResourceDetails.css";
 import "./Details.css";
 import Properties from "./DetailProperties";
 import Button from "../forms/Button";
@@ -15,13 +15,13 @@ import {request} from "../../../remote_api/uql_api_endpoint";
 import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
-import SourceForm from "../forms/SourceForm";
+import ResourceForm from "../forms/ResourceForm";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
 
 
-export default function SourceDetails({id, onDeleteComplete}) {
+export default function ResourceDetails({id, onDeleteComplete}) {
 
     const confirm = useConfirm();
     const [data, setData] = React.useState(null);
@@ -32,7 +32,7 @@ export default function SourceDetails({id, onDeleteComplete}) {
         setLoading(true);
         request(
             {
-                url: '/source/' + id,
+                url: '/resource/' + id,
                 method: "GET"
             },
             setLoading,
@@ -57,12 +57,12 @@ export default function SourceDetails({id, onDeleteComplete}) {
 
     const onDelete = () => {
         confirm({
-            title: "Do you want to delete this source?",
+            title: "Do you want to delete this resource?",
             description: "This action can not be undone."
         }).then(() => {
             request(
                 {
-                    url: '/source/' + data.id,
+                    url: '/resource/' + data.id,
                     method: "DELETE"
                 },
                 () => {
@@ -73,7 +73,7 @@ export default function SourceDetails({id, onDeleteComplete}) {
                     }
                 }, (reponse) => {
                     request({
-                            url: '/sources/refresh'
+                            url: '/resources/refresh'
                         },
                         ()=>{},
                         (e)=>{
@@ -94,7 +94,7 @@ export default function SourceDetails({id, onDeleteComplete}) {
     }
 
     const Details = () => <>
-        <FormHeader>Source</FormHeader>
+        <FormHeader>Resource</FormHeader>
         <ElevatedBox>
             <FormSubHeader>Data</FormSubHeader>
             <Properties properties={data}/>
@@ -136,10 +136,10 @@ export default function SourceDetails({id, onDeleteComplete}) {
 
         <FormDrawer
             width={800}
-            label="Edit Source"
+            label="Edit Resource"
             onClose={()=>{setEditData(null)}}
             open={editData !== null}>
-            <SourceForm init={editData} onClose={()=>{setEditData(null)}}/>
+            <ResourceForm init={editData} onClose={()=>{setEditData(null)}}/>
         </FormDrawer>
     </div>
 
