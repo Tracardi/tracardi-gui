@@ -1,4 +1,4 @@
 window._env_ = {
   PUBLIC_URL: "/",
-  API_URL: "http://localhost:8686",
+  API_URL: "//localhost:8686",
 }
