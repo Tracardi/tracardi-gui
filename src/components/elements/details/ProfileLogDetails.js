@@ -2,28 +2,18 @@ import React, {useEffect, useState} from "react";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
-import {FlowProfiling} from "../../flow/FlowProfiling";
-import {convertDebugInfoToProfilingData} from "../../flow/profilingConverter";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import LogsList from "../../flow/LogsList";
 
-const EventProfilingDetails = ({eventId, showAlert}) => {
+const ProfileLogDetails = ({eventId: profileId, showAlert}) => {
 
-    const [profilingData, setProfilingData] = useState(null);
+    const [logData, setLogData] = useState(null);
     const [loading, setLoading] = useState(false);
-
-    const ListOfProfilingData = ({data}) => {
-        if(Array.isArray(data)) {
-            return profilingData.map(
-                (data, index) => <FlowProfiling key={index} profilingData={convertDebugInfoToProfilingData(data)}/>
-            )
-        }
-        return ""
-    }
 
     useEffect(() => {
         setLoading(true);
         request({
-                url: "/event/debug/" + eventId,
+                url: "/event/profile/" + profileId,
             },
             setLoading,
             (e) => {
@@ -37,17 +27,17 @@ const EventProfilingDetails = ({eventId, showAlert}) => {
             },
             (response) => {
                 if(response !== null) {
-                    setProfilingData(response.data);
+                    setLogData(response.data);
                 }
             })
 
-    }, [eventId, showAlert]);
+    }, [profileId, showAlert]);
 
     if(loading) {
         return <CenteredCircularProgress/>
     }
 
-    return <ListOfProfilingData data={profilingData} />
+    return <LogsList logs={logData} />
 }
 const mapProps = (state) => {
     return {
@@ -57,5 +47,5 @@ const mapProps = (state) => {
 export default connect(
     mapProps,
     {showAlert}
-)(EventProfilingDetails)
+)(ProfileLogDetails)
 

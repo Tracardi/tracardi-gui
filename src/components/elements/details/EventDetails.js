@@ -8,11 +8,13 @@ import Properties from "./DetailProperties";
 import "./Details.css";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import EventProfilingDetails from "./EventProfilingDetails";
+import EventLogDetails from "./EventLogDetails";
+import ProfileLogDetails from "./ProfileLogDetails";
 
 export default function EventDetails({data}) {
     return <div style={{height: "inherit"}}>
         <div className="RightTabScroller">
-            <Tabs tabs={["Event", "Context", "Result", "Raw", "Flow result"]}>
+            <Tabs tabs={["Event", "Context", "Result", "Raw", "Flow debug", "Flow logs", "Profile logs"]}>
                 <TabCase id={0}>
                     <div className="Box10">
                         <div className="Bottom20">
@@ -88,7 +90,16 @@ export default function EventDetails({data}) {
                     <div style={{paddingTop: 10, height: 'inherit'}}>
                         <EventProfilingDetails eventId={data.event.id}/>
                     </div>
-
+                </TabCase>
+                <TabCase id={5}>
+                    <div style={{paddingTop: 10, height: 'inherit'}}>
+                        <EventLogDetails eventId={data.event.id}/>
+                    </div>
+                </TabCase>
+                <TabCase id={6}>
+                    <div style={{paddingTop: 10, height: 'inherit'}}>
+                        <ProfileLogDetails eventId={data.event.profile.id}/>
+                    </div>
                 </TabCase>
             </Tabs>
 

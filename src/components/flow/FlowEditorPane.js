@@ -12,7 +12,7 @@ import {debug} from "./FlowEditorOps";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import DebugDetails from "./DebugDetails";
-import FlowLogs from "./FlowLogs";
+import LogsList from "./LogsList";
 
 export function FlowEditorPane(
     {
@@ -326,7 +326,7 @@ export function FlowEditorPane(
                     onConnectionDetails={onConnectionDetails}
                 />}
                 logTab={
-                    <FlowLogs logs={logs}/>
+                    <LogsList logs={logs}/>
                 }
             />
             }
