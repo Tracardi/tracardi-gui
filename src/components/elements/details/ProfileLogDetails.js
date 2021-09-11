@@ -13,7 +13,7 @@ const ProfileLogDetails = ({eventId: profileId, showAlert}) => {
     useEffect(() => {
         setLoading(true);
         request({
-                url: "/event/profile/" + profileId,
+                url: "/profile/logs/" + profileId,
             },
             setLoading,
             (e) => {
