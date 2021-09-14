@@ -1,6 +1,7 @@
 import dot from "dot-object";
 import DetailKeyValue from "./DetailKeyValue";
 import React from "react";
+import PropTypes from "prop-types";
 
 export default function Properties({properties, show}) {
 
@@ -40,3 +41,8 @@ export default function Properties({properties, show}) {
         {keyValues()}
     </React.Fragment>
 }
+
+Properties.propTypes = {
+    properties: PropTypes.object,
+    show: PropTypes.object,
+  };

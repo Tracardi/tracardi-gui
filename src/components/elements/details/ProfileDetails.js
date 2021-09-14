@@ -10,6 +10,7 @@ import Properties from "./DetailProperties";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import DataBrowsingList from "../../pages/DataBrowsingList";
 import LineChartElement from "../charts/LineChart";
+import PropTypes from "prop-types";
 
 export default function ProfileDetails({data}) {
 
@@ -124,3 +125,7 @@ export default function ProfileDetails({data}) {
     </div>;
 
 }
+
+ProfileDetails.propTypes = {
+    data: PropTypes.object,
+  };

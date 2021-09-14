@@ -12,6 +12,7 @@ import FormDrawer from "../drawers/FormDrawer";
 import SegmentForm from "../forms/SegmentForm";
 import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
+import PropTypes from "prop-types";
 
 export default function SegmentDetails({id, onDeleteComplete}) {
 
@@ -120,3 +121,8 @@ export default function SegmentDetails({id, onDeleteComplete}) {
         </FormDrawer>
     </div>
 }
+
+SegmentDetails.propTypes = {
+    id: PropTypes.string,
+    onDeleteComplete: PropTypes.func,
+  };

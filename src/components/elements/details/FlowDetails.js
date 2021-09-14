@@ -16,6 +16,7 @@ import FlowForm from "../forms/FlowForm";
 import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
+import PropTypes from "prop-types";
 
 export default function FlowDetails({id, onDeleteComplete}) {
 
@@ -177,3 +178,8 @@ export default function FlowDetails({id, onDeleteComplete}) {
         </FormDrawer>
     </div>
 }
+
+FlowDetails.propTypes = {
+    id: PropTypes.string,
+    onDeleteComplete: PropTypes.func,
+  };

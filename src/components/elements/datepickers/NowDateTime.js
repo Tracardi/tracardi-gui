@@ -1,6 +1,8 @@
 import Button from "../forms/Button";
 import {BiTimeFive} from "@react-icons/all-files/bi/BiTimeFive";
 import React from "react";
+import PropTypes from "prop-types";
+
 const NowDateTime = ({onDateSelect}) => {
 
     const onNowClick = () => {
@@ -23,5 +25,9 @@ const NowDateTime = ({onDateSelect}) => {
         />
     </div>
 }
+
+NowDateTime.propTypes = {
+    onDateSelect: PropTypes.func,
+  };
 
 export default NowDateTime;

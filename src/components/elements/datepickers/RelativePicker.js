@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
+import PropTypes from "prop-types";
 
 export default function RelativePicker({type, onDateSelect, datetime}) {
 
@@ -127,3 +128,9 @@ export default function RelativePicker({type, onDateSelect, datetime}) {
 
     </div>
 }
+
+RelativePicker.propTypes = {
+    datetime: PropTypes.object,
+    onDateSelect: PropTypes.func,
+    type: PropTypes.string,
+  };

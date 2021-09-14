@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import Properties from "./DetailProperties";
+import PropTypes from "prop-types";
 
 export default function RuleStats({id}) {
 
@@ -27,3 +28,7 @@ export default function RuleStats({id}) {
         </div>}
     </React.Fragment>
 }
+
+RuleStats.propTypes = {
+    id: PropTypes.string,
+  };

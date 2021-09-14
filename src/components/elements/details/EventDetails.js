@@ -7,6 +7,7 @@ import {MiniHeader} from "../Headers";
 import Properties from "./DetailProperties";
 import "./Details.css";
 import Tabs, {TabCase} from "../tabs/Tabs";
+import PropTypes from "prop-types";
 
 export default function EventDetails({data}) {
     return <div style={{height: "inherit"}}>
@@ -90,3 +91,7 @@ export default function EventDetails({data}) {
     </div>;
 
 }
+
+EventDetails.propTypes = {
+    data: PropTypes.object,
+  };

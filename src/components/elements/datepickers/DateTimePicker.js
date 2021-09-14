@@ -8,6 +8,7 @@ import CalendarPicker from "./CalendarPicker";
 import RelativePicker from "./RelativePicker";
 import {IoCalendarOutline} from "@react-icons/all-files/io5/IoCalendarOutline";
 import NowDateTime from "./NowDateTime";
+import PropTypes from "prop-types";
 
 export default function DataTimePicker({type, datetime, onDatetimeSelect}) {
 
@@ -108,3 +109,9 @@ export default function DataTimePicker({type, datetime, onDatetimeSelect}) {
 
 
 }
+
+DataTimePicker.propTypes = {
+    datetime: PropTypes.object,
+    onDatetimeSelect: PropTypes.func,
+    type: PropTypes.string,
+  };
