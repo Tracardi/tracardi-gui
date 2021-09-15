@@ -2,6 +2,7 @@ import WhenChips from "../forms/NewRuleForm/WhenChips";
 import ThenChips from "../forms/NewRuleForm/ThenChips";
 import React from "react";
 import './UqlDetails.css';
+import PropTypes from "prop-types";
 
 const UqlDetails = ({data}) => {
 
@@ -21,5 +22,9 @@ const UqlDetails = ({data}) => {
 
     return <RenderChips/>;
 }
+
+UqlDetails.propTypes = {
+    data: PropTypes.object,
+  };
 
 export default UqlDetails;

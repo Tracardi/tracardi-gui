@@ -4,6 +4,7 @@ import {request} from "../../../remote_api/uql_api_endpoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import "./Chart.css";
 import ErrorBox from "../../errors/ErrorBox";
+import PropTypes from "prop-types";
 
 export default function BarChartElement({onLoadRequest, columns}) {
 
@@ -54,3 +55,7 @@ export default function BarChartElement({onLoadRequest, columns}) {
     );
 }
 
+BarChartElement.propTypes = {
+    columns: PropTypes.array,
+    onLoadRequest: PropTypes.func,
+  };

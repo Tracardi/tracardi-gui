@@ -3,6 +3,7 @@ import React, {useEffect} from "react";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import "./Chart.css";
+import PropTypes from "prop-types";
 
 export default function LineChartElement({onLoadRequest, columns}) {
 
@@ -57,3 +58,7 @@ export default function LineChartElement({onLoadRequest, columns}) {
     );
 }
 
+LineChartElement.propTypes = {
+    columns: PropTypes.array,
+    onLoadRequest: PropTypes.func,
+  };

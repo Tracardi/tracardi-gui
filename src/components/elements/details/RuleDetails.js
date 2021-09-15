@@ -14,6 +14,7 @@ import Rows from "../misc/Rows";
 import FormDescription from "../misc/FormDescription";
 import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
+import PropTypes from "prop-types";
 
 
 function RuleDetails({data, onDelete, onEdit}) {
@@ -98,5 +99,11 @@ function RuleDetails({data, onDelete, onEdit}) {
     </div>
 
 }
+
+RuleDetails.propTypes = {
+    data: PropTypes.object,
+    onDelete: PropTypes.func,
+    onEdit: PropTypes.func,
+  };
 
 export default RuleDetails;

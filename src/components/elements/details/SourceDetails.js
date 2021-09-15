@@ -16,6 +16,7 @@ import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
 import SourceForm from "../forms/SourceForm";
+import PropTypes from "prop-types";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -144,3 +145,8 @@ export default function SourceDetails({id, onDeleteComplete}) {
     </div>
 
 }
+
+SourceDetails.propTypes = {
+    id: PropTypes.string,
+    onDeleteComplete: PropTypes.func,
+  };

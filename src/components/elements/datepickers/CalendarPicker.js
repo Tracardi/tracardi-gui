@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import PickyDateTime from "react-picky-date-time";
 import "./CalendarPicker.css";
 import moment from 'moment'
+import PropTypes from "prop-types";
 
 export default function CalendarPicker({onDateSelect, datetime}) {
 
@@ -98,3 +99,8 @@ export default function CalendarPicker({onDateSelect, datetime}) {
         onClearTime={onClearTime}
     />
 }
+
+CalendarPicker.propTypes = {
+    datetime: PropTypes.object,
+    onDateSelect: PropTypes.func,
+  };

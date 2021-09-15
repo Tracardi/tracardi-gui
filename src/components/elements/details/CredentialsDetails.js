@@ -9,7 +9,7 @@ import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import FormDescription from "../misc/FormDescription";
 import {ObjectInspector} from "react-inspector";
-
+import PropTypes from "prop-types";
 
 export default function CredentialDetails({id}) {
 
@@ -54,3 +54,7 @@ export default function CredentialDetails({id}) {
     </div>
 
 }
+
+CredentialDetails.propTypes = {
+    id: PropTypes.string,
+  };
