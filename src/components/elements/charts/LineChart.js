@@ -5,6 +5,8 @@ import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import "./Chart.css";
 import PropTypes from "prop-types";
 
+// todo onLoadRequest is a misleading name - it is an object with information on endpoint to call
+// todo this needs to be refactored.
 export default function LineChartElement({onLoadRequest, columns}) {
 
     const [loading, setLoading] = React.useState(false);
@@ -60,5 +62,5 @@ export default function LineChartElement({onLoadRequest, columns}) {
 
 LineChartElement.propTypes = {
     columns: PropTypes.array,
-    onLoadRequest: PropTypes.func,
+    onLoadRequest: PropTypes.object,
   };

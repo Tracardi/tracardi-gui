@@ -44,5 +44,5 @@ export default function Properties({properties, show}) {
 
 Properties.propTypes = {
     properties: PropTypes.object,
-    show: PropTypes.object,
+    show: PropTypes.array,
   };

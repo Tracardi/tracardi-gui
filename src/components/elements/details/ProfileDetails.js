@@ -82,7 +82,7 @@ export default function ProfileDetails({data}) {
                 </TabCase>
                 <TabCase id={1}>
                     <div className="Box10">
-                        <Properties properties={data.segments}/>
+                        <Properties properties={{segments: data.segments}}/>
                     </div>
                 </TabCase>
                 <TabCase id={2}>

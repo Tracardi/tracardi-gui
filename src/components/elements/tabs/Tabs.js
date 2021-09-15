@@ -12,19 +12,18 @@ export function TabCases({children, tabId}) {
         }
     );
 }
+TabCases.propTypes = {
+    tabId: PropTypes.number.isRequired,
+}
 
 export function TabCase({children, id}) {
     return children;
-}
-
-TabCases.propTypes = {
-    tabId: PropTypes.number.isRequired,
 }
 TabCase.propTypes = {
     id: PropTypes.number.isRequired,
 }
 
-export default function Tabs({tabs, children, defaultTab, onTabSelect}) {
+export default function Tabs({tabs, children, defaultTab=0, onTabSelect}) {
 
     const [tabId, setTabId] = useState((defaultTab) ? defaultTab : 0);
 

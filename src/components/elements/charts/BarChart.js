@@ -6,6 +6,8 @@ import "./Chart.css";
 import ErrorBox from "../../errors/ErrorBox";
 import PropTypes from "prop-types";
 
+// todo onLoadRequest is a misleading name - it is an object with information on endpoint to call
+// todo this needs to be refactored.
 export default function BarChartElement({onLoadRequest, columns}) {
 
     const [loading, setLoading] = React.useState(false);
@@ -57,5 +59,5 @@ export default function BarChartElement({onLoadRequest, columns}) {
 
 BarChartElement.propTypes = {
     columns: PropTypes.array,
-    onLoadRequest: PropTypes.func,
+    onLoadRequest: PropTypes.object,
   };
