@@ -89,17 +89,17 @@ export default function EventDetails({data}) {
                 </TabCase>
                 <TabCase id={4}>
                     <div style={{paddingTop: 10, height: 'inherit'}}>
-                        <EventProfilingDetails eventId={data.event.id}/>
+                        <EventProfilingDetails eventId={data?.event?.id}/>
                     </div>
                 </TabCase>
                 <TabCase id={5}>
                     <div style={{paddingTop: 10, height: 'inherit'}}>
-                        <EventLogDetails eventId={data.event.id}/>
+                        <EventLogDetails eventId={data?.event?.id}/>
                     </div>
                 </TabCase>
                 <TabCase id={6}>
                     <div style={{paddingTop: 10, height: 'inherit'}}>
-                        <ProfileLogDetails eventId={data.event.profile.id}/>
+                        <ProfileLogDetails profileId={data?.event?.profile?.id}/>
                     </div>
                 </TabCase>
             </Tabs>
