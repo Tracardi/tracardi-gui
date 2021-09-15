@@ -21,7 +21,6 @@ import PropTypes from "prop-types";
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
 
-
 export default function ResourceDetails({id, onDeleteComplete}) {
 
     const confirm = useConfirm();
@@ -146,7 +145,7 @@ export default function ResourceDetails({id, onDeleteComplete}) {
 
 }
 
-SourceDetails.propTypes = {
+ResourceDetails.propTypes = {
     id: PropTypes.string,
     onDeleteComplete: PropTypes.func,
   };
