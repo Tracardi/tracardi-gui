@@ -9,7 +9,8 @@ export default function EventsAnalytics() {
         return {
             url: '/event/select/range',
             method: "post",
-            data: query
+            data: query,
+            limit: 30
         }
     }
 
@@ -17,7 +18,8 @@ export default function EventsAnalytics() {
         return {
             url: '/event/select/histogram',
             method: "post",
-            data: query
+            data: query,
+            limit: 30
         }
     }
 
@@ -31,6 +33,7 @@ export default function EventsAnalytics() {
 
     return <DataAnalytics
         type="event"
+        label="List of events"
         enableFiltering={true}
         detailsLabel="Event details"
         timeFieldLabel = "timestamp"

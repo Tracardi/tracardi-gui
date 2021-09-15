@@ -3,7 +3,7 @@ import "./AppBox.css";
 import MainContent from "./MainContent";
 import {Redirect} from "react-router-dom";
 import PrivateRoute from "./authentication/PrivateRoute";
-import Sources from "./pages/Sources";
+import Resources from "./pages/Resources";
 import Rules from "./pages/Rules";
 import EventsAnalytics from "./pages/EventsAnalytics";
 import ProfilesAnalytics from "./pages/ProfilesAnalytics";
@@ -48,8 +48,8 @@ const AppBox = () => {
 
             </PrivateRoute>
 
-            <PrivateRoute path={urlPrefix("/setup/sources")} roles={["admin"]}>
-                <Sources/>
+            <PrivateRoute path={urlPrefix("/setup/resources")} roles={["admin"]}>
+                <Resources/>
             </PrivateRoute>
             <PrivateRoute path={urlPrefix("/setup/flows")} roles={["admin"]}>
                 <Flows/>
@@ -69,6 +69,7 @@ const AppBox = () => {
             <PrivateRoute path={urlPrefix("/setup/segments")} roles={["admin"]}>
                 <Segments/>
             </PrivateRoute>
+
             <PrivateRoute path={urlPrefix("/setup/credentials")} roles={["admin"]}>
                 <Credentials/>
             </PrivateRoute>

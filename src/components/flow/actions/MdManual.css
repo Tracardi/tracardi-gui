@@ -5,6 +5,7 @@
     background: white;
     padding: 10px;
     border-radius: 5px;
+    user-select: text;
 }
 .MdManual A {
     color: rgb(0, 105, 192);

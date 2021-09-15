@@ -40,7 +40,7 @@ export default function PluginForm({id}) {
     const onEnabled = () => {
         request(
             {
-                url: '/flow/action/plugin/'+plugin.id+'/enable/' + ((!hidden) ? 'yes' : 'no')
+                url: '/flow/action/plugin/'+plugin.id+'/enable/' + ((!enabled) ? 'yes' : 'no')
             },
             () => {},
             () => {},

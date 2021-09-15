@@ -5,11 +5,14 @@ import PropTypes from 'prop-types';
 import FlowNode from "./FlowNode";
 import {v4 as uuid4} from "uuid";
 import {request} from "../../remote_api/uql_api_endpoint";
-import Sidebar from "./Sidebar";
+import SidebarLeft from "./SidebarLeft";
+import SidebarRight from "./SidebarRight";
 import NodeDetails from "./NodeDetails";
 import {debug} from "./FlowEditorOps";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
+import DebugDetails from "./DebugDetails";
+import LogsList from "./LogsList";
 
 export function FlowEditorPane(
     {
@@ -34,10 +37,14 @@ export function FlowEditorPane(
     const reactFlowWrapper = useRef(null);
     const [flowLoading, setFlowLoading] = useState(false);
     const [currentNode, setCurrentNode] = useState({});
-    const [displayDetails, setDisplayDetails] = useState(false);
+    const [debugNodeId, setDebugNode] = useState(null);
+    const [displayRightSidebar, setDisplayRightSidebar] = useState(false);
+    const [rightSidebarTab, setRightSidebarTab] = useState(0);
     const [animatedEdge, setAnimatedEdge] = useState(null);
     const [elements, setElements] = useState([]);
+    const [logs, setLogs] = useState([]);
     const [label, setLabel] = useState({name: "", id: null});
+    const [debugInProgress, setDebugInProgress] = useState(false);
 
     const updateFlow = useCallback((data) => {
         if (data) {
@@ -90,19 +97,36 @@ export function FlowEditorPane(
     useEffect(() => {
         setElements((els) => els.map((el) => {
                 if (isEdge(el)) {
-                    if (animatedEdge === null && el.animated === true) {
-                        el.animated = false;
+                    if (animatedEdge === null) {
+                        if(el?.style?.stroke === '#ad1457') {
+                            const { stroke, ...newStyle } = el.style
+                            el.style = newStyle
+                        }
+
                     } else if (el.id === animatedEdge) {
-                        el.animated = true;
+                        el.style = {
+                            stroke: '#ad1457'
+                        }
                     } else {
-                        el.animated = false;
+                        if(el?.style?.stroke === '#ad1457') {
+                            const { stroke, ...newStyle } = el.style
+                            el.style = newStyle
+                        }
                     }
                 }
+
+                if (isNode(el)) {
+                    el.data = {
+                        ...el.data,
+                        metadata: {...el.data.metadata, selected: el.id === debugNodeId},
+                    }
+                }
+
                 return el;
             })
         );
 
-    }, [animatedEdge])
+    }, [animatedEdge, debugNodeId])
 
     useEffect(() => {
         setElements((els) => els.map((el) => {
@@ -119,17 +143,24 @@ export function FlowEditorPane(
     }, [label, setElements]);
 
     const onLoad = (reactFlowInstance) => {
+        reactFlowInstance.fitView();
         onEditorReady(reactFlowInstance)
     };
 
     const onDebug = () => {
+        setDebugNode(null);
+        setAnimatedEdge(null);
+        setRightSidebarTab(1);
         debug(
             id,
             reactFlowInstance,
             (e) => showAlert(e),
-            () => {
-            },
-            (elements) => setElements(elements)
+            setDebugInProgress,
+            ({elements, logs}) => {
+                setElements(elements);
+                setLogs(logs);
+                setDisplayRightSidebar(true);
+            }
         )
     }
 
@@ -154,27 +185,31 @@ export function FlowEditorPane(
     }
 
     const onDrop = (event) => {
+        try {
+            event.preventDefault();
 
-        event.preventDefault();
+            const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+            const position = reactFlowInstance.project({
+                x: event.clientX - reactFlowBounds.left,
+                y: event.clientY - reactFlowBounds.top,
+            });
 
-        const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-        const position = reactFlowInstance.project({
-            x: event.clientX - reactFlowBounds.left,
-            y: event.clientY - reactFlowBounds.top,
-        });
-
-        const payload = event.dataTransfer.getData('application/json');
-        const data = JSON.parse(payload)
-        const newNode = {
-            id: uuid4(),
-            type: data.metadata.type,
-            position,
-            data: data
-        };
-        setElements((es) => es.concat(newNode));
-        if (onChange) {
-            onChange();
+            const payload = event.dataTransfer.getData('application/json');
+            const data = JSON.parse(payload)
+            const newNode = {
+                id: uuid4(),
+                type: data.metadata.type,
+                position,
+                data: data
+            };
+            setElements((es) => es.concat(newNode));
+            if (onChange) {
+                onChange();
+            }
+        } catch (e) {
+            alert("Json error. Droped element without json.");
         }
+
     };
 
     const onDragOver = (event) => {
@@ -195,14 +230,15 @@ export function FlowEditorPane(
     }
 
     const onPaneClick = () => {
-        setDisplayDetails(false);
+        setDisplayRightSidebar(false);
+        setDebugNode(null);
         setAnimatedEdge(null);
     }
 
     const onNodeContextMenu = (event, element) => {
         event.preventDefault();
         event.stopPropagation();
-        setDisplayDetails(false);
+        setDisplayRightSidebar(false);
     }
 
     const onNodeClick = (element) => {
@@ -216,7 +252,7 @@ export function FlowEditorPane(
     }
     const onDisplayDetails = (element) => {
         setCurrentNode(element);
-        setDisplayDetails(true);
+        setDisplayRightSidebar(true);
     }
 
     const onConfigSave = () => {
@@ -225,8 +261,9 @@ export function FlowEditorPane(
         }
     }
 
-    const onConnectionDetails = (edge_id) => {
-        setAnimatedEdge(edge_id);
+    const onConnectionDetails = (nodeId, edgeId) => {
+        setDebugNode(nodeId)
+        setAnimatedEdge(edgeId);
     }
 
     const onEditClick = (data) => {
@@ -260,6 +297,7 @@ export function FlowEditorPane(
             nodeTypes={nodeTypes}
             onConnect={onConnect}
             deleteKeyCode={46}
+            zoomActivationKeyCode={32}
             onLoad={onLoad}
             onDrop={onDrop}
             onDragOver={onDragOver}
@@ -270,14 +308,28 @@ export function FlowEditorPane(
             defaultZoom={1}
         >
             {title}
-            <Sidebar onEdit={onEditClick}
-                     onDebug={onDebugClick}/>
-            {displayDetails && <NodeDetails
-                onLabelSet={handleLabelSet}
-                node={currentNode}
-                onConfig={onConfigSave}
-                onConnectionDetails={onConnectionDetails}
-            />}
+            <SidebarLeft onEdit={onEditClick}
+                     onDebug={onDebugClick}
+                     debugInProgress={debugInProgress}
+            />
+            {displayRightSidebar && <SidebarRight
+                defaultTab={rightSidebarTab}
+                onTabSelect={setRightSidebarTab}
+                inspectTab={<NodeDetails
+                    onLabelSet={handleLabelSet}
+                    node={currentNode}
+                    onConfig={onConfigSave}
+                />}
+                debugTab={<DebugDetails
+                    nodes={elements}
+                    node={currentNode}
+                    onConnectionDetails={onConnectionDetails}
+                />}
+                logTab={
+                    <LogsList logs={logs}/>
+                }
+            />
+            }
             <Background color="#444" gap={16}/>
         </ReactFlow>}
     </div>

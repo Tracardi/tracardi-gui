@@ -5,8 +5,9 @@ import './FlowEditorButtons.css'
 import Popover from "@material-ui/core/Popover";
 import ModuleRegisterForm from "./ModuleRegisterForm";
 import {VscAdd} from "@react-icons/all-files/vsc/VscAdd";
+import IconButton from "../elements/misc/IconButton";
 
-export function FlowEditorIcons({onEdit, onDebug, onRegister}) {
+export function FlowEditorIcons({onEdit, onDebug, onRegister, debugInProgress}) {
 
     const [showResisterPopOver, setShowResisterPopOver] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -23,9 +24,19 @@ export function FlowEditorIcons({onEdit, onDebug, onRegister}) {
     };
 
     return <div className="FlowEditorButtons">
-        <VscAdd size={35} className="CircleIcon" onClick={onRegisterClick}/>
-        <FiEdit3 size={35} className="CircleIcon" onClick={onEdit}/>
-        <VscDebugAlt size={35} className="CircleIcon" onClick={onDebug}/>
+        <IconButton label="Add plugin" onClick={onRegisterClick}>
+            <VscAdd size={35} className="CircleIcon"/>
+        </IconButton>
+
+        <IconButton label="Edit" onClick={onEdit}>
+            <FiEdit3 size={35} className="CircleIcon"/>
+        </IconButton>
+
+        <IconButton label="Debug"
+                    onClick={onDebug}
+                    progress={debugInProgress}>
+            <VscDebugAlt size={20}/>
+        </IconButton>
         <Popover
             id="register"
             open={showResisterPopOver}

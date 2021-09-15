@@ -1,5 +1,5 @@
 .ConsoleView {
-    padding: 0px 10px 10px 10px;
+    padding: 0;
     background-color: white;
     border-radius: 10px;
     border: solid #eee 1px;
@@ -7,13 +7,19 @@
 }
 
 .ConsoleView >.Title {
-    margin: 5px 5px 10px 5px;
-    padding: 5px 0 ;
+    padding: 10px;
     font-weight: 600;
     font-family: "Roboto Mono";
     font-size: 16px;
     border-bottom: #ccc 1px solid;
-    color: #333
+    color: #333;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+    -webkit-box-shadow: 0 3px 5px -2px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0 3px 5px -2px rgba(0,0,0,0.75);
+    box-shadow: 0 3px 5px -2px rgba(0,0,0,0.75);
 }
 
 .ConsoleView >.Content {

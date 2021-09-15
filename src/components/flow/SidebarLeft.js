@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import './Sidebar.css';
+import './SidebarLeft.css';
 import FlowMenuNode from "./FlowMenuNode";
 import {request} from "../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
@@ -8,7 +8,7 @@ import CenteredCircularProgress from "../elements/progress/CenteredCircularProgr
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
 import {FlowEditorIcons} from "./FlowEditorButtons";
 
-function Sidebar({showAlert, onEdit, onDebug}) {
+function SidebarLeft({showAlert, onEdit, onDebug, debugInProgress}) {
 
     const [filterActions, setFilterActions] = useState("*not-hidden");
     const [plugins, setPlugins] = useState(null);
@@ -51,7 +51,10 @@ function Sidebar({showAlert, onEdit, onDebug}) {
     return (
         <div className="SidebarSection">
             <div className="TaskFilter">
-                <FlowEditorIcons onEdit={onEdit} onDebug={onDebug} onRegister={onRegister}/>
+                <FlowEditorIcons onEdit={onEdit}
+                                 onDebug={onDebug}
+                                 onRegister={onRegister}
+                                 debugInProgress={debugInProgress}/>
                 <FilterTextField label="Action filter" variant="standard" onSubmit={setFilterActions}/>
             </div>
             <div className="TaskNodes">
@@ -82,4 +85,4 @@ const mapProps = (state) => {
 export default connect(
     mapProps,
     {showAlert}
-)(Sidebar)
+)(SidebarLeft)

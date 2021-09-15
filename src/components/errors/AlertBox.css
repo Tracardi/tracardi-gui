@@ -1,0 +1,21 @@
+.AlertBox {
+    background: #ff5722;
+    color: white;
+    padding: 15px;
+    overflow-x: auto;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: 0.4s;
+    border-radius: 5px;
+}
+
+.AlertBox > .AlertDetails {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    font-size: 120%;
+}

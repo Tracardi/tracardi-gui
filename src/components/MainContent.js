@@ -35,7 +35,7 @@ export default function MainContent({children, style}) {
     const Brand = () => {
         return <span className="Brand">TRACARDI
             <span className="BrandTag">Home for your Customer Data</span>
-            <span className="Version"> v. 0.5.0rc1</span>
+            <span className="Version"> v. 0.6.0rc1</span>
         </span>
     }
 

@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import {Handle} from 'react-flow-renderer';
 import './FlowNode.css';
 import FlowNodeIcons from "./FlowNodeIcons";
+import ExecutionNumber from "./ExecutionNumber";
 
 export default memo (({data}) => {
 
@@ -39,28 +40,13 @@ export default memo (({data}) => {
         }
     }
 
-    const SequenceNumber = ({data}) => {
-
-        const hasError = (calls) => {
-            if(Array.isArray(calls)) {
-                return calls.some((call) => call.error !== null)
-            }
-            return false
-        }
-
-        if(data.debugging?.node?.sequenceNumber) {
-            let status = hasError(data.debugging?.node?.calls) ? " Error": " Ok"
-            return <div className={"SequenceNumber" + status}>{data.debugging.node.sequenceNumber}</div>
-        } else {
-            return ""
-        }
-    }
+    const nodeClass = (data?.metadata?.selected === true) ? "NodePanel DebugNode" : "NodePanel"
 
     return (
         <>
-            <SequenceNumber data={data}/>
+            <ExecutionNumber data={data}/>
             {renderInputs(data?.spec)}
-            <div className="NodePanel">
+            <div className={nodeClass}>
                 <div className="NodeIcon"><FlowNodeIcons icon={data?.metadata?.icon}/></div>
                 <div className="NodeLabel" style={{maxWidth: data?.metadata?.width, maxHeight: data?.metadata?.height}}>
                     {data?.metadata?.name}

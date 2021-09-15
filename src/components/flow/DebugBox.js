@@ -3,39 +3,39 @@ import Tabs, {TabCase} from "../elements/tabs/Tabs";
 import {DebugPortDetails} from "./DebugPortDetails";
 import {NoPortData} from "./NoPortData";
 import ConsoleView from "../elements/misc/ConsoleView";
+import ErrorBox from "../errors/ErrorBox";
 
 export default function DebugBox({call, onTabSelect}) {
-
-    const renderPorts = (messages) => {
+    const renderPorts = (messages, input) => {
         if (messages) {
-            return messages.map((message, index) => {
-                return <DebugPortDetails port={message} key={index}/>
+            return messages.map((result, index) => {
+                return <DebugPortDetails port={result} key={index} input={input}/>
             })
         } else {
-            return <NoPortData />
+            return <NoPortData input={input}/>
         }
     }
 
     const Padder = ({children}) => {
-        return <div style={{height: "calc(100% - 40px)"}}>
+        return <div>
             {children}
         </div>
     }
 
-    return <div style={{height: "calc(100% - 45px)"}}>
-        {call.error && <div className="Errors">{call.error}</div>}
-        {!call.error && <Tabs
+    return <>
+        {call?.error && <ErrorBox>{call.error}</ErrorBox>}
+        {!call?.error && <Tabs
             tabs={["Input", "Output", "Profile"]}
             onTabSelect={onTabSelect}
         >
             <TabCase id={0}>
                 <Padder>
-                    {renderPorts([call?.input?.params])}
+                    {renderPorts([call?.input?.params], true)}
                 </Padder>
             </TabCase>
             <TabCase id={1}>
                 <Padder>
-                    {renderPorts(call?.output?.results)}
+                    {renderPorts(call?.output?.results, false)}
                 </Padder>
             </TabCase>
             <TabCase id={2}>
@@ -44,5 +44,5 @@ export default function DebugBox({call, onTabSelect}) {
                 </Padder>
             </TabCase>
         </Tabs>}
-    </div>
+    </>
 }

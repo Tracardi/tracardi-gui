@@ -21,6 +21,7 @@ export default function SessionsAnalytics() {
     }
 
     return <DataAnalytics
+        label="List of sessions"
         enableFiltering={true}
         type="session"
         detailsLabel="Session details"

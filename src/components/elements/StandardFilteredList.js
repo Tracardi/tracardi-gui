@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {request} from "../../remote_api/uql_api_endpoint";
 import Input from "./forms/inputs/Input";
 import "./StandardFilteredList.css";
-import ErrorBox from "../errors/ErrorBox";
+import ErrorsBox from "../errors/ErrorsBox";
 import CenteredCircularProgress from "./progress/CenteredCircularProgress";
 import Button from "./forms/Button";
 
@@ -45,7 +45,7 @@ export function StandardFilteredList({
                     method: "post",
                     data: {
                         where: searchQuery,
-                        limit: 20
+                        limit: 30
                     }
                 },
                 load,
@@ -79,7 +79,7 @@ export function StandardFilteredList({
 
     const render = () => {
         if (error !== false) {
-            return <ErrorBox errorList={error}/>
+            return <ErrorsBox errorList={error}/>
         } else if (ready !== false) {
             return renderList(ready.data)
         } else if (loading) {

@@ -5,6 +5,10 @@
     display: inline-grid;
     cursor: pointer;
     margin: 1px;
+    width: 40px;
+    height: 40px;
+    align-content: center;
+    justify-content: center;
 }
 
 .IconButtonRegular {

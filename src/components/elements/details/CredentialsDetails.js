@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import "../lists/cards/SourceCard.css";
-import "./SourceDetails.css";
+import "./ResourceDetails.css";
 import "./Details.css";
 import FormHeader from "../misc/FormHeader";
 import ElevatedBox from "../misc/ElevatedBox";
@@ -22,7 +22,7 @@ export default function CredentialDetails({id}) {
         setLoading(true);
         request(
             {
-                url: '/source/' + id,
+                url: '/resource/' + id,
                 method: "GET"
             },
             setLoading,

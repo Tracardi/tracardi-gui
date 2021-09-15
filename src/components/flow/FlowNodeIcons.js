@@ -19,7 +19,6 @@ import {FaRegDotCircle} from "@react-icons/all-files/fa/FaRegDotCircle";
 import {IoIosAttach} from "@react-icons/all-files/io/IoIosAttach";
 import {RiIncreaseDecreaseLine} from "@react-icons/all-files/ri/RiIncreaseDecreaseLine";
 import {IoCloudOutline} from "@react-icons/all-files/io5/IoCloudOutline";
-import {TiWeatherSunny} from "@react-icons/all-files/ti/TiWeatherSunny";
 import {TiFlowSwitch} from "@react-icons/all-files/ti/TiFlowSwitch";
 import {VscCircuitBoard} from "@react-icons/all-files/vsc/VscCircuitBoard";
 import {VscRemove} from "@react-icons/all-files/vsc/VscRemove";
@@ -50,6 +49,17 @@ import {AiOutlineSlack} from "@react-icons/all-files/ai/AiOutlineSlack";
 import {FaDiscord} from "@react-icons/all-files/fa/FaDiscord";
 import {VscTwitter} from "@react-icons/all-files/vsc/VscTwitter";
 import {FaFacebookSquare} from "@react-icons/all-files/fa/FaFacebookSquare";
+import {BiBarChartAlt} from "@react-icons/all-files/bi/BiBarChartAlt";
+import {BiCloudRain} from "@react-icons/all-files/bi/BiCloudRain";
+import {BiTime} from "@react-icons/all-files/bi/BiTime";
+import {MdTimer} from "@react-icons/all-files/md/MdTimer";
+import {RiRestTimeLine} from "@react-icons/all-files/ri/RiRestTimeLine";
+import {SiRedis} from "@react-icons/all-files/si/SiRedis";
+import {VscGlobe} from "@react-icons/all-files/vsc/VscGlobe";
+import {IoIosTimer} from "@react-icons/all-files/io/IoIosTimer";
+import {VscError} from "@react-icons/all-files/vsc/VscError";
+import {SiPostgresql} from "@react-icons/all-files/si/SiPostgresql";
+import {CgCalendarToday} from "@react-icons/all-files/cg/CgCalendarToday";
 
 export default function FlowNodeIcons({icon}) {
 
@@ -70,9 +80,12 @@ export default function FlowNodeIcons({icon}) {
         'plugin': <VscPlug size={20}/>,
         "copy-property": <AiOutlineSisternode size={20} />,
         'location': <FiMapPin size={20} />,
-        'time-schedule': <AiOutlineFieldTime size={20} />,
+        'timer': <MdTimer size={20} />,
         'clock': <BiTimeFive size={20}/>,
+        'sleep': <RiRestTimeLine size={20}/>,
         'time-lapse': <MdTimelapse size={20}/>,
+        'time': <BiTime size={20}/>,
+        'wait': <AiOutlineFieldTime size={20}/>,
         'x': <TiTimes size={20}/>,
         'message-alert': <BiMessageRoundedError size={20}/>,
         'message-ok': <BiMessageRoundedCheck size={20}/>,
@@ -83,7 +96,7 @@ export default function FlowNodeIcons({icon}) {
         'attach': <IoIosAttach size={20}/>,
         'plus-minus': <RiIncreaseDecreaseLine size={20} />,
         'cloud': <IoCloudOutline size={20} />,
-        'weather': <TiWeatherSunny size={20} />,
+        'weather': <BiCloudRain size={20} />,
         'map-properties': <TiFlowSwitch size={20}/>,
         'circut': <VscCircuitBoard size={20}/>,
         'add': <VscAdd size={20}/>,
@@ -107,8 +120,14 @@ export default function FlowNodeIcons({icon}) {
         'discord': <FaDiscord size={20}/>,
         'slack': <AiOutlineSlack size={20}/>,
         'facebook': <FaFacebookSquare size={20}/>,
-        'twitter': <VscTwitter size={20}/>
-
+        'twitter': <VscTwitter size={20}/>,
+        'bar-chart': <BiBarChartAlt size={20}/>,
+        'redis': <SiRedis size={20}/>,
+        'globe': <VscGlobe size={20}/>,
+        'profiler': <IoIosTimer size={20}/>,
+        'error': <VscError size={20}/>,
+        'postgres': <SiPostgresql size={20}/>,
+        'today': <CgCalendarToday size={20}/>
     }
 
     const renderIcon = () => {

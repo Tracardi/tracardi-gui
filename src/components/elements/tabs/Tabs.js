@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./Tabs.css";
 import PropTypes from 'prop-types';
 
@@ -27,6 +27,11 @@ TabCase.propTypes = {
 export default function Tabs({tabs, children, defaultTab, onTabSelect}) {
 
     const [tabId, setTabId] = useState((defaultTab) ? defaultTab : 0);
+
+    useEffect(() => {
+        setTabId((defaultTab))
+    }, [defaultTab])
+
     const onTabClick = (id) => {
         setTabId(id);
         if(onTabSelect) {

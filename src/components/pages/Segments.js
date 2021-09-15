@@ -31,6 +31,7 @@ export default function Segments() {
     }
 
     return <CardBrowser
+        label="Segments"
         urlFunc={urlFunc}
         cardFunc={segments}
         buttomLabel="New segment"

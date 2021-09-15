@@ -19,7 +19,7 @@ import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 
 
-function SourceForm({init, onClose,showAlert}) {
+function ResourceForm({init, onClose,showAlert}) {
 
     if (!init) {
         init = {
@@ -51,7 +51,7 @@ function SourceForm({init, onClose,showAlert}) {
     const onSubmit = (payload) => {
         setProcessing(true);
         request({
-                url: "/source",
+                url: "/resource",
                 method: "post",
                 data: payload
             },
@@ -64,7 +64,7 @@ function SourceForm({init, onClose,showAlert}) {
             (data) => {
                 if (data) {
                     request({
-                            url: '/sources/refresh'
+                            url: '/resources/refresh'
                         },
                         setProcessing,
                         ()=>{},
@@ -77,6 +77,84 @@ function SourceForm({init, onClose,showAlert}) {
                 }
             }
         )
+    }
+
+    const setTypeAndDefineCredentialsTemplate = (type) => {
+        setType(type)
+
+        let template = {}
+
+        switch (type.id)
+        {
+            case "mysql":
+                template = {
+                    host: 'localhost',
+                    port: 3306,
+                    user: null,
+                    password: null,
+                    database: null
+                }
+                break;
+
+            case "postgresql":
+                template = {
+                    host: 'localhost',
+                    port: 5439,
+                    user: null,
+                    password: null,
+                    database: null
+                }
+                break;
+
+            case "redshift":
+                template = {
+                    host: 'localhost',
+                    port: 5439,
+                    user: null,
+                    password: null,
+                    database: null
+                }
+                break;
+
+            case "mongodb":
+                template = {
+                    uri: 'mongodb://127.0.0.1:27017/',
+                    timeout: 5000
+                }
+                break;
+
+            case "rabbitmq":
+                template = {
+                    uri: 'amqp://127.0.0.1:5672//',
+                    timeout: 5,
+                    virtual_host: null,
+                    port: null
+                }
+                break;
+
+            case "smtp-server":
+                template = {
+                    smtp: null,
+                    port: null,
+                    username: null,
+                    password: null
+                }
+                break;
+
+            case "ip-geo-locator":
+                template = {
+                    host: null,
+                    license: null,
+                    accountId: null
+                }
+                break;
+
+            default:
+                template = {}
+        }
+
+        template = JSON.stringify(template, null, '  ')
+        setConfig(template)
     }
 
     const _onSubmit = () => {
@@ -118,39 +196,40 @@ function SourceForm({init, onClose,showAlert}) {
 
     return <Form>
         <Columns>
-            <FormHeader>Source</FormHeader>
+            <FormHeader>Resource</FormHeader>
             <ElevatedBox className="Elevate">
-                <FormSubHeader>Source data origin</FormSubHeader>
-                <FormDescription>Data origin defines what is the primary source of data. Is it event or database
-                    query. </FormDescription>
+                <FormSubHeader>Resource data origin</FormSubHeader>
+                <FormDescription>Data origin defines what is the primary resource of data. Is it event or storage
+                    read or write. </FormDescription>
                 <SelectItems label="Origin" value={origin} onChange={_setOrigin}>
                     <MenuItem value="event">Event</MenuItem>
-                    <MenuItem value="query">Query</MenuItem>
+                    <MenuItem value="read">Read</MenuItem>
+                    <MenuItem value="write">Write</MenuItem>
                 </SelectItems>
 
-                <FormSubHeader>Source type</FormSubHeader>
-                <FormDescription>Source type defines soft of storage or endpoint. </FormDescription>
+                <FormSubHeader>Resource type</FormSubHeader>
+                <FormDescription>Resource type defines soft of storage or endpoint. </FormDescription>
                 <AutoComplete
                     solo={true}
                     disabled={false}
                     error={errorTypeMessage}
-                    placeholder="Source type"
-                    url="/sources/types"
+                    placeholder="Resource type"
+                    url="/resources/types"
                     initValue={type}
-                    onSetValue={setType}
+                    onSetValue={setTypeAndDefineCredentialsTemplate}
                 />
 
                 <FormSubHeader>Consent</FormSubHeader>
-                <FormDescription>Check if this source requires user consent? Web pages
+                <FormDescription>Check if this resource requires user consent? Web pages
                     located in Europe require user consent to comply with GDPR. </FormDescription>
                 <div style={{display: "flex", alignItems: "center"}}>
                     <Switch
                         checked={requiresConsent}
                         onChange={setRequiresConsent}
-                        name="concetRequired"
+                        name="consentRequired"
                     />
                     <span>
-                            This source requires user consent
+                            This resource requires user consent
                         </span>
                 </div>
                 <div style={{display: "flex", alignItems: "center"}}>
@@ -160,7 +239,7 @@ function SourceForm({init, onClose,showAlert}) {
                         name="enabledSource"
                     />
                     <span>
-                        This source is enabled
+                        This resource is enabled
                     </span>
                 </div>
             </ElevatedBox>
@@ -168,22 +247,21 @@ function SourceForm({init, onClose,showAlert}) {
             <FormHeader>Configuration</FormHeader>
             <ElevatedBox>
                 <FormSubHeader>Credentials or Access tokens</FormSubHeader>
-                <FormDescription>This json data will be an encrypted part of source. Please pass here all the
-                    credentials or
-                    access configuration information, such as hostname, port, username and password, etc.
-                    This part can be empty if source does not require authorization.</FormDescription>
+                <FormDescription>This json data will be an encrypted part of resource. Please pass here all the
+                    credentials or access configuration information, such as hostname, port, username and password, etc.
+                    This part can be empty if resource does not require authorization.</FormDescription>
                 <JsonEditor value={config} onChange={setConfig}/>
             </ElevatedBox>
 
             <FormHeader>Description</FormHeader>
             <ElevatedBox>
                 <FormSubHeader>Name</FormSubHeader>
-                <FormDescription>Source name can be any string that
-                    identifies source. Source id is made out of rule
+                <FormDescription>Resource name can be any string that
+                    identifies resource. Resource id is made out of rule
                     name by replacing spaces with hyphens and lowering the string
                 </FormDescription>
                 <TextField
-                    label={"Source name"}
+                    label={"Resource name"}
                     value={name}
                     error={(typeof errorNameMessage !== "undefined" && errorNameMessage !== '' && errorNameMessage !== null )}
                     helperText={errorNameMessage}
@@ -230,4 +308,4 @@ const mapProps = (state) => {
 export default connect(
     mapProps,
     {showAlert}
-)(SourceForm)
+)(ResourceForm)

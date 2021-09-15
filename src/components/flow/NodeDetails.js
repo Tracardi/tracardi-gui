@@ -1,12 +1,10 @@
 import React, {Suspense, useEffect, useState} from "react";
 import './NodeDetails.css';
 import {BsInfoCircle} from "@react-icons/all-files/bs/BsInfoCircle";
-import {VscDebug} from "@react-icons/all-files/vsc/VscDebug";
 import IconButton from "../elements/misc/IconButton";
 import {GoSettings} from "@react-icons/all-files/go/GoSettings";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {VscBook} from "@react-icons/all-files/vsc/VscBook";
-import ActionDebugBox from "./ActionDebugBox";
 import {VscListTree} from "@react-icons/all-files/vsc/VscListTree";
 import ConsoleView from "../elements/misc/ConsoleView";
 import ConfigEditor from "./editors/ConfigEditor";
@@ -15,7 +13,7 @@ import FilterTextField from "../elements/forms/inputs/FilterTextField";
 
 const MdManual = React.lazy(() => import('./actions/MdManual'));
 
-export default function NodeDetails({node, onConfig, onLabelSet, onConnectionDetails}) {
+export default function NodeDetails({node, onConfig, onLabelSet}) {
 
     const [tab, setTab] = useState(0);
 
@@ -41,7 +39,7 @@ export default function NodeDetails({node, onConfig, onLabelSet, onConnectionDet
         }
     }
 
-    return <aside className="NodeDetails">
+    return <div className="NodeDetails">
         <div className="Title">
             <FilterTextField label={null}
                                  initValue={node?.data?.metadata?.name}
@@ -66,12 +64,6 @@ export default function NodeDetails({node, onConfig, onLabelSet, onConnectionDet
                     selected={tab === 2}>
                     <GoSettings size={22}/>
                 </IconButton>}
-                {node?.data?.debugging && <IconButton
-                    label="Debug"
-                    onClick={() => setTab(1)}
-                    selected={tab === 1}>
-                        <VscDebug size={22}/>
-                </IconButton>}
                 <IconButton
                     label="Raw"
                     onClick={() => setTab(3)}
@@ -83,10 +75,6 @@ export default function NodeDetails({node, onConfig, onLabelSet, onConnectionDet
         </div>
         <div className="Pane">
             {tab === 0 && <NodeInfo node={node} onLabelSet={onLabelSet}/>}
-            {tab === 1 && <ActionDebugBox
-                debugging={node?.data?.debugging}
-                onConnectionDetails={onConnectionDetails}
-            />}
             {tab === 2 && node?.data?.spec?.init &&
             <ConfigEditor
                 config={node?.data?.spec?.init}
@@ -98,5 +86,5 @@ export default function NodeDetails({node, onConfig, onLabelSet, onConnectionDet
                 <MdManual mdFile={node?.data?.spec?.manual}/>
             </Suspense>}
         </div>
-    </aside>
+    </div>
 }

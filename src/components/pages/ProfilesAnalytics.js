@@ -10,7 +10,8 @@ export default function ProfilesAnalytics() {
         return {
             url: '/profile/select/range',
             method: "post",
-            data: query
+            data: query,
+            limit: 30
         }
     }
 
@@ -18,7 +19,8 @@ export default function ProfilesAnalytics() {
         return {
             url: '/profile/select/histogram',
             method: "post",
-            data: query
+            data: query,
+            limit: 30
         }
     }
 
@@ -32,6 +34,7 @@ export default function ProfilesAnalytics() {
 
     return <DataAnalytics
         type="profile"
+        label="List of profiles"
         enableFiltering={true}
         detailsLabel="Profile details"
         timeFieldLabel = "last visit"

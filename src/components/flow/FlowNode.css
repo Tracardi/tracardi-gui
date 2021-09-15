@@ -55,6 +55,12 @@ DIV.NodePanel {
     font-size: 14px;
 }
 
+DIV.DebugNode {
+    background-color: #ad1457 !important;
+    border-color: #ad1457 !important;
+    color: white !important;
+}
+
 DIV.NodeIcon {
     width: 24px;
     display: grid;
@@ -65,24 +71,4 @@ DIV.NodeLabel {
     display: flex;
     align-items: center;
     overflow: hidden;
-}
-
-DIV.SequenceNumber {
-    border-radius: 50%;
-    background-color: #999;
-    color: white;
-    padding: 1px 5px;
-    position: absolute;
-    top: -10px;
-    right: 4px;
-    font-size: 70%;
-    display: grid;
-}
-
-DIV.Ok {
-    background-color: #43a047 !important;
-}
-
-DIV.Error {
-    background-color: #d81b60 !important;
 }

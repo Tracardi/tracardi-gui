@@ -13,6 +13,10 @@
   padding: 10px;
 }
 
+.Relative {
+  position:relative;
+}
+
 .ScrollablePaper {
   width: inherit;
   height: 100%;

@@ -1,4 +1,4 @@
-import {isNode} from "react-flow-renderer";
+import {isEdge, isNode} from "react-flow-renderer";
 import {request} from "../../remote_api/uql_api_endpoint";
 
 export function prepareGraph(reactFlowInstance) {
@@ -78,19 +78,80 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                 const flow = reactFlowInstance.toObject();
 
                 flow.elements.map((element) => {
+
+                    element.data = {...element.data,
+                        debugging: {
+                            node: {},
+                            edge: {}
+                        }
+                    }
+
                     if (isNode(element)) {
-                        if (data.data?.debugInfo?.nodes[element.id]) {
-                            element.data = {...element.data, debugging: {
-                                    node: data.data.debugInfo.nodes[element.id]
-                                }
+                        if (data?.data?.debugInfo?.nodes[element.id]) {
+                            element.data.debugging = {
+                                ...element.data.debugging,
+                                node: data.data.debugInfo.nodes[element.id]
                             }
                         } else {
                             delete element.data.debugging
                         }
                     }
+
+                    if (isEdge(element)) {
+                        if(data?.data?.debugInfo?.edges) {
+                            const edge_info = data.data?.debugInfo?.edges[element.id]
+                            if (edge_info) {
+                                element.data.debugging = {
+                                    ...element.data.debugging,
+                                    edge: edge_info
+                                }
+                                if(edge_info.active.includes(false) && !edge_info.active.includes(true)) {
+                                    element.label = "Inactive";
+                                    element.labelStyle = {
+                                        fontSize: 14
+                                    }
+                                    element.animated = false;
+                                    element.style = {
+                                        stroke: '#aaa'
+                                    }
+                                } else if (edge_info.active.includes(true) && !edge_info.active.includes(false)) {
+                                    element.label = null
+                                    // element.label = edge_info.active.toString();
+                                    element.animated = true
+                                    element.style = {};
+                                } else {
+                                    element.label = null
+                                    // element.label = edge_info.active.toString();
+                                    element.animated = true
+                                    element.style = {
+                                        stroke: '#aaa'
+                                    }
+                                }
+                            } else {
+                                // no debug info
+                                element.label = null
+                                element.animated = false
+                                element.style = {
+                                    stroke: '#ddd',
+                                    strokeWidth: 1
+                                };
+                                element.labelStyle = {
+                                    fontSize: 14
+                                }
+                                element.label = "?"
+                            }
+                        }
+                        else {
+                            console.error("DebugInfo.edges missing in server response.")
+                        }
+                    }
+
                     return element;
                 });
-                onReady(flow.elements || []);
+                onReady({
+                    elements: flow.elements || [],
+                    logs: data?.data?.logs
+                });
             }
         }
     )

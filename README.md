@@ -15,14 +15,14 @@ Go to root directory ant build docker image
 Go to root directory ant build docker image
 
 ```
- docker build . -t tracardi-gui
+ docker build . -t tracardi/tracardi-gui:0.6.0
 ```
 
 It may take some time ~ 15min. 
 
 Then
 
-##```docker run -p 8787:80 -e API_URL=http://127.0.0.1:8686 tracardi-gui```
+##```docker run -p 8787:80 -e API_URL=//127.0.0.1:8686 tracardi/tracardi-gui:0.6.0```
 
 It open pot 8787 on your localhost and connects to API at localhost: 8686.
 

@@ -1,0 +1,30 @@
+.ErrorsBox {
+    background: #d81b60;
+    color: white;
+    padding: 15px;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: row;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: 0.4s;
+}
+
+.NotFullErrorBox {
+    border-radius: 15px;
+    margin: 10px;
+}
+
+.ErrorsBox > .ErrorDetails {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.ErrorsBox .ErrorDetails > .Header {
+    font-size: 120%;
+    text-decoration: underline;
+    font-weight: 400;
+    margin-left: 15px;
+}

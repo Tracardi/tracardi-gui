@@ -1,9 +1,9 @@
 import ObjectRow from "./rows/ObjectRow";
-import ErrorBox from "../../errors/ErrorBox";
+import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import React from "react";
 
-const ObjectList = ({data, loading, errors, timeField, timeFieldLabel, timeFieldWidth, filterFields, onLoadDetails, onDetails}) => {
+const ObjectList = ({data, loading, errors, label, timeField, timeFieldLabel, timeFieldWidth, filterFields, onLoadDetails, onDetails}) => {
 
     const widthStyle = (typeof timeFieldWidth !== "undefined")
         ? (timeFieldWidth>0)
@@ -14,7 +14,7 @@ const ObjectList = ({data, loading, errors, timeField, timeFieldLabel, timeField
     const header = (timeFieldLabel, data) => {
         return <div className="Header">
             {widthStyle && <div className="Timestamp">{timeFieldLabel}</div>}
-            <div className="Data">Data - Total {data.total} records</div>
+            <div className="Data">{label} - Total {data.total} records</div>
         </div>
     }
 
@@ -36,9 +36,8 @@ const ObjectList = ({data, loading, errors, timeField, timeFieldLabel, timeField
     }
 
     function render (data, loading, errors, timeField, timeFieldLabel, filterFields, onDetailsRequest) {
-
         if(errors !== false) {
-            return <ErrorBox errorList={errors}/>
+            return <ErrorsBox errorList={errors}/>
         }
 
         if(loading === true) {

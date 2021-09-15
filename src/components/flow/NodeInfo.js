@@ -45,6 +45,18 @@ const NodeInfo = ({node}) => {
                     <td>{node?.data?.spec?.className}</td>
                 </tr>
                 <tr>
+                    <td>Author</td>
+                    <td>{node?.data?.spec?.author}</td>
+                </tr>
+                <tr>
+                    <td>License</td>
+                    <td>{node?.data?.spec?.license}</td>
+                </tr>
+                <tr>
+                    <td>Version</td>
+                    <td>{node?.data?.spec?.version}</td>
+                </tr>
+                <tr>
                     <td>Config</td>
                     <td><Properties properties={node?.data?.spec?.init}/></td>
                 </tr>

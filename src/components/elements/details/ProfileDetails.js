@@ -4,13 +4,13 @@ import {ObjectInspector} from "react-inspector";
 import "../lists/cards/SourceCard.css";
 import "./RuleDetails.css";
 import {MiniHeader} from "../Headers";
-import DetailHeader from "./DetailHeader";
 import "./Details.css";
 import Properties from "./DetailProperties";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import DataBrowsingList from "../../pages/DataBrowsingList";
 import LineChartElement from "../charts/LineChart";
 import PropTypes from "prop-types";
+import PiiDetails from "./PiiDetails";
 
 export default function ProfileDetails({data}) {
 
@@ -23,7 +23,7 @@ export default function ProfileDetails({data}) {
             }
         },
         where: 'profile.id="' + data.id + '"',
-        limit: 10
+        limit: 30
     }
 
     const encodeParams = () => {
@@ -68,17 +68,11 @@ export default function ProfileDetails({data}) {
     }
 
     return <div style={{height: "inherit"}}>
-        <DetailHeader label={data.id}/>
+        <PiiDetails pii={data.pii}/>
         <div className="RightTabScroller">
 
-            <Tabs tabs={["Personal Data","Traits", "Segments", "Events", "Sessions", "Raw"]}>
+            <Tabs tabs={["Traits", "Segments", "Events", "Sessions", "Raw"]}>
                 <TabCase id={0}>
-                    <div className="Box10">
-                        <MiniHeader>Personal Information</MiniHeader>
-                        <Properties properties={data.pii}/>
-                    </div>
-                </TabCase>
-                <TabCase id={1}>
                     <div className="Box10">
                         <MiniHeader>Private</MiniHeader>
                         <Properties properties={data.traits.private}/>
@@ -86,13 +80,14 @@ export default function ProfileDetails({data}) {
                         <Properties properties={data.traits.public}/>
                     </div>
                 </TabCase>
-                <TabCase id={2}>
+                <TabCase id={1}>
                     <div className="Box10">
                         <Properties properties={data.segments}/>
                     </div>
                 </TabCase>
-                <TabCase id={3}>
+                <TabCase id={2}>
                     <DataBrowsingList
+                        label="List of Profiles"
                         onLoadDataRequest={onLoadEventDataRequest}
                         timeFieldLabel="timestamp"
                         filterFields={['metadata.time.utc']}
@@ -103,8 +98,9 @@ export default function ProfileDetails({data}) {
                                           columns={[{label: "events", color: "#039be5", stackId: "events"}]}/>
                     </DataBrowsingList>
                 </TabCase>
-                <TabCase id={4}>
+                <TabCase id={3}>
                     <DataBrowsingList
+                        label="List of Sessions"
                         onLoadDataRequest={onLoadSessionDataRequest}
                         timeFieldLabel="timestamp"
                         filterFields={['metadata.time.utc']}
@@ -115,7 +111,7 @@ export default function ProfileDetails({data}) {
                                           columns={[{label: "events", color: "#039be5", stackId: "events"}]}/>
                     </DataBrowsingList>
                 </TabCase>
-                <TabCase id={5}>
+                <TabCase id={4}>
                     <div className="Box10">
                         <ObjectInspector data={data} theme={theme} expandLevel={3}/>
                     </div>

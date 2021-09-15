@@ -1,28 +1,16 @@
 import React from "react";
 import "./ErrorBox.css";
-import {FiAlertTriangle} from "@react-icons/all-files/fi/FiAlertTriangle";
+import {VscError} from "@react-icons/all-files/vsc/VscError";
 
-export default function ErrorBox({errorList, fillWidth}) {
+export default function ErrorBox({children}) {
 
-    const visual = (typeof fillWidth === "undefined") ? "ErrorBox NotFullErrorBox" : "ErrorBox";
+    return <div className="ErrorBox">
+        <div>
+            <VscError size={25}/>
+        </div>
+        <pre className="ErrorDetails">
+            {children}
+        </pre>
+    </div>
 
-    const displayErrors = (errorLst) => errorLst.map(({msg, loc, type}, index)=>{
-        return <li key={index} title={loc}>{msg} [{type}]</li>
-    })
-
-    const displayBox = (errorLst) => {
-        if(errorLst) {
-            return <div className={visual}>
-                <FiAlertTriangle size={50}/>
-                <section className="ErrorDetails">
-                    <div className="Header">The following errors occurred:</div>
-                    <ul className="ErrorList">
-                        {errorLst && displayErrors(errorLst)}
-                    </ul>
-                </section>
-            </div>
-        }
-    }
-
-    return displayBox(errorList)
 }

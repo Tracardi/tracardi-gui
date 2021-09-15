@@ -2,7 +2,7 @@ import Chip from "@material-ui/core/Chip";
 import React from "react";
 import {VscError} from "@react-icons/all-files/vsc/VscError";
 import {AiOutlinePlayCircle} from "@react-icons/all-files/ai/AiOutlinePlayCircle";
-import ErrorBox from "../../../errors/ErrorBox";
+import ErrorsBox from "../../../errors/ErrorsBox";
 
 function ThenChips({actions, onDelete}) {
 
@@ -40,7 +40,7 @@ function ThenChips({actions, onDelete}) {
                 }
             );
         } else {
-            return <ErrorBox errorList={[{msg: "Artions is not array", type: "Exception"}]}/>
+            return <ErrorsBox errorList={[{msg: "Artions is not array", type: "Exception"}]}/>
         }
     }
 

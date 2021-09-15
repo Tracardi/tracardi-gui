@@ -8,6 +8,7 @@ import BarChartElement from "../elements/charts/BarChart";
 export default function DataAnalytics(
     {
         type,
+        label,
         onLoadDataRequest,
         onLoadHistogramRequest,
         onLoadDetails,
@@ -92,7 +93,7 @@ export default function DataAnalytics(
         minDate: getSavedData(type, "DateFrom"),
         maxDate: getSavedData(type, "DateTo"),
         where: getQuery(type, "Query"),
-        limit: 10
+        limit: 30
     }));
 
     useEffect(() => {
@@ -117,7 +118,7 @@ export default function DataAnalytics(
             minDate: from,
             maxDate: to,
             where: where,
-            limit: 10
+            limit: 30
         }))
     }
 
@@ -142,6 +143,7 @@ export default function DataAnalytics(
 
         <div className="Data">
             <DataBrowsingList
+                label={label}
                 onLoadDataRequest={onLoadDataRequest}
                 onLoadHistogramRequest={onLoadHistogramRequest}
                 onLoadDetails={onLoadDetails}

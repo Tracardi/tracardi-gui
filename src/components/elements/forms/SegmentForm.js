@@ -34,7 +34,7 @@ function SegmentForm({onSubmit, init, showAlert}) {
     const [condition, setCondition] = useState(init.condition);
     const [nameErrorMessage, setNameErrorMessage] = useState(null);
     const [conditionErrorMessage, setConditionErrorMessage] = useState(null);
-    const [enabled, setEnabled] = useState(false);
+    const [enabled, setEnabled] = useState(init.enabled);
     const [processing, setProcessing] = useState(false);
     const [type, setType] = useState(init.eventType);
 

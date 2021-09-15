@@ -1,0 +1,14 @@
+.SidebarRight {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    z-index: 50;
+    width: 640px;
+    padding: 0;
+    background-color: rgba(235, 235, 235, 0.85);
+    height: calc(100% - 30px);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    border: rgba(220, 220, 220, 1) 1px solid;
+}

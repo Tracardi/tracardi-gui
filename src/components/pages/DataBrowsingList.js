@@ -4,6 +4,7 @@ import DetailsObjectList from "../elements/lists/DetailsObjectList";
 
 export default function DataBrowsingList(
     {
+        label,
         children,
         onLoadDataRequest,
         onLoadDetails,
@@ -17,19 +18,21 @@ export default function DataBrowsingList(
     }) {
 
     return <section>
-            <div>
-                {children}
-            </div>
-            <div>
-                <DetailsObjectList onLoadRequest={onLoadDataRequest(initQuery)}
-                                   onLoadDetails={onLoadDetails}
-                                   filterFields={filterFields}
-                                   timeField={timeField}
-                                   timeFieldLabel={timeFieldLabel}
-                                   displayDetails={displayDetails}
-                                   detailsDrawerWidth={detailsDrawerWidth}
-                                   detailsLabel={detailsLabel}
-                />
-            </div>
-        </section>
+        <div>
+            {children}
+        </div>
+        <div>
+            <DetailsObjectList
+                label={label}
+                onLoadRequest={onLoadDataRequest(initQuery)}
+                onLoadDetails={onLoadDetails}
+                filterFields={filterFields}
+                timeField={timeField}
+                timeFieldLabel={timeFieldLabel}
+                displayDetails={displayDetails}
+                detailsDrawerWidth={detailsDrawerWidth}
+                detailsLabel={detailsLabel}
+            />
+        </div>
+    </section>
 }
