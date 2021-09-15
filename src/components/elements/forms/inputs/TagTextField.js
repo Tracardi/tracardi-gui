@@ -30,7 +30,7 @@ export default function TagTextForm({label, placeholder, defaultTags, tags, onCh
 
     const handleChange = (ev, value, reason) => {
         if (reason === 'create-option') {
-            confirm({ title:"Project does not exists!", description: 'Do you want it to be created?' })
+            confirm({ title:"Tag does not exist!", description: 'Do you want it to be created?' })
                 .then(() => {
                     request({
                             url: '/project',

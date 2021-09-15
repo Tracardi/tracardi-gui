@@ -6,7 +6,7 @@ import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import LogsList from "../../flow/LogsList";
 
 const ProfileLogDetails = ({profileId, sessionProfileId, showAlert}) => {
-    console.log(profileId)
+
     const [logData, setLogData] = useState(null);
     const [loading, setLoading] = useState(false);
 
