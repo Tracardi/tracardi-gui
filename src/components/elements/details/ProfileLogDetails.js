@@ -5,16 +5,29 @@ import {showAlert} from "../../../redux/reducers/alertSlice";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import LogsList from "../../flow/LogsList";
 
-const ProfileLogDetails = ({profileId, showAlert}) => {
+const ProfileLogDetails = ({profileId, sessionProfileId, showAlert}) => {
     console.log(profileId)
     const [logData, setLogData] = useState(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if(profileId !== null && typeof profileId !== 'undefined') {
+        let id = null;
+        if(profileId === null || typeof profileId === 'undefined') {
+
+            if(sessionProfileId !== null && typeof sessionProfileId !== 'undefined') {
+                id = sessionProfileId
+            }
+
+            showAlert({message: "This event has no profile attached. That means the profile was deleted.", type: "warning", hideAfter: 4000});
+
+        } else {
+            id = profileId
+        }
+
+        if(id !== null) {
             setLoading(true);
             request({
-                    url: "/profile/logs/" + profileId,
+                    url: "/profile/logs/" + id,
                 },
                 setLoading,
                 (e) => {
@@ -31,10 +44,8 @@ const ProfileLogDetails = ({profileId, showAlert}) => {
                         setLogData(response.data);
                     }
                 })
-        } else {
-            showAlert({message: "This event has no profile attached. That means the profile could be deleted.", type: "warning", hideAfter: 4000});
         }
-    }, [profileId, showAlert]);
+    }, [profileId, sessionProfileId, showAlert]);
 
     if(loading) {
         return <CenteredCircularProgress/>
