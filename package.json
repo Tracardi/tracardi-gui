@@ -29,6 +29,8 @@
     "@react-icons/all-files": "^4.1.0",
     "@reduxjs/toolkit": "^1.5.0",
     "@szhsin/react-menu": "^1.10.1",
+    "@uiw/react-heat-map": "^1.4.6",
+    "@uiw/react-tooltip": "^4.9.7",
     "ace-builds": "^1.4.12",
     "axios": "^0.21.0",
     "dot-object": "^2.1.4",

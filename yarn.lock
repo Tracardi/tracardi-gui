@@ -2465,6 +2465,46 @@
     "@typescript-eslint/types" "4.28.3"
     eslint-visitor-keys "^2.0.0"
 
+"@uiw/react-heat-map@^1.4.6":
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/@uiw/react-heat-map/-/react-heat-map-1.4.6.tgz#4c9b1d3bba02f92f63fb98ac1afcf9eda9cbbcd8"
+  integrity sha512-ycqP2liHUG9ONZsB6SfSgLVqphn1nVZ6v2bgU/WE2Z8AJAHOhPm8MuAQp6Kqc6c5OXXqBNOzzkcGAKiFqMZ+zg==
+
+"@uiw/react-overlay-trigger@^4.9.7":
+  version "4.9.7"
+  resolved "https://registry.yarnpkg.com/@uiw/react-overlay-trigger/-/react-overlay-trigger-4.9.7.tgz#6c724d9ca34089fe198e397eb81e543c34472a4f"
+  integrity sha512-PDP48H9/yYoxRKH/xHUr6ib1rpl/3ogXTpscEJo0U2XFGPsxRM2MLma/Pr2gB5f542PeBPux2H6mEtucFZMSVA==
+  dependencies:
+    "@uiw/react-overlay" "^4.9.7"
+    "@uiw/utils" "^4.9.7"
+
+"@uiw/react-overlay@^4.9.7":
+  version "4.9.7"
+  resolved "https://registry.yarnpkg.com/@uiw/react-overlay/-/react-overlay-4.9.7.tgz#208d34b99dcc466ccc87c28e6cc67632cf1cea47"
+  integrity sha512-BRFWkPPOiy6Mc66ldApaFLnNhqwZucw6un7sDgUSCG12n23iqNZCIc1QS3EboqAq58HMA1TD/L7po6i3ipM/XQ==
+  dependencies:
+    "@uiw/react-portal" "^4.9.7"
+    "@uiw/utils" "^4.9.7"
+    react-transition-group "^4.4.2"
+
+"@uiw/react-portal@^4.9.7":
+  version "4.9.7"
+  resolved "https://registry.yarnpkg.com/@uiw/react-portal/-/react-portal-4.9.7.tgz#2347c0b5cb18e15c238c9a2c24d2d1b5988dde0e"
+  integrity sha512-dg7fFGW/Vh/yORemPMuGeBvrUsj3o4SgYlb05GiKc9BTkQsuu/0nR8YodtoUD6W9FeO2tdsELar7beZybGJPkg==
+
+"@uiw/react-tooltip@^4.9.7":
+  version "4.9.7"
+  resolved "https://registry.yarnpkg.com/@uiw/react-tooltip/-/react-tooltip-4.9.7.tgz#ee27b2299357ebf01c2e8f3cf61ed68de5ac6850"
+  integrity sha512-afpoPDz3IoXrMKh7/G6LhwZoBGWG2t/LmRGWE0KVCh0vgKSha014To1wQfI9oV5UHgZD560IVOWUUszA9m6Wrw==
+  dependencies:
+    "@uiw/react-overlay-trigger" "^4.9.7"
+    "@uiw/utils" "^4.9.7"
+
+"@uiw/utils@^4.9.7":
+  version "4.9.7"
+  resolved "https://registry.yarnpkg.com/@uiw/utils/-/utils-4.9.7.tgz#982fd12b594fb5ad2bc5c9bacd9f3d74f9aa5b9b"
+  integrity sha512-4W+SWnSVhPPjmmngb7XXENBb9YEXECPk7vUe4751f3HLS1ikimitJ5Q0lo6q/z7zdO787ayi1hpFWylnQIFfxg==
+
 "@webassemblyjs/ast@1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.9.0.tgz#bd850604b4042459a5a41cd7d338cbed695ed964"
@@ -10285,7 +10325,7 @@ react-transition-group@^1.2.0:
     prop-types "^15.5.6"
     warning "^3.0.0"
 
-react-transition-group@^4.4.0:
+react-transition-group@^4.4.0, react-transition-group@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.2.tgz#8b59a56f09ced7b55cbd53c36768b922890d5470"
   integrity sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==
