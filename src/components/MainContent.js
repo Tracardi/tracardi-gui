@@ -91,7 +91,7 @@ export default function MainContent({children, style}) {
                         </MenuItem>
                     </MenuIcon>
                     <MenuIcon icon={<FiMoreHorizontal size={30}/>} label="Settings" direction="bottom">
-                        <MenuItem onClick={() => alert("Not implemented yet")}>
+                        <MenuItem onClick={go("/settings")}>
                             <VscSettingsGear size={20} style={{marginRight: 8}}/>Settings
                         </MenuItem>
                         <MenuItem onClick={() => setOpenAbout(true)}>
