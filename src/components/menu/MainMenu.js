@@ -16,6 +16,7 @@ import {BsLightning} from "@react-icons/all-files/bs/BsLightning";
 import {BsGear} from "@react-icons/all-files/bs/BsGear";
 import {VscJson} from "@react-icons/all-files/vsc/VscJson";
 import {VscAdd} from "@react-icons/all-files/vsc/VscAdd";
+import {VscRunAll} from "@react-icons/all-files/vsc/VscRunAll";
 
 export default function MainMenu() {
 
@@ -55,17 +56,20 @@ export default function MainMenu() {
                 <MenuItem onClick={go("/setup/flow-actions")}>
                     <VscPlug size={20} style={{marginRight: 8}}/> Action plugins
                 </MenuItem>
+                <MenuItem onClick={go("/setup/instances")}>
+                    <VscRunAll size={20} style={{marginRight: 8}}/> Running instances
+                </MenuItem>
             </MenuIcon>
             <MenuIcon icon={<VscOrganization size={25}/>} label="Segments">
                 <MenuItem onClick={go("/setup/segments")}>
                     <VscOrganization size={20} style={{marginRight: 8}}/> Segments
                 </MenuItem>
             </MenuIcon>
-            <MenuIcon icon={<VscAdd size={25}/>} label="Segments">
-                <MenuItem onClick={go("/setup/process")}>
-                    <VscAdd size={20} style={{marginRight: 8}}/> Add process
-                </MenuItem>
-            </MenuIcon>
+            {/*<MenuIcon icon={<VscAdd size={25}/>} label="Segments">*/}
+            {/*    <MenuItem onClick={go("/setup/process")}>*/}
+            {/*        <VscAdd size={20} style={{marginRight: 8}}/> Add process*/}
+            {/*    </MenuItem>*/}
+            {/*</MenuIcon>*/}
         </div>
         <div>
 

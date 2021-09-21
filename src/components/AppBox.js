@@ -16,6 +16,7 @@ import Credentials from "./pages/Credentials";
 import Segments from "./pages/Segments";
 import FlowReader from "./flow/FlowReader";
 import '@szhsin/react-menu/dist/index.css';
+import Instances from "./pages/Instances";
 
 const AppBox = () => {
 
@@ -42,8 +43,6 @@ const AppBox = () => {
                 <SessionsAnalytics/>
             </PrivateRoute>
 
-
-
             <PrivateRoute exact path={urlPrefix("")} roles={["admin"]}>
 
             </PrivateRoute>
@@ -68,6 +67,10 @@ const AppBox = () => {
             </PrivateRoute>
             <PrivateRoute path={urlPrefix("/setup/segments")} roles={["admin"]}>
                 <Segments/>
+            </PrivateRoute>
+
+            <PrivateRoute path={urlPrefix("/setup/instances")} roles={["admin"]}>
+                <Instances/>
             </PrivateRoute>
 
             <PrivateRoute path={urlPrefix("/setup/credentials")} roles={["admin"]}>
