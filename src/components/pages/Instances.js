@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { request } from "../../remote_api/uql_api_endpoint";
-import ObjectList from "../elements/lists/ObjectList";
+import AutoLoadObjectList from "../elements/lists/AutoLoadObjectList";
 
 export default function Instances() {
   const [data, setData] = useState(null);
+  const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState(null);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
+    console.log("Instance page is", page);
     request(
       {
         url: "/instances",
@@ -21,23 +24,39 @@ export default function Instances() {
       }, // runs on error
       (response) => {
         // on response ready
-        if (response) {
-          console.log(response.data);
-          setData(response.data);
+        if (response && page < 7) {
+          console.log("RESPONSE RECEIVED");
+          const data = {
+            ...response.data,
+            result: [
+              ...response.data.result,
+              ...response.data.result,
+              ...response.data.result,
+              ...response.data.result,
+            ],
+          };
+          setData(data);
+          setRows([...rows, ...data.result]);
+
+          console.log("data", data);
+          console.log("rows", rows);
         }
       }
     );
-  }, [loading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, page]);
 
   if (data) {
     return (
-      <ObjectList
+      <AutoLoadObjectList
         data={data}
+        allRows={rows}
         label="INSTANCES"
         errors={errors}
         loading={loading}
         timeField={(row) => [row.timestamp]}
         timeFieldLabel="Timestamp"
+        setPage={setPage}
       />
     );
   }
