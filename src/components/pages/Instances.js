@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { request } from "../../remote_api/uql_api_endpoint";
 import ErrorsBox from "../errors/ErrorsBox";
 import AutoLoadObjectList from "../elements/lists/AutoLoadObjectList";
@@ -8,7 +8,7 @@ export default function Instances() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState(null);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     request(
@@ -16,14 +16,11 @@ export default function Instances() {
         url: `/instances/page/${page}`,
         method: "GET",
       },
-      (l) => {
-        setLoading(l);
-      }, // sets l=true when loading, l=false when ready
+      setLoading,
       (e) => {
         setErrors(e);
-      }, // runs on error
+      },
       (response) => {
-        // on response ready
         if (response) {
           setData(response.data);
           setRows([...rows, ...response.data.result]);

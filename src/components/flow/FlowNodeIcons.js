@@ -60,6 +60,8 @@ import {IoIosTimer} from "@react-icons/all-files/io/IoIosTimer";
 import {VscError} from "@react-icons/all-files/vsc/VscError";
 import {SiPostgresql} from "@react-icons/all-files/si/SiPostgresql";
 import {CgCalendarToday} from "@react-icons/all-files/cg/CgCalendarToday";
+import {IoIosContact} from "@react-icons/all-files/io/IoIosContact";
+import {BiParagraph} from "@react-icons/all-files/bi/BiParagraph";
 
 export default function FlowNodeIcons({icon}) {
 
@@ -127,7 +129,9 @@ export default function FlowNodeIcons({icon}) {
         'profiler': <IoIosTimer size={20}/>,
         'error': <VscError size={20}/>,
         'postgres': <SiPostgresql size={20}/>,
-        'today': <CgCalendarToday size={20}/>
+        'today': <CgCalendarToday size={20}/>,
+        'fullcontact': <IoIosContact size={20}/>,
+        'paragraph': <BiParagraph size={20}/>
     }
 
     const renderIcon = () => {
