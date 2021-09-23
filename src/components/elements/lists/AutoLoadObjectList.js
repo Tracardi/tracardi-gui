@@ -23,11 +23,10 @@ const AutoLoadObjectList = ({
     const offset = window.innerHeight / 2;
 
     const page = Math.round(target.scrollTop / offset) + 1;
-    console.log("page", page);
+
     if (page > totalPages) {
       setTotalPages(page);
       setPage(totalPages);
-      console.log("totalPages is now", totalPages);
     }
   };
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { request } from "../../remote_api/uql_api_endpoint";
+import ErrorsBox from "../errors/ErrorsBox";
 import AutoLoadObjectList from "../elements/lists/AutoLoadObjectList";
 
 export default function Instances() {
@@ -10,10 +11,9 @@ export default function Instances() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    console.log("Instance page is", page);
     request(
       {
-        url: "/instances",
+        url: `/instances/page/${page}`,
         method: "GET",
       },
       (l) => {
@@ -24,22 +24,9 @@ export default function Instances() {
       }, // runs on error
       (response) => {
         // on response ready
-        if (response && page < 7) {
-          console.log("RESPONSE RECEIVED");
-          const data = {
-            ...response.data,
-            result: [
-              ...response.data.result,
-              ...response.data.result,
-              ...response.data.result,
-              ...response.data.result,
-            ],
-          };
-          setData(data);
-          setRows([...rows, ...data.result]);
-
-          console.log("data", data);
-          console.log("rows", rows);
+        if (response) {
+          setData(response.data);
+          setRows([...rows, ...response.data.result]);
         }
       }
     );
@@ -62,7 +49,7 @@ export default function Instances() {
   }
 
   if (errors) {
-    return "ERROR";
+    return <ErrorsBox errorList={errors} />;
   }
 
   return null;
