@@ -1,7 +1,6 @@
 import ObjectRow from "./rows/ObjectRow";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import { useState } from "react";
 
 const AutoLoadObjectList = ({
   data,
@@ -15,18 +14,13 @@ const AutoLoadObjectList = ({
   filterFields,
   onLoadDetails,
   onDetails,
-  setPage,
+  setParentPageState,
+  parentPageState,
 }) => {
-  const [totalPages, setTotalPages] = useState(0);
-
   const handleScroll = ({ target }) => {
-    const offset = window.innerHeight / 2;
-
-    const page = Math.round(target.scrollTop / offset) + 1;
-
-    if (page > totalPages) {
-      setTotalPages(page);
-      setPage(totalPages);
+    const bottom = target.scrollHeight - target.scrollTop === target.clientHeight;
+    if (bottom) {
+      setParentPageState(parentPageState + 1);
     }
   };
 

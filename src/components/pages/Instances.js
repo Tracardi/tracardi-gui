@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { request } from "../../remote_api/uql_api_endpoint";
 import ErrorsBox from "../errors/ErrorsBox";
 import AutoLoadObjectList from "../elements/lists/AutoLoadObjectList";
+import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 
 export default function Instances() {
   const [data, setData] = useState(null);
@@ -28,7 +29,11 @@ export default function Instances() {
       }
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading, page]);
+  }, [page]);
+
+  if (loading) {
+    return <CenteredCircularProgress />;
+  }
 
   if (data) {
     return (
@@ -40,7 +45,8 @@ export default function Instances() {
         loading={loading}
         timeField={(row) => [row.timestamp]}
         timeFieldLabel="Timestamp"
-        setPage={setPage}
+        setParentPageState={setPage}
+        parentPageState={page}
       />
     );
   }
