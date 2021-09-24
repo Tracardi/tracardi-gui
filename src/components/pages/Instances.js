@@ -10,24 +10,29 @@ export default function Instances() {
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState(null);
   const [page, setPage] = useState(0);
+  const [endOfData, setEndOfData] = useState(false);
 
   useEffect(() => {
-    request(
-      {
-        url: `/instances/page/${page}`,
-        method: "GET",
-      },
-      setLoading,
-      (e) => {
-        setErrors(e);
-      },
-      (response) => {
-        if (response) {
-          setData(response.data);
-          setRows([...rows, ...response.data.result]);
+    !endOfData &&
+      request(
+        {
+          url: `/instances/page/${page}`,
+          method: "GET",
+        },
+        setLoading,
+        (e) => {
+          setErrors(e);
+        },
+        (response) => {
+          if (response) {
+            if (response.data.result.length === 0) {
+              setEndOfData(true);
+            }
+            setData(response.data);
+            setRows([...rows, ...response.data.result]);
+          }
         }
-      }
-    );
+      );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
@@ -47,6 +52,7 @@ export default function Instances() {
         timeFieldLabel="Timestamp"
         setParentPageState={setPage}
         parentPageState={page}
+        endOfData={endOfData}
       />
     );
   }
