@@ -1,7 +1,7 @@
 import ObjectRow from "./rows/ObjectRow";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const AutoLoadObjectList = ({
   data,
@@ -15,18 +15,37 @@ const AutoLoadObjectList = ({
   filterFields,
   onLoadDetails,
   onDetails,
-  setPage,
+  setParentPageState,
+  parentPageState,
+  endOfData,
 }) => {
-  const [totalPages, setTotalPages] = useState(0);
+  const objectListRef = useRef(null);
+
+  const pageFilled = (rows) => {
+    let totalHeight = 0;
+    Array.from(rows).forEach((row) => {
+      totalHeight += row.clientHeight;
+    });
+
+    const parentHeight = objectListRef.current.clientHeight;
+
+    return totalHeight > parentHeight;
+  };
+
+  const [pageIsFilled, setPageIsFilled] = useState(false);
+
+  useEffect(() => {
+    setPageIsFilled(pageFilled(objectListRef.current.children));
+    if (!pageIsFilled && !endOfData) {
+      setParentPageState(parentPageState + 1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [endOfData, pageIsFilled]);
 
   const handleScroll = ({ target }) => {
-    const offset = window.innerHeight / 2;
-
-    const page = Math.round(target.scrollTop / offset) + 1;
-
-    if (page > totalPages) {
-      setTotalPages(page);
-      setPage(totalPages);
+    const bottom = target.scrollHeight - target.scrollTop === target.clientHeight;
+    if (bottom && !endOfData) {
+      setParentPageState(parentPageState + 1);
     }
   };
 
@@ -78,7 +97,7 @@ const AutoLoadObjectList = ({
     } else {
       if (data) {
         return (
-          <div className="ObjectList" style={{ overflow: "scroll" }} onScroll={handleScroll}>
+          <div className="ObjectList" style={{ overflow: "scroll" }} onScroll={handleScroll} ref={objectListRef}>
             {header(timeFieldLabel, data, onDetailsRequest)}
             {rows(timeField, filterFields, allRows, onDetailsRequest, onDetails)}
           </div>
