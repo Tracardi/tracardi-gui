@@ -22,13 +22,28 @@ const AutoLoadObjectList = ({
   const objectListRef = useRef(null);
 
   useEffect(()=>{
-    console.log( objectListRef.current.getBoundingClientRect() )
-  }, [])
+    const childrenHeight = (rows) => {
+      let totalHeight = 0;
+      Array.from(rows).forEach((row) => {
+        totalHeight += row.clientHeight;
+      });
+      return totalHeight
+    };
+
+    const height = Math.ceil(objectListRef.current.getBoundingClientRect().height)
+    if(height >= childrenHeight(objectListRef.current.children)) {
+      console.log("fill");
+    }
+
+    console.log( objectListRef.current.getBoundingClientRect().height )
+    console.log( objectListRef.current.clientHeight)
+  }, [parentPageState])
 
   const handleScroll = ({ target }) => {
     const bottom = target.scrollHeight - Math.ceil(target.scrollTop) - 1 <= target.clientHeight;
-    console.log(parentPageState)
+
     if (bottom && !endOfData) {
+      console.log("page",parentPageState)
       setParentPageState(parentPageState + 1);
     }
   };
