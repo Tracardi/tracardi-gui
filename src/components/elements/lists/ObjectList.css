@@ -4,6 +4,11 @@
     height: inherit;
     width: inherit;
     padding: 10px;
+    border-bottom: 2px transparent solid;
+}
+
+.EndOfList {
+    border-bottom: 2px #006db3 solid !important;
 }
 
 .ObjectList > .Header {

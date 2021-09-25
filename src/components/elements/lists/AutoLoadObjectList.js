@@ -21,29 +21,9 @@ const AutoLoadObjectList = ({
 }) => {
   const objectListRef = useRef(null);
 
-  const pageFilled = (rows) => {
-    let totalHeight = 0;
-    Array.from(rows).forEach((row) => {
-      totalHeight += row.clientHeight;
-    });
-
-    const parentHeight = objectListRef.current.clientHeight;
-
-    return totalHeight > parentHeight;
-  };
-
-  const [pageIsFilled, setPageIsFilled] = useState(false);
-
-  useEffect(() => {
-    setPageIsFilled(pageFilled(objectListRef.current.children));
-    if (!pageIsFilled && !endOfData) {
-      setParentPageState(parentPageState + 1);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [endOfData, pageIsFilled]);
-
   const handleScroll = ({ target }) => {
-    const bottom = target.scrollHeight - target.scrollTop === target.clientHeight;
+    const bottom = target.scrollHeight - Math.ceil(target.scrollTop) - 1 <= target.clientHeight;
+    console.log(parentPageState)
     if (bottom && !endOfData) {
       setParentPageState(parentPageState + 1);
     }
@@ -97,7 +77,7 @@ const AutoLoadObjectList = ({
     } else {
       if (data) {
         return (
-          <div className="ObjectList" style={{ overflow: "scroll" }} onScroll={handleScroll} ref={objectListRef}>
+          <div className={endOfData===false ? "ObjectList" : "ObjectList EndOfList"} style={{ overflow: "scroll" }} onScroll={handleScroll} ref={objectListRef}>
             {header(timeFieldLabel, data, onDetailsRequest)}
             {rows(timeField, filterFields, allRows, onDetailsRequest, onDetails)}
           </div>
