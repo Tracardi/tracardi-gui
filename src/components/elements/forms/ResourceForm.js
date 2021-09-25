@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import AutoComplete from "./AutoComplete";
 import Button from "./Button";
 import TextField from "@material-ui/core/TextField";
@@ -12,14 +12,12 @@ import Rows from "../misc/Rows";
 import Form from "../misc/Form";
 import FormHeader from "../misc/FormHeader";
 import JsonEditor from "../misc/JsonEditor";
-import MenuItem from "@material-ui/core/MenuItem";
-import SelectItems from "./SelectItems";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 
 
-function ResourceForm({init, onClose,showAlert}) {
+function ResourceForm({init, onClose, showAlert}) {
 
     if (!init) {
         init = {
@@ -27,7 +25,6 @@ function ResourceForm({init, onClose,showAlert}) {
             type: {name: "", id: ""},
             description: "",
             config: {},
-            origin: "event",
             consent: false,
             enabled: false
         }
@@ -37,12 +34,26 @@ function ResourceForm({init, onClose,showAlert}) {
     const [enabledSource, setEnabledSource] = useState(init?.enabled);
     const [type, setType] = useState(init?.type);
     const [name, setName] = useState(init?.name);
-    const [origin, setOrigin] = useState(init?.origin)
     const [description, setDescription] = useState(init?.description);
     const [errorTypeMessage, setTypeErrorMessage] = useState('');
     const [errorNameMessage, setNameErrorMessage] = useState('');
     const [config, setConfig] = useState(JSON.stringify(init?.config, null, '  '));
     const [processing, setProcessing] = useState(false);
+    const [credentialTypes, setCredentialTypes] = useState({});
+
+    useEffect(() => {
+        request(
+            {url: "/resources/type/configuration"},
+            () => {
+            },
+            () => {},
+            (response) => {
+                if (response) {
+                    setCredentialTypes(response.data.result)
+                }
+            }
+        )
+    }, [])
 
     const setRequiresConsent = (ev) => {
         _setRequiresConsent(ev.target.checked)
@@ -57,7 +68,7 @@ function ResourceForm({init, onClose,showAlert}) {
             },
             setProcessing,
             (e) => {
-                if(e) {
+                if (e) {
                     showAlert({message: e[0].msg, type: "error", hideAfter: 5000});
                 }
             },
@@ -67,8 +78,9 @@ function ResourceForm({init, onClose,showAlert}) {
                             url: '/resources/refresh'
                         },
                         setProcessing,
-                        ()=>{},
-                        ()=>{
+                        () => {
+                        },
+                        () => {
                             if (onClose) {
                                 onClose(data)
                             }
@@ -82,79 +94,11 @@ function ResourceForm({init, onClose,showAlert}) {
     const setTypeAndDefineCredentialsTemplate = (type) => {
         setType(type)
 
-        let template = {}
-
-        switch (type.id)
-        {
-            case "mysql":
-                template = {
-                    host: 'localhost',
-                    port: 3306,
-                    user: null,
-                    password: null,
-                    database: null
-                }
-                break;
-
-            case "postgresql":
-                template = {
-                    host: 'localhost',
-                    port: 5439,
-                    user: null,
-                    password: null,
-                    database: null
-                }
-                break;
-
-            case "redshift":
-                template = {
-                    host: 'localhost',
-                    port: 5439,
-                    user: null,
-                    password: null,
-                    database: null
-                }
-                break;
-
-            case "mongodb":
-                template = {
-                    uri: 'mongodb://127.0.0.1:27017/',
-                    timeout: 5000
-                }
-                break;
-
-            case "rabbitmq":
-                template = {
-                    uri: 'amqp://127.0.0.1:5672//',
-                    timeout: 5,
-                    virtual_host: null,
-                    port: null
-                }
-                break;
-
-            case "smtp-server":
-                template = {
-                    smtp: null,
-                    port: null,
-                    username: null,
-                    password: null
-                }
-                break;
-
-            case "ip-geo-locator":
-                template = {
-                    host: null,
-                    license: null,
-                    accountId: null
-                }
-                break;
-
-            default:
-                template = {}
+        if(type?.id in credentialTypes) {
+            let template = credentialTypes[type.id]
+            template = JSON.stringify(template, null, '  ')
+            setConfig(template)
         }
-
-        template = JSON.stringify(template, null, '  ')
-        setConfig(template)
     }
 
     const _onSubmit = () => {
@@ -179,7 +123,6 @@ function ResourceForm({init, onClose,showAlert}) {
                 name: name,
                 description: description,
                 type: type.name,
-                origin: origin,
                 config: (config === "") ? {} : JSON.parse(config),
                 consent: requiresConsent,
                 enabled: enabledSource
@@ -190,23 +133,10 @@ function ResourceForm({init, onClose,showAlert}) {
         }
     }
 
-    const _setOrigin = (ev) => {
-        setOrigin(ev.target.value)
-    }
-
     return <Form>
         <Columns>
             <FormHeader>Resource</FormHeader>
             <ElevatedBox className="Elevate">
-                <FormSubHeader>Resource data origin</FormSubHeader>
-                <FormDescription>Data origin defines what is the primary resource of data. Is it event or storage
-                    read or write. </FormDescription>
-                <SelectItems label="Origin" value={origin} onChange={_setOrigin}>
-                    <MenuItem value="event">Event</MenuItem>
-                    <MenuItem value="read">Read</MenuItem>
-                    <MenuItem value="write">Write</MenuItem>
-                </SelectItems>
-
                 <FormSubHeader>Resource type</FormSubHeader>
                 <FormDescription>Resource type defines soft of storage or endpoint. </FormDescription>
                 <AutoComplete
@@ -214,7 +144,7 @@ function ResourceForm({init, onClose,showAlert}) {
                     disabled={false}
                     error={errorTypeMessage}
                     placeholder="Resource type"
-                    url="/resources/types"
+                    url="/resources/type/name"
                     initValue={type}
                     onSetValue={setTypeAndDefineCredentialsTemplate}
                 />
@@ -263,7 +193,7 @@ function ResourceForm({init, onClose,showAlert}) {
                 <TextField
                     label={"Resource name"}
                     value={name}
-                    error={(typeof errorNameMessage !== "undefined" && errorNameMessage !== '' && errorNameMessage !== null )}
+                    error={(typeof errorNameMessage !== "undefined" && errorNameMessage !== '' && errorNameMessage !== null)}
                     helperText={errorNameMessage}
                     onChange={(ev) => {
                         setName(ev.target.value)

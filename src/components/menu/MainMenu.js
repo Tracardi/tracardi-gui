@@ -15,7 +15,8 @@ import {BsPerson} from "@react-icons/all-files/bs/BsPerson";
 import {BsLightning} from "@react-icons/all-files/bs/BsLightning";
 import {BsGear} from "@react-icons/all-files/bs/BsGear";
 import {VscJson} from "@react-icons/all-files/vsc/VscJson";
-import {VscRunAll} from "@react-icons/all-files/vsc/VscRunAll";
+import {AiOutlineFieldTime} from "@react-icons/all-files/ai/AiOutlineFieldTime";
+import {VscVmRunning} from "@react-icons/all-files/vsc/VscVmRunning";
 
 export default function MainMenu() {
 
@@ -56,7 +57,10 @@ export default function MainMenu() {
                     <VscPlug size={20} style={{marginRight: 8}}/> Action plugins
                 </MenuItem>
                 <MenuItem onClick={go("/setup/instances")}>
-                    <VscRunAll size={20} style={{marginRight: 8}}/> Running instances
+                    <VscVmRunning size={20} style={{marginRight: 8}}/> Running instances
+                </MenuItem>
+                <MenuItem onClick={go("/setup/tasks")}>
+                    <AiOutlineFieldTime size={20} style={{marginRight: 8}}/> Scheduled tasks
                 </MenuItem>
             </MenuIcon>
             <MenuIcon icon={<VscOrganization size={25}/>} label="Segments">

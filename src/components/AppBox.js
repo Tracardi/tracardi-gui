@@ -18,6 +18,7 @@ import FlowReader from "./flow/FlowReader";
 import '@szhsin/react-menu/dist/index.css';
 import Instances from "./pages/Instances";
 import Settings from "./pages/Settings";
+import Tasks from "./pages/Tasks";
 
 const AppBox = () => {
 
@@ -72,6 +73,10 @@ const AppBox = () => {
 
             <PrivateRoute path={urlPrefix("/setup/instances")} roles={["admin"]}>
                 <Instances/>
+            </PrivateRoute>
+
+            <PrivateRoute path={urlPrefix("/setup/tasks")} roles={["admin"]}>
+                <Tasks/>
             </PrivateRoute>
 
             <PrivateRoute path={urlPrefix("/settings")} roles={["admin"]}>
