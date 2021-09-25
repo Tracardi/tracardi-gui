@@ -22,8 +22,8 @@ const AutoLoadObjectList = ({
   const objectListRef = useRef(null);
 
   useEffect(()=>{
-    console.log( objectListRef.getBoundingClientRect() )
-  }, [objectListRef])
+    console.log( objectListRef.current.getBoundingClientRect() )
+  }, [])
 
   const handleScroll = ({ target }) => {
     const bottom = target.scrollHeight - Math.ceil(target.scrollTop) - 1 <= target.clientHeight;
