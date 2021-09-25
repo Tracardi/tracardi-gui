@@ -1,7 +1,7 @@
 import ObjectRow from "./rows/ObjectRow";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import { useEffect, useRef, useState } from "react";
+import React from "react";
 
 const AutoLoadObjectList = ({
   data,
@@ -19,31 +19,11 @@ const AutoLoadObjectList = ({
   parentPageState,
   endOfData,
 }) => {
-  const objectListRef = useRef(null);
-
-  useEffect(()=>{
-    const childrenHeight = (rows) => {
-      let totalHeight = 0;
-      Array.from(rows).forEach((row) => {
-        totalHeight += row.clientHeight;
-      });
-      return totalHeight
-    };
-
-    const height = Math.ceil(objectListRef.current.getBoundingClientRect().height)
-    if(height >= childrenHeight(objectListRef.current.children)) {
-      console.log("fill");
-    }
-
-    console.log( objectListRef.current.getBoundingClientRect().height )
-    console.log( objectListRef.current.clientHeight)
-  }, [parentPageState])
 
   const handleScroll = ({ target }) => {
     const bottom = target.scrollHeight - Math.ceil(target.scrollTop) - 1 <= target.clientHeight;
 
     if (bottom && !endOfData) {
-      console.log("page",parentPageState)
       setParentPageState(parentPageState + 1);
     }
   };
@@ -96,7 +76,9 @@ const AutoLoadObjectList = ({
     } else {
       if (data) {
         return (
-          <div className={endOfData===false ? "ObjectList" : "ObjectList EndOfList"} style={{ overflow: "scroll" }} onScroll={handleScroll} ref={objectListRef}>
+          <div className={endOfData===false ? "ObjectList" : "ObjectList EndOfList"}
+               style={{ overflow: "scroll" }}
+               onScroll={handleScroll}>
             {header(timeFieldLabel, data, onDetailsRequest)}
             {rows(timeField, filterFields, allRows, onDetailsRequest, onDetails)}
           </div>
