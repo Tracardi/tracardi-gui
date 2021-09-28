@@ -1,8 +1,8 @@
 import React, {useCallback} from "react";
 import SquareCard from "../elements/lists/cards/SquareCard";
-import {VscPlug} from "@react-icons/all-files/vsc/VscPlug";
 import PluginForm from "../elements/forms/PluginForm";
 import CardBrowser from "../elements/lists/CardBrowser";
+import FlowNodeIcons from "../flow/FlowNodeIcons";
 
 export default function ActionPlugins() {
 
@@ -17,7 +17,7 @@ export default function ActionPlugins() {
                     {plugs.map((row, subIndex) => {
                         return <SquareCard key={index+"-"+subIndex}
                                            id={row?.id}
-                                           icon={<VscPlug size={45}/>}
+                                           icon={<FlowNodeIcons icon={row?.plugin?.metadata?.icon} size={45}/>}
                                            status={row?.settings?.enabled}
                                            name={row?.plugin?.metadata?.name}
                                            description={row?.plugin?.metadata?.desc}

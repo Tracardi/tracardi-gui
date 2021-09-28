@@ -11,7 +11,7 @@
     padding: 10px;
     border-radius: 15px;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     font-size: 120%;
     font-weight: 400;
     position: relative;
@@ -44,6 +44,7 @@
 
 .SquareCard .icon {
     margin: 10px;
+    color: #666666;
 }
 
 .SquareCard .enabled {
