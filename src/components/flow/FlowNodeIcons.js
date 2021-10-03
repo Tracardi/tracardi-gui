@@ -62,6 +62,8 @@ import {SiPostgresql} from "@react-icons/all-files/si/SiPostgresql";
 import {CgCalendarToday} from "@react-icons/all-files/cg/CgCalendarToday";
 import {IoIosContact} from "@react-icons/all-files/io/IoIosContact";
 import {BiParagraph} from "@react-icons/all-files/bi/BiParagraph";
+import {IoPush} from "@react-icons/all-files/io5/IoPush";
+import {AiOutlineSplitCells} from "@react-icons/all-files/ai/AiOutlineSplitCells";
 
 export default function FlowNodeIcons({icon, size=20}) {
 
@@ -131,7 +133,9 @@ export default function FlowNodeIcons({icon, size=20}) {
         'postgres': <SiPostgresql size={size}/>,
         'today': <CgCalendarToday size={size}/>,
         'fullcontact': <IoIosContact size={size}/>,
-        'paragraph': <BiParagraph size={size}/>
+        'paragraph': <BiParagraph size={size}/>,
+        "pushover": <IoPush size={size}/>,
+        'splitter':<AiOutlineSplitCells size={size}/>
     }
 
     const renderIcon = () => {
