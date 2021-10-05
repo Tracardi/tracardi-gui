@@ -17,11 +17,11 @@ export default function DataBrowsingList(
         detailsLabel
     }) {
 
-    return <section>
+    return <section style={{height: '100%'}}>
         <div>
             {children}
         </div>
-        <div>
+        <div style={{height: '100%'}}>
             <DetailsObjectList
                 label={label}
                 onLoadRequest={onLoadDataRequest(initQuery)}

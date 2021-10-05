@@ -1,13 +1,7 @@
-import ObjectRow from "./rows/ObjectRow";
-import ErrorsBox from "../../errors/ErrorsBox";
-import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import React from "react";
+import { useState } from "react";
+import AutoLoadObjectRows from "./AutoLoadObjectRows";
 
 const AutoLoadObjectList = ({
-  data,
-  allRows,
-  loading,
-  errors,
   label,
   timeField,
   timeFieldLabel,
@@ -15,17 +9,16 @@ const AutoLoadObjectList = ({
   filterFields,
   onLoadDetails,
   onDetails,
-  setParentPageState,
-  parentPageState,
-  endOfData,
+  onLoadRequest,
 }) => {
+  const [shown, setShown] = useState(0);
+  const [total, setTotal] = useState(0);
 
-  const handleScroll = ({ target }) => {
-    const bottom = target.scrollHeight - Math.ceil(target.scrollTop) - 1 <= target.clientHeight;
+  // useEffect(() => {
+  //   }, [onLoadRequest])
 
-    if (bottom && !endOfData) {
-      setParentPageState(parentPageState + 1);
-    }
+  const endOfData = () => {
+    return shown >= total;
   };
 
   const widthStyle =
@@ -35,61 +28,36 @@ const AutoLoadObjectList = ({
         : false
       : {};
 
-  const header = (timeFieldLabel, data) => {
+  const header = (timeFieldLabel) => {
     return (
       <div className="Header">
         {widthStyle && <div className="Timestamp">{timeFieldLabel}</div>}
         <div className="Data">
-          {label} - Total {data.total} records
+          {label} - Showing {shown} of {total} total records
         </div>
       </div>
     );
   };
 
-  const rows = (timeField, filterFields, allRows, onDetailsRequest, onDetails) => {
-    if (Array.isArray(allRows)) {
-      return allRows.map((row, index) => {
-        return (
-          <ObjectRow
-            key={index}
-            row={row}
-            timeField={timeField}
-            timeFieldWidth={timeFieldWidth}
-            filterFields={filterFields}
-            onClick={() => {
-              onDetails(row.id);
-            }}
-            displayDetailButton={typeof onDetailsRequest !== "undefined"}
-          />
-        );
-      });
-    }
-  };
-
-  function render(data, loading, errors, timeField, timeFieldLabel, filterFields, onDetailsRequest) {
-    if (errors !== false) {
-      return <ErrorsBox errorList={errors} />;
-    }
-
-    if (loading === true) {
-      return <CenteredCircularProgress />;
-    } else {
-      if (data) {
-        return (
-          <div className={endOfData===false ? "ObjectList" : "ObjectList EndOfList"}
-               style={{ overflow: "scroll" }}
-               onScroll={handleScroll}>
-            {header(timeFieldLabel, data, onDetailsRequest)}
-            {rows(timeField, filterFields, allRows, onDetailsRequest, onDetails)}
-          </div>
-        );
-      } else {
-        return "";
-      }
-    }
+  function render(timeField, timeFieldLabel, filterFields, onDetailsRequest) {
+    return (
+      <div className={!endOfData() ? "ObjectList" : "ObjectList EndOfList"}>
+        {header(timeFieldLabel)}
+        <AutoLoadObjectRows
+          timeField={timeField}
+          filterFields={filterFields}
+          onDetails={onDetails}
+          onDetailsRequest={onDetailsRequest}
+          shown={shown}
+          setShown={setShown}
+          setTotal={setTotal}
+          onLoadRequest={onLoadRequest}
+          endOfData={endOfData}
+        />
+      </div>
+    );
   }
-
-  return render(data, loading, errors, timeField, timeFieldLabel, filterFields, onLoadDetails, onDetails);
+  return render(timeField, timeFieldLabel, filterFields, onLoadDetails, onDetails);
 };
 
 export default AutoLoadObjectList;

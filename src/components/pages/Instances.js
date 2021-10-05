@@ -10,10 +10,8 @@ export default function Instances() {
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState(null);
   const [page, setPage] = useState(0);
-  const [endOfData, setEndOfData] = useState(false);
 
   useEffect(() => {
-    !endOfData &&
       request(
         {
           url: `/instances/page/${page}`,
@@ -25,9 +23,7 @@ export default function Instances() {
         },
         (response) => {
           if (response) {
-            if (response.data.result.length === 0) {
-              setEndOfData(true);
-            }
+            
             setData(response.data);
             setRows([...rows, ...response.data.result]);
           }
@@ -52,7 +48,6 @@ export default function Instances() {
         timeFieldLabel="Timestamp"
         setParentPageState={setPage}
         parentPageState={page}
-        endOfData={endOfData}
       />
     );
   }

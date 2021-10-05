@@ -8,5 +8,4 @@
     display: flex;
     flex-direction: column;
     height: calc(100% - 45px);
-    overflow-y: scroll;
 }
