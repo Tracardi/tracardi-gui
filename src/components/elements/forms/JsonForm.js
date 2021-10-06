@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useCallback, useEffect} from "react";
 import TextField from "@material-ui/core/TextField";
 import AutoComplete from "./AutoComplete";
 import Button from "./Button";
+import "./JsonForm.css";
 
 
 const label2Component = (label, id) => {
@@ -21,7 +22,17 @@ const label2Component = (label, id) => {
 
 function TextInput({id, onChange, label, value, error}) {
 
-    const [inputValue, setInputValue] = React.useState(value);
+    const [inputValue, setInputValue] = React.useState(value || "");
+
+    const cachedOnChange = useCallback((id, value) => {
+        if (typeof (onChange) != "undefined") {
+            onChange(id, value);
+        }
+    }, [onChange])
+
+    useEffect(() => {
+        cachedOnChange(id, value);
+    }, [id, value, cachedOnChange])
 
     const handleChange = (event) => {
         if (typeof (onChange) != "undefined") {
@@ -32,17 +43,29 @@ function TextInput({id, onChange, label, value, error}) {
     };
 
     return <TextField id={id}
-                   label={label}
-                   value={inputValue}
-                   onChange={handleChange}
-                   error={error}
-                   variant="outlined"
-                   size="small"
-        />
+                      label={label}
+                      value={inputValue}
+                      onChange={handleChange}
+                      error={error}
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+    />
 }
 
 function TextAreaInput({id, onChange, label, value, error}) {
-    const [inputValue, setInputValue] = React.useState(value);
+
+    const [inputValue, setInputValue] = React.useState(value || "");
+
+    const cachedOnChange = useCallback((id, value) => {
+        if (typeof (onChange) != "undefined") {
+            onChange(id, value);
+        }
+    }, [onChange])
+
+    useEffect(() => {
+        cachedOnChange(id, value);
+    }, [id, value, cachedOnChange])
 
     const handleChange = (event) => {
         if (typeof (onChange) != "undefined") {
@@ -59,6 +82,7 @@ function TextAreaInput({id, onChange, label, value, error}) {
                       error={error}
                       variant="outlined"
                       multiline
+                      fullWidth
                       rows={4}
     />
 }
@@ -67,7 +91,9 @@ const ResourceSelect = ({id, onChange, value, disabled = false, placeholder = "R
 
     const handleChange = (event) => {
         if (typeof (onChange) != "undefined") {
-            onChange(id, event.target.value);
+            if (event !== null) {
+                onChange(id, event.id);
+            }
         }
     };
 
@@ -75,7 +101,7 @@ const ResourceSelect = ({id, onChange, value, disabled = false, placeholder = "R
                          solo={false}
                          placeholder={placeholder}
                          url="/resources"
-        // initValue={{"id":"", "name": ""}}
+                         initValue={{"id": "", "name": ""}}
                          onSetValue={handleChange}
                          onDataLoaded={
                              (result) => {
@@ -104,71 +130,75 @@ export default function JsonForm() {
     const schema = {
         form: {
             title: "Form title",
-            groups: {
-                "group1": {
+            groups: [
+                {
+                    "name": "Grupa",
+                    "description": "Group description",
+                },
+                {
+                    "name": "Grupa",
                     "description": "Group description",
                     "fields": [
                         {
-                            "copy.traits.to": {
-                                "component": {
-                                    "type": "text",
-                                    "props": {
-                                        "label": "test",
-                                        "style": {
-                                            "margin": 10
-                                        },
-                                        "required": true,
-                                        "value": "xxx"
-                                    }
-                                },
-                                "name": "Copy traits to",
-                                "description": "Field description",
-                                "validation": {
-                                    "regex": "^[a-zA-Z0–9 ]+$",
-                                    "message": "Only contain alphanumeric characters allowed"
+                            "id": "id1",
+                            "component": {
+                                "type": "text",
+                                "props": {
+                                    "label": "source",
+                                    "style": {
+                                        "margin": 10
+                                    },
+                                    "required": true,
+
                                 }
+                            },
+                            "name": "Copy traits to",
+                            "description": "Field description",
+                            "validation": {
+                                "regex": "^[a-zA-Z0–9 ]+$",
+                                "message": "Only contain alphanumeric characters allowed"
+                            }
+
+                        },
+                        {
+                            "id": "id2",
+                            "component": {
+                                "type": "textarea",
+                                "props": {
+                                    "label": "test",
+                                    "style": {
+                                        "margin": 10
+                                    },
+                                    "required": true,
+                                    "value": "xxx"
+                                }
+                            },
+                            "name": "Copy traits to",
+                            "description": "Field description",
+                            "validation": {
+                                "regex": "^[a-zA-Z0–9 ]+$",
+                                "message": "Only contain alphanumeric characters allowed"
                             }
                         },
                         {
-                            "copy.aaa.to": {
-                                "component": {
-                                    "type": "textarea",
-                                    "props": {
-                                        "label": "test",
-                                        "style": {
-                                            "margin": 10
-                                        },
-                                        "required": true,
-                                        "value": "xxx"
-                                    }
-                                },
-                                "name": "Copy traits to",
-                                "description": "Field description",
-                                "validation": {
-                                    "regex": "^[a-zA-Z0–9 ]+$",
-                                    "message": "Only contain alphanumeric characters allowed"
+                            "id": "id3",
+                            "component": {
+                                "type": "resources",
+                                "props": {
+                                    "required": true,
                                 }
+                            },
+                            "name": "Copy traits from",
+                            "description": "Field description",
+                            "validation": {
+                                "regex": "^[a-zA-Z0–9 ]+$",
+                                "message": "Only contain alphanumeric characters allowed"
                             }
-                        },
-                        {
-                            "copy.traits.from": {
-                                "component": {
-                                    "type": "resources",
-                                    "props": {
-                                        "required": true,
-                                    }
-                                },
-                                "name": "Copy traits from",
-                                "description": "Field description",
-                                "validation": {
-                                    "regex": "^[a-zA-Z0–9 ]+$",
-                                    "message": "Only contain alphanumeric characters allowed"
-                                }
-                            }
+
                         }
                     ]
                 }
-            }
+            ]
         },
 
     };
@@ -185,9 +215,12 @@ export default function JsonForm() {
         return ""
     }
 
-    const Name = ({text}) => {
+    const Name = ({text, isFirst = false}) => {
         if (typeof text != 'undefined') {
-            return <h2>{text}</h2>
+            if (isFirst === true) {
+                return <h3 style={{marginTop: 0}}>{text}</h3>
+            }
+            return <h3>{text}</h3>
         }
         return ""
     }
@@ -201,33 +234,28 @@ export default function JsonForm() {
 
     const Fields = ({fields}) => {
 
-        const Fld = ({fields}) => {
-            return fields.map((fieldSchema, key) => {
-                return objMap(fieldSchema, (fieldName, fieldDetails) => {
-                    const component = fieldDetails?.component?.type
-                    const props = fieldDetails?.component?.props
-                    if (typeof component != "undefined") {
-                        const componentCallable = label2Component(component, fieldName)
-                        return <div key={fieldName}>
-                            <Name text={fieldDetails.name}/>
-                            <Description text={fieldDetails.description}/>
-                            {componentCallable(props, onChange)}
-                        </div>
-                    }
-                })[0]
-            })
-        }
-
-        return <Fld fields={fields.fields}/>
+        return fields.map((fieldObject, key) => {
+            const fieldName = fieldObject.id
+            const component = fieldObject.component?.type
+            const props = fieldObject.component?.props
+            if (typeof component != "undefined") {
+                const componentCallable = label2Component(component, fieldName)
+                return <div key={fieldName + key}>
+                    <Name text={fieldObject.name} isFirst={key === 0}/>
+                    <Description text={fieldObject.description}/>
+                    {componentCallable(props, onChange)}
+                </div>
+            }
+        })
     }
 
     const Groups = ({groups}) => {
 
-        return objMap(groups, (groupName, fields) => {
-            return <section key={groupName}>
-                {groupName}
-                <Description text={fields.description}/>
-                <Fields fields={fields}/>
+        return groups.map((groupObject, idx) => {
+            return <section key={idx}>
+                {groupObject.name && <h2>{groupObject.name}</h2>}
+                {groupObject.description && <Description text={groupObject.description}/>}
+                {groupObject.fields && <Fields fields={groupObject.fields}/>}
             </section>
         })
     }
@@ -236,7 +264,7 @@ export default function JsonForm() {
         console.log(formValues)
     }
 
-    return <form>
+    return <form className="JsonForm">
         <Title title={schema.form?.title}/>
         <Groups groups={schema.form?.groups}/>
         <Button onClick={handleSubmit} label="Submit"/>
