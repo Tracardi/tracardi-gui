@@ -1,49 +1,22 @@
-import { useEffect, useState, useRef, useLayoutEffect } from "react";
-import { request } from "../../../remote_api/uql_api_endpoint";
+import {connect, useDispatch} from "react-redux";
+import {increasePage} from "../../../redux/reducers/pagingSlice";
 import ObjectRow from "./rows/ObjectRow";
-import ErrorsBox from "../../errors/ErrorsBox";
-import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+
 
 const AutoLoadObjectRows = ({
   timeField,
   timeFieldWidth,
   filterFields,
   onDetails,
-  onLoadRequest,
-  setTotal,
-  shown,
-  setShown,
   onDetailsRequest,
-  endOfData,
+  paging,
+  rows
 }) => {
-  const [page, setPage] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [rows, setRows] = useState([]);
-  const [scrollPos, setScrollPos] = useState(0);
-  const rowsContainer = useRef(null);
 
-  useEffect(() => {
-    const rebuildUrl = (url) => {
-      const urlToArr = url.split("/");
-      urlToArr.length = 4;
-      return `${urlToArr.join("/")}/page/${page}`;
-    };
-    onLoadRequest.url = rebuildUrl(onLoadRequest.url);
-    request(onLoadRequest, setLoading, setError, (response) => {
-      if (response) {
-        setTotal(response.data.total);
-        setShown(shown + response.data.result.length);
-        setRows([...rows, ...response.data.result]);
-      }
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
 
-  useLayoutEffect(() => {
-    rowsContainer.current.scrollTop = scrollPos;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const dispatch = useDispatch()
+  const { shown, total, type, refreshOn} = paging;
+  
 
   const buildRows = (rows) => {
     if (Array.isArray(rows)) {
@@ -62,33 +35,28 @@ const AutoLoadObjectRows = ({
           />
         );
       });
-    } else {
-      return setError("Incorrect Data Format");
-    }
+    } 
   };
 
   const handleScroll = ({ target }) => {
     const bottom = target.scrollHeight - Math.ceil(target.scrollTop) - 1 <= target.clientHeight;
-
-    if (bottom && !endOfData()) {
-      setPage(page + 1);
-      setScrollPos(target.scrollTop);
+  
+    if (bottom && shown < total && !refreshOn) {
+      dispatch(increasePage())
     }
   };
 
-  if (loading) {
-    return <CenteredCircularProgress />;
-  }
-
-  if (error) {
-    return <ErrorsBox errorList={error} />;
-  }
-
   return (
-    <div style={{ overflow: "scroll" }} onScroll={handleScroll} ref={rowsContainer}>
-      {rows.length > 0 && buildRows(rows)}
+    <div style={{ overflow: "scroll", height: 'calc(100% - 250px)' }} onScroll={handleScroll}>
+      {buildRows(rows)}
     </div>
   );
 };
 
-export default AutoLoadObjectRows;
+const mapState = state => {
+  return {
+    paging: state.pagingReducer
+  }
+}
+
+export default connect(mapState)(AutoLoadObjectRows);

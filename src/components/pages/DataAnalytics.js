@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from "react";
+import {useDispatch} from 'react-redux';
+import {resetPage, setRefreshOn, setRefreshOff} from "../../redux/reducers/pagingSlice";
 import "./DataAnalytics.css";
 import ObjectFiltering from "../elements/forms/ObjectFiltering";
 import moment from "moment";
 import DataBrowsingList from "./DataBrowsingList";
 import BarChartElement from "../elements/charts/BarChart";
 
-export default function DataAnalytics(
+export default function DataAnalytics (
     {
         type,
         label,
@@ -19,6 +21,7 @@ export default function DataAnalytics(
         detailsDrawerWidth,
         filterFields
     }) {
+    const dispatch = useDispatch();
 
     const getQuery = (type, label) => {
         const key = type + label
@@ -95,14 +98,17 @@ export default function DataAnalytics(
         where: getQuery(type, "Query"),
         limit: 30
     }));
-
     useEffect(() => {
         let timer;
         if (refresh > 0) {
+            dispatch(resetPage({type}));
+            dispatch(setRefreshOn());
             timer = setInterval(
                 () => setQuery(encodeParams(query)),
                 refresh * 1000
             );
+        } else {
+            dispatch(setRefreshOff());
         }
 
         return () => {

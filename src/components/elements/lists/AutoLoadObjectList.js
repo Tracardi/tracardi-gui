@@ -1,5 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { request } from "../../../remote_api/uql_api_endpoint";
+import { updateCounts} from "../../../redux/reducers/pagingSlice";
 import AutoLoadObjectRows from "./AutoLoadObjectRows";
+import { connect, useDispatch } from "react-redux";
+import ErrorsBox from "../../errors/ErrorsBox";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 
 const AutoLoadObjectList = ({
   label,
@@ -10,16 +15,34 @@ const AutoLoadObjectList = ({
   onLoadDetails,
   onDetails,
   onLoadRequest,
+  paging,
 }) => {
-  const [shown, setShown] = useState(0);
-  const [total, setTotal] = useState(0);
+  
+  const { page, shown, total } = paging;
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   }, [onLoadRequest])
+  useEffect(() => {
+    const rebuildUrl = (url) => {
+      const urlToArr = url.split("/");
+      urlToArr.length = 4;
+      return `${urlToArr.join("/")}/page/${page}`;
+    };
+    onLoadRequest.url = rebuildUrl(onLoadRequest.url);
 
-  const endOfData = () => {
-    return shown >= total;
-  };
+    if (total === 0 || page > 0) {
+      request(onLoadRequest, setLoading, setError, (response) => {
+        if (response) {
+          dispatch(updateCounts({ total: response.data.total, shown: response.data.result.length }));
+
+          setRows(page === 0 ? [...response.data.result] : [...rows, ...response.data.result]);
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, total]);
 
   const widthStyle =
     typeof timeFieldWidth !== "undefined"
@@ -29,11 +52,18 @@ const AutoLoadObjectList = ({
       : {};
 
   const header = (timeFieldLabel) => {
+    let rowCountText = '';
+    if(total === 0) { 
+      rowCountText = 'Loading...'
+    } else {
+      rowCountText = `Showing ${shown} of ${total} total records`
+    }
+
     return (
       <div className="Header">
         {widthStyle && <div className="Timestamp">{timeFieldLabel}</div>}
         <div className="Data">
-          {label} - Showing {shown} of {total} total records
+          {label} - {rowCountText}
         </div>
       </div>
     );
@@ -41,23 +71,34 @@ const AutoLoadObjectList = ({
 
   function render(timeField, timeFieldLabel, filterFields, onDetailsRequest) {
     return (
-      <div className={!endOfData() ? "ObjectList" : "ObjectList EndOfList"}>
+      <div className={shown < total ? "ObjectList" : "ObjectList EndOfList"}>
         {header(timeFieldLabel)}
         <AutoLoadObjectRows
           timeField={timeField}
           filterFields={filterFields}
           onDetails={onDetails}
           onDetailsRequest={onDetailsRequest}
-          shown={shown}
-          setShown={setShown}
-          setTotal={setTotal}
-          onLoadRequest={onLoadRequest}
-          endOfData={endOfData}
+          rows={rows}
         />
       </div>
     );
   }
+
+  if (loading) {
+    return <CenteredCircularProgress />;
+  }
+
+  if (error) {
+    return <ErrorsBox errorList={error} />;
+  }
+
   return render(timeField, timeFieldLabel, filterFields, onLoadDetails, onDetails);
 };
 
-export default AutoLoadObjectList;
+const mapState = (state) => {
+  return {
+    paging: state.pagingReducer,
+  };
+};
+
+export default connect(mapState)(AutoLoadObjectList);
