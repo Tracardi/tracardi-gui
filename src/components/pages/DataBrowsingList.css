@@ -1,0 +1,9 @@
+.DataBrowsingList {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 200px auto
+}
+
+.DataBrowsingList > .Data {
+    padding: 5px 0;
+}

@@ -1,5 +1,6 @@
 import React from "react";
 import "./DataAnalytics.css";
+import "./DataBrowsingList.css";
 import DetailsObjectList from "../elements/lists/DetailsObjectList";
 
 export default function DataBrowsingList(
@@ -17,11 +18,11 @@ export default function DataBrowsingList(
         detailsLabel
     }) {
 
-    return <section>
+    return <section className="DataBrowsingList">
         <div>
             {children}
         </div>
-        <div>
+        <div className="Data">
             <DetailsObjectList
                 label={label}
                 onLoadRequest={onLoadDataRequest(initQuery)}
