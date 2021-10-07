@@ -3,22 +3,116 @@ import TextField from "@material-ui/core/TextField";
 import AutoComplete from "./AutoComplete";
 import Button from "./Button";
 import "./JsonForm.css";
+import MenuItem from "@material-ui/core/MenuItem";
 
 
-const label2Component = (label, id) => {
+const label2Component = (label, id, value, onChange) => {
 
     switch (label) {
         case "resources":
-            return (props, onChange) => <ResourceSelect id={id} onChange={onChange}/>
+            return (props) => <ResourceSelect id={id} value={value} onChange={onChange}/>
+        case "dotPath":
+            return (props) => <DotPathInput id={id} value={value} onChange={onChange} {...props}/>
         case "text":
-            return (props, onChange) => <TextInput id={id} onChange={onChange} {...props}/>
+            return (props) => <TextInput id={id} value={value} onChange={onChange} {...props}/>
+        case "number":
+            return (props) => <NumberInput id={id} value={value} onChange={onChange} {...props}/>
         case "textarea":
-            return (props, onChange) => <TextAreaInput id={id} onChange={onChange} {...props}/>
+            return (props) => <TextAreaInput id={id} value={value} onChange={onChange} {...props}/>
         default:
-            return (props, onChange) => ""
+            return (props) => ""
     }
 }
 
+function DotPathInput({id, onChange, label, value, error}) {
+
+    let [sourceValue, pathValue] = value ? value.split('@') : ["", ""]
+    if(typeof pathValue === 'undefined' && sourceValue) {
+        pathValue = sourceValue
+        sourceValue = ''
+    }
+
+    const [path, setPath] = React.useState(pathValue || "");
+    const [source, setSource] = React.useState(sourceValue || "");
+
+    const sources = [
+        {
+            value: '',
+            label: '',
+        },
+        {
+            value: 'payload',
+            label: 'payload',
+        },
+        {
+            value: 'profile',
+            label: 'profile',
+        },
+        {
+            value: 'event',
+            label: 'event',
+        },
+        {
+            value: 'session',
+            label: 'session',
+        },
+        {
+            value: 'flow',
+            label: 'flow',
+        },
+    ];
+
+    const cachedOnChange = useCallback((id, value) => {
+        if (typeof (onChange) != "undefined") {
+            onChange(id, value);
+        }
+    }, [onChange])
+
+    useEffect(() => {
+        cachedOnChange(id, value);
+    }, [id, value, cachedOnChange])
+
+    const handleExternalOnChange = (path, source) => {
+        if (typeof (onChange) != "undefined") {
+            onChange(id, source+"@"+path);
+        }
+    }
+
+    const handlePathChange = (event) => {
+        setPath(event.target.value);
+        handleExternalOnChange(event.target.value, source);
+    };
+
+    const handleSourceChange = (event) => {
+        setSource(event.target.value);
+        handleExternalOnChange(path, event.target.value);
+    };
+
+    return <div style={{display: "flex"}}>
+        <TextField select
+                   label="Source"
+                   variant="outlined"
+                   size="small"
+                   value={source}
+                   onChange={handleSourceChange}
+                   style={{width: 100, marginRight: 5}}
+        >
+            {sources.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                </MenuItem>
+            ))}
+        </TextField>
+        <TextField id={id}
+                   label={label}
+                   value={path}
+                   onChange={handlePathChange}
+                   error={error}
+                   variant="outlined"
+                   size="small"
+        />
+    </div>
+}
 
 function TextInput({id, onChange, label, value, error}) {
 
@@ -49,6 +143,52 @@ function TextInput({id, onChange, label, value, error}) {
                       error={error}
                       variant="outlined"
                       size="small"
+                      fullWidth
+    />
+}
+
+function NumberInput({id, onChange, label, value, error}) {
+
+    const [inputValue, setInputValue] = React.useState(value || "");
+
+    const cachedOnChange = useCallback((id, value) => {
+        if (typeof (onChange) != "undefined") {
+            onChange(id, value);
+        }
+    }, [onChange])
+
+    useEffect(() => {
+        cachedOnChange(id, value);
+    }, [id, value, cachedOnChange])
+
+    const handleChange = (event) => {
+        try {
+            let value = ""
+            if(event.target.value) {
+                value = parseInt(event.target.value)
+            }
+            if(!isNaN(value)) {
+                if (typeof (onChange) != "undefined") {
+                    onChange(id, value);
+                }
+                setInputValue(value);
+            }
+
+        } catch (e) {
+            console.log(e)
+        }
+
+
+    };
+
+    return <TextField id={id}
+                      label={label}
+                      value={inputValue}
+                      onChange={handleChange}
+                      error={error}
+                      variant="outlined"
+                      size="small"
+                      inputProps={{inputMode: "numeric", pattern: '[0-9]*'}}
                       fullWidth
     />
 }
@@ -119,93 +259,16 @@ const ResourceSelect = ({id, onChange, value, disabled = false, placeholder = "R
 
 }
 
-export default function JsonForm() {
+export default function JsonForm({schema, values = {}, onSubmit}) {
 
     let formValues = {}
 
-    const objMap = (obj, func) => {
-        return Object.entries(obj).map(([k, v]) => func(k, v));
-    }
-
-    const schema = {
-        form: {
-            title: "Form title",
-            groups: [
-                {
-                    "name": "Grupa",
-                    "description": "Group description",
-                },
-                {
-                    "name": "Grupa",
-                    "description": "Group description",
-                    "fields": [
-                        {
-                            "id": "id1",
-                            "component": {
-                                "type": "text",
-                                "props": {
-                                    "label": "source",
-                                    "style": {
-                                        "margin": 10
-                                    },
-                                    "required": true,
-
-                                }
-                            },
-                            "name": "Copy traits to",
-                            "description": "Field description",
-                            "validation": {
-                                "regex": "^[a-zA-Z0–9 ]+$",
-                                "message": "Only contain alphanumeric characters allowed"
-                            }
-
-                        },
-                        {
-                            "id": "id2",
-                            "component": {
-                                "type": "textarea",
-                                "props": {
-                                    "label": "test",
-                                    "style": {
-                                        "margin": 10
-                                    },
-                                    "required": true,
-                                    "value": "xxx"
-                                }
-                            },
-                            "name": "Copy traits to",
-                            "description": "Field description",
-                            "validation": {
-                                "regex": "^[a-zA-Z0–9 ]+$",
-                                "message": "Only contain alphanumeric characters allowed"
-                            }
-                        },
-                        {
-                            "id": "id3",
-                            "component": {
-                                "type": "resources",
-                                "props": {
-                                    "required": true,
-                                }
-                            },
-                            "name": "Copy traits from",
-                            "description": "Field description",
-                            "validation": {
-                                "regex": "^[a-zA-Z0–9 ]+$",
-                                "message": "Only contain alphanumeric characters allowed"
-                            }
-
-                        }
-                    ]
-                }
-            ]
-        },
-
-    };
+    // const objMap = (obj, func) => {
+    //     return Object.entries(obj).map(([k, v]) => func(k, v));
+    // }
 
     const onChange = (id, value) => {
         formValues[id] = value
-        console.log(formValues)
     }
 
     const Title = ({title}) => {
@@ -232,19 +295,24 @@ export default function JsonForm() {
         return ""
     }
 
-    const Fields = ({fields}) => {
+    const Fields = ({fields, values}) => {
 
         return fields.map((fieldObject, key) => {
             const fieldName = fieldObject.id
             const component = fieldObject.component?.type
             const props = fieldObject.component?.props
             if (typeof component != "undefined") {
-                const componentCallable = label2Component(component, fieldName)
+                const componentCallable = label2Component(component,
+                    fieldName,
+                    fieldName in values ? values[fieldName] : "",
+                    onChange)
                 return <div key={fieldName + key}>
                     <Name text={fieldObject.name} isFirst={key === 0}/>
                     <Description text={fieldObject.description}/>
-                    {componentCallable(props, onChange)}
+                    {componentCallable(props)}
                 </div>
+            } else {
+                return ""
             }
         })
     }
@@ -255,18 +323,25 @@ export default function JsonForm() {
             return <section key={idx}>
                 {groupObject.name && <h2>{groupObject.name}</h2>}
                 {groupObject.description && <Description text={groupObject.description}/>}
-                {groupObject.fields && <Fields fields={groupObject.fields}/>}
+                {groupObject.fields && <Fields fields={groupObject.fields} values={values}/>}
             </section>
         })
     }
 
     const handleSubmit = () => {
-        console.log(formValues)
+        if (onSubmit) {
+            onSubmit(formValues)
+        }
     }
 
-    return <form className="JsonForm">
-        <Title title={schema.form?.title}/>
-        <Groups groups={schema.form?.groups}/>
-        <Button onClick={handleSubmit} label="Submit"/>
-    </form>
+    if (schema) {
+        return <form className="JsonForm">
+            {schema.title && <Title title={schema.title}/>}
+            {schema.groups && <Groups groups={schema.groups}/>}
+            <Button onClick={handleSubmit} label="Submit"/>
+        </form>
+    }
+
+    return ""
+
 }
