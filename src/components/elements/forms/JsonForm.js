@@ -1,33 +1,53 @@
-import React, {useCallback, useEffect} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import AutoComplete from "./AutoComplete";
 import Button from "./Button";
 import "./JsonForm.css";
 import MenuItem from "@material-ui/core/MenuItem";
+import JsonEditor from "../misc/JsonEditor";
+import isString from "../../../misc/isString";
+import {dot2object, object2dot} from "../../../misc/dottedObject";
 
-
-const label2Component = (label, id, value, onChange) => {
-
-    switch (label) {
+const label2Component = (componentLabel, id, fieldValue, onChange) => {
+    switch (componentLabel) {
         case "resources":
-            return (props) => <ResourceSelect id={id} value={value} onChange={onChange}/>
+            return (props) => <ResourceSelect id={id} value={fieldValue} onChange={onChange}/>
         case "dotPath":
-            return (props) => <DotPathInput id={id} value={value} onChange={onChange} {...props}/>
+            return (props) => <DotPathInput id={id} value={fieldValue} onChange={onChange} {...props}/>
         case "text":
-            return (props) => <TextInput id={id} value={value} onChange={onChange} {...props}/>
+            return (props) => <TextInput id={id} value={fieldValue} onChange={onChange} {...props}/>
+        case "json":
+            return (props) => <JsonInput id={id} value={fieldValue} onChange={onChange} {...props}/>
         case "number":
-            return (props) => <NumberInput id={id} value={value} onChange={onChange} {...props}/>
+            return (props) => <NumberInput id={id} value={fieldValue} onChange={onChange} {...props}/>
         case "textarea":
-            return (props) => <TextAreaInput id={id} value={value} onChange={onChange} {...props}/>
+            return (props) => <TextAreaInput id={id} value={fieldValue} onChange={onChange} {...props}/>
         default:
             return (props) => ""
     }
 }
 
-function DotPathInput({id, onChange, label, value, error}) {
+function JsonInput({id, onChange, label, value, error}) {
 
-    let [sourceValue, pathValue] = value ? value.split('@') : ["", ""]
-    if(typeof pathValue === 'undefined' && sourceValue) {
+    const jsonString = JSON.stringify(value, null, '  ')
+    const [json, setJson] = useState(jsonString);
+
+    const handleChange = (value) => {
+        if (typeof (onChange) != "undefined") {
+            onChange(id, () => {return JSON.parse(value)});
+        }
+        setJson(value);
+    }
+
+    return <JsonEditor
+        value={json}
+        onChange={handleChange}
+    />
+}
+
+function DotPathInput({id, onChange, label, value, error}) {
+    let [sourceValue, pathValue] = isString(value) ? value.split('@') : ["", ""]
+    if (typeof pathValue === 'undefined' && sourceValue) {
         pathValue = sourceValue
         sourceValue = ''
     }
@@ -74,7 +94,7 @@ function DotPathInput({id, onChange, label, value, error}) {
 
     const handleExternalOnChange = (path, source) => {
         if (typeof (onChange) != "undefined") {
-            onChange(id, source+"@"+path);
+            onChange(id, source + "@" + path);
         }
     }
 
@@ -131,7 +151,6 @@ function TextInput({id, onChange, label, value, error}) {
     const handleChange = (event) => {
         if (typeof (onChange) != "undefined") {
             onChange(id, event.target.value);
-            event.preventDefault();
         }
         setInputValue(event.target.value);
     };
@@ -164,21 +183,18 @@ function NumberInput({id, onChange, label, value, error}) {
     const handleChange = (event) => {
         try {
             let value = ""
-            if(event.target.value) {
+            if (event.target.value) {
                 value = parseInt(event.target.value)
-            }
-            if(!isNaN(value)) {
-                if (typeof (onChange) != "undefined") {
-                    onChange(id, value);
+                if (!isNaN(value)) {
+                    if (typeof onChange != "undefined") {
+                        onChange(id, value);
+                    }
+                    setInputValue(value);
                 }
-                setInputValue(value);
             }
-
         } catch (e) {
             console.log(e)
         }
-
-
     };
 
     return <TextField id={id}
@@ -259,13 +275,13 @@ const ResourceSelect = ({id, onChange, value, disabled = false, placeholder = "R
 
 }
 
-export default function JsonForm({schema, values = {}, onSubmit}) {
+export default function JsonForm({schema, value = {}, onSubmit}) {
 
     let formValues = {}
 
-    // const objMap = (obj, func) => {
-    //     return Object.entries(obj).map(([k, v]) => func(k, v));
-    // }
+    const objMap = (obj, func) => {
+        return Object.entries(obj).map(([k, v]) => func(k, v));
+    }
 
     const onChange = (id, value) => {
         formValues[id] = value
@@ -295,17 +311,30 @@ export default function JsonForm({schema, values = {}, onSubmit}) {
         return ""
     }
 
-    const Fields = ({fields, values}) => {
+    const readValue = (fieldName, dottedValues, value) => {
+        if(fieldName in dottedValues) {
+            return dottedValues[fieldName]
+        } else if(fieldName in value) {
+            return value[fieldName]
+        }
+        return null
+    }
 
-        return fields.map((fieldObject, key) => {
-            const fieldName = fieldObject.id
-            const component = fieldObject.component?.type
-            const props = fieldObject.component?.props
+    const Fields = ({fields, value}) => {
+        // Convert to dotted values
+        const dottedValues = object2dot(value)
+
+        return  fields.map((fieldObject, key) => {
+            const fieldName = fieldObject.id;
+            const component = fieldObject.component?.type;
+            const props = fieldObject.component?.props;
+            const fieldValue = readValue(fieldName, dottedValues, value);
             if (typeof component != "undefined") {
-                const componentCallable = label2Component(component,
+                const componentCallable = label2Component(
+                    component,
                     fieldName,
-                    fieldName in values ? values[fieldName] : "",
-                    onChange)
+                    fieldValue,
+                    onChange);
                 return <div key={fieldName + key}>
                     <Name text={fieldObject.name} isFirst={key === 0}/>
                     <Description text={fieldObject.description}/>
@@ -323,14 +352,52 @@ export default function JsonForm({schema, values = {}, onSubmit}) {
             return <section key={idx}>
                 {groupObject.name && <h2>{groupObject.name}</h2>}
                 {groupObject.description && <Description text={groupObject.description}/>}
-                {groupObject.fields && <Fields fields={groupObject.fields} values={values}/>}
+                {groupObject.fields && <Fields fields={groupObject.fields} value={value}/>}
             </section>
         })
     }
 
-    const handleSubmit = () => {
+
+    const validate = (schema, values) => {
+        if(schema.groups) {
+            schema.groups.map((groupObject) => {
+                if(groupObject.fields) {
+                    return groupObject.fields.map((fieldObject) => {
+                        console.log(fieldObject)
+                        if(fieldObject.validation) {
+                            if(fieldObject.id in values) {
+                                let re = new RegExp(fieldObject.validation.regex);
+                                const v = values[fieldObject.id]
+                                console.log('xxx', fieldObject.validation, v, re.test(v))
+                            }
+                        }
+                        return null
+                    })
+                }
+                return null;
+            })
+        }
+    }
+
+
+    const handleSubmit = (schema) => {
+        // todo validate
+
         if (onSubmit) {
-            onSubmit(formValues)
+            objMap(formValues, (name, value) => {
+                if (typeof value === 'function') {
+                    try {
+                        formValues[name] = value()
+                    } catch (e) {
+                        console.log(e)
+                    }
+                }
+            })
+
+            validate(schema, formValues)
+
+            // Convert it back to object
+            onSubmit(dot2object(formValues))
         }
     }
 
@@ -338,7 +405,7 @@ export default function JsonForm({schema, values = {}, onSubmit}) {
         return <form className="JsonForm">
             {schema.title && <Title title={schema.title}/>}
             {schema.groups && <Groups groups={schema.groups}/>}
-            <Button onClick={handleSubmit} label="Submit"/>
+            <Button onClick={() => handleSubmit(schema)} label="Submit"/>
         </form>
     }
 

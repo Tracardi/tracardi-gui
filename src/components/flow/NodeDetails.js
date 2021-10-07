@@ -97,7 +97,7 @@ export default function NodeDetails({node, onConfig, onLabelSet}) {
             />}
             {tab === 3 && node?.data?.spec?.form &&
             <JsonAsFormEditor
-                values={node?.data?.spec?.init}
+                value={node?.data?.spec?.init}
                 formSchema={node?.data?.spec?.form}
                 onSubmit={handleFormSubmit}
             />}
