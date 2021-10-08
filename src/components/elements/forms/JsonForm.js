@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import AutoComplete from "./AutoComplete";
 import Button from "./Button";
@@ -8,14 +8,6 @@ import JsonEditor from "../misc/JsonEditor";
 import {isString, isEmptyObject} from "../../../misc/typeChecking";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
 import {objectFilter, objectMap} from "../../../misc/mappers";
-
-
-
-
-
-
-
-
 
 const ResourceSelect = ({id, onChange, value, disabled = false, placeholder = "Resource"}) => {
 
@@ -49,15 +41,19 @@ const ResourceSelect = ({id, onChange, value, disabled = false, placeholder = "R
 
 }
 
-export default function JsonForm({schema, value = {}, onSubmit}) {
+const JsonForm = ({schema, value = {}, onSubmit}) => {
 
-    const [errors, setErrors] = useState({})
-    const formValues = useRef({...value})   // This must be a copy as it would be treated as reference to plugin.init
+    console.log("JsonForm rerender")
+
+    const formValues = useRef({} )
+
+    // Rewrite formValues on every new JsonForm
+    formValues.current = {...value} // This must be a copy as it would be treated as reference to plugin.init
 
     const dottedValues = object2dot(formValues.current)
-    console.log("value", formValues)
+    console.log("value", value)
+    console.log("formValues", formValues)
     console.log("dotted", dottedValues)
-    // let formValues = {}
 
     const Title = ({title}) => {
         if (typeof title != 'undefined') {
@@ -92,47 +88,20 @@ export default function JsonForm({schema, value = {}, onSubmit}) {
         return null
     }
 
-    const label2Component = (componentLabel, id) => {
-        switch (componentLabel) {
-            case "resources":
-                return (props) => <ResourceSelect id={id}
-                                                  errors={errors}
-                                                  {...props}/>
-            case "dotPath":
-                return (props) => <DotPathInput id={id}
-                                                errors={errors}
-                                                {...props}/>
-            case "text":
-                return (props) => <TextInput id={id}
-                                             errors={errors}
-                                             {...props}/>
-            case "json":
-                return (props) => <JsonInput id={id}
-                                             errors={errors}
-                                             {...props}/>
-            case "textarea":
-                return (props) => <TextAreaInput id={id}
-                                                 errors={errors}
-                                                 {...props}/>
-            default:
-                return (props) => ""
-        }
-    }
-
-    const Fields = ({fields}) => {
+    const Fields = ({fields, componetsDb}) => {
 
         return fields.map((fieldObject, key) => {
             const fieldName = fieldObject.id;
             const component = fieldObject.component?.type;
             const props = fieldObject.component?.props;
             if (typeof component != "undefined") {
-                const componentCallable = label2Component(
+                const componentSchema = componetsDb(
                     component,
                     fieldName);
                 return <div key={fieldName + key}>
                     <Name text={fieldObject.name} isFirst={key === 0}/>
                     <Description text={fieldObject.description}/>
-                    {componentCallable(props)}
+                    {componentSchema.component(props)}
                 </div>
             } else {
                 return ""
@@ -142,91 +111,148 @@ export default function JsonForm({schema, value = {}, onSubmit}) {
 
     const Groups = ({groups}) => {
 
-        return groups.map((groupObject, idx) => {
+        const [errors, setErrors] = useState({})
+
+        const getComponentByLabel = (componentLabel, id) => {
+            switch (componentLabel) {
+                case "resources":
+                    return {
+                        component: (props) => <ResourceSelect id={id}
+                                                              errors={errors}
+                                                              {...props}/>
+                    }
+                case "dotPath":
+                    return {
+                        component: (props) => <DotPathInput id={id}
+                                                            errors={errors}
+                                                            {...props}/>
+                    }
+                case "text":
+                    return {
+                        component: (props) => <TextInput id={id}
+                                                         errors={errors}
+                                                         {...props}/>
+                    }
+                case "json":
+                    return {
+                        component: (props) => <JsonInput id={id}
+                                                         errors={errors}
+                                                         {...props}/>,
+                        validator: (value) => {
+                            try {
+                                JSON.parse(value);
+                                return true;
+                            } catch (e) {
+                                return e.toString()
+                            }
+
+                        }
+
+                    }
+                case "textarea":
+                    return {
+                        component: (props) => <TextAreaInput id={id}
+                                                             errors={errors}
+                                                             {...props}/>
+                    }
+                default:
+                    return {
+                        component: (props) => ""
+                    }
+            }
+        }
+
+        const validate = (schema, values) => {
+            if (schema.groups) {
+                let validFields = []
+                const validationErrors = schema.groups.reduce((accumulator, groupObject) => {
+                    if (groupObject.fields) {
+                        const groupErrors =  groupObject.fields.reduce((previousValue, fieldObject) => {
+                            if (fieldObject.validation) {
+                                if (fieldObject.id in values) {
+                                    let re = new RegExp(fieldObject.validation.regex);
+                                    let fieldValue = values[fieldObject.id]
+                                    if(!isString(fieldValue)) {
+                                        fieldValue = fieldValue.toString()
+                                    }
+                                    console.log("re.test.value", fieldValue, typeof fieldValue)
+                                    console.log("re.test", re.test(fieldValue))
+                                    if(!re.test(fieldValue)) {
+                                        return {...previousValue, [fieldObject.id]: fieldObject.validation.message}
+                                    } else {
+                                        validFields.push(fieldObject.id)
+                                    }
+                                }
+                            } else {
+                                validFields.push(fieldObject.id)
+                            }
+                            return null
+                        }, {})
+                        console.log("accumulator", accumulator)
+                        return {...accumulator, ...groupErrors}
+                    }
+                    return accumulator;
+                }, {})
+
+                if(validationErrors) {
+                    setErrors(validationErrors)
+                }
+                return [validationErrors, validFields]
+            }
+        }
+
+        const handleSubmit = (schema) => {
+            if (onSubmit) {
+                let currentFormValues = formValues.current
+                objectMap(currentFormValues, (name, value) => {
+                    if (typeof value === 'function') {
+                        try {
+                            console.log("function", name)
+                            currentFormValues[name] = value()
+                        } catch (e) {
+                            console.log(e)
+                        }
+                    }
+                })
+
+                const [validationErrors, validFields] = validate(schema, currentFormValues);
+                console.log("validationErrors", validationErrors);
+                console.log("validaFields", validFields);
+                console.log("currentFormValues", currentFormValues);
+
+                // Convert it back to object
+                if(isEmptyObject(validationErrors)) {
+                    // currentFormValues has all values from all forms
+                    // We filter only values for current form.
+                    const fieldsToSave = objectFilter(currentFormValues, validFields);
+                    onSubmit(dot2object(fieldsToSave));
+                    console.log("saved", fieldsToSave);
+                }
+
+            }
+        }
+
+        const groupComponents = groups.map((groupObject, idx) => {
             return <section key={idx}>
                 {groupObject.name && <h2>{groupObject.name}</h2>}
                 {groupObject.description && <Description text={groupObject.description}/>}
-                {groupObject.fields && <Fields fields={groupObject.fields}/>}
+                {groupObject.fields && <Fields
+                    fields={groupObject.fields}
+                    componetsDb={getComponentByLabel}
+                />}
             </section>
         })
-    }
 
-
-    const validate = (schema, values) => {
-        if (schema.groups) {
-            let validFields = []
-            const validationErrors = schema.groups.reduce((accumulator, groupObject) => {
-                if (groupObject.fields) {
-                    const groupErrors =  groupObject.fields.reduce((previousValue, fieldObject) => {
-                        if (fieldObject.validation) {
-                            if (fieldObject.id in values) {
-                                let re = new RegExp(fieldObject.validation.regex);
-                                let fieldValue = values[fieldObject.id]
-                                if(!isString(fieldValue)) {
-                                    fieldValue = fieldValue.toString()
-                                }
-                                console.log("re.test.value", fieldValue, typeof fieldValue)
-                                console.log("re.test", re.test(fieldValue))
-                                if(!re.test(fieldValue)) {
-                                    return {...previousValue, [fieldObject.id]: fieldObject.validation.message}
-                                } else {
-                                    validFields.push(fieldObject.id)
-                                }
-                            }
-                        } else {
-                            validFields.push(fieldObject.id)
-                        }
-                        return null
-                    }, {})
-                    console.log("accumulator", accumulator)
-                    return {...accumulator, ...groupErrors}
-                }
-                return accumulator;
-            }, {})
-
-            if(validationErrors) {
-                setErrors(validationErrors)
-            }
-            return [validationErrors, validFields]
-        }
-    }
-
-    const handleSubmit = (schema) => {
-        if (onSubmit) {
-            let currentFormValues = formValues.current
-            objectMap(currentFormValues, (name, value) => {
-                if (typeof value === 'function') {
-                    try {
-                        console.log("function", name)
-                        currentFormValues[name] = value()
-                    } catch (e) {
-                        console.log(e)
-                    }
-                }
-            })
-
-            const [validationErrors, validFields] = validate(schema, currentFormValues);
-            console.log("validationErrors", validationErrors);
-            console.log("validaFields", validFields);
-            console.log("currentFormValues", currentFormValues);
-
-            // Convert it back to object
-            if(isEmptyObject(validationErrors)) {
-                // currentFormValues has all values from all forms
-                // We filter only values for current form.
-                const fieldsToSave = objectFilter(currentFormValues, validFields);
-                onSubmit(dot2object(fieldsToSave));
-                console.log("saved", fieldsToSave);
-            }
-
-        }
+        return <>
+            {groupComponents}
+            <Button onClick={() => handleSubmit(schema)} label="Submit"/>
+            </>
     }
 
     if (schema) {
         return <form className="JsonForm">
             {schema.title && <Title title={schema.title}/>}
             {schema.groups && <Groups groups={schema.groups}/>}
-            <Button onClick={() => handleSubmit(schema)} label="Submit"/>
         </form>
     }
 
@@ -289,7 +315,6 @@ export default function JsonForm({schema, value = {}, onSubmit}) {
     function DotPathInput({id, label, errors}) {
 
         const value = readValue(id)
-        console.log("dotcomp", value);
         let [sourceValue, pathValue] = isString(value) ? value.split('@') : ["", ""]
 
         if (typeof pathValue === 'undefined' && sourceValue) {
@@ -299,8 +324,6 @@ export default function JsonForm({schema, value = {}, onSubmit}) {
 
         const [path, setPath] = React.useState(pathValue || "");
         const [source, setSource] = React.useState(sourceValue || "");
-
-        console.log("path", path, pathValue)
 
         const sources = [
             {
@@ -384,7 +407,13 @@ export default function JsonForm({schema, value = {}, onSubmit}) {
         const [json, setJson] = useState(jsonString);
 
         const handleExternalOnChange = (value) => {
-            formValues.current[id] = value
+            formValues.current[id] = () => {
+                try {
+                    return JSON.parse(value)
+                } catch (e) {
+                    return e.toString();
+                }
+            }
         }
 
         const handleChange = (value) => {
@@ -398,3 +427,7 @@ export default function JsonForm({schema, value = {}, onSubmit}) {
         />
     }
 }
+
+const MemoJsonForm = React.memo(JsonForm);
+
+export default MemoJsonForm;
