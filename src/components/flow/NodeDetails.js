@@ -10,8 +10,8 @@ import ConsoleView from "../elements/misc/ConsoleView";
 import ConfigEditor from "./editors/ConfigEditor";
 import NodeInfo from "./NodeInfo";
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
-import JsonAsFormEditor from "./editors/JsonAsFormEditor";
 import {VscJson} from "@react-icons/all-files/vsc/VscJson";
+import JsonForm from "../elements/forms/JsonForm";
 
 const MdManual = React.lazy(() => import('./actions/MdManual'));
 
@@ -96,9 +96,9 @@ export default function NodeDetails({node, onConfig, onLabelSet}) {
                 onConfig={handleFormSubmit}
             />}
             {tab === 3 && node?.data?.spec?.form &&
-            <JsonAsFormEditor
+            <JsonForm
                 value={node?.data?.spec?.init}
-                formSchema={node?.data?.spec?.form}
+                schema={node?.data?.spec?.form}
                 onSubmit={handleFormSubmit}
             />}
 

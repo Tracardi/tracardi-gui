@@ -8,25 +8,6 @@ import JsonEditor from "../misc/JsonEditor";
 import isString from "../../../misc/isString";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
 
-const label2Component = (componentLabel, id, fieldValue, onChange) => {
-    switch (componentLabel) {
-        case "resources":
-            return (props) => <ResourceSelect id={id} value={fieldValue} onChange={onChange}/>
-        case "dotPath":
-            return (props) => <DotPathInput id={id} value={fieldValue} onChange={onChange} {...props}/>
-        case "text":
-            return (props) => <TextInput id={id} value={fieldValue} onChange={onChange} {...props}/>
-        case "json":
-            return (props) => <JsonInput id={id} value={fieldValue} onChange={onChange} {...props}/>
-        case "number":
-            return (props) => <NumberInput id={id} value={fieldValue} onChange={onChange} {...props}/>
-        case "textarea":
-            return (props) => <TextAreaInput id={id} value={fieldValue} onChange={onChange} {...props}/>
-        default:
-            return (props) => ""
-    }
-}
-
 function JsonInput({id, onChange, label, value, error}) {
 
     const jsonString = JSON.stringify(value, null, '  ')
@@ -34,7 +15,9 @@ function JsonInput({id, onChange, label, value, error}) {
 
     const handleChange = (value) => {
         if (typeof (onChange) != "undefined") {
-            onChange(id, () => {return JSON.parse(value)});
+            onChange(id, () => {
+                return JSON.parse(value)
+            });
         }
         setJson(value);
     }
@@ -45,7 +28,7 @@ function JsonInput({id, onChange, label, value, error}) {
     />
 }
 
-function DotPathInput({id, onChange, label, value, error}) {
+function DotPathInput({id, onChange, label, value, errors}) {
     let [sourceValue, pathValue] = isString(value) ? value.split('@') : ["", ""]
     if (typeof pathValue === 'undefined' && sourceValue) {
         pathValue = sourceValue
@@ -108,6 +91,12 @@ function DotPathInput({id, onChange, label, value, error}) {
         handleExternalOnChange(path, event.target.value);
     };
 
+    let errorProps = {}
+    if (id in errors) {
+        errorProps['error'] = true
+        errorProps['helperText'] = errors[id]
+    }
+
     return <div style={{display: "flex"}}>
         <TextField select
                    label="Source"
@@ -127,14 +116,14 @@ function DotPathInput({id, onChange, label, value, error}) {
                    label={label}
                    value={path}
                    onChange={handlePathChange}
-                   error={error}
                    variant="outlined"
                    size="small"
+                   {...errorProps}
         />
     </div>
 }
 
-function TextInput({id, onChange, label, value, error}) {
+function TextInput({id, onChange, label, value, errors = {}}) {
 
     const [inputValue, setInputValue] = React.useState(value || "");
 
@@ -155,18 +144,24 @@ function TextInput({id, onChange, label, value, error}) {
         setInputValue(event.target.value);
     };
 
+    let errorProps = {}
+    if (id in errors) {
+        errorProps['error'] = true
+        errorProps['helperText'] = errors[id]
+    }
+
     return <TextField id={id}
                       label={label}
                       value={inputValue}
                       onChange={handleChange}
-                      error={error}
                       variant="outlined"
                       size="small"
                       fullWidth
+                      {...errorProps}
     />
 }
 
-function NumberInput({id, onChange, label, value, error}) {
+function NumberInput({id, onChange, label, value, errors={}}) {
 
     const [inputValue, setInputValue] = React.useState(value || "");
 
@@ -197,15 +192,21 @@ function NumberInput({id, onChange, label, value, error}) {
         }
     };
 
+    let errorProps = {}
+    if (id in errors) {
+        errorProps['error'] = true
+        errorProps['helperText'] = errors[id]
+    }
+
     return <TextField id={id}
                       label={label}
                       value={inputValue}
                       onChange={handleChange}
-                      error={error}
                       variant="outlined"
                       size="small"
                       inputProps={{inputMode: "numeric", pattern: '[0-9]*'}}
                       fullWidth
+                      {...errorProps}
     />
 }
 
@@ -277,6 +278,8 @@ const ResourceSelect = ({id, onChange, value, disabled = false, placeholder = "R
 
 export default function JsonForm({schema, value = {}, onSubmit}) {
 
+    const [errors, setErrors] = useState({})
+
     let formValues = {}
 
     const objMap = (obj, func) => {
@@ -312,19 +315,44 @@ export default function JsonForm({schema, value = {}, onSubmit}) {
     }
 
     const readValue = (fieldName, dottedValues, value) => {
-        if(fieldName in dottedValues) {
+        if (fieldName in dottedValues) {
             return dottedValues[fieldName]
-        } else if(fieldName in value) {
+        } else if (fieldName in value) {
             return value[fieldName]
         }
         return null
     }
 
     const Fields = ({fields, value}) => {
+
+
+
+        const label2Component = (componentLabel, id, fieldValue, onChange) => {
+            switch (componentLabel) {
+                case "resources":
+                    return (props) => <ResourceSelect id={id} value={fieldValue} onChange={onChange}/>
+                case "dotPath":
+                    return (props) => <DotPathInput id={id} value={fieldValue} onChange={onChange}
+                                                    errors={errors} {...props}/>
+                case "text":
+                    return (props) => <TextInput id={id} value={fieldValue} onChange={onChange}
+                                                 errors={errors} {...props}/>
+                case "json":
+                    return (props) => <JsonInput id={id} value={fieldValue} onChange={onChange} {...props}/>
+                case "number":
+                    return (props) => <NumberInput id={id} value={fieldValue} onChange={onChange}
+                                                   errors={errors} {...props}/>
+                case "textarea":
+                    return (props) => <TextAreaInput id={id} value={fieldValue} onChange={onChange} {...props}/>
+                default:
+                    return (props) => ""
+            }
+        }
+
         // Convert to dotted values
         const dottedValues = object2dot(value)
 
-        return  fields.map((fieldObject, key) => {
+        return fields.map((fieldObject, key) => {
             const fieldName = fieldObject.id;
             const component = fieldObject.component?.type;
             const props = fieldObject.component?.props;
@@ -359,23 +387,37 @@ export default function JsonForm({schema, value = {}, onSubmit}) {
 
 
     const validate = (schema, values) => {
-        if(schema.groups) {
-            schema.groups.map((groupObject) => {
-                if(groupObject.fields) {
-                    return groupObject.fields.map((fieldObject) => {
-                        console.log(fieldObject)
-                        if(fieldObject.validation) {
-                            if(fieldObject.id in values) {
+        if (schema.groups) {
+            const validationErrors = schema.groups.reduce((accumulator, groupObject) => {
+                if (groupObject.fields) {
+                    const groupErrors =  groupObject.fields.reduce((previousValue, fieldObject) => {
+                        if (fieldObject.validation) {
+                            if (fieldObject.id in values) {
                                 let re = new RegExp(fieldObject.validation.regex);
-                                const v = values[fieldObject.id]
-                                console.log('xxx', fieldObject.validation, v, re.test(v))
+                                let fieldValue = values[fieldObject.id]
+                                if(!isString(fieldValue)) {
+                                    fieldValue = fieldValue.toString()
+                                }
+                                console.log("re.test.value", fieldValue, typeof fieldValue)
+                                console.log("re.test", re.test(fieldValue))
+                                if(!re.test(fieldValue)) {
+                                    return {...previousValue, [fieldObject.id]: fieldObject.validation.message}
+                                }
                             }
                         }
                         return null
-                    })
+                    }, {})
+                    console.log("accumulator", accumulator)
+                    return {...accumulator, ...groupErrors}
                 }
-                return null;
-            })
+                return accumulator;
+            }, {})
+            console.log("validationErrors", validationErrors)
+            if(validationErrors) {
+                setErrors(validationErrors)
+            }
+
+            return validationErrors
         }
     }
 
