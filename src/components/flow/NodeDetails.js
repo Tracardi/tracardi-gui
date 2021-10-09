@@ -63,17 +63,17 @@ function NodeDetails({node, onConfig, onLabelSet}) {
                     selected={tab === 3}>
                     <GoSettings size={22}/>
                 </IconButton>}
-                {node?.data?.spec?.manual && <IconButton
-                    label="Manual"
-                    onClick={() => setTab(1)}
-                    selected={tab === 1}>
-                    <VscBook size={22}/>
-                </IconButton>}
                 {node?.data?.spec?.init && <IconButton
                     label="Json Config"
                     onClick={() => setTab(2)}
                     selected={tab === 2}>
                     <VscJson size={22}/>
+                </IconButton>}
+                {node?.data?.spec?.manual && <IconButton
+                    label="Manual"
+                    onClick={() => setTab(1)}
+                    selected={tab === 1}>
+                    <VscBook size={22}/>
                 </IconButton>}
                 <IconButton
                     label="Raw"

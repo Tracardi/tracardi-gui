@@ -9,41 +9,8 @@ import {isString, isEmptyObject} from "../../../misc/typeChecking";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
 import {objectFilter, objectMap} from "../../../misc/mappers";
 
-const ResourceSelect = ({id, onChange, value, disabled = false, placeholder = "Resource"}) => {
-
-    const handleChange = (event) => {
-        if (typeof (onChange) != "undefined") {
-            if (event !== null) {
-                onChange(id, event.id);
-            }
-        }
-    };
-
-    return <AutoComplete disabled={disabled}
-                         solo={false}
-                         placeholder={placeholder}
-                         url="/resources"
-                         initValue={{"id": "", "name": ""}}
-                         onSetValue={handleChange}
-                         onDataLoaded={
-                             (result) => {
-                                 if (result) {
-                                     let sources = []
-                                     for (const source of result?.data?.result) {
-                                         if (typeof source.name !== "undefined" && typeof source.id !== "undefined") {
-                                             sources.push({name: source.name, id: source.id})
-                                         }
-                                     }
-                                     return sources
-                                 }
-                             }
-                         }/>
-
-}
 
 const JsonForm = ({schema, value = {}, onSubmit}) => {
-
-    console.log("JsonForm rerender")
 
     const formValues = useRef({} )
 
@@ -51,9 +18,6 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
     formValues.current = {...value} // This must be a copy as it would be treated as reference to plugin.init
 
     const dottedValues = object2dot(formValues.current)
-    console.log("value", value)
-    console.log("formValues", formValues)
-    console.log("dotted", dottedValues)
 
     const Title = ({title}) => {
         if (typeof title != 'undefined') {
@@ -115,7 +79,7 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
 
         const getComponentByLabel = (componentLabel, id) => {
             switch (componentLabel) {
-                case "resources":
+                case "resource":
                     return {
                         component: (props) => <ResourceSelect id={id}
                                                               errors={errors}
@@ -175,8 +139,6 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
                                     if(!isString(fieldValue)) {
                                         fieldValue = fieldValue.toString()
                                     }
-                                    console.log("re.test.value", fieldValue, typeof fieldValue)
-                                    console.log("re.test", re.test(fieldValue))
                                     if(!re.test(fieldValue)) {
                                         return {...previousValue, [fieldObject.id]: fieldObject.validation.message}
                                     } else {
@@ -188,7 +150,6 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
                             }
                             return null
                         }, {})
-                        console.log("accumulator", accumulator)
                         return {...accumulator, ...groupErrors}
                     }
                     return accumulator;
@@ -207,7 +168,6 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
                 objectMap(currentFormValues, (name, value) => {
                     if (typeof value === 'function') {
                         try {
-                            console.log("function", name)
                             currentFormValues[name] = value()
                         } catch (e) {
                             console.log(e)
@@ -216,9 +176,6 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
                 })
 
                 const [validationErrors, validFields] = validate(schema, currentFormValues);
-                console.log("validationErrors", validationErrors);
-                console.log("validaFields", validFields);
-                console.log("currentFormValues", currentFormValues);
 
                 // Convert it back to object
                 if(isEmptyObject(validationErrors)) {
@@ -226,7 +183,6 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
                     // We filter only values for current form.
                     const fieldsToSave = objectFilter(currentFormValues, validFields);
                     onSubmit(dot2object(fieldsToSave));
-                    console.log("saved", fieldsToSave);
                 }
 
             }
@@ -290,7 +246,7 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
         />
     }
 
-    function TextAreaInput({id, label, error}) {
+    function TextAreaInput({id, label, errors}) {
 
         const [value, setValue] = useState(readValue(id))
 
@@ -300,15 +256,21 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
             event.preventDefault()
         };
 
+        let errorProps = {}
+        if (id in errors) {
+            errorProps['error'] = true
+            errorProps['helperText'] = errors[id]
+        }
+
         return <TextField id={id}
                           label={label}
                           value={value}
                           onChange={handleChange}
-                          error={error}
                           variant="outlined"
                           multiline
                           fullWidth
                           rows={4}
+                          {...errorProps}
         />
     }
 
@@ -381,7 +343,7 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
                        size="small"
                        value={source}
                        onChange={handleSourceChange}
-                       style={{width: 100, marginRight: 5}}
+                       style={{width: 120, marginRight: 5}}
             >
                 {sources.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
@@ -395,6 +357,7 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
                        onChange={handlePathChange}
                        variant="outlined"
                        size="small"
+                       style={{width: 460}}
                        {...errorProps}
             />
         </div>
@@ -425,6 +388,37 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
             value={json}
             onChange={handleChange}
         />
+    }
+
+    function ResourceSelect ({id, label, error, placeholder = "Resource"}) {
+
+        const value = readValue(id)
+
+        const handleChange = (value) => {
+            console.log("res",value)
+            formValues.current[id] = value
+        };
+
+        return <AutoComplete disabled={false}
+                             solo={false}
+                             placeholder={placeholder}
+                             url="/resources"
+                             initValue={value}
+                             onSetValue={handleChange}
+                             onDataLoaded={
+                                 (result) => {
+                                     if (result) {
+                                         let sources = [{id:"", name:""}]
+                                         for (const source of result?.data?.result) {
+                                             if (typeof source.name !== "undefined" && typeof source.id !== "undefined") {
+                                                 sources.push({name: source.name, id: source.id})
+                                             }
+                                         }
+                                         return sources
+                                     }
+                                 }
+                             }/>
+
     }
 }
 

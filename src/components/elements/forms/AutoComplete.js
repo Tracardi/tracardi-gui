@@ -16,8 +16,8 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
     const [open, setOpen] = React.useState(false);
     const [value, _setValue] = React.useState(initValue);
     const [options, setOptions] = React.useState([]);
-    const loading = open && typeof options !== "undefined" && options?.length >= 0;
     const [progress, setProgress] = React.useState(false);
+    const loading = open && typeof options !== "undefined" && options?.length >= 0;
 
     const handleDataLoaded = useCallback((result, onDataLoaded) => {
         if(!onDataLoaded) {
@@ -50,7 +50,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
 
                     if(typeof options !== "undefined" && options !== null) {
                         if(Array.isArray(options) && options.length === 0) {
-                            setOptions([{name: "None", key: "none"}])
+                            setOptions([{name: "", key: ""}])
                         } else {
                             setOptions(options);
                         }
@@ -90,7 +90,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
                 setOpen(false);
             }}
             getOptionSelected={(option, value) => option.id === value.id}
-            getOptionLabel={(option) => option.name}
+            getOptionLabel={(option) => {return option?.name || option?.id || ""}}
             options={options}
             loading={loading}
             value={value}
