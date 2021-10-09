@@ -8,11 +8,12 @@ import JsonEditor from "../misc/JsonEditor";
 import {isString, isEmptyObject} from "../../../misc/typeChecking";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
 import {objectFilter, objectMap} from "../../../misc/mappers";
+import ErrorLine from "../../errors/ErrorLine";
 
 
 const JsonForm = ({schema, value = {}, onSubmit}) => {
 
-    const formValues = useRef({} )
+    const formValues = useRef({})
 
     // Rewrite formValues on every new JsonForm
     formValues.current = {...value} // This must be a copy as it would be treated as reference to plugin.init
@@ -131,15 +132,40 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
                 let validFields = []
                 const validationErrors = schema.groups.reduce((accumulator, groupObject) => {
                     if (groupObject.fields) {
-                        const groupErrors =  groupObject.fields.reduce((previousValue, fieldObject) => {
+                        const groupErrors = groupObject.fields.reduce((previousValue, fieldObject) => {
+                            // console.log('required', fieldObject.required, fieldObject.id)
+                            // console.log('val',values[fieldObject.id], fieldObject.id  in values)
+                            // console.log("component", fieldObject.component.type)
+                            if(fieldObject.required && fieldObject.required === true) {
+                                let value = null;
+                                if(fieldObject.component?.type === 'resource') {
+                                    // console.log('fff')
+                                    if(fieldObject.id  in values) {
+                                        value = values[fieldObject.id].id
+                                    }
+                                } else {
+                                    value = values[fieldObject.id]
+                                }
+                                // console.log("ddd", value)
+                                // console.log(!(fieldObject.id  in values))
+                                // console.log(values[fieldObject.id], typeof values[fieldObject.id] === 'undefined')
+                                // console.log(values[fieldObject.id] === "")
+                                if(!(fieldObject.id  in values)
+                                    || value === null
+                                    || typeof value === 'undefined'
+                                    || value === "") {
+                                    return {...previousValue, [fieldObject.id]: "This field is required."}
+                                }
+                            }
+
                             if (fieldObject.validation) {
                                 if (fieldObject.id in values) {
                                     let re = new RegExp(fieldObject.validation.regex);
                                     let fieldValue = values[fieldObject.id]
-                                    if(!isString(fieldValue)) {
+                                    if (!isString(fieldValue)) {
                                         fieldValue = fieldValue.toString()
                                     }
-                                    if(!re.test(fieldValue)) {
+                                    if (!re.test(fieldValue)) {
                                         return {...previousValue, [fieldObject.id]: fieldObject.validation.message}
                                     } else {
                                         validFields.push(fieldObject.id)
@@ -155,7 +181,7 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
                     return accumulator;
                 }, {})
 
-                if(validationErrors) {
+                if (validationErrors) {
                     setErrors(validationErrors)
                 }
                 return [validationErrors, validFields]
@@ -178,7 +204,7 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
                 const [validationErrors, validFields] = validate(schema, currentFormValues);
 
                 // Convert it back to object
-                if(isEmptyObject(validationErrors)) {
+                if (isEmptyObject(validationErrors)) {
                     // currentFormValues has all values from all forms
                     // We filter only values for current form.
                     const fieldsToSave = objectFilter(currentFormValues, validFields);
@@ -202,7 +228,7 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
         return <>
             {groupComponents}
             <Button onClick={() => handleSubmit(schema)} label="Submit"/>
-            </>
+        </>
     }
 
     if (schema) {
@@ -390,35 +416,43 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
         />
     }
 
-    function ResourceSelect ({id, label, error, placeholder = "Resource"}) {
+    function ResourceSelect({id, label, errors, placeholder = "Resource"}) {
 
         const value = readValue(id)
 
         const handleChange = (value) => {
-            console.log("res",value)
             formValues.current[id] = value
         };
 
-        return <AutoComplete disabled={false}
-                             solo={false}
-                             placeholder={placeholder}
-                             url="/resources"
-                             initValue={value}
-                             onSetValue={handleChange}
-                             onDataLoaded={
-                                 (result) => {
-                                     if (result) {
-                                         let sources = [{id:"", name:""}]
-                                         for (const source of result?.data?.result) {
-                                             if (typeof source.name !== "undefined" && typeof source.id !== "undefined") {
-                                                 sources.push({name: source.name, id: source.id})
-                                             }
-                                         }
-                                         return sources
-                                     }
-                                 }
-                             }/>
+        const Error = () => {
+            if (id in errors) {
+                return <ErrorLine>{errors[id]}</ErrorLine>
+            }
+            return ""
+        }
 
+        return <>
+            <AutoComplete disabled={false}
+                          solo={false}
+                          placeholder={placeholder}
+                          url="/resources"
+                          initValue={value}
+                          onSetValue={handleChange}
+                          onDataLoaded={
+                              (result) => {
+                                  if (result) {
+                                      let sources = [{id: "", name: ""}]
+                                      for (const source of result?.data?.result) {
+                                          if (typeof source.name !== "undefined" && typeof source.id !== "undefined") {
+                                              sources.push({name: source.name, id: source.id})
+                                          }
+                                      }
+                                      return sources
+                                  }
+                              }
+                          }/>
+                          <Error/>
+        </>
     }
 }
 
