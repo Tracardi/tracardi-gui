@@ -1,0 +1,21 @@
+.NoDataError {
+    border: solid 2px #d81b60;
+    border-radius: 4px;
+    width: inherit;
+    height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    flex-direction: column;
+    color: #d81b60;
+
+    -webkit-animation: fadeInOpacity 1s; /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadeInOpacity 1s; /* Firefox < 16 */
+    -ms-animation: fadeInOpacity 1s; /* Internet Explorer */
+    -o-animation: fadeInOpacity 1s; /* Opera < 12.1 */
+    animation: fadeInOpacity 1s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: 1s;
+}

@@ -1,0 +1,32 @@
+FORM.JsonForm {
+
+}
+
+FORM.JsonForm > H1 {
+    font-size: 150%;
+    font-weight: 400;
+    margin: 15px 10px;
+    text-transform: uppercase;
+    font-family: Viga, Roboto, serif;
+    color: #444;
+}
+
+FORM.JsonForm > SECTION {
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px -1px rgba(176,176,176,1);
+    padding: 25px;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+FORM.JsonForm > SECTION > H2 {
+    font-size: 140%;
+    margin: 0 0 10px 0;
+    font-weight: 400;
+}
+
+FORM.JsonForm > SECTION H3 {
+    font-size: 140%;
+    margin: 15px 0 10px 0;
+    font-weight: 400;
+}

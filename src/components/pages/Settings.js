@@ -1,3 +1,9 @@
+import React from "react";
+import JsonForm from "../elements/forms/JsonForm";
+
+
 export default function Settings() {
-    return "Not implemented"
+
+    return <JsonForm />
+
 }

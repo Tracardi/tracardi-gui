@@ -70,7 +70,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
         }
     }, [open]);
 
-    const setValue = (value) => {
+    const handleChange = (value) => {
         _setValue(value);
         if(onSetValue) {
             onSetValue(value);
@@ -97,11 +97,11 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
             disabled={disabled}
             onChange={(event, newValue) => {
                 setOptions(newValue ? [newValue, ...options] : options);
-                setValue(newValue);
+                handleChange(newValue);
             }}
             onInputChange={(event, newInputValue) => {
                 newInputValue = {name: newInputValue, id: newInputValue}
-                setValue(newInputValue);
+                handleChange(newInputValue);
             }}
             renderInput={(params) => (
                 <TextField

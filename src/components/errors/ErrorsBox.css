@@ -1,19 +1,16 @@
 .ErrorsBox {
-    background: #d81b60;
-    color: white;
+    border: solid 2px #d81b60;
     padding: 15px;
     overflow-x: auto;
     display: flex;
     flex-direction: row;
-    animation-name: fadeInOpacity;
-    animation-iteration-count: 1;
-    animation-timing-function: ease-out;
-    animation-duration: 0.4s;
+    height: 100%;
+    color: #d81b60;
+    background-color: #fff;
 }
 
 .NotFullErrorBox {
-    border-radius: 15px;
-    margin: 10px;
+    border-radius: 4px;
 }
 
 .ErrorsBox > .ErrorDetails {
