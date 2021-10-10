@@ -1,22 +1,10 @@
-import {connect, useDispatch} from "react-redux";
-import {increasePage} from "../../../redux/reducers/pagingSlice";
+import { connect, useDispatch } from "react-redux";
+import { increasePage } from "../../../redux/reducers/pagingSlice";
 import ObjectRow from "./rows/ObjectRow";
 
-
-const AutoLoadObjectRows = ({
-  timeField,
-  timeFieldWidth,
-  filterFields,
-  onDetails,
-  onDetailsRequest,
-  paging,
-  rows
-}) => {
-
-
-  const dispatch = useDispatch()
-  const { shown, total, type, refreshOn} = paging;
-  
+const AutoLoadObjectRows = ({ timeField, timeFieldWidth, filterFields, onDetails, onDetailsRequest, paging, rows }) => {
+  const dispatch = useDispatch();
+  const { page, shown, total, refreshOn } = paging;
 
   const buildRows = (rows) => {
     if (Array.isArray(rows)) {
@@ -35,28 +23,28 @@ const AutoLoadObjectRows = ({
           />
         );
       });
-    } 
+    }
   };
 
   const handleScroll = ({ target }) => {
     const bottom = target.scrollHeight - Math.ceil(target.scrollTop) - 1 <= target.clientHeight;
-  
+
     if (bottom && shown < total && !refreshOn) {
-      dispatch(increasePage())
+      dispatch(increasePage());
     }
   };
 
   return (
-    <div style={{ overflow: "scroll", height: 'calc(100% - 250px)' }} onScroll={handleScroll}>
+    <div className="DataContent" onScroll={handleScroll}>
       {buildRows(rows)}
     </div>
   );
 };
 
-const mapState = state => {
+const mapState = (state) => {
   return {
-    paging: state.pagingReducer
-  }
-}
+    paging: state.pagingReducer,
+  };
+};
 
 export default connect(mapState)(AutoLoadObjectRows);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { request } from "../../../remote_api/uql_api_endpoint";
-import { updateCounts} from "../../../redux/reducers/pagingSlice";
+import { updateCounts } from "../../../redux/reducers/pagingSlice";
 import AutoLoadObjectRows from "./AutoLoadObjectRows";
 import { connect, useDispatch } from "react-redux";
 import ErrorsBox from "../../errors/ErrorsBox";
@@ -17,7 +17,6 @@ const AutoLoadObjectList = ({
   onLoadRequest,
   paging,
 }) => {
-  
   const { page, shown, total } = paging;
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -25,14 +24,11 @@ const AutoLoadObjectList = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const rebuildUrl = (url) => {
-      const urlToArr = url.split("/");
-      urlToArr.length = 4;
-      return `${urlToArr.join("/")}/page/${page}`;
-    };
-    onLoadRequest.url = rebuildUrl(onLoadRequest.url);
+    const oldUrl = onLoadRequest.url;
 
-    if (total === 0 || page > 0) {
+    if (page > 0 || total === 0) {
+      onLoadRequest.url = `${onLoadRequest.url}/page/${page}`;
+
       request(onLoadRequest, setLoading, setError, (response) => {
         if (response) {
           dispatch(updateCounts({ total: response.data.total, shown: response.data.result.length }));
@@ -41,8 +37,11 @@ const AutoLoadObjectList = ({
         }
       });
     }
+    return () => {
+      onLoadRequest.url = oldUrl;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, total]);
+  }, [page, total, onLoadRequest.data]);
 
   const widthStyle =
     typeof timeFieldWidth !== "undefined"
@@ -52,11 +51,14 @@ const AutoLoadObjectList = ({
       : {};
 
   const header = (timeFieldLabel) => {
-    let rowCountText = '';
-    if(total === 0) { 
-      rowCountText = 'Loading...'
+    let rowCountText = "";
+    if (loading) {
+      rowCountText = "Loading...";
+    }
+    if (total === 0) {
+      rowCountText = "No Results";
     } else {
-      rowCountText = `Showing ${shown} of ${total} total records`
+      rowCountText = `Showing ${shown} of ${total} total records`;
     }
 
     return (

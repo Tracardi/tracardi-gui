@@ -6,18 +6,17 @@ export const pagingSlice = createSlice({
         page: 0,
         shown: 0,
         total: 0,
-        type: '',
+        type: '', 
         refreshOn: false
     },
     reducers: {
-        increasePage: (state, action) => {
+        increasePage: (state) => {
             state.page = state.page + 1;
         },
-        resetPage: (state, action) => {
+        resetPage: (state) => {
             state.page = 0;
             state.shown = 0;
             state.total = 0;
-            state.type = action.payload.type
         },
         setRefreshOn: (state) => {
             state.refreshOn = true;
@@ -25,12 +24,15 @@ export const pagingSlice = createSlice({
         setRefreshOff: (state) => {
             state.refreshOn = false;
         },
-        updateCounts: (state, action) => {
-            state.total = action.payload.total;
-            state.shown = state.shown + action.payload.shown;
+        updateCounts: (state, {payload}) => {
+            state.total = payload.total;
+            state.shown = state.shown + payload.shown;
+        },
+        setType: (state, {payload}) => {
+            state.type = payload.type
         }
     }
 })
 
-export const {increasePage, resetPage, updateCounts, setRefreshOn, setRefreshOff} = pagingSlice.actions
+export const {increasePage, resetPage, updateCounts, setRefreshOn, setRefreshOff, setType} = pagingSlice.actions
 export default pagingSlice.reducer
