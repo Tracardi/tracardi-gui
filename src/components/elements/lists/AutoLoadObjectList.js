@@ -1,13 +1,12 @@
-import ObjectRow from "./rows/ObjectRow";
+import { useState, useEffect } from "react";
+import { request } from "../../../remote_api/uql_api_endpoint";
+import { updateCounts } from "../../../redux/reducers/pagingSlice";
+import AutoLoadObjectRows from "./AutoLoadObjectRows";
+import { connect, useDispatch } from "react-redux";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import React from "react";
 
 const AutoLoadObjectList = ({
-  data,
-  allRows,
-  loading,
-  errors,
   label,
   timeField,
   timeFieldLabel,
@@ -15,18 +14,34 @@ const AutoLoadObjectList = ({
   filterFields,
   onLoadDetails,
   onDetails,
-  setParentPageState,
-  parentPageState,
-  endOfData,
+  onLoadRequest,
+  paging,
 }) => {
+  const { page, shown, total } = paging;
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleScroll = ({ target }) => {
-    const bottom = target.scrollHeight - Math.ceil(target.scrollTop) - 1 <= target.clientHeight;
+  useEffect(() => {
+    const oldUrl = onLoadRequest.url;
 
-    if (bottom && !endOfData) {
-      setParentPageState(parentPageState + 1);
+    if (page > 0 || total === 0) {
+      onLoadRequest.url = `${onLoadRequest.url}/page/${page}`;
+
+      request(onLoadRequest, setLoading, setError, (response) => {
+        if (response) {
+          dispatch(updateCounts({ total: response.data.total, shown: response.data.result.length }));
+
+          setRows(page === 0 ? [...response.data.result] : [...rows, ...response.data.result]);
+        }
+      });
     }
-  };
+    return () => {
+      onLoadRequest.url = oldUrl;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, total, onLoadRequest.data]);
 
   const widthStyle =
     typeof timeFieldWidth !== "undefined"
@@ -35,61 +50,57 @@ const AutoLoadObjectList = ({
         : false
       : {};
 
-  const header = (timeFieldLabel, data) => {
+  const header = (timeFieldLabel) => {
+    let rowCountText = "";
+    if (loading) {
+      rowCountText = "Loading...";
+    }
+    if (total === 0) {
+      rowCountText = "No Results";
+    } else {
+      rowCountText = `Showing ${shown} of ${total} total records`;
+    }
+
     return (
       <div className="Header">
         {widthStyle && <div className="Timestamp">{timeFieldLabel}</div>}
         <div className="Data">
-          {label} - Total {data.total} records
+          {label} - {rowCountText}
         </div>
       </div>
     );
   };
 
-  const rows = (timeField, filterFields, allRows, onDetailsRequest, onDetails) => {
-    if (Array.isArray(allRows)) {
-      return allRows.map((row, index) => {
-        return (
-          <ObjectRow
-            key={index}
-            row={row}
-            timeField={timeField}
-            timeFieldWidth={timeFieldWidth}
-            filterFields={filterFields}
-            onClick={() => {
-              onDetails(row.id);
-            }}
-            displayDetailButton={typeof onDetailsRequest !== "undefined"}
-          />
-        );
-      });
-    }
-  };
-
-  function render(data, loading, errors, timeField, timeFieldLabel, filterFields, onDetailsRequest) {
-    if (errors !== false) {
-      return <ErrorsBox errorList={errors} />;
-    }
-
-    if (loading === true) {
-      return <CenteredCircularProgress />;
-    } else {
-      if (data) {
-        return (
-          <div className={endOfData===false ? "ObjectList" : "ObjectList EndOfList"}
-               style={{ overflow: "scroll" }}
-               onScroll={handleScroll}>
-            {header(timeFieldLabel, data, onDetailsRequest)}
-            {rows(timeField, filterFields, allRows, onDetailsRequest, onDetails)}
-          </div>
-        );
-      } else {
-        return "";
-      }
-    }
+  function render(timeField, timeFieldLabel, filterFields, onDetailsRequest) {
+    return (
+      <div className={shown < total ? "ObjectList" : "ObjectList EndOfList"}>
+        {header(timeFieldLabel)}
+        <AutoLoadObjectRows
+          timeField={timeField}
+          filterFields={filterFields}
+          onDetails={onDetails}
+          onDetailsRequest={onDetailsRequest}
+          rows={rows}
+        />
+      </div>
+    );
   }
 
-  return render(data, loading, errors, timeField, timeFieldLabel, filterFields, onLoadDetails, onDetails);
+  if (loading) {
+    return <CenteredCircularProgress />;
+  }
+
+  if (error) {
+    return <ErrorsBox errorList={error} />;
+  }
+
+  return render(timeField, timeFieldLabel, filterFields, onLoadDetails, onDetails);
 };
 
-export default AutoLoadObjectList;
+const mapState = (state) => {
+  return {
+    paging: state.pagingReducer,
+  };
+};
+
+export default connect(mapState)(AutoLoadObjectList);
