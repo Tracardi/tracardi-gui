@@ -15,7 +15,7 @@ const Instances = () => {
 
   useEffect(() => {
     dispatch(resetPage());
-  }, [])
+  }, [dispatch])
 
     return (
       <AutoLoadObjectList

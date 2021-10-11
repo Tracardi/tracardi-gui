@@ -1,4 +1,4 @@
-import ObjectRow from "./rows/ObjectRow";
+import {MemoObjectRow} from "./rows/ObjectRow";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import React from "react";
@@ -22,7 +22,7 @@ const ObjectList = ({data, loading, errors, label, timeField, timeFieldLabel, ti
         if(Array.isArray(data.result)) {
             return data.result.map(
                 (row, index) => {
-                    return <ObjectRow key={index}
+                    return <MemoObjectRow key={index}
                                       row={row}
                                       timeField={timeField}
                                       timeFieldWidth={timeFieldWidth}

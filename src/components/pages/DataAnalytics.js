@@ -114,7 +114,7 @@ export default function DataAnalytics({
         clearInterval(timer);
       }
     };
-  }, [refresh, query]);
+  }, [refresh, query, dispatch]);
 
   const onFilter = ({ to, from, where }) => {
     setQuery(
