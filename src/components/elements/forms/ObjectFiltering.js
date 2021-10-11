@@ -1,4 +1,6 @@
 import React, {useCallback, useState} from "react";
+import { useDispatch } from "react-redux";
+import {resetPage} from '../../../redux/reducers/pagingSlice'
 import TextField from "@material-ui/core/TextField";
 import Button from "./Button";
 import "./ObjectFiltering.css";
@@ -11,10 +13,11 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
     const [fromDate, setFromDate] = useState(initDate.minDate);
     const [toDate, setToDate] = useState(initDate.maxDate);
     const [query, setQuery] = useState(initDate.where);
+    const dispatch = useDispatch();
 
     const onSetDateFrom = useCallback((date) => {
         localStorage.setItem(type+"DateFrom", JSON.stringify(date));
-        setFromDate(date)
+        setFromDate(date);
     }, [type])
 
     const onSetDateTo= useCallback((date) => {
@@ -38,6 +41,7 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
 
     function onReady() {
         localStorage.setItem(type+"Query", query);
+        dispatch(resetPage());
         onFilterClick({
             from: fromDate,
             to: toDate,

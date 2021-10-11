@@ -7,6 +7,7 @@ import alertReducer from "./reducers/alertSlice";
 import progressReducer from "./reducers/progressSlice";
 import eventDataGridReducer from "./reducers/eventDataGridSlice";
 import uqlReducer from "./reducers/uqlSlice";
+import pagingReducer from "./reducers/pagingSlice";
 
 export default configureStore({
         reducer: {
@@ -17,7 +18,8 @@ export default configureStore({
             warningIconReducer,
             alertReducer,
             eventDataGridReducer,
-            uqlReducer
+            uqlReducer,
+            pagingReducer
         }
     }
 );
