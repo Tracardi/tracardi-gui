@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { request } from "../../../remote_api/uql_api_endpoint";
 import { updateCounts } from "../../../redux/reducers/pagingSlice";
 import AutoLoadObjectRows from "./AutoLoadObjectRows";

@@ -6,7 +6,7 @@ import {TiBusinessCard} from "@react-icons/all-files/ti/TiBusinessCard";
 import {BsArrowsExpand} from "@react-icons/all-files/bs/BsArrowsExpand";
 import {BsArrowsCollapse} from "@react-icons/all-files/bs/BsArrowsCollapse";
 
-export default function ObjectRow({row, timeField, onClick, filterFields, displayDetailButton, timeFieldWidth}) {
+export function ObjectRow({row, timeField, onClick, filterFields, displayDetailButton, timeFieldWidth}) {
 
     const [toggle, setToggle] = useState(false);
 
@@ -51,3 +51,9 @@ export default function ObjectRow({row, timeField, onClick, filterFields, displa
         </div>
     </div>
 }
+
+function rowsAreEqual(prevRow, nextRow) {
+    return prevRow.id === nextRow.id;
+}
+
+export const MemoObjectRow = React.memo(ObjectRow, rowsAreEqual);

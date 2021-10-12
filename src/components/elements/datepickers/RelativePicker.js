@@ -15,7 +15,7 @@ export default function RelativePicker({type, onDateSelect, datetime}) {
             absolute: null,
             delta: {
                 type: periodType,
-                value: period * ((periodType==="minus") ? -1 : 1),
+                value: period * ((periodType==="minus" && period > 0) ? -1 : 1),
                 entity: periodEntity
             },
             now: null
@@ -40,6 +40,11 @@ export default function RelativePicker({type, onDateSelect, datetime}) {
                 onChange={(ev) => setPeriod(ev.target.value)}
                 InputLabelProps={{
                     shrink: true,
+                }}
+                InputProps={{
+                    inputProps: {
+                        [periodType==='minus' ? 'max' : 'min']: 0
+                    }
                 }}
                 style={{width: 100, margin: 2}}
             />
