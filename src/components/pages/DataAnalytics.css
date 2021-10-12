@@ -1,7 +1,10 @@
 .DataAnalytics {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     height: inherit;
+    grid-template-rows: 55px calc(100% - 60px)
+}
+.DataAnalytics  > .Filtering {
+    height: 55px;
 }
 
 .DataAnalytics  > .Data {

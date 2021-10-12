@@ -19,7 +19,7 @@ export default function DataBrowsingList(
     }) {
 
     return <section className="DataBrowsingList">
-        <div>
+        <div className="Chart">
             {children}
         </div>
         <div className="Data">

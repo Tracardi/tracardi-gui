@@ -1,16 +1,14 @@
 .DataBrowsingList {
     height: 100%;
     display: grid;
-    grid-template-rows: 200px calc(100% - 255px)
+    grid-template-rows: 200px calc(100% - 205px)
+}
+
+.DataBrowsingList > .Chart {
+    height: 200px;
 }
 
 .DataBrowsingList > .Data {
-    padding: 5px 0;
     height: 100%;
-}
-
-.DataBrowsingList > .Data > .ObjectList > .DataContent {
-    height: 100%;
-    overflow-y: scroll;
 }
 

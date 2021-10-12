@@ -139,14 +139,15 @@ export default function DataAnalytics({
 
   return (
     <div className="DataAnalytics">
-      <ObjectFiltering
-        type={type}
-        initDate={query}
-        initRefresh={refresh}
-        onFilterClick={onFilter}
-        onRefreshChange={onRefreshChange}
-      />
-
+      <div className="Filtering">
+        <ObjectFiltering
+          type={type}
+          initDate={query}
+          initRefresh={refresh}
+          onFilterClick={onFilter}
+          onRefreshChange={onRefreshChange}
+        />
+      </div>
       <div className="Data">
         <DataBrowsingList
           label={label}

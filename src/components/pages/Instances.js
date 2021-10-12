@@ -17,14 +17,14 @@ const Instances = () => {
     dispatch(resetPage());
   }, [dispatch])
 
-    return (
+    return <div style={{overflow: "auto", height: "inherit"}}>
       <AutoLoadObjectList
         onLoadRequest={onLoadRequest}
         label="INSTANCES"
         timeField={(row) => [row.timestamp]}
         timeFieldLabel="Timestamp"
       />
-    );
+    </div>
 }
 
 const mapState = state => {
