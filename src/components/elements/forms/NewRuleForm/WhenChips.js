@@ -2,6 +2,7 @@ import Chip from "@material-ui/core/Chip";
 import React from "react";
 import {VscError} from "@react-icons/all-files/vsc/VscError";
 import {BsCheckCircle} from "@react-icons/all-files/bs/BsCheckCircle";
+import PropTypes from 'prop-types';
 
 const WhenChips = ({condition, onDelete}) => {
 
@@ -17,6 +18,11 @@ const WhenChips = ({condition, onDelete}) => {
         style={{color:"#0069c0", border: "solid #0069c0 2px", backgroundColor: "inherit"}}
         onDelete={onDelete}
     />
+}
+
+WhenChips.propTypes = {
+    condition: PropTypes.string,
+    onDelete: PropTypes.string
 }
 
 export default WhenChips;

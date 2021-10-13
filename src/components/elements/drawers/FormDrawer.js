@@ -1,6 +1,7 @@
 import RightPaperHeader from "../RightPaperHeader";
 import Drawer from "@material-ui/core/Drawer";
 import React from "react";
+import PropTypes from 'prop-types';
 
 export default function FormDrawer(
     {
@@ -20,3 +21,10 @@ export default function FormDrawer(
         </div>
     </Drawer>
 }
+
+FormDrawer.propTypes = {
+    width: PropTypes.number,
+        label: PropTypes.string,
+        open: PropTypes.bool,
+        onClose: PropTypes.func
+  };

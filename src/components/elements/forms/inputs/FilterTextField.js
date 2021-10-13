@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import TextField from "@material-ui/core/TextField";
+import PropTypes from 'prop-types';
 
 const FilterTextField = ({label, onChange, onSubmit, initValue="", variant="outlined"}) => {
 
@@ -40,6 +41,14 @@ const FilterTextField = ({label, onChange, onSubmit, initValue="", variant="outl
                       fullWidth
                       size="small"
     />
+}
+
+FilterTextField.propTypes = {
+    label: PropTypes.string,
+    onChange: PropTypes.func,
+    onSubmit: PropTypes.func,
+    initValue: PropTypes.string,
+    variant: PropTypes.string
 }
 
 export default FilterTextField;

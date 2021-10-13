@@ -7,6 +7,7 @@ import "./ObjectFiltering.css";
 import {AiOutlineFilter} from "@react-icons/all-files/ai/AiOutlineFilter";
 import DataTimePicker from "../datepickers/DateTimePicker";
 import MenuItem from "@material-ui/core/MenuItem";
+import PropTypes from 'prop-types';
 
 export default function ObjectFiltering({type, initDate, onFilterClick, initRefresh, onRefreshChange}) {
 
@@ -90,3 +91,5 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
         </div>
     </section>
 }
+
+ObjectFiltering.propTypes = {type: PropTypes.string, initDate: PropTypes.object, onFilterClick: PropTypes.func, initRefresh: PropTypes.number, onRefreshChange: PropTypes.func}

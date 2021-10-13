@@ -3,6 +3,7 @@ import React from "react";
 import {VscError} from "@react-icons/all-files/vsc/VscError";
 import {AiOutlinePlayCircle} from "@react-icons/all-files/ai/AiOutlinePlayCircle";
 import ErrorsBox from "../../../errors/ErrorsBox";
+import PropTypes from 'prop-types';
 
 function ThenChips({actions, onDelete}) {
 
@@ -46,6 +47,11 @@ function ThenChips({actions, onDelete}) {
 
     return render();
 
+}
+
+ThenChips.propTypes = {
+    actions: PropTypes.array,
+    onDelete: PropTypes.func
 }
 
 export default ThenChips;

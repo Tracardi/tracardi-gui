@@ -15,6 +15,7 @@ import JsonEditor from "../misc/JsonEditor";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
+import PropTypes from 'prop-types';
 
 
 function ResourceForm({init, onClose, showAlert}) {
@@ -228,6 +229,11 @@ function ResourceForm({init, onClose, showAlert}) {
             />
         </Rows>
     </Form>
+}
+
+ResourceForm.propTypes = {
+    init: PropTypes.object,
+    onClose: PropTypes.func
 }
 
 const mapProps = (state) => {
