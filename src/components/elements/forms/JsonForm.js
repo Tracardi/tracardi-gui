@@ -3,13 +3,13 @@ import TextField from "@material-ui/core/TextField";
 import AutoComplete from "./AutoComplete";
 import Button from "./Button";
 import "./JsonForm.css";
-import MenuItem from "@material-ui/core/MenuItem";
 import JsonEditor from "../misc/JsonEditor";
-import {isString} from "../../../misc/typeChecking";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
 import {objectFilter, objectMap} from "../../../misc/mappers";
 import ErrorLine from "../../errors/ErrorLine";
 import FormSchema from "../../../domain/formSchema";
+import DottedPathInput from "./inputs/DottedPathInput";
+import ListOfDottedInputs from "./ListOfDottedInputs";
 
 
 const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
@@ -93,6 +93,13 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                                                             errors={errors}
                                                             {...props}/>
                     }
+                case "listOfDotPaths":
+                    return {
+                        component: (props) => <ListOfDotPaths
+                            id={id}
+                            errors={errors}
+                            {...props}/>
+                    }
                 case "text":
                     return {
                         component: (props) => <TextInput id={id}
@@ -144,7 +151,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                 const form = new FormSchema(schema)
                 form.validate(pluginId, currentFormValues).then(
                     (result) => {
-                        if(result === true) {
+                        if (result === true) {
                             setErrors({})
                             const fieldsToSave = objectFilter(currentFormValues, form.getAllFields());
                             onSubmit(dot2object(fieldsToSave));
@@ -153,7 +160,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                         }
                     }
                 )
-             }
+            }
         }
 
         const groupComponents = groups.map((groupObject, idx) => {
@@ -242,93 +249,33 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         />
     }
 
+    function ListOfDotPaths({id, label, errors}) {
+        const handleSubmit = (value) => {
+            formValues.current[id] = value;
+        }
+
+        const value = readValue(id);
+
+        console.log(value)
+
+        return <ListOfDottedInputs onChange={handleSubmit}/>
+    }
+
     function DotPathInput({id, label, errors}) {
 
-        const value = readValue(id)
-        let [sourceValue, pathValue] = isString(value) ? value.split('@') : ["", ""]
-
-        if (typeof pathValue === 'undefined' && sourceValue) {
-            pathValue = sourceValue
-            sourceValue = ''
+        const handleChange = (value) => {
+            formValues.current[id] = value;
         }
 
-        const [path, setPath] = React.useState(pathValue || "");
-        const [source, setSource] = React.useState(sourceValue || "");
-
-        const sources = [
-            {
-                value: '',
-                label: '',
-            },
-            {
-                value: 'payload',
-                label: 'payload',
-            },
-            {
-                value: 'profile',
-                label: 'profile',
-            },
-            {
-                value: 'event',
-                label: 'event',
-            },
-            {
-                value: 'session',
-                label: 'session',
-            },
-            {
-                value: 'flow',
-                label: 'flow',
-            },
-        ];
-
-        const handleExternalOnChange = (path, source) => {
-            formValues.current[id] = source + "@" + path
-        }
-
-        const handlePathChange = (event) => {
-            setPath(event.target.value);
-            handleExternalOnChange(event.target.value, source);
-            event.preventDefault();
-        };
-
-        const handleSourceChange = (event) => {
-            setSource(event.target.value);
-            handleExternalOnChange(path, event.target.value);
-            event.preventDefault();
-        };
-
+        const value = readValue(id);
         let errorProps = {}
+
         if (id in errors) {
             errorProps['error'] = true
             errorProps['helperText'] = errors[id]
         }
 
-        return <div style={{display: "flex"}}>
-            <TextField select
-                       label="Source"
-                       variant="outlined"
-                       size="small"
-                       value={source}
-                       onChange={handleSourceChange}
-                       style={{width: 120, marginRight: 5}}
-            >
-                {sources.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                    </MenuItem>
-                ))}
-            </TextField>
-            <TextField id={id}
-                       label={label}
-                       value={path}
-                       onChange={handlePathChange}
-                       variant="outlined"
-                       size="small"
-                       style={{width: 460}}
-                       {...errorProps}
-            />
-        </div>
+        return <DottedPathInput value={value} label={label} onChange={handleChange} {...errorProps}/>
     }
 
     function JsonInput({id, label, error}) {
@@ -393,7 +340,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                                   }
                               }
                           }/>
-                          <Error/>
+            <Error/>
         </>
     }
 }
