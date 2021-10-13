@@ -11,7 +11,7 @@ import {objectFilter, objectMap} from "../../../misc/mappers";
 import ErrorLine from "../../errors/ErrorLine";
 
 
-const JsonForm = ({schema, value = {}, onSubmit}) => {
+const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
 
     const formValues = useRef({})
 
@@ -128,6 +128,10 @@ const JsonForm = ({schema, value = {}, onSubmit}) => {
         }
 
         const validate = (schema, values) => {
+
+            // todo remote validation
+            console.log(pluginId)
+
             if (schema.groups) {
                 let validFields = []
                 const validationErrors = schema.groups.reduce((accumulator, groupObject) => {

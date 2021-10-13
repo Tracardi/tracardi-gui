@@ -97,6 +97,7 @@ function NodeDetails({node, onConfig, onLabelSet}) {
             />}
             {tab === 3 && node?.data?.spec?.form &&
             <MemoJsonForm
+                pluginId={node?.data?.spec?.id}
                 value={node?.data?.spec?.init}
                 schema={node?.data?.spec?.form}
                 onSubmit={handleFormSubmit}
