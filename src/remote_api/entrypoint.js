@@ -29,3 +29,16 @@ export const remote = (config) => {
     }
     return axios(config)
 }
+
+export const asyncRemote = async (config) => {
+    config = {
+        ...config,
+        baseURL: window._env_.API_URL
+    }
+    config.headers = {
+        ...config.headers,
+        'Authorization': authToken()
+    }
+
+    return axios(config)
+}

@@ -33,7 +33,8 @@ function SidebarLeft({showAlert, onEdit, onDebug, debugInProgress}) {
             })
     }, [showAlert, refresh, filterActions])
 
-    const onDragStart = (event, data) => {
+    const onDragStart = (event, row) => {
+        const data = row.plugin;
         event.dataTransfer.setData('application/json', JSON.stringify(data));
         event.dataTransfer.effectAllowed = 'move';
     };
@@ -65,7 +66,7 @@ function SidebarLeft({showAlert, onEdit, onDebug, debugInProgress}) {
                             return <div key={index}>
                                 <p>{category}</p>
                                 {plugs.map((row, subIndex) => {
-                                    return <FlowMenuNode key={index + "-" + subIndex} data={row.plugin}
+                                    return <FlowMenuNode key={index + "-" + subIndex} row={row}
                                                          onDragStart={onDragStart} draggable/>
                                 })}
                             </div>

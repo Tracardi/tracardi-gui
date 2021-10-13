@@ -163,9 +163,9 @@ export const request = ({url, header, method, data}, setLoading, setError, setRe
                     && Array.isArray(e.response?.data?.detail)) {
                         setError(e.response.data.detail);
                 } else if (e.response?.data.detail && typeof e.response?.data?.detail === 'string') {
-                    setError([{msg:e.response.data.detail, type: "Exception"}]);
+                    setError([{msg:e.response.data.detail, type: "Exception", response: e.response}]);
                 } else {
-                    setError([{msg:e.message, type: "Exception"}]);
+                    setError([{msg:e.message, type: "Exception", response: e.response}]);
                 }
 
                 if (e.request && e.request.status === 401) {

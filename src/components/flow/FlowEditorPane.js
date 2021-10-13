@@ -7,12 +7,12 @@ import {v4 as uuid4} from "uuid";
 import {request} from "../../remote_api/uql_api_endpoint";
 import SidebarLeft from "./SidebarLeft";
 import SidebarRight from "./SidebarRight";
-import NodeDetails from "./NodeDetails";
 import {debug} from "./FlowEditorOps";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import DebugDetails from "./DebugDetails";
 import LogsList from "./LogsList";
+import MemoNodeDetails from "./NodeDetails";
 
 export function FlowEditorPane(
     {
@@ -315,7 +315,7 @@ export function FlowEditorPane(
             {displayRightSidebar && <SidebarRight
                 defaultTab={rightSidebarTab}
                 onTabSelect={setRightSidebarTab}
-                inspectTab={<NodeDetails
+                inspectTab={<MemoNodeDetails
                     onLabelSet={handleLabelSet}
                     node={currentNode}
                     onConfig={onConfigSave}

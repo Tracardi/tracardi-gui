@@ -11,11 +11,11 @@ import ConfigEditor from "./editors/ConfigEditor";
 import NodeInfo from "./NodeInfo";
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
 import {VscJson} from "@react-icons/all-files/vsc/VscJson";
-import JsonForm from "../elements/forms/JsonForm";
+import MemoJsonForm from "../elements/forms/JsonForm";
 
 const MdManual = React.lazy(() => import('./actions/MdManual'));
 
-export default function NodeDetails({node, onConfig, onLabelSet}) {
+function NodeDetails({node, onConfig, onLabelSet}) {
 
     const [tab, setTab] = useState(0);
 
@@ -40,7 +40,7 @@ export default function NodeDetails({node, onConfig, onLabelSet}) {
         if (onConfig) {
             onConfig(config)
         }
-        console.log(config)
+        console.log("Config submit", config)
     }
 
 
@@ -63,17 +63,17 @@ export default function NodeDetails({node, onConfig, onLabelSet}) {
                     selected={tab === 3}>
                     <GoSettings size={22}/>
                 </IconButton>}
-                {node?.data?.spec?.manual && <IconButton
-                    label="Manual"
-                    onClick={() => setTab(1)}
-                    selected={tab === 1}>
-                    <VscBook size={22}/>
-                </IconButton>}
                 {node?.data?.spec?.init && <IconButton
                     label="Json Config"
                     onClick={() => setTab(2)}
                     selected={tab === 2}>
                     <VscJson size={22}/>
+                </IconButton>}
+                {node?.data?.spec?.manual && <IconButton
+                    label="Manual"
+                    onClick={() => setTab(1)}
+                    selected={tab === 1}>
+                    <VscBook size={22}/>
                 </IconButton>}
                 <IconButton
                     label="Raw"
@@ -96,7 +96,8 @@ export default function NodeDetails({node, onConfig, onLabelSet}) {
                 onConfig={handleFormSubmit}
             />}
             {tab === 3 && node?.data?.spec?.form &&
-            <JsonForm
+            <MemoJsonForm
+                pluginId={node?.data?.spec?.id}
                 value={node?.data?.spec?.init}
                 schema={node?.data?.spec?.form}
                 onSubmit={handleFormSubmit}
@@ -107,3 +108,10 @@ export default function NodeDetails({node, onConfig, onLabelSet}) {
         </div>
     </div>
 }
+
+function areEqual(prevProps, nextProps) {
+    return prevProps.node.id===nextProps.node.id;
+}
+const MemoNodeDetails = React.memo(NodeDetails, areEqual);
+
+export default MemoNodeDetails;
