@@ -5,10 +5,11 @@ import Button from "./Button";
 import "./JsonForm.css";
 import MenuItem from "@material-ui/core/MenuItem";
 import JsonEditor from "../misc/JsonEditor";
-import {isString, isEmptyObject} from "../../../misc/typeChecking";
+import {isString} from "../../../misc/typeChecking";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
 import {objectFilter, objectMap} from "../../../misc/mappers";
 import ErrorLine from "../../errors/ErrorLine";
+import FormSchema from "../../../domain/formSchema";
 
 
 const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
@@ -127,71 +128,6 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
             }
         }
 
-        const validate = (schema, values) => {
-
-            // todo remote validation
-            console.log(pluginId)
-
-            if (schema.groups) {
-                let validFields = []
-                const validationErrors = schema.groups.reduce((accumulator, groupObject) => {
-                    if (groupObject.fields) {
-                        const groupErrors = groupObject.fields.reduce((previousValue, fieldObject) => {
-                            // console.log('required', fieldObject.required, fieldObject.id)
-                            // console.log('val',values[fieldObject.id], fieldObject.id  in values)
-                            // console.log("component", fieldObject.component.type)
-                            if(fieldObject.required && fieldObject.required === true) {
-                                let value = null;
-                                if(fieldObject.component?.type === 'resource') {
-                                    // console.log('fff')
-                                    if(fieldObject.id  in values) {
-                                        value = values[fieldObject.id].id
-                                    }
-                                } else {
-                                    value = values[fieldObject.id]
-                                }
-                                // console.log("ddd", value)
-                                // console.log(!(fieldObject.id  in values))
-                                // console.log(values[fieldObject.id], typeof values[fieldObject.id] === 'undefined')
-                                // console.log(values[fieldObject.id] === "")
-                                if(!(fieldObject.id  in values)
-                                    || value === null
-                                    || typeof value === 'undefined'
-                                    || value === "") {
-                                    return {...previousValue, [fieldObject.id]: "This field is required."}
-                                }
-                            }
-
-                            if (fieldObject.validation) {
-                                if (fieldObject.id in values) {
-                                    let re = new RegExp(fieldObject.validation.regex);
-                                    let fieldValue = values[fieldObject.id]
-                                    if (!isString(fieldValue)) {
-                                        fieldValue = fieldValue.toString()
-                                    }
-                                    if (!re.test(fieldValue)) {
-                                        return {...previousValue, [fieldObject.id]: fieldObject.validation.message}
-                                    } else {
-                                        validFields.push(fieldObject.id)
-                                    }
-                                }
-                            } else {
-                                validFields.push(fieldObject.id)
-                            }
-                            return null
-                        }, {})
-                        return {...accumulator, ...groupErrors}
-                    }
-                    return accumulator;
-                }, {})
-
-                if (validationErrors) {
-                    setErrors(validationErrors)
-                }
-                return [validationErrors, validFields]
-            }
-        }
-
         const handleSubmit = (schema) => {
             if (onSubmit) {
                 let currentFormValues = formValues.current
@@ -200,22 +136,24 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                         try {
                             currentFormValues[name] = value()
                         } catch (e) {
-                            console.log(e)
+                            console.error(e);
                         }
                     }
                 })
 
-                const [validationErrors, validFields] = validate(schema, currentFormValues);
-
-                // Convert it back to object
-                if (isEmptyObject(validationErrors)) {
-                    // currentFormValues has all values from all forms
-                    // We filter only values for current form.
-                    const fieldsToSave = objectFilter(currentFormValues, validFields);
-                    onSubmit(dot2object(fieldsToSave));
-                }
-
-            }
+                const form = new FormSchema(schema)
+                form.validate(pluginId, currentFormValues).then(
+                    (result) => {
+                        if(result === true) {
+                            setErrors({})
+                            const fieldsToSave = objectFilter(currentFormValues, form.getAllFields());
+                            onSubmit(dot2object(fieldsToSave));
+                        } else {
+                            setErrors(result)
+                        }
+                    }
+                )
+             }
         }
 
         const groupComponents = groups.map((groupObject, idx) => {

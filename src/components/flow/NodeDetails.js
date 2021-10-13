@@ -40,7 +40,7 @@ function NodeDetails({node, onConfig, onLabelSet}) {
         if (onConfig) {
             onConfig(config)
         }
-        console.log(config)
+        console.log("Config submit", config)
     }
 
 
