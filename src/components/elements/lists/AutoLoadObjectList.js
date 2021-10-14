@@ -25,23 +25,23 @@ const AutoLoadObjectList = ({
 
   useEffect(() => {
     const oldUrl = onLoadRequest.url;
-
     if (page > 0 || total === 0) {
       onLoadRequest.url = `${onLoadRequest.url}/page/${page}`;
+      if (rows.length >= page) {
+        request(onLoadRequest, setLoading, setError, (response) => {
+          if (response) {
+            dispatch(updateCounts({ total: response.data.total, shown: response.data.result.length }));
 
-      request(onLoadRequest, setLoading, setError, (response) => {
-        if (response) {
-          dispatch(updateCounts({ total: response.data.total, shown: response.data.result.length }));
-
-          setRows(page === 0 ? [...response.data.result] : [...rows, ...response.data.result]);
-        }
-      });
+            setRows(page === 0 ? [...response.data.result] : [...rows, ...response.data.result]);
+          }
+        });
+      }
     }
     return () => {
       onLoadRequest.url = oldUrl;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, total, onLoadRequest.data]);
+  }, [page, total, onLoadRequest.data, dispatch]);
 
   const widthStyle =
     typeof timeFieldWidth !== "undefined"
