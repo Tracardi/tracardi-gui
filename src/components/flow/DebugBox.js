@@ -2,8 +2,9 @@ import React from "react";
 import Tabs, {TabCase} from "../elements/tabs/Tabs";
 import {DebugPortDetails} from "./DebugPortDetails";
 import {NoPortData} from "./NoPortData";
-import ConsoleView from "../elements/misc/ConsoleView";
 import ErrorBox from "../errors/ErrorBox";
+import DebugContextAccordions from "./accordions/DebugContextAccordion";
+import "./DebugBox.css";
 
 export default function DebugBox({call, onTabSelect}) {
     const renderPorts = (messages, input) => {
@@ -22,10 +23,10 @@ export default function DebugBox({call, onTabSelect}) {
         </div>
     }
 
-    return <>
+    return <div className="DebugBox">
         {call?.error && <ErrorBox>{call.error}</ErrorBox>}
         {!call?.error && <Tabs
-            tabs={["Input", "Output", "Profile"]}
+            tabs={["Input", "Output", "Debug data"]}
             onTabSelect={onTabSelect}
         >
             <TabCase id={0}>
@@ -40,9 +41,9 @@ export default function DebugBox({call, onTabSelect}) {
             </TabCase>
             <TabCase id={2}>
                 <Padder>
-                    <ConsoleView data={call?.profile} label="Profile"/>
+                    <DebugContextAccordions profile={call?.profile} event={call?.event}/>
                 </Padder>
             </TabCase>
         </Tabs>}
-    </>
+    </div>
 }
