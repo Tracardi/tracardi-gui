@@ -3,6 +3,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import React from "react";
 import Select from "@material-ui/core/Select";
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -27,4 +28,10 @@ export default function SelectItems({children, label, value, onChange}) {
             {children}
         </Select>
     </FormControl>
+}
+
+SelectItems.propTypes = {
+    label: PropTypes.string,
+    value: PropTypes.any,
+    onChange: PropTypes.func
 }

@@ -2,6 +2,7 @@ import RightPaperHeader from "../RightPaperHeader";
 import Drawer from "@material-ui/core/Drawer";
 import React from "react";
 import RuleAddForm from "../forms/RuleAddForm";
+import PropTypes from 'prop-types';
 
 export default function RuleFormDrawer(
     {
@@ -25,3 +26,10 @@ export default function RuleFormDrawer(
         </div>
     </Drawer>
 }
+
+RuleFormDrawer.propTypes = {
+        init: PropTypes.object,
+        label: PropTypes.string,
+        open: PropTypes.bool,
+        onClose: PropTypes.func
+  };
