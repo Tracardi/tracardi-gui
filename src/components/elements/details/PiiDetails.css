@@ -1,29 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap');
-
 .PiiDetails {
     width: 100%;
     display: flex;
-    justify-content: center;
-    padding: 40px;
-    color: #fff;
-    background: #006db3;
-    font-family: 'Poppins', cursive;
+    padding: 10px 40px;
+    color: #444;
+    width: 100%;
 }
 
 .PiiBox {
-    display: flex;
+    display: grid;
+    grid-template-columns: 400px calc(100% - 405px);
+    align-content: center;
+    width: 100%;
 }
 
 .PiiIcon {
-    border: solid #64acff 6px;
-    width: 120px;
-    height: 120px;
+    border: solid #444 3px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    margin: 0 50px 0 0;
     display: grid;
     align-items: center;
     justify-items: center;
-    color: #64acff;
 }
 
 .PiiData {
@@ -40,20 +37,23 @@
     display: flex;
     align-items: center;
     padding: 5px 0;
-    font-size: 120%;
+    font-size: 90%;
 }
 
-.PiiCard .Name {
-    font-size: 300%;
-    margin-bottom: 20px;
-    letter-spacing: -1px;
-    background: -webkit-linear-gradient(-70deg,#fff,#64acff);;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 800;
+.PiiBox .PiiNameSurname {
+    display: grid;
+    grid-template-columns: 100px calc(100% - 105px);
+    width: 100%;
+    align-items: center;
+}
+
+.PiiBox .Name {
+    font-size: 160%;
+    letter-spacing: 1px;
+    font-weight: 400;
 
 }
 
-.PiiData ASIDE {
+.PiiBox ASIDE {
     margin-left: 100px;
 }

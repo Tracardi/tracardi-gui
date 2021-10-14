@@ -164,7 +164,7 @@ export default function DataAnalytics({
         >
           <BarChartElement
             onLoadRequest={onLoadHistogramRequest(query)}
-            columns={[{ label: "events", color: "#039be5", stackId: "events" }]}
+            columns={[{ label: "count", color: "#039be5", stackId: "count" }]}
           />
         </DataBrowsingList>
       </div>

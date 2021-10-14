@@ -23,7 +23,7 @@ TabCase.propTypes = {
     id: PropTypes.number.isRequired,
 }
 
-export default function Tabs({tabs, children, defaultTab=0, onTabSelect}) {
+export default function Tabs({tabs, children, defaultTab=0, onTabSelect, className}) {
 
     const [tabId, setTabId] = useState((defaultTab) ? defaultTab : 0);
 
@@ -42,8 +42,15 @@ export default function Tabs({tabs, children, defaultTab=0, onTabSelect}) {
         return <span className={(selected) ? "Tab Selected" : "Tab"} onClick={() => onTabClick(index)}>{label}</span>
     }
 
+    const css = () => {
+        if(className) {
+            return "Navigation "+className;
+        }
+        return "Navigation";
+    }
+
     return <section className="Tabs">
-        <nav className="Navigation">
+        <nav className={css()}>
             {tabs.map((label, key) => {
                     if (tabId === key) {
                         return <Tab label={label} key={key} index={key} selected={true}/>

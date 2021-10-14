@@ -48,7 +48,7 @@ export default function BarChartElement({onLoadRequest, columns}) {
                         return <Bar key={index} stackId={column.stackId ? column.stackId : "stack"} dataKey={column.label} fill={column.color ? column.color : "#ffa000"}/>
                     })}
 
-                    <XAxis dataKey="time" style={{fontSize:"80%"}}/>
+                    <XAxis dataKey="date" style={{fontSize:"80%"}}/>
                     <YAxis style={{fontSize:"90%"}}/>
 
                 </BarChart>
