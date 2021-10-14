@@ -14,6 +14,7 @@ import Rows from "../misc/Rows";
 import TagTextFieldForProjects from "./inputs/TagTextFieldForProjects";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
+import PropTypes from 'prop-types';
 
 function FlowForm({
                       id,
@@ -160,6 +161,17 @@ function FlowForm({
         </Rows>
 
     </div>
+}
+
+FlowForm.propTypes = {
+    id: PropTypes.string,
+    name: PropTypes.string,
+    description: PropTypes.string,
+    enabled: PropTypes.bool,
+    projects: PropTypes.array,
+    onFlowSaveComplete: PropTypes.func,
+    draft: PropTypes.bool,
+    refreshMetaData: PropTypes.bool
 }
 
 

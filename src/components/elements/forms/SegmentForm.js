@@ -15,6 +15,7 @@ import {remote} from "../../../remote_api/entrypoint";
 import AutoComplete from "./AutoComplete";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
+import PropTypes from 'prop-types';
 
 function SegmentForm({onSubmit, init, showAlert}) {
 
@@ -206,6 +207,8 @@ function SegmentForm({onSubmit, init, showAlert}) {
 
     </Form>
 }
+
+SegmentForm.propTypes = {onSubmit: PropTypes.func, init: PropTypes.object}
 
 const mapProps = (state) => {
     return {

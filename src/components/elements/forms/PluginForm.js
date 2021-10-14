@@ -8,6 +8,7 @@ import ElevatedBox from "../misc/ElevatedBox";
 import FormHeader from "../misc/FormHeader";
 import {BsXSquare} from "@react-icons/all-files/bs/BsXSquare";
 import {BsCheckBox} from "@react-icons/all-files/bs/BsCheckBox";
+import PropTypes from 'prop-types';
 
 export default function PluginForm({id}) {
 
@@ -140,4 +141,8 @@ export default function PluginForm({id}) {
             </div>
         </ElevatedBox>
     </div>
+}
+
+PluginForm.propTypes = {
+    id: PropTypes.string
 }

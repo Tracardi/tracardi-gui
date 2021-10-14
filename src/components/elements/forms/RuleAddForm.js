@@ -4,6 +4,7 @@ import RecordAddedConfirmation from "./RecordAddedConfirmation";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import RuleForm from "./RuleForm";
+import PropTypes from 'prop-types';
 
 const RuleAddForm = ({showAlert, init}) => {
 
@@ -36,6 +37,10 @@ const RuleAddForm = ({showAlert, init}) => {
         {step === 0 && <RuleForm onSubmit={onRuleSubmit} init={init}/>}
         {step === 1 && <RecordAddedConfirmation payload={confirmation}/>}
     </div>
+}
+
+RuleAddForm.propTypes = {
+    init: PropTypes.object
 }
 
 const mapProps = (state) => {

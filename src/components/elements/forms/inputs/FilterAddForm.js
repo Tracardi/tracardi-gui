@@ -2,6 +2,7 @@ import React from "react";
 import './FilterAddForm.css';
 import FilterTextField from "./FilterTextField";
 import Button from "../Button";
+import PropTypes from 'prop-types';
 
 export default function FilterAddForm({textFieldLabel, buttonLabel, buttonIcon, onFilter, onAdd}) {
     return <div className='FilterAddForm'>
@@ -14,3 +15,11 @@ export default function FilterAddForm({textFieldLabel, buttonLabel, buttonIcon, 
         </div>
     </div>
 }
+
+FilterAddForm.propTypes = {
+    textFieldLabel: PropTypes.string,
+    buttonIcon: PropTypes.element,
+    buttonLabel: PropTypes.string,
+    onFilter: PropTypes.func,
+    onAdd: PropTypes.func
+};

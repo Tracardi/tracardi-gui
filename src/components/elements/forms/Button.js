@@ -2,6 +2,7 @@ import React from "react";
 import "./Button.css";
 import IconCircularProgress from "../progress/IconCircularProgress";
 import {AiOutlineCheckCircle} from "@react-icons/all-files/ai/AiOutlineCheckCircle";
+import PropTypes from 'prop-types';
 
 export default function Button({label, onClick, className, style, icon, disabled, selected=false, progress=false}) {
 
@@ -43,3 +44,5 @@ export default function Button({label, onClick, className, style, icon, disabled
         <RenderContent processing={progress}/>
     </button>
 }
+
+Button.propTypes = {label: PropTypes.string, onClick: PropTypes.func, className: PropTypes.object, style: PropTypes.object, icon: PropTypes.element, disabled: PropTypes.bool, selected: PropTypes.bool, progress: PropTypes.bool}

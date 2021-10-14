@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {request} from "../../../../remote_api/uql_api_endpoint";
 import TagTextForm from "./TagTextField";
+import PropTypes from 'prop-types';
 
 export default function TagTextFieldForProjects({initTags, onChange}) {
 
@@ -35,4 +36,9 @@ export default function TagTextFieldForProjects({initTags, onChange}) {
                         onChange={handleChange}
                         defaultTags={initTags}
                         tags={tags}/>
+}
+
+TagTextFieldForProjects.propTypes = {
+    initTags: PropTypes.array,
+    onChange: PropTypes.func   
 }

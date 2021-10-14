@@ -10,6 +10,7 @@ import Columns from "../misc/Columns";
 import Rows from "../misc/Rows";
 import Form from "../misc/Form";
 import FormHeader from "../misc/FormHeader";
+import PropTypes from 'prop-types';
 
 export default function RuleForm({onSubmit, init}) {
 
@@ -192,3 +193,5 @@ export default function RuleForm({onSubmit, init}) {
 
     </Form>
 }
+
+RuleForm.propTypes = {onSubmit: PropTypes.func, init: PropTypes.object}

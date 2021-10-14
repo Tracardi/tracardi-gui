@@ -1,13 +1,14 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import {makeStyles} from "@material-ui/core/styles";
+import PropTypes from 'prop-types';
 
 export default function Input({onEnterPressed, onChange, label, initValue, error, variant}) {
     const useStyles = makeStyles(() => (
         {
             root: {
                 width: '100%'
-            }
+            } 
         }
     ));
     const classes = useStyles();
@@ -40,3 +41,12 @@ export default function Input({onEnterPressed, onChange, label, initValue, error
         />
     </div>
 }
+
+Input.propTypes = {
+    onEnterPressed: PropTypes.func,
+    onChange: PropTypes.func,
+    label: PropTypes.string,
+    initValue: PropTypes.string,
+    error: PropTypes.object,
+    variant: PropTypes.string   
+} 

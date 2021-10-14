@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import {request} from "../../../../remote_api/uql_api_endpoint";
 import {v4 as uuid4} from 'uuid';
 import { useConfirm} from 'material-ui-confirm';
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -74,6 +75,16 @@ export default function TagTextForm({label, placeholder, defaultTags, tags, onCh
                 />
         </div>
     );
+}
+
+TagTextForm.propTypes = {
+    label: PropTypes.string,
+    placeholder: PropTypes.string,
+    onChange: PropTypes.func,
+    defaultTags: PropTypes.array,
+    tags: PropTypes.array,
+    freeSolo: PropTypes.bool,
+    multiple: PropTypes.bool,
 }
 
 
