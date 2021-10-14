@@ -13,7 +13,9 @@ const SidebarRight = ({defaultTab, onTabSelect, debugTab, inspectTab, logTab}) =
                 {inspectTab}
             </TabCase>
             <TabCase id={1}>
-                {debugTab}
+                <div style={{height: "inherit"}}>
+                    {debugTab}
+                </div>
             </TabCase>
             <TabCase id={2}>
                 {logTab}

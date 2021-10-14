@@ -11,7 +11,7 @@
 }
 
 .Tabs > .Navigation > .Tab {
-    padding: 10px;
+    padding: 13px 10px 10px 10px;
     flex: 1;
     cursor: pointer;
     display: flex;
@@ -26,4 +26,5 @@
 .Tabs .TabContent {
     height: inherit;
     overflow-y: auto;
+    overflow-x: hidden;
 }

@@ -28,6 +28,7 @@ export default function DebugBox({call, onTabSelect}) {
         {!call?.error && <Tabs
             tabs={["Input", "Output", "Debug data"]}
             onTabSelect={onTabSelect}
+            className="DebugTabs"
         >
             <TabCase id={0}>
                 <Padder>

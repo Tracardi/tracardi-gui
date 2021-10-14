@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     secondaryHeading: {
         fontSize: theme.typography.pxToRem(15),
         color: theme.palette.text.secondary,
-    },
+    }
 }));
 
 export default function DebugContextAccordions({profile, event, session}) {
@@ -38,6 +38,7 @@ export default function DebugContextAccordions({profile, event, session}) {
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1bh-content"
                     id="panel1bh-header"
+
                 >
                     <Typography className={classes.heading}>Profile data</Typography>
                     <Typography className={classes.secondaryHeading}>Profile data is mutable</Typography>
