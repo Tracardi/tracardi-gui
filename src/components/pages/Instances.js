@@ -9,8 +9,7 @@ const Instances = () => {
 
   const onLoadRequest = {
     url: `/instances`,
-    method: "GET",
-    data: {}
+    method: "GET"
   }
 
   useEffect(() => {

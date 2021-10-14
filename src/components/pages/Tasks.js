@@ -9,8 +9,7 @@ const Tasks = () => {
 
     const onLoadRequest = {
         url: `/tasks`,
-        method: "GET",
-        data: {}
+        method: "GET"
     }
 
     useEffect(() => {
