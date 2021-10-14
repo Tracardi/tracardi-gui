@@ -1,0 +1,10 @@
+.DebugBox {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 7px;
+    margin: 0 5px;
+    padding-top: 5px;
+    height: 100%;
+    border: solid 1px #ccc;
+}
