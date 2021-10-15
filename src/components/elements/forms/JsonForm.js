@@ -258,7 +258,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
 
         console.log(value)
 
-        return <ListOfDottedInputs onChange={handleSubmit} errors={errors} value={value}/>
+        return <ListOfDottedInputs id={id} onChange={handleSubmit} errors={errors} value={value}/>
     }
 
     function DotPathInput({id, label, errors}) {
