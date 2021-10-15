@@ -1,0 +1,15 @@
+.DottedValue {
+    display: grid;
+    align-items: center;
+    grid-template-columns: calc(100% - 35px) 35px;
+    border-bottom: 1px dotted #ccc;
+    height: 40px;
+}
+
+.DottedValue:hover {
+    background-color: #eee;
+}
+
+.DottedValue > SPAN {
+    padding-left: 10px;
+}

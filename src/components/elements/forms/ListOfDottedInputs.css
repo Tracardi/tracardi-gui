@@ -10,22 +10,6 @@
     padding: 10px 5px;
 }
 
-.ListOfDottedInputs .DottedValue {
-    display: grid;
-    align-items: center;
-    grid-template-columns: calc(100% - 35px) 35px;
-    border-bottom: 1px dotted #ccc;
-    height: 40px;
-}
-.ListOfDottedInputs .DottedValue:hover {
-    background-color: #eee;
-}
-
-
-.ListOfDottedInputs .DottedValue > SPAN {
-    padding-left: 10px;
-}
-
 .ListOfDottedInputs > .Values {
     height: 200px;
     overflow-y: auto;

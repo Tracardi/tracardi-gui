@@ -1,25 +1,26 @@
 import React, {useState} from "react";
-import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import DottedPathInput from "./inputs/DottedPathInput";
 import {AiOutlinePlusCircle} from "@react-icons/all-files/ai/AiOutlinePlusCircle";
 import './ListOfDottedInputs.css';
+import DottedValue from "./inputs/DottedValue";
+import ErrorLine from "../../errors/ErrorLine";
 
 
-const ListOfDottedInputs = ({onChange}) => {
+const ListOfDottedInputs = ({onChange, value, errors}) => {
 
-    const [value, setValue] = useState("")
-    const [listOfValues, setListOfValues] = useState([])
+    const [inputValue, setInputValue] = useState('')
+    const [listOfValues, setListOfValues] = useState(value)
 
-    const DottedValue = ({children, onDelete}) => {
-        return <div className="DottedValue">
-            <span>{children}</span>
-            <VscTrash size={25} onClick={() => onDelete(children)} style={{cursor: "pointer"}}/>
-        </div>
+    const Error = ({id, errors}) => {
+        if(id in errors) {
+            return <ErrorLine style={{marginLeft: 10}}>{errors[id]}</ErrorLine>
+        }
+        return ""
     }
 
     const handleAdd = () => {
-        if(!listOfValues.includes(value)) {
-            const newValues = [...listOfValues, value]
+        if(!listOfValues.includes(inputValue)) {
+            const newValues = [...listOfValues, inputValue]
             setListOfValues(newValues)
             if(onChange) {
                 onChange(newValues);
@@ -37,12 +38,14 @@ const ListOfDottedInputs = ({onChange}) => {
 
     return <div className="ListOfDottedInputs">
         <div className="AddForm">
-            <DottedPathInput value={value} label="Path" onChange={setValue} width={380}/>
+            <DottedPathInput value={inputValue} label="Path" onChange={setInputValue} width={380}/>
             <AiOutlinePlusCircle size={25} onClick={handleAdd} style={{cursor: "pointer", marginLeft: 10}}/>
         </div>
+        <Error id="delete" errors={errors}/>
         <div className="Values">
             {listOfValues.map((value, idx) => <DottedValue key={idx} onDelete={handleDelete}>{value}</DottedValue>)}
         </div>
+
     </div>
 }
 
