@@ -42,9 +42,12 @@ const ListOfDottedInputs = ({id, onChange, value, errors}) => {
             <AiOutlinePlusCircle size={25} onClick={handleAdd} style={{cursor: "pointer", marginLeft: 10}}/>
         </div>
         <Error id={id} errors={errors}/>
-        <div className="Values">
-            {listOfValues.map((value, idx) => <DottedValue key={idx} onDelete={handleDelete}>{value}</DottedValue>)}
-        </div>
+        <fieldset>
+            <legend>List of values</legend>
+            <div className="Values">
+                {listOfValues.map((value, idx) => <DottedValue key={idx} onDelete={handleDelete}>{value}</DottedValue>)}
+            </div>
+        </fieldset>
 
     </div>
 }

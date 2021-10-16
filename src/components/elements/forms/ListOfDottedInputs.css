@@ -10,9 +10,21 @@
     padding: 10px 5px;
 }
 
-.ListOfDottedInputs > .Values {
+.ListOfDottedInputs > FIELDSET {
+    border-radius: 5px;
+    border-color: rgba(0, 0, 0, 0.26);
+    border-width: 1px;
     height: 200px;
     overflow-y: auto;
+}
+
+
+.ListOfDottedInputs > FIELDSET > LEGEND{
+    color: rgba(0, 0, 0, 0.54);
+    font-size: .8rem;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    line-height: 1;
 }
 
 .ListOfDottedInputs > .Buttons {
