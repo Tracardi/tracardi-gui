@@ -1,9 +1,10 @@
-import { InputLabel, MenuItem, Select } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import {MenuItem} from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import "./CopyTraitsForm.css";
 import DottedPathInput from "./inputs/DottedPathInput";
 import { AiOutlinePlusCircle } from "@react-icons/all-files/ai/AiOutlinePlusCircle";
-import { AiOutlineDelete } from "@react-icons/all-files/ai/AiOutlineDelete";
+import TextField from "@material-ui/core/TextField";
+import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 
 const CopyTraitsForm = ({ onChange = () => {}, value }) => {
   const [localValue, setLocalValue] = useState(value || { copy: {} });
@@ -36,39 +37,43 @@ const CopyTraitsForm = ({ onChange = () => {}, value }) => {
             paddingTop: "20px",
           }}
         >
-          <InputLabel id="task-select">Task</InputLabel>
-          <Select
-            labelId="task-select"
+          <TextField select
             variant="outlined"
             size="small"
+            label="Task"
             value={task}
             defaultValue="copy"
-            style={{ width: 200, justifySelf: "center" }}
+            style={{ width: 120, justifySelf: "center" }}
             onChange={(e) => setTask(e.target.value)}
           >
-            <MenuItem value="copy">Copy</MenuItem>
-          </Select>
+              <MenuItem value="copy">Copy</MenuItem>
+              <MenuItem value="append">Append</MenuItem>
+              <MenuItem value="remove">Remove</MenuItem>
+          </TextField>
         </div>
         <DottedPathInput label="path" value={source} onChange={setSource} />
       </div>
       <AiOutlinePlusCircle size={30} onClick={handleAdd} className="Button AddButton" />
 
-      <ul className="CopyTraitsList">
-        {Object.keys(localValue.copy).map((item, i) => {
-          return (
-            <li key={i}>
-              <p>{`${item} ${task} to: ${localValue.copy[item]}`}</p>
-              <AiOutlineDelete
-                size={30}
-                onClick={() => {
-                  handleDelete(item);
-                }}
-                className="Button DeleteButton"
-              />
-            </li>
-          );
-        })}
-      </ul>
+      <fieldset>
+          <legend>Operations</legend>
+          <ul className="CopyTraitsList">
+              {Object.keys(localValue.copy).map((item, i) => {
+                  return (
+                      <li key={i}>
+                          <p>{`${item} ${task} to: ${localValue.copy[item]}`}</p>
+                          <VscTrash
+                              size={30}
+                              onClick={() => {
+                                  handleDelete(item);
+                              }}
+                              className="Button DeleteButton"
+                          />
+                      </li>
+                  );
+              })}
+          </ul>
+      </fieldset>
     </div>
   );
 };

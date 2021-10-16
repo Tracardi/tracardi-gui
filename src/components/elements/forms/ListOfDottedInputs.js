@@ -9,10 +9,10 @@ import ErrorLine from "../../errors/ErrorLine";
 const ListOfDottedInputs = ({id, onChange, value, errors}) => {
 
     const [inputValue, setInputValue] = useState('')
-    const [listOfValues, setListOfValues] = useState(value)
+    const [listOfValues, setListOfValues] = useState(value || [])
 
     const Error = ({id, errors}) => {
-        if(id in errors) {
+        if(Array.isArray(errors) && id in errors) {
             return <ErrorLine style={{marginLeft: 10}}>{errors[id]}</ErrorLine>
         }
         return ""
