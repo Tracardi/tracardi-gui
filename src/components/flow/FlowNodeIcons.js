@@ -64,6 +64,7 @@ import {IoIosContact} from "@react-icons/all-files/io/IoIosContact";
 import {BiParagraph} from "@react-icons/all-files/bi/BiParagraph";
 import {IoPush} from "@react-icons/all-files/io5/IoPush";
 import {AiOutlineSplitCells} from "@react-icons/all-files/ai/AiOutlineSplitCells";
+import {IoLanguageOutline} from "@react-icons/all-files/io5/IoLanguageOutline";
 
 export default function FlowNodeIcons({icon, size=20}) {
 
@@ -135,7 +136,8 @@ export default function FlowNodeIcons({icon, size=20}) {
         'fullcontact': <IoIosContact size={size}/>,
         'paragraph': <BiParagraph size={size}/>,
         "pushover": <IoPush size={size}/>,
-        'splitter':<AiOutlineSplitCells size={size}/>
+        'splitter':<AiOutlineSplitCells size={size}/>,
+        "language": <IoLanguageOutline size={size}/>
     }
 
     const renderIcon = () => {
