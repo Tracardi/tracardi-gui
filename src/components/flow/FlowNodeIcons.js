@@ -65,6 +65,8 @@ import {BiParagraph} from "@react-icons/all-files/bi/BiParagraph";
 import {IoPush} from "@react-icons/all-files/io5/IoPush";
 import {AiOutlineSplitCells} from "@react-icons/all-files/ai/AiOutlineSplitCells";
 import {IoLanguageOutline} from "@react-icons/all-files/io5/IoLanguageOutline";
+import {VscRegex} from "@react-icons/all-files/vsc/VscRegex";
+import {AiOutlineCheckCircle} from "@react-icons/all-files/ai/AiOutlineCheckCircle";
 
 export default function FlowNodeIcons({icon, size=20}) {
 
@@ -137,7 +139,9 @@ export default function FlowNodeIcons({icon, size=20}) {
         'paragraph': <BiParagraph size={size}/>,
         "pushover": <IoPush size={size}/>,
         'splitter':<AiOutlineSplitCells size={size}/>,
-        "language": <IoLanguageOutline size={size}/>
+        "language": <IoLanguageOutline size={size}/>,
+        "regex": <VscRegex size={size}/>,
+        "ok": <AiOutlineCheckCircle size={size}/>
     }
 
     const renderIcon = () => {
