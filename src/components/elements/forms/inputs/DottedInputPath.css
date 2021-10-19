@@ -1,0 +1,16 @@
+.DottedInputPath {
+    display: flex;
+    align-items: center;
+}
+.DottedInputSeparatorPo > .Item {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px 10px 10px;
+    cursor: pointer;
+    color: #444;
+}
+
+.DottedInputSeparatorPo > .Item:hover {
+    background-color: #e5e5e5;
+    color: black;
+}

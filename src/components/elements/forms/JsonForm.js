@@ -5,7 +5,7 @@ import Button from "./Button";
 import "./JsonForm.css";
 import JsonEditor from "../misc/JsonEditor";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
-import {objectFilter, objectMap} from "../../../misc/mappers";
+import {objectMap} from "../../../misc/mappers";
 import ErrorLine from "../../errors/ErrorLine";
 import FormSchema from "../../../domain/formSchema";
 import DottedPathInput from "./inputs/DottedPathInput";
@@ -89,9 +89,15 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                     }
                 case "dotPath":
                     return {
-                        component: (props) => <DotPathInput id={id}
+                        component: (props) => <DotPathAndTextInput id={id}
                                                             errors={errors}
                                                             {...props}/>
+                    }
+                case "forceDotPath":
+                    return {
+                        component: (props) => <DotPathInput id={id}
+                                                                   errors={errors}
+                                                                   {...props}/>
                     }
                 case "listOfDotPaths":
                     return {
@@ -149,12 +155,17 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                 })
 
                 const form = new FormSchema(schema)
-                form.validate(pluginId, currentFormValues).then(
+                form.validate(pluginId, dot2object(currentFormValues)).then(
                     (result) => {
                         if (result === true) {
                             setErrors({})
-                            const fieldsToSave = objectFilter(currentFormValues, form.getAllFields());
-                            onSubmit(dot2object(fieldsToSave));
+                            // todo remove after 01.11.2021
+                            // const allFields = form.getAllFields();
+                            // console.log(allFields)
+                            // console.log("2", currentFormValues)
+                            // const fieldsToSave = objectFilter(object2dot(currentFormValues), allFields);
+                            // console.log("3", currentFormValues)
+                            onSubmit(dot2object(currentFormValues));
                         } else {
                             setErrors(result)
                         }
@@ -253,15 +264,12 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         const handleSubmit = (value) => {
             formValues.current[id] = value;
         }
-
         const value = readValue(id);
-
-        console.log(value)
 
         return <ListOfDottedInputs id={id} onChange={handleSubmit} errors={errors} value={value}/>
     }
 
-    function DotPathInput({id, label, errors}) {
+    function DotPathInput({id, errors}) {
 
         const handleChange = (value) => {
             formValues.current[id] = value;
@@ -275,7 +283,28 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
             errorProps['helperText'] = errors[id]
         }
 
-        return <DottedPathInput value={value} label={label} onChange={handleChange} {...errorProps}/>
+        return <DottedPathInput value={value}
+                                onChange={handleChange}
+                                {...errorProps}/>
+    }
+
+    function DotPathAndTextInput({id, errors}) {
+
+        const handleChange = (value) => {
+            formValues.current[id] = value;
+        }
+
+        const value = readValue(id);
+        let errorProps = {}
+
+        if (id in errors) {
+            errorProps['error'] = true
+            errorProps['helperText'] = errors[id]
+        }
+
+        return <DottedPathInput value={value}
+                                onChange={handleChange}
+                                {...errorProps}/>
     }
 
     function JsonInput({id, label, error}) {

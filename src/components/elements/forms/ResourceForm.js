@@ -150,42 +150,6 @@ function ResourceForm({init, onClose, showAlert}) {
                     onSetValue={setTypeAndDefineCredentialsTemplate}
                 />
 
-                <FormSubHeader>Consent</FormSubHeader>
-                <FormDescription>Check if this resource requires user consent? Web pages
-                    located in Europe require user consent to comply with GDPR. </FormDescription>
-                <div style={{display: "flex", alignItems: "center"}}>
-                    <Switch
-                        checked={requiresConsent}
-                        onChange={setRequiresConsent}
-                        name="consentRequired"
-                    />
-                    <span>
-                            This resource requires user consent
-                        </span>
-                </div>
-                <div style={{display: "flex", alignItems: "center"}}>
-                    <Switch
-                        checked={enabledSource}
-                        onChange={() => setEnabledSource(!enabledSource)}
-                        name="enabledSource"
-                    />
-                    <span>
-                        This resource is enabled
-                    </span>
-                </div>
-            </ElevatedBox>
-
-            <FormHeader>Configuration</FormHeader>
-            <ElevatedBox>
-                <FormSubHeader>Credentials or Access tokens</FormSubHeader>
-                <FormDescription>This json data will be an encrypted part of resource. Please pass here all the
-                    credentials or access configuration information, such as hostname, port, username and password, etc.
-                    This part can be empty if resource does not require authorization.</FormDescription>
-                <JsonEditor value={config} onChange={setConfig}/>
-            </ElevatedBox>
-
-            <FormHeader>Description</FormHeader>
-            <ElevatedBox>
                 <FormSubHeader>Name</FormSubHeader>
                 <FormDescription>Resource name can be any string that
                     identifies resource. Resource id is made out of rule
@@ -220,6 +184,38 @@ function ResourceForm({init, onClose, showAlert}) {
                     fullWidth
                 />
 
+                <FormSubHeader>Consent</FormSubHeader>
+                <FormDescription>Check if this resource requires user consent? Web pages
+                    located in Europe require user consent to comply with GDPR. </FormDescription>
+                <div style={{display: "flex", alignItems: "center"}}>
+                    <Switch
+                        checked={requiresConsent}
+                        onChange={setRequiresConsent}
+                        name="consentRequired"
+                    />
+                    <span>
+                            This resource requires user consent
+                        </span>
+                </div>
+                <div style={{display: "flex", alignItems: "center"}}>
+                    <Switch
+                        checked={enabledSource}
+                        onChange={() => setEnabledSource(!enabledSource)}
+                        name="enabledSource"
+                    />
+                    <span>
+                        This resource is enabled
+                    </span>
+                </div>
+            </ElevatedBox>
+
+            <FormHeader>Configuration</FormHeader>
+            <ElevatedBox>
+                <FormSubHeader>Credentials or Access tokens</FormSubHeader>
+                <FormDescription>This json data will be an encrypted part of resource. Please pass here all the
+                    credentials or access configuration information, such as hostname, port, username and password, etc.
+                    This part can be empty if resource does not require authorization.</FormDescription>
+                <JsonEditor value={config} onChange={setConfig}/>
             </ElevatedBox>
         </Columns>
         <Rows style={{paddingLeft: 30}}>

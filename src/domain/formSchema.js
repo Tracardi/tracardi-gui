@@ -5,30 +5,34 @@ export default class FormSchema {
     constructor(schema) {
         this.schema = schema
     }
-
-    getAllFields() {
-        if (this.schema?.groups) {
-
-            return this.schema?.groups?.reduce((accumulator, groupObject) => {
-                if (groupObject.fields) {
-                    const fields = groupObject.fields.map((item) => {
-                        return item.id
-                    })
-                    return accumulator.concat(fields)
-                }
-                return accumulator;
-            }, [])
-        }
-
-        return []
-    }
+    // todo remove after 01.11.2021
+    // getAllFields() {
+    //     if (this.schema?.groups) {
+    //
+    //         return this.schema?.groups?.reduce((accumulator, groupObject) => {
+    //             if (groupObject.fields) {
+    //                 const fields = groupObject.fields.map((item) => {
+    //                     return item.id
+    //                 })
+    //                 return accumulator.concat(fields)
+    //             }
+    //             return accumulator;
+    //         }, [])
+    //     }
+    //
+    //     return []
+    // }
 
 
 
     async validate(pluginId, formValues) {
 
         const remoteValidation = async (pluginId, values) => {
-
+            console.log("validate values", {
+                url: `/action/${pluginId}/config/validate`,
+                method: "POST",
+                data: values
+            })
             try {
                 await asyncRemote({
                     url: `/action/${pluginId}/config/validate`,

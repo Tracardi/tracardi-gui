@@ -98,28 +98,6 @@ function FlowForm({
 
     return <div className="FlowForm">
 
-        <FormHeader>Settings</FormHeader>
-        <ElevatedBox>
-            <FormDescription>Disabled flows will not be executed.</FormDescription>
-            <FormControlLabel
-                style={{marginLeft: 2}}
-                control={
-                    <Checkbox
-                        checked={flowEnabled}
-                        onChange={() => setFlowEnabled(!flowEnabled)}
-                        name="enable"
-                        color="primary"
-                    />
-                }
-                label="Enable flow"
-            />
-
-            <FormDescription>Tag the flow with project name to group it into meaningful groups.</FormDescription>
-            <TagTextFieldForProjects
-                initTags={projects}
-                onChange={onTagChange}/>
-        </ElevatedBox>
-
         <FormHeader>Description</FormHeader>
         <ElevatedBox>
             <FormSubHeader>Name</FormSubHeader>
@@ -154,6 +132,28 @@ function FlowForm({
                            style={{width: "70%"}}
                 />
             </div>
+        </ElevatedBox>
+
+        <FormHeader>Settings</FormHeader>
+        <ElevatedBox>
+            <FormDescription>Disabled flows will not be executed.</FormDescription>
+            <FormControlLabel
+                style={{marginLeft: 2}}
+                control={
+                    <Checkbox
+                        checked={flowEnabled}
+                        onChange={() => setFlowEnabled(!flowEnabled)}
+                        name="enable"
+                        color="primary"
+                    />
+                }
+                label="Enable flow"
+            />
+
+            <FormDescription>Tag the flow with project name to group it into meaningful groups.</FormDescription>
+            <TagTextFieldForProjects
+                initTags={projects}
+                onChange={onTagChange}/>
         </ElevatedBox>
 
         <Rows style={{marginLeft: 20}}>
