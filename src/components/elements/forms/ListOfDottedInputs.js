@@ -38,7 +38,7 @@ const ListOfDottedInputs = ({id, onChange, value, errors}) => {
 
     return <div className="ListOfDottedInputs">
         <div className="AddForm">
-            <DottedPathInput value={inputValue} label="Path" onChange={setInputValue} width={380}/>
+            <DottedPathInput value={inputValue} onChange={setInputValue} width={355}/>
             <AiOutlinePlusCircle size={25} onClick={handleAdd} style={{cursor: "pointer", marginLeft: 10}}/>
         </div>
         <Error id={id} errors={errors}/>
