@@ -90,21 +90,21 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                 case "dotPath":
                     return {
                         component: (props) => <DotPathAndTextInput id={id}
-                                                            errors={errors}
-                                                            {...props}/>
+                                                                   errors={errors}
+                                                                   props={props}/>
                     }
                 case "forceDotPath":
                     return {
                         component: (props) => <DotPathInput id={id}
-                                                                   errors={errors}
-                                                                   {...props}/>
+                                                            errors={errors}
+                                                            props={props}/>
                     }
                 case "listOfDotPaths":
                     return {
                         component: (props) => <ListOfDotPaths
                             id={id}
                             errors={errors}
-                            {...props}/>
+                            props={props}/>
                     }
                 case "text":
                     return {
@@ -260,16 +260,37 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         />
     }
 
-    function ListOfDotPaths({id, label, errors}) {
+    function ListOfDotPaths({id, errors, props}) {
         const handleSubmit = (value) => {
             formValues.current[id] = value;
         }
         const value = readValue(id);
 
-        return <ListOfDottedInputs id={id} onChange={handleSubmit} errors={errors} value={value}/>
+        return <ListOfDottedInputs id={id} onChange={handleSubmit} errors={errors} value={value} {...props}/>
     }
 
-    function DotPathInput({id, errors}) {
+    function DotPathInput({id, errors, props}) {
+
+        const handleChange = (value) => {
+            formValues.current[id] = value;
+        }
+
+        const value = readValue(id);
+        let errorProps = {}
+
+        if (id in errors) {
+            errorProps['error'] = true
+            errorProps['helperText'] = errors[id]
+        }
+
+        return <DottedPathInput value={value}
+                                forceMode={1}
+                                onChange={handleChange}
+                                {...errorProps}
+                                {...props}/>
+    }
+
+    function DotPathAndTextInput({id, errors, props}) {
 
         const handleChange = (value) => {
             formValues.current[id] = value;
@@ -285,26 +306,9 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
 
         return <DottedPathInput value={value}
                                 onChange={handleChange}
-                                {...errorProps}/>
-    }
-
-    function DotPathAndTextInput({id, errors}) {
-
-        const handleChange = (value) => {
-            formValues.current[id] = value;
-        }
-
-        const value = readValue(id);
-        let errorProps = {}
-
-        if (id in errors) {
-            errorProps['error'] = true
-            errorProps['helperText'] = errors[id]
-        }
-
-        return <DottedPathInput value={value}
-                                onChange={handleChange}
-                                {...errorProps}/>
+                                {...errorProps}
+                                {...props}
+        />
     }
 
     function JsonInput({id, label, error}) {
@@ -334,9 +338,10 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         />
     }
 
-    function ResourceSelect({id, label, errors, placeholder = "Resource"}) {
+    function ResourceSelect({id, errors, placeholder = "Resource"}) {
 
         const value = readValue(id)
+        console.log("slect", "value")
 
         const handleChange = (value) => {
             formValues.current[id] = value
