@@ -8,17 +8,22 @@ import {BsArrowBarRight} from "@react-icons/all-files/bs/BsArrowBarRight";
 import {IoTextOutline} from "@react-icons/all-files/io5/IoTextOutline";
 
 
-export default function DottedPathInput({value, onChange, forceMode, error = false, helperText = null, width=460}) {
+export default function DottedPathInput({value, onChange, defaultMode=1, defaultSourceValue="", defaultPathValue="", forceMode, error = false, helperText = null, width=460}) {
 
     let computedMode;
     if(forceMode) {
         computedMode = forceMode;
     } else {
-        const re = new RegExp("^(payload|profile|session|event|flow)@");
-        computedMode = re.test(value) ? 1 : 2;
+        if(typeof value === 'undefined' || value === null || value === '') {
+            // No value provided
+            computedMode = defaultMode
+        } else {
+            const re = new RegExp("^(payload|profile|session|event|flow)@");
+            computedMode = re.test(value) ? 1 : 2;
+        }
     }
 
-    let [sourceValue, pathValue] = isString(value) ? value.split('@') : ["", ""];
+    let [sourceValue, pathValue] = isString(value) ? value.split('@') : [defaultSourceValue, defaultPathValue];
     const [mode, setMode] = useState(computedMode);
 
     if (typeof pathValue === 'undefined' && sourceValue) {

@@ -13,16 +13,16 @@ const ConfigEditor = ({showAlert, config, manual, onConfig}) => {
     const [saveEnabled, setSaveEnabled] = useState(true);
 
     useEffect(() => {
-            setEventPayload(initConfig);
-        }, [initConfig])
+        setEventPayload(initConfig);
+    }, [initConfig])
 
     const onConfigSave = (payload) => {
         try {
-            if(onConfig) {
+            if (onConfig) {
                 onConfig(JSON.parse(payload));
                 setSaveEnabled(false);
             }
-        } catch(e) {
+        } catch (e) {
             showAlert({message: e.toString(), type: "error", hideAfter: 2000});
         }
     }
@@ -35,7 +35,7 @@ const ConfigEditor = ({showAlert, config, manual, onConfig}) => {
     return <>
         <JsonEditor value={eventPayload}
                     onChange={(d) => _setEventPayload(d)}
-                    />
+        />
 
         <div style={{display: "flex", margin: "10px 0"}}>
             <Button label="Save"
