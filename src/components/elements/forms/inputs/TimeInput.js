@@ -17,7 +17,9 @@ const TimeInput = ({ value, onChange, disabled }) => {
       ...localValue,
       [type]: { ...localValue[type], [name]: value },
     });
-    onChange(localValue);
+    if(onChange) {
+      onChange(localValue);
+    }
   };
 
   const handleDateChange = (e) => {
@@ -27,7 +29,9 @@ const TimeInput = ({ value, onChange, disabled }) => {
       ...localValue,
       date: { inputDate: e.target.value, displayDate: isoString },
     });
-    onChange(localValue);
+    if(onChange) {
+      onChange(localValue);
+    }
   };
 
   const timeIntervalMenu = () => {
@@ -37,7 +41,7 @@ const TimeInput = ({ value, onChange, disabled }) => {
         variant="outlined"
         size="small"
         defaultValue="seconds"
-        style={{ justifySelf: "center" }}
+        style={{ justifySelf: "center", marginLeft: 2 }}
         onChange={handleChange}
         name="type"
         value={localValue[type]?.type || ""}
@@ -93,17 +97,17 @@ const TimeInput = ({ value, onChange, disabled }) => {
           size="small"
           value={type}
           defaultValue="date"
-          style={{ justifySelf: "center" }}
+          style={{ justifySelf: "center", marginRight: 2 }}
           onChange={(e) => setType(e.target.value)}
         >
           <MenuItem value="date">
-            <VscCalendar />
+            <VscCalendar style={{marginRight: 8}}/> Date
           </MenuItem>
           <MenuItem value="period">
-            <VscArrowRight />
+            <VscArrowRight style={{marginRight: 8}}/> After
           </MenuItem>
           <MenuItem value="interval">
-            <VscRefresh />
+            <VscRefresh style={{marginRight: 8}}/> Interval
           </MenuItem>
         </TextField>
         {timeInputSelect()}
