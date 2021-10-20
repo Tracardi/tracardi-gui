@@ -341,7 +341,6 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
     function ResourceSelect({id, errors, placeholder = "Resource"}) {
 
         const value = readValue(id)
-        console.log("slect", "value")
 
         const handleChange = (value) => {
             formValues.current[id] = value

@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -7,9 +7,9 @@ import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
 
-const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoaded,  onSetValue, solo, disabled}) => {
+const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoaded, onSetValue, solo, disabled}) => {
 
-    if(typeof solo == "undefined") {
+    if (typeof solo == "undefined") {
         solo = true
     }
 
@@ -19,37 +19,33 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
     const [progress, setProgress] = React.useState(false);
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
 
-    const handleDataLoaded = useCallback((result, onDataLoaded) => {
-        if(!onDataLoaded) {
+    const handleDataLoaded = (result, onDataLoaded) => {
+        if (!onDataLoaded) {
             return result.data?.result.map((key) => {
                 return {name: key, id: key}
             });
         } else {
             return onDataLoaded(result)
         }
-    }, [])
+    }
 
-    React.useEffect(() => {
-        let active = true;
-
-        if (!loading) {
-            return undefined;
-        }
+    const handleLoading = () => {
         setProgress(true);
         request(
             {url},
             setProgress,
             (e) => {
-                if(e) {
+                if (e) {
                     showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
                 }
             },
             (result) => {
-                if (active) {
+                setOpen(true);
+                if (result) {
                     const options = handleDataLoaded(result, onDataLoaded)
 
-                    if(typeof options !== "undefined" && options !== null) {
-                        if(Array.isArray(options) && options.length === 0) {
+                    if (typeof options !== "undefined" && options !== null) {
+                        if (Array.isArray(options) && options.length === 0) {
                             setOptions([{name: "", key: ""}])
                         } else {
                             setOptions(options);
@@ -59,20 +55,11 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
             }
         );
 
-        return () => {
-            active = false;
-        };
-    }, [loading, url, handleDataLoaded, onDataLoaded, showAlert]);
-
-    React.useEffect(() => {
-        if (!open) {
-            setOptions([]);
-        }
-    }, [open]);
+    }
 
     const handleChange = (value) => {
         _setValue(value);
-        if(onSetValue) {
+        if (onSetValue) {
             onSetValue(value);
         }
     }
@@ -84,13 +71,16 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
             style={{width: 300}}
             open={open}
             onOpen={() => {
-                setOpen(true);
+                handleLoading();
             }}
             onClose={() => {
                 setOpen(false);
+                setOptions([]);
             }}
             getOptionSelected={(option, value) => option.id === value.id}
-            getOptionLabel={(option) => {return option?.name || option?.id || ""}}
+            getOptionLabel={(option) => {
+                return option?.name || option?.id || ""
+            }}
             options={options}
             loading={loading}
             value={value}
@@ -99,25 +89,21 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
                 setOptions(newValue ? [newValue, ...options] : options);
                 handleChange(newValue);
             }}
-            onInputChange={(event, newInputValue) => {
-                newInputValue = {name: newInputValue, id: newInputValue}
-                handleChange(newInputValue);
-            }}
             renderInput={(params) => (
                 <TextField
                     {...params}
                     label={placeholder}
-                    error={(typeof error !== "undefined" && error !== '' && error !== null )}
+                    error={(typeof error !== "undefined" && error !== '' && error !== null)}
                     helperText={error}
                     variant="outlined"
                     size="small"
                     InputProps={{
                         ...params.InputProps,
                         endAdornment: (
-                            <React.Fragment>
+                            <>
                                 {progress ? <CircularProgress color="inherit" size={20}/> : null}
                                 {params.InputProps.endAdornment}
-                            </React.Fragment>
+                            </>
                         ),
                     }}
                 />

@@ -12,11 +12,15 @@ const MdManual = ({mdFile}) => {
     }
 
     useEffect(()=> {
+        let isMounted = true
         if(mdFile) {
             loadMdFile(mdFile).then((text) => {
-                setPage( text )
+                if(isMounted) {
+                    setPage( text )
+                }
             })
         }
+        return () => { isMounted = false };
     }, [mdFile])
 
     return <section className="MdManual"><MarkdownElement text={page} /></section>
