@@ -10,7 +10,7 @@ const ConfigEditor = ({showAlert, config, manual, onConfig}) => {
 
     const initConfig = JSON.stringify(config, null, '  ')
     const [eventPayload, setEventPayload] = useState(initConfig);
-    const [saveEnabled, setSaveEnabled] = useState(true);
+    const [confirmedButton, setConfirmedButton] = useState(false);
 
     useEffect(() => {
         setEventPayload(initConfig);
@@ -20,7 +20,7 @@ const ConfigEditor = ({showAlert, config, manual, onConfig}) => {
         try {
             if (onConfig) {
                 onConfig(JSON.parse(payload));
-                setSaveEnabled(false);
+                setConfirmedButton(true);
             }
         } catch (e) {
             showAlert({message: e.toString(), type: "error", hideAfter: 2000});
@@ -29,7 +29,7 @@ const ConfigEditor = ({showAlert, config, manual, onConfig}) => {
 
     const _setEventPayload = (d) => {
         setEventPayload(d);
-        setSaveEnabled(true);
+        setConfirmedButton(false);
     }
 
     return <>
@@ -39,7 +39,7 @@ const ConfigEditor = ({showAlert, config, manual, onConfig}) => {
 
         <div style={{display: "flex", margin: "10px 0"}}>
             <Button label="Save"
-                    disabled={!saveEnabled}
+                    confirmed={confirmedButton}
                     onClick={() => onConfigSave(eventPayload)}/>
         </div>
 

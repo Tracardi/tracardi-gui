@@ -12,7 +12,7 @@ const ListOfDottedInputs = ({id, onChange, value, errors}) => {
     const [listOfValues, setListOfValues] = useState(value || [])
 
     const Error = ({id, errors}) => {
-        if(Array.isArray(errors) && id in errors) {
+        if(isError()) {
             return <ErrorLine style={{marginLeft: 10}}>{errors[id]}</ErrorLine>
         }
         return ""
@@ -24,7 +24,6 @@ const ListOfDottedInputs = ({id, onChange, value, errors}) => {
             setListOfValues(newValues)
             if(onChange) {
                 onChange(newValues);
-                console.log("new", newValues )
             }
         }
     }
@@ -33,21 +32,29 @@ const ListOfDottedInputs = ({id, onChange, value, errors}) => {
         const values = listOfValues.filter((element) => {
             return element !== value;
         });
-        setListOfValues(values)
+        setListOfValues(values);
+        if(onChange) {
+            onChange(values);
+        }
+    }
+
+    const isError = () => {
+        return id in errors;
     }
 
     return <div className="ListOfDottedInputs">
         <div className="AddForm">
-            <DottedPathInput value={inputValue} onChange={setInputValue} width={355}/>
+            <DottedPathInput value={inputValue} onChange={setInputValue} width={340}/>
             <AiOutlinePlusCircle size={25} onClick={handleAdd} style={{cursor: "pointer", marginLeft: 10}}/>
         </div>
-        <Error id={id} errors={errors}/>
-        <fieldset>
-            <legend>List of values</legend>
+
+        <fieldset style={isError() ? {borderColor: "red"} : {}}>
+            <legend style={isError() ? {color: "red"} : {}}>List of values</legend>
             <div className="Values">
                 {listOfValues.map((value, idx) => <DottedValue key={idx} onDelete={handleDelete}>{value}</DottedValue>)}
             </div>
         </fieldset>
+        <Error id={id} errors={errors}/>
 
     </div>
 }
