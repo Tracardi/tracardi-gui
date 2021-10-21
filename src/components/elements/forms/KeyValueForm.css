@@ -1,0 +1,24 @@
+.KeyValueInput {
+  display: flex;
+  justify-content: space-between;
+  width: inherit;
+  align-items: center;
+}
+
+.KeyValueList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.KeyValueList > li {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding: 2px;
+  align-items: center;
+}
+
+.KeyValueList > li:nth-child(odd) {
+  background-color: rgb(235, 235, 235);
+}
