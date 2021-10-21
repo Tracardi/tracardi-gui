@@ -39,7 +39,7 @@ const ListOfDottedInputs = ({id, onChange, value, errors}) => {
     }
 
     const isError = () => {
-        return id in errors;
+        return errors && id in errors;
     }
 
     return <div className="ListOfDottedInputs">

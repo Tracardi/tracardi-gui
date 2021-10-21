@@ -17,7 +17,7 @@ const MdManual = React.lazy(() => import('./actions/MdManual'));
 
 function NodeDetails({node, onConfig, onLabelSet}) {
 
-    const [tab, setTab] = useState(0);
+    const [tab, setTab] = useState(3);
 
     useEffect(() => {
 

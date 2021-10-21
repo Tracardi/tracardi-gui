@@ -1,14 +1,17 @@
 .SidebarRight {
     position: absolute;
-    right: 15px;
-    top: 15px;
+    right: 0;
+    top: 0;
     z-index: 50;
-    width: 640px;
+    width: 700px;
     padding: 0;
     background-color: rgba(235, 235, 235, 0.85);
-    height: calc(100% - 30px);
-    border-radius: 5px;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    border: rgba(220, 220, 220, 1) 1px solid;
+    border-left: rgba(220, 220, 220, 1) 1px solid;
+    animation-name: moveLeftAndOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: .3s;
 }

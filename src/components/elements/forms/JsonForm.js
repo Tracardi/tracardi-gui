@@ -10,6 +10,11 @@ import ErrorLine from "../../errors/ErrorLine";
 import FormSchema from "../../../domain/formSchema";
 import DottedPathInput from "./inputs/DottedPathInput";
 import ListOfDottedInputs from "./ListOfDottedInputs";
+import AlertBox from "../../errors/AlertBox";
+import MenuItem from "@material-ui/core/MenuItem";
+import Switch from "@material-ui/core/Switch";
+import Tabs, {TabCase} from "../tabs/Tabs";
+import HtmlEditor from "../misc/HtmlEditor";
 
 
 const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
@@ -79,10 +84,11 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
 
         const [errors, setErrors] = useState({})
         const [submitConfirmed, setSubmitConfirmed] = useState(false);
+        const [submitError, setSubmitError] = useState(false);
 
         const handleOnChange = (value) => {
-            console.log(value);
             setSubmitConfirmed(false);
+            setSubmitError(false);
         }
 
         const getComponentByLabel = (componentLabel, id) => {
@@ -128,16 +134,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                         component: (props) => <JsonInput id={id}
                                                          errors={errors}
                                                          onChange={handleOnChange}
-                                                         {...props}/>,
-                        validator: (value) => {
-                            try {
-                                JSON.parse(value);
-                                return true;
-                            } catch (e) {
-                                return e.toString()
-                            }
-
-                        }
+                                                         {...props}/>
 
                     }
                 case "textarea":
@@ -147,9 +144,31 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                                                              errors={errors}
                                                              {...props}/>
                     }
+                case 'select':
+                    return {
+                        component: (props) => <SelectInput id={id}
+                                                           onChange={handleOnChange}
+                                                           errors={errors}
+                                                           {...props}/>
+                    }
+
+                case 'bool':
+                    return {
+                        component: (props) => <BoolInput id={id}
+                                                         onChange={handleOnChange}
+                                                         errors={errors}
+                                                         {...props}/>
+                    }
+                case "contentInput":
+                    return {
+                        component: (props) => <ContentInput id={id}
+                                                            onChange={handleOnChange}
+                                                            errors={errors}
+                                                            {...props}/>
+                    }
                 default:
                     return {
-                        component: (props) => ""
+                        component: (props) => <AlertBox>Missing form type {componentLabel}.</AlertBox>
                     }
             }
         }
@@ -157,6 +176,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         const handleSubmit = (schema) => {
             if (onSubmit) {
                 setSubmitConfirmed(false);
+                setSubmitError(false);
                 let currentFormValues = formValues.current
                 objectMap(currentFormValues, (name, value) => {
                     if (typeof value === 'function') {
@@ -180,30 +200,39 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                             // const fieldsToSave = objectFilter(object2dot(currentFormValues), allFields);
                             // console.log("3", currentFormValues)
                             onSubmit(dot2object(currentFormValues));
+                            setSubmitConfirmed(true);
                         } else {
-                            setErrors(result)
+                            setErrors(result);
+                            setSubmitError(true);
                         }
                     }
                 )
-                setSubmitConfirmed(true);
+
             }
         }
 
         const groupComponents = groups.map((groupObject, idx) => {
-            return <section key={idx}>
-                {groupObject.name && <h2>{groupObject.name}</h2>}
-                {groupObject.description && <Description text={groupObject.description}/>}
-                {groupObject.fields && <Fields
-                    fields={groupObject.fields}
-                    componetsDb={getComponentByLabel}
-                />}
-            </section>
+            return <div className="JsonFromGroup" key={idx}>
+                {(groupObject.name || groupObject.description) && <div className="JsonFromGroupHeader">
+                    {groupObject.name && <h2>{groupObject.name}</h2>}
+                    {groupObject.description && <Description text={groupObject.description}/>}
+                </div>}
+                <section>
+                    {groupObject.fields && <Fields
+                        fields={groupObject.fields}
+                        componetsDb={getComponentByLabel}
+                    />}
+                </section>
+            </div>
+
+
         })
 
         return <>
             {groupComponents}
             <Button onClick={() => handleSubmit(schema)}
                     confirmed={submitConfirmed}
+                    error={submitError}
                     label="Save"
                     style={{marginLeft: 15}}
             />
@@ -224,9 +253,12 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
     // Field components
     // -------------------------------------------------------
 
-    function TextInput({id, label, errors = {}, onChange=()=>{}}) {
+    function TextInput({
+                           id, label, errors = {}, onChange = () => {
+        }
+                       }) {
 
-        const [value, setValue] = useState(readValue(id))
+        const [value, setValue] = useState(readValue(id) || "")
 
         const handleChange = (event) => {
             event.preventDefault();
@@ -252,7 +284,170 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         />
     }
 
-    function TextAreaInput({id, label, errors, onChange=()=>{}}) {
+    function BoolInput({
+                           id, label, errors, onChange = () => {
+        }
+                       }) {
+        const value = readValue(id);
+        const [boolValue, setBoolValue] = useState(value || false);
+
+        const handleChange = (value) => {
+            formValues.current[id] = value;
+            setBoolValue(value);
+            if (onChange) {
+                onChange(value);
+            }
+        }
+
+        let errorProps = {}
+        if (id in errors) {
+            errorProps['error'] = true
+            errorProps['helperText'] = errors[id]
+        }
+
+        return <div style={{display: "flex", alignItems: "center"}}>
+            <Switch
+                checked={boolValue}
+                onChange={() => handleChange(!boolValue)}
+                name="enabledSource"
+            />
+            <span>{label}</span>
+        </div>
+
+    }
+
+    function ContentInput({
+                              id, label, errors, onChange = () => {
+        }, rows = 4
+                          }) {
+        const value = readValue(id);
+        const [textValue, setTextValue] = useState(value.content || "");
+        const [tab, setTab] = useState(value.type === "text/plain" ? 0 : 1);
+
+        const getContentType = (tab) => {
+            switch (tab) {
+                case 0:
+                    return "text/plain"
+                case 1:
+                    return "application/json"
+                case 2:
+                    return "text/html"
+                default:
+                    return "application/json"
+            }
+        }
+
+        let contentType = getContentType(tab)
+
+        const handleTabChange = (tab) => {
+            setTab(tab);
+            contentType = getContentType(tab)
+            handleChange(textValue)
+        }
+
+        const handleChange = (value) => {
+            value = {
+                type: contentType,
+                content: value
+            }
+            formValues.current[id] = value;
+            setTextValue(value.content);
+            if (onChange) {
+                onChange(value);
+            }
+        }
+
+        let errorProps = {}
+        if (id in errors) {
+            errorProps['error'] = true
+            errorProps['helperText'] = errors[id]
+        }
+
+        return <Tabs
+            tabs={["Text", "JSON", "HTML"]}
+            defaultTab={tab}
+            onTabSelect={handleTabChange}
+        >
+            <TabCase id={0}>
+                <div style={{marginTop: 10}}>
+                    <TextField id={id}
+                               label={label}
+                               value={textValue}
+                               onChange={(ev) => handleChange(ev.target.value)}
+                               variant="outlined"
+                               multiline
+                               fullWidth
+                               rows={rows}
+                               {...errorProps}/>
+                </div>
+
+            </TabCase>
+            <TabCase id={1}>
+                <fieldset style={{marginTop: 10}}>
+                    <legend>{label}</legend>
+                    <JsonEditor
+                        value={textValue}
+                        onChange={handleChange}
+                    />
+                </fieldset>
+            </TabCase>
+            <TabCase id={2}>
+                <fieldset style={{marginTop: 10}}>
+                    <legend>{label}</legend>
+                    <HtmlEditor
+                        value={textValue}
+                        onChange={handleChange}
+                    />
+                </fieldset>
+            </TabCase>
+        </Tabs>
+
+
+    }
+
+
+    function SelectInput({
+                             id, label, items = [], errors, onChange = () => {
+        }
+                         }) {
+        const value = readValue(id);
+        const [selectedItem, setSelectedItem] = useState(value || "");
+
+        const handleChange = (ev) => {
+            formValues.current[id] = ev.target.value;
+            setSelectedItem(ev.target.value);
+            if (onChange) {
+                onChange(ev.target.value);
+            }
+            ev.preventDefault();
+        }
+
+        let errorProps = {}
+        if (id in errors) {
+            errorProps['error'] = true
+            errorProps['helperText'] = errors[id]
+        }
+        return <TextField select
+                          label={label}
+                          variant="outlined"
+                          size="small"
+                          value={selectedItem}
+                          style={{minWidth: 150}}
+                          onChange={handleChange}
+                          {...errorProps}
+        >
+            {objectMap(items, (key, value) => (
+                <MenuItem key={key} value={key}>
+                    {value}
+                </MenuItem>
+            ))}
+        </TextField>
+    }
+
+    function TextAreaInput({
+                               id, label, errors, onChange = () => {
+        }
+                           }) {
 
         const [value, setValue] = useState(readValue(id))
 
@@ -281,7 +476,10 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         />
     }
 
-    function ListOfDotPaths({id, errors, props, onChange=()=>{}}) {
+    function ListOfDotPaths({
+                                id, errors, props, onChange = () => {
+        }
+                            }) {
         const handleSubmit = (value) => {
             formValues.current[id] = value;
             onChange(value);
@@ -291,7 +489,10 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         return <ListOfDottedInputs id={id} onChange={handleSubmit} errors={errors} value={value} {...props}/>
     }
 
-    function DotPathInput({id, errors, props, onChange=()=>{}}) {
+    function DotPathInput({
+                              id, errors, props, onChange = () => {
+        }
+                          }) {
 
         const handleChange = (value) => {
             formValues.current[id] = value;
@@ -313,7 +514,10 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                                 {...props}/>
     }
 
-    function DotPathAndTextInput({id, errors, props, onChange=()=>{}}) {
+    function DotPathAndTextInput({
+                                     id, errors, props, onChange = () => {
+        }
+                                 }) {
 
         const handleChange = (value) => {
             formValues.current[id] = value;
@@ -323,7 +527,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         const value = readValue(id);
         let errorProps = {}
 
-        if (id in errors) {
+        if (errors && id in errors) {
             errorProps['error'] = true
             errorProps['helperText'] = errors[id]
         }
@@ -335,35 +539,48 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         />
     }
 
-    function JsonInput({id, error, onChange=()=>{}}) {
+    function JsonInput({id, errors, onChange = () => {} }) {
 
-        const value = readValue(id)
-        const jsonString = JSON.stringify(value, null, '  ')
-        const [json, setJson] = useState(jsonString);
-
-        const handleExternalOnChange = (value) => {
-            formValues.current[id] = () => {
-                try {
-                    return JSON.parse(value)
-                } catch (e) {
-                    return e.toString();
+        const getFormattedValue = (value) => {
+            try {
+                if(typeof value === 'string' && value.length > 0) {
+                    return [JSON.stringify(JSON.parse(value), null, '  '), null]
                 }
+                return [value, null]
+            } catch(e) {
+                return [value,  e.toString()]
             }
-            onChange(value);
         }
+        const [value, error] = getFormattedValue(readValue(id))
+        const [json, setJson] = useState(value);
+        const [errorMsg, setErrorMsg] = useState(error);
 
         const handleChange = (value) => {
+            const [formattedValue, error] = getFormattedValue(value)
             setJson(value);
-            handleExternalOnChange(value);
+            setErrorMsg(error)
+            formValues.current[id] = formattedValue
+            if(onChange) {
+                onChange(formattedValue);
+            }
         }
 
-        return <JsonEditor
-            value={json}
-            onChange={handleChange}
-        />
+        return <>
+            <fieldset style={{marginTop: 10}}>
+                <legend>JSON</legend>
+                <JsonEditor
+                    value={json}
+                    onChange={handleChange}
+                />
+            </fieldset>
+            <div style={{height:10}}>
+                {errorMsg && <ErrorLine>{errorMsg}</ErrorLine>}
+            </div>
+
+        </>
     }
 
-    function ResourceSelect({id, errors, placeholder = "Resource", onChange=()=>{}}) {
+    function ResourceSelect({id, errors, placeholder = "Resource", onChange = () => {} }) {
 
         const value = readValue(id)
 
