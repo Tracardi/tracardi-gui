@@ -4,16 +4,19 @@ import IconCircularProgress from "../progress/IconCircularProgress";
 import {AiOutlineCheckCircle} from "@react-icons/all-files/ai/AiOutlineCheckCircle";
 import PropTypes from 'prop-types';
 
-export default function Button({label, onClick, className, style, icon, disabled, selected=false, progress=false}) {
+export default function Button({label, onClick, className, style, icon, disabled, selected=false, progress=false, confirmed=false}) {
 
     let visuals = (selected) ? "ButtonSelected Button" : "Button";
     visuals = (className) ? className : visuals;
     if (progress === true) {
         visuals += " DisabledButton";
-    } else if (typeof disabled === "undefined") {
-        visuals += " EnabledButton";
-    } else if (disabled !== true) {
-        visuals += " EnabledButton";
+    } else if (typeof disabled === "undefined" || disabled !== true) {
+        if(confirmed) {
+            visuals += " ConfirmedButton";
+        } else {
+            visuals += " EnabledButton";
+        }
+
     } else {
         visuals += " DisabledButton";
     }
