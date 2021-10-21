@@ -29,6 +29,11 @@ BUTTON.ConfirmedButton {
     background-color: #43a047;
     color: whitesmoke;
 }
+BUTTON.ErrorButton {
+    border: solid 2px #d81b60;
+    background-color: #d81b60;
+    color: whitesmoke;
+}
 BUTTON.ButtonSelected {
     background-color: #006db3;
     color: white;
