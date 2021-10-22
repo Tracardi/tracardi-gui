@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlinePlusCircle } from "@react-icons/all-files/ai/AiOutlinePlusCircle";
 import TextField from "@material-ui/core/TextField";
 import { VscTrash } from "@react-icons/all-files/vsc/VscTrash";
@@ -13,9 +13,10 @@ const KeyValueForm = ({ value, onChange }) => {
 
   const handleAdd = () => {
     if (key.length > 0 && val.length > 0) {
-      setLocalValue({ ...localValue, [key]: val });
+      const newValue = { ...localValue, [key]: val }
+      setLocalValue(newValue);
       if (onChange) {
-        onChange(localValue);
+        onChange(newValue);
       }
       setKey("");
       setVal("");
@@ -55,8 +56,8 @@ const KeyValueForm = ({ value, onChange }) => {
         />
         <AiOutlinePlusCircle size={30} onClick={handleAdd} className="Button AddButton" />
       </div>
-      <fieldset>
-        <legend>Key / Value Pairs</legend>
+      <fieldset style={{height: 200, overflowY: "auto", marginTop:5}}>
+        <legend>List of key-value pairs</legend>
         <ul className="KeyValueList">
           {Object.keys(localValue).map((item, i) => {
             return (

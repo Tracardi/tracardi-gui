@@ -67,6 +67,8 @@ import {AiOutlineSplitCells} from "@react-icons/all-files/ai/AiOutlineSplitCells
 import {IoLanguageOutline} from "@react-icons/all-files/io5/IoLanguageOutline";
 import {VscRegex} from "@react-icons/all-files/vsc/VscRegex";
 import {AiOutlineCheckCircle} from "@react-icons/all-files/ai/AiOutlineCheckCircle";
+import {IoTextOutline} from "@react-icons/all-files/io5/IoTextOutline";
+import {SiCurl} from "@react-icons/all-files/si/SiCurl";
 
 export default function FlowNodeIcons({icon, size=20}) {
 
@@ -141,7 +143,9 @@ export default function FlowNodeIcons({icon, size=20}) {
         'splitter':<AiOutlineSplitCells size={size}/>,
         "language": <IoLanguageOutline size={size}/>,
         "regex": <VscRegex size={size}/>,
-        "ok": <AiOutlineCheckCircle size={size}/>
+        "ok": <AiOutlineCheckCircle size={size}/>,
+        "uppercase": <IoTextOutline size={size}/>,
+        "url": <SiCurl size={size}/>
     }
 
     const renderIcon = () => {
