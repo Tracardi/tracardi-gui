@@ -11,7 +11,7 @@ import Columns from "../misc/Columns";
 import Rows from "../misc/Rows";
 import Form from "../misc/Form";
 import FormHeader from "../misc/FormHeader";
-import JsonEditor from "../misc/JsonEditor";
+import JsonEditor from "../editors/JsonEditor";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";

@@ -1,19 +1,16 @@
-import React, {Suspense, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import './NodeDetails.css';
 import {BsInfoCircle} from "@react-icons/all-files/bs/BsInfoCircle";
 import IconButton from "../elements/misc/IconButton";
 import {GoSettings} from "@react-icons/all-files/go/GoSettings";
-import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
-import {VscBook} from "@react-icons/all-files/vsc/VscBook";
-import {VscListTree} from "@react-icons/all-files/vsc/VscListTree";
 import ConsoleView from "../elements/misc/ConsoleView";
 import ConfigEditor from "./editors/ConfigEditor";
 import NodeInfo from "./NodeInfo";
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
 import {VscJson} from "@react-icons/all-files/vsc/VscJson";
 import MemoJsonForm from "../elements/forms/JsonForm";
-
-const MdManual = React.lazy(() => import('./actions/MdManual'));
+import "../elements/forms/JsonForm"
+import {VscTools} from "@react-icons/all-files/vsc/VscTools";
 
 function NodeDetails({node, onConfig, onLabelSet}) {
 
@@ -67,28 +64,19 @@ function NodeDetails({node, onConfig, onLabelSet}) {
                     label="Json Config"
                     onClick={() => setTab(2)}
                     selected={tab === 2}>
-                    <VscJson size={22}/>
-                </IconButton>}
-                {node?.data?.spec?.manual && <IconButton
-                    label="Manual"
-                    onClick={() => setTab(1)}
-                    selected={tab === 1}>
-                    <VscBook size={22}/>
+                    <VscTools size={22}/>
                 </IconButton>}
                 <IconButton
                     label="Raw"
                     onClick={() => setTab(4)}
                     selected={tab === 4}>
-                        <VscListTree size={22}/>
+                        <VscJson size={22}/>
                 </IconButton>
 
                 </span>
         </div>
         <div className="Pane">
             {tab === 0 && <NodeInfo node={node} onLabelSet={onLabelSet}/>}
-            {tab === 1 && <Suspense fallback={<CenteredCircularProgress/>}>
-                <MdManual mdFile={node?.data?.spec?.manual}/>
-            </Suspense>}
             {tab === 2 && node?.data?.spec?.init &&
             <ConfigEditor
                 config={node?.data?.spec?.init}

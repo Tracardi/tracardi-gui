@@ -3,7 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import AutoComplete from "./AutoComplete";
 import Button from "./Button";
 import "./JsonForm.css";
-import JsonEditor from "../misc/JsonEditor";
+import JsonEditor from "../editors/JsonEditor";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
 import {objectMap} from "../../../misc/mappers";
 import ErrorLine from "../../errors/ErrorLine";
@@ -14,7 +14,8 @@ import AlertBox from "../../errors/AlertBox";
 import MenuItem from "@material-ui/core/MenuItem";
 import Switch from "@material-ui/core/Switch";
 import Tabs, {TabCase} from "../tabs/Tabs";
-import HtmlEditor from "../misc/HtmlEditor";
+import HtmlEditor from "../editors/HtmlEditor";
+import SqlEditor from "../editors/SqlEditor";
 
 
 const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
@@ -135,6 +136,18 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                                                          errors={errors}
                                                          onChange={handleOnChange}
                                                          {...props}/>
+
+
+
+                    }
+                case "sql":
+                    return {
+                        component: (props) => <SqlInput id={id}
+                                                         errors={errors}
+                                                         onChange={handleOnChange}
+                                                         {...props}/>
+
+
 
                     }
                 case "textarea":
@@ -316,10 +329,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
 
     }
 
-    function ContentInput({
-                              id, label, errors, onChange = () => {
-        }, rows = 4
-                          }) {
+    function ContentInput({id, label, errors, onChange = () => {}, rows = 4}) {
         const value = readValue(id);
         const [textValue, setTextValue] = useState(value.content || "");
         const [tab, setTab] = useState(value.type === "text/plain" ? 0 : 1);
@@ -444,10 +454,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         </TextField>
     }
 
-    function TextAreaInput({
-                               id, label, errors, onChange = () => {
-        }
-                           }) {
+    function TextAreaInput({id, label, errors, onChange=null}) {
 
         const [value, setValue] = useState(readValue(id))
 
@@ -455,7 +462,9 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
             setValue(event.target.value);
             formValues.current[id] = event.target.value;
             event.preventDefault();
-            onChange(event.target.value);
+            if(onChange) {
+                onChange(event.target.value);
+            }
         };
 
         let errorProps = {}
@@ -476,27 +485,25 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         />
     }
 
-    function ListOfDotPaths({
-                                id, errors, props, onChange = () => {
-        }
-                            }) {
+    function ListOfDotPaths({id, errors, props, onChange = null}) {
         const handleSubmit = (value) => {
             formValues.current[id] = value;
-            onChange(value);
+            if(onChange) {
+                onChange(value);
+            }
         }
         const value = readValue(id);
 
         return <ListOfDottedInputs id={id} onChange={handleSubmit} errors={errors} value={value} {...props}/>
     }
 
-    function DotPathInput({
-                              id, errors, props, onChange = () => {
-        }
-                          }) {
+    function DotPathInput({id, errors, props, onChange = null}) {
 
         const handleChange = (value) => {
             formValues.current[id] = value;
-            onChange(value);
+            if(onChange) {
+                onChange(value);
+            }
         }
 
         const value = readValue(id);
@@ -514,14 +521,13 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                                 {...props}/>
     }
 
-    function DotPathAndTextInput({
-                                     id, errors, props, onChange = () => {
-        }
-                                 }) {
+    function DotPathAndTextInput({id, errors, props, onChange = () => {}}) {
 
         const handleChange = (value) => {
             formValues.current[id] = value;
-            onChange(value);
+            if(onChange) {
+                onChange(value);
+            }
         }
 
         const value = readValue(id);
@@ -539,7 +545,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         />
     }
 
-    function JsonInput({id, errors, onChange = () => {} }) {
+    function JsonInput({id, errors, onChange = null }) {
 
         const getFormattedValue = (value) => {
             try {
@@ -570,6 +576,40 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                 <legend>JSON</legend>
                 <JsonEditor
                     value={json}
+                    onChange={handleChange}
+                />
+            </fieldset>
+            <div style={{height:10}}>
+                {errorMsg && <ErrorLine>{errorMsg}</ErrorLine>}
+            </div>
+
+        </>
+    }
+
+    function SqlInput({id, errors, onChange = null }) {
+
+        const [value, setValue] = useState(readValue(id))
+        console.log(value)
+
+        const handleChange = (value) => {
+            formValues.current[id] = value;
+            setValue(value);
+            if(onChange) {
+                onChange(value);
+            }
+        }
+
+        let errorMsg = ""
+
+        if (errors && id in errors) {
+            errorMsg = errors[id]
+        }
+
+        return <>
+            <fieldset style={{marginTop: 10}}>
+                <legend>SQL</legend>
+                <SqlEditor
+                    value={value}
                     onChange={handleChange}
                 />
             </fieldset>

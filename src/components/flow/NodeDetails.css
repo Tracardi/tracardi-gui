@@ -1,3 +1,6 @@
+.NodeDetails {
+    height: 100%;
+}
 .NodeDetails > .Title {
     display: flex;
     align-items: center;
@@ -10,9 +13,10 @@
     -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.28);
     -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.28);
     box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.28);
-    border-radius: 5px;
     font-family: Viga, Roboto, serif;
     color: #444;
+    background-color: whitesmoke;
+    height: 62px;
 }
 
 .NodeDetails > .Title:hover {
@@ -45,6 +49,7 @@
     margin-top: 5px;
     height: calc(100% - 70px);
     padding: 10px;
+    overflow-y: auto;
 }
 
 .NodeDetails > .Pane .SubTitle {

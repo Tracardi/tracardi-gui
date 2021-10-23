@@ -1,24 +1,33 @@
 import React from "react";
 import Tabs, {TabCase} from "../elements/tabs/Tabs";
-import {DebugPortDetails} from "./DebugPortDetails";
-import {NoPortData} from "./NoPortData";
 import ErrorBox from "../errors/ErrorBox";
 import DebugContextAccordions from "./accordions/DebugContextAccordion";
 import "./DebugBox.css";
+import AccordionItems from "./accordions/AccordionItems";
+import theme from "../../themes/inspector_light_theme";
+import {ObjectInspector} from "react-inspector";
 
 export default function DebugBox({call, onTabSelect}) {
-    const renderPorts = (messages, input) => {
-        if (messages) {
-            return messages.map((result, index) => {
-                return <DebugPortDetails port={result} key={index} input={input}/>
+
+    const PortsAccordion = ({portsData}) => {
+        if(Array.isArray(portsData)) {
+            const accordionItems = portsData.map((item, idx) => {
+                return {
+                    id:"item"+idx,
+                    title: `Port: ${item.port}`,
+                    description: `Click to see content of port "${item.port}"`,
+                    content: <ObjectInspector data={item.value} theme={theme} expandLevel={5}/>
+                }
             })
-        } else {
-            return <NoPortData input={input}/>
+            return <AccordionItems items={accordionItems} />
         }
+        // No data
+        return ""
+
     }
 
-    const Padder = ({children}) => {
-        return <div>
+    const Padder = ({children, style}) => {
+        return <div style={style}>
             {children}
         </div>
     }
@@ -32,12 +41,12 @@ export default function DebugBox({call, onTabSelect}) {
         >
             <TabCase id={0}>
                 <Padder>
-                    {renderPorts([call?.input?.params], true)}
+                    <PortsAccordion portsData={[call?.input?.params]} />
                 </Padder>
             </TabCase>
             <TabCase id={1}>
                 <Padder>
-                    {renderPorts(call?.output?.results, false)}
+                    <PortsAccordion portsData={call?.output?.results} />
                 </Padder>
             </TabCase>
             <TabCase id={2}>

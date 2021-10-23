@@ -5,5 +5,5 @@
 .DebugDetails > .DebugContent {
     padding: 10px;
     width: 100%;
-    height: calc(100% - 50px);
+    height: inherit;
 }
