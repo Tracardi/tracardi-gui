@@ -1,4 +1,3 @@
-import Properties from "../elements/details/DetailProperties";
 import React from "react";
 import '../elements/forms/JsonForm';
 
@@ -61,10 +60,6 @@ const NodeInfo = ({node}) => {
                             <tr>
                                 <td>Version</td>
                                 <td>{node?.data?.spec?.version}</td>
-                            </tr>
-                            <tr>
-                                <td>Config</td>
-                                <td><Properties properties={node?.data?.spec?.init}/></td>
                             </tr>
                             </tbody>
                         </table>
