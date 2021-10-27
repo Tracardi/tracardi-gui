@@ -18,6 +18,7 @@ import {FiMoreHorizontal} from "@react-icons/all-files/fi/FiMoreHorizontal";
 import Modal from "@material-ui/core/Modal";
 import SocialButton from "./elements/misc/SocialButton";
 import {Facebook, Twitter, YouTube} from "@material-ui/icons";
+import {VscBook} from "@react-icons/all-files/vsc/VscBook";
 
 export default function MainContent({children, style}) {
 
@@ -28,8 +29,13 @@ export default function MainContent({children, style}) {
         return () => history.push(urlPrefix(url));
     }
 
-    const external = (url) => {
-        return () => window.location.href = url;
+    const external = (url, newWindow=false) => {
+        if(newWindow===true) {
+            return () => window.open(url, '_blank', 'location=yes,scrollbars=yes,status=yes')
+        } else {
+            return () => window.location.href = url;
+        }
+
     }
 
     const Brand = () => {
@@ -77,16 +83,16 @@ export default function MainContent({children, style}) {
                 <Brand/>
                 <aside className="User">
                     <MenuIcon icon={<FiShare2 size={25}/>} label="Share" direction="bottom">
-                        <MenuItem onClick={external("https://twitter.com/tracardi")}>
+                        <MenuItem onClick={external("https://twitter.com/tracardi" , true)}>
                             <VscTwitter size={20} style={{marginRight: 8}}/> Twitter
                         </MenuItem>
-                        <MenuItem onClick={external("https://www.facebook.com/TRACARDI/")}>
+                        <MenuItem onClick={external("https://www.facebook.com/TRACARDI/", true)}>
                             <FaFacebookSquare size={20} style={{marginRight: 8}}/> Facebook
                         </MenuItem>
-                        <MenuItem onClick={external("https://www.youtube.com/channel/UC0atjYqW43MdqNiSJBvN__Q")}>
+                        <MenuItem onClick={external("https://www.youtube.com/channel/UC0atjYqW43MdqNiSJBvN__Q", true)}>
                             <IoLogoYoutube size={20} style={{marginRight: 8}}/> Youtube
                         </MenuItem>
-                        <MenuItem onClick={external("https://github.com/atompie/tracardi")}>
+                        <MenuItem onClick={external("https://github.com/atompie/tracardi", true)}>
                             <VscGithubInverted size={20} style={{marginRight: 8}}/> GitHub
                         </MenuItem>
                     </MenuIcon>
@@ -94,6 +100,10 @@ export default function MainContent({children, style}) {
                         <MenuItem onClick={go("/settings")}>
                             <VscSettingsGear size={20} style={{marginRight: 8}}/>Settings
                         </MenuItem>
+                        <MenuItem onClick={external(`${window._env_.API_URL}/manual/en/site`, true)}>
+                            <VscBook size={20} style={{marginRight: 8}}/>Manual
+                        </MenuItem>
+                        e
                         <MenuItem onClick={() => setOpenAbout(true)}>
                             <VscInfo size={20} style={{marginRight: 8}}/>About
                         </MenuItem>

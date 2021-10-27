@@ -4,8 +4,8 @@ import TextField from "@material-ui/core/TextField";
 import "./DottedInputPath.css";
 import MenuItem from "@material-ui/core/MenuItem";
 import Popover from "@material-ui/core/Popover";
-import {BsArrowBarRight} from "@react-icons/all-files/bs/BsArrowBarRight";
 import {IoTextOutline} from "@react-icons/all-files/io5/IoTextOutline";
+import {IoAt} from "@react-icons/all-files/io5/IoAt";
 
 
 export default function DottedPathInput({value, onChange, defaultMode=1, defaultSourceValue="", defaultPathValue="", forceMode, error = false, helperText = null, width=460}) {
@@ -94,7 +94,7 @@ export default function DottedPathInput({value, onChange, defaultMode=1, default
         const [anchorEl, setAnchorEl] = useState(null);
 
         const selectedIcon = (mode === 1)
-            ? <BsArrowBarRight size={26} />
+            ? <IoAt size={26} />
             : <IoTextOutline size={26} />
 
         const handlePopoverDisplay = (event) => {
@@ -120,7 +120,7 @@ export default function DottedPathInput({value, onChange, defaultMode=1, default
                 }}
             >
                 <div className="DottedInputSeparatorPo">
-                    <div className="Item" onClick={()=>{handleModeChange(1)}}><BsArrowBarRight size={20} style={{marginRight: 15}}/> Path to data</div>
+                    <div className="Item" onClick={()=>{handleModeChange(1)}}><IoAt size={20} style={{marginRight: 15}}/> Path to data</div>
                     <div className="Item" onClick={()=>{handleModeChange(2)}}><IoTextOutline size={20} style={{marginRight: 15}}/> Plain text</div>
                 </div>
             </Popover></>
