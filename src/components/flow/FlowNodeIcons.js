@@ -70,7 +70,7 @@ import {AiOutlineCheckCircle} from "@react-icons/all-files/ai/AiOutlineCheckCirc
 import {IoTextOutline} from "@react-icons/all-files/io5/IoTextOutline";
 import {SiCurl} from "@react-icons/all-files/si/SiCurl";
 
-export default function FlowNodeIcons({icon, size=20}) {
+export default function FlowNodeIcons({icon, size=18}) {
 
     const defaultIcon = <VscPlug size={size}/>
     const icons = {

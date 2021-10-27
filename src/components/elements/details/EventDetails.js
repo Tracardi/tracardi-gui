@@ -15,7 +15,7 @@ import ProfileLogDetails from "./ProfileLogDetails";
 export default function EventDetails({data}) {
     return <div style={{height: "inherit"}}>
         <div className="RightTabScroller">
-            <Tabs tabs={["Event", "Context", "Result", "Raw", "Flow debug", "Flow logs", "Profile logs"]}>
+            <Tabs tabs={["Event", "Context", "Raw", "Flow debug", "Flow logs", "Profile logs"]}>
                 <TabCase id={0}>
                     <div className="Box10">
                         <div className="Bottom20">
@@ -58,46 +58,20 @@ export default function EventDetails({data}) {
                 </TabCase>
                 <TabCase id={2}>
                     <div className="Box10">
-                        <div className="Box10">
-                            <div className="Bottom20">
-                                <MiniHeader>Session</MiniHeader>
-                                <Properties properties={data.result?.session}/>
-                            </div>
-                            <div className="Bottom20">
-                                <MiniHeader>Profile</MiniHeader>
-                                <Properties properties={data.result?.profile}/>
-                            </div>
-                            <div className="Bottom20">
-                                <MiniHeader>Events</MiniHeader>
-                                <Properties properties={data.result?.events}/>
-                            </div>
-                            <div className="Bottom20">
-                                <MiniHeader>Rules</MiniHeader>
-                                <Properties properties={data.result?.rules}/>
-                            </div>
-                            <div className="Bottom20">
-                                <MiniHeader>Segments</MiniHeader>
-                                <Properties properties={data.result?.segments}/>
-                            </div>
-                        </div>
-                    </div>
-                </TabCase>
-                <TabCase id={3}>
-                    <div className="Box10">
                         <ObjectInspector data={data} theme={theme} expandLevel={3}/>
                     </div>
                 </TabCase>
-                <TabCase id={4}>
+                <TabCase id={3}>
                     <div style={{paddingTop: 10, height: 'inherit'}}>
                         <EventProfilingDetails eventId={data?.event?.id}/>
                     </div>
                 </TabCase>
-                <TabCase id={5}>
+                <TabCase id={4}>
                     <div style={{paddingTop: 10, height: 'inherit'}}>
                         <EventLogDetails eventId={data?.event?.id}/>
                     </div>
                 </TabCase>
-                <TabCase id={6}>
+                <TabCase id={5}>
                     <div style={{paddingTop: 10, height: 'inherit'}}>
                         <ProfileLogDetails profileId={data?.event?.profile?.id}
                                            sessionProfileId={data?.event?.session?.profile?.id}/>

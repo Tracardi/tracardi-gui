@@ -56,11 +56,6 @@ export default function MainContent({children, style}) {
                 <Brand />
 
                 <section>
-                    <h1>Contributors</h1>
-                    <ul>
-                        <li>Risto Kowaczewski</li>
-                    </ul>
-
                     <p>If you would like to help developing TRACARDI join us <a style={{color: "white"}} href="http://github.com/atompie/tracardi">GitHub</a></p>
 
                     <h1>Follow us</h1>

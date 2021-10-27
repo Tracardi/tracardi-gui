@@ -15,6 +15,7 @@ function SidebarLeft({showAlert, onEdit, onDebug, debugInProgress}) {
     const [pluginsLoading, setPluginsLoading] = useState(false);
     const [refresh, setRefresh] = useState(Math.random)
 
+
     useEffect(() => {
         setPluginsLoading(true);
         request({

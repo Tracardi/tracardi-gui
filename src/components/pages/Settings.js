@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import "../elements/forms/JsonForm.css";
 import KeyValueDesc from "../elements/misc/KeyValueDesc";
+import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 
 function Settings({showAlert}) {
 
@@ -36,13 +37,12 @@ function Settings({showAlert}) {
                 <p>Use environment variables to set these settings.</p>
             </div>
             <section>
-                {setting.map((row, index) => {
+                {loading && <CenteredCircularProgress/>}
+                {!loading && setting.map((row, index) => {
                     return <KeyValueDesc key={index} label={row.label} value={row.value} description={row.desc} />
                 })}
             </section>
         </div>
-
-
     </form>
 }
 
