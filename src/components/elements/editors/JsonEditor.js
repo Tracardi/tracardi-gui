@@ -13,7 +13,7 @@ export default function JsonEditor({onChange, value, height}) {
         // onLoad={(d)=>console.log(d)}
         onChange={onChange}
         name="payload_editor"
-        value={value}
+        value={typeof value === 'string' ? value : ""}
         editorProps={{$blockScrolling: true}}
         width="100%"
         height={height ? height : "260px"}

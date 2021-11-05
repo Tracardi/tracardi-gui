@@ -14,7 +14,7 @@ RUN yarn build
 # Production environment
 FROM nginx:stable-alpine
 RUN rm -rf /etc/nginx/conf.d
-COPY nginx/conf /etc/nginx
+COPY nginx/conf-ssl /etc/nginx
 
 # Static build
 COPY --from=build /app/build /usr/share/nginx/html
