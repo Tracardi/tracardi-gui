@@ -69,6 +69,9 @@ import {VscRegex} from "@react-icons/all-files/vsc/VscRegex";
 import {AiOutlineCheckCircle} from "@react-icons/all-files/ai/AiOutlineCheckCircle";
 import {IoTextOutline} from "@react-icons/all-files/io5/IoTextOutline";
 import {SiCurl} from "@react-icons/all-files/si/SiCurl";
+import {BiGroup} from "@react-icons/all-files/bi/BiGroup";
+import {VscReplace} from "@react-icons/all-files/vsc/VscReplace";
+import {ImInsertTemplate} from "@react-icons/all-files/im/ImInsertTemplate";
 
 export default function FlowNodeIcons({icon, size=18}) {
 
@@ -145,7 +148,10 @@ export default function FlowNodeIcons({icon, size=18}) {
         "regex": <VscRegex size={size}/>,
         "ok": <AiOutlineCheckCircle size={size}/>,
         "uppercase": <IoTextOutline size={size}/>,
-        "url": <SiCurl size={size}/>
+        "url": <SiCurl size={size}/>,
+        "group-person": <BiGroup size={size}/>,
+        'replace': <VscReplace size={size}/>,
+        'template': <ImInsertTemplate size={size}/>
     }
 
     const renderIcon = () => {
