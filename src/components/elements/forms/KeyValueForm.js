@@ -54,9 +54,9 @@ const KeyValueForm = ({ value, onChange }) => {
           value={val}
           style={{ marginRight: 8, flexGrow: 1 }}
         />
-        <AiOutlinePlusCircle size={30} onClick={handleAdd} className="Button AddButton" />
+        <AiOutlinePlusCircle size={25} onClick={handleAdd} className="Button AddButton" style={{cursor: "pointer"}}/>
       </div>
-      <fieldset style={{height: 200, overflowY: "auto", marginTop:5}}>
+      <fieldset style={{height: 200, overflowY: "auto", margin:"5px 0"}}>
         <legend>List of key-value pairs</legend>
         <ul className="KeyValueList">
           {Object.keys(localValue).map((item, i) => {
@@ -64,12 +64,12 @@ const KeyValueForm = ({ value, onChange }) => {
               <li key={i}>
                 {`${item}: ${localValue[item]}`}
                 <VscTrash
-                  size={30}
+                  size={25}
                   onClick={() => {
                     handleDelete(item);
                   }}
                   className="Button DeleteButton"
-                  style={{ marginLeft: 12 }}
+                  style={{ marginLeft: 12, cursor: "pointer" }}
                 />
               </li>
             );

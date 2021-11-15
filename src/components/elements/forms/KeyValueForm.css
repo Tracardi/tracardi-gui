@@ -14,11 +14,11 @@
 .KeyValueList > li {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   padding: 2px;
   align-items: center;
 }
 
 .KeyValueList > li:nth-child(odd) {
-  background-color: rgb(235, 235, 235);
+  background-color: rgb(245, 245, 245);
 }

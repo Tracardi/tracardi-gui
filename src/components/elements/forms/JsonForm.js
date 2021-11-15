@@ -16,6 +16,7 @@ import Switch from "@material-ui/core/Switch";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import HtmlEditor from "../editors/HtmlEditor";
 import SqlEditor from "../editors/SqlEditor";
+import KeyValueForm from "./KeyValueForm";
 
 
 const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
@@ -114,6 +115,13 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                                                             errors={errors}
                                                             onChange={handleOnChange}
                                                             props={props}/>
+                    }
+                case "keyValueList":
+                    return {
+                        component: (props) => <KeyValueInput id={id}
+                                                             errors={errors}
+                                                             onChange={handleOnChange}
+                                                             props={props}/>
                     }
                 case "listOfDotPaths":
                     return {
@@ -542,6 +550,30 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                                 onChange={handleChange}
                                 {...errorProps}
                                 {...props}
+        />
+    }
+
+    function KeyValueInput({id, errors, props, onChange = () => {}}) {
+
+        const handleChange = (value) => {
+            formValues.current[id] = value;
+            if(onChange) {
+                onChange(value);
+            }
+        }
+
+        const value = readValue(id);
+        let errorProps = {}
+
+        if (errors && id in errors) {
+            errorProps['error'] = true
+            errorProps['helperText'] = errors[id]
+        }
+
+        return <KeyValueForm value={value}
+                             onChange={handleChange}
+                             {...errorProps}
+                             {...props}
         />
     }
 
