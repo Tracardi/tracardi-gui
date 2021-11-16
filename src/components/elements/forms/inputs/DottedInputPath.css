@@ -1,6 +1,7 @@
 .DottedInputPath {
     display: flex;
     align-items: center;
+    width: 100%;
 }
 .DottedInputSeparatorPo > .Item {
     display: flex;

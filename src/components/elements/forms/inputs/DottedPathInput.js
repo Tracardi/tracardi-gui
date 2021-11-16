@@ -8,13 +8,13 @@ import {IoTextOutline} from "@react-icons/all-files/io5/IoTextOutline";
 import {IoAt} from "@react-icons/all-files/io5/IoAt";
 
 
-export default function DottedPathInput({value, onChange, defaultMode=1, defaultSourceValue="", defaultPathValue="", forceMode, error = false, helperText = null, width=460}) {
+export default function DottedPathInput({value, onChange, label="Source", defaultMode = 1, defaultSourceValue = "", defaultPathValue = "", forceMode, error = false, helperText = null, width = 460}) {
 
     let computedMode;
-    if(forceMode) {
+    if (forceMode) {
         computedMode = forceMode;
     } else {
-        if(typeof value === 'undefined' || value === null || value === '') {
+        if (typeof value === 'undefined' || value === null || value === '') {
             // No value provided
             computedMode = defaultMode
         } else {
@@ -63,7 +63,7 @@ export default function DottedPathInput({value, onChange, defaultMode=1, default
 
     const handleExternalOnChange = (mode, path, source) => {
         if (onChange) {
-            if(mode === 1) {
+            if (mode === 1) {
                 onChange(`${source}@${path}`)
             } else {
                 onChange(path)
@@ -94,22 +94,23 @@ export default function DottedPathInput({value, onChange, defaultMode=1, default
         const [anchorEl, setAnchorEl] = useState(null);
 
         const selectedIcon = (mode === 1)
-            ? <IoAt size={26} />
-            : <IoTextOutline size={26} />
+            ? <IoAt size={26}/>
+            : <IoTextOutline size={26}/>
 
         const handlePopoverDisplay = (event) => {
-            if(typeof forceMode === 'undefined') {
+            if (typeof forceMode === 'undefined') {
                 setAnchorEl(event.currentTarget);
                 setDisplayPopover(!displayPopover)
             }
         }
 
         return <>
-            <span onClick={handlePopoverDisplay} style={{margin: "8px 5px 5px", cursor: "pointer"}}>{selectedIcon}</span>
+            <span onClick={handlePopoverDisplay}
+                  style={{margin: "8px 5px 5px", cursor: "pointer"}}>{selectedIcon}</span>
             <Popover
-                    open={displayPopover}
-                    anchorEl={anchorEl}
-                    onClose={()=>setDisplayPopover(false)}
+                open={displayPopover}
+                anchorEl={anchorEl}
+                onClose={() => setDisplayPopover(false)}
                 anchorOrigin={{
                     vertical: 'bottom',
                     horizontal: 'center',
@@ -120,15 +121,21 @@ export default function DottedPathInput({value, onChange, defaultMode=1, default
                 }}
             >
                 <div className="DottedInputSeparatorPo">
-                    <div className="Item" onClick={()=>{handleModeChange(1)}}><IoAt size={20} style={{marginRight: 15}}/> Path to data</div>
-                    <div className="Item" onClick={()=>{handleModeChange(2)}}><IoTextOutline size={20} style={{marginRight: 15}}/> Plain text</div>
+                    <div className="Item" onClick={() => {
+                        handleModeChange(1)
+                    }}><IoAt size={20} style={{marginRight: 15}}/> Path to data
+                    </div>
+                    <div className="Item" onClick={() => {
+                        handleModeChange(2)
+                    }}><IoTextOutline size={20} style={{marginRight: 15}}/> Plain text
+                    </div>
                 </div>
             </Popover></>
     }
 
     const pathMode = () => <div className="DottedInputPath">
         <TextField select
-                   label="Source"
+                   label={label}
                    variant="outlined"
                    size="small"
                    value={source}

@@ -17,6 +17,7 @@ import Tabs, {TabCase} from "../tabs/Tabs";
 import HtmlEditor from "../editors/HtmlEditor";
 import SqlEditor from "../editors/SqlEditor";
 import KeyValueForm from "./KeyValueForm";
+import CopyTraitsForm from "./CopyTraitsForm";
 
 
 const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
@@ -123,6 +124,14 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                                                              onChange={handleOnChange}
                                                              props={props}/>
                     }
+                case "copyTraitsInput":
+                    return {
+                        component: (props) => <CopyTraitsInput id={id}
+                                                             errors={errors}
+                                                             onChange={handleOnChange}
+                                                             props={props}/>
+                    }
+
                 case "listOfDotPaths":
                     return {
                         component: (props) => <ListOfDotPaths
@@ -571,6 +580,31 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         }
 
         return <KeyValueForm value={value}
+                             onChange={handleChange}
+                             {...errorProps}
+                             {...props}
+        />
+    }
+
+    function CopyTraitsInput({id, errors, props, onChange = () => {}}) {
+
+        const handleChange = (value) => {
+            console.log(value)
+            formValues.current[id] = value;
+            if(onChange) {
+                onChange(value);
+            }
+        }
+
+        const value = readValue(id);
+        let errorProps = {}
+
+        if (errors && id in errors) {
+            errorProps['error'] = true
+            errorProps['helperText'] = errors[id]
+        }
+
+        return <CopyTraitsForm value={value}
                              onChange={handleChange}
                              {...errorProps}
                              {...props}
