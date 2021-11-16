@@ -66,7 +66,6 @@ const SignInForm = ({showAlert}) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [rememberMe, setRememberMe] = useState(false);
 
     const {state} = useLocation();
     const {from} = state || {from: {pathname: urlPrefix("/home")}};
@@ -78,9 +77,6 @@ const SignInForm = ({showAlert}) => {
 
     const handlePassChange = (evt) => {
         setPassword(evt.target.value);
-    }
-    const handleRemMe = (evt) => {
-        setRememberMe(evt.target.checked);
     }
 
     const onSubmit = event => {
@@ -144,11 +140,6 @@ const SignInForm = ({showAlert}) => {
                             id="password"
                             autoComplete="current-password"
                             onChange={handlePassChange}
-                        />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" onChange={handleRemMe}
-                                               checked={rememberMe}/>}
-                            label="Remember me"
                         />
                         <Button
                             type="submit"
