@@ -1,7 +1,7 @@
 import React from "react";
 import "./AppBox.css";
 import MainContent from "./MainContent";
-import {Redirect} from "react-router-dom";
+import {Redirect, Route} from "react-router-dom";
 import PrivateRoute from "./authentication/PrivateRoute";
 import Resources from "./pages/Resources";
 import Rules from "./pages/Rules";
@@ -19,6 +19,7 @@ import '@szhsin/react-menu/dist/index.css';
 import Instances from "./pages/Instances";
 import Settings from "./pages/Settings";
 import Tasks from "./pages/Tasks";
+import TryOut from "./pages/TryOut";
 
 const AppBox = () => {
 
@@ -89,6 +90,9 @@ const AppBox = () => {
             <PrivateRoute exact path={urlPrefix("/setup")} roles={["admin"]}>
                 <Flows/>
             </PrivateRoute>
+            <Route exact path={urlPrefix("/tryout")}>
+                <TryOut/>
+            </Route>
         </div>
 
     </MainContent>
