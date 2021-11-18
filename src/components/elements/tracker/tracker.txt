@@ -1,5 +1,5 @@
 <script>
-    const options = {
+    var options = {
         tracker: {
             url: {
                 // This is url to tracardi backend. Please mind the correct port.
