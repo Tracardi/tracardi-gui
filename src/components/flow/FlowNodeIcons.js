@@ -72,6 +72,7 @@ import {SiCurl} from "@react-icons/all-files/si/SiCurl";
 import {BiGroup} from "@react-icons/all-files/bi/BiGroup";
 import {VscReplace} from "@react-icons/all-files/vsc/VscReplace";
 import {ImInsertTemplate} from "@react-icons/all-files/im/ImInsertTemplate";
+import {FaAws} from "@react-icons/all-files/fa/FaAws";
 
 export default function FlowNodeIcons({icon, size=18}) {
 
@@ -151,7 +152,8 @@ export default function FlowNodeIcons({icon, size=18}) {
         "url": <SiCurl size={size}/>,
         "group-person": <BiGroup size={size}/>,
         'replace': <VscReplace size={size}/>,
-        'template': <ImInsertTemplate size={size}/>
+        'template': <ImInsertTemplate size={size}/>,
+        'aws': <FaAws size={size}/>
     }
 
     const renderIcon = () => {
