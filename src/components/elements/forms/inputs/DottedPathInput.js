@@ -8,22 +8,25 @@ import {IoTextOutline} from "@react-icons/all-files/io5/IoTextOutline";
 import {IoAt} from "@react-icons/all-files/io5/IoAt";
 
 
-export default function DottedPathInput({value, onChange, label="Source", defaultMode = 1, defaultSourceValue = "", defaultPathValue = "", forceMode, error = false, helperText = null, width = 460}) {
+export default function DottedPathInput({value, onChange, label = "Source", defaultMode = 1, defaultSourceValue = "", defaultPathValue = "", forceMode, error = false, helperText = null, width = 460}) {
 
     let computedMode;
-    if (forceMode) {
-        computedMode = forceMode;
-    } else {
-        if (typeof value === 'undefined' || value === null || value === '') {
-            // No value provided
-            computedMode = defaultMode
+    const re = new RegExp("^(payload|profile|session|event|flow)@");
+
+    if (typeof value === 'undefined' || value === null || value === '') {
+        // No value provided
+        if (forceMode) {
+            computedMode = forceMode;
         } else {
-            const re = new RegExp("^(payload|profile|session|event|flow)@");
-            computedMode = re.test(value) ? 1 : 2;
+            computedMode = defaultMode
         }
+    } else {
+        computedMode = re.test(value) ? 1 : 2;
     }
 
-    let [sourceValue, pathValue] = isString(value) ? value.split('@') : [defaultSourceValue, defaultPathValue];
+    let [sourceValue, pathValue] = isString(value)
+        ? (value!== null && re.test(value) ? [value.split('@')[0], value.split('@').slice(1).join('@')]
+            : ["", value]) : [defaultSourceValue, defaultPathValue];
     const [mode, setMode] = useState(computedMode);
 
     if (typeof pathValue === 'undefined' && sourceValue) {
