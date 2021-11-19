@@ -47,12 +47,25 @@ DIV.NodePorts {
 DIV.NodePanel {
     display: flex;
     flex-direction: row;
-    padding: 7px;
     border-style: solid;
     border-radius: 6px;
     border-width: 2px;
     background-color: white;
     font-size: 14px;
+}
+
+DIV.NodePadding {
+    padding: 7px;
+    width: inherit;
+    display: flex;
+}
+
+DIV.NodePro {
+    display: flex;
+    color: white;
+    align-items: center;
+    background-color: #333;
+    padding: 0 10px;
 }
 
 DIV.DebugNode {

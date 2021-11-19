@@ -6,7 +6,18 @@
     color: inherit;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     font-size: 14px;
+}
+
+.menuNode SPAN.proTag {
+    border-radius: 6px;
+    font-size: 80%;
+    padding: 1px 6px;
+    margin: 3px;
+    background: #ef6c00;
+    color: white;
+    font-weight: 600;
 }
 
 .menuNode:hover {

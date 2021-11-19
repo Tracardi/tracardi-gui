@@ -47,11 +47,15 @@ export default memo (({data}) => {
             <ExecutionNumber data={data}/>
             {renderInputs(data?.spec)}
             <div className={nodeClass}>
-                <div className="NodeIcon"><FlowNodeIcons icon={data?.metadata?.icon}/></div>
-                <div className="NodeLabel" style={{maxWidth: data?.metadata?.width, maxHeight: data?.metadata?.height}}>
-                    {data?.metadata?.name}
+                <div className="NodePadding">
+                    <div className="NodeIcon"><FlowNodeIcons icon={data?.metadata?.icon}/></div>
+                    <div className="NodeLabel" style={{maxWidth: data?.metadata?.width, maxHeight: data?.metadata?.height}}>
+                        {data?.metadata?.name}
+                    </div>
                 </div>
+                {data?.metadata?.pro ? <div className="NodePro">Pro</div> : ""}
             </div>
+
             {renderOutputs(data?.spec)}
         </>
     );
