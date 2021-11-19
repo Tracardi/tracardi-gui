@@ -84,4 +84,15 @@ DIV.NodeLabel {
     display: flex;
     align-items: center;
     overflow: hidden;
+    flex-direction: row;
+}
+
+DIV.NodeLabel > P {
+    margin: 0;
+    font-weight: 400;
+}
+
+DIV.NodeLabel ASIDE {
+    font-size: 70%;
+    margin-left: 5px;
 }

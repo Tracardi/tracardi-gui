@@ -50,7 +50,8 @@ export default memo (({data}) => {
                 <div className="NodePadding">
                     <div className="NodeIcon"><FlowNodeIcons icon={data?.metadata?.icon}/></div>
                     <div className="NodeLabel" style={{maxWidth: data?.metadata?.width, maxHeight: data?.metadata?.height}}>
-                        {data?.metadata?.name}
+                        <p>{data?.metadata?.name}</p>
+                        <aside>v.{data?.spec?.version}</aside>
                     </div>
                 </div>
                 {data?.metadata?.pro ? <div className="NodePro">Pro</div> : ""}
