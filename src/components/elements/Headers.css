@@ -7,3 +7,13 @@
     letter-spacing: 0.10em;
     font-weight: 600;
 }
+
+.SemiHeader{
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.6rem;
+    text-transform: capitalize;
+    padding: 5px 0px;
+    color:black;
+    letter-spacing: 0.05em;
+}
