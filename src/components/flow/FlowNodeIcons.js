@@ -75,7 +75,7 @@ import {ImInsertTemplate} from "@react-icons/all-files/im/ImInsertTemplate";
 import {FaAws} from "@react-icons/all-files/fa/FaAws";
 import {AiOutlinePieChart} from "@react-icons/all-files/ai/AiOutlinePieChart";
 
-export default function FlowNodeIcons({icon, size=18}) {
+export default function FlowNodeIcons({icon, size=20}) {
 
     const defaultIcon = <VscPlug size={size}/>
     const icons = {

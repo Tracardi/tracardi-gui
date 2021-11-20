@@ -6,7 +6,7 @@ export default function FlowMenuNode({onDragStart, row}) {
         onDragStart(event, row)} draggable>
         <div style={{display: "flex"}}>
             <FlowNodeIcons icon={row.plugin?.metadata?.icon}/>
-            <div style={{marginLeft: 5}}>
+            <div style={{marginLeft: 10}}>
                 <div>{row.plugin?.metadata?.name}</div>
                 <div style={{fontSize: "70%"}}>{row.plugin?.spec?.version}</div>
             </div>

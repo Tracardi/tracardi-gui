@@ -106,9 +106,9 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                                     edge: edge_info
                                 }
                                 if(edge_info.active.includes(false) && !edge_info.active.includes(true)) {
-                                    element.label = "Inactive";
+                                    element.label = "x";
                                     element.labelStyle = {
-                                        fontSize: 14
+                                        fontSize: 15
                                     }
                                     element.animated = false;
                                     element.style = {
