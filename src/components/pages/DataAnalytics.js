@@ -6,6 +6,7 @@ import ObjectFiltering from "../elements/forms/ObjectFiltering";
 import moment from "moment";
 import DataBrowsingList from "./DataBrowsingList";
 import BarChartElement from "../elements/charts/BarChart";
+import { SemiHeader } from "../elements/Headers";
 
 export default function DataAnalytics({
   type,
@@ -149,6 +150,7 @@ export default function DataAnalytics({
         />
       </div>
       <div className="Data">
+      <SemiHeader>{label}</SemiHeader>
         <DataBrowsingList
           label={label}
           onLoadDataRequest={onLoadDataRequest}
