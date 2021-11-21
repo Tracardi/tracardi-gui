@@ -6,55 +6,54 @@ import ExecutionNumber from "./ExecutionNumber";
 
 export default memo(({data}) => {
 
-    const Outputs = ({spec}) => {
+    const InputPort = ({value}) => {
         const [showHint, setShowHint] = useState(false);
+        return <div className="NodePortContainer">
+            {showHint && <span id={value} className="InputPortHint PortHint">{value}</span>}
+            <Handle
+                type="target"
+                position="top"
+                id={value}
+                onMouseOver={() => setShowHint(true)}
+                onMouseOut={() => setShowHint(false)}
+            />
+
+        </div>
+    }
+
+    const OutputPort = ({value}) => {
+        const [showHint, setShowHint] = useState(false);
+        return <div className="NodePortContainer">
+            <Handle
+                type="source"
+                position="bottom"
+                id={value}
+                onMouseOver={() => setShowHint(true)}
+                onMouseOut={() => setShowHint(false)}
+            />
+            {showHint && <span id={value} className="OutputPortHint PortHint">{value}</span>}
+        </div>
+    }
+
+    const Outputs = ({spec}) => {
+
         if (spec?.outputs) {
-            return <div>
-                <div className="NodePorts" style={{bottom: "24px"}}>
-                    {
-                        spec.outputs.map((value, index) => {
-
-                            return <Handle
-                                key={index}
-                                type="source"
-                                position="bottom"
-                                id={value}
-                                onMouseOver={() => setShowHint(true)}
-                                onMouseOut={() => setShowHint(false)}
-                            />
-
-                        })
-                    }
-                </div>
-                <div className="NodePortHints">
-                    {
-                        spec.outputs.map((value, index) => {
-                            return <span id={value} className="OutputPortHint PortHint">{value}</span>
-                        })
-                    }
-                </div>
-
+            return <div className="NodePorts" style={{marginTop: "-7px"}}>
+                {
+                    spec.outputs.map((value, index) => {
+                        return <OutputPort key={index} value={value}/>
+                    })
+                }
             </div>
         }
     }
 
     const Inputs = ({spec}) => {
-        const [showHint, setShowHint] = useState(false);
         if (spec?.inputs) {
-            return <div className="NodePorts" style={{top: "-5px"}}>
+            return <div className="NodePorts" style={{marginBottom: "-7px"}}>
                 {
                     spec.inputs.map((value, index) => {
-                        return <>
-                            {showHint && <span id={value} className="InputPortHint PortHint">{value}</span>}
-                            <Handle
-                                onMouseOver={() => setShowHint(true)}
-                                onMouseOut={() => setShowHint(false)}
-                                key={index}
-                                type="target"
-                                position="top"
-                                id={value}
-                            />
-                        </>
+                        return <InputPort key={index} value={value} />
                     })
                 }
             </div>

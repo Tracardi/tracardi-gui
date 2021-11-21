@@ -1,6 +1,6 @@
 .react-flow__handle {
-    width: 12px !important;
-    height: 12px !important;
+    width: 14px !important;
+    height: 14px !important;
     background-color: white !important;
     border-radius: 100% !important;
     position: unset !important;
@@ -38,32 +38,36 @@
 }
 
 DIV.NodePorts {
-    position:absolute;
     width: 100%;
     display: flex;
     justify-content: space-around;
 }
 
-DIV.NodePortHints .PortHint {
+DIV.NodePorts DIV.NodePortContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:100%;
+    position: relative;
+}
+
+DIV.NodePortContainer .PortHint {
     background-color: aliceblue;
     color: #444;
     border-radius: 3px;
-    padding: 1px 4px;
+    padding: 3px 8px;
     font-size: 80%;
-    margin: 2px;
-}
-DIV.NodePortHints {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 8px;
+    margin: 4px;
 }
 
-DIV.NodePorts .InputPortHint {
-    top: -20px
+DIV.NodePortContainer .InputPortHint {
+    bottom: 15px;
+    position:absolute;
 }
 
-DIV.NodePorts .OutputPortHint {
-    bottom: -20px
+DIV.NodePortContainer .OutputPortHint {
+    top: 15px;
+    position:absolute;
 }
 
 DIV.NodePanel {
