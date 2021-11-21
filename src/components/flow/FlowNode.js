@@ -1,39 +1,60 @@
-import React, { memo } from 'react';
+import React, {memo, useState} from 'react';
 import {Handle} from 'react-flow-renderer';
 import './FlowNode.css';
 import FlowNodeIcons from "./FlowNodeIcons";
 import ExecutionNumber from "./ExecutionNumber";
 
-export default memo (({data}) => {
+export default memo(({data}) => {
 
-    const renderOutputs = (spec) => {
-        if(spec?.outputs) {
-            return <div className="NodePorts" style={{bottom: "-5px"}}>
-                {
-                    spec.outputs.map((value, index)=>{
-                        return <Handle
-                            key={index}
-                            type="source"
-                            position="bottom"
-                            id={value}
-                        />
-                    })
-                }
+    const Outputs = ({spec}) => {
+        const [showHint, setShowHint] = useState(false);
+        if (spec?.outputs) {
+            return <div>
+                <div className="NodePorts" style={{bottom: "24px"}}>
+                    {
+                        spec.outputs.map((value, index) => {
+
+                            return <Handle
+                                key={index}
+                                type="source"
+                                position="bottom"
+                                id={value}
+                                onMouseOver={() => setShowHint(true)}
+                                onMouseOut={() => setShowHint(false)}
+                            />
+
+                        })
+                    }
+                </div>
+                <div className="NodePortHints">
+                    {
+                        spec.outputs.map((value, index) => {
+                            return <span id={value} className="OutputPortHint PortHint">{value}</span>
+                        })
+                    }
+                </div>
+
             </div>
         }
     }
 
-    const renderInputs = (spec) => {
-        if(spec?.inputs) {
+    const Inputs = ({spec}) => {
+        const [showHint, setShowHint] = useState(false);
+        if (spec?.inputs) {
             return <div className="NodePorts" style={{top: "-5px"}}>
                 {
-                    spec.inputs.map((value, index)=>{
-                        return <Handle
-                            key={index}
-                            type="target"
-                            position="top"
-                            id={value}
-                        />
+                    spec.inputs.map((value, index) => {
+                        return <>
+                            {showHint && <span id={value} className="InputPortHint PortHint">{value}</span>}
+                            <Handle
+                                onMouseOver={() => setShowHint(true)}
+                                onMouseOut={() => setShowHint(false)}
+                                key={index}
+                                type="target"
+                                position="top"
+                                id={value}
+                            />
+                        </>
                     })
                 }
             </div>
@@ -45,19 +66,19 @@ export default memo (({data}) => {
     return (
         <>
             <ExecutionNumber data={data}/>
-            {renderInputs(data?.spec)}
+            <Inputs spec={data?.spec}/>
             <div className={nodeClass}>
                 <div className="NodePadding">
                     <div className="NodeIcon"><FlowNodeIcons icon={data?.metadata?.icon}/></div>
-                    <div className="NodeLabel" style={{maxWidth: data?.metadata?.width, maxHeight: data?.metadata?.height}}>
+                    <div className="NodeLabel"
+                         style={{maxWidth: data?.metadata?.width, maxHeight: data?.metadata?.height}}>
                         <p>{data?.metadata?.name}</p>
                         <aside>v.{data?.spec?.version}</aside>
                     </div>
                 </div>
                 {data?.metadata?.pro ? <div className="NodePro">Pro</div> : ""}
             </div>
-
-            {renderOutputs(data?.spec)}
+            <Outputs spec={data?.spec}/>
         </>
     );
 });

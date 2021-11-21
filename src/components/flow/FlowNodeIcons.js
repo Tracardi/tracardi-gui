@@ -74,6 +74,7 @@ import {VscReplace} from "@react-icons/all-files/vsc/VscReplace";
 import {ImInsertTemplate} from "@react-icons/all-files/im/ImInsertTemplate";
 import {FaAws} from "@react-icons/all-files/fa/FaAws";
 import {AiOutlinePieChart} from "@react-icons/all-files/ai/AiOutlinePieChart";
+import {VscRadioTower} from "@react-icons/all-files/vsc/VscRadioTower";
 
 export default function FlowNodeIcons({icon, size=20}) {
 
@@ -155,7 +156,8 @@ export default function FlowNodeIcons({icon, size=20}) {
         'replace': <VscReplace size={size}/>,
         'template': <ImInsertTemplate size={size}/>,
         'aws': <FaAws size={size}/>,
-        'pie-chart': <AiOutlinePieChart size={size}/>
+        'pie-chart': <AiOutlinePieChart size={size}/>,
+        'tower': <VscRadioTower size={size}/>
     }
 
     const renderIcon = () => {

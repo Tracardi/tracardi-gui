@@ -44,6 +44,28 @@ DIV.NodePorts {
     justify-content: space-around;
 }
 
+DIV.NodePortHints .PortHint {
+    background-color: aliceblue;
+    color: #444;
+    border-radius: 3px;
+    padding: 1px 4px;
+    font-size: 80%;
+    margin: 2px;
+}
+DIV.NodePortHints {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+DIV.NodePorts .InputPortHint {
+    top: -20px
+}
+
+DIV.NodePorts .OutputPortHint {
+    bottom: -20px
+}
+
 DIV.NodePanel {
     display: flex;
     flex-direction: row;
