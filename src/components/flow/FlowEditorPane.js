@@ -19,6 +19,9 @@ import {showAlert} from "../../redux/reducers/alertSlice";
 import DebugDetails from "./DebugDetails";
 import LogsList from "./LogsList";
 import MemoNodeDetails from "./NodeDetails";
+import InfoEdge from "./edges/InfoEdge";
+import StopEdge from "./edges/StopEdge";
+import CancelEdge from "./edges/CancelEdge";
 
 export function FlowEditorPane(
     {
@@ -38,6 +41,12 @@ export function FlowEditorPane(
     const snapGrid = [20, 20];
     const nodeTypes = {
         flowNode: FlowNode
+    };
+
+    const edgeTypes = {
+        info: InfoEdge,
+        stop: StopEdge,
+        cancel: CancelEdge
     };
 
     const reactFlowWrapper = useRef(null);
@@ -301,6 +310,7 @@ export function FlowEditorPane(
             onNodeContextMenu={onNodeContextMenu}
             onPaneClick={onPaneClick}
             nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
             onConnect={onConnect}
             deleteKeyCode={46}
             zoomActivationKeyCode={32}

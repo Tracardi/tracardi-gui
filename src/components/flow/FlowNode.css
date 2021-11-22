@@ -49,6 +49,7 @@ DIV.NodePorts DIV.NodePortContainer {
     align-items: center;
     width:100%;
     position: relative;
+    z-index: 11;
 }
 
 DIV.NodePortContainer .PortHint {
@@ -78,6 +79,7 @@ DIV.NodePanel {
     border-width: 2px;
     background-color: white;
     font-size: 14px;
+    position: relative;
 }
 
 DIV.NodePadding {

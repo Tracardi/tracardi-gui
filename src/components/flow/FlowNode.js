@@ -23,7 +23,8 @@ export default memo(({data}) => {
 
     const OutputPort = ({value}) => {
         const [showHint, setShowHint] = useState(false);
-        return <div className="NodePortContainer">
+        return <>
+          <div className="NodePortContainer">
             <Handle
                 type="source"
                 position="bottom"
@@ -33,6 +34,8 @@ export default memo(({data}) => {
             />
             {showHint && <span id={value} className="OutputPortHint PortHint">{value}</span>}
         </div>
+
+        </>
     }
 
     const Outputs = ({spec}) => {
@@ -41,7 +44,7 @@ export default memo(({data}) => {
             return <div className="NodePorts" style={{marginTop: "-7px"}}>
                 {
                     spec.outputs.map((value, index) => {
-                        return <OutputPort key={index} value={value}/>
+                        return <OutputPort key={index} value={value} />
                     })
                 }
             </div>
@@ -64,9 +67,9 @@ export default memo(({data}) => {
 
     return (
         <>
-            <ExecutionNumber data={data}/>
             <Inputs spec={data?.spec}/>
             <div className={nodeClass}>
+                <ExecutionNumber data={data}/>
                 <div className="NodePadding">
                     <div className="NodeIcon"><FlowNodeIcons icon={data?.metadata?.icon}/></div>
                     <div className="NodeLabel"

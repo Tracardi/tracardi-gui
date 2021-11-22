@@ -12,6 +12,7 @@ export function prepareGraph(reactFlowInstance) {
         if (isNode(element)) {
             return graph.nodes.push(element)
         } else {
+            element.type = "";
             return graph.edges.push(element)
         }
     });
@@ -106,10 +107,8 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                                     edge: edge_info
                                 }
                                 if(edge_info.active.includes(false) && !edge_info.active.includes(true)) {
-                                    element.label = "x";
-                                    element.labelStyle = {
-                                        fontSize: 15
-                                    }
+                                    element.label = null
+                                    element.type="stop";
                                     element.animated = false;
                                     element.style = {
                                         stroke: '#aaa'
@@ -119,6 +118,11 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                                     // element.label = edge_info.active.toString();
                                     element.animated = true
                                     element.style = {};
+                                    element.type="info";
+                                    element.style = {
+                                        stroke: 'green',
+                                        strokeWidth: 3
+                                    }
                                 } else {
                                     element.label = null
                                     // element.label = edge_info.active.toString();
@@ -126,6 +130,7 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                                     element.style = {
                                         stroke: '#aaa'
                                     }
+                                    element.type=null;
                                 }
                             } else {
                                 // no debug info
@@ -135,10 +140,8 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                                     stroke: '#ddd',
                                     strokeWidth: 1
                                 };
-                                element.labelStyle = {
-                                    fontSize: 14
-                                }
-                                element.label = "?"
+                                element.label = null
+                                element.type="cancel";
                             }
                         }
                         else {
