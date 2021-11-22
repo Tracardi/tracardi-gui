@@ -1,12 +1,17 @@
 import { icons } from '../flow/FlowNodeIcons';
 import { useState } from 'react';
-import { Button, Popover } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
-import { addIcon } from '../../redux/reducers/iconSlice';
+import {
+  Button,
+  IconButton,
+  Input,
+  InputAdornment,
+  Popover,
+} from '@material-ui/core';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 const IconSelector = () => {
-  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [iconName, setIconName] = useState('');
 
   const handlePopover = (event) => {
     setAnchorEl(event.currentTarget);
@@ -17,31 +22,50 @@ const IconSelector = () => {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
 
   return (
     <div
       style={{
-        margin: '50px',
         display: 'flex',
         flexDirection: 'row',
+        margin: '10px',
       }}
     >
-      <Button variant='contained' color='primary' onClick={handlePopover}>
+      <Input
+        style={{
+          width: '150px',
+        }}
+        placeholder='Icon Name'
+        value={iconName}
+        endAdornment={
+          <InputAdornment positon='end'>
+            <IconButton onClick={() => navigator.clipboard.writeText(iconName)}>
+              <FileCopyIcon fontSize='small' color='primary' />
+            </IconButton>
+          </InputAdornment>
+        }
+      />
+      <Button
+        style={{
+          marginLeft: '10px',
+        }}
+        variant='contained'
+        color='primary'
+        onClick={handlePopover}
+      >
         Select icon
       </Button>
       <Popover
-        id={id}
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'center',
+          horizontal: 'left',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'center',
+          horizontal: 'left',
         }}
       >
         <div
@@ -54,7 +78,7 @@ const IconSelector = () => {
             <Button
               key={index}
               onClick={() => {
-                dispatch(addIcon(Object.keys(icons)[index]));
+                setIconName(Object.keys(icons)[index]);
               }}
             >
               {item}
