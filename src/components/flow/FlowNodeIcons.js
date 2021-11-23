@@ -75,118 +75,24 @@ import {ImInsertTemplate} from "@react-icons/all-files/im/ImInsertTemplate";
 import {FaAws} from "@react-icons/all-files/fa/FaAws";
 import {AiOutlinePieChart} from "@react-icons/all-files/ai/AiOutlinePieChart";
 
-export default function FlowNodeIcons({icon, size=20}) {
-
-    const defaultIcon = <VscPlug size={size}/>
-    const icons = {
-        "store": <FiDatabase size={size}/>,
-        "json": <VscJson size={size}/>,
-        "split": <BiGitRepoForked size={size} style={{ transform: "rotateX(180deg)"}}/>,
-        "join": <BiGitRepoForked size={size} />,
-        "if": <BsDiamond size={size} />,
-        'event': <VscSymbolEvent size={size} />,
-        "copy": <VscCompareChanges size={size} />,
-        "debug": <VscDebugAlt2 size={size} />,
-        "property": <RiScissorsCutFill size={size} />,
-        "start": <VscDebugStart size={size} />,
-        'profile': <BsPerson size={size}/>,
-        "stop": <VscDebugStop size={size}/>,
-        'plugin': <VscPlug size={size}/>,
-        "copy-property": <AiOutlineSisternode size={size} />,
-        'location': <FiMapPin size={size} />,
-        'timer': <MdTimer size={size} />,
-        'clock': <BiTimeFive size={size}/>,
-        'sleep': <RiRestTimeLine size={size}/>,
-        'time-lapse': <MdTimelapse size={size}/>,
-        'time': <BiTime size={size}/>,
-        'wait': <AiOutlineFieldTime size={size}/>,
-        'x': <TiTimes size={size}/>,
-        'message-alert': <BiMessageRoundedError size={size}/>,
-        'message-ok': <BiMessageRoundedCheck size={size}/>,
-        'message-x': <BiMessageRoundedX size={size} />,
-        'alert': <FiAlertTriangle size={size}/>,
-        'alert-sound': <AiOutlineAlert size={size}/>,
-        'end': <FaRegDotCircle size={size}/>,
-        'attach': <IoIosAttach size={size}/>,
-        'plus-minus': <RiIncreaseDecreaseLine size={size} />,
-        'cloud': <IoCloudOutline size={size} />,
-        'weather': <BiCloudRain size={size} />,
-        'map-properties': <TiFlowSwitch size={size}/>,
-        'circut': <VscCircuitBoard size={size}/>,
-        'add': <VscAdd size={size}/>,
-        'remove': <VscTrash size={size}/>,
-        'plus': <VscAdd size={size}/>,
-        'minus': <VscRemove size={size}/>,
-        'arrow-up': <VscArrowUp size={size}/>,
-        'arrow-down': <VscArrowDown size={size}/>,
-        'merge': <VscGitMerge size={size}/>,
-        'segment': <VscOrganization size={size}/>,
-        'append': <MdLibraryAdd size={size}/>,
-        'browser': <GoBrowser size={size}/>,
-        'question': <VscQuestion size={size}/>,
-        'dark-light': <VscColorMode size={size}/>,
-        'zapier': <SiZapier size={size}/>,
-        'whatsapp': <AiOutlineWhatsApp size={size}/>,
-        "rabbitmq": <SiRabbitmq size={size}/>,
-        'mongo': <SiMongodb size={size}/>,
-        'email': <VscMail size={size}/>,
-        'mysql': <GrMysql size={size}/>,
-        'discord': <FaDiscord size={size}/>,
-        'slack': <AiOutlineSlack size={size}/>,
-        'facebook': <FaFacebookSquare size={size}/>,
-        'twitter': <VscTwitter size={size}/>,
-        'bar-chart': <BiBarChartAlt size={size}/>,
-        'redis': <SiRedis size={size}/>,
-        'globe': <VscGlobe size={size}/>,
-        'profiler': <IoIosTimer size={size}/>,
-        'error': <VscError size={size}/>,
-        'postgres': <SiPostgresql size={size}/>,
-        'today': <CgCalendarToday size={size}/>,
-        'fullcontact': <IoIosContact size={size}/>,
-        'paragraph': <BiParagraph size={size}/>,
-        "pushover": <IoPush size={size}/>,
-        'splitter':<AiOutlineSplitCells size={size}/>,
-        "language": <IoLanguageOutline size={size}/>,
-        "regex": <VscRegex size={size}/>,
-        "ok": <AiOutlineCheckCircle size={size}/>,
-        "uppercase": <IoTextOutline size={size}/>,
-        "url": <SiCurl size={size}/>,
-        "group-person": <BiGroup size={size}/>,
-        'replace': <VscReplace size={size}/>,
-        'template': <ImInsertTemplate size={size}/>,
-        'aws': <FaAws size={size}/>,
-        'pie-chart': <AiOutlinePieChart size={size}/>
-    }
-
-    const renderIcon = () => {
-        if (icon in icons) {
-            return icons[icon]
-        } else {
-            return defaultIcon
-        }
-    }
-
-    return renderIcon()
-}
-
-let size = 20
+const size = 20
 export const icons = {
     "store": <FiDatabase size={size}/>,
     "json": <VscJson size={size}/>,
-    "split": <BiGitRepoForked size={size} style={{ transform: "rotateX(180deg)"}}/>,
-    "join": <BiGitRepoForked size={size} />,
-    "if": <BsDiamond size={size} />,
-    'event': <VscSymbolEvent size={size} />,
-    "copy": <VscCompareChanges size={size} />,
-    "debug": <VscDebugAlt2 size={size} />,
-    "property": <RiScissorsCutFill size={size} />,
-    "start": <VscDebugStart size={size} />,
+    "split": <BiGitRepoForked size={size} style={{transform: "rotateX(180deg)"}}/>,
+    "join": <BiGitRepoForked size={size}/>,
+    "if": <BsDiamond size={size}/>,
+    'event': <VscSymbolEvent size={size}/>,
+    "copy": <VscCompareChanges size={size}/>,
+    "debug": <VscDebugAlt2 size={size}/>,
+    "property": <RiScissorsCutFill size={size}/>,
+    "start": <VscDebugStart size={size}/>,
     'profile': <BsPerson size={size}/>,
     "stop": <VscDebugStop size={size}/>,
     'plugin': <VscPlug size={size}/>,
-    "copy-property": <AiOutlineSisternode size={size} />,
-    'location': <FiMapPin size={size} />,
-    'timer': <MdTimer size={size} />,
+    "copy-property": <AiOutlineSisternode size={size}/>,
+    'location': <FiMapPin size={size}/>,
+    'timer': <MdTimer size={size}/>,
     'clock': <BiTimeFive size={size}/>,
     'sleep': <RiRestTimeLine size={size}/>,
     'time-lapse': <MdTimelapse size={size}/>,
@@ -195,14 +101,14 @@ export const icons = {
     'x': <TiTimes size={size}/>,
     'message-alert': <BiMessageRoundedError size={size}/>,
     'message-ok': <BiMessageRoundedCheck size={size}/>,
-    'message-x': <BiMessageRoundedX size={size} />,
+    'message-x': <BiMessageRoundedX size={size}/>,
     'alert': <FiAlertTriangle size={size}/>,
     'alert-sound': <AiOutlineAlert size={size}/>,
     'end': <FaRegDotCircle size={size}/>,
     'attach': <IoIosAttach size={size}/>,
-    'plus-minus': <RiIncreaseDecreaseLine size={size} />,
-    'cloud': <IoCloudOutline size={size} />,
-    'weather': <BiCloudRain size={size} />,
+    'plus-minus': <RiIncreaseDecreaseLine size={size}/>,
+    'cloud': <IoCloudOutline size={size}/>,
+    'weather': <BiCloudRain size={size}/>,
     'map-properties': <TiFlowSwitch size={size}/>,
     'circut': <VscCircuitBoard size={size}/>,
     'add': <VscAdd size={size}/>,
@@ -237,8 +143,32 @@ export const icons = {
     'fullcontact': <IoIosContact size={size}/>,
     'paragraph': <BiParagraph size={size}/>,
     "pushover": <IoPush size={size}/>,
-    'splitter':<AiOutlineSplitCells size={size}/>,
+    'splitter': <AiOutlineSplitCells size={size}/>,
     "language": <IoLanguageOutline size={size}/>,
     "regex": <VscRegex size={size}/>,
-    "ok": <AiOutlineCheckCircle size={size}/>
+    "ok": <AiOutlineCheckCircle size={size}/>,
+    "uppercase": <IoTextOutline size={size}/>,
+    "url": <SiCurl size={size}/>,
+    "group-person": <BiGroup size={size}/>,
+    'replace': <VscReplace size={size}/>,
+    'template': <ImInsertTemplate size={size}/>,
+    'aws': <FaAws size={size}/>,
+    'pie-chart': <AiOutlinePieChart size={size}/>
 }
+
+
+export default function FlowNodeIcons({icon, size = 20}) {
+
+    const defaultIcon = <VscPlug size={size}/>
+
+    const renderIcon = () => {
+        if (icon in icons) {
+            return icons[icon]
+        } else {
+            return defaultIcon
+        }
+    }
+
+    return renderIcon()
+}
+
