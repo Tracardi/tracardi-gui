@@ -63,8 +63,8 @@ const CopyTraitsForm = ({
                 <div style={{margin: "5px 0 15px 0", fontSize: "140%"}}>
                     Use this form to add operations.
                 </div>
+                <DottedPathInput label="Target" value={target} onChange={setTarget}/>
 
-                <DottedPathInput label="Source" value={source} onChange={setSource} defaultSourceValue={defaultSource}/>
                 <div
                     style={{
                         display: "flex",
@@ -87,7 +87,7 @@ const CopyTraitsForm = ({
                     </TextField>
                 </div>
                 <div className="Target">
-                    <DottedPathInput label="Target" value={target} onChange={setTarget}/>
+                    <DottedPathInput label="Source" value={source} onChange={setSource} defaultSourceValue={defaultSource}/>
                     <AiOutlinePlusCircle size={25} onClick={handleAdd} className="Button AddButton"/>
                 </div>
             </div>
