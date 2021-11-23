@@ -38,13 +38,8 @@ export default function CancelEdge({
 
     return (
         <>
-            <path
-                id={id}
-                style={style}
-                className="react-flow__edge-path"
-                d={edgePath}
-                markerEnd={markerEnd}
-            />
+            <path className="react-flow__edge-path-selector" d={edgePath} markerEnd={markerEnd} fillRule="evenodd" />
+            <path id={id} style={style} className="react-flow__edge-path" d={edgePath} markerEnd={markerEnd} fillRule="evenodd" />
             <foreignObject
                 width={foreignObjectSize}
                 height={foreignObjectSize}

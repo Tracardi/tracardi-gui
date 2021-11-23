@@ -22,6 +22,7 @@ import MemoNodeDetails from "./NodeDetails";
 import InfoEdge from "./edges/InfoEdge";
 import StopEdge from "./edges/StopEdge";
 import CancelEdge from "./edges/CancelEdge";
+import BoldEdge from "./edges/BoldEdge";
 
 export function FlowEditorPane(
     {
@@ -46,7 +47,8 @@ export function FlowEditorPane(
     const edgeTypes = {
         info: InfoEdge,
         stop: StopEdge,
-        cancel: CancelEdge
+        cancel: CancelEdge,
+        default: BoldEdge
     };
 
     const reactFlowWrapper = useRef(null);

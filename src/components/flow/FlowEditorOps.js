@@ -110,26 +110,16 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                                     element.label = null
                                     element.type="stop";
                                     element.animated = false;
-                                    element.style = {
-                                        stroke: '#aaa'
-                                    }
+                                    element.style = {...element.style, stroke: '#aaa', strokeWidth: 3}
                                 } else if (edge_info.active.includes(true) && !edge_info.active.includes(false)) {
                                     element.label = null
-                                    // element.label = edge_info.active.toString();
                                     element.animated = true
-                                    element.style = {};
+                                    element.style = {...element.style,  stroke: 'green', strokeWidth: 3};
                                     element.type="info";
-                                    element.style = {
-                                        stroke: 'green',
-                                        strokeWidth: 3
-                                    }
                                 } else {
                                     element.label = null
-                                    // element.label = edge_info.active.toString();
                                     element.animated = true
-                                    element.style = {
-                                        stroke: '#aaa'
-                                    }
+                                    element.style = {...element.style, stroke: '#aaa', strokeWidth: 3 }
                                     element.type=null;
                                 }
                             } else {
@@ -137,10 +127,10 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                                 element.label = null
                                 element.animated = false
                                 element.style = {
+                                    ...element.style,
                                     stroke: '#ddd',
                                     strokeWidth: 1
                                 };
-                                element.label = null
                                 element.type="cancel";
                             }
                         }

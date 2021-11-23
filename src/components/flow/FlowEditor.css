@@ -4,7 +4,7 @@
 }
 
 .FlowPane .react-flow .react-flow__edge-path {
-    stroke-width: 4;
+    stroke-width: 2;
 }
 
 .FlowPane .react-flow__edge-default .react-flow__edge-path {
@@ -16,6 +16,20 @@
 
 .FlowPane .react-flow__edge.react-flow__edge-default.selected {
 
+}
+
+.FlowPane .react-flow__edge-path-selector:hover { cursor: pointer }
+.FlowPane .react-flow__edge-path-selector:hover + .react-flow__edge-path, .react-flow__edge-path:hover  {
+    stroke: black;
+    cursor: pointer;
+}
+.FlowPane .react-flow__edge-path-selector {
+    fill: none;
+    stroke: transparent;
+    stroke-width: 28;
+    animation: unset !important;
+    stroke-dasharray: none !important;
+    -webkit-animation: unset !important;
 }
 
 .FlowEditor {
