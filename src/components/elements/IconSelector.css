@@ -1,0 +1,21 @@
+.IconList {
+    width: 300px;
+    max-height: 400px;
+    padding: 10px;
+    display: flex;
+    flex-flow: wrap;
+}
+
+.IconList > .Icon {
+    color: #444;
+    padding: 10px;
+    cursor: pointer;
+    display:grid;
+    align-self: center;
+}
+
+.IconList > .Icon:hover {
+    background-color: #004A98;
+    color: white;
+    border-radius: 4px;
+}
