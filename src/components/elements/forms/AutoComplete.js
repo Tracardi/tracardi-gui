@@ -7,14 +7,14 @@ import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
 
-const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoaded, onSetValue, solo, disabled}) => {
+const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoaded, onSetValue, onChange, solo, disabled}) => {
 
     if (typeof solo == "undefined") {
         solo = true
     }
 
     const [open, setOpen] = React.useState(false);
-    const [value, _setValue] = React.useState(initValue);
+    const [value, setValue] = React.useState(initValue);
     const [options, setOptions] = React.useState([]);
     const [progress, setProgress] = React.useState(false);
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
@@ -57,10 +57,16 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
 
     }
 
-    const handleChange = (value) => {
-        _setValue(value);
+    const handleValueSet = (value) => {
+        setValue(value);
         if (onSetValue) {
             onSetValue(value);
+        }
+    }
+
+    const handleChange = (value) => {
+        if (onChange) {
+            onChange(value);
         }
     }
 
@@ -86,8 +92,14 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
             value={value}
             disabled={disabled}
             onChange={(event, newValue) => {
-                setOptions(newValue ? [newValue, ...options] : options);
-                handleChange(newValue);
+                if(typeof newValue === "string") {
+                    newValue = {id: null, name: newValue}
+                }
+                console.log("onChange", newValue)
+                handleValueSet(newValue);
+            }}
+            onInputChange={(ev, value, reason)=>{
+                handleChange(value)
             }}
             renderInput={(params) => (
                 <TextField

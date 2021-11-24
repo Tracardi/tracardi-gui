@@ -3,9 +3,6 @@ import Chip from '@material-ui/core/Chip';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {makeStyles} from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import {request} from "../../../../remote_api/uql_api_endpoint";
-import {v4 as uuid4} from 'uuid';
-import { useConfirm} from 'material-ui-confirm';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
@@ -17,9 +14,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function TagTextForm({label, placeholder, defaultTags, tags, onChange, freeSolo=true, multiple=true}) {
+export default function TuiTagger({label, placeholder, defaultTags, tags, onChange, freeSolo=true, multiple=true}) {
     const classes = useStyles();
-    const confirm = useConfirm();
 
     if(!defaultTags) {
         defaultTags = []
@@ -30,26 +26,8 @@ export default function TagTextForm({label, placeholder, defaultTags, tags, onCh
     }
 
     const handleChange = (ev, value, reason) => {
-        if (reason === 'create-option') {
-            confirm({ title:"Tag does not exist!", description: 'Do you want it to be created?' })
-                .then(() => {
-                    request({
-                            url: '/project',
-                            method: "post",
-                            data: {
-                                id: uuid4(),
-                                name: value[value.length - 1]
-                            }
-                        },
-                        () => {},
-                        () => {},
-                        () => {}
-                    )
-                })
-                .catch(() => {});
-        }
         if(onChange) {
-            onChange(value)
+            onChange(value, reason)
         }
     }
 
@@ -77,7 +55,7 @@ export default function TagTextForm({label, placeholder, defaultTags, tags, onCh
     );
 }
 
-TagTextForm.propTypes = {
+TuiTagger.propTypes = {
     label: PropTypes.string,
     placeholder: PropTypes.string,
     onChange: PropTypes.func,

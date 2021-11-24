@@ -1,6 +1,5 @@
 import React, {useRef, useState} from "react";
 import TextField from "@material-ui/core/TextField";
-import AutoComplete from "./AutoComplete";
 import Button from "./Button";
 import "./JsonForm.css";
 import JsonEditor from "../editors/JsonEditor";
@@ -18,6 +17,7 @@ import HtmlEditor from "../editors/HtmlEditor";
 import SqlEditor from "../editors/SqlEditor";
 import KeyValueForm from "./KeyValueForm";
 import CopyTraitsForm from "./CopyTraitsForm";
+import TuiSelectResource from "../tui/TuiSelectResource";
 
 
 const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
@@ -264,7 +264,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                     confirmed={submitConfirmed}
                     error={submitError}
                     label="Save"
-                    style={{marginLeft: 15}}
+                    style={{justifyContent: "center"}}
             />
         </>
     }
@@ -695,35 +695,15 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
             onChange(value);
         };
 
-        const Error = () => {
+
+        const error = () => {
             if (id in errors) {
-                return <ErrorLine>{errors[id]}</ErrorLine>
+                return errors[id]
             }
             return ""
         }
 
-        return <>
-            <AutoComplete disabled={false}
-                          solo={false}
-                          placeholder={placeholder}
-                          url="/resources"
-                          initValue={value}
-                          onSetValue={handleChange}
-                          onDataLoaded={
-                              (result) => {
-                                  if (result) {
-                                      let sources = [{id: "", name: ""}]
-                                      for (const source of result?.data?.result) {
-                                          if (typeof source.name !== "undefined" && typeof source.id !== "undefined") {
-                                              sources.push({name: source.name, id: source.id})
-                                          }
-                                      }
-                                      return sources
-                                  }
-                              }
-                          }/>
-            <Error/>
-        </>
+        return <TuiSelectResource value={value} onSetValue={handleChange} errorMessage={error()}/>
     }
 }
 

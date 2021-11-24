@@ -12,10 +12,10 @@ import Switch from "@material-ui/core/Switch";
 import {v4 as uuid4} from "uuid";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import {remote} from "../../../remote_api/entrypoint";
-import AutoComplete from "./AutoComplete";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from 'prop-types';
+import TuiSelectEventType from "../tui/TuiSelectEventType";
 
 function SegmentForm({onSubmit, init, showAlert}) {
 
@@ -126,13 +126,7 @@ function SegmentForm({onSubmit, init, showAlert}) {
                 <FormDescription>Bind this segment event type. You can select None then segment will be checked at every
                     event.
                     against all events.</FormDescription>
-                <AutoComplete
-                    disabled={false}
-                    placeholder="Event type"
-                    url="/events/metadata/type"
-                    initValue={{name:type, id:type}}
-                    onSetValue={setType}
-                />
+                <TuiSelectEventType value={{name:type, id:type}} onSetValue={setType}/>
 
                 <FormSubHeader>Condition</FormSubHeader>
                 <FormDescription>Segments are created after the event is processed.

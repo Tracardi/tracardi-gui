@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import AutoComplete from "./AutoComplete";
 import Button from "./Button";
 import TextField from "@material-ui/core/TextField";
 import {v4 as uuid4} from 'uuid';
@@ -11,6 +10,9 @@ import Rows from "../misc/Rows";
 import Form from "../misc/Form";
 import FormHeader from "../misc/FormHeader";
 import PropTypes from 'prop-types';
+import TuiSelectResource from "../tui/TuiSelectResource";
+import TuiSelectFlow from "../tui/TuiSelectFlow";
+import TuiSelectEventType from "../tui/TuiSelectEventType";
 
 export default function RuleForm({onSubmit, init}) {
 
@@ -30,10 +32,11 @@ export default function RuleForm({onSubmit, init}) {
     const [type, _setType] = useState(init.event);
     const [name, setName] = useState(init.name);
     const [description, setDescription] = useState(init.description);
-    const [source, _setSource] = useState(init.source);
+    const [source, setSource] = useState(init.source);
     const [nameErrorMessage, setNameErrorMessage] = useState("");
     const [typeErrorMessage, setTypeErrorMessage] = useState("");
     const [flowErrorMessage, setFlowErrorMessage] = useState("");
+    const [sourceErrorMessage, setSourceErrorMessage] = useState("");
     const [sourceDisabled, setSourceDisabled] = useState(init.sourceDisabled);
 
     const setType = (value) => {
@@ -45,26 +48,39 @@ export default function RuleForm({onSubmit, init}) {
         }
     }
 
-    const setSource = (value) => {
-        _setSource(value);
+    const handleSourceSet = (value) => {
+        console.log('set-source', value)
+        setSource(value);
+    }
+
+    const handleFlowChange = (value) => {
+        console.log(value)
+        setFlow(value)
     }
 
     const _onSubmit = () => {
 
-        if (!flow || !type || !name) {
+        if (!flow || !type || !name || !source || source?.id === "" || flow?.id === '' || type?.name === '') {
+
+            if (source === null || source?.id === "") {
+                setSourceErrorMessage("Resource can not be empty");
+            } else {
+                setSourceErrorMessage("")
+            }
+
             if (!name || name.length === 0) {
                 setNameErrorMessage("Rule name can not be empty");
             } else {
                 setNameErrorMessage("");
             }
 
-            if (!type || type.length === 0) {
+            if (!type || type.length === 0 || type?.name === '') {
                 setTypeErrorMessage("Event type can not be empty");
             } else {
                 setTypeErrorMessage("");
             }
 
-            if (!flow || flow.length === 0) {
+            if (!flow || flow.length === 0 || flow?.id === '') {
                 setFlowErrorMessage("Flow name can not be empty");
             } else {
                 setFlowErrorMessage("");
@@ -94,60 +110,18 @@ export default function RuleForm({onSubmit, init}) {
 
                 <FormSubHeader>Event type</FormSubHeader>
                 <FormDescription>Type event type to filter incoming events.</FormDescription>
-                <AutoComplete
-                    disabled={false}
-                    error={typeErrorMessage}
-                    placeholder="Event type"
-                    url="/events/metadata/type"
-                    initValue={type}
-                    onSetValue={setType}
-                />
-                <FormSubHeader>Resource <sup style={{fontSize: "70%"}}>* optional</sup></FormSubHeader>
-                <FormDescription>Type event resource or leave it blank if this trigger refers to all available event sources.
-                    Resource can be set only if event type is set. </FormDescription>
-                <AutoComplete disabled={sourceDisabled}
-                              solo={false}
-                              placeholder="Resource"
-                              url="/resources"
-                              initValue={source}
-                              onSetValue={setSource}
-                              onDataLoaded={
-                                  (result) => {
-                                      if (result) {
-                                          let sources = []
-                                          for (const source of result?.data?.result) {
-                                              if (typeof source.name !== "undefined" && typeof source.id !== "undefined") {
-                                                  sources.push({name: source.name, id: source.id})
-                                              }
-                                          }
-                                          return sources
-                                      }
-                                  }
-                              }/>
+                <TuiSelectEventType value={type} errorMessage={typeErrorMessage} onSetValue={setType}/>
+
+                <FormSubHeader>Resource</FormSubHeader>
+                <FormDescription>Select event resource. Event without selected resource will be
+                    discarded.</FormDescription>
+                <TuiSelectResource value={source} disabled={sourceDisabled} onSetValue={handleSourceSet}
+                                   errorMessage={sourceErrorMessage}/>
 
                 <FormSubHeader>Flow name</FormSubHeader>
-                <FormDescription>Select existing flow name or type new flow name. New flow will be automatically created.</FormDescription>
+                <FormDescription>Select existing flow. If there is none create it on Flow page.</FormDescription>
                 <div className="SearchInput">
-                    <AutoComplete
-                        disabled={false}
-                        placeholder="Flow name"
-                        url="/flows"
-                        error={flowErrorMessage}
-                        initValue={flow}
-                        onSetValue={setFlow}
-                        onDataLoaded={
-                            (result) => {
-                                if (result) {
-                                    let flows = []
-                                    for (const flow of result?.data?.result) {
-                                        if (typeof flow.name !== "undefined" && typeof flow.id !== "undefined") {
-                                            flows.push({name: flow.name, id: flow.id})
-                                        }
-                                    }
-                                    return flows
-                                }
-                            }
-                        }/>
+                    <TuiSelectFlow value={flow} errorMessage={flowErrorMessage} onSetValue={handleFlowChange}/>
                 </div>
             </ElevatedBox>
 
@@ -159,7 +133,7 @@ export default function RuleForm({onSubmit, init}) {
                 </FormDescription>
                 <TextField
                     label={"Rule name"}
-                    error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null )}
+                    error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null)}
                     helperText={nameErrorMessage}
                     value={name}
                     onChange={(ev) => {

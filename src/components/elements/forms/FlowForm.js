@@ -11,7 +11,7 @@ import FormSubHeader from "../misc/FormSubHeader";
 import FormDescription from "../misc/FormDescription";
 import FormHeader from "../misc/FormHeader";
 import Rows from "../misc/Rows";
-import TagTextFieldForProjects from "./inputs/TagTextFieldForProjects";
+import TuiTaggerFlow from "../tui/TuiTaggerFlow";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from 'prop-types';
@@ -151,9 +151,7 @@ function FlowForm({
             />
 
             <FormDescription>Tag the flow with project name to group it into meaningful groups.</FormDescription>
-            <TagTextFieldForProjects
-                initTags={projects}
-                onChange={onTagChange}/>
+            <TuiTaggerFlow tags={projects} onChange={onTagChange}/>
         </ElevatedBox>
 
         <Rows style={{marginLeft: 20}}>

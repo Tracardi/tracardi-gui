@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {v4 as uuid4} from "uuid";
-import ResourceSelect from "../elements/forms/ResourceSelect";
+import TuiSelectResource from "../elements/tui/TuiSelectResource";
 import Input from "../elements/forms/inputs/Input";
 import JsonEditor from "../elements/editors/JsonEditor";
 import Button from "../elements/forms/Button";
@@ -11,12 +11,13 @@ export const RequestForm = ({onError, onRequest}) => {
 
     const [resource, setResource] = useState(null);
     const [session, setSession] = useState(uuid4());
-    const [profile, setProfile] = useState(null);
+    const [profile, setProfile] = useState("");
     const [eventType, setEventType] = useState('page-view');
     const [properties, setProperties] = useState(JSON.stringify({}));
     const [context, setContext] = useState(JSON.stringify({}));
     const [profileFlag, setProfileFlag] = useState(true);
     const [progress, setProgress] = useState(false);
+    const [debug, setDebug] = useState(false);
 
     const handleSubmit = async () => {
         setProgress(true);
@@ -38,7 +39,8 @@ export const RequestForm = ({onError, onRequest}) => {
                     }
                 ],
                 options: {
-                    profile: profileFlag
+                    profile: profileFlag,
+                    debugger: debug
                 }
             }
 
@@ -54,10 +56,6 @@ export const RequestForm = ({onError, onRequest}) => {
             setProgress(false)
         }
 
-    }
-
-    const handleProfileFlag = (value) => {
-        setProfileFlag(value);
     }
 
     return <form className="JsonForm RequestForm">
@@ -106,13 +104,14 @@ export const RequestForm = ({onError, onRequest}) => {
                 </div>
 
                 <h3>Options</h3>
-                <BoolInput label="Return profile data" value={profileFlag} onChange={handleProfileFlag}/>
+                <BoolInput label="Return profile data" value={profileFlag} onChange={setProfileFlag}/>
+                <BoolInput label="Return debugger data" value={debug} onChange={setDebug}/>
 
                 <h3>Context</h3>
                 <p>Context is the additional data describing event context.</p>
                 <fieldset>
                     <legend>Context</legend>
-                    <JsonEditor value={context} onChange={setContext} height={120}/>
+                    <JsonEditor value={context} onChange={setContext} height="120px"/>
                 </fieldset>
             </section>
         </div>
@@ -127,9 +126,9 @@ export const RequestForm = ({onError, onRequest}) => {
                 <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
                     <div  style={{flexBasis: 320}}>
                         <h3>Source</h3>
-                        <ResourceSelect
+                        <TuiSelectResource
                             value={resource}
-                            onChange={setResource}
+                            onSetValue={setResource}
                         />
                     </div>
                     <div  style={{flexBasis: 320}}>
@@ -148,7 +147,7 @@ export const RequestForm = ({onError, onRequest}) => {
                 <p>Event properties is the data data is sent to Tracardi for further processing.</p>
                 <fieldset>
                     <legend>Properties</legend>
-                    <JsonEditor value={properties} onChange={setProperties} height={200}/>
+                    <JsonEditor value={properties} onChange={setProperties} height="200px"/>
                 </fieldset>
             </section>
 

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import AutoComplete from "./AutoComplete";
 import Button from "./Button";
 import TextField from "@material-ui/core/TextField";
 import Switch from "@material-ui/core/Switch";
@@ -16,6 +15,7 @@ import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from 'prop-types';
+import TuiSelectResourceType from "../tui/TuiSelectResourceType";
 
 
 function ResourceForm({init, onClose, showAlert}) {
@@ -140,15 +140,7 @@ function ResourceForm({init, onClose, showAlert}) {
             <ElevatedBox className="Elevate">
                 <FormSubHeader>Resource type</FormSubHeader>
                 <FormDescription>Resource type defines soft of storage or endpoint. </FormDescription>
-                <AutoComplete
-                    solo={true}
-                    disabled={false}
-                    error={errorTypeMessage}
-                    placeholder="Resource type"
-                    url="/resources/type/name"
-                    initValue={type}
-                    onSetValue={setTypeAndDefineCredentialsTemplate}
-                />
+                <TuiSelectResourceType value={type} onSetValue={setTypeAndDefineCredentialsTemplate} errorMessage={errorTypeMessage}/>
 
                 <FormSubHeader>Name</FormSubHeader>
                 <FormDescription>Resource name can be any string that
