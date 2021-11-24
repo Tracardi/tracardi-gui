@@ -30,7 +30,7 @@ export default function Input({onEnterPressed, onChange, label, initValue, error
     };
 
     return <div className={classes.root}>
-        <TextField id="search-input" label={label}
+        <TextField label={label}
                    value={searchValue}
                    onChange={handleNameChange}
                    onKeyPressCapture={handleKeyPress}

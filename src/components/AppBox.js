@@ -20,6 +20,7 @@ import Instances from "./pages/Instances";
 import Settings from "./pages/Settings";
 import Tasks from "./pages/Tasks";
 import TryOut from "./pages/TryOut";
+import TestEditor from "./pages/TestEditor";
 
 const AppBox = () => {
 
@@ -92,6 +93,9 @@ const AppBox = () => {
             </PrivateRoute>
             <Route exact path={urlPrefix("/tryout")}>
                 <TryOut/>
+            </Route>
+            <Route exact path={urlPrefix("/editor/test")}>
+                <TestEditor/>
             </Route>
         </div>
 
