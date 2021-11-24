@@ -1,14 +1,18 @@
 .TestEditor {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: .45fr .55fr;
     height: 100%;
 }
 
 .TestEditor .LeftColumn {
     overflow-y: auto;
+    padding: 10px 5px 10px 10px;
+    height: inherit;
 }
 
 
 .TestEditor .RightColumn {
     overflow-y: auto;
+    height: inherit;
+    padding: 10px 10px 10px 5px;
 }

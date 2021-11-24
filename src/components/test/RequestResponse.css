@@ -1,0 +1,11 @@
+.RequestResponse {
+    display: grid;
+    grid-template-rows: 370px calc(100% - 390px);
+    grid-row-gap: 10px;
+    height: 100%;
+}
+
+.RequestResponse .RequestResponseGroup {
+    display: grid;
+    grid-template-rows: auto 1fr;
+}

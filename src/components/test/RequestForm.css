@@ -1,0 +1,11 @@
+.RequestForm {
+    display: grid;
+    grid-template-rows: calc(60% - 90px) 40% 50px;
+    grid-row-gap: 10px;
+    height: 100%;
+}
+
+.RequestForm .RequestFormGroup {
+    display: grid;
+    grid-template-rows: auto 1fr;
+}

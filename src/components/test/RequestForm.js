@@ -5,6 +5,7 @@ import ResourceSelect from "../elements/forms/ResourceSelect";
 import Input from "../elements/forms/inputs/Input";
 import JsonEditor from "../elements/editors/JsonEditor";
 import Button from "../elements/forms/Button";
+import "./RequestForm.css";
 
 export const RequestForm = ({onResponse, onRequest}) => {
 
@@ -64,52 +65,97 @@ export const RequestForm = ({onResponse, onRequest}) => {
 
     }
 
-    return <form className="JsonForm">
-        <div className="JsonFromGroup">
+    return <form className="JsonForm RequestForm">
+        <div className="JsonFromGroup RequestFormGroup">
             <div className="JsonFromGroupHeader">
                 <h2>Payload settings</h2>
+                <p>Inside payload setting you need to define resource, session, and profile. Profile is optional an will
+                    be created if nothing is passed.</p>
             </div>
-            <section>
-                <h3>Input Resource </h3>
-                <ResourceSelect
-                    value={resource}
-                    onChange={setResource}
-                />
-                <h3>Session</h3>
-                <Input label="Session"
-                       initValue={session}
-                       variant="outlined"
-                       onChange={(e) => setSession(e.target.value)}
-                />
-                <h3>Profile</h3>
-                <Input label="Profile"
-                       initValue={profile}
-                       variant="outlined"
-                       onChange={(e) => setProfile(e.target.value)}
-                />
+            <section style={{overflowY: "auto"}}>
+                <div style={{display: "flex", gap: 20, flexWrap: "wrap"}}>
+                    <div style={{flexBasis: 320}}>
+                        <div style={{display: "flex", gap: 10, flexDirection: "column"}}>
+                            <div>
+                                <h3>Session</h3>
+                                <p style={{height: 60, textOverflow: "ellipsis", overflow: "hidden"}}>If you know
+                                    profile id leave session empty, then Tracardi will create new session for given
+                                    profile.</p>
+                            </div>
+                            <div>
+                                <Input label="Session"
+                                       initValue={session}
+                                       variant="outlined"
+                                       onChange={(e) => setSession(e.target.value)}/>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div style={{flexBasis: 320}}>
+                        <div style={{display: "flex", gap: 10, flexDirection: "column"}}>
+                                <div>
+                                    <h3>Profile</h3>
+                                    <p style={{height: 60, textOverflow: "ellipsis", overflow: "hidden"}}>Profile must
+                                        match session, if you do now know profile id leave it empty, then new profile will
+                                        be created for given session.</p>
+                                </div>
+                                <div>
+                                    <Input label="Profile"
+                                           initValue={profile}
+                                           variant="outlined"
+                                           onChange={(e) => setProfile(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                    </div>
+                </div>
                 <h3>Context</h3>
-                <p>EContext is the additional data describing event context.</p>
-                <JsonEditor value={context} onChange={setContext} height={200}/>
+                <p>Context is the additional data describing event context.</p>
+                <fieldset>
+                    <legend>Context</legend>
+                    <JsonEditor value={context} onChange={setContext} height={120}/>
+                </fieldset>
             </section>
         </div>
-        <div className="JsonFromGroup">
+        <div className="JsonFromGroup RequestFormGroup">
             <div className="JsonFromGroupHeader">
-                <h2>Payload settings</h2>
+                <h2>Event settings</h2>
+                <p>Inside event setting you need to define an event type and it properties. This data will be sent to
+                    Tracardi. </p>
             </div>
-            <section>
-                <h3>Event type</h3>
-                <Input label="Event type"
-                       initValue={eventType}
-                       style={{width: "100%"}}
-                       variant="outlined"
-                       onChange={(e) => setEventType(e.target.value)}
-                />
+
+            <section style={{overflowY: "auto"}}>
+                <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
+                    <div  style={{flexBasis: 320}}>
+                        <h3>Source</h3>
+                        <ResourceSelect
+                            value={resource}
+                            onChange={setResource}
+                        />
+                    </div>
+                    <div  style={{flexBasis: 320}}>
+                        <h3>Event type</h3>
+                        <Input label="Event type"
+                               initValue={eventType}
+                               style={{width: "100%"}}
+                               variant="outlined"
+                               onChange={(e) => setEventType(e.target.value)}
+                        />
+                    </div>
+
+                </div>
+
                 <h3>Event properties</h3>
                 <p>Event properties is the data data is sent to Tracardi for further processing.</p>
-                <JsonEditor value={properties} onChange={setProperties}/>
+                <fieldset>
+                    <legend>Properties</legend>
+                    <JsonEditor value={properties} onChange={setProperties} height={200}/>
+                </fieldset>
             </section>
-        </div>
 
-        <Button label="Sumbit" onClick={handleSubmit}/>
+        </div>
+        <div>
+            <Button label="Sumbit" onClick={handleSubmit}/>
+        </div>
     </form>
 }
