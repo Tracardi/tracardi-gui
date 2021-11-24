@@ -40,11 +40,11 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: linear-gradient(45deg, #1565c0 30%, #03a9f4  90%);
+    background: white;
     position: absolute;
-    padding: 20px;
+    padding: 40px;
     border-radius: 10px;
-    color: white;
+    color: #444;
     -webkit-box-shadow: 0px 0px 11px 0px rgba(0,0,0,0.5);
     -moz-box-shadow: 0px 0px 11px 0px rgba(0,0,0,0.5);
     box-shadow: 0px 0px 11px 0px rgba(0,0,0,0.5);

@@ -12,6 +12,7 @@ function Settings({showAlert}) {
     const [setting, setSettings] =useState([false]);
 
     useEffect(()=>{
+        setLoading(true);
         request({
                 method: "get",
                 url: "/settings"

@@ -1,13 +1,13 @@
 import React, {useState} from "react";
 import {v4 as uuid4} from "uuid";
-import {remote} from "../../remote_api/entrypoint";
 import ResourceSelect from "../elements/forms/ResourceSelect";
 import Input from "../elements/forms/inputs/Input";
 import JsonEditor from "../elements/editors/JsonEditor";
 import Button from "../elements/forms/Button";
 import "./RequestForm.css";
+import BoolInput from "../elements/forms/BoolInput";
 
-export const RequestForm = ({onResponse, onRequest}) => {
+export const RequestForm = ({onError, onRequest}) => {
 
     const [resource, setResource] = useState(null);
     const [session, setSession] = useState(uuid4());
@@ -16,10 +16,16 @@ export const RequestForm = ({onResponse, onRequest}) => {
     const [properties, setProperties] = useState(JSON.stringify({}));
     const [context, setContext] = useState(JSON.stringify({}));
     const [profileFlag, setProfileFlag] = useState(true);
+    const [progress, setProgress] = useState(false);
 
     const handleSubmit = async () => {
-
+        setProgress(true);
         try {
+
+            if(resource===null) {
+                throw new Error("Missing resource.");
+            }
+
             const props = JSON.parse(properties);
             const ctx = JSON.parse(context);
             let requestBody = {
@@ -40,29 +46,18 @@ export const RequestForm = ({onResponse, onRequest}) => {
                 requestBody = {...requestBody, profile: {id: profile}}
             }
 
-            onRequest(requestBody);
-
-            try {
-                const resp = await remote({
-                        url: '/track',
-                        method: 'post',
-                        data: requestBody
-                    }
-                );
-                if (resp) {
-                    onResponse(resp.data)
-                    console.log(resp)
-                }
-            } catch (e) {
-                console.log(e)
-                onResponse({})
-            }
+            await onRequest(requestBody);
 
         } catch (e) {
-            onResponse({})
+            onError(e)
+        } finally {
+            setProgress(false)
         }
 
+    }
 
+    const handleProfileFlag = (value) => {
+        setProfileFlag(value);
     }
 
     return <form className="JsonForm RequestForm">
@@ -109,6 +104,10 @@ export const RequestForm = ({onResponse, onRequest}) => {
                             </div>
                     </div>
                 </div>
+
+                <h3>Options</h3>
+                <BoolInput label="Return profile data" value={profileFlag} onChange={handleProfileFlag}/>
+
                 <h3>Context</h3>
                 <p>Context is the additional data describing event context.</p>
                 <fieldset>
@@ -155,7 +154,7 @@ export const RequestForm = ({onResponse, onRequest}) => {
 
         </div>
         <div>
-            <Button label="Sumbit" onClick={handleSubmit}/>
+            <Button label="Submit" onClick={handleSubmit} progress={progress} disabled={progress} style={{justifyContent: "center"}}/>
         </div>
     </form>
 }

@@ -19,6 +19,8 @@ import Modal from "@material-ui/core/Modal";
 import SocialButton from "./elements/misc/SocialButton";
 import {Facebook, Twitter, YouTube} from "@material-ui/icons";
 import {VscBook} from "@react-icons/all-files/vsc/VscBook";
+import {VscDebugConsole} from "@react-icons/all-files/vsc/VscDebugConsole";
+
 
 export default function MainContent({children, style}) {
 
@@ -95,10 +97,12 @@ export default function MainContent({children, style}) {
                         <MenuItem onClick={go("/settings")}>
                             <VscSettingsGear size={20} style={{marginRight: 8}}/>Settings
                         </MenuItem>
+                        <MenuItem onClick={go("/editor/test")}>
+                            <VscDebugConsole size={20} style={{marginRight: 8}}/>Test console
+                        </MenuItem>
                         <MenuItem onClick={external(`${window._env_.API_URL}/manual/en/site`, true)}>
                             <VscBook size={20} style={{marginRight: 8}}/>Manual
                         </MenuItem>
-                        e
                         <MenuItem onClick={() => setOpenAbout(true)}>
                             <VscInfo size={20} style={{marginRight: 8}}/>About
                         </MenuItem>

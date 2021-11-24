@@ -1,4 +1,4 @@
-BUTTON.Button {
+ SPAN.Button {
     display: flex;
     align-items: center;
     padding: 9px 15px;
@@ -15,31 +15,31 @@ BUTTON.Button {
     -ms-user-select: none;
 }
 
-BUTTON.EnabledButton {
+ SPAN.EnabledButton {
     border: solid 2px #006db3;
     color: #006db3;
 }
 
-BUTTON.DisabledButton {
+ SPAN.DisabledButton {
     border: solid 2px #888;
     color: #888;
 }
-BUTTON.ConfirmedButton {
+ SPAN.ConfirmedButton {
     border: solid 2px #43a047;
     background-color: #43a047;
     color: whitesmoke;
 }
-BUTTON.ErrorButton {
+ SPAN.ErrorButton {
     border: solid 2px #d81b60;
     background-color: #d81b60;
     color: whitesmoke;
 }
-BUTTON.ButtonSelected {
+ SPAN.ButtonSelected {
     background-color: #006db3;
     color: white;
 }
 
-BUTTON.EnabledButton:hover {
+ SPAN.EnabledButton:hover {
     background-color: #006db3;
     color: white;
     -webkit-box-shadow: 0 0 8px -1px rgba(0,0,0,0.75);

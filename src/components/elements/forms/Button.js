@@ -45,9 +45,9 @@ export default function Button({label, onClick, className, style, icon, disabled
         </>
     }
 
-    return <button onClickCapture={onButtonClick} className={visuals} style={style}>
+    return <span onClickCapture={onButtonClick} className={visuals} style={style}>
         <RenderContent processing={progress}/>
-    </button>
+    </span>
 }
 
 Button.propTypes = {label: PropTypes.string, onClick: PropTypes.func, className: PropTypes.object, style: PropTypes.object, icon: PropTypes.element, disabled: PropTypes.bool, selected: PropTypes.bool, progress: PropTypes.bool}
