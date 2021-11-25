@@ -4,8 +4,3 @@
     grid-row-gap: 10px;
     height: 100%;
 }
-
-.RequestResponse .RequestResponseGroup {
-    display: grid;
-    grid-template-rows: auto 1fr;
-}

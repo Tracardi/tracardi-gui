@@ -6,6 +6,9 @@ import JsonEditor from "../elements/editors/JsonEditor";
 import Button from "../elements/forms/Button";
 import "./RequestForm.css";
 import BoolInput from "../elements/forms/BoolInput";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
+import TuiColumnsFlex from "../elements/tui/TuiColumnsFlex";
+import TuiTopHeaderWrapper from "../elements/tui/TuiTopHeaderWrapper";
 
 export const RequestForm = ({onError, onRequest}) => {
 
@@ -23,7 +26,7 @@ export const RequestForm = ({onError, onRequest}) => {
         setProgress(true);
         try {
 
-            if(resource===null) {
+            if (resource === null) {
                 throw new Error("Missing resource.");
             }
 
@@ -58,50 +61,31 @@ export const RequestForm = ({onError, onRequest}) => {
 
     }
 
-    return <form className="JsonForm RequestForm">
-        <div className="JsonFromGroup RequestFormGroup">
-            <div className="JsonFromGroupHeader">
-                <h2>Payload settings</h2>
-                <p>Inside payload setting you need to define resource, session, and profile. Profile is optional an will
-                    be created if nothing is passed.</p>
-            </div>
-            <section style={{overflowY: "auto"}}>
-                <div style={{display: "flex", gap: 20, flexWrap: "wrap"}}>
-                    <div style={{flexBasis: 320}}>
-                        <div style={{display: "flex", gap: 10, flexDirection: "column"}}>
-                            <div>
-                                <h3>Session</h3>
-                                <p style={{height: 60, textOverflow: "ellipsis", overflow: "hidden"}}>If you know
-                                    profile id leave session empty, then Tracardi will create new session for given
-                                    profile.</p>
-                            </div>
-                            <div>
-                                <Input label="Session"
-                                       initValue={session}
-                                       variant="outlined"
-                                       onChange={(e) => setSession(e.target.value)}/>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div style={{flexBasis: 320}}>
-                        <div style={{display: "flex", gap: 10, flexDirection: "column"}}>
-                                <div>
-                                    <h3>Profile</h3>
-                                    <p style={{height: 60, textOverflow: "ellipsis", overflow: "hidden"}}>Profile must
-                                        match session, if you do now know profile id leave it empty, then new profile will
-                                        be created for given session.</p>
-                                </div>
-                                <div>
-                                    <Input label="Profile"
-                                           initValue={profile}
-                                           variant="outlined"
-                                           onChange={(e) => setProfile(e.target.value)}
-                                    />
-                                </div>
-                            </div>
-                    </div>
-                </div>
+    return <TuiForm className="RequestForm">
+        <TuiFormGroup>
+            <TuiFormGroupHeader
+                header="Payload settings"
+                description="Inside payload setting you need to define resource, session, and profile. Profile is optional an will
+                    be created if nothing is passed."
+            />
+            <TuiFormGroupContent>
+                <TuiColumnsFlex width={320}>
+                    <TuiTopHeaderWrapper header="Session"
+                                         description="If you know profile id leave session empty, then Tracardi will create new session for given profile.">
+                        <Input label="Session"
+                               initValue={session}
+                               variant="outlined"
+                               onChange={(e) => setSession(e.target.value)}/>
+                    </TuiTopHeaderWrapper>
+                    <TuiTopHeaderWrapper header="Profile"
+                                         description="Profile must match session, if you do now know profile id leave it empty, then new profile will be created for given session.">
+                        <Input label="Profile"
+                               initValue={profile}
+                               variant="outlined"
+                               onChange={(e) => setProfile(e.target.value)}
+                        />
+                    </TuiTopHeaderWrapper>
+                </TuiColumnsFlex>
 
                 <h3>Options</h3>
                 <BoolInput label="Return profile data" value={profileFlag} onChange={setProfileFlag}/>
@@ -113,35 +97,31 @@ export const RequestForm = ({onError, onRequest}) => {
                     <legend>Context</legend>
                     <JsonEditor value={context} onChange={setContext} height="120px"/>
                 </fieldset>
-            </section>
-        </div>
-        <div className="JsonFromGroup RequestFormGroup">
-            <div className="JsonFromGroupHeader">
-                <h2>Event settings</h2>
-                <p>Inside event setting you need to define an event type and it properties. This data will be sent to
-                    Tracardi. </p>
-            </div>
-
-            <section style={{overflowY: "auto"}}>
-                <div style={{display: "flex", gap: 10, flexWrap: "wrap"}}>
-                    <div  style={{flexBasis: 320}}>
-                        <h3>Source</h3>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <TuiFormGroup>
+            <TuiFormGroupHeader
+                header="Event settings"
+                description="Inside event setting you need to define an event type and it properties. This data will be sent to
+                    Tracardi."
+            />
+            <TuiFormGroupContent>
+                <TuiColumnsFlex width={320}>
+                    <TuiTopHeaderWrapper header="Source">
                         <TuiSelectResource
                             value={resource}
                             onSetValue={setResource}
                         />
-                    </div>
-                    <div  style={{flexBasis: 320}}>
-                        <h3>Event type</h3>
+                    </TuiTopHeaderWrapper>
+                    <TuiTopHeaderWrapper header="Event type">
                         <Input label="Event type"
                                initValue={eventType}
                                style={{width: "100%"}}
                                variant="outlined"
                                onChange={(e) => setEventType(e.target.value)}
                         />
-                    </div>
-
-                </div>
+                    </TuiTopHeaderWrapper>
+                </TuiColumnsFlex>
 
                 <h3>Event properties</h3>
                 <p>Event properties is the data data is sent to Tracardi for further processing.</p>
@@ -149,11 +129,11 @@ export const RequestForm = ({onError, onRequest}) => {
                     <legend>Properties</legend>
                     <JsonEditor value={properties} onChange={setProperties} height="200px"/>
                 </fieldset>
-            </section>
-
-        </div>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
         <div>
-            <Button label="Submit" onClick={handleSubmit} progress={progress} disabled={progress} style={{justifyContent: "center"}}/>
+            <Button label="Submit" onClick={handleSubmit} progress={progress} disabled={progress}
+                    style={{justifyContent: "center"}}/>
         </div>
-    </form>
+    </TuiForm>
 }
