@@ -18,7 +18,7 @@ import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import DebugDetails from "./DebugDetails";
 import LogsList from "./LogsList";
-import MemoNodeDetails from "./NodeDetails";
+import {NodeDetails} from "./NodeDetails";
 import InfoEdge from "./edges/InfoEdge";
 import StopEdge from "./edges/StopEdge";
 import CancelEdge from "./edges/CancelEdge";
@@ -27,7 +27,6 @@ import BoldEdge from "./edges/BoldEdge";
 export function FlowEditorPane(
     {
         id,
-        title,
         reactFlowInstance = null,
         onFlowLoad,
         onEditorReady,
@@ -325,7 +324,6 @@ export function FlowEditorPane(
             style={{background: "white"}}
             defaultZoom={1}
         >
-            {title}
             <SidebarLeft onEdit={onEditClick}
                      onDebug={onDebugClick}
                      debugInProgress={debugInProgress}
@@ -333,7 +331,7 @@ export function FlowEditorPane(
             {displayRightSidebar && <SidebarRight
                 defaultTab={rightSidebarTab}
                 onTabSelect={setRightSidebarTab}
-                inspectTab={<MemoNodeDetails
+                inspectTab={<NodeDetails
                     onLabelSet={handleLabelSet}
                     node={currentNode}
                     onConfig={onConfigSave}

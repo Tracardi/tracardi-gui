@@ -99,18 +99,20 @@ const FlowEditor = ({showAlert}) => {
     }
 
     return (
+        <>
+
         <ReactFlowProvider>
             <div className="FlowEditor">
                 <div className="WorkArea">
                     <div className="LeftColumn">
+                        <FlowEditorTitle
+                            title={flowMetaData?.name}
+                            modified={modified}
+                            deployed={deployed}
+                            onSave={() => onSaveDraft(false)}
+                            onDeploy={() => onDeploy()}
+                        />
                         <FlowEditorPane id={id}
-                                        title={<FlowEditorTitle
-                                            title={flowMetaData?.name}
-                                            modified={modified}
-                                            deployed={deployed}
-                                            onSave={() => onSaveDraft(false)}
-                                            onDeploy={() => onDeploy()}
-                                        />}
                                         onEdit={() => setFlowFormOpened(true)}
                                         reactFlowInstance={reactFlowInstance}
                                         onEditorReady={onEditorReady}
@@ -141,6 +143,7 @@ const FlowEditor = ({showAlert}) => {
                           }}/>
             </FormDrawer>
         </ReactFlowProvider>
+            </>
     );
 };
 

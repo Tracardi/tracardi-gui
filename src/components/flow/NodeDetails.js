@@ -8,11 +8,12 @@ import ConfigEditor from "./editors/ConfigEditor";
 import NodeInfo from "./NodeInfo";
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
 import {VscJson} from "@react-icons/all-files/vsc/VscJson";
-import MemoJsonForm from "../elements/forms/JsonForm";
+import {JsonForm} from "../elements/forms/JsonForm";
 import "../elements/forms/JsonForm"
 import {VscTools} from "@react-icons/all-files/vsc/VscTools";
+import MutableMergeRecursive from "../../misc/recursiveObjectMerge";
 
-function NodeDetails({node, onConfig, onLabelSet}) {
+export function NodeDetails({node, onConfig, onLabelSet}) {
 
     const [tab, setTab] = useState(3);
 
@@ -37,9 +38,11 @@ function NodeDetails({node, onConfig, onLabelSet}) {
         if (onConfig) {
             onConfig(config)
         }
-        console.log("Config submit", config)
     }
 
+    const handleFormChange = (value) => {
+        MutableMergeRecursive(node.data.spec.init, value)
+    }
 
     return <div className="NodeDetails">
         <div className="Title">
@@ -84,11 +87,12 @@ function NodeDetails({node, onConfig, onLabelSet}) {
                 onConfig={handleFormSubmit}
             />}
             {tab === 3 && node?.data?.spec?.form &&
-            <MemoJsonForm
+            <JsonForm
                 pluginId={node?.data?.spec?.id}
                 value={node?.data?.spec?.init}
                 schema={node?.data?.spec?.form}
                 onSubmit={handleFormSubmit}
+                onChange={handleFormChange}
             />}
 
             {tab === 4 && <ConsoleView label="Action raw data" data={node}/>}
@@ -97,9 +101,10 @@ function NodeDetails({node, onConfig, onLabelSet}) {
     </div>
 }
 
-function areEqual(prevProps, nextProps) {
-    return prevProps.node.id===nextProps.node.id;
-}
-const MemoNodeDetails = React.memo(NodeDetails, areEqual);
+// function areEqual(prevProps, nextProps) {
+//     console.log(prevProps.node.id===nextProps.node.id, prevProps, nextProps)
+//     return prevProps.node.id===nextProps.node.id;
+// }
+// const MemoNodeDetails = React.memo(NodeDetails, areEqual);
 
-export default MemoNodeDetails;
+// export default MemoNodeDetails;

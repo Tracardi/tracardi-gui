@@ -2,7 +2,6 @@ import {
     TuiForm,
     TuiFormGroup,
     TuiFormGroupContent,
-    TuiFormGroupField,
     TuiFormGroupHeader
 } from "../elements/tui/TuiForm";
 import {ObjectInspector} from "react-inspector";

@@ -20,7 +20,8 @@ import TuiSelectResource from "../tui/TuiSelectResource";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 
 
-const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
+export const JsonForm = ({pluginId, schema, value = {}, onSubmit, onChange}) => {
+    console.log("JsonForm rerender", value)
 
     const formValues = useRef({})
 
@@ -32,23 +33,6 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
     const Title = ({title}) => {
         if (typeof title != 'undefined') {
             return <h1>{title}</h1>
-        }
-        return ""
-    }
-
-    const Name = ({text, isFirst = false}) => {
-        if (typeof text != 'undefined') {
-            if (isFirst === true) {
-                return <h3 style={{marginTop: 0}}>{text}</h3>
-            }
-            return <h3>{text}</h3>
-        }
-        return ""
-    }
-
-    const Description = ({text}) => {
-        if (typeof text != 'undefined') {
-            return <p>{text}</p>
         }
         return ""
     }
@@ -93,9 +77,12 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         const [submitConfirmed, setSubmitConfirmed] = useState(false);
         const [submitError, setSubmitError] = useState(false);
 
-        const handleOnChange = (value) => {
+        const handleOnChange = (value, id) => {
             setSubmitConfirmed(false);
             setSubmitError(false);
+            if(onChange) {
+                onChange(dot2object({[id]: value}))
+            }
         }
 
         const getComponentByLabel = (componentLabel, id) => {
@@ -104,35 +91,35 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                     return {
                         component: (props) => <ResourceSelect id={id}
                                                               errors={errors}
-                                                              onChange={handleOnChange}
+                                                              onChange={(value) => handleOnChange(value, id)}
                                                               {...props}/>
                     }
                 case "dotPath":
                     return {
                         component: (props) => <DotPathAndTextInput id={id}
                                                                    errors={errors}
-                                                                   onChange={handleOnChange}
+                                                                   onChange={(value) => handleOnChange(value, id)}
                                                                    props={props}/>
                     }
                 case "forceDotPath":
                     return {
                         component: (props) => <DotPathInput id={id}
                                                             errors={errors}
-                                                            onChange={handleOnChange}
+                                                            onChange={(value) => handleOnChange(value, id)}
                                                             props={props}/>
                     }
                 case "keyValueList":
                     return {
                         component: (props) => <KeyValueInput id={id}
                                                              errors={errors}
-                                                             onChange={handleOnChange}
+                                                             onChange={(value) => handleOnChange(value, id)}
                                                              props={props}/>
                     }
                 case "copyTraitsInput":
                     return {
                         component: (props) => <CopyTraitsInput id={id}
                                                              errors={errors}
-                                                             onChange={handleOnChange}
+                                                             onChange={(value) => handleOnChange(value, id)}
                                                              props={props}/>
                     }
 
@@ -140,7 +127,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                     return {
                         component: (props) => <ListOfDotPaths
                             id={id}
-                            onChange={handleOnChange}
+                            onChange={(value) => handleOnChange(value, id)}
                             errors={errors}
                             props={props}/>
                     }
@@ -148,14 +135,14 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                     return {
                         component: (props) => <TextInput id={id}
                                                          errors={errors}
-                                                         onChange={handleOnChange}
+                                                         onChange={(value) => handleOnChange(value, id)}
                                                          {...props}/>
                     }
                 case "json":
                     return {
                         component: (props) => <JsonInput id={id}
                                                          errors={errors}
-                                                         onChange={handleOnChange}
+                                                         onChange={(value) => handleOnChange(value, id)}
                                                          {...props}/>
 
 
@@ -165,7 +152,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                     return {
                         component: (props) => <SqlInput id={id}
                                                          errors={errors}
-                                                         onChange={handleOnChange}
+                                                         onChange={(value) => handleOnChange(value, id)}
                                                          {...props}/>
 
 
@@ -174,14 +161,14 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                 case "textarea":
                     return {
                         component: (props) => <TextAreaInput id={id}
-                                                             onChange={handleOnChange}
+                                                             onChange={(value) => handleOnChange(value, id)}
                                                              errors={errors}
                                                              {...props}/>
                     }
                 case 'select':
                     return {
                         component: (props) => <SelectInput id={id}
-                                                           onChange={handleOnChange}
+                                                           onChange={(value) => handleOnChange(value, id)}
                                                            errors={errors}
                                                            {...props}/>
                     }
@@ -189,14 +176,14 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                 case 'bool':
                     return {
                         component: (props) => <BoolInput id={id}
-                                                         onChange={handleOnChange}
+                                                         onChange={(value) => handleOnChange(value, id)}
                                                          errors={errors}
                                                          {...props}/>
                     }
                 case "contentInput":
                     return {
                         component: (props) => <ContentInput id={id}
-                                                            onChange={handleOnChange}
+                                                            onChange={(value) => handleOnChange(value, id)}
                                                             errors={errors}
                                                             {...props}/>
                     }
@@ -227,12 +214,6 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                     (result) => {
                         if (result === true) {
                             setErrors({})
-                            // todo remove after 01.11.2021
-                            // const allFields = form.getAllFields();
-                            // console.log(allFields)
-                            // console.log("2", currentFormValues)
-                            // const fieldsToSave = objectFilter(object2dot(currentFormValues), allFields);
-                            // console.log("3", currentFormValues)
                             onSubmit(dot2object(currentFormValues));
                             setSubmitConfirmed(true);
                         } else {
@@ -591,7 +572,6 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
     function CopyTraitsInput({id, errors, props, onChange = () => {}}) {
 
         const handleChange = (value) => {
-            console.log(value)
             formValues.current[id] = value;
             if(onChange) {
                 onChange(value);
@@ -657,7 +637,6 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
     function SqlInput({id, errors, onChange = null }) {
 
         const [value, setValue] = useState(readValue(id))
-        console.log(value)
 
         const handleChange = (value) => {
             formValues.current[id] = value;
@@ -688,7 +667,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         </>
     }
 
-    function ResourceSelect({id, errors, placeholder = "Resource", onChange = () => {} }) {
+    function ResourceSelect({id, errors, onChange = () => {} }) {
 
         const value = readValue(id)
 
@@ -709,6 +688,11 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
     }
 }
 
-const MemoJsonForm = React.memo(JsonForm);
 
-export default MemoJsonForm;
+// function areEqual(prevProps, nextProps) {
+//     console.log(prevProps.pluginId===nextProps.pluginId, prevProps.pluginId, nextProps.pluginId)
+//     return prevProps.pluginId===nextProps.pluginId;
+// }
+// const MemoJsonForm = React.memo(JsonForm, areEqual);
+//
+// export default MemoJsonForm;
