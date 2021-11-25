@@ -6,6 +6,13 @@ import {showAlert} from "../../../redux/reducers/alertSlice";
 import MdManual from "../actions/MdManual";
 import JsonEditor from "../../elements/editors/JsonEditor";
 import "../../elements/forms/JsonForm";
+import {
+    TuiForm,
+    TuiFormGroup,
+    TuiFormGroupContent,
+    TuiFormGroupField,
+    TuiFormGroupHeader
+} from "../../elements/tui/TuiForm";
 
 const ConfigEditor = ({showAlert, config, manual, onConfig}) => {
 
@@ -33,41 +40,37 @@ const ConfigEditor = ({showAlert, config, manual, onConfig}) => {
         setConfirmedButton(false);
     }
 
-    return <form className="JsonForm">
-            <div className="JsonFromGroup">
-                <div className="JsonFromGroupHeader">
-                    <h2>JSON Configuration</h2>
-                </div>
-                <section>
-                    <h3>Advanced Plug-in Configuration</h3>
-                    <div>This is plugin configuration as JSON data. Use is with caution. Everything you type into
-                        plug-in configuration form gets translated into this JSON.</div>
-                    <fieldset style={{marginTop:20}}>
-                        <legend>JSON Configuration</legend>
-                        <JsonEditor value={eventPayload}
-                                    onChange={(d) => _setEventPayload(d)}
-                        />
-                    </fieldset>
+    return <TuiForm>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="JSON Configuration"/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField header="Advanced Plug-in Configuration"
+                                       description="This is plugin configuration as JSON data. Use is with caution. Everything you type into
+                        plug-in configuration form gets translated into this JSON.">
+                        <fieldset style={{marginTop:20}}>
+                            <legend>JSON Configuration</legend>
+                            <JsonEditor value={eventPayload}
+                                        onChange={(d) => _setEventPayload(d)}
+                            />
+                        </fieldset>
 
-                    <div style={{display: "flex", margin: "10px 0"}}>
-                        <Button label="Save"
-                                confirmed={confirmedButton}
-                                onClick={() => onConfigSave(eventPayload)}/>
-                    </div>
-                </section>
+                        <div style={{display: "flex", margin: "10px 0"}}>
+                            <Button label="Save"
+                                    confirmed={confirmedButton}
+                                    onClick={() => onConfigSave(eventPayload)}/>
+                        </div>
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
 
-            </div>
+            {manual && <TuiFormGroup>
+                    <TuiFormGroupHeader header="Plug-in Documentation"/>
+                    <TuiFormGroupContent>
+                        <MdManual mdFile={manual}/>
+                    </TuiFormGroupContent>
+            </TuiFormGroup>}
 
-        {manual && <div className="JsonFromGroup">
-                <div className="JsonFromGroupHeader">
-                    <h2>Plug-in Documentation</h2>
-                </div>
-                <section>
-                    <MdManual mdFile={manual}/>
-                </section>
-        </div>}
-
-        </form>
+        </TuiForm>
 
 }
 

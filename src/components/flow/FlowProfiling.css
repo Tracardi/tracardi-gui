@@ -1,18 +1,16 @@
 .DebugAndProfile {
     display: grid;
-    grid-template-rows: [profilling] 30% [debugging] 70%;
+    grid-template-rows: 30% 70%;
     height: 100%;
     user-select: none;
 }
 .Debugging {
-    grid-area: debugging;
     height: 100%;
     overflow: auto;
     padding-top: 10px;
     user-select: text;
 }
 .Profiling {
-    grid-area: profilling;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -93,6 +91,8 @@
     border-right: solid 1px #ccc;
     min-width: 70px;
     text-align: right;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
 }
 .TaskHeader .TaskBar,
 .TaskRow .TaskBar {

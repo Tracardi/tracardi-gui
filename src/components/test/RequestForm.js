@@ -6,7 +6,13 @@ import JsonEditor from "../elements/editors/JsonEditor";
 import Button from "../elements/forms/Button";
 import "./RequestForm.css";
 import BoolInput from "../elements/forms/BoolInput";
-import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
+import {
+    TuiForm,
+    TuiFormGroup,
+    TuiFormGroupContent,
+    TuiFormGroupField,
+    TuiFormGroupHeader
+} from "../elements/tui/TuiForm";
 import TuiColumnsFlex from "../elements/tui/TuiColumnsFlex";
 import TuiTopHeaderWrapper from "../elements/tui/TuiTopHeaderWrapper";
 
@@ -69,34 +75,37 @@ export const RequestForm = ({onError, onRequest}) => {
                     be created if nothing is passed."
             />
             <TuiFormGroupContent>
-                <TuiColumnsFlex width={320}>
-                    <TuiTopHeaderWrapper header="Session"
-                                         description="If you know profile id leave session empty, then Tracardi will create new session for given profile.">
-                        <Input label="Session"
-                               initValue={session}
-                               variant="outlined"
-                               onChange={(e) => setSession(e.target.value)}/>
-                    </TuiTopHeaderWrapper>
-                    <TuiTopHeaderWrapper header="Profile"
-                                         description="Profile must match session, if you do now know profile id leave it empty, then new profile will be created for given session.">
-                        <Input label="Profile"
-                               initValue={profile}
-                               variant="outlined"
-                               onChange={(e) => setProfile(e.target.value)}
-                        />
-                    </TuiTopHeaderWrapper>
-                </TuiColumnsFlex>
+                <TuiFormGroupField>
+                    <TuiColumnsFlex width={320}>
+                        <TuiTopHeaderWrapper header="Session"
+                                             description="If you know profile id leave session empty, then Tracardi will create new session for given profile.">
+                            <Input label="Session"
+                                   initValue={session}
+                                   variant="outlined"
+                                   onChange={(e) => setSession(e.target.value)}/>
+                        </TuiTopHeaderWrapper>
+                        <TuiTopHeaderWrapper header="Profile"
+                                             description="Profile must match session, if you do now know profile id leave it empty, then new profile will be created for given session.">
+                            <Input label="Profile"
+                                   initValue={profile}
+                                   variant="outlined"
+                                   onChange={(e) => setProfile(e.target.value)}
+                            />
+                        </TuiTopHeaderWrapper>
+                    </TuiColumnsFlex>
+                </TuiFormGroupField>
 
-                <h3>Options</h3>
-                <BoolInput label="Return profile data" value={profileFlag} onChange={setProfileFlag}/>
-                <BoolInput label="Return debugger data" value={debug} onChange={setDebug}/>
+                <TuiFormGroupField header="Options">
+                    <BoolInput label="Return profile data" value={profileFlag} onChange={setProfileFlag}/>
+                    <BoolInput label="Return debugger data" value={debug} onChange={setDebug}/>
+                </TuiFormGroupField>
 
-                <h3>Context</h3>
-                <p>Context is the additional data describing event context.</p>
-                <fieldset>
-                    <legend>Context</legend>
-                    <JsonEditor value={context} onChange={setContext} height="120px"/>
-                </fieldset>
+                <TuiFormGroupField header="Context" description="Context is the additional data describing event context.">
+                    <fieldset>
+                        <legend>Context</legend>
+                        <JsonEditor value={context} onChange={setContext} height="120px"/>
+                    </fieldset>
+                </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
@@ -106,29 +115,31 @@ export const RequestForm = ({onError, onRequest}) => {
                     Tracardi."
             />
             <TuiFormGroupContent>
-                <TuiColumnsFlex width={320}>
-                    <TuiTopHeaderWrapper header="Source">
-                        <TuiSelectResource
-                            value={resource}
-                            onSetValue={setResource}
-                        />
-                    </TuiTopHeaderWrapper>
-                    <TuiTopHeaderWrapper header="Event type">
-                        <Input label="Event type"
-                               initValue={eventType}
-                               style={{width: "100%"}}
-                               variant="outlined"
-                               onChange={(e) => setEventType(e.target.value)}
-                        />
-                    </TuiTopHeaderWrapper>
-                </TuiColumnsFlex>
+                <TuiFormGroupField>
+                    <TuiColumnsFlex width={320}>
+                        <TuiTopHeaderWrapper header="Source">
+                            <TuiSelectResource
+                                value={resource}
+                                onSetValue={setResource}
+                            />
+                        </TuiTopHeaderWrapper>
+                        <TuiTopHeaderWrapper header="Event type">
+                            <Input label="Event type"
+                                   initValue={eventType}
+                                   style={{width: "100%"}}
+                                   variant="outlined"
+                                   onChange={(e) => setEventType(e.target.value)}
+                            />
+                        </TuiTopHeaderWrapper>
+                    </TuiColumnsFlex>
+                </TuiFormGroupField>
 
-                <h3>Event properties</h3>
-                <p>Event properties is the data data is sent to Tracardi for further processing.</p>
-                <fieldset>
-                    <legend>Properties</legend>
-                    <JsonEditor value={properties} onChange={setProperties} height="200px"/>
-                </fieldset>
+                <TuiFormGroupField header="Event properties" description="Event properties is the data data is sent to Tracardi for further processing.">
+                    <fieldset>
+                        <legend>Properties</legend>
+                        <JsonEditor value={properties} onChange={setProperties} height="200px"/>
+                    </fieldset>
+                </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
         <div>

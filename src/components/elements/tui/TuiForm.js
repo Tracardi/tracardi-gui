@@ -38,7 +38,7 @@ export const TuiFormGroupHeader = ({className, style, header, description=null})
     </div>
 }
 
-export const TuiFormGroupContent = ({children, className, style, header=null, description=null}) => {
+export const TuiFormGroupContent = ({children, className, style}) => {
 
     let baseClassName = ["TuiFormGroupContent"]
     let baseStyle =  {overflowY: "auto"}
@@ -52,10 +52,17 @@ export const TuiFormGroupContent = ({children, className, style, header=null, de
     }
 
     return <section className={baseClassName.join(" ")} style={baseStyle}>
-        {header && <h3>{header}</h3>}
-        {description && <p>{description}</p>}
         {children}
     </section>
 }
+
+export const TuiFormGroupField = ({children, header=null, description=null}) => {
+    return <>
+        {header && <h3>{header}</h3>}
+        {description && <p>{description}</p>}
+        {children}
+    </>
+}
+
 
 

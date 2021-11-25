@@ -1,7 +1,6 @@
 import React, {useRef, useState} from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "./Button";
-import "./JsonForm.css";
 import JsonEditor from "../editors/JsonEditor";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
 import {objectMap} from "../../../misc/mappers";
@@ -18,6 +17,7 @@ import SqlEditor from "../editors/SqlEditor";
 import KeyValueForm from "./KeyValueForm";
 import CopyTraitsForm from "./CopyTraitsForm";
 import TuiSelectResource from "../tui/TuiSelectResource";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 
 
 const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
@@ -64,7 +64,7 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
 
     const Fields = ({fields, componetsDb}) => {
 
-        return fields.map((fieldObject, key) => {
+        const GroupFields = ({fields}) => fields.map((fieldObject, key) => {
             const fieldName = fieldObject.id;
             const component = fieldObject.component?.type;
             const props = fieldObject.component?.props;
@@ -72,15 +72,19 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
                 const componentSchema = componetsDb(
                     component,
                     fieldName);
-                return <div key={fieldName + key}>
-                    <Name text={fieldObject.name} isFirst={key === 0}/>
-                    <Description text={fieldObject.description}/>
+                return <TuiFormGroupField key={fieldName + key}
+                                            header={fieldObject.name}
+                                            description={fieldObject.description}>
                     {componentSchema.component(props)}
-                </div>
+                </TuiFormGroupField>
             } else {
                 return ""
             }
         })
+
+        return <TuiFormGroupContent>
+            <GroupFields fields={fields}/>
+        </TuiFormGroupContent>
     }
 
     const Groups = ({groups}) => {
@@ -242,18 +246,16 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
         }
 
         const groupComponents = groups.map((groupObject, idx) => {
-            return <div className="JsonFromGroup" key={idx}>
-                {(groupObject.name || groupObject.description) && <div className="JsonFromGroupHeader">
-                    {groupObject.name && <h2>{groupObject.name}</h2>}
-                    {groupObject.description && <Description text={groupObject.description}/>}
-                </div>}
-                <section>
-                    {groupObject.fields && <Fields
+            return <TuiFormGroup key={idx}>
+                {(groupObject.name || groupObject.description) && <TuiFormGroupHeader
+                    header={groupObject.name}
+                    description={groupObject.description}
+                />}
+                {groupObject.fields && <Fields
                         fields={groupObject.fields}
                         componetsDb={getComponentByLabel}
-                    />}
-                </section>
-            </div>
+                />}
+            </TuiFormGroup>
 
 
         })
@@ -270,10 +272,10 @@ const JsonForm = ({pluginId, schema, value = {}, onSubmit}) => {
     }
 
     if (schema) {
-        return <form className="JsonForm">
+        return <TuiForm>
             {schema.title && <Title title={schema.title}/>}
             {schema.groups && <Groups groups={schema.groups}/>}
-        </form>
+        </TuiForm>
     }
 
     return ""

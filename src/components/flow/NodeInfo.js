@@ -1,14 +1,12 @@
 import React from "react";
-import '../elements/forms/JsonForm';
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
 
 const NodeInfo = ({node}) => {
 
-    return  <form className="JsonForm">
-        <div className="JsonFromGroup">
-            <div className="JsonFromGroupHeader">
-                <h2>Plug-in Information</h2>
-            </div>
-            <section>
+    return  <TuiForm>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Plug-in Information"/>
+            <TuiFormGroupContent>
                 <div className="InfoBox">{node?.data?.metadata?.desc}</div>
                         <div className="SubTitle"><span><span style={{fontWeight: 600}}>Action</span> Details</span></div>
                         <table>
@@ -63,9 +61,9 @@ const NodeInfo = ({node}) => {
                             </tr>
                             </tbody>
                         </table>
-            </section>
-        </div>
-    </form>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+    </TuiForm>
 }
 
 export default NodeInfo;

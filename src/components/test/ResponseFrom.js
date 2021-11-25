@@ -1,10 +1,16 @@
-import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
+import {
+    TuiForm,
+    TuiFormGroup,
+    TuiFormGroupContent,
+    TuiFormGroupField,
+    TuiFormGroupHeader
+} from "../elements/tui/TuiForm";
 import {ObjectInspector} from "react-inspector";
 import theme from "../../themes/inspector_light_theme";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import React from "react";
 
-export default function ResponseForm ({loading, request, response}) {
+export default function ResponseForm({loading, request, response}) {
     return <TuiForm className="RequestResponse">
         <TuiFormGroup>
             <TuiFormGroupHeader header="Request"

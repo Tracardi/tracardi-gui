@@ -1,6 +1,6 @@
 .Tabs {
     width: inherit;
-    height: 100%;
+    height: inherit;
     display: flex;
     flex-direction: column;
 }

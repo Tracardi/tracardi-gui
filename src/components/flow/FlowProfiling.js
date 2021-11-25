@@ -86,7 +86,7 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
                             className="Task"
                             style={{
                                 left: relativeStartTime + "%",
-                                width: relativeRunTime + "%"
+                                minWidth: relativeRunTime + "%"
                             }}>
                             <div
                                 className="TaskBall"
@@ -112,7 +112,7 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
 
     return <div className="DebugAndProfile">
         <div className="Profiling">
-            <div style={{width: 960, padding: 6}}>
+            <div style={{minWidth: 400, padding: 6}}>
                 <div className="TaskHeader" style={{position: "sticky", top: 0, zIndex: 3}}>
                     <div className="TaskSq">&nbsp;</div>
                     <div className="TaskName">Actions</div>

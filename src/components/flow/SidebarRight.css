@@ -9,7 +9,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    border-left: rgba(220, 220, 220, 1) 1px solid;
+    border: rgba(220, 220, 220, 1) 1px solid;
     animation-name: moveLeftAndOpacity;
     animation-iteration-count: 1;
     animation-timing-function: ease-out;

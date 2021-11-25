@@ -56,7 +56,7 @@ const KeyValueForm = ({ value, onChange }) => {
         />
         <AiOutlinePlusCircle size={25} onClick={handleAdd} className="Button AddButton" style={{cursor: "pointer"}}/>
       </div>
-      <fieldset style={{height: 200, overflowY: "auto", margin:"5px 0"}}>
+      <fieldset style={{height: 130, overflowY: "auto", margin:"5px 0"}}>
         <legend>List of key-value pairs</legend>
         <ul className="KeyValueList">
           {Object.keys(localValue).map((item, i) => {
