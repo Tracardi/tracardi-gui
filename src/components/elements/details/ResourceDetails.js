@@ -4,10 +4,6 @@ import "./ResourceDetails.css";
 import "./Details.css";
 import Properties from "./DetailProperties";
 import Button from "../forms/Button";
-import FormHeader from "../misc/FormHeader";
-import ElevatedBox from "../misc/ElevatedBox";
-import FormSubHeader from "../misc/FormSubHeader";
-import FormDescription from "../misc/FormDescription";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
@@ -17,6 +13,7 @@ import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
 import ResourceForm from "../forms/ResourceForm";
 import PropTypes from "prop-types";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -37,7 +34,7 @@ export default function ResourceDetails({id, onDeleteComplete}) {
             },
             setLoading,
             (e) => {
-                if(e) {
+                if (e) {
                     console.error(e)
                 }
             },
@@ -49,7 +46,7 @@ export default function ResourceDetails({id, onDeleteComplete}) {
         )
     }, [id])
 
-    const onEdit= () => {
+    const onEdit = () => {
         const editData = JSON.parse(JSON.stringify(data));
         editData.type = {name: editData.type, id: editData.type}
         setEditData(editData)
@@ -68,20 +65,21 @@ export default function ResourceDetails({id, onDeleteComplete}) {
                 () => {
                 },
                 (e) => {
-                    if(e) {
+                    if (e) {
                         console.error(e);
                     }
                 }, (reponse) => {
                     request({
                             url: '/resources/refresh'
                         },
-                        ()=>{},
-                        (e)=>{
-                            if(e) {
+                        () => {
+                        },
+                        (e) => {
+                            if (e) {
                                 console.error(e);
                             }
                         },
-                        ()=>{
+                        () => {
                             if (onDeleteComplete) {
                                 onDeleteComplete(reponse)
                             }
@@ -94,39 +92,43 @@ export default function ResourceDetails({id, onDeleteComplete}) {
     }
 
     const Details = () => <>
-        <FormHeader>Resource</FormHeader>
-        <ElevatedBox>
-            <FormSubHeader>Data</FormSubHeader>
-            <Properties properties={data}/>
-            <Rows style={{marginTop: 20}}>
-                <Button onClick={onEdit}
-                        icon={<VscEdit size={20}/>}
-                        label="Edit"
-                        disabled={typeof data === "undefined"}/>
-                <Button onClick={onDelete}
-                        icon={<VscTrash size={20}/>}
-                        label="Delete"
-                        disabled={typeof data === "undefined"}/>
-            </Rows>
-        </ElevatedBox>
+        <TuiForm>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Resource"/>
+                <TuiFormGroupContent header={"Data"}>
+                    <Properties properties={data}/>
+                    <Rows style={{marginTop: 20}}>
+                        <Button onClick={onEdit}
+                                icon={<VscEdit size={20}/>}
+                                label="Edit"
+                                disabled={typeof data === "undefined"}/>
+                        <Button onClick={onDelete}
+                                icon={<VscTrash size={20}/>}
+                                label="Delete"
+                                disabled={typeof data === "undefined"}/>
+                    </Rows>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>
 
-        {data.type === "web-page" && <React.Fragment><FormHeader>Integration</FormHeader><ElevatedBox>
-            <FormSubHeader>Javascript code</FormSubHeader>
-            <FormDescription>Please paste this code into your web page. This code should appear on every page.</FormDescription>
-            <Suspense fallback={<CenteredCircularProgress/>}><TrackerScript sourceId={data.id}/></Suspense>
-        </ElevatedBox>
-            <FormHeader>Javascript event sending</FormHeader>
-            <ElevatedBox>
-                <FormSubHeader>Javascript example</FormSubHeader>
-                <FormDescription>
-                    Than send multiple events with the following code.
-                </FormDescription>
-                <Suspense fallback={<CenteredCircularProgress/>}><TrackerUseScript/></Suspense>
-                <FormDescription>
-                    Please refer to Tracardi documentation on more complex configuration.
-                </FormDescription>
-            </ElevatedBox>
-        </React.Fragment>}
+        {data.type === "web-page" && <TuiForm>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Integration"
+                                    description="Please paste this code into your web page. This code should appear on every page."/>
+                <TuiFormGroupContent>
+                    <Suspense fallback={<CenteredCircularProgress/>}><TrackerScript sourceId={data.id}/></Suspense>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Javascript example"
+                                    description="This is an example of event sending. This code sends multiple events. Please refer to Tracardi documentation on more complex configuration."/>
+                <TuiFormGroupContent>
+                    <Suspense fallback={<CenteredCircularProgress/>}><TrackerUseScript/></Suspense>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>
+        }
 
     </>
 
@@ -137,9 +139,13 @@ export default function ResourceDetails({id, onDeleteComplete}) {
         <FormDrawer
             width={800}
             label="Edit Resource"
-            onClose={()=>{setEditData(null)}}
+            onClose={() => {
+                setEditData(null)
+            }}
             open={editData !== null}>
-            <ResourceForm init={editData} onClose={()=>{setEditData(null)}}/>
+            <ResourceForm init={editData} onClose={() => {
+                setEditData(null)
+            }}/>
         </FormDrawer>
     </div>
 
@@ -148,4 +154,4 @@ export default function ResourceDetails({id, onDeleteComplete}) {
 ResourceDetails.propTypes = {
     id: PropTypes.string,
     onDeleteComplete: PropTypes.func,
-  };
+};
