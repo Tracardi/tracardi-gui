@@ -1,7 +1,6 @@
-import React, {useState} from "react";
+import React from "react";
 import Button from "./Button";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
-import {objectMap} from "../../../misc/mappers";
 import AlertBox from "../../errors/AlertBox";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {

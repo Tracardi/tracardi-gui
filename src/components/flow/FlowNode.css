@@ -26,7 +26,8 @@
 .react-flow__node .NodePanel {
     color: #333;
     text-transform: none;
-    z-index: 10
+    z-index: 10;
+    position: relative;
 }
 
 .react-flow__node-flowNode.selected .NodePanel,
@@ -47,8 +48,7 @@ DIV.NodePorts DIV.NodePortContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width:100%;
-    position: relative;
+    width: 100%;
     z-index: 11;
 }
 
@@ -62,13 +62,44 @@ DIV.NodePortContainer .PortHint {
 }
 
 DIV.NodePortContainer .InputPortHint {
-    bottom: 15px;
+    top: -7px;
+    transform: translate(0, -100%);
     position:absolute;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: .2s;
+}
+
+DIV.NodePortContainer .InputPortDesc {
+    top: -33px;
+    position:absolute;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: .3s;
+    transform: translate(0,-100%);
+    width: 160px;
 }
 
 DIV.NodePortContainer .OutputPortHint {
-    top: 15px;
+    bottom: -7px;
     position:absolute;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: .2s;
+    transform: translate(0,100%)
+}
+
+DIV.NodePortContainer .OutputPortDesc {
+    bottom: -31px;
+    position:absolute;
+    width: 160px;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: .3s;
+    transform: translate(0,100%);
 }
 
 DIV.NodePanel {
