@@ -28,11 +28,6 @@ export default class FormSchema {
     async validate(pluginId, formValues) {
 
         const remoteValidation = async (pluginId, values) => {
-            console.log("validate values", {
-                url: `/action/${pluginId}/config/validate`,
-                method: "POST",
-                data: values
-            })
             try {
                 await asyncRemote({
                     url: `/action/${pluginId}/config/validate`,

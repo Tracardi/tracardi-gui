@@ -19,7 +19,7 @@ export default function TuiSelectResource({value = null, disabled = false, error
                          onDataLoaded={
                              (result) => {
                                  if (result) {
-                                     let sources = [{id: "", name: ""}]
+                                     let sources = []
                                      for (const source of result?.data?.result) {
                                          if (typeof source.name !== "undefined" && typeof source.id !== "undefined") {
                                              sources.push({name: source.name, id: source.id})

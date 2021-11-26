@@ -223,7 +223,7 @@ export function FlowEditorPane(
                 onChange();
             }
         } catch (e) {
-            alert("Json error. Droped element without json.");
+            alert("Json error. Dropped element without json.");
         }
 
     };
@@ -234,9 +234,8 @@ export function FlowEditorPane(
     };
 
     const onNodeDoubleClick = (event, element) => {
-        if (onDisplayDetails) {
-            onDisplayDetails(element);
-        }
+        selectNode(element)
+        setDisplayRightSidebar(true);
     }
 
     const onElementClick = (event, element) => {
@@ -257,18 +256,18 @@ export function FlowEditorPane(
         setDisplayRightSidebar(false);
     }
 
+    const selectNode = (node) => {
+        setCurrentNode(node)
+    }
+
     const onNodeClick = (element) => {
-        setCurrentNode(element);
+        selectNode(element);
         if (element.data?.debugging && Array.isArray(element.data?.debugging)
             && element.data?.debugging.length > 0 && element.data?.debugging[0]?.edge?.id) {
             setAnimatedEdge(element.data.debugging[0].edge.id);
         } else {
             setAnimatedEdge(null);
         }
-    }
-    const onDisplayDetails = (element) => {
-        setCurrentNode(element);
-        setDisplayRightSidebar(true);
     }
 
     const onConfigSave = () => {

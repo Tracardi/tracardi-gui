@@ -8,7 +8,14 @@ import {IoTextOutline} from "@react-icons/all-files/io5/IoTextOutline";
 import {IoAt} from "@react-icons/all-files/io5/IoAt";
 
 
-export default function DottedPathInput({value, onChange, label = "Source", defaultMode = 1, defaultSourceValue = "", defaultPathValue = "", forceMode, error = false, helperText = null, width = 460}) {
+export default function DottedPathInput({value, onChange,
+                                            label = "Source",
+                                            defaultMode = 1,
+                                            defaultSourceValue = "",
+                                            defaultPathValue = "",
+                                            forceMode,
+                                            errorMessage,
+                                            width = 460}) {
 
     let computedMode;
     const re = new RegExp("^(payload|profile|session|event|flow)@");
@@ -158,8 +165,8 @@ export default function DottedPathInput({value, onChange, label = "Source", defa
                    variant="outlined"
                    size="small"
                    style={{width: width}}
-                   error={error}
-                   helperText={helperText}
+                   error={errorMessage}
+                   helperText={errorMessage}
         />
     </div>
 
@@ -171,8 +178,8 @@ export default function DottedPathInput({value, onChange, label = "Source", defa
                    variant="outlined"
                    size="small"
                    style={{width: width + 120}}
-                   error={error}
-                   helperText={helperText}
+                   error={errorMessage}
+                   helperText={errorMessage}
         />
     </div>
 

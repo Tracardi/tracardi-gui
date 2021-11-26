@@ -1,0 +1,22 @@
+.ConfigEditor .SaveConfigButton {
+    z-index: 10;
+    right: 10px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 4px;
+    display: inline-flex;
+    margin: 10px 0;
+
+
+}
+.ConfigEditor .SaveConfigButton:hover {
+    background-color: rgb(0, 105, 192);
+}
+
+.ConfigEditor .Error {
+    padding: 8px;
+    background-color: #d81b60;
+    color: white;
+    display: flex;
+    align-items: center;
+}

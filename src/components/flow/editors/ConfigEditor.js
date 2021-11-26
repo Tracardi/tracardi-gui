@@ -1,8 +1,6 @@
 import Button from "../../elements/forms/Button";
 import React, {useEffect, useState} from "react";
-import '../ConfigEditor.css';
-import {connect} from "react-redux";
-import {showAlert} from "../../../redux/reducers/alertSlice";
+import './ConfigEditor.css';
 import MdManual from "../actions/MdManual";
 import JsonEditor from "../../elements/editors/JsonEditor";
 import "../../elements/forms/JsonForm";
@@ -13,74 +11,79 @@ import {
     TuiFormGroupField,
     TuiFormGroupHeader
 } from "../../elements/tui/TuiForm";
+import {objectMap} from "../../../misc/mappers";
+import {BiError} from "@react-icons/all-files/bi/BiError";
 
-const ConfigEditor = ({showAlert, config, manual, onConfig}) => {
+const ConfigEditor = ({config, manual, onConfig, errorMessages={}, confirmed = false}) => {
 
     const initConfig = JSON.stringify(config, null, '  ')
     const [eventPayload, setEventPayload] = useState(initConfig);
-    const [confirmedButton, setConfirmedButton] = useState(false);
+    const [parseErrors, setParseErrors] = useState({});
+    const hasErrors = errorMessages && Object.keys(errorMessages).length
 
     useEffect(() => {
         setEventPayload(initConfig);
     }, [initConfig])
 
-    const onConfigSave = (payload) => {
+    const handleSubmit = (payload) => {
         try {
             if (onConfig) {
                 onConfig(JSON.parse(payload));
-                setConfirmedButton(true);
             }
+            setParseErrors({})
         } catch (e) {
-            showAlert({message: e.toString(), type: "error", hideAfter: 2000});
+            setParseErrors({message: e.toString()})
         }
     }
 
-    const _setEventPayload = (d) => {
-        setEventPayload(d);
-        setConfirmedButton(false);
+    const ErrorMessages = ({errors}) => {
+        if (errors && Object.keys(errors).length){
+            return <div>
+                {objectMap(errors, (field, error) => {
+                    return <div className="Error"><BiError size={20}
+                                                           style={{marginRight: 8}}/> {`Field ${field}: ${error}`}</div>
+                })}
+            </div>
+        }
+        return ""
     }
 
-    return <TuiForm>
-            <TuiFormGroup>
-                <TuiFormGroupHeader header="JSON Configuration"/>
-                <TuiFormGroupContent>
-                    <TuiFormGroupField header="Advanced Plug-in Configuration"
-                                       description="This is plugin configuration as JSON data. Use is with caution. Everything you type into
+    return <TuiForm className="ConfigEditor">
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="JSON Configuration"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Advanced Plug-in Configuration"
+                                   description="This is plugin configuration as JSON data. Use is with caution. Everything you type into
                         plug-in configuration form gets translated into this JSON.">
-                        <fieldset style={{marginTop:20}}>
-                            <legend>JSON Configuration</legend>
-                            <JsonEditor value={eventPayload}
-                                        onChange={(d) => _setEventPayload(d)}
-                            />
-                        </fieldset>
+                    <fieldset style={{marginTop: 20}}>
+                        <legend>JSON Configuration</legend>
 
-                        <div style={{display: "flex", margin: "10px 0"}}>
-                            <Button label="Save"
-                                    confirmed={confirmedButton}
-                                    onClick={() => onConfigSave(eventPayload)}/>
-                        </div>
-                    </TuiFormGroupField>
-                </TuiFormGroupContent>
-            </TuiFormGroup>
+                        <ErrorMessages errors={{...parseErrors, ...errorMessages}} />
 
-            {manual && <TuiFormGroup>
-                    <TuiFormGroupHeader header="Plug-in Documentation"/>
-                    <TuiFormGroupContent>
-                        <MdManual mdFile={manual}/>
-                    </TuiFormGroupContent>
-            </TuiFormGroup>}
+                        <JsonEditor value={eventPayload}
+                                    onChange={setEventPayload}
+                        />
+                    </fieldset>
 
-        </TuiForm>
+                    <Button label="Save"
+                            confirmed={confirmed}
+                            error={hasErrors}
+                            onClick={() => handleSubmit(eventPayload)}
+                            style={{justifyContent: "center"}}
+                    />
 
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+
+        {manual && <TuiFormGroup>
+            <TuiFormGroupHeader header="Plug-in Documentation"/>
+            <TuiFormGroupContent>
+                <MdManual mdFile={manual}/>
+            </TuiFormGroupContent>
+        </TuiFormGroup>}
+
+    </TuiForm>
 }
 
-const mapProps = (state) => {
-    return {
-        notification: state.notificationReducer,
-    }
-};
-
-export default connect(
-    mapProps,
-    {showAlert}
-)(ConfigEditor)
+export default ConfigEditor;
