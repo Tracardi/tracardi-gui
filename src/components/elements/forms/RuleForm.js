@@ -2,45 +2,44 @@ import React, {useState} from "react";
 import Button from "./Button";
 import TextField from "@material-ui/core/TextField";
 import {v4 as uuid4} from 'uuid';
-import ElevatedBox from "../misc/ElevatedBox";
-import FormSubHeader from "../misc/FormSubHeader";
-import FormDescription from "../misc/FormDescription";
-import Columns from "../misc/Columns";
-import Rows from "../misc/Rows";
-import Form from "../misc/Form";
-import FormHeader from "../misc/FormHeader";
 import PropTypes from 'prop-types';
 import TuiSelectResource from "../tui/TuiSelectResource";
 import TuiSelectFlow from "../tui/TuiSelectFlow";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
+import {request} from "../../../remote_api/uql_api_endpoint";
+import TuiFormError from "../tui/TuiFormError";
+import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 
-export default function RuleForm({onSubmit, init}) {
+export default function RuleForm({onReady, init}) {
 
     if (!init) {
         init = {
-            flow: {id: "", name: ""},
-            event: {name: ""},
+            flow: {},
+            event: {},
             name: "",
             description: "",
-            source: {id: "", name: ""},
+            source: {},
             sourceDisabled: true
         }
 
     }
 
     const [flow, setFlow] = useState(init.flow);
-    const [type, _setType] = useState(init.event);
+    const [type, setType] = useState(init.event);
     const [name, setName] = useState(init.name);
     const [description, setDescription] = useState(init.description);
     const [source, setSource] = useState(init.source);
+    const [errorMessage, setErrorMessage] = useState("");
     const [nameErrorMessage, setNameErrorMessage] = useState("");
     const [typeErrorMessage, setTypeErrorMessage] = useState("");
     const [flowErrorMessage, setFlowErrorMessage] = useState("");
     const [sourceErrorMessage, setSourceErrorMessage] = useState("");
     const [sourceDisabled, setSourceDisabled] = useState(init.sourceDisabled);
 
-    const setType = (value) => {
-        _setType(value);
+
+    const handleType = (value) => {
+        setType(value);
         if (value) {
             setSourceDisabled(false);
         } else {
@@ -49,20 +48,19 @@ export default function RuleForm({onSubmit, init}) {
     }
 
     const handleSourceSet = (value) => {
-        console.log('set-source', value)
         setSource(value);
     }
 
     const handleFlowChange = (value) => {
-        console.log(value)
         setFlow(value)
     }
 
-    const _onSubmit = () => {
+    const handleSubmit = () => {
+        console.log(source, isEmptyObjectOrNull(source))
 
-        if (!flow || !type || !name || !source || source?.id === "" || flow?.id === '' || type?.name === '') {
+        if (isEmptyObjectOrNull(type) || isEmptyObjectOrNull(source) || isEmptyObjectOrNull(flow) || !name) {
 
-            if (source === null || source?.id === "") {
+            if (isEmptyObjectOrNull(source)) {
                 setSourceErrorMessage("Resource can not be empty");
             } else {
                 setSourceErrorMessage("")
@@ -74,13 +72,13 @@ export default function RuleForm({onSubmit, init}) {
                 setNameErrorMessage("");
             }
 
-            if (!type || type.length === 0 || type?.name === '') {
+            if (isEmptyObjectOrNull(type)) {
                 setTypeErrorMessage("Event type can not be empty");
             } else {
                 setTypeErrorMessage("");
             }
 
-            if (!flow || flow.length === 0 || flow?.id === '') {
+            if (isEmptyObjectOrNull(flow)) {
                 setFlowErrorMessage("Flow name can not be empty");
             } else {
                 setFlowErrorMessage("");
@@ -98,74 +96,84 @@ export default function RuleForm({onSubmit, init}) {
             flow: flow
         };
 
-        onSubmit(payload)
+        request({
+                url: "/rule",
+                method: "post",
+                data: payload
+            },
+            () => { },
+            (e)=>{
+                if(e) {
+                    setErrorMessage(e[0].msg);
+                }
+            },
+            (data) => {
+                if(data) {
+                    onReady(data)
+                }
+            }
+        )
     }
 
-    return <Form>
-        <Columns>
-            <FormHeader>Set up trigger and flow</FormHeader>
-            <ElevatedBox>
-                <FormDescription>Workflow engine will trigger given flow only if incoming event type and
-                    optionally source are equal to the values set in this form. </FormDescription>
-
-                <FormSubHeader>Event type</FormSubHeader>
-                <FormDescription>Type event type to filter incoming events.</FormDescription>
-                <TuiSelectEventType value={type} errorMessage={typeErrorMessage} onSetValue={setType}/>
-
-                <FormSubHeader>Resource</FormSubHeader>
-                <FormDescription>Select event resource. Event without selected resource will be
-                    discarded.</FormDescription>
-                <TuiSelectResource value={source} disabled={sourceDisabled} onSetValue={handleSourceSet}
-                                   errorMessage={sourceErrorMessage}/>
-
-                <FormSubHeader>Flow name</FormSubHeader>
-                <FormDescription>Select existing flow. If there is none create it on Flow page.</FormDescription>
-                <div className="SearchInput">
-                    <TuiSelectFlow value={flow} errorMessage={flowErrorMessage} onSetValue={handleFlowChange}/>
-                </div>
-            </ElevatedBox>
-
-            <FormHeader>Describe rule</FormHeader>
-            <ElevatedBox>
-                <FormSubHeader>Name</FormSubHeader>
-                <FormDescription>Rule name can be any string that
-                    identifies rule.
-                </FormDescription>
-                <TextField
-                    label={"Rule name"}
-                    error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null)}
-                    helperText={nameErrorMessage}
-                    value={name}
-                    onChange={(ev) => {
-                        setName(ev.target.value)
-                    }}
-                    size="small"
-                    variant="outlined"
-                    fullWidth
-                />
-
-                <FormSubHeader>Description <sup style={{fontSize: "70%"}}>* optional</sup></FormSubHeader>
-                <FormDescription>Description will help you to understand when the rule triggers the flow.
-                </FormDescription>
-                <TextField
-                    label={"Rule description"}
-                    value={description}
-                    multiline
-                    rows={3}
-                    onChange={(ev) => {
-                        setDescription(ev.target.value)
-                    }}
-                    variant="outlined"
-                    fullWidth
-                />
-
-            </ElevatedBox>
-        </Columns>
-        <Rows style={{paddingLeft: 30}}>
-            <Button label="Save" onClick={_onSubmit}/>
-        </Rows>
-
-    </Form>
+    return <TuiForm style={{margin:20}}>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Rule trigger and workflow" description="Workflow engine will trigger given flow
+            only if incoming event type and resource are equal to the values set in this form. "/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Event type" description="Type event type to filter incoming events. If there
+                are no events please start collecting data first.">
+                    <TuiSelectEventType value={type} errorMessage={typeErrorMessage} onSetValue={handleType}/>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Resource" description="Select event resource. Event without selected resource will be
+                    discarded.">
+                    <TuiSelectResource value={source} disabled={sourceDisabled} onSetValue={handleSourceSet}
+                                       errorMessage={sourceErrorMessage}/>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Workflow"
+                                   description="Select existing workflow. If there is none create it on workflow page.">
+                    <div className="SearchInput">
+                        <TuiSelectFlow value={flow} errorMessage={flowErrorMessage} onSetValue={handleFlowChange}/>
+                    </div>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Describe rule"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Name" description="Rule name can be any string that
+                    identifies rule.">
+                    <TextField
+                        label={"Rule name"}
+                        error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null)}
+                        helperText={nameErrorMessage}
+                        value={name}
+                        onChange={(ev) => {
+                            setName(ev.target.value)
+                        }}
+                        size="small"
+                        variant="outlined"
+                        fullWidth
+                    />
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Description"
+                                   description="Description will help you to understand when the rule triggers the flow.">
+                    <TextField
+                        label={"Rule description"}
+                        value={description}
+                        multiline
+                        rows={3}
+                        onChange={(ev) => {
+                            setDescription(ev.target.value)
+                        }}
+                        variant="outlined"
+                        fullWidth
+                    />
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        {errorMessage && <TuiFormError message={errorMessage} />}
+        <Button label="Save" onClick={handleSubmit} style={{justifyContent: "center"}}/>
+    </TuiForm>
 }
 
 RuleForm.propTypes = {onSubmit: PropTypes.func, init: PropTypes.object}

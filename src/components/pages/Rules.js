@@ -24,7 +24,7 @@ const Rules = ({showAlert}) => {
     const none = () => {
     }
 
-    const onDeleteOk = (data) => {
+    const onDeleteOk = () => {
         setReady(false);
     }
 
@@ -100,6 +100,7 @@ const Rules = ({showAlert}) => {
         </TopInfoBar>
         <ListDetailView list={blocks} detail={details}/>
         <RuleFormDrawer
+            width={600}
             init={editInitData}
             label="Create Rule"
             open={formToggle}
@@ -108,7 +109,7 @@ const Rules = ({showAlert}) => {
     </React.Fragment>
 }
 
-const mapProps = (state) => {
+const mapProps = () => {
     return {}
 }
 export default connect(

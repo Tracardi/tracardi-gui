@@ -6,6 +6,7 @@
 .InfoTable > .InfoRow {
     display: grid;
     grid-template-columns: 160px auto;
+    color: #444;
 }
 
 .InfoTable > .InfoRow > DIV {
@@ -17,9 +18,12 @@
 
 .InfoTable > .InfoRow:hover {
     background-color: whitesmoke;
+
 }
 
 .InfoTable > .InfoRow > DIV:first-child {
-    text-transform: uppercase;
-    color: #444;
+    text-transform: capitalize;
+    color: black;
+    font-weight: 600;
+
 }

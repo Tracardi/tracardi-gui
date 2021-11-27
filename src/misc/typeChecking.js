@@ -7,5 +7,9 @@ export function isObject (a) {
 }
 
 export function isEmptyObject(obj) {
-    return Object.keys(obj).length === 0;
+    return isObject(obj) && Object.keys(obj).length === 0;
+}
+
+export function isEmptyObjectOrNull(obj) {
+    return obj === null || (isObject(obj) && Object.keys(obj).length === 0);
 }

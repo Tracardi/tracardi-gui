@@ -2,11 +2,13 @@ import {red} from '@material-ui/core/colors';
 import {createTheme} from '@material-ui/core/styles';
 
 export const mainTheme = createTheme({
-    // typography: {
-    //     fontFamily: [
-    //         'Lato',
-    //     ].join(','),
-    // },
+    typography: {
+        "fontFamily": `"Lato", "Arial", sans-serif`,
+        "fontSize": 15,
+        "fontWeightLight": 300,
+        "fontWeightRegular": 400,
+        "fontWeightMedium": 500
+    },
     palette: {
         primary: {
             main: '#006db3',

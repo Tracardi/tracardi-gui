@@ -156,6 +156,7 @@ export const request = ({url, header, method, data}, setLoading, setError, setRe
             setError(false);
             setReady({data: response.data, error: false});
         }).catch((e) => {
+            console.log(e)
             setLoading(false);
             setReady(false);
             if (e.response) {

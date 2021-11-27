@@ -3,19 +3,13 @@ import Button from "./Button";
 import TextField from "@material-ui/core/TextField";
 import Switch from "@material-ui/core/Switch";
 import {v4 as uuid4} from 'uuid';
-import ElevatedBox from "../misc/ElevatedBox";
-import FormSubHeader from "../misc/FormSubHeader";
-import FormDescription from "../misc/FormDescription";
-import Columns from "../misc/Columns";
-import Rows from "../misc/Rows";
-import Form from "../misc/Form";
-import FormHeader from "../misc/FormHeader";
 import JsonEditor from "../editors/JsonEditor";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from 'prop-types';
 import TuiSelectResourceType from "../tui/TuiSelectResourceType";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 
 
 function ResourceForm({init, onClose, showAlert}) {
@@ -23,7 +17,7 @@ function ResourceForm({init, onClose, showAlert}) {
     if (!init) {
         init = {
             name: "",
-            type: {name: "", id: ""},
+            type: {},
             description: "",
             config: {},
             consent: false,
@@ -47,7 +41,8 @@ function ResourceForm({init, onClose, showAlert}) {
             {url: "/resources/type/configuration"},
             () => {
             },
-            () => {},
+            () => {
+            },
             (response) => {
                 if (response) {
                     setCredentialTypes(response.data.result)
@@ -95,7 +90,7 @@ function ResourceForm({init, onClose, showAlert}) {
     const setTypeAndDefineCredentialsTemplate = (type) => {
         setType(type)
 
-        if(type?.id in credentialTypes) {
+        if (type?.id in credentialTypes) {
             let template = credentialTypes[type.id]
             template = JSON.stringify(template, null, '  ')
             setConfig(template)
@@ -134,89 +129,96 @@ function ResourceForm({init, onClose, showAlert}) {
         }
     }
 
-    return <Form>
-        <Columns>
-            <FormHeader>Resource</FormHeader>
-            <ElevatedBox className="Elevate">
-                <FormSubHeader>Resource type</FormSubHeader>
-                <FormDescription>Resource type defines soft of storage or endpoint. </FormDescription>
-                <TuiSelectResourceType value={type} onSetValue={setTypeAndDefineCredentialsTemplate} errorMessage={errorTypeMessage}/>
-
-                <FormSubHeader>Name</FormSubHeader>
-                <FormDescription>Resource name can be any string that
-                    identifies resource. Resource id is made out of rule
-                    name by replacing spaces with hyphens and lowering the string
-                </FormDescription>
-                <TextField
-                    label={"Resource name"}
-                    value={name}
-                    error={(typeof errorNameMessage !== "undefined" && errorNameMessage !== '' && errorNameMessage !== null)}
-                    helperText={errorNameMessage}
-                    onChange={(ev) => {
-                        setName(ev.target.value)
-                    }}
-                    size="small"
-                    variant="outlined"
-                    fullWidth
-                />
-
-                <FormSubHeader>Description <sup style={{fontSize: "70%"}}>* optional</sup></FormSubHeader>
-                <FormDescription>Description will help you to understand what a rule is
-                    doing.
-                </FormDescription>
-                <TextField
-                    label={"Rule description"}
-                    value={description}
-                    multiline
-                    rows={3}
-                    onChange={(ev) => {
-                        setDescription(ev.target.value)
-                    }}
-                    variant="outlined"
-                    fullWidth
-                />
-
-                <FormSubHeader>Consent</FormSubHeader>
-                <FormDescription>Check if this resource requires user consent? Web pages
-                    located in Europe require user consent to comply with GDPR. </FormDescription>
-                <div style={{display: "flex", alignItems: "center"}}>
-                    <Switch
-                        checked={requiresConsent}
-                        onChange={setRequiresConsent}
-                        name="consentRequired"
+    return <TuiForm style={{margin: 20}}>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Resource"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Resource type"
+                                   description="Resource type defines soft of storage or endpoint. ">
+                    <TuiSelectResourceType value={type}
+                                           onSetValue={setTypeAndDefineCredentialsTemplate}
+                                           errorMessage={errorTypeMessage}/>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Name" description="Resource name can be any string that
+                    identifies resource. Resource id is made out of rule name by replacing spaces with hyphens and
+                    lowering the string">
+                    <TextField
+                        label={"Resource name"}
+                        value={name}
+                        error={(typeof errorNameMessage !== "undefined" && errorNameMessage !== '' && errorNameMessage !== null)}
+                        helperText={errorNameMessage}
+                        onChange={(ev) => {
+                            setName(ev.target.value)
+                        }}
+                        size="small"
+                        variant="outlined"
+                        fullWidth
                     />
-                    <span>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Description" description="Description will help you to understand what a rule is
+                    doing.">
+                    <TextField
+                        label={"Rule description"}
+                        value={description}
+                        multiline
+                        rows={3}
+                        onChange={(ev) => {
+                            setDescription(ev.target.value)
+                        }}
+                        variant="outlined"
+                        fullWidth
+                    />
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Access and Consent"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Resource consent" description="Check if this resource requires user consent? Web pages
+                    located in Europe require user consent to comply with GDPR. ">
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <Switch
+                            checked={requiresConsent}
+                            onChange={setRequiresConsent}
+                            name="consentRequired"
+                        />
+                        <span>
                             This resource requires user consent
                         </span>
-                </div>
-                <div style={{display: "flex", alignItems: "center"}}>
-                    <Switch
-                        checked={enabledSource}
-                        onChange={() => setEnabledSource(!enabledSource)}
-                        name="enabledSource"
-                    />
-                    <span>
+                    </div>
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <Switch
+                            checked={enabledSource}
+                            onChange={() => setEnabledSource(!enabledSource)}
+                            name="enabledSource"
+                        />
+                        <span>
                         This resource is enabled
                     </span>
-                </div>
-            </ElevatedBox>
-
-            <FormHeader>Configuration</FormHeader>
-            <ElevatedBox>
-                <FormSubHeader>Credentials or Access tokens</FormSubHeader>
-                <FormDescription>This json data will be an encrypted part of resource. Please pass here all the
-                    credentials or access configuration information, such as hostname, port, username and password, etc.
-                    This part can be empty if resource does not require authorization.</FormDescription>
-                <JsonEditor value={config} onChange={setConfig}/>
-            </ElevatedBox>
-        </Columns>
-        <Rows style={{paddingLeft: 30}}>
-            <Button label="Save"
-                    onClick={_onSubmit}
-                    progress={processing}
-            />
-        </Rows>
-    </Form>
+                    </div>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Configuration"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Credentials or Access tokens" description="This json data will be an
+                encrypted part of resource. Please pass here all the credentials or access configuration information,
+                such as hostname, port, username and password, etc. This part can be empty if resource does not
+                require authorization.">
+                </TuiFormGroupField>
+                <fieldset>
+                    <legend>Credentials configuration</legend>
+                    <JsonEditor value={config} onChange={setConfig}/>
+                </fieldset>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <Button label="Save"
+                onClick={_onSubmit}
+                progress={processing}
+                style={{justifyContent: "center"}}
+        />
+    </TuiForm>
 }
 
 ResourceForm.propTypes = {

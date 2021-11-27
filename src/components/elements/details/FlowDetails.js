@@ -1,9 +1,6 @@
 import React, {useEffect} from "react";
 import Properties from "./DetailProperties";
 import Button from "../forms/Button";
-import FormHeader from "../misc/FormHeader";
-import ElevatedBox from "../misc/ElevatedBox";
-import FormSubHeader from "../misc/FormSubHeader";
 import Rows from "../misc/Rows";
 import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
 import {request} from "../../../remote_api/uql_api_endpoint";
@@ -17,6 +14,7 @@ import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
 import PropTypes from "prop-types";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 
 export default function FlowDetails({id, onDeleteComplete}) {
 
@@ -120,42 +118,45 @@ export default function FlowDetails({id, onDeleteComplete}) {
         })
     }
 
-    const Details = () => <>
-        <FormHeader>Flow</FormHeader>
-        <ElevatedBox>
-            <FormSubHeader>Data</FormSubHeader>
-            <Properties properties={data} show={["id", "name", "description", "enabled"]}/>
-            <Rows style={{marginTop: 20}}>
-                <Button onClick={onEditClick}
-                        icon={<VscEdit size={20}/>}
-                        label="Edit" disabled={typeof data === "undefined"}/>
-                <Button onClick={() => onGoToEditFlow(data.id)}
-                                       icon={<IoGitNetworkSharp size={20} style={{marginRight: 5}}/>}
-                                       label="Edit FLOW"
-                                       disabled={typeof data === "undefined"}/>
-                <Button onClick={() => onGoToDeployedFlow(data.id)}
-                        icon={<IoGitNetworkSharp size={20} style={{marginRight: 5}}/>}
-                        label="View Deployed FLOW"
-                        disabled={typeof data === "undefined"}/>
-                {onDeleteComplete && <Button
-                    icon={<VscTrash size={20}/>}
-                    onClick={onDelete}
-                    label="Delete"
-                    disabled={typeof data === "undefined"}/>
-                }
-            </Rows>
-        </ElevatedBox>
+    const Details = () => <TuiForm>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Workflow" description="Information on workflow"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Data">
+                    <Properties properties={data} show={["id", "name", "description", "enabled"]}/>
+                    <Rows style={{marginTop: 20}}>
+                        <Button onClick={onEditClick}
+                                icon={<VscEdit size={20}/>}
+                                label="Edit" disabled={typeof data === "undefined"}/>
+                        <Button onClick={() => onGoToEditFlow(data.id)}
+                                icon={<IoGitNetworkSharp size={20} style={{marginRight: 5}}/>}
+                                label="Edit FLOW"
+                                disabled={typeof data === "undefined"}/>
+                        <Button onClick={() => onGoToDeployedFlow(data.id)}
+                                icon={<IoGitNetworkSharp size={20} style={{marginRight: 5}}/>}
+                                label="View Deployed FLOW"
+                                disabled={typeof data === "undefined"}/>
+                        {onDeleteComplete && <Button
+                            icon={<VscTrash size={20}/>}
+                            onClick={onDelete}
+                            label="Delete"
+                            disabled={typeof data === "undefined"}/>
+                        }
+                    </Rows>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
 
-        {Array.isArray(rules) && rules.length > 0 && <>
-            <FormHeader>Active Rules</FormHeader>
+        {Array.isArray(rules) && rules.length > 0 && <TuiFormGroup>
+            <TuiFormGroupHeader header="Rules" description="List of rules connected with the workflow."/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Active rules" description="Rules that trigger this flow">
+                    <RulesList rules={rules}/>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>}
 
-            <ElevatedBox>
-                <FormSubHeader>Rules that trigger this flow</FormSubHeader>
-                <RulesList rules={rules}/>
-            </ElevatedBox>
-        </>}
-
-    </>
+    </TuiForm>
 
     return <div className="Box10">
         {loading && <CenteredCircularProgress/>}
@@ -182,4 +183,4 @@ export default function FlowDetails({id, onDeleteComplete}) {
 FlowDetails.propTypes = {
     id: PropTypes.string,
     onDeleteComplete: PropTypes.func,
-  };
+};

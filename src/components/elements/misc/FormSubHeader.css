@@ -1,9 +1,0 @@
-.FormSubHeader {
-    font-size: 140%;
-    margin: 15px 0 10px 0;
-    font-weight: 400;
-}
-
-.FormSubHeader:first-child {
-    margin: 0 0 10px 0;
-}

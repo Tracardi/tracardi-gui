@@ -45,11 +45,9 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
                     const options = handleDataLoaded(result, onDataLoaded)
 
                     if (typeof options !== "undefined" && options !== null) {
-                        if (Array.isArray(options) && options.length === 0) {
-                            setOptions([{name: "", key: ""}])
-                        } else {
-                            setOptions(options);
-                        }
+                        setOptions(options);
+                    } else {
+                        setOptions([])
                     }
                 }
             }
@@ -92,13 +90,13 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
             value={value}
             disabled={disabled}
             onChange={(event, newValue) => {
-                if(typeof newValue === "string") {
+                if (typeof newValue === "string") {
                     newValue = {id: null, name: newValue}
                 }
                 console.log("onChange", newValue)
                 handleValueSet(newValue);
             }}
-            onInputChange={(ev, value, reason)=>{
+            onInputChange={(ev, value, reason) => {
                 handleChange(value)
             }}
             renderInput={(params) => (

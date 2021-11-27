@@ -7,7 +7,6 @@ FORM.TuiForm > H1 {
     font-weight: 400;
     margin: 15px 10px;
     text-transform: uppercase;
-    font-family: Viga, Roboto, serif;
     color: #444;
 
 }
@@ -29,12 +28,11 @@ FORM.TuiForm > .TuiFormGroup > .TuiFormGroupHeader {
 }
 
 FORM.TuiForm > .TuiFormGroup > .TuiFormGroupHeader > H2 {
-    font-size: 170%;
+    font-size: 200%;
     margin: 0 0 10px 0;
-    font-weight: 400;
-    font-family: Viga, Roboto, serif;
+    font-weight: 300;
     color: #444;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 FORM.TuiForm > .TuiFormGroup > SECTION.TuiFormGroupContent {
@@ -45,4 +43,12 @@ FORM.TuiForm > .TuiFormGroup > SECTION.TuiFormGroupContent > H3 {
     font-size: 140%;
     margin: 15px 0 10px 0;
     font-weight: 400;
+}
+
+FORM.TuiForm DIV.TuiFormError {
+    background-color: #d81b60;
+    color: white;
+    padding: 6px;
+    display: flex;
+    align-items: center;
 }

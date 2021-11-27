@@ -1,20 +1,17 @@
 import React from "react";
-import DetailHeader from "./DetailHeader";
 import "./Details.css";
 import "./RuleDetails.css";
 import ConfirmationDialog from "../misc/ConfirmationDialog";
 import Button from "../forms/Button";
-import BluredBox from "../misc/BluredBox";
 import UqlDetails from "./UqlDetails";
 import {useHistory} from "react-router-dom";
 import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
 import urlPrefix from "../../../misc/UrlPrefix";
-import ElevatedBox from "../misc/ElevatedBox";
 import Rows from "../misc/Rows";
-import FormDescription from "../misc/FormDescription";
 import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
 import PropTypes from "prop-types";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 
 
 function RuleDetails({data, onDelete, onEdit}) {
@@ -49,54 +46,37 @@ function RuleDetails({data, onDelete, onEdit}) {
         setOpenConfirmation(false);
     }
 
-    const isChrome = !!window.chrome;
+    return <TuiForm style={{margin: 20}}>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header={data.name} description="Please find below rule logic that will trigger the workflow."/>
+            <TuiFormGroupContent>
+                <TuiFormGroupContent >
+                    <TuiFormGroupField description={data.description}>
+                        {data && <UqlDetails data={data} type="Rule"/>}
 
-    const detailBoxStyle = (isChrome)
-        ? {zIndex: 5, backgroundColor: "rgba(255,255,255,.3)", marginBottom: 0}
-        : {zIndex: 5, marginBottom: 0};
-
-    return <div style={{height: "inherit"}}>
-        <DetailHeader label={data.name}/>
-
-        <div className="RightTabScroller" style={{height: "calc(100% - 122px)", overflowY: "scroll"}}>
-
-            <BluredBox style={{position: "sticky", top: 8}}>
-
-                <ElevatedBox style={detailBoxStyle}>
-
-                    {data && <UqlDetails data={data} type="Rule"/>}
-
-                    {data.description && <FormDescription style={{marginTop: 20}}>
-                        {data.description}
-                    </FormDescription>}
-
-                    <Rows style={{marginTop: 20}}>
-                        {onEditClick && <Button onClick={onEditClick}
-                                                icon={<VscEdit size={20}/>}
-                                                label="Edit"
-                                                disabled={typeof data === "undefined"}/>}
-                        <Button onClick={onGoToFlow}
-                                icon={<IoGitNetworkSharp size={20} style={{marginRight: 5}}/>}
-                                label="Go to FLOW"
-                                disabled={typeof data === "undefined"}/>
-                        {onDeleteClick && <Button onClick={onDeleteClick}
-                                                  label="Delete"
-                                                  icon={<VscTrash size={20} style={{marginRight: 5}}/>}
-                                                  disabled={typeof data === "undefined"}/>}
-                    </Rows>
-
-                    <ConfirmationDialog open={openConfirmation} title="Do you want to delete this rule?"
-                                        content="This action can not be undone." onClose={onDeleteClose}
-                                        onAgree={onConfirmedDelete}
-                    />
-
-                </ElevatedBox>
-
-            </BluredBox>
-
-        </div>
-
-    </div>
+                        <Rows style={{marginTop: 20}}>
+                            {onEditClick && <Button onClick={onEditClick}
+                                                    icon={<VscEdit size={20}/>}
+                                                    label="Edit"
+                                                    disabled={typeof data === "undefined"}/>}
+                            <Button onClick={onGoToFlow}
+                                    icon={<IoGitNetworkSharp size={20} style={{marginRight: 5}}/>}
+                                    label="Go to FLOW"
+                                    disabled={typeof data === "undefined"}/>
+                            {onDeleteClick && <Button onClick={onDeleteClick}
+                                                      label="Delete"
+                                                      icon={<VscTrash size={20} style={{marginRight: 5}}/>}
+                                                      disabled={typeof data === "undefined"}/>}
+                        </Rows>
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <ConfirmationDialog open={openConfirmation} title="Do you want to delete this rule?"
+                            content="This action can not be undone." onClose={onDeleteClose}
+                            onAgree={onConfirmedDelete}
+        />
+    </TuiForm>
 
 }
 

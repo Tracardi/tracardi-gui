@@ -1,9 +1,6 @@
 import React, {useEffect} from "react";
 import Properties from "./DetailProperties";
 import Button from "../forms/Button";
-import FormHeader from "../misc/FormHeader";
-import ElevatedBox from "../misc/ElevatedBox";
-import FormSubHeader from "../misc/FormSubHeader";
 import Rows from "../misc/Rows";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
@@ -13,6 +10,7 @@ import SegmentForm from "../forms/SegmentForm";
 import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
 import PropTypes from "prop-types";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 
 export default function SegmentDetails({id, onDeleteComplete}) {
 
@@ -83,26 +81,28 @@ export default function SegmentDetails({id, onDeleteComplete}) {
             })
     }
 
-    const Details = () => <>
-        <FormHeader>Segment</FormHeader>
-        <ElevatedBox>
-            <FormSubHeader>Data</FormSubHeader>
-            <Properties properties={data}/>
-            <Rows style={{marginTop: 20}}>
-                <Button onClick={onEditClick}
-                        icon={<VscEdit size={20}/>}
-                        label="Edit"
-                        disabled={typeof data === "undefined"}/>
-                {onDeleteComplete && <Button
-                    icon={<VscTrash size={20}/>}
-                    onClick={onDelete}
-                    label="Delete"
-                    disabled={typeof data === "undefined"}
-                />}
-            </Rows>
-        </ElevatedBox>
-
-    </>
+    const Details = () => <TuiForm>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Segment" description="Information on segment."/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField>
+                    <Properties properties={data}/>
+                    <Rows style={{marginTop: 20}}>
+                        <Button onClick={onEditClick}
+                                icon={<VscEdit size={20}/>}
+                                label="Edit"
+                                disabled={typeof data === "undefined"}/>
+                        {onDeleteComplete && <Button
+                            icon={<VscTrash size={20}/>}
+                            onClick={onDelete}
+                            label="Delete"
+                            disabled={typeof data === "undefined"}
+                        />}
+                    </Rows>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+    </TuiForm>
 
     return <div className="Box10">
         {loading && <CenteredCircularProgress/>}

@@ -109,7 +109,6 @@ DIV.NodePanel {
     border-radius: 6px;
     border-width: 2px;
     background-color: white;
-    font-size: 14px;
     position: relative;
 }
 
@@ -136,7 +135,6 @@ DIV.DebugNode {
 DIV.NodeIcon {
     width: 24px;
     display: grid;
-    font-size: 13px;
 }
 
 DIV.NodeLabel {
@@ -148,7 +146,6 @@ DIV.NodeLabel {
 
 DIV.NodeLabel > P {
     margin: 0;
-    font-weight: 400;
 }
 
 DIV.NodeLabel ASIDE {

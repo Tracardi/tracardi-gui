@@ -42,7 +42,7 @@ export default function Flows() {
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
         drawerAddTitle="New flow"
-        drawerAddWidth={800}
+        drawerAddWidth={600}
         addFunc={addFunc}
     />
 }
