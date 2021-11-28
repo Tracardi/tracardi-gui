@@ -23,6 +23,7 @@ import InfoEdge from "./edges/InfoEdge";
 import StopEdge from "./edges/StopEdge";
 import CancelEdge from "./edges/CancelEdge";
 import BoldEdge from "./edges/BoldEdge";
+import {NodeInitForm} from "../elements/forms/NodeInitForm";
 
 export function FlowEditorPane(
     {
@@ -55,12 +56,15 @@ export function FlowEditorPane(
     const [currentNode, setCurrentNode] = useState({});
     const [debugNodeId, setDebugNode] = useState(null);
     const [displayRightSidebar, setDisplayRightSidebar] = useState(false);
+    const [displayNodeContextMenu, setDisplayNodeContextMenu] = useState(false);
     const [rightSidebarTab, setRightSidebarTab] = useState(0);
     const [animatedEdge, setAnimatedEdge] = useState(null);
     const [elements, setElements] = useState([]);
     const [logs, setLogs] = useState([]);
     const [label, setLabel] = useState({name: "", id: null});
     const [debugInProgress, setDebugInProgress] = useState(false);
+    const [clientX, setClientX] = useState(0);
+    const [clientY, setClientY] = useState(0);
 
     const updateFlow = useCallback((data) => {
         if (data) {
@@ -167,6 +171,7 @@ export function FlowEditorPane(
         setDebugNode(null);
         setAnimatedEdge(null);
         setRightSidebarTab(1);
+        setDisplayNodeContextMenu(false);
         debug(
             id,
             reactFlowInstance,
@@ -195,6 +200,7 @@ export function FlowEditorPane(
 
     const onConnect = (params) => {
         setElements((els) => addEdge(params, els));
+        setDisplayNodeContextMenu(false);
         if (onChange) {
             onChange();
         }
@@ -236,41 +242,57 @@ export function FlowEditorPane(
     const onNodeDoubleClick = (event, element) => {
         selectNode(element)
         setDisplayRightSidebar(true);
+        setDisplayNodeContextMenu(false);
     }
 
     const onElementClick = (event, element) => {
         if (onNodeClick) {
-            onNodeClick(element);
+            onNodeClick(event, element);
         }
+
     }
 
     const onPaneClick = () => {
         setDisplayRightSidebar(false);
         setDebugNode(null);
         setAnimatedEdge(null);
+        selectNode(null);
+        setDisplayNodeContextMenu(false);
     }
 
     const onNodeContextMenu = (event, element) => {
         event.preventDefault();
         event.stopPropagation();
-        setDisplayRightSidebar(false);
+        selectNode(element);
+        setDisplayNodeContextMenu(true);
+        setClientX(event?.clientX - 50);
+        setClientY(event?.clientY - 50)
+    }
+
+    const onEdgeContextMenu = (event, element) => {
+        event.preventDefault();
+        event.stopPropagation();
     }
 
     const selectNode = (node) => {
         setCurrentNode(node)
     }
 
-    const onNodeClick = (element) => {
+    const onNodeClick = (event, element) => {
+        console.log(event)
         selectNode(element);
+        setDisplayNodeContextMenu(false);
         if (element.data?.debugging && Array.isArray(element.data?.debugging)
             && element.data?.debugging.length > 0 && element.data?.debugging[0]?.edge?.id) {
             setAnimatedEdge(element.data.debugging[0].edge.id);
         } else {
             setAnimatedEdge(null);
         }
+        selectNode(element);
     }
 
-    const onConfigSave = () => {
+    const onConfigSave = (value) => {
+        currentNode.data.spec.init = value
         if (onConfig) {
             onConfig()
         }
@@ -308,6 +330,7 @@ export function FlowEditorPane(
             onNodeDoubleClick={onNodeDoubleClick}
             // onSelectionChange={onSelectionChange}
             onNodeContextMenu={onNodeContextMenu}
+            onEdgeContextMenu={onEdgeContextMenu}
             onPaneClick={onPaneClick}
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
@@ -345,6 +368,19 @@ export function FlowEditorPane(
                 }
             />
             }
+            {displayNodeContextMenu && currentNode?.data?.spec?.form && <div className="NodeContextForm"
+                                            style={{
+                                                left: clientX,
+                                                top: clientY
+                                            }}
+            >
+                <NodeInitForm
+                    pluginId={currentNode?.data?.spec?.id}
+                    init={currentNode?.data?.spec?.init}
+                    formSchema={currentNode?.data?.spec?.form}
+                    onSubmit={onConfigSave}
+                />
+            </div>}
             <Background color="#444" gap={16}/>
         </ReactFlow>}
     </div>

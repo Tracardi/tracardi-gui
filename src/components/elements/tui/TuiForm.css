@@ -45,6 +45,10 @@ FORM.TuiForm > .TuiFormGroup > SECTION.TuiFormGroupContent > H3 {
     font-weight: 400;
 }
 
+FORM.TuiForm > .TuiFormGroup > SECTION.TuiFormGroupContent > H3:first-child {
+    margin-top: 0;
+}
+
 FORM.TuiForm DIV.TuiFormError {
     background-color: #d81b60;
     color: white;

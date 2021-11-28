@@ -32,7 +32,6 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
         [node, tab])
 
     const handleSubmit = (init) => {
-        node.data.spec.init = init
         if(onConfig){
             onConfig(init)
         }

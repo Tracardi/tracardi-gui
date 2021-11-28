@@ -2,6 +2,10 @@ export function isString(value) {
     return typeof value === 'string' || value instanceof String
 }
 
+export function isEmptyStringOrNull(value) {
+    return  value=== null || value === "";
+}
+
 export function isObject (a) {
     return (!!a) && (a.constructor === Object);
 }

@@ -13,6 +13,7 @@ import CopyTraitsForm from "./CopyTraitsForm";
 import ErrorLine from "../../errors/ErrorLine";
 import SqlEditor from "../editors/SqlEditor";
 import TuiSelectResource from "../tui/TuiSelectResource";
+import {isEmptyStringOrNull} from "../../../misc/typeChecking";
 
 export function TextInput({value, label, errorMessage, onChange}) {
 
@@ -32,7 +33,7 @@ export function TextInput({value, label, errorMessage, onChange}) {
                       variant="outlined"
                       size="small"
                       helperText={errorMessage}
-                      error={errorMessage}
+                      error={!isEmptyStringOrNull(errorMessage)}
                       fullWidth
     />
 }
@@ -184,7 +185,7 @@ export function TextAreaInput({value, label, errorMessage, onChange = null}) {
                       value={text}
                       onChange={handleChange}
                       helperText={errorMessage}
-                      error={errorMessage}
+                      error={!isEmptyStringOrNull(errorMessage)}
                       variant="outlined"
                       multiline
                       fullWidth

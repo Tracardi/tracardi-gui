@@ -57,3 +57,14 @@
     flex: 1;
     height: inherit;
 }
+.FlowEditor .NodeContextForm {
+    position: absolute;
+    z-index: 12;
+    padding: 10px;
+    max-height: 500px;
+    overflow: auto;
+    width: 600px;
+    background-color: rgba(245, 245, 245, .8);
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
