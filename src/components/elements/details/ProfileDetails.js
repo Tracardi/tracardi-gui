@@ -3,7 +3,6 @@ import theme from "../../../themes/inspector_light_theme";
 import {ObjectInspector} from "react-inspector";
 import "../lists/cards/SourceCard.css";
 import "./RuleDetails.css";
-import {MiniHeader} from "../Headers";
 import "./Details.css";
 import Properties from "./DetailProperties";
 import Tabs, {TabCase} from "../tabs/Tabs";
@@ -11,6 +10,7 @@ import PropTypes from "prop-types";
 import PiiDetails from "./PiiDetails";
 import ProfileEventHeatMap from "./ProfileEventHeatMap";
 import './ProfileDetails.css';
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 
 export default function ProfileDetails({data}) {
 
@@ -19,22 +19,51 @@ export default function ProfileDetails({data}) {
         <div className="RightTabScroller">
             <Tabs tabs={["Traits", "Segments", "Events", "Raw"]} className="ProfileDetailsTabs">
                 <TabCase id={0}>
-                    <div className="Box10">
-                        <MiniHeader>Private</MiniHeader>
-                        <Properties properties={data.traits.private}/>
-                        <MiniHeader>Public</MiniHeader>
-                        <Properties properties={data.traits.public}/>
-                    </div>
+                    <TuiForm style={{margin: 20}}>
+                        <TuiFormGroup>
+                            <TuiFormGroupHeader header="Traits"/>
+                            <TuiFormGroupContent>
+                                <TuiFormGroupField header="Private traits">
+                                    <Properties properties={data?.traits?.private}/>
+                                </TuiFormGroupField>
+                                <TuiFormGroupField header="Public traits">
+                                    <Properties properties={data?.traits?.public}/>
+                                </TuiFormGroupField>
+                            </TuiFormGroupContent>
+                        </TuiFormGroup>
+                        <TuiFormGroup>
+                            <TuiFormGroupHeader header="Personally Identifiable Information "/>
+                            <TuiFormGroupContent>
+                                <TuiFormGroupField>
+                                    <Properties properties={data?.pii}/>
+                                </TuiFormGroupField>
+                            </TuiFormGroupContent>
+                        </TuiFormGroup>
+                    </TuiForm>
                 </TabCase>
                 <TabCase id={1}>
-                    <div className="Box10">
-                        <Properties properties={{segments: data.segments}}/>
-                    </div>
+                    <TuiForm style={{margin: 20}}>
+                        <TuiFormGroup>
+                            <TuiFormGroupHeader header="Segments"/>
+                            <TuiFormGroupContent>
+                                <TuiFormGroupField>
+                                    <Properties properties={{segments: data.segments}}/>
+                                </TuiFormGroupField>
+                            </TuiFormGroupContent>
+                        </TuiFormGroup>
+                    </TuiForm>
                 </TabCase>
                 <TabCase id={2}>
-                    <div style={{padding: 20}}>
-                        <ProfileEventHeatMap profileId={data.id} />
-                    </div>
+                    <TuiForm style={{margin: 20}}>
+                        <TuiFormGroup>
+                            <TuiFormGroupHeader header="Events heatmap"/>
+                            <TuiFormGroupContent>
+                                <TuiFormGroupField>
+                                    <ProfileEventHeatMap profileId={data.id} />
+                                </TuiFormGroupField>
+                            </TuiFormGroupContent>
+                        </TuiFormGroup>
+                    </TuiForm>
                 </TabCase>
                 <TabCase id={3}>
                     <div className="Box10">

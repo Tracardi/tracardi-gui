@@ -24,7 +24,6 @@ export default function SessionsAnalytics() {
         label="List of sessions"
         enableFiltering={true}
         type="session"
-        detailsLabel="Session details"
         timeFieldLabel = "timestamp"
         filterFields={['metadata.time', 'context.storage', 'context.screen']}
         timeField={(row) => [row.metadata.time.insert]}

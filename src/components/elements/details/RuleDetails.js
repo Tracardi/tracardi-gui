@@ -26,7 +26,7 @@ function RuleDetails({data, onDelete, onEdit}) {
     }
 
     const onGoToFlow = () => {
-        history.push(urlPrefix("/setup/flow/") + data.flow.id);
+        history.push(urlPrefix("/setup/flow/") + data?.flow?.id);
     }
 
     const onDeleteClick = () => {
@@ -37,8 +37,8 @@ function RuleDetails({data, onDelete, onEdit}) {
 
     const onConfirmedDelete = () => {
         setOpenConfirmation(false);
-        if (data.id) {
-            onDelete(data.id);
+        if (data?.id) {
+            onDelete(data?.id);
         }
     }
 
@@ -48,10 +48,10 @@ function RuleDetails({data, onDelete, onEdit}) {
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
-            <TuiFormGroupHeader header={data.name} description="Please find below rule logic that will trigger the workflow."/>
+            <TuiFormGroupHeader header={data?.name} description="Please find below rule logic that will trigger the workflow."/>
             <TuiFormGroupContent>
                 <TuiFormGroupContent >
-                    <TuiFormGroupField description={data.description}>
+                    <TuiFormGroupField description={data?.description}>
                         {data && <UqlDetails data={data} type="Rule"/>}
 
                         <Rows style={{marginTop: 20}}>

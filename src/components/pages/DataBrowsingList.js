@@ -15,7 +15,6 @@ export default function DataBrowsingList(
         initQuery,
         displayDetails,
         detailsDrawerWidth,
-        detailsLabel
     }) {
 
     return <section className="DataBrowsingList">
@@ -32,7 +31,6 @@ export default function DataBrowsingList(
                 timeFieldLabel={timeFieldLabel}
                 displayDetails={displayDetails}
                 detailsDrawerWidth={detailsDrawerWidth}
-                detailsLabel={detailsLabel}
             />
         </div>
     </section>

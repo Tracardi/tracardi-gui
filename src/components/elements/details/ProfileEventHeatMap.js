@@ -34,11 +34,11 @@ export default function ProfileEventHeatMap({profileId}) {
         {loading && <CenteredCircularProgress/>}
         {events && <HeatMap value={events}
                     startDate={startDate()}
-                    width={1150}
+                    width={1080}
                     height={180}
-                    rectSize={18}
+                    rectSize={15}
                     rectProps={{
-                        rx: 10
+                        rx: 8
                     }}
                     panelColors={{
                         0: '#eee',

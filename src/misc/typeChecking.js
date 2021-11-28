@@ -11,5 +11,5 @@ export function isEmptyObject(obj) {
 }
 
 export function isEmptyObjectOrNull(obj) {
-    return obj === null || (isObject(obj) && Object.keys(obj).length === 0);
+    return !obj || obj === null || (isObject(obj) && Object.keys(obj).length === 0);
 }

@@ -4,11 +4,11 @@
 }
 .FilterAddForm > DIV {
     display: grid;
-    grid-template-columns: auto 190px;
+    grid-template-columns: auto 200px;
     width: inherit;
     align-items: center;
     padding: 10px;
-    background-color: white;
+    background-color: whitesmoke;
     grid-gap: 5px;
     border-radius: 5px;
 }

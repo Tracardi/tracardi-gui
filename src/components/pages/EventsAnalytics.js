@@ -35,7 +35,6 @@ export default function EventsAnalytics() {
         type="event"
         label="List of events"
         enableFiltering={true}
-        detailsLabel="Event details"
         timeFieldLabel = "timestamp"
         filterFields={[
             'session.profile',

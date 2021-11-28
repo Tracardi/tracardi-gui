@@ -2,7 +2,6 @@ import React from "react";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import "./ObjectList.css";
 import Drawer from "@material-ui/core/Drawer";
-import RightPaperHeader from "../RightPaperHeader";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import AutoLoadObjectList from "./AutoLoadObjectList";
@@ -10,7 +9,6 @@ import AutoLoadObjectList from "./AutoLoadObjectList";
 function DetailsObjectList({
                                label,
                                filterFields,
-                               detailsLabel,
                                timeFieldLabel,
                                timeField,
                                onLoadRequest,
@@ -55,7 +53,7 @@ function DetailsObjectList({
         }
     }
 
-    const useStyles = makeStyles((theme) => ({
+    const useStyles = makeStyles(() => ({
         drawerPaper: {
             overflow: "hidden"
         },
@@ -79,9 +77,6 @@ function DetailsObjectList({
         {onLoadDetails &&
         <Drawer anchor="right" open={detailsToggle} onClose={closeDetails} classes={{paper: classes.drawerPaper}}>
             <div style={{width: drawerWidth, height: "inherit"}}>
-                <RightPaperHeader onClose={closeDetails}>
-                    <span style={{fontWeight: 600}}>{detailsLabel}</span>
-                </RightPaperHeader>
                 {loadingDetails && <CenteredCircularProgress/>}
                 {detailsData && displayDetails && displayDetails(detailsData.data)}
             </div>

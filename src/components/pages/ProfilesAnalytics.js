@@ -36,7 +36,6 @@ export default function ProfilesAnalytics() {
         type="profile"
         label="List of profiles"
         enableFiltering={true}
-        detailsLabel="Profile details"
         timeFieldLabel = "last visit"
         timeField={(row) => [row.metadata.time.insert]}
         filterFields={['metadata.time.insert','metadata.time.update']}

@@ -14,7 +14,6 @@ export default function DataAnalytics({
   onLoadDataRequest,
   onLoadHistogramRequest,
   onLoadDetails,
-  detailsLabel,
   timeField,
   timeFieldLabel,
   displayDetails,
@@ -162,7 +161,6 @@ export default function DataAnalytics({
           initQuery={query}
           displayDetails={displayDetails}
           detailsDrawerWidth={detailsDrawerWidth}
-          detailsLabel={detailsLabel}
         >
           <BarChartElement
             onLoadRequest={onLoadHistogramRequest(query)}
