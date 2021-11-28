@@ -1,19 +1,18 @@
 .RuleRow {
-    align-items: flex-start;
+    display: grid;
+    align-items: center;
     padding: 5px;
     border-bottom: 1px solid #cecece;
-    font-size: 16px;
-    display: grid;
-    grid-template-columns:  30px 3fr 30px 7fr;
+    grid-template-columns: 1fr 30px 1fr 30px 1fr;
 }
-.RuleRow > .event,
-.RuleRow > .rule,
+.RuleRow > .EventBox,
+.RuleRow > .RuleBox,
 .RuleRow .name,
 .RuleRow .desc {
     margin-right: 10px
 }
-.RuleRow > .event {
-    padding: 3px 10px 3px 5px;
+.RuleRow > .EventBox {
+    padding: 5px 10px 5px 5px;
     border: 2px solid #1565c0;
     background-color: #1565c0;
     color: white;
@@ -22,8 +21,9 @@
     align-items: center;
 }
 
-.RuleRow > .rule {
-    padding: 3px;
+.RuleRow > .RuleBox {
+    padding: 5px;
+    align-items: center;
     border: 2px solid #1565c0;
     color: #1565c0;
     border-radius: 4px;

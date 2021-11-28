@@ -39,7 +39,7 @@ export default function Flows() {
         buttomLabel="New flow"
         buttonIcon={<IoGitNetworkSharp size={20} style={{marginRight: 10}}/>}
         drawerDetailsTitle="Flow details"
-        drawerDetailsWidth={800}
+        drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
         drawerAddTitle="New flow"
         drawerAddWidth={600}

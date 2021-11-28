@@ -112,9 +112,9 @@ export default function FlowDetails({id, onDeleteComplete}) {
             })
     }
 
-    const RulesList = ({rules}) => {
+    const RulesList = ({flow, rules}) => {
         return rules.map((rule, index) => {
-            return <RuleRow data={rule} key={index}/>
+            return <RuleRow data={rule} flow={flow} key={index}/>
         })
     }
 
@@ -151,7 +151,7 @@ export default function FlowDetails({id, onDeleteComplete}) {
             <TuiFormGroupHeader header="Rules" description="List of rules connected with the workflow."/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Active rules" description="Rules that trigger this flow">
-                    <RulesList rules={rules}/>
+                    <RulesList flow={data.name} rules={rules}/>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>}
