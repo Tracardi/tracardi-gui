@@ -3,8 +3,6 @@ import {Redirect, useLocation} from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -66,7 +64,6 @@ const SignInForm = ({showAlert}) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [rememberMe, setRememberMe] = useState(false);
 
     const {state} = useLocation();
     const {from} = state || {from: {pathname: urlPrefix("/home")}};
@@ -78,9 +75,6 @@ const SignInForm = ({showAlert}) => {
 
     const handlePassChange = (evt) => {
         setPassword(evt.target.value);
-    }
-    const handleRemMe = (evt) => {
-        setRememberMe(evt.target.checked);
     }
 
     const onSubmit = event => {
@@ -144,11 +138,6 @@ const SignInForm = ({showAlert}) => {
                             id="password"
                             autoComplete="current-password"
                             onChange={handlePassChange}
-                        />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" onChange={handleRemMe}
-                                               checked={rememberMe}/>}
-                            label="Remember me"
                         />
                         <Button
                             type="submit"

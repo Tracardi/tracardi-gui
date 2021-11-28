@@ -19,7 +19,7 @@ export default configureStore({
             alertReducer,
             eventDataGridReducer,
             uqlReducer,
-            pagingReducer
+            pagingReducer,
         }
     }
 );
