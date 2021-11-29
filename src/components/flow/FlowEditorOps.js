@@ -22,11 +22,15 @@ export function prepareGraph(reactFlowInstance) {
 export function prepareFlowPayload(id, flowMetaData, reactFlowInstance) {
     return {
         id: id,
-        name: flowMetaData.name,
-        description: flowMetaData.description,
-        enabled: flowMetaData.enabled,
+        wf_schema: {
+            uri: flowMetaData?.wf_schema?.uri,
+            version: flowMetaData?.wf_schema?.version
+        },
+        name: flowMetaData?.name,
+        description: flowMetaData?.description,
+        enabled: flowMetaData?.enabled,
         flowGraph: prepareGraph(reactFlowInstance),
-        projects: flowMetaData.projects
+        projects: flowMetaData?.projects
     }
 }
 

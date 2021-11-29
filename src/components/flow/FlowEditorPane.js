@@ -70,6 +70,10 @@ export function FlowEditorPane(
         if (data) {
             if (onFlowLoad) {
                 const payload = {
+                    wf_schema: {
+                        uri:   data?.wf_schema?.uri,
+                        version: data?.wf_schema?.version
+                    },
                     name: data?.name,
                     description: data?.description,
                     enabled: data?.enabled,
