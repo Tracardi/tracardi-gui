@@ -129,7 +129,7 @@ export default function SegmentForm({onSubmit, init}) {
                         multiline
                         rows={3}
                         error={(typeof conditionErrorMessage !== "undefined" && conditionErrorMessage !== '' && conditionErrorMessage !== null)}
-                        helperText={conditionErrorMessage ? conditionErrorMessage : "Condition example: stats.visits>10 AND properties.public.boughtProducts>1"}
+                        helperText={conditionErrorMessage ? conditionErrorMessage : "Condition example: profile@stats.visits>10 AND profile@traits.public.boughtProducts>1"}
                         onChange={(ev) => {
                             setCondition(ev.target.value)
                         }}
