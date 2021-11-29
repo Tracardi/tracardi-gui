@@ -16,6 +16,8 @@ import {signInTheme} from "../../themes";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import {connect} from "react-redux";
 import urlPrefix from "../../misc/UrlPrefix";
+import Autocomplete from '@material-ui/lab/Autocomplete';
+
 
 function Copyright() {
     return (
@@ -59,11 +61,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignInForm = ({showAlert}) => {
+    const nodeRef = useRef(null);
 
     const classes = useStyles();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [endpoint, setEndpoint] = useState(
+        localStorage.getItem('tracardi-api-url')
+          ? JSON.parse(localStorage.getItem('tracardi-api-url'))
+          : ''
+    );
 
     const {state} = useLocation();
     const {from} = state || {from: {pathname: urlPrefix("/home")}};
@@ -77,6 +85,29 @@ const SignInForm = ({showAlert}) => {
         setPassword(evt.target.value);
     }
 
+    const handleSubmitEndpoint = () => {
+        localStorage.setItem('tracardi-api-url', JSON.stringify(endpoint));
+    
+        // if tracardi-api-urls doesn't exist create new one with endpoint in it
+        if (JSON.parse(localStorage.getItem('tracardi-api-urls')) === null) {
+          localStorage.setItem('tracardi-api-urls', JSON.stringify([endpoint]));
+          return;
+        }
+    
+        let historicalEndpoints = JSON.parse(
+          localStorage.getItem('tracardi-api-urls')
+        );
+    
+        // if tracardi-api-urls doesn't contain endpoint, append endpoint to list
+        if (!historicalEndpoints.includes(endpoint)) {
+          historicalEndpoints.push(endpoint);
+          localStorage.setItem(
+            'tracardi-api-urls',
+            JSON.stringify(historicalEndpoints)
+          );
+        }
+      };
+
     const onSubmit = event => {
         const api = loginUser(email, password);
         api
@@ -84,6 +115,7 @@ const SignInForm = ({showAlert}) => {
                 setToken(response.data['access_token']);
                 setRoles(response.data['roles'])
                 setRedirectToReferrer(true);
+                handleSubmitEndpoint();
             })
             .catch(e => {
                 let message = e.message;
@@ -139,6 +171,32 @@ const SignInForm = ({showAlert}) => {
                             autoComplete="current-password"
                             onChange={handlePassChange}
                         />
+                        <div
+                            ref={nodeRef}
+                            style={{
+                                width: '100%',
+                            }}
+                            >
+                            <Autocomplete
+                                options={
+                                localStorage.getItem('tracardi-api-urls')
+                                    ? JSON.parse(localStorage.getItem('tracardi-api-urls'))
+                                    : []
+                                }
+                                value={endpoint}
+                                onChange={(e, v) => setEndpoint(v)}
+                                freeSolo
+                                renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    onChange={({ target }) => setEndpoint(target.value)}
+                                    label='API Endpoint'
+                                    margin='normal'
+                                    variant='outlined'
+                                />
+                                )}
+                            />
+                            </div>
                         <Button
                             type="submit"
                             fullWidth
