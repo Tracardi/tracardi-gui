@@ -5,9 +5,15 @@
     background: rgba(235,235,235,0.75);
     z-index: 10;
     padding: 6px 15px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     flex-direction: row;
-    font-size: 18px;
+    font-size: 120%;
     width: 100%;
+    justify-content: space-between;
+}
+
+.FlowEditorTitle > DIV {
+    display: flex;
+    align-items: center;
 }

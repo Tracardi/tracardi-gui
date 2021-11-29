@@ -72,7 +72,8 @@ export function FlowEditorPane(
                 const payload = {
                     wf_schema: {
                         uri:   data?.wf_schema?.uri,
-                        version: data?.wf_schema?.version
+                        version: data?.wf_schema?.version,
+                        server_version: data?.wf_schema?.server_version
                     },
                     name: data?.name,
                     description: data?.description,

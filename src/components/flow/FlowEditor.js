@@ -107,6 +107,7 @@ const FlowEditor = ({showAlert}) => {
                     <div className="LeftColumn">
                         <FlowEditorTitle
                             title={flowMetaData?.name}
+                            schema={flowMetaData?.wf_schema}
                             modified={modified}
                             deployed={deployed}
                             onSave={() => onSaveDraft(false)}
