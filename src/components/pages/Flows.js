@@ -36,12 +36,12 @@ export default function Flows() {
         label="Workflows"
         urlFunc={urlFunc}
         cardFunc={flows}
-        buttomLabel="New flow"
+        buttomLabel="New workflow"
         buttonIcon={<IoGitNetworkSharp size={20} style={{marginRight: 10}}/>}
-        drawerDetailsTitle="Flow details"
+        drawerDetailsTitle="Workflow details"
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
-        drawerAddTitle="New flow"
+        drawerAddTitle="New workflow"
         drawerAddWidth={600}
         addFunc={addFunc}
     />

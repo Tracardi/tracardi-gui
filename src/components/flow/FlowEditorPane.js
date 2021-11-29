@@ -97,7 +97,7 @@ export function FlowEditorPane(
     useEffect(() => {
         setFlowLoading(true);
         request({
-                url: ((draft) ? "/flow/draft/" : "/flow/") + id,
+                url: ((draft) ? "/flow/draft/" : "/flow/production") + id,
             },
             setFlowLoading,
             (e) => {

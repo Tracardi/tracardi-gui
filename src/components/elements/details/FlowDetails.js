@@ -30,7 +30,7 @@ export default function FlowDetails({id, onDeleteComplete}) {
     useEffect(() => {
             setLoading(true);
             request({
-                    url: '/flow/' + id,
+                    url: '/flow/metadata/' + id,
                     method: "get"
                 },
                 setLoading,

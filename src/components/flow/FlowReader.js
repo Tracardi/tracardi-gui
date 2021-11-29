@@ -21,7 +21,7 @@ export function FlowReader({showAlert}) {
     useEffect(() => {
         setFlowLoading(true);
         request({
-                url: "/flow/" + id,
+                url: "/flow/production/" + id,
             },
             setFlowLoading,
             (e) => {

@@ -35,7 +35,7 @@ export function save(id, flowMetaData, reactFlowInstance, onError, onReady, prog
     progress(true);
     request(
         {
-            url: (deploy === false) ? "/flow/draft" : "/flow",
+            url: (deploy === false) ? "/flow/draft" : "/flow/production",
             method: "POST",
             data: payload
         },
