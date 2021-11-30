@@ -24,6 +24,7 @@ import StopEdge from "./edges/StopEdge";
 import CancelEdge from "./edges/CancelEdge";
 import BoldEdge from "./edges/BoldEdge";
 import {NodeInitForm} from "../elements/forms/NodeInitForm";
+import WfSchema from "./WfSchema";
 
 export function FlowEditorPane(
     {
@@ -36,6 +37,7 @@ export function FlowEditorPane(
         onConfig,
         locked = false,
         draft = true,
+        schema,
         showAlert
     }) {
 
@@ -386,6 +388,7 @@ export function FlowEditorPane(
                     onSubmit={onConfigSave}
                 />
             </div>}
+            <WfSchema schema={schema} style={{position: "absolute" , bottom:5, right:10, fontSize: "80%"}}/>
             <Background color="#444" gap={16}/>
         </ReactFlow>}
     </div>

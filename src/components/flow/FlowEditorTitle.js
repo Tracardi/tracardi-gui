@@ -4,9 +4,8 @@ import {TiTickOutline} from "@react-icons/all-files/ti/TiTickOutline";
 import {BsToggleOn} from "@react-icons/all-files/bs/BsToggleOn";
 import {BsToggleOff} from "@react-icons/all-files/bs/BsToggleOff";
 import "./FlowEditorTitle.css";
-import {VscWarning} from "@react-icons/all-files/vsc/VscWarning";
 
-export default function FlowEditorTitle({title, schema, modified, deployed, onSave, onDeploy}) {
+export default function FlowEditorTitle({title, modified, deployed, onSave, onDeploy}) {
 
     const Saved = ({onClick}) => {
         const button = () => (modified)
@@ -24,30 +23,11 @@ export default function FlowEditorTitle({title, schema, modified, deployed, onSa
         return <span onClick={onClick} style={{cursor: "pointer"}}>{button()}</span>
     }
 
-    const Warning = ({version}) => {
-        return <>
-            <VscWarning style={{color: "red", marginLeft: 10, marginRight: 10}} size={25} title="Incompatible backend version ."/> {version}
-            </>
-    }
-
-    const Schema = ({schema}) => {
-        if(schema) {
-            return <>
-            {schema?.uri} v. {schema?.version}
-            {schema?.server_version!==schema?.version && <Warning version={schema?.server_version}/>}
-            </>
-        }
-        return ""
-    }
-
     return <aside className="FlowEditorTitle">
         <div>
             <Saved onClick={onSave}/>
             <Deployed onClick={onDeploy}/>
             <span style={{marginLeft: 10}}>{title}</span>
-        </div>
-        <div>
-            <Schema schema={schema}/>
         </div>
     </aside>
 }
