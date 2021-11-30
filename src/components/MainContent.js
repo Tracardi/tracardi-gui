@@ -20,7 +20,7 @@ import SocialButton from "./elements/misc/SocialButton";
 import {Facebook, Twitter, YouTube} from "@material-ui/icons";
 import {VscBook} from "@react-icons/all-files/vsc/VscBook";
 import {VscDebugConsole} from "@react-icons/all-files/vsc/VscDebugConsole";
-
+import version from "../misc/version";
 
 export default function MainContent({children, style}) {
 
@@ -43,7 +43,7 @@ export default function MainContent({children, style}) {
     const Brand = () => {
         return <span className="Brand">TRACARDI
             <span className="BrandTag">Home for your Customer Data</span>
-            <span className="Version"> v. 0.6.0</span>
+            <span className="Version"> v. {version()}</span>
         </span>
     }
 
