@@ -388,7 +388,7 @@ export function FlowEditorPane(
                     onSubmit={onConfigSave}
                 />
             </div>}
-            <WfSchema schema={schema} style={{position: "absolute" , bottom:5, right:10, fontSize: "80%"}}/>
+            <WfSchema schema={schema} style={{position: "absolute", color: "#555" , bottom:5, right:10, fontSize: "80%"}}/>
             <Background color="#444" gap={16}/>
         </ReactFlow>}
     </div>
