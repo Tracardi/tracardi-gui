@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Redirect, useLocation} from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -16,6 +16,8 @@ import {signInTheme} from "../../themes";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import {connect} from "react-redux";
 import urlPrefix from "../../misc/UrlPrefix";
+import { getData } from '../../remote_api/uql_api_endpoint';
+import version from '../../misc/version';
 
 function Copyright() {
     return (
@@ -59,6 +61,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SignInForm = ({showAlert}) => {
+    const ver = version()
+    const [ready, setReady] = useState({
+        data: null
+    });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchVerision = async () => {
+            await getData("http://localhost:8686/info/verision", setLoading, setError, setReady);
+            if (error) {
+                console.log(error);
+            }
+        }
+        fetchVerision()
+    }, [])
+
 
     const classes = useStyles();
 
@@ -114,6 +133,15 @@ const SignInForm = ({showAlert}) => {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
+
+                    {!loading && ready.data !== ver  ? (
+                        <p style={{
+                            color: "red",
+                            fontSize: "12px",
+                            marginTop: "10px"
+
+                        }}>The GUI version does not match API version.</p>
+                    ) : null}
                     <form onSubmitCapture={onSubmit} className={classes.form} noValidate>
                         <TextField
                             variant="outlined"
