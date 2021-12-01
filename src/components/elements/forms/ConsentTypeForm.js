@@ -5,7 +5,6 @@ import TuiFormError from "../tui/TuiFormError";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import BoolInput from "./BoolInput";
-import Properties from "../details/DetailProperties";
 
 import { request } from "../../../remote_api/uql_api_endpoint";
 import { v4 as uuid4 } from "uuid";
@@ -58,7 +57,6 @@ export default function ConsentTypeForm({ init }) {
                 id="name"
                 label="Enter name"
                 value={name}
-                //  onKeyPressCapture={onEnterPressed}
                 onChange={(ev) => {
                   setName(ev.target.value);
                 }}

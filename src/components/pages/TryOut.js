@@ -5,16 +5,18 @@ import React from "react";
 // import KeyValueForm from "../elements/forms/KeyValueForm";
 // import IconSelector from "../elements/IconSelector";
 import ConsentTypeForm from "../elements/forms/ConsentTypeForm";
+import ConsentTypeList from "../elements/lists/ConsentTypeList";
 
 export default function TryOut() {
   return (
-    <>
+    <div>
       {/* <IconSelector value="alert" onChange={(ic) => console.log(ic)}/>
         <KeyValueForm value={{kw:"value"}} onChange={(v)=>console.log(v)}/>
         <TimeInput />
         <DottedPathInput value={"ala.kk"} onChange={(v)=>console.log(v)} forceMode={2} width={300}/>
         <ListOfDottedInputs onChange={(x)=>console.log(x)}/> */}
-      <ConsentTypeForm />
-    </>
+      <ConsentTypeList />
+      {/* <ConsentTypeForm /> */}
+    </div>
   );
 }
