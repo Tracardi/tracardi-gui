@@ -9,7 +9,6 @@ import {useHistory} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import {VscPlug} from "@react-icons/all-files/vsc/VscPlug";
 import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
-import {BsShieldLock} from "@react-icons/all-files/bs/BsShieldLock";
 import {BsPerson} from "@react-icons/all-files/bs/BsPerson";
 import {BsLightning} from "@react-icons/all-files/bs/BsLightning";
 import {BsGear} from "@react-icons/all-files/bs/BsGear";
@@ -27,15 +26,10 @@ export default function MainMenu() {
 
     return <div className="MainMenu">
         <div>
-            <MenuIcon icon={<AiOutlineCloudServer size={25}/>} label="Sources">
+            <MenuIcon icon={<BsFolder size={25}/>} label="Data">
                 <MenuItem onClick={go("/setup/resources")}>
                     <AiOutlineCloudServer size={20} style={{marginRight: 8}}/>Resources
                 </MenuItem>
-                <MenuItem onClick={go("/setup/credentials")}>
-                    <BsShieldLock size={20} style={{marginRight: 8}}/> Resource's configurations
-                </MenuItem>
-            </MenuIcon>
-            <MenuIcon icon={<BsFolder size={25}/>} label="Data">
                 <MenuItem onClick={go("/home/events")}>
                     <BsLightning size={20} style={{marginRight: 8}}/> Events
                 </MenuItem>

@@ -12,7 +12,6 @@ import FlowEditor from "./flow/FlowEditor";
 import Flows from "./pages/Flows";
 import urlPrefix from "../misc/UrlPrefix";
 import ActionPlugins from "./pages/ActionPlugins";
-import Credentials from "./pages/Credentials";
 import Segments from "./pages/Segments";
 import FlowReader from "./flow/FlowReader";
 import '@szhsin/react-menu/dist/index.css';
@@ -85,9 +84,6 @@ const AppBox = () => {
                 <Settings/>
             </PrivateRoute>
 
-            <PrivateRoute path={urlPrefix("/setup/credentials")} roles={["admin"]}>
-                <Credentials/>
-            </PrivateRoute>
             <PrivateRoute exact path={urlPrefix("/setup")} roles={["admin"]}>
                 <Flows/>
             </PrivateRoute>

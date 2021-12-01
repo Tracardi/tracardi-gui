@@ -12,6 +12,7 @@ import TuiSelectResourceType from "../tui/TuiSelectResourceType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import DisabledInput from "./inputs/DisabledInput";
 import Chip from "@material-ui/core/Chip";
+import Tabs, {TabCase} from "../tabs/Tabs";
 
 
 function ResourceForm({init, onClose, showAlert}) {
@@ -22,7 +23,10 @@ function ResourceForm({init, onClose, showAlert}) {
             name: "",
             type: {},
             description: "",
-            config: {},
+            credentials: {
+                production: {},
+                test: {}
+            },
             consent: false,
             enabled: false,
             tags: []
@@ -38,9 +42,11 @@ function ResourceForm({init, onClose, showAlert}) {
     const [description, setDescription] = useState(init?.description);
     const [errorTypeMessage, setTypeErrorMessage] = useState('');
     const [errorNameMessage, setNameErrorMessage] = useState('');
-    const [config, setConfig] = useState(JSON.stringify(init?.config, null, '  '));
+    const [productionConfig, setProductionConfig] = useState(JSON.stringify(init?.credentials?.production, null, '  '));
+    const [testConfig, setTestConfig] = useState(JSON.stringify(init?.credentials?.test, null, '  '));
     const [processing, setProcessing] = useState(false);
     const [credentialTypes, setCredentialTypes] = useState({});
+    const [selectedTab, setSelectedTab] = useState(0);
 
     useEffect(() => {
         request(
@@ -98,7 +104,8 @@ function ResourceForm({init, onClose, showAlert}) {
 
         if (type?.id in credentialTypes) {
             const template = credentialTypes[type.id]
-            setConfig(JSON.stringify(template?.config, null, '  '))
+            setProductionConfig(JSON.stringify(template?.config, null, '  '))
+            setTestConfig(JSON.stringify(template?.config, null, '  '))
             setTags(template?.tags)
         }
     }
@@ -126,7 +133,10 @@ function ResourceForm({init, onClose, showAlert}) {
                 name: name,
                 description: description,
                 type: type.name,
-                config: (config === "") ? {} : JSON.parse(config),
+                credentials: {
+                    production: (productionConfig === "") ? {} : JSON.parse(productionConfig),
+                    test: (testConfig === "") ? {} : JSON.parse(testConfig)
+                },
                 consent: requiresConsent,
                 enabled: enabledSource,
                 tags: tags
@@ -135,6 +145,10 @@ function ResourceForm({init, onClose, showAlert}) {
         } catch (e) {
             alert("Invalid JSON in field CONFIG.")
         }
+    }
+
+    const handleTabSelect = (tab) => {
+        setSelectedTab(tab);
     }
 
     return <TuiForm style={{margin: 20}}>
@@ -226,10 +240,26 @@ function ResourceForm({init, onClose, showAlert}) {
                 such as hostname, port, username and password, etc. This part can be empty or left as it is if resource does not
                 require authorization.">
                 </TuiFormGroupField>
-                <fieldset>
-                    <legend>Credentials configuration</legend>
-                    <JsonEditor value={config} onChange={setConfig}/>
-                </fieldset>
+                <Tabs
+                    tabs={["Test", "Production"]}
+                    defaultTab={selectedTab}
+                    onTabSelect={handleTabSelect}
+                >
+                    <TabCase id={0}>
+                        <fieldset style={{marginTop: 10}}>
+                            <legend>Credentials configuration</legend>
+                            <JsonEditor value={testConfig} onChange={setTestConfig}/>
+                        </fieldset>
+                    </TabCase>
+                    <TabCase id={1}>
+                        <fieldset style={{marginTop: 10}}>
+                            <legend>Credentials configuration</legend>
+                            <JsonEditor value={productionConfig} onChange={setProductionConfig}/>
+                        </fieldset>
+                    </TabCase>
+
+                </Tabs>
+
             </TuiFormGroupContent>
         </TuiFormGroup>
         <Button label="Save"

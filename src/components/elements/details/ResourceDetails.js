@@ -42,8 +42,8 @@ export default function ResourceDetails({id, onDeleteComplete}) {
             },
             (response) => {
                 if (response) {
-                    setCredentials(response.data.config);
-                    delete response.data.config;
+                    setCredentials(response.data.credentials);
+                    delete response.data.credentials;
                     setData(response.data);
                 }
             }
@@ -53,6 +53,7 @@ export default function ResourceDetails({id, onDeleteComplete}) {
     const onEdit = () => {
         const editData = JSON.parse(JSON.stringify(data));
         editData.type = {name: editData.type, id: editData.type}
+        editData.credentials = JSON.parse(JSON.stringify(credentials));
         setEditData(editData)
     }
 
@@ -117,7 +118,7 @@ export default function ResourceDetails({id, onDeleteComplete}) {
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Credentials"/>
                 <TuiFormGroupContent header={"Data"}>
-                    <CredentialsVault data={credentials}/>
+                    <CredentialsVault production={credentials?.production} test={credentials?.test}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>
