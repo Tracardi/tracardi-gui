@@ -21,6 +21,7 @@ import {Facebook, Twitter, YouTube} from "@material-ui/icons";
 import {VscBook} from "@react-icons/all-files/vsc/VscBook";
 import {VscDebugConsole} from "@react-icons/all-files/vsc/VscDebugConsole";
 import version from "../misc/version";
+import {apiUrl} from "../remote_api/entrypoint";
 
 export default function MainContent({children, style}) {
 
@@ -100,7 +101,7 @@ export default function MainContent({children, style}) {
                         <MenuItem onClick={go("/editor/test")}>
                             <VscDebugConsole size={20} style={{marginRight: 8}}/>Test console
                         </MenuItem>
-                        <MenuItem onClick={external(`${window._env_.API_URL}/manual/en/site`, true)}>
+                        <MenuItem onClick={external(`${apiUrl()}/manual/en/site`, true)}>
                             <VscBook size={20} style={{marginRight: 8}}/>Manual
                         </MenuItem>
                         <MenuItem onClick={() => setOpenAbout(true)}>

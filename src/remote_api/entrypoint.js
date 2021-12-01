@@ -1,6 +1,10 @@
 import axios from 'axios'
 import {getToken} from "../components/authentication/login";
 
+export const apiUrl = () => {
+    return window._env_.API_URL;
+}
+
 const authToken = () => {
     let token = getToken();
     return 'Bearer ' + (token == null ? 'None' : token)
@@ -13,7 +17,7 @@ export const api = (headers) => {
     }
 
     return axios.create({
-        baseURL: window._env_.API_URL,
+        baseURL: apiUrl(),
         headers
     })
 }
@@ -21,7 +25,7 @@ export const api = (headers) => {
 export const remote = (config) => {
     config = {
         ...config,
-        baseURL: window._env_.API_URL
+        baseURL: apiUrl()
     }
     config.headers = {
         ...config.headers,
@@ -33,7 +37,7 @@ export const remote = (config) => {
 export const asyncRemote = async (config) => {
     config = {
         ...config,
-        baseURL: window._env_.API_URL
+        baseURL: apiUrl()
     }
     config.headers = {
         ...config.headers,
