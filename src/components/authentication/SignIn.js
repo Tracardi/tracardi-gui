@@ -4,7 +4,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
@@ -19,30 +18,7 @@ import urlPrefix from "../../misc/UrlPrefix";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {request} from '../../remote_api/uql_api_endpoint';
 import version from '../../misc/version';
-
-
-class storageValue {
-    constructor(key) {
-        this.key = key;
-    }
-
-    read() {
-        try {
-            const endpoint = localStorage.getItem(this.key);
-            return endpoint === null ? null : JSON.parse(endpoint);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    save(data) {
-        try {
-            localStorage.setItem(this.key, JSON.stringify(data));
-        } catch (error) {
-            console.log(error);
-        }
-    }
-}
+import storageValue from "../../misc/localStorageDriver";
 
 function Copyright() {
     return (
@@ -99,7 +75,7 @@ const SignInForm = ({showAlert}) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [endpoint, setEndpoint] = useState(new storageValue('tracardi-api-url').read());
+    const [endpoint, setEndpoint] = useState(new storageValue('tracardi-api-url').read([]));
 
     const {state} = useLocation();
     const {from} = state || {from: {pathname: urlPrefix("/home")}};
@@ -108,18 +84,20 @@ const SignInForm = ({showAlert}) => {
     const handleEmailChange = (evt) => { setEmail(evt.target.value); }
     const handlePassChange = (evt) => { setPassword(evt.target.value); }
 
+    const handleEndpoint = (value) => {
+        setEndpoint(value);
+        new storageValue('tracardi-api-url').save(value, "");
+    }
+
     const handleSubmitEndpoint = () => {
-        if (endpoint) {
-            new storageValue('tracardi-api-url').save(endpoint);
-        }
-        let historicalEndpoints = new storageValue('tracardi-api-urls').read();
+        let historicalEndpoints = new storageValue('tracardi-api-urls').read([]);
         if (historicalEndpoints === null) {
             historicalEndpoints = [];
         }
         if (!historicalEndpoints.includes(endpoint)) {
             if (endpoint !== null) {
                 historicalEndpoints.push(endpoint);
-                new storageValue('tracardi-api-urls').save(historicalEndpoints);
+                new storageValue('tracardi-api-urls').save(historicalEndpoints, []);
             }
         }
     };
@@ -167,9 +145,10 @@ const SignInForm = ({showAlert}) => {
                                 padding: "3px 6px",
                                 borderRadius: 4,
                                 color: "white",
-                                marginTop: "10px"
+                                marginTop: "10px",
+                                fontSize: "90%"
 
-                            }}>The GUI version does not match API version.</p>
+                            }}>The GUI version {ver} does not match API version {ready?.data}.</p>
                         ) : null}
 
                         <form onSubmitCapture={onSubmit} className={classes.form} noValidate>
@@ -210,13 +189,12 @@ const SignInForm = ({showAlert}) => {
                                         new storageValue('tracardi-api-urls').read() || []
                                     }
                                     value={endpoint}
-                                    onChange={(e, v) => setEndpoint(v)}
+                                    onChange={(e, v) => handleEndpoint(v)}
                                     freeSolo
-
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
-                                            onChange={({target}) => setEndpoint(target.value)}
+                                            onChange={({target}) => handleEndpoint(target.value)}
                                             label='API Endpoint URL'
                                             margin='normal'
                                             size="small"

@@ -1,8 +1,10 @@
 import axios from 'axios'
 import {getToken} from "../components/authentication/login";
+import storageValue from "../misc/localStorageDriver";
 
 export const apiUrl = () => {
-    return window._env_.API_URL;
+    const api_url = new storageValue('tracardi-api-url').read(window._env_.API_URL)
+    return api_url ? api_url : window._env_.API_URL;
 }
 
 const authToken = () => {
