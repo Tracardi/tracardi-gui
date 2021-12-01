@@ -14,6 +14,7 @@ import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
 import ResourceForm from "../forms/ResourceForm";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
+import CredentialsVault from "../misc/CredentialsVault";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -22,6 +23,7 @@ export default function ResourceDetails({id, onDeleteComplete}) {
 
     const confirm = useConfirm();
     const [data, setData] = React.useState(null);
+    const [credentials, setCredentials] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [editData, setEditData] = React.useState(null);
 
@@ -40,7 +42,9 @@ export default function ResourceDetails({id, onDeleteComplete}) {
             },
             (response) => {
                 if (response) {
-                    setData(response.data)
+                    setCredentials(response.data.config);
+                    delete response.data.config;
+                    setData(response.data);
                 }
             }
         )
@@ -107,6 +111,13 @@ export default function ResourceDetails({id, onDeleteComplete}) {
                                 label="Delete"
                                 disabled={typeof data === "undefined"}/>
                     </Rows>
+                </TuiFormGroupContent>
+
+            </TuiFormGroup>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Credentials"/>
+                <TuiFormGroupContent header={"Data"}>
+                    <CredentialsVault data={credentials}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>

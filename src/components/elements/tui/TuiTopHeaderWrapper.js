@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function TuiTopHeaderWrapper({children, header, description, gap = 10, descHeight = 60}) {
+export default function TuiTopHeaderWrapper({children, header, description, gap = 10, descHeight = 70}) {
 
     return <div style={{display: "flex", gap: gap, flexDirection: "column"}}>
             <div>

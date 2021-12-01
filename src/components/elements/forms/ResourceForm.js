@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import TuiSelectResourceType from "../tui/TuiSelectResourceType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import DisabledInput from "./inputs/DisabledInput";
+import Chip from "@material-ui/core/Chip";
 
 
 function ResourceForm({init, onClose, showAlert}) {
@@ -23,7 +24,8 @@ function ResourceForm({init, onClose, showAlert}) {
             description: "",
             config: {},
             consent: false,
-            enabled: false
+            enabled: false,
+            tags: []
         }
     }
 
@@ -32,6 +34,7 @@ function ResourceForm({init, onClose, showAlert}) {
     const [type, setType] = useState(init?.type);
     const [name, setName] = useState(init?.name);
     const [id, setId] = useState(init?.id);
+    const [tags, setTags] = useState(init?.tags);
     const [description, setDescription] = useState(init?.description);
     const [errorTypeMessage, setTypeErrorMessage] = useState('');
     const [errorNameMessage, setNameErrorMessage] = useState('');
@@ -94,13 +97,13 @@ function ResourceForm({init, onClose, showAlert}) {
         setType(type)
 
         if (type?.id in credentialTypes) {
-            let template = credentialTypes[type.id]
-            template = JSON.stringify(template, null, '  ')
-            setConfig(template)
+            const template = credentialTypes[type.id]
+            setConfig(JSON.stringify(template?.config, null, '  '))
+            setTags(template?.tags)
         }
     }
 
-    const _onSubmit = () => {
+    const handleSubmit = () => {
 
         if (!name || name.length === 0 || !type?.name) {
             if (!name || name.length === 0) {
@@ -125,7 +128,8 @@ function ResourceForm({init, onClose, showAlert}) {
                 type: type.name,
                 config: (config === "") ? {} : JSON.parse(config),
                 consent: requiresConsent,
-                enabled: enabledSource
+                enabled: enabledSource,
+                tags: tags
             };
             onSubmit(payload)
         } catch (e) {
@@ -180,6 +184,10 @@ function ResourceForm({init, onClose, showAlert}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
+                <TuiFormGroupField header="Tags" description="Resources are auto-tagged. This is only information on
+                resource type. It is used internally by the system.">
+                    {Array.isArray(tags) && tags.map((tag, index) => <Chip label={tag} key={index} style={{marginLeft: 5}}/>)}
+                </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
@@ -225,7 +233,7 @@ function ResourceForm({init, onClose, showAlert}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <Button label="Save"
-                onClick={_onSubmit}
+                onClick={handleSubmit}
                 progress={processing}
                 style={{justifyContent: "center"}}
         />
