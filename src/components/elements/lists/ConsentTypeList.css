@@ -1,0 +1,16 @@
+.List ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.ListItemEven,
+.ListItemOdd {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+}
+
+.ListItemOdd {
+  background-color: #f2f2f2;
+}
