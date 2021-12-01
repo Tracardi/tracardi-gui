@@ -75,6 +75,7 @@ import {ImInsertTemplate} from "@react-icons/all-files/im/ImInsertTemplate";
 import {FaAws} from "@react-icons/all-files/fa/FaAws";
 import {AiOutlinePieChart} from "@react-icons/all-files/ai/AiOutlinePieChart";
 import {VscRadioTower} from "@react-icons/all-files/vsc/VscRadioTower";
+import {AiOutlineCloudServer} from "@react-icons/all-files/ai/AiOutlineCloudServer";
 
 export const icons = {
     "store":            (size) => <FiDatabase size={size}/>,
@@ -154,7 +155,8 @@ export const icons = {
     'template':         (size) => <ImInsertTemplate size={size}/>,
     'aws':              (size) => <FaAws size={size}/>,
     'pie-chart':        (size) => <AiOutlinePieChart size={size}/>,
-    'tower':            (size) => <VscRadioTower size={size}/>
+    'tower':            (size) => <VscRadioTower size={size}/>,
+    'resource':         (size) => <AiOutlineCloudServer size={size}/>
 }
 
 

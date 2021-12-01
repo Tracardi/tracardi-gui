@@ -10,12 +10,14 @@ import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from 'prop-types';
 import TuiSelectResourceType from "../tui/TuiSelectResourceType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
+import DisabledInput from "./inputs/DisabledInput";
 
 
 function ResourceForm({init, onClose, showAlert}) {
 
     if (!init) {
         init = {
+            id: uuid4(),
             name: "",
             type: {},
             description: "",
@@ -29,6 +31,7 @@ function ResourceForm({init, onClose, showAlert}) {
     const [enabledSource, setEnabledSource] = useState(init?.enabled);
     const [type, setType] = useState(init?.type);
     const [name, setName] = useState(init?.name);
+    const [id, setId] = useState(init?.id);
     const [description, setDescription] = useState(init?.description);
     const [errorTypeMessage, setTypeErrorMessage] = useState('');
     const [errorNameMessage, setNameErrorMessage] = useState('');
@@ -105,6 +108,7 @@ function ResourceForm({init, onClose, showAlert}) {
             } else {
                 setNameErrorMessage("");
             }
+
             if (!type?.name) {
                 setTypeErrorMessage("Source type can not be empty");
             } else {
@@ -115,7 +119,7 @@ function ResourceForm({init, onClose, showAlert}) {
 
         try {
             const payload = {
-                id: (!init?.id) ? uuid4() : init.id,
+                id: (!id) ? uuid4() : id,
                 name: name,
                 description: description,
                 type: type.name,
@@ -133,15 +137,23 @@ function ResourceForm({init, onClose, showAlert}) {
         <TuiFormGroup>
             <TuiFormGroupHeader header="Resource"/>
             <TuiFormGroupContent>
+                <TuiFormGroupField header="Resource id"
+                                   description="Resource id is auto-generated. In most cases you do not have to do nothing
+                                   just leave it like it is. In rare cases when you would like to create a resource
+                                   with user defined value, then unlock the field and type your resource id. If you change
+                                   the id of existing resource new resource will be created.">
+                    <DisabledInput label={"Resource id"}
+                                   value={id}
+                                   onChange={setId}/>
+                </TuiFormGroupField>
                 <TuiFormGroupField header="Resource type"
-                                   description="Resource type defines soft of storage or endpoint. ">
+                                   description="Resource type defines storage or endpoint type. ">
                     <TuiSelectResourceType value={type}
                                            onSetValue={setTypeAndDefineCredentialsTemplate}
                                            errorMessage={errorTypeMessage}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Name" description="Resource name can be any string that
-                    identifies resource. Resource id is made out of rule name by replacing spaces with hyphens and
-                    lowering the string">
+                    identifies resource.">
                     <TextField
                         label={"Resource name"}
                         value={name}
@@ -155,8 +167,7 @@ function ResourceForm({init, onClose, showAlert}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description" description="Description will help you to understand what a rule is
-                    doing.">
+                <TuiFormGroupField header="Description" description="Description will help you understand what kind of resource it is.">
                     <TextField
                         label={"Rule description"}
                         value={description}
@@ -174,7 +185,7 @@ function ResourceForm({init, onClose, showAlert}) {
         <TuiFormGroup>
             <TuiFormGroupHeader header="Access and Consent"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Resource consent" description="Check if this resource requires user consent? Web pages
+                <TuiFormGroupField header="Resource consent" description="Check if this resource requires user consent? E.g. web pages
                     located in Europe require user consent to comply with GDPR. ">
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Switch
@@ -204,7 +215,7 @@ function ResourceForm({init, onClose, showAlert}) {
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Credentials or Access tokens" description="This json data will be an
                 encrypted part of resource. Please pass here all the credentials or access configuration information,
-                such as hostname, port, username and password, etc. This part can be empty if resource does not
+                such as hostname, port, username and password, etc. This part can be empty or left as it is if resource does not
                 require authorization.">
                 </TuiFormGroupField>
                 <fieldset>

@@ -344,10 +344,11 @@ export function FlowEditorPane(
             onConnect={onConnect}
             deleteKeyCode={46}
             zoomActivationKeyCode={32}
+            multiSelectionKeyCode={32}
             onLoad={onLoad}
             onDrop={onDrop}
             onDragOver={onDragOver}
-            snapToGrid={true}
+            snapToGrid={false}
             snapGrid={snapGrid}
             nodesDraggable={!locked}
             style={{background: "white"}}

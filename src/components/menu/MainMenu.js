@@ -1,7 +1,6 @@
 import React from "react";
 import "./MainMenu.css";
 import {MenuIcon} from "./Menu";
-import {VscRadioTower} from "@react-icons/all-files/vsc/VscRadioTower";
 import {MenuItem} from "@szhsin/react-menu";
 import {BsFolder} from "@react-icons/all-files/bs/BsFolder";
 import {VscServerProcess} from "@react-icons/all-files/vsc/VscServerProcess";
@@ -17,6 +16,7 @@ import {BsGear} from "@react-icons/all-files/bs/BsGear";
 import {VscJson} from "@react-icons/all-files/vsc/VscJson";
 import {AiOutlineFieldTime} from "@react-icons/all-files/ai/AiOutlineFieldTime";
 import {VscVmRunning} from "@react-icons/all-files/vsc/VscVmRunning";
+import {AiOutlineCloudServer} from "@react-icons/all-files/ai/AiOutlineCloudServer";
 
 export default function MainMenu() {
 
@@ -27,9 +27,9 @@ export default function MainMenu() {
 
     return <div className="MainMenu">
         <div>
-            <MenuIcon icon={<VscRadioTower size={25}/>} label="Sources">
+            <MenuIcon icon={<AiOutlineCloudServer size={25}/>} label="Sources">
                 <MenuItem onClick={go("/setup/resources")}>
-                    <VscRadioTower size={20} style={{marginRight: 8}}/>Resources
+                    <AiOutlineCloudServer size={20} style={{marginRight: 8}}/>Resources
                 </MenuItem>
                 <MenuItem onClick={go("/setup/credentials")}>
                     <BsShieldLock size={20} style={{marginRight: 8}}/> Resource's configurations
