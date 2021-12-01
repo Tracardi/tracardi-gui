@@ -65,7 +65,7 @@ const SignInForm = ({showAlert}) => {
     const [ready, setReady] = useState({
         data: null
     });
-    const [loading, setLoading] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -133,7 +133,8 @@ const SignInForm = ({showAlert}) => {
                     <Typography component="h1" variant="h5">
                         Sign in
                     </Typography>
-                    {ready.data !== ver  ? (
+
+                    {!loading && ready.data !== ver  ? (
                         <p style={{
                             color: "red",
                             fontSize: "12px",
