@@ -16,7 +16,7 @@ import {signInTheme} from "../../themes";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import {connect} from "react-redux";
 import urlPrefix from "../../misc/UrlPrefix";
-import { getData } from '../../remote_api/uql_api_endpoint';
+import {request} from '../../remote_api/uql_api_endpoint';
 import version from '../../misc/version';
 
 function Copyright() {
@@ -66,16 +66,9 @@ const SignInForm = ({showAlert}) => {
         data: null
     });
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchVerision = async () => {
-            await getData("http://localhost:8686/info/verision", setLoading, setError, setReady);
-            if (error) {
-                console.log(error);
-            }
-        }
-        fetchVerision()
+        request({url: "/info/version"}, setLoading, () => {}, setReady);
     }, [])
 
 
@@ -106,11 +99,11 @@ const SignInForm = ({showAlert}) => {
             })
             .catch(e => {
                 let message = e.message;
-                if(typeof e.response == "undefined") {
+                if (typeof e.response == "undefined") {
                     message = 'Api unavailable.';
-                } else if(e.response.status === 422) {
+                } else if (e.response.status === 422) {
                     message = 'Bag request. Fill all fields.';
-                } else if(typeof e.response.data['detail'] == "string") {
+                } else if (typeof e.response.data['detail'] == "string") {
                     message = e.response.data['detail']
                 }
                 showAlert({type: "error", message: message, hideAfter: 3000})
@@ -134,10 +127,12 @@ const SignInForm = ({showAlert}) => {
                         Sign in
                     </Typography>
 
-                    {!loading && ready.data !== ver  ? (
+                    {!loading && ready.data !== ver ? (
                         <p style={{
-                            color: "red",
-                            fontSize: "12px",
+                            backgroundColor: "red",
+                            padding: "3px 6px",
+                            borderRadius: 4,
+                            color: "white",
                             marginTop: "10px"
 
                         }}>The GUI version does not match API version.</p>
