@@ -19,7 +19,6 @@ import Modal from "@material-ui/core/Modal";
 import SocialButton from "./elements/misc/SocialButton";
 import {Facebook, Twitter, YouTube} from "@material-ui/icons";
 import {VscBook} from "@react-icons/all-files/vsc/VscBook";
-import {VscDebugConsole} from "@react-icons/all-files/vsc/VscDebugConsole";
 import version from "../misc/version";
 import {apiUrl} from "../remote_api/entrypoint";
 
@@ -97,9 +96,6 @@ export default function MainContent({children, style}) {
                     <MenuIcon icon={<FiMoreHorizontal size={30}/>} label="Settings" direction="bottom">
                         <MenuItem onClick={go("/settings")}>
                             <VscSettingsGear size={20} style={{marginRight: 8}}/>Settings
-                        </MenuItem>
-                        <MenuItem onClick={go("/editor/test")}>
-                            <VscDebugConsole size={20} style={{marginRight: 8}}/>Test console
                         </MenuItem>
                         <MenuItem onClick={external(`${apiUrl()}/manual/en/site`, true)}>
                             <VscBook size={20} style={{marginRight: 8}}/>Manual

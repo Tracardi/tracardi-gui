@@ -16,6 +16,9 @@ import {VscJson} from "@react-icons/all-files/vsc/VscJson";
 import {AiOutlineFieldTime} from "@react-icons/all-files/ai/AiOutlineFieldTime";
 import {VscVmRunning} from "@react-icons/all-files/vsc/VscVmRunning";
 import {AiOutlineCloudServer} from "@react-icons/all-files/ai/AiOutlineCloudServer";
+import { BsBug } from "react-icons/bs";
+import {VscDebugConsole} from "@react-icons/all-files/vsc/VscDebugConsole";
+import {VscPulse} from "@react-icons/all-files/vsc/VscPulse";
 
 export default function MainMenu() {
 
@@ -39,6 +42,9 @@ export default function MainMenu() {
                 <MenuItem onClick={go("/home/sessions")}>
                     <VscJson size={20} style={{marginRight: 8}}/> Sessions
                 </MenuItem>
+                <MenuItem onClick={go("/setup/segments")}>
+                    <VscOrganization size={20} style={{marginRight: 8}}/> Segments
+                </MenuItem>
             </MenuIcon>
             <MenuIcon icon={<VscServerProcess size={25}/>} label="Processing">
                 <MenuItem onClick={go("/setup/rules")}>
@@ -50,6 +56,8 @@ export default function MainMenu() {
                 <MenuItem onClick={go("/setup/flow-actions")}>
                     <VscPlug size={20} style={{marginRight: 8}}/> Action plugins
                 </MenuItem>
+            </MenuIcon>
+            <MenuIcon icon={<VscPulse size={25}/>} label="Settings">
                 <MenuItem onClick={go("/setup/instances")}>
                     <VscVmRunning size={20} style={{marginRight: 8}}/> Running instances
                 </MenuItem>
@@ -57,9 +65,9 @@ export default function MainMenu() {
                     <AiOutlineFieldTime size={20} style={{marginRight: 8}}/> Scheduled tasks
                 </MenuItem>
             </MenuIcon>
-            <MenuIcon icon={<VscOrganization size={25}/>} label="Segments">
-                <MenuItem onClick={go("/setup/segments")}>
-                    <VscOrganization size={20} style={{marginRight: 8}}/> Segments
+            <MenuIcon icon={<BsBug size={25}/>} label="Test & monitor">
+                <MenuItem onClick={go("/editor/test")}>
+                    <VscDebugConsole size={20} style={{marginRight: 8}}/>Test console
                 </MenuItem>
             </MenuIcon>
         </div>

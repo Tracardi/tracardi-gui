@@ -7,7 +7,7 @@ import IconSelector from "../elements/IconSelector";
 
 export default function TryOut() {
   return (
-    <div>
+    <div style={{height: "100%", overflow: "auto"}}>
       <IconSelector value="alert" onChange={(ic) => console.log(ic)} />
       <KeyValueForm value={{ kw: "value" }} onChange={(v) => console.log(v)} />
       <TimeInput />
