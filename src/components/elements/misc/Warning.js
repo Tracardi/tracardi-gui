@@ -3,7 +3,7 @@ import React from "react";
 
 const Warning = ({message}) => {
     return <>
-        <VscWarning style={{color: "red", marginLeft: 10, marginRight: 10}} size={25} title="Incompatible backend version ."/> {message}
+        <VscWarning style={{color: "#c2185b", marginLeft: 10, marginRight: 10}} size={25} title="Incompatible backend version ."/> {message}
     </>
 }
 
