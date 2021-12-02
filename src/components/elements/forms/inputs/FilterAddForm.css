@@ -1,6 +1,5 @@
 .FilterAddForm {
-    padding: 10px;
-    width: 100%;
+    width: calc(100% - 40px);
 }
 .FilterAddForm > DIV {
     display: grid;
@@ -11,9 +10,11 @@
     background-color: whitesmoke;
     grid-gap: 5px;
     border-radius: 5px;
+    width: 100%;
 }
 
 .FilterAddForm > DIV.FullGrid {
     display: flex !important;
     grid-template-columns: none;
+    width: 100%;
 }

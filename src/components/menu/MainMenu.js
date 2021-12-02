@@ -42,9 +42,6 @@ export default function MainMenu() {
                 <MenuItem onClick={go("/home/sessions")}>
                     <VscJson size={20} style={{marginRight: 8}}/> Sessions
                 </MenuItem>
-                <MenuItem onClick={go("/setup/segments")}>
-                    <VscOrganization size={20} style={{marginRight: 8}}/> Segments
-                </MenuItem>
             </MenuIcon>
             <MenuIcon icon={<VscServerProcess size={25}/>} label="Processing">
                 <MenuItem onClick={go("/setup/rules")}>
@@ -52,6 +49,9 @@ export default function MainMenu() {
                 </MenuItem>
                 <MenuItem onClick={go("/setup/flows")}>
                     <IoGitNetworkSharp size={20} style={{marginRight: 8}}/> Flows
+                </MenuItem>
+                <MenuItem onClick={go("/setup/segments")}>
+                    <VscOrganization size={20} style={{marginRight: 8}}/> Segments
                 </MenuItem>
                 <MenuItem onClick={go("/setup/flow-actions")}>
                     <VscPlug size={20} style={{marginRight: 8}}/> Action plugins

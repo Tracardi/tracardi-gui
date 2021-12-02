@@ -1,7 +1,14 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import AutoLoadObjectList from "../elements/lists/AutoLoadObjectList";
-import { connect, useDispatch } from "react-redux";
-import { resetPage } from "../../redux/reducers/pagingSlice";
+import {connect, useDispatch} from "react-redux";
+import {resetPage} from "../../redux/reducers/pagingSlice";
+import {
+    TuiForm,
+    TuiFormGroup,
+    TuiFormGroupContent,
+    TuiFormGroupField,
+    TuiFormGroupHeader
+} from "../elements/tui/TuiForm";
 
 const Tasks = () => {
 
@@ -16,14 +23,24 @@ const Tasks = () => {
         dispatch(resetPage());
     }, [dispatch])
 
-    return <div style={{overflow: "auto", height: "inherit"}}>
-        <AutoLoadObjectList
-            onLoadRequest={onLoadRequest}
-            label="TASKS"
-            timeField={(row) => [row.event.type]}
-            timeFieldLabel="event.type"
-        />
-    </div>
+    return <TuiForm style={{margin: 20, width: "calc(100% - 40px)"}}>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Scheduled tasks"
+                                description="List of scheduled tasks."/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField>
+                    <div style={{overflow: "auto", height: "inherit"}}>
+                        <AutoLoadObjectList
+                            onLoadRequest={onLoadRequest}
+                            label="TASKS"
+                            timeField={(row) => [row.event.type]}
+                            timeFieldLabel="event.type"
+                        />
+                    </div>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+    </TuiForm>
 }
 
 const mapState = state => {

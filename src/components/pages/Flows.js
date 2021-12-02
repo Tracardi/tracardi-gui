@@ -34,6 +34,7 @@ export default function Flows() {
 
     return <CardBrowser
         label="Workflows"
+        description="List of defined workflows. You may filter this list by workflow name in the upper search box."
         urlFunc={urlFunc}
         cardFunc={flows}
         buttomLabel="New workflow"

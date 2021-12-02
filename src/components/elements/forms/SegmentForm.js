@@ -76,7 +76,7 @@ export default function SegmentForm({onSubmit, init}) {
             id: (!init?.id) ? uuid4() : init.id,
             name: name,
             description: description,
-            eventType: type.id,
+            eventType: type ? type?.id : null,
             condition: condition,
             enabled: enabled,
         }

@@ -4,8 +4,8 @@ import FilterTextField from "./FilterTextField";
 import Button from "../Button";
 import PropTypes from 'prop-types';
 
-export default function FilterAddForm({textFieldLabel, buttonLabel, buttonIcon, onFilter, onAdd}) {
-    return <div className='FilterAddForm'>
+export default function FilterAddForm({textFieldLabel, buttonLabel, buttonIcon, onFilter, onAdd, style}) {
+    return <div className='FilterAddForm' style={style}>
         <div className={!buttonLabel ? "FullGrid" : ""}>
             <FilterTextField label={textFieldLabel} onSubmit={onFilter}/>
             {buttonLabel && <Button label={buttonLabel}

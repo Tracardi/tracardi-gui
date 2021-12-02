@@ -6,9 +6,11 @@ import FormDrawer from "../../elements/drawers/FormDrawer";
 import FilterAddForm from "../../elements/forms/inputs/FilterAddForm";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import {connect} from "react-redux";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 
 const CardBrowser = ({
                          label,
+                         description,
                          showAlert,
                          urlFunc,
                          cardFunc,
@@ -73,22 +75,29 @@ const CardBrowser = ({
         setDisplayAddForm(true)
     }
 
-    const Label = ({children}) => {
-        return <h3>{children}</h3>
-    }
-
     return <div className="CardBrowser">
         <FilterAddForm
+            style={{margin: 20}}
             textFieldLabel="Type to filter"
             buttonLabel={buttomLabel}
             buttonIcon={buttonIcon}
             onFilter={onFilter}
             onAdd={onAdd}/>
-        {label && <Label>{label}</Label>}
-        <section className={className}>
-            {loading && <CenteredCircularProgress/>}
-            {cards && cardFunc(cards, onClick)}
-        </section>
+
+
+        <TuiForm style={{margin: 20, width: "calc(100% - 40px)", height: "calc(100% - 60px)"}}>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header={label} description={description}/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField>
+                        <section className={className} style={{display: "flex",flexWrap: "wrap"}}>
+                            {loading && <CenteredCircularProgress/>}
+                            {cards && cardFunc(cards, onClick)}
+                        </section>
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>
 
 
         <FormDrawer
