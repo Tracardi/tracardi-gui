@@ -24,7 +24,7 @@ const Instances = () => {
     }, [dispatch])
 
     return <TuiForm style={{margin: 20, width: "calc(100% - 40px)", height: "calc(100% - 40px)"}}>
-        <TuiFormGroup>
+        <TuiFormGroup fitHeight={true}>
             <TuiFormGroupHeader header="Running instances of Tracardi" description="List of running workers of tracardi API."/>
             <TuiFormGroupContent>
                 <TuiFormGroupField>

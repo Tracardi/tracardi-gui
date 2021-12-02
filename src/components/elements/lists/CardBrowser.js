@@ -77,7 +77,7 @@ const CardBrowser = ({
 
     return <div className="CardBrowser">
         <FilterAddForm
-            style={{margin: 20}}
+            style={{margin: "10px 20px"}}
             textFieldLabel="Type to filter"
             buttonLabel={buttomLabel}
             buttonIcon={buttonIcon}
@@ -85,8 +85,8 @@ const CardBrowser = ({
             onAdd={onAdd}/>
 
 
-        <TuiForm style={{margin: 20, width: "calc(100% - 40px)", height: "calc(100% - 60px)"}}>
-            <TuiFormGroup>
+        <TuiForm style={{margin: 20, width: "calc(100% - 40px)", height: "calc(100% - 50px)"}}>
+            <TuiFormGroup fitHeight={true}>
                 <TuiFormGroupHeader header={label} description={description}/>
                 <TuiFormGroupContent>
                     <TuiFormGroupField>

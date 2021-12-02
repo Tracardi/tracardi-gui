@@ -24,7 +24,7 @@ const Tasks = () => {
     }, [dispatch])
 
     return <TuiForm style={{margin: 20, width: "calc(100% - 40px)"}}>
-        <TuiFormGroup>
+        <TuiFormGroup fitHeight={true}>
             <TuiFormGroupHeader header="Scheduled tasks"
                                 description="List of scheduled tasks."/>
             <TuiFormGroupContent>
