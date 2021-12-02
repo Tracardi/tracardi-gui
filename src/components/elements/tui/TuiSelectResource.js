@@ -1,7 +1,7 @@
 import AutoComplete from "../forms/AutoComplete";
 import React from "react";
 
-export default function TuiSelectResource({value = null, disabled = false, errorMessage = null, onSetValue = null}) {
+export default function TuiSelectResource({value = null, disabled = false, errorMessage = null, onSetValue = null, tag = null}) {
 
     const handleValueSet = (value) => {
         if (onSetValue) {
@@ -9,10 +9,12 @@ export default function TuiSelectResource({value = null, disabled = false, error
         }
     };
 
+    const resourceUrl = tag ? "/resources/entity/tag/"+tag : "/resources/entity"
+
     return <AutoComplete disabled={disabled}
                          solo={false}
                          placeholder="Resource"
-                         url="/resources/entity"
+                         url={resourceUrl}
                          initValue={value}
                          error={errorMessage}
                          onSetValue={handleValueSet}

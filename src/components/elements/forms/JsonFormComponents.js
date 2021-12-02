@@ -322,11 +322,11 @@ export function SqlInput({value, onChange = null}) {
     </>
 }
 
-export function ResourceSelect({value, errorMessage, onChange = null}) {
+export function ResourceSelect({value, errorMessage, onChange = null, tag=null}) {
 
     const handleChange = (value) => {
         onChange(value);
     };
 
-    return <TuiSelectResource value={value} errorMessage={errorMessage} onSetValue={handleChange}/>
+    return <TuiSelectResource value={value} errorMessage={errorMessage} onSetValue={handleChange} tag={tag}/>
 }
