@@ -62,6 +62,14 @@ export default function EventDetails({data}) {
                                 </TuiFormGroupField>}
                             </TuiFormGroupContent>
                         </TuiFormGroup>
+                        {!isEmptyObjectOrNull(data?.event?.aux) && <TuiFormGroup>
+                            <TuiFormGroupHeader header="Event auxiliary data"/>
+                            <TuiFormGroupContent>
+                                <TuiFormGroupField header="Auxiliary data">
+                                    <Properties properties={data?.event?.aux}/>
+                                </TuiFormGroupField>
+                            </TuiFormGroupContent>
+                        </TuiFormGroup>}
                     </TuiForm>
                 </TabCase>
                 <TabCase id={2}>
