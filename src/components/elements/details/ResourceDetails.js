@@ -52,7 +52,6 @@ export default function ResourceDetails({id, onDeleteComplete}) {
 
     const onEdit = () => {
         const editData = JSON.parse(JSON.stringify(data));
-        editData.type = {name: editData.type, id: editData.type}
         editData.credentials = JSON.parse(JSON.stringify(credentials));
         setEditData(editData)
     }

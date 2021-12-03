@@ -6,6 +6,8 @@ import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
+import {isObject} from "../../../misc/typeChecking";
+import {objectMap} from "../../../misc/mappers";
 
 const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoaded, onSetValue, onChange, solo, disabled}) => {
 
@@ -21,9 +23,16 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
 
     const handleDataLoaded = (result, onDataLoaded) => {
         if (!onDataLoaded) {
-            return result.data?.result.map((key) => {
-                return {name: key, id: key}
-            });
+            if(Array.isArray(result.data?.result)) {
+                return result.data?.result.map((key) => {
+                    return {name: key, id: key}
+                });
+            } else if(isObject(result.data?.result)) {
+                return objectMap(result.data?.result, (key, value) => {
+                    return {name: value, id: key}
+                })
+            }
+            return []
         } else {
             return onDataLoaded(result)
         }
@@ -93,7 +102,6 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
                 if (typeof newValue === "string") {
                     newValue = {id: null, name: newValue}
                 }
-                console.log("onChange", newValue)
                 handleValueSet(newValue);
             }}
             onInputChange={(ev, value, reason) => {

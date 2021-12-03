@@ -21,7 +21,7 @@ function ResourceForm({init, onClose, showAlert}) {
         init = {
             id: uuid4(),
             name: "",
-            type: {},
+            type: null,
             description: "",
             credentials: {
                 production: {},
@@ -35,7 +35,7 @@ function ResourceForm({init, onClose, showAlert}) {
 
     const [requiresConsent, _setRequiresConsent] = useState(init?.consent);
     const [enabledSource, setEnabledSource] = useState(init?.enabled);
-    const [type, setType] = useState(init?.type);
+    const [type, setType] = useState(null);  // It is set in useEffects after the types are loaded
     const [name, setName] = useState(init?.name);
     const [id, setId] = useState(init?.id);
     const [tags, setTags] = useState(init?.tags);
@@ -48,7 +48,15 @@ function ResourceForm({init, onClose, showAlert}) {
     const [credentialTypes, setCredentialTypes] = useState({});
     const [selectedTab, setSelectedTab] = useState(0);
 
+    const getIdNameFromType = (type, types) => {
+        if (type in types) {
+            return {id: type, name: types[type]['name']}
+        }
+        return {id: type, name: type}
+    }
+
     useEffect(() => {
+
         request(
             {url: "/resources/type/configuration"},
             () => {
@@ -57,11 +65,15 @@ function ResourceForm({init, onClose, showAlert}) {
             },
             (response) => {
                 if (response) {
-                    setCredentialTypes(response.data.result)
+                    setCredentialTypes(response.data.result);
+                    // Original type value is an id  e.g "aws", but "type" state is and object with id and name,
+                    // e.g {name" "AWS credentials", id: "aws"}
+                    // It must be set after the available list of resources are loaded.
+                    setType(getIdNameFromType(init?.type, response.data.result));
                 }
             }
         )
-    }, [])
+    }, [init])
 
     const setRequiresConsent = (ev) => {
         _setRequiresConsent(ev.target.checked)
@@ -101,9 +113,8 @@ function ResourceForm({init, onClose, showAlert}) {
 
     const setTypeAndDefineCredentialsTemplate = (type) => {
         setType(type)
-
         if (type?.id in credentialTypes) {
-            const template = credentialTypes[type.id]
+            const template = credentialTypes[type?.id]
             setProductionConfig(JSON.stringify(template?.config, null, '  '))
             setTestConfig(JSON.stringify(template?.config, null, '  '))
             setTags(template?.tags)
@@ -132,7 +143,7 @@ function ResourceForm({init, onClose, showAlert}) {
                 id: (!id) ? uuid4() : id,
                 name: name,
                 description: description,
-                type: type.name,
+                type: type.id,  // Save only type id not the whole object.
                 credentials: {
                     production: (productionConfig === "") ? {} : JSON.parse(productionConfig),
                     test: (testConfig === "") ? {} : JSON.parse(testConfig)
@@ -166,9 +177,9 @@ function ResourceForm({init, onClose, showAlert}) {
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Resource type"
                                    description="Resource type defines storage or endpoint type. ">
-                    <TuiSelectResourceType value={type}
+                    {type && <TuiSelectResourceType value={type}
                                            onSetValue={setTypeAndDefineCredentialsTemplate}
-                                           errorMessage={errorTypeMessage}/>
+                                           errorMessage={errorTypeMessage}/>}
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Name" description="Resource name can be any string that
                     identifies resource.">
