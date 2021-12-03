@@ -4,10 +4,12 @@ import DottedPathInput from "../elements/forms/inputs/DottedPathInput";
 import TimeInput from "../elements/forms/inputs/TimeInput";
 import KeyValueForm from "../elements/forms/KeyValueForm";
 import IconSelector from "../elements/IconSelector";
+import ScheduledForm from "../elements/forms/ScheduledForm";
 
 export default function TryOut() {
   return (
     <div style={{height: "100%", overflow: "auto"}}>
+      <ScheduledForm />
       <IconSelector value="alert" onChange={(ic) => console.log(ic)} />
       <KeyValueForm value={{ kw: "value" }} onChange={(v) => console.log(v)} />
       <TimeInput />

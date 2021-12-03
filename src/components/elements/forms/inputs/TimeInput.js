@@ -65,6 +65,13 @@ const TimeInput = ({ value, onChange, disabled }) => {
             onChange={handleDateChange}
             name="date"
             value={localValue?.date?.inputDate || ""}
+            style={{
+              height: '40.73px',
+              borderRadius: '4px',
+              border: '1px solid rgb(196, 196, 196)',
+              fontSize: '16px',
+              padding: '10px',
+            }}
           />
         </>
       );
@@ -79,6 +86,10 @@ const TimeInput = ({ value, onChange, disabled }) => {
             onChange={handleChange}
             name="amount"
             value={localValue[type]?.amount || ""}
+            style={
+              type === 'interval' ? {width: '150px'} : {width: '168px'}
+      
+            }
           />
           {timeIntervalMenu()}
         </>
@@ -89,7 +100,7 @@ const TimeInput = ({ value, onChange, disabled }) => {
   };
 
   return (
-    <div className="TimeInput" style={{ padding: "20px" }}>
+    <div className="TimeInput" style={{ padding: "20px", width: '500px' }}>
       <div className="TimeInputSelect">
         <TextField
           select
@@ -112,7 +123,9 @@ const TimeInput = ({ value, onChange, disabled }) => {
         </TextField>
         {timeInputSelect()}
       </div>
-      <fieldset>
+      {/* <fieldset style={{
+        width: '350px'
+      }}>
         <legend>Time Settings</legend>
         <ul style={{ listStyleType: "none" }}>
           <li>
@@ -125,7 +138,7 @@ const TimeInput = ({ value, onChange, disabled }) => {
             <VscRefresh /> {`${localValue?.interval?.amount || ""} ${localValue?.interval?.type || ""}`}
           </li>
         </ul>
-      </fieldset>
+      </fieldset> */}
     </div>
   );
 };
