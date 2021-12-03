@@ -73,7 +73,7 @@ function ResourceForm({init, onClose, showAlert}) {
                 }
             }
         )
-    }, [init])
+    }, [])  // todo: setting init here make infinite request
 
     const setRequiresConsent = (ev) => {
         _setRequiresConsent(ev.target.checked)
