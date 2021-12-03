@@ -10,15 +10,9 @@ import JsonEditor from '../../elements/editors/JsonEditor';
 import TimeInput from '../forms/inputs/TimeInput';
 import Button from './Button';
 
-const ScheduledForm = () => {
-  const [data, setData] = useState({
-    eventType: '',
-    properties: null,
-    time: null,
-  });
-
+const ScheduledForm = ({ value, setValue }) => {
   const handleSubmit = () => {
-    console.log(data);
+    console.log(value);
   };
 
   return (
@@ -35,8 +29,8 @@ const ScheduledForm = () => {
             variant='outlined'
             type='text'
             size='small'
-            value={data.eventType}
-            onChange={(e) => setData({ ...data, eventType: e.target.value })}
+            value={value.eventType}
+            onChange={(e) => setValue({ ...value, eventType: e.target.value })}
             style={{
               marginTop: '5px',
             }}
@@ -63,22 +57,22 @@ const ScheduledForm = () => {
               Properties
             </label>
             <JsonEditor
-              value={data.properties}
+              value={value.properties}
               onChange={(newValue) =>
-                setData({ ...data, properties: newValue })
+                setValue({ ...value, properties: newValue })
               }
             />
           </div>
           <div>
             <TimeInput
-              value={data.time}
-              onChange={(newValue) => setData({ ...data, time: newValue })}
+              value={value.time}
+              onChange={(newValue) => setValue({ ...value, time: newValue })}
             />
             <Button
               disabled={
-                data.eventType === '' ||
-                data.properties === null ||
-                data.time === null
+                value.eventType === '' ||
+                value.properties === null ||
+                value.time === null
               }
               onClick={handleSubmit}
               style={{
