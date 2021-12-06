@@ -29,13 +29,12 @@
 
 .FlowEditor > .WorkArea .SidebarSection {
     position: absolute;
-    height: calc(100% - 115px);
-    top: 75px;
-    left: 15px;
+    height: calc(100% - 46px);
+    top: 46px;
+    left: 0;
     width: 270px;
-    border-radius: 4px;
     background: rgba(255,255,255,0.85);
-    border: 1px solid rgba(220,220,220,1);
+    border-right: 1px solid rgba(220,220,220,1);
     z-index: 50;
     padding: 0;
 }
@@ -45,7 +44,6 @@
     -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.28);
     -moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.28);
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.28);
-    border-radius: 5px;
 }
 
 .FlowEditor > .WorkArea .TaskFilter:hover {

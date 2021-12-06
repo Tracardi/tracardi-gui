@@ -1,13 +1,9 @@
 .DebugBox {
     display: flex;
     flex-direction: column;
-    border-radius: 7px;
-    margin: 0 5px;
     height: 100%;
-    border: solid 1px #ccc;
 }
 
 .DebugBox .DebugTabs {
-    background-color: white;
     border-radius: 7px 7px 0 0;
 }

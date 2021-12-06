@@ -25,6 +25,7 @@ import CancelEdge from "./edges/CancelEdge";
 import BoldEdge from "./edges/BoldEdge";
 import {NodeInitForm} from "../elements/forms/NodeInitForm";
 import WfSchema from "./WfSchema";
+import DebugPane from "./DebugPane";
 
 export function FlowEditorPane(
     {
@@ -58,6 +59,7 @@ export function FlowEditorPane(
     const [currentNode, setCurrentNode] = useState({});
     const [debugNodeId, setDebugNode] = useState(null);
     const [displayRightSidebar, setDisplayRightSidebar] = useState(false);
+    const [displayDebugPane, setDisplayDebugPane] = useState(false);
     const [displayNodeContextMenu, setDisplayNodeContextMenu] = useState(false);
     const [rightSidebarTab, setRightSidebarTab] = useState(0);
     const [animatedEdge, setAnimatedEdge] = useState(null);
@@ -179,6 +181,7 @@ export function FlowEditorPane(
         setAnimatedEdge(null);
         setRightSidebarTab(1);
         setDisplayNodeContextMenu(false);
+        setDisplayDebugPane(true);
         debug(
             id,
             reactFlowInstance,
@@ -261,6 +264,7 @@ export function FlowEditorPane(
 
     const onPaneClick = () => {
         setDisplayRightSidebar(false);
+        setDisplayDebugPane(false);
         setDebugNode(null);
         setAnimatedEdge(null);
         selectNode(null);
@@ -325,7 +329,7 @@ export function FlowEditorPane(
         }
     }
 
-    return <div className="FlowPane" ref={reactFlowWrapper}>
+    return <div style={{height: "100%", display: "grid", gridTemplateRows: "1fr auto"}}><div className="FlowPane" ref={reactFlowWrapper}>
         {flowLoading && <CenteredCircularProgress/>}
         {elements && <ReactFlow
             elements={elements}
@@ -366,11 +370,6 @@ export function FlowEditorPane(
                     node={currentNode}
                     onConfig={onConfigSave}
                 />}
-                debugTab={<DebugDetails
-                    nodes={elements}
-                    node={currentNode}
-                    onConnectionDetails={onConnectionDetails}
-                />}
                 logTab={
                     <LogsList logs={logs}/>
                 }
@@ -389,10 +388,17 @@ export function FlowEditorPane(
                     onSubmit={onConfigSave}
                 />
             </div>}
+
             <WfSchema schema={schema} style={{position: "absolute", color: "#555" , bottom:5, right:10, fontSize: "80%"}}/>
             <Background color="#444" gap={16}/>
         </ReactFlow>}
     </div>
+        {displayDebugPane && <DebugPane
+            elements={elements}
+            currentNode={currentNode}
+            onDetails={onConnectionDetails}
+        />}
+        </div>
 }
 
 FlowEditorPane.propTypes = {

@@ -1,5 +1,4 @@
 .FlowPane .react-flow {
-    /*font-family: inherit !important;*/
     height: inherit !important;
 }
 
@@ -37,6 +36,7 @@
     flex-direction: column;
     height: inherit;
     user-select: none;
+    overflow-y: auto;
 }
 
 .FlowEditor > .WorkArea {
@@ -53,7 +53,7 @@
     position: relative;
 }
 
-.FlowEditor .WorkArea > .LeftColumn > .FlowPane {
+.FlowEditor .WorkArea > .LeftColumn  .FlowPane {
     flex: 1;
     height: inherit;
 }

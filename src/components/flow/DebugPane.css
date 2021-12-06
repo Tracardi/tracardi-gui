@@ -1,0 +1,19 @@
+.DebugPane {
+    background: whitesmoke;
+    display: grid;
+    grid-template-rows: 5px calc(100% - 5px);
+    position: relative;
+    height: 300px;
+    bottom: 0;
+    z-index: 60;
+    width: 100%;
+}
+
+
+.DebugPane .ResizeHorizontalHandler {
+    height: 5px;
+    border-top: solid #ccc 1px;
+    border-bottom: solid #ccc 1px;
+    background-color: #ddd;
+    width: 100%;
+}
