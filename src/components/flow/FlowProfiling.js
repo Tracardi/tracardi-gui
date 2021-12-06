@@ -1,11 +1,10 @@
-import React, {useState} from "react";
+import React from "react";
 import './FlowProfiling.css';
 import DebugBox from "./DebugBox";
 
-export function FlowProfiling({profilingData, node, onCallSelect}) {
+function FlowProfiling({profilingData, nodeId, edgeId, onCallSelect}) {
 
-    const [currentCall, setCurrentCall] = useState(null);
-
+    console.log("FlowProfiling", profilingData)
 
     const sort = (profilingData) => {
 
@@ -34,7 +33,6 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
     }
 
     const handleClick = (debugProfile) => {
-        setCurrentCall(debugProfile)
         if (onCallSelect) {
             onCallSelect(
                 debugProfile?.id,
@@ -75,7 +73,7 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
                                 runTime={(obj.runTime * 1000).toFixed(2) + 'ms'}
                                 relativeRunTime={obj.runTime.toFixed(3) + " from " + wholeTime.toFixed(2) +
                                 " makes " + relativeRunTime.toFixed(1) + "%"}
-                                highlighed={node && node.id === obj.id}
+                                highlighed={nodeId === obj.id}
                                 currentCall={isCurrentCall(obj)}
                                 onClick={() => handleClick(obj)}
                                 key={index}
@@ -106,24 +104,30 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
     }
 
     const isCurrentCall = (obj) => {
-        return currentCall && currentCall.id === obj.id && currentCall.call.input.edge === obj.call.input.edge;
+        return nodeId === obj?.id && edgeId === obj?.call?.input?.edge?.id;
     }
 
     return <div className="DebugAndProfile">
         <div className="Profiling">
-            <div className="TaskHeader" style={{zIndex: 3, height: 56}}>
+            <div className="TaskHeader">
                 <div className="TaskSq">&nbsp;</div>
                 <div className="TaskName">Actions</div>
                 <div className="TaskRunTime">Run time</div>
                 <div className="TaskBar">Execution time span</div>
             </div>
-            <div style={{height: "inherit", overflowY: "auto"}}>
+            <div className="TaskRows">
                 <Rows profilingData={profilingData}/>
             </div>
 
         </div>
         <div className="Debugging">
-            {currentCall && <DebugBox call={currentCall?.call}/>}
+            {/*{edgeId && <DebugBox call={currentCall?.call}/>}*/}
         </div>
     </div>
 }
+
+export const MemoFlowProfiling = React.memo(FlowProfiling,
+    (prevProps, nextProps) => {
+    console.log("MemoFlowProfiling",prevProps.profilingData === nextProps.profilingData)
+    return prevProps.profilingData === nextProps.profilingData;
+});

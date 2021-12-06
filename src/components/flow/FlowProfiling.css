@@ -1,26 +1,28 @@
 .DebugAndProfile {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    height: 100%;
+    display: flex;
+    flex-direction: row;
+    height: inherit;
     user-select: none;
 }
+
 .Debugging {
-    height: 100%;
+    height: inherit;
     overflow: auto;
     user-select: text;
+    flex: 1;
 }
+
 .Profiling {
     position: relative;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-
-    height: 100%;
+    display: grid;
+    grid-template-rows: 49px 1fr;
+    border-right: solid 1px #ccc;
+    height: inherit;
+    flex: 1;
 }
 
-.TaskHeader {
+.Profiling > .TaskHeader {
     position: relative;
-    height: 40px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -29,7 +31,12 @@
     border-bottom: solid 1px #ccc
 }
 
-.TaskRow {
+.TaskRows {
+    overflow-y: auto;
+    height: calc(100% - 50px);
+}
+
+.TaskRows .TaskRow {
     position: relative;
     height: 35px;
     display: flex;
@@ -117,20 +124,22 @@
     color: white;
     background-color: #d81b60;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     display: grid;
     justify-content: center;
     align-content: center;
+    font-size: 12px;
 }
 
 .TaskRow .OKStatus {
     color: white;
     background-color: #43a047;
     border-radius: 50%;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     display: grid;
     justify-content: center;
     align-content: center;
+    font-size: 12px;
 }

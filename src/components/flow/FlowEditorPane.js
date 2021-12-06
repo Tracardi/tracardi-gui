@@ -16,9 +16,7 @@ import SidebarRight from "./SidebarRight";
 import {debug} from "./FlowEditorOps";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
-import DebugDetails from "./DebugDetails";
-import LogsList from "./LogsList";
-import {NodeDetails} from "./NodeDetails";
+import {MemoNodeDetails} from "./NodeDetails";
 import InfoEdge from "./edges/InfoEdge";
 import StopEdge from "./edges/StopEdge";
 import CancelEdge from "./edges/CancelEdge";
@@ -61,10 +59,10 @@ export function FlowEditorPane(
     const [displayRightSidebar, setDisplayRightSidebar] = useState(false);
     const [displayDebugPane, setDisplayDebugPane] = useState(false);
     const [displayNodeContextMenu, setDisplayNodeContextMenu] = useState(false);
-    const [rightSidebarTab, setRightSidebarTab] = useState(0);
     const [animatedEdge, setAnimatedEdge] = useState(null);
     const [elements, setElements] = useState([]);
     const [logs, setLogs] = useState([]);
+    const [inputEdgeId, setInputEdgeId] = useState(null);
     const [label, setLabel] = useState({name: "", id: null});
     const [debugInProgress, setDebugInProgress] = useState(false);
     const [clientX, setClientX] = useState(0);
@@ -75,7 +73,7 @@ export function FlowEditorPane(
             if (onFlowLoad) {
                 const payload = {
                     wf_schema: {
-                        uri:   data?.wf_schema?.uri,
+                        uri: data?.wf_schema?.uri,
                         version: data?.wf_schema?.version,
                         server_version: data?.wf_schema?.server_version
                     },
@@ -127,8 +125,8 @@ export function FlowEditorPane(
         setElements((els) => els.map((el) => {
                 if (isEdge(el)) {
                     if (animatedEdge === null) {
-                        if(el?.style?.stroke === '#ad1457') {
-                            const { stroke, ...newStyle } = el.style
+                        if (el?.style?.stroke === '#ad1457') {
+                            const {stroke, ...newStyle} = el.style
                             el.style = newStyle
                         }
 
@@ -137,8 +135,8 @@ export function FlowEditorPane(
                             stroke: '#ad1457'
                         }
                     } else {
-                        if(el?.style?.stroke === '#ad1457') {
-                            const { stroke, ...newStyle } = el.style
+                        if (el?.style?.stroke === '#ad1457') {
+                            const {stroke, ...newStyle} = el.style
                             el.style = newStyle
                         }
                     }
@@ -179,7 +177,6 @@ export function FlowEditorPane(
     const onDebug = () => {
         setDebugNode(null);
         setAnimatedEdge(null);
-        setRightSidebarTab(1);
         setDisplayNodeContextMenu(false);
         setDisplayDebugPane(true);
         debug(
@@ -190,7 +187,6 @@ export function FlowEditorPane(
             ({elements, logs}) => {
                 setElements(elements);
                 setLogs(logs);
-                setDisplayRightSidebar(true);
             }
         )
     }
@@ -199,12 +195,6 @@ export function FlowEditorPane(
         setElements((els) => removeElements(elementsToRemove, els));
         if (onChange) {
             onChange();
-        }
-    }
-
-    const onDebugClick = (data) => {
-        if (onDebug) {
-            onDebug(data)
         }
     }
 
@@ -290,7 +280,6 @@ export function FlowEditorPane(
     }
 
     const onNodeClick = (event, element) => {
-        console.log(event)
         selectNode(element);
         setDisplayNodeContextMenu(false);
         if (element.data?.debugging && Array.isArray(element.data?.debugging)
@@ -310,8 +299,10 @@ export function FlowEditorPane(
     }
 
     const onConnectionDetails = (nodeId, edgeId) => {
+        console.log("ond", edgeId)
         setDebugNode(nodeId)
         setAnimatedEdge(edgeId);
+        setInputEdgeId(edgeId);
     }
 
     const onEditClick = (data) => {
@@ -329,76 +320,78 @@ export function FlowEditorPane(
         }
     }
 
-    return <div style={{height: "100%", display: "grid", gridTemplateRows: "1fr auto"}}><div className="FlowPane" ref={reactFlowWrapper}>
-        {flowLoading && <CenteredCircularProgress/>}
-        {elements && <ReactFlow
-            elements={elements}
-            zoomOnDoubleClick={false}
-            zoomOnScroll={false}
-            panOnScroll={true}
-            onElementsRemove={onElementsRemove}
-            onElementClick={onElementClick}
-            onNodeDoubleClick={onNodeDoubleClick}
-            // onSelectionChange={onSelectionChange}
-            onNodeContextMenu={onNodeContextMenu}
-            onEdgeContextMenu={onEdgeContextMenu}
-            onPaneClick={onPaneClick}
-            nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
-            onConnect={onConnect}
-            deleteKeyCode={46}
-            zoomActivationKeyCode={32}
-            multiSelectionKeyCode={32}
-            onLoad={onLoad}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
-            snapToGrid={false}
-            snapGrid={snapGrid}
-            nodesDraggable={!locked}
-            style={{background: "white"}}
-            defaultZoom={1}
-        >
-            <SidebarLeft onEdit={onEditClick}
-                     onDebug={onDebugClick}
-                     debugInProgress={debugInProgress}
-            />
-            {displayRightSidebar && <SidebarRight
-                defaultTab={rightSidebarTab}
-                onTabSelect={setRightSidebarTab}
-                inspectTab={<NodeDetails
-                    onLabelSet={handleLabelSet}
-                    node={currentNode}
-                    onConfig={onConfigSave}
-                />}
-                logTab={
-                    <LogsList logs={logs}/>
-                }
-            />
-            }
-            {displayNodeContextMenu && currentNode?.data?.spec?.form && <div className="NodeContextForm"
-                                            style={{
-                                                left: clientX,
-                                                top: clientY
-                                            }}
+    return <div className="FlowEditorGrid">
+        <div className="FlowPane" ref={reactFlowWrapper}>
+            {flowLoading && <CenteredCircularProgress/>}
+            {elements && <ReactFlow
+                elements={elements}
+                zoomOnDoubleClick={false}
+                zoomOnScroll={false}
+                panOnScroll={true}
+                onElementsRemove={onElementsRemove}
+                onElementClick={onElementClick}
+                onNodeDoubleClick={onNodeDoubleClick}
+                // onSelectionChange={onSelectionChange}
+                onNodeContextMenu={onNodeContextMenu}
+                onEdgeContextMenu={onEdgeContextMenu}
+                onPaneClick={onPaneClick}
+                nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
+                onConnect={onConnect}
+                deleteKeyCode={46}
+                zoomActivationKeyCode={32}
+                multiSelectionKeyCode={32}
+                onLoad={onLoad}
+                onDrop={onDrop}
+                onDragOver={onDragOver}
+                snapToGrid={false}
+                snapGrid={snapGrid}
+                nodesDraggable={!locked}
+                style={{background: "white"}}
+                defaultZoom={1}
             >
-                <NodeInitForm
-                    pluginId={currentNode?.data?.spec?.id}
-                    init={currentNode?.data?.spec?.init}
-                    formSchema={currentNode?.data?.spec?.form}
-                    onSubmit={onConfigSave}
+                <SidebarLeft onEdit={onEditClick}
+                             onDebug={onDebug}
+                             debugInProgress={debugInProgress}
                 />
-            </div>}
 
-            <WfSchema schema={schema} style={{position: "absolute", color: "#555" , bottom:5, right:10, fontSize: "80%"}}/>
-            <Background color="#444" gap={16}/>
-        </ReactFlow>}
-    </div>
+                {displayNodeContextMenu && currentNode?.data?.spec?.form && <div className="NodeContextForm"
+                                                                                 style={{
+                                                                                     left: clientX,
+                                                                                     top: clientY
+                                                                                 }}
+                >
+                    <NodeInitForm
+                        pluginId={currentNode?.data?.spec?.id}
+                        init={currentNode?.data?.spec?.init}
+                        formSchema={currentNode?.data?.spec?.form}
+                        onSubmit={onConfigSave}
+                    />
+                </div>}
+
+                <WfSchema schema={schema}
+                          style={{position: "absolute", color: "#555", bottom: 5, right: 10, fontSize: "80%"}}/>
+                <Background color="#444" gap={16}/>
+            </ReactFlow>}
+        </div>
+
+        {displayRightSidebar && <SidebarRight>
+            <MemoNodeDetails
+                onLabelSet={handleLabelSet}
+                node={currentNode}
+                onConfig={onConfigSave}
+            />
+        </SidebarRight>}
+
         {displayDebugPane && <DebugPane
             elements={elements}
-            currentNode={currentNode}
+            nodeId={debugNodeId}
+            edgeId={inputEdgeId}
+            logs={logs}
             onDetails={onConnectionDetails}
         />}
-        </div>
+
+    </div>
 }
 
 FlowEditorPane.propTypes = {

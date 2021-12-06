@@ -4,13 +4,7 @@ import {FiAlertTriangle} from "@react-icons/all-files/fi/FiAlertTriangle";
 import {VscError} from "@react-icons/all-files/vsc/VscError";
 import {AiOutlineCheckCircle} from "@react-icons/all-files/ai/AiOutlineCheckCircle";
 
-const LogsList = ({logs}) => {
-
-    const Header = ({message}) => {
-        return <div className="FlowLogRow FlowLogHeader">
-            <div className="FlowLogMessage">{message}</div>
-        </div>
-    }
+const FlowLogs = ({logs}) => {
 
     const Row = ({log}) => {
 
@@ -33,17 +27,17 @@ const LogsList = ({logs}) => {
     }
 
     return <div className="FlowLog">
-        <Header
-            message="Message"
-        />
-        {Array.isArray(logs) && logs.map((log, index)=> {
-            return <Row
-                key={index}
-                log={log}
-            />
-        })}
+        <div className="FlowLogHeader">Message</div>
+        <div className="FlowLogRows">
+            {Array.isArray(logs) && logs.map((log, index)=> {
+                return <Row
+                    key={index}
+                    log={log}
+                />
+            })}
+        </div>
     </div>
 
 }
 
-export default LogsList;
+export default FlowLogs;

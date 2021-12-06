@@ -100,18 +100,16 @@ const FlowEditor = ({showAlert}) => {
 
     return (
         <>
-
-        <ReactFlowProvider>
-            <div className="FlowEditor">
-                <div className="WorkArea">
-                    <div className="LeftColumn">
-                        <FlowEditorTitle
-                            title={flowMetaData?.name}
-                            modified={modified}
-                            deployed={deployed}
-                            onSave={() => onSaveDraft(false)}
-                            onDeploy={() => onDeploy()}
-                        />
+            <ReactFlowProvider>
+                <FlowEditorTitle
+                    title={flowMetaData?.name}
+                    modified={modified}
+                    deployed={deployed}
+                    onSave={() => onSaveDraft(false)}
+                    onDeploy={() => onDeploy()}
+                />
+                <div className="FlowEditor">
+                    <div className="WorkArea">
                         <FlowEditorPane id={id}
                                         onEdit={() => setFlowFormOpened(true)}
                                         reactFlowInstance={reactFlowInstance}
@@ -124,27 +122,26 @@ const FlowEditor = ({showAlert}) => {
                         />
                     </div>
                 </div>
-            </div>
-            <FormDrawer
-                width={800}
-                label="Flow details"
-                onClose={() => {
-                    setFlowFormOpened(false)
-                }}
-                open={flowFormOpened}>
-                <FlowForm id={id}
-                          name={flowMetaData?.name}
-                          description={flowMetaData?.description}
-                          enabled={flowMetaData?.enabled}
-                          projects={flowMetaData?.projects}
-                          draft={true}
-                          onFlowSaveComplete={({name, description, enabled, projects}) => {
-                              setFlowMetaData({name, description, enabled, projects});
-                              setFlowFormOpened(false)
-                          }}/>
-            </FormDrawer>
-        </ReactFlowProvider>
-            </>
+                <FormDrawer
+                    width={800}
+                    label="Flow details"
+                    onClose={() => {
+                        setFlowFormOpened(false)
+                    }}
+                    open={flowFormOpened}>
+                    <FlowForm id={id}
+                              name={flowMetaData?.name}
+                              description={flowMetaData?.description}
+                              enabled={flowMetaData?.enabled}
+                              projects={flowMetaData?.projects}
+                              draft={true}
+                              onFlowSaveComplete={({name, description, enabled, projects}) => {
+                                  setFlowMetaData({name, description, enabled, projects});
+                                  setFlowFormOpened(false)
+                              }}/>
+                </FormDrawer>
+            </ReactFlowProvider>
+        </>
     );
 };
 

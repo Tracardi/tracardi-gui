@@ -1,14 +1,12 @@
 .DebugPane {
-    background: whitesmoke;
-    display: grid;
-    grid-template-rows: 5px calc(100% - 5px);
-    position: relative;
-    height: 300px;
-    bottom: 0;
-    z-index: 60;
+    height: inherit;
     width: 100%;
+    background: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    grid-area: debug;
 }
-
 
 .DebugPane .ResizeHorizontalHandler {
     height: 5px;
@@ -16,4 +14,15 @@
     border-bottom: solid #ccc 1px;
     background-color: #ddd;
     width: 100%;
+}
+
+.DebugPane > .WorkArea {
+    height: calc(100% - 5px);
+    display: flex;
+}
+
+.DebugPane > .WorkArea> .Icons {
+    padding: 4px;
+    border-right: 1px solid #ccc;
+    width: 50px;
 }

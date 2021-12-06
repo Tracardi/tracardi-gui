@@ -3,7 +3,7 @@ import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import LogsList from "../../flow/LogsList";
+import FlowLogs from "../../flow/FlowLogs";
 
 const ProfileLogDetails = ({profileId, sessionProfileId, showAlert}) => {
 
@@ -51,7 +51,7 @@ const ProfileLogDetails = ({profileId, sessionProfileId, showAlert}) => {
         return <CenteredCircularProgress/>
     }
 
-    return <LogsList logs={logData} />
+    return <FlowLogs logs={logData} />
 }
 const mapProps = (state) => {
     return {

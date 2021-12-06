@@ -1,8 +1,5 @@
 .SidebarRight {
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: 50;
+    grid-area: properties;
     width: 700px;
     padding: 0;
     background-color: rgba(235, 235, 235, 0.85);

@@ -1,7 +1,4 @@
 .FlowEditorTitle {
-    position: absolute;
-    top: 0;
-    left: 0;
     background: rgba(235,235,235,0.75);
     z-index: 10;
     padding: 6px 15px;

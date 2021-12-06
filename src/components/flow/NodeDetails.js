@@ -12,7 +12,7 @@ import {VscTools} from "@react-icons/all-files/vsc/VscTools";
 import {NodeInitForm, NodeInitJsonForm} from "../elements/forms/NodeInitForm";
 
 export function NodeDetails({node, onConfig, onLabelSet}) {
-    console.log("node-dtails", node)
+    console.log("node-details", node)
     const [tab, setTab] = useState(3);
 
     useEffect(() => {
@@ -95,10 +95,9 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
     </div>
 }
 
-// function areEqual(prevProps, nextProps) {
-//     console.log(prevProps.node.id===nextProps.node.id, prevProps, nextProps)
-//     return prevProps.node.id===nextProps.node.id;
-// }
-// const MemoNodeDetails = React.memo(NodeDetails, areEqual);
+function areEqual(prevProps, nextProps) {
+    console.log("MemoNodeDetails", prevProps.node.id===nextProps.node.id, prevProps, nextProps)
+    return prevProps.node.id===nextProps.node.id;
+}
+export const MemoNodeDetails = React.memo(NodeDetails, areEqual);
 
-// export default MemoNodeDetails;

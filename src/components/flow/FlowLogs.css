@@ -1,9 +1,22 @@
 .FlowLog {
-    margin: 10px;
-    padding: 5px;
-    border-radius: 6px;
-    border: solid #ccc 1px;
-    background-color: white;
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.FlowLogHeader {
+    font-weight: 600;
+    border-bottom: #ccc 1px solid;
+    height: 49px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.FlowLogRows {
+    overflow: auto;
+    height: calc(100% - 105px);
 }
 
 .FlowLogRow {
@@ -12,13 +25,6 @@
     align-items: stretch;
     padding: 5px;
     border-bottom: solid #ccc 1px;
-    background-color: white;
-}
-
-.FlowLogHeader {
-    font-weight: 600;
-    position: sticky;
-    top: 0
 }
 
 .FlowLogRow .FlowLogMessage {

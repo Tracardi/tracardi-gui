@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
-import {FlowProfiling} from "../../flow/FlowProfiling";
+import {MemoFlowProfiling} from "../../flow/FlowProfiling";
 import {convertDebugInfoToProfilingData} from "../../flow/profilingConverter";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 
@@ -14,7 +14,7 @@ const EventProfilingDetails = ({eventId, showAlert}) => {
     const ListOfProfilingData = ({data}) => {
         if(Array.isArray(data)) {
             return profilingData.map(
-                (data, index) => <FlowProfiling key={index} profilingData={convertDebugInfoToProfilingData(data)}/>
+                (data, index) => <MemoFlowProfiling key={index} profilingData={convertDebugInfoToProfilingData(data)}/>
             )
         }
         return ""
