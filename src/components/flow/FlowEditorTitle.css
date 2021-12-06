@@ -1,5 +1,5 @@
 .FlowEditorTitle {
-    background: rgba(235,235,235,0.75);
+    background: whitesmoke;
     z-index: 10;
     padding: 6px 15px;
     display: flex;
@@ -8,6 +8,7 @@
     font-size: 120%;
     width: 100%;
     justify-content: space-between;
+    border-bottom: 1px solid #ccc;
 }
 
 .FlowEditorTitle > DIV {

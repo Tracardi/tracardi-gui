@@ -23,7 +23,8 @@ import CancelEdge from "./edges/CancelEdge";
 import BoldEdge from "./edges/BoldEdge";
 import {NodeInitForm} from "../elements/forms/NodeInitForm";
 import WfSchema from "./WfSchema";
-import DebugPane from "./DebugPane";
+import {MemoDebugPane} from "./DebugPane";
+import convertNodesToProfilingData from "./profilingConverter";
 
 export function FlowEditorPane(
     {
@@ -56,13 +57,18 @@ export function FlowEditorPane(
     const [flowLoading, setFlowLoading] = useState(false);
     const [currentNode, setCurrentNode] = useState({});
     const [debugNodeId, setDebugNode] = useState(null);
+    const [profilingData, setProfilingData] = useState({
+        startTime: 0,
+        endTime: 0,
+        calls: []
+    });
     const [displayRightSidebar, setDisplayRightSidebar] = useState(false);
     const [displayDebugPane, setDisplayDebugPane] = useState(false);
+    const [displayDebugHeight, setDisplayDebugHeight] = useState(null);
     const [displayNodeContextMenu, setDisplayNodeContextMenu] = useState(false);
     const [animatedEdge, setAnimatedEdge] = useState(null);
     const [elements, setElements] = useState([]);
     const [logs, setLogs] = useState([]);
-    const [inputEdgeId, setInputEdgeId] = useState(null);
     const [label, setLabel] = useState({name: "", id: null});
     const [debugInProgress, setDebugInProgress] = useState(false);
     const [clientX, setClientX] = useState(0);
@@ -174,11 +180,20 @@ export function FlowEditorPane(
         onEditorReady(reactFlowInstance)
     };
 
+    const handleDisplayDebugPane = (flag) => {
+        if(flag === true) {
+            setDisplayDebugPane(true);
+            setDisplayDebugHeight({gridTemplateRows: "calc(100% - 400px) 400px"});
+        } else {
+            setDisplayDebugPane(false);
+            setDisplayDebugHeight(null)
+        }
+    }
+
     const onDebug = () => {
         setDebugNode(null);
         setAnimatedEdge(null);
         setDisplayNodeContextMenu(false);
-        setDisplayDebugPane(true);
         debug(
             id,
             reactFlowInstance,
@@ -187,6 +202,8 @@ export function FlowEditorPane(
             ({elements, logs}) => {
                 setElements(elements);
                 setLogs(logs);
+                setProfilingData(convertNodesToProfilingData(elements))
+                handleDisplayDebugPane(true);
             }
         )
     }
@@ -254,7 +271,7 @@ export function FlowEditorPane(
 
     const onPaneClick = () => {
         setDisplayRightSidebar(false);
-        setDisplayDebugPane(false);
+        handleDisplayDebugPane(false);
         setDebugNode(null);
         setAnimatedEdge(null);
         selectNode(null);
@@ -299,10 +316,8 @@ export function FlowEditorPane(
     }
 
     const onConnectionDetails = (nodeId, edgeId) => {
-        console.log("ond", edgeId)
         setDebugNode(nodeId)
         setAnimatedEdge(edgeId);
-        setInputEdgeId(edgeId);
     }
 
     const onEditClick = (data) => {
@@ -320,7 +335,7 @@ export function FlowEditorPane(
         }
     }
 
-    return <div className="FlowEditorGrid">
+    return <div className="FlowEditorGrid" style={displayDebugHeight}>
         <div className="FlowPane" ref={reactFlowWrapper}>
             {flowLoading && <CenteredCircularProgress/>}
             {elements && <ReactFlow
@@ -383,10 +398,8 @@ export function FlowEditorPane(
             />
         </SidebarRight>}
 
-        {displayDebugPane && <DebugPane
-            elements={elements}
-            nodeId={debugNodeId}
-            edgeId={inputEdgeId}
+        {displayDebugPane && <MemoDebugPane
+            profilingData={profilingData}
             logs={logs}
             onDetails={onConnectionDetails}
         />}

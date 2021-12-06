@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import './FlowProfiling.css';
 import DebugBox from "./DebugBox";
 
-function FlowProfiling({profilingData, nodeId, edgeId, onCallSelect}) {
+export function FlowProfiling({profilingData, onCallSelect}) {
 
     console.log("FlowProfiling", profilingData)
+
+    const [currentNode, setCurrentNode] = useState(null);
 
     const sort = (profilingData) => {
 
@@ -33,6 +35,7 @@ function FlowProfiling({profilingData, nodeId, edgeId, onCallSelect}) {
     }
 
     const handleClick = (debugProfile) => {
+        setCurrentNode((debugProfile))
         if (onCallSelect) {
             onCallSelect(
                 debugProfile?.id,
@@ -73,7 +76,6 @@ function FlowProfiling({profilingData, nodeId, edgeId, onCallSelect}) {
                                 runTime={(obj.runTime * 1000).toFixed(2) + 'ms'}
                                 relativeRunTime={obj.runTime.toFixed(3) + " from " + wholeTime.toFixed(2) +
                                 " makes " + relativeRunTime.toFixed(1) + "%"}
-                                highlighed={nodeId === obj.id}
                                 currentCall={isCurrentCall(obj)}
                                 onClick={() => handleClick(obj)}
                                 key={index}
@@ -88,11 +90,11 @@ function FlowProfiling({profilingData, nodeId, edgeId, onCallSelect}) {
                             <div
                                 className="TaskBall"
                                 title={obj.startTime}
-                            ></div>
+                            />
                             <div
                                 className="TaskBall"
                                 title={obj.endTime}
-                            ></div>
+                            />
                         </div>
                     </Row>
                 }
@@ -104,7 +106,7 @@ function FlowProfiling({profilingData, nodeId, edgeId, onCallSelect}) {
     }
 
     const isCurrentCall = (obj) => {
-        return nodeId === obj?.id && edgeId === obj?.call?.input?.edge?.id;
+        return currentNode?.id==obj.id && currentNode?.call?.input?.edge?.id === obj?.call?.input?.edge?.id;
     }
 
     return <div className="DebugAndProfile">
@@ -121,13 +123,7 @@ function FlowProfiling({profilingData, nodeId, edgeId, onCallSelect}) {
 
         </div>
         <div className="Debugging">
-            {/*{edgeId && <DebugBox call={currentCall?.call}/>}*/}
+            {currentNode && <DebugBox call={currentNode?.call}/>}
         </div>
     </div>
 }
-
-export const MemoFlowProfiling = React.memo(FlowProfiling,
-    (prevProps, nextProps) => {
-    console.log("MemoFlowProfiling",prevProps.profilingData === nextProps.profilingData)
-    return prevProps.profilingData === nextProps.profilingData;
-});

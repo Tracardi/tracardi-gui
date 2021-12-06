@@ -6,6 +6,10 @@
     flex-direction: column;
     position: relative;
     grid-area: debug;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: .3s;
 }
 
 .DebugPane .ResizeHorizontalHandler {

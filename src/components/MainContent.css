@@ -22,13 +22,9 @@
     height: 45px;
     background-color: rgb(0, 105, 192);
     color: white;
-    -webkit-box-shadow: 0 4px 9px -4px rgba(0,0,0,0.91);
-    -moz-box-shadow: 0 4px 9px -4px rgba(0,0,0,0.91);
-    box-shadow: 0 4px 9px -4px rgba(0,0,0,0.91);
 }
 
 .MainContent > .MainPane > .Bottom {
-    padding-top: 5px;
     display: flex;
     width:100%;
     flex-direction: row;
@@ -80,6 +76,7 @@
     font-size: 60%;
     text-transform: none;
     margin-left: 5px;
+    font-weight: 300;
 }
 
 .MainPane > .Top > .User {

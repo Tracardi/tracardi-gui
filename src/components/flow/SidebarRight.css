@@ -6,8 +6,8 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    border: rgba(220, 220, 220, 1) 1px solid;
-    animation-name: moveLeftAndOpacity;
+    border-left: 1px #ccc solid;
+    animation-name: fadeInOpacity;
     animation-iteration-count: 1;
     animation-timing-function: ease-out;
     animation-duration: .3s;

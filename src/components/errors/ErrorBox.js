@@ -8,9 +8,9 @@ export default function ErrorBox({children}) {
         <div>
             <VscError size={25}/>
         </div>
-        <pre className="ErrorDetails">
+        <div className="ErrorDetails">
             {children}
-        </pre>
+        </div>
     </div>
 
 }

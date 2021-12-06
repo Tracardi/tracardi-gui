@@ -50,12 +50,23 @@
     display: grid;
     grid-column-gap: 0;
     grid-row-gap: 0;
-    grid-template-rows: calc(100% - 500px) 500px;
-    /*grid-template-columns: calc(100% - 700px) 700px;*/
+    grid-template-rows: 100%;
     grid-template-columns: 1fr auto;
     grid-template-areas: "editor properties"
                          "debug debug";
 }
+
+/*.FlowEditor > .WorkArea .FlowEditorGridDebug {*/
+/*    height: 100%;*/
+/*    width: 100%;*/
+/*    display: grid;*/
+/*    grid-column-gap: 0;*/
+/*    grid-row-gap: 0;*/
+/*    grid-template-rows: calc(100% - 500px) 500px;*/
+/*    grid-template-columns: 1fr auto;*/
+/*    grid-template-areas: "editor properties"*/
+/*                         "debug debug";*/
+/*}*/
 
 .FlowEditor > .WorkArea {
     display: flex;

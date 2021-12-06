@@ -1,15 +1,12 @@
 import React from "react";
 import './DebugDetails.css';
-import convertNodesToProfilingData from "./profilingConverter";
-import {MemoFlowProfiling} from "./FlowProfiling";
+import {FlowProfiling} from "./FlowProfiling";
 
-const DebugDetails = ({nodes, nodeId, edgeId, onConnectionDetails}) => {
+const DebugDetails = ({profilingData, onConnectionDetails}) => {
 
     return <section className="DebugDetails">
-            <MemoFlowProfiling
-                profilingData={convertNodesToProfilingData(nodes)}
-                nodeId={nodeId}
-                edgeId={edgeId}
+            <FlowProfiling
+                profilingData={profilingData}
                 onCallSelect={(nodeId, edgeId) => {
                     if(onConnectionDetails) {
                         onConnectionDetails(nodeId, edgeId)

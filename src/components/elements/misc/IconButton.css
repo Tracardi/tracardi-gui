@@ -1,7 +1,6 @@
 .IconButton {
     padding: 5px;
-    /*border: 2px #1565c0 solid;*/
-    border-radius: 50%;
+    border-radius: 8px;
     display: inline-grid;
     cursor: pointer;
     margin: 1px;

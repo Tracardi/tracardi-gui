@@ -145,6 +145,7 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
 
                     return element;
                 });
+
                 onReady({
                     elements: flow.elements || [],
                     logs: data?.data?.logs

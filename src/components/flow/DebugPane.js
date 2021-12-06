@@ -2,11 +2,11 @@ import DebugDetails from "./DebugDetails";
 import React, {useState} from "react";
 import "./DebugPane.css";
 import IconButton from "../elements/misc/IconButton";
-import {VscDebugAlt} from "@react-icons/all-files/vsc/VscDebugAlt";
+import {VscDebugAlt} from "react-icons/vsc";
 import {VscRunErrors} from "react-icons/vsc";
 import FlowLogs from "./FlowLogs";
 
-export default function DebugPane({elements, nodeId, edgeId, logs, onDetails}) {
+function DebugPane({profilingData, logs, onDetails}) {
 
     const [displayDebug, setDisplayDebug] = useState(true);
     const [displayLog, setDisplayLog] = useState(false);
@@ -24,9 +24,7 @@ export default function DebugPane({elements, nodeId, edgeId, logs, onDetails}) {
     const DebugToggler = () => {
         if(displayDebug) {
             return <DebugDetails
-                nodes={elements}
-                nodeId={nodeId}
-                edgeId={edgeId}
+                profilingData={profilingData}
                 onConnectionDetails={onDetails}
             />
         }
@@ -43,7 +41,7 @@ export default function DebugPane({elements, nodeId, edgeId, logs, onDetails}) {
         <div className="WorkArea">
             <div className="Icons">
                 <IconButton label="Debug" onClick={handleDisplayDebug}>
-                    <VscDebugAlt size={20}/>
+                    <VscDebugAlt size={24}/>
                 </IconButton>
                 <IconButton label="Logs" onClick={handleDisplayLog}>
                     <VscRunErrors size={24}/>
@@ -54,3 +52,9 @@ export default function DebugPane({elements, nodeId, edgeId, logs, onDetails}) {
 
     </div>
 }
+
+export const MemoDebugPane = React.memo(DebugPane,
+    (prevProps, nextProps) => {
+        console.log("MemoDebugPane",prevProps.profilingData === nextProps.profilingData)
+        return prevProps.profilingData === nextProps.profilingData;
+    });
