@@ -1,13 +1,15 @@
 .menuNode {
     padding: 8px;
     border: solid 2px transparent;
-    border-radius: 6px;
+    border-radius: 10px;
     margin: 4px 0;
     color: inherit;
     display: flex;
     align-items: center;
     justify-content: space-between;
     background-color: #f0f0f0;
+    border: 1px solid #eee;
+
 }
 
 .menuNode SPAN.proTag {
@@ -21,9 +23,9 @@
 }
 
 .menuNode:hover {
-    background-color: white;
-    border: solid 2px rgb(0, 105, 192) !important;
-    color: rgb(0, 105, 192);
+    background-color: #e0e0e0;
+    border: 1px solid #e0e0e0;
+    color: black;
     cursor: grab;
 }
 
@@ -39,9 +41,7 @@
 
 .FlowEditor > .WorkArea .TaskFilter {
     padding: 5px 14px 14px 14px;
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.28);
-    -moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.28);
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.28);
+    border-bottom: solid 1px #ccc;
 }
 
 .FlowEditor > .WorkArea .TaskFilter:hover {
@@ -52,7 +52,7 @@
 }
 
 .FlowEditor > .WorkArea .TaskNodes {
-    padding: 0 15px 15px 15px;
+    padding: 0 10px 15px 15px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;

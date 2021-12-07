@@ -6,12 +6,15 @@ import {VscDebugAlt} from "react-icons/vsc";
 import {VscRunErrors} from "react-icons/vsc";
 import FlowLogs from "./FlowLogs";
 
-function DebugPane({profilingData, logs, onDetails}) {
+function DebugPane({profilingData, logs, onDetails, onDebug}) {
 
     const [displayDebug, setDisplayDebug] = useState(true);
     const [displayLog, setDisplayLog] = useState(false);
 
     const handleDisplayDebug = () => {
+        if(Array.isArray(profilingData?.calls) && profilingData?.calls.length === 0) {
+            onDebug()
+        }
         setDisplayDebug(true);
         setDisplayLog(false);
     }
@@ -40,16 +43,15 @@ function DebugPane({profilingData, logs, onDetails}) {
         <div className="ResizeHorizontalHandler"></div>
         <div className="WorkArea">
             <div className="Icons">
-                <IconButton label="Debug" onClick={handleDisplayDebug}>
+                <IconButton label="Debug" onClick={handleDisplayDebug} selected={displayDebug}>
                     <VscDebugAlt size={24}/>
                 </IconButton>
-                <IconButton label="Logs" onClick={handleDisplayLog}>
+                <IconButton label="Logs" onClick={handleDisplayLog} selected={displayLog}>
                     <VscRunErrors size={24}/>
                 </IconButton>
             </div>
             <DebugToggler/>
         </div>
-
     </div>
 }
 

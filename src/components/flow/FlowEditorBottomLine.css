@@ -1,0 +1,11 @@
+.FlowEditorBottomLine {
+    grid-area: debug;
+    background-color: whitesmoke;
+    border-top: #ccc 1px solid;
+}
+
+.FlowEditorBottomLine  > SPAN {
+    border-right: 1px solid #ccc;
+    padding: 4px 8px;
+    cursor: pointer;
+}

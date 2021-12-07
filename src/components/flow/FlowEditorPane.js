@@ -4,7 +4,7 @@ import ReactFlow, {
     Background,
     isEdge,
     isNode,
-    removeElements
+    removeElements, useZoomPanHelper
 } from "react-flow-renderer";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import PropTypes from 'prop-types';
@@ -25,6 +25,7 @@ import {NodeInitForm} from "../elements/forms/NodeInitForm";
 import WfSchema from "./WfSchema";
 import {MemoDebugPane} from "./DebugPane";
 import convertNodesToProfilingData from "./profilingConverter";
+import {FlowEditorBottomLine} from "./FlowEditorBottomLine";
 
 export function FlowEditorPane(
     {
@@ -53,6 +54,8 @@ export function FlowEditorPane(
         default: BoldEdge
     };
 
+    const { zoomIn, zoomOut } = useZoomPanHelper();
+
     const reactFlowWrapper = useRef(null);
     const [flowLoading, setFlowLoading] = useState(false);
     const [currentNode, setCurrentNode] = useState({});
@@ -64,7 +67,7 @@ export function FlowEditorPane(
     });
     const [displayRightSidebar, setDisplayRightSidebar] = useState(false);
     const [displayDebugPane, setDisplayDebugPane] = useState(false);
-    const [displayDebugHeight, setDisplayDebugHeight] = useState(null);
+    const [displayDebugHeight, setDisplayDebugHeight] = useState({gridTemplateRows: "calc(100% - 80px) 80px"});
     const [displayNodeContextMenu, setDisplayNodeContextMenu] = useState(false);
     const [animatedEdge, setAnimatedEdge] = useState(null);
     const [elements, setElements] = useState([]);
@@ -186,7 +189,7 @@ export function FlowEditorPane(
             setDisplayDebugHeight({gridTemplateRows: "calc(100% - 400px) 400px"});
         } else {
             setDisplayDebugPane(false);
-            setDisplayDebugHeight(null)
+            setDisplayDebugHeight({gridTemplateRows: "calc(100% - 80px) 80px"})
         }
     }
 
@@ -335,6 +338,8 @@ export function FlowEditorPane(
         }
     }
 
+
+
     return <div className="FlowEditorGrid" style={displayDebugHeight}>
         <div className="FlowPane" ref={reactFlowWrapper}>
             {flowLoading && <CenteredCircularProgress/>}
@@ -402,6 +407,14 @@ export function FlowEditorPane(
             profilingData={profilingData}
             logs={logs}
             onDetails={onConnectionDetails}
+            onDebug={onDebug}
+        />}
+
+        {!displayDebugPane && <FlowEditorBottomLine
+            onZoomIn={zoomIn}
+            onZoomOut={zoomOut}
+            onEdit={onEditClick}
+            onDebug={()=>handleDisplayDebugPane(true)}
         />}
 
     </div>

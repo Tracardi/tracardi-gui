@@ -106,7 +106,7 @@ export function FlowProfiling({profilingData, onCallSelect}) {
     }
 
     const isCurrentCall = (obj) => {
-        return currentNode?.id==obj.id && currentNode?.call?.input?.edge?.id === obj?.call?.input?.edge?.id;
+        return currentNode?.id === obj.id && currentNode?.call?.input?.edge?.id === obj?.call?.input?.edge?.id;
     }
 
     return <div className="DebugAndProfile">
