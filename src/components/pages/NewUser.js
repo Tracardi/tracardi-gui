@@ -7,7 +7,7 @@ import {
     Switch,
     TextField,
   } from '@material-ui/core';
-  import { useState } from 'react';
+  import React, { useState } from 'react';
   import Button from '../elements/forms/Button';
   import {
     TuiForm,
@@ -16,7 +16,7 @@ import {
     TuiFormGroupHeader,
   } from '../elements/tui/TuiForm.js';
   
-  const ProfileManagement = () => {
+  const NewUser = () => {
     const [state, setState] = useState({
       username: '',
       password: '',
@@ -35,7 +35,7 @@ import {
           marginLeft: '20px',
         }}
       >
-        <TuiFormGroupHeader header='Profile Management' />
+        <TuiFormGroupHeader header='New user' />
         <TuiFormGroupContent           style={{
               margin: '0% 30%',
             }}>
@@ -197,5 +197,5 @@ import {
     );
   };
   
-  export default ProfileManagement;
+  export default NewUser;
   
