@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
     Avatar,
     FormControlLabel,
@@ -7,7 +8,6 @@ import {
     Switch,
     TextField,
   } from '@material-ui/core';
-  import React, { useState } from 'react';
   import Button from '../elements/forms/Button';
   import {
     TuiForm,
@@ -17,6 +17,7 @@ import {
   } from '../elements/tui/TuiForm.js';
   
   const NewUser = () => {
+
     const [state, setState] = useState({
       username: '',
       password: '',
@@ -29,6 +30,7 @@ import {
     const handleSubmit = () => {
       console.log(state);
     };
+
     return (
       <TuiForm
         style={{
@@ -36,7 +38,7 @@ import {
         }}
       >
         <TuiFormGroupHeader header='New user' />
-        <TuiFormGroupContent           style={{
+        <TuiFormGroupContent style={{
               margin: '0% 30%',
             }}>
           <TuiFormGroupField>
@@ -50,13 +52,6 @@ import {
             />
   
             <div>
-              <InputLabel
-                style={{
-                  marginBottom: '5px',
-                }}
-              >
-                Username
-              </InputLabel>
               <TextField
                 value={state.username}
                 onChange={(e) => {
@@ -66,19 +61,13 @@ import {
                 size='small'
                 fullWidth
                 variant='outlined'
+                label="User name"
               />
               <div
                 style={{
                   margin: '10px 0px',
                 }}
               >
-                <InputLabel
-                  style={{
-                    marginBottom: '5px',
-                  }}
-                >
-                  Password
-                </InputLabel>
                 <TextField
                   value={state.password}
                   onChange={(e) => {
@@ -88,16 +77,10 @@ import {
                   size='small'
                   fullWidth
                   variant='outlined'
+                  label="Password"
                 />
               </div>
               <div>
-                <InputLabel
-                  style={{
-                    marginBottom: '5px',
-                  }}
-                >
-                  Full Name
-                </InputLabel>
                 <TextField
                   value={state.fullname}
                   onChange={(e) => {
@@ -107,6 +90,7 @@ import {
                   size='small'
                   fullWidth
                   variant='outlined'
+                  label="Full name"
                 />
               </div>
               <div
@@ -114,13 +98,6 @@ import {
                   margin: '10px 0px',
                 }}
               >
-                <InputLabel
-                  style={{
-                    marginBottom: '5px',
-                  }}
-                >
-                  Email
-                </InputLabel>
                 <TextField
                   value={state.email}
                   onChange={(e) => {
@@ -130,6 +107,7 @@ import {
                   size='small'
                   fullWidth
                   variant='outlined'
+                  label="E-mail"
                 />
               </div>
               <div
@@ -146,13 +124,6 @@ import {
                     flexDirection: 'column',
                   }}
                 >
-                  <InputLabel
-                    style={{
-                      marginBottom: '5px',
-                    }}
-                  >
-                    Role
-                  </InputLabel>
                   <Select
                     value={state.role}
                     onChange={(e) => {
