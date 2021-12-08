@@ -3,11 +3,10 @@ import React, {useState} from "react";
 import './FlowEditorButtons.css'
 import Popover from "@material-ui/core/Popover";
 import ModuleRegisterForm from "./ModuleRegisterForm";
-import {VscAdd} from "@react-icons/all-files/vsc/VscAdd";
 import IconButton from "../elements/misc/IconButton";
 import {VscPlug} from "@react-icons/all-files/vsc/VscPlug";
 
-export function FlowEditorIcons({onEdit, onDebug, onRegister, debugInProgress}) {
+export function FlowEditorIcons({onDebug, onRegister, debugInProgress}) {
 
     const [showResisterPopOver, setShowResisterPopOver] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);

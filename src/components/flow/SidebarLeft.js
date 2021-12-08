@@ -53,8 +53,7 @@ function SidebarLeft({showAlert, onEdit, onDebug, debugInProgress}) {
     return (
         <div className="SidebarSection">
             <div className="TaskFilter">
-                <FlowEditorIcons onEdit={onEdit}
-                                 onDebug={onDebug}
+                <FlowEditorIcons onDebug={onDebug}
                                  onRegister={onRegister}
                                  debugInProgress={debugInProgress}/>
                 <FilterTextField label="Action filter" variant="standard" onSubmit={setFilterActions}/>

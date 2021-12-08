@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -16,10 +16,14 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
     }
 
     const [open, setOpen] = React.useState(false);
-    const [value, setValue] = React.useState(initValue);
+    const [value, setValue] = React.useState(initValue || {});
     const [options, setOptions] = React.useState([]);
     const [progress, setProgress] = React.useState(false);
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
+
+    useEffect(() => {
+        setValue(initValue)
+    }, [initValue])
 
     const handleDataLoaded = (result, onDataLoaded) => {
         if (!onDataLoaded) {
@@ -90,7 +94,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
                 setOpen(false);
                 setOptions([]);
             }}
-            getOptionSelected={(option, value) => option.id === value.id}
+            getOptionSelected={(option, value) => (option.id === value.id)}
             getOptionLabel={(option) => {
                 return option?.name || option?.id || ""
             }}

@@ -63,7 +63,7 @@
 
 .TaskHeader .TaskSq,
 .TaskRow .TaskSq {
-    min-width: 30px;
+    min-width: 32px;
     padding: 5px 5px 5px 10px;
     position: sticky;
     left: 0;

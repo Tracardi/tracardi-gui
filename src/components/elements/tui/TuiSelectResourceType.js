@@ -12,3 +12,8 @@ export default function TuiSelectResourceType({value, onSetValue, errorMessage="
         onSetValue={onSetValue}
     />
 }
+
+export const TuiSelectResourceTypeMemo = React.memo(TuiSelectResourceType,
+    (prev,next) => {
+        return prev.value === next.value
+    })

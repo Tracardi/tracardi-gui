@@ -8,7 +8,7 @@ import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from 'prop-types';
-import TuiSelectResourceType from "../tui/TuiSelectResourceType";
+import {TuiSelectResourceTypeMemo} from "../tui/TuiSelectResourceType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import DisabledInput from "./inputs/DisabledInput";
 import Chip from "@material-ui/core/Chip";
@@ -177,9 +177,9 @@ function ResourceForm({init, onClose, showAlert}) {
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Resource type"
                                    description="Resource type defines storage or endpoint type. ">
-                    {type && <TuiSelectResourceType value={type}
+                    <TuiSelectResourceTypeMemo value={type}
                                            onSetValue={setTypeAndDefineCredentialsTemplate}
-                                           errorMessage={errorTypeMessage}/>}
+                                           errorMessage={errorTypeMessage}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Name" description="Resource name can be any string that
                     identifies resource.">

@@ -13,7 +13,19 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-}
+     background-position: center;
+     transition: background 0.8s;
+ }
+
+ SPAN.Button:hover {
+     background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
+ }
+
+ SPAN.Button:active {
+     background-color: #6eb9f7;
+     background-size: 100%;
+     transition: background 0s;
+ }
 
  SPAN.EnabledButton {
     border: solid 2px #006db3;
