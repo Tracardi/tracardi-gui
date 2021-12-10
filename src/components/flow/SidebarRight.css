@@ -1,6 +1,6 @@
 .SidebarRight {
     grid-area: properties;
-    width: 700px;
+    width: 600px;
     padding: 0;
     background-color: rgba(235, 235, 235, 0.85);
     height: 100%;

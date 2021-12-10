@@ -5,25 +5,6 @@ export default class FormSchema {
     constructor(schema) {
         this.schema = schema
     }
-    // todo remove after 01.11.2021
-    // getAllFields() {
-    //     if (this.schema?.groups) {
-    //
-    //         return this.schema?.groups?.reduce((accumulator, groupObject) => {
-    //             if (groupObject.fields) {
-    //                 const fields = groupObject.fields.map((item) => {
-    //                     return item.id
-    //                 })
-    //                 return accumulator.concat(fields)
-    //             }
-    //             return accumulator;
-    //         }, [])
-    //     }
-    //
-    //     return []
-    // }
-
-
 
     async validate(pluginId, formValues) {
 
@@ -38,10 +19,10 @@ export default class FormSchema {
                 return true;
 
             } catch (e) {
-                if (e.response.status === 422) {
+                if (e?.response?.status === 422) {
                     return e.response.data;
                 }
-                if (e.response.status === 404) {
+                if (e?.response?.status === 404) {
                     return true
                 }
             }

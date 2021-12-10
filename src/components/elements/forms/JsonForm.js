@@ -109,8 +109,6 @@ export const JsonForm = ({schema, values = {}, errorMessages={}, onSubmit, onCha
     const keyValueMapOfComponentValues = object2dot(values)
     const hasErrors = errorMessages && Object.keys(errorMessages).length
 
-    console.log("JsonForm rerender", keyValueMapOfComponentValues, errorMessages)
-
     const Title = ({title}) => {
         if (typeof title != 'undefined') {
             return <h1>{title}</h1>
@@ -209,7 +207,5 @@ export const JsonForm = ({schema, values = {}, errorMessages={}, onSubmit, onCha
     }
 
     return ""
-
-
 
 }

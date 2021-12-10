@@ -15,12 +15,15 @@ import PrivateRoute from "./authentication/PrivateRoute";
 import "./App.css";
 import urlPrefix from "../misc/UrlPrefix";
 import AlertTitle from "@material-ui/lab/AlertTitle";
+import FormDrawer from "./elements/drawers/FormDrawer";
+import {close} from "../redux/reducers/newResource";
+import ResourceForm from "./elements/forms/ResourceForm";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const App = ({alert}) => {
+const App = ({alert, resource, close}) => {
 
     const dispatch = useDispatch()
 
@@ -48,6 +51,9 @@ const App = ({alert}) => {
                         <span style={{fontWeight: 400}}>{alert.message}</span>
                     </Alert>
                 </Snackbar>
+                <FormDrawer open={resource.show} onClose={() => {close()}} width={550}>
+                    <ResourceForm onClose={() => {close()}}/>
+                </FormDrawer>
             </Router>
         );
     }
@@ -58,6 +64,10 @@ const App = ({alert}) => {
 const mapState = (state) => {
     return {
         alert: state.alertReducer,
+        resource: state.newResource
     }
 }
-export default connect(mapState)(App);
+export default connect(
+    mapState,
+    {close}
+    )(App);

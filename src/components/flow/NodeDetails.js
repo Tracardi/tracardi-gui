@@ -12,7 +12,7 @@ import {VscTools} from "@react-icons/all-files/vsc/VscTools";
 import {NodeInitForm, NodeInitJsonForm} from "../elements/forms/NodeInitForm";
 
 export function NodeDetails({node, onConfig, onLabelSet}) {
-    console.log("node-details", node)
+
     const [tab, setTab] = useState(3);
 
     useEffect(() => {
