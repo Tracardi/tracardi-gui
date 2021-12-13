@@ -17,6 +17,8 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
     if (!value) {
         value = {
             id: uuid4(),
+            username: "",
+            password: "",
             name: "",
             url: "",
             type: null,
@@ -30,6 +32,8 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
     const [enabledSource, setEnabledSource] = useState(value?.enabled);
     const [type, setType] = useState(null);  // It is set in useEffects after the types are loaded
     const [name, setName] = useState(value?.name);
+    const [username, setUsername] = useState(value?.username);
+    const [password, setPassword] = useState(value?.password);
     const [url, setUrl] = useState(value?.url);
     const [id, setId] = useState(value?.id);
     const [tags, setTags] = useState(value?.tags);
@@ -39,6 +43,7 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
     const [errorUrlMessage, setUrlErrorMessage] = useState('');
     const [processing, setProcessing] = useState(false);
     const [errors, setError] = useState(null);
+    const [displayCredentials, setDisplayCredentials] = useState(false);
 
     const getIdNameFromType = (type, types) => {
         if (type in types) {
@@ -46,6 +51,10 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
         }
         return {id: type, name: type}
     }
+
+    useEffect(() => {
+        setDisplayCredentials(type?.id === 'tracardi-pro')
+    }, [type])
 
     useEffect(() => {
         request(
@@ -100,6 +109,8 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
                     id: (!id) ? uuid4() : id,
                     name: name,
                     url: url,
+                    username: username,
+                    password: password,
                     description: description,
                     type: type.id,  // Save only type id not the whole object.
                     enabled: enabledSource,
@@ -129,8 +140,13 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
 
     }
 
+    const handleTypeChange = (type) => {
+        setType(type);
+        setDisplayCredentials(type?.id === 'tracardi-pro')
+    }
+
     return <TuiForm>
-        {errors && <ErrorsBox errorList={errors} />}
+        {errors && <ErrorsBox errorList={errors}/>}
         <TuiFormGroup>
             <TuiFormGroupHeader header="Event source"
                                 description="This is a source where Tracardi will collect events from."/>
@@ -147,8 +163,9 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
                 <TuiFormGroupField header="Event source type"
                                    description="Event source type defines storage or endpoint type. ">
                     <TuiSelectEventSourceType value={type}
-                                              onSetValue={setType}
+                                              onSetValue={handleTypeChange}
                                               errorMessage={errorTypeMessage}/>
+
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Source URL" description="Event source URL is required for Tracardi PRO services.
                 Web page source needs it only for informational purposes.">
@@ -164,6 +181,31 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
                         variant="outlined"
                         fullWidth
                     />
+                    {displayCredentials && <TextField
+                        label="User name"
+                        value={username}
+                        // error={(typeof errorUrlMessage !== "undefined" && errorUrlMessage !== '' && errorUrlMessage !== null)}
+                        // helperText={errorUrlMessage}
+                        onChange={(ev) => {
+                            setUsername(ev.target.value)
+                        }}
+                        size="small"
+                        variant="outlined"
+                        style={{marginTop: 15, marginRight: 10}}
+                    />}
+                    {displayCredentials && <TextField
+                        label="Password"
+                        value={password}
+                        type="password"
+                        // error={(typeof errorUrlMessage !== "undefined" && errorUrlMessage !== '' && errorUrlMessage !== null)}
+                        // helperText={errorUrlMessage}
+                        onChange={(ev) => {
+                            setPassword(ev.target.value)
+                        }}
+                        size="small"
+                        variant="outlined"
+                        style={{marginTop: 15}}
+                    />}
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Name" description="Event source name can be any string that
                     identifies Event source.">
@@ -213,9 +255,9 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
 
             </TuiFormGroupContent>
         </TuiFormGroup>
-        {errors && <ErrorsBox errorList={errors} />}
+        {errors && <ErrorsBox errorList={errors}/>}
         <Button label="Save"
-                error={errors!==null}
+                error={errors !== null}
                 onClick={handleSubmit}
                 progress={processing}
                 style={{justifyContent: "center"}}
