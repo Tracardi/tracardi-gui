@@ -146,7 +146,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                 setEditData(null)
             }}
             open={editData !== null}>
-            <EventSourceForm init={editData} onClose={() => {
+            <EventSourceForm value={editData} onClose={() => {
                 setEditData(null)
             }}/>
         </FormDrawer>

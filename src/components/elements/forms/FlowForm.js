@@ -106,8 +106,8 @@ function FlowForm({
                                    onChange={(ev) => {
                                        setFlowName(ev.target.value)
                                    }}
+                                   fullWidth
                                    size="small"
-                                   style={{width: "70%"}}
                         />
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Description" description="Flow description. Be as descriptive as possible.">
@@ -120,8 +120,8 @@ function FlowForm({
                                    onChange={(ev) => {
                                        setFlowDescription(ev.target.value)
                                    }}
+                                   fullWidth
                                    size="small"
-                                   style={{width: "70%"}}
                         />
                     </TuiFormGroupField>
                 </TuiFormGroupContent>
@@ -148,9 +148,7 @@ function FlowForm({
                     </TuiFormGroupField>
                 </TuiFormGroupContent>
             </TuiFormGroup>
-            <Rows style={{marginLeft: 20}}>
-                <Button label="Save" onClick={onSave} progress={processing} style={{justifyContent: "center"}}/>
-            </Rows>
+            <Button label="Save" onClick={onSave} progress={processing} style={{justifyContent: "center"}}/>
         </TuiForm>
 }
 

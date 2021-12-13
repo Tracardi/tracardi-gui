@@ -105,7 +105,7 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
     }
 }
 
-export const JsonForm = ({schema, values = {}, errorMessages={}, onSubmit, onChange, confirmed=false}) => {
+export const JsonForm = ({schema, values = {}, errorMessages={}, onSubmit, onChange, processing=false, confirmed=false}) => {
     const keyValueMapOfComponentValues = object2dot(values)
     const hasErrors = errorMessages && Object.keys(errorMessages).length
 
@@ -200,6 +200,7 @@ export const JsonForm = ({schema, values = {}, errorMessages={}, onSubmit, onCha
             <Button onClick={() => handleSubmit(schema)}
                     confirmed={confirmed}
                     error={hasErrors}
+                    progress={processing}
                     label="Save"
                     style={{justifyContent: "center"}}
             />

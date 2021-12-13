@@ -7,7 +7,8 @@ export default function ErrorsBox({errorList, fillWidth}) {
     const visual = (typeof fillWidth === "undefined") ? "ErrorsBox NotFullErrorBox" : "ErrorsBox";
 
     const displayErrors = (errorLst) => errorLst.map(({msg, loc, type}, index)=>{
-        return <li key={index} title={loc}>{msg} [{type}]</li>
+        const location = Array.isArray(loc) ? loc.join(".") : "unknown-location"
+        return <li key={index} title={location}>{location}: {msg} [{type}]</li>
     })
 
     const displayBox = (errorLst) => {

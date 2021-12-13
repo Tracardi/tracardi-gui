@@ -7,18 +7,18 @@ import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: 480,
         '& > * + *': {
             marginTop: theme.spacing(3),
         },
     },
 }));
 
-export default function TuiTagger({label, placeholder, defaultTags, tags, onChange, freeSolo=true, multiple=true}) {
+export default function TuiTagger({label, placeholder, value, tags, onChange, freeSolo=true, multiple=true}) {
+
     const classes = useStyles();
 
-    if(!defaultTags) {
-        defaultTags = []
+    if(!value) {
+        value = []
     }
 
     if(!tags) {
@@ -41,7 +41,7 @@ export default function TuiTagger({label, placeholder, defaultTags, tags, onChan
                     onChange={(ev, value, reason) =>
                     { handleChange (ev, value, reason)} }
                     options={tags}
-                    defaultValue={defaultTags}
+                    defaultValue={value}
                     renderTags={(value, getTagProps) =>
                         value.map((option, index) => (
                             <Chip size="small" label={option} {...getTagProps({index})} />
@@ -59,7 +59,7 @@ TuiTagger.propTypes = {
     label: PropTypes.string,
     placeholder: PropTypes.string,
     onChange: PropTypes.func,
-    defaultTags: PropTypes.array,
+    value: PropTypes.array,
     tags: PropTypes.array,
     freeSolo: PropTypes.bool,
     multiple: PropTypes.bool,

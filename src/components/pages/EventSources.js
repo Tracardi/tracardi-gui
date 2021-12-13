@@ -1,9 +1,9 @@
 import React, {useCallback} from "react";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
-import {AiOutlineCloudServer} from "@react-icons/all-files/ai/AiOutlineCloudServer";
 import EventSourceDetails from "../elements/details/EventSourceDetails";
 import EventSourceForm from "../elements/forms/EventSourceForm";
+import {BsBoxArrowInUpRight} from "@react-icons/all-files/bs/BsBoxArrowInUpRight";
 
 
 export default function EventSources() {
@@ -20,7 +20,7 @@ export default function EventSources() {
                     {plugs.map((row, subIndex) => {
                         return <SquareCard key={index + "-" + subIndex}
                                            id={row?.id}
-                                           icon={<AiOutlineCloudServer size={45}/>}
+                                           icon={<BsBoxArrowInUpRight size={45}/>}
                                            status={row?.enabled}
                                            name={row?.name}
                                            description={row?.description}
@@ -36,7 +36,7 @@ export default function EventSources() {
         urlFunc={urlFunc}
         cardFunc={sources}
         buttomLabel="New event source"
-        buttonIcon={<AiOutlineCloudServer size={20} style={{marginRight: 10}}/>}
+        buttonIcon={<BsBoxArrowInUpRight size={20} style={{marginRight: 10}}/>}
         drawerDetailsTitle="Event source details"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
