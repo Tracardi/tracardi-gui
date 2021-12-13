@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {v4 as uuid4} from "uuid";
-import TuiSelectResource from "../elements/tui/TuiSelectResource";
 import Input from "../elements/forms/inputs/Input";
 import JsonEditor from "../elements/editors/JsonEditor";
 import Button from "../elements/forms/Button";
@@ -15,6 +14,7 @@ import {
 } from "../elements/tui/TuiForm";
 import TuiColumnsFlex from "../elements/tui/TuiColumnsFlex";
 import TuiTopHeaderWrapper from "../elements/tui/TuiTopHeaderWrapper";
+import {TuiSelectEventSource} from "../elements/tui/TuiSelectEventSource";
 
 export const RequestForm = ({onError, onRequest}) => {
 
@@ -117,8 +117,8 @@ export const RequestForm = ({onError, onRequest}) => {
             <TuiFormGroupContent>
                 <TuiFormGroupField>
                     <TuiColumnsFlex width={320}>
-                        <TuiTopHeaderWrapper header="Source">
-                            <TuiSelectResource
+                        <TuiTopHeaderWrapper header="Event source">
+                            <TuiSelectEventSource
                                 value={resource}
                                 onSetValue={setResource}
                             />

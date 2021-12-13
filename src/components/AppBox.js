@@ -21,6 +21,7 @@ import Tasks from "./pages/Tasks";
 import TryOut from "./pages/TryOut";
 import TestEditor from "./pages/TestEditor";
 import NewUser from "./pages/NewUser";
+import EventSources from "./pages/EventSources";
 
 const AppBox = () => {
 
@@ -51,6 +52,9 @@ const AppBox = () => {
 
             </PrivateRoute>
 
+            <PrivateRoute path={urlPrefix("/setup/event-sources")} roles={["admin"]}>
+                <EventSources/>
+            </PrivateRoute>
             <PrivateRoute path={urlPrefix("/setup/resources")} roles={["admin"]}>
                 <Resources/>
             </PrivateRoute>

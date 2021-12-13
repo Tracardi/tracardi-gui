@@ -19,6 +19,7 @@ import {AiOutlineCloudServer} from "@react-icons/all-files/ai/AiOutlineCloudServ
 import { BsBug } from "react-icons/bs";
 import {VscDebugConsole} from "@react-icons/all-files/vsc/VscDebugConsole";
 import {VscPulse} from "@react-icons/all-files/vsc/VscPulse";
+import {BsBoxArrowInUpRight} from "@react-icons/all-files/bs/BsBoxArrowInUpRight";
 
 export default function MainMenu() {
 
@@ -30,6 +31,9 @@ export default function MainMenu() {
     return <div className="MainMenu">
         <div>
             <MenuIcon icon={<BsFolder size={25}/>} label="Data">
+                <MenuItem onClick={go("/setup/event-sources")}>
+                    <BsBoxArrowInUpRight size={20} style={{marginRight: 8}}/>Event sources
+                </MenuItem>
                 <MenuItem onClick={go("/setup/resources")}>
                     <AiOutlineCloudServer size={20} style={{marginRight: 8}}/>Resources
                 </MenuItem>

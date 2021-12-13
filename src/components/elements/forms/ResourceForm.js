@@ -198,7 +198,7 @@ function ResourceForm({init, onClose, showAlert}) {
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Description" description="Description will help you understand what kind of resource it is.">
                     <TextField
-                        label={"Rule description"}
+                        label={"Resource description"}
                         value={description}
                         multiline
                         rows={3}
