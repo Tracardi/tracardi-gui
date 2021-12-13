@@ -37,7 +37,6 @@ export const remote = (config) => {
 }
 
 export const asyncRemote = async (config) => {
-    console.log(config?.baseURL)
     if(!config?.baseURL) {
         config = {
             ...config,

@@ -14,13 +14,13 @@ export default function ErrorsBox({errorList, fillWidth}) {
     const displayBox = (errorLst) => {
         if(errorLst) {
             return <div className={visual}>
-                <VscError size={50}/>
-                <section className="ErrorDetails">
+                <div style={{width: 40}}><VscError size={40}/></div>
+                <div className="ErrorDetails">
                     <div className="Header">The following errors occurred:</div>
                     <ul className="ErrorList">
                         {errorLst && displayErrors(errorLst)}
                     </ul>
-                </section>
+                </div>
             </div>
         }
     }

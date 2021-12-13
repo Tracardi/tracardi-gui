@@ -5,8 +5,9 @@
     display: flex;
     flex-direction: row;
     height: 100%;
-    color: #d81b60;
-    background-color: #fff;
+    color: #fff;
+    background-color: #d81b60;
+    width: 100%;
 }
 
 .NotFullErrorBox {

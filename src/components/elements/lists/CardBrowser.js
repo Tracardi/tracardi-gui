@@ -4,14 +4,12 @@ import {request} from "../../../remote_api/uql_api_endpoint";
 import CenteredCircularProgress from "../../elements/progress/CenteredCircularProgress";
 import FormDrawer from "../../elements/drawers/FormDrawer";
 import FilterAddForm from "../../elements/forms/inputs/FilterAddForm";
-import {showAlert} from "../../../redux/reducers/alertSlice";
-import {connect} from "react-redux";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
+import ErrorsBox from "../../errors/ErrorsBox";
 
 const CardBrowser = ({
                          label,
                          description,
-                         showAlert,
                          urlFunc,
                          cardFunc,
                          buttomLabel = null,
@@ -31,18 +29,20 @@ const CardBrowser = ({
     const [loading, setLoading] = useState(false);
     const [displayAddForm, setDisplayAddForm] = useState(false);
     const [refresh, setRefresh] = useState(Math.random);
+    const [errors, setErrors] = useState(null);
 
     useEffect(() => {
         setCards(null);
         setLoading(true);
         const url = urlFunc(query)
+
         request({
                 url
             },
             setLoading,
             (e) => {
                 if (e) {
-                    showAlert({message: e[0].msg, type: "error", hideAfter: 3000});
+                    setErrors(e)
                 }
             },
             (response) => {
@@ -51,7 +51,7 @@ const CardBrowser = ({
                 }
             }
         )
-    }, [query, refresh, showAlert, urlFunc])
+    }, [query, refresh, urlFunc])
 
     const onClick = (id) => {
         setCardId(id);
@@ -90,9 +90,10 @@ const CardBrowser = ({
                 <TuiFormGroupHeader header={label} description={description}/>
                 <TuiFormGroupContent>
                     <TuiFormGroupField>
-                        <section className={className} style={{display: "flex",flexWrap: "wrap"}}>
+                        <section className={className} style={{display: "flex",flexWrap: "wrap", width: "100%"}}>
                             {loading && <CenteredCircularProgress/>}
                             {cards && cardFunc(cards, onClick)}
+                            {errors && <ErrorsBox errorList={errors}/> }
                         </section>
                     </TuiFormGroupField>
                 </TuiFormGroupContent>
@@ -123,10 +124,4 @@ const CardBrowser = ({
     </div>
 }
 
-const mapProps = (state) => {
-    return {}
-}
-export default connect(
-    mapProps,
-    {showAlert}
-)(CardBrowser)
+export default CardBrowser;

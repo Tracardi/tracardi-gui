@@ -1,4 +1,4 @@
-import {api, remote} from "./entrypoint";
+import {api, getError, remote} from "./entrypoint";
 import {logout} from "../components/authentication/login";
 
 export const fetchData = (uqlStatement, url, setLoading, setError, setReady, setDefaultValues = true) => {
@@ -156,26 +156,9 @@ export const request = ({url, header, method, data}, setLoading, setError, setRe
             setError(false);
             setReady({data: response.data, error: false});
         }).catch((e) => {
-            console.log(e)
             setLoading(false);
             setReady(false);
-            if (e.response) {
-                if( typeof e.response?.data?.detail === 'object'
-                    && Array.isArray(e.response?.data?.detail)) {
-                        setError(e.response.data.detail);
-                } else if (e.response?.data.detail && typeof e.response?.data?.detail === 'string') {
-                    setError([{msg:e.response.data.detail, type: "Exception", response: e.response}]);
-                } else {
-                    setError([{msg:e.message, type: "Exception", response: e.response}]);
-                }
-
-                if (e.request && e.request.status === 401) {
-                    logout();
-                }
-
-            } else {
-                setError([{msg:e.message, type: "Exception"}]);
-            }
+            setError(getError(e))
         });
     } catch (e) {
         setReady(false);
