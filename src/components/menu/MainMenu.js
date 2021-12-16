@@ -21,6 +21,7 @@ import {VscDebugConsole} from "@react-icons/all-files/vsc/VscDebugConsole";
 import {VscPulse} from "@react-icons/all-files/vsc/VscPulse";
 import {BsBoxArrowInUpRight} from "@react-icons/all-files/bs/BsBoxArrowInUpRight";
 import {BsStar} from "@react-icons/all-files/bs/BsStar";
+import {BsBoxArrowUpRight} from "@react-icons/all-files/bs/BsBoxArrowUpRight";
 
 export default function MainMenu() {
 
@@ -39,7 +40,7 @@ export default function MainMenu() {
                     <BsBoxArrowInUpRight size={20} style={{marginRight: 8}}/>Event sources
                 </MenuItem>
                 <MenuItem onClick={go("/setup/resources")}>
-                    <AiOutlineCloudServer size={20} style={{marginRight: 8}}/>Resources
+                    <BsBoxArrowUpRight size={20} style={{marginRight: 8}}/> External resources
                 </MenuItem>
                 <MenuItem onClick={go("/home/events")}>
                     <BsLightning size={20} style={{marginRight: 8}}/> Events

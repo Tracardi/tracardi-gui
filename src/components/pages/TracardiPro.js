@@ -5,55 +5,109 @@ import TracardiProForm from "../elements/forms/TracardiProForm";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import TracardiProServiceConfigForm from "../elements/forms/TracardiProServiceConfigForm";
 import TracardiProAddedServicesList from "../elements/lists/TracardiProAddedServicesList";
+import './TracardiPro.css';
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
+import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 
 export default function TracardiPro() {
 
     const [endpoint, setEndpoint] = useState(null);
     const [selectedService, setSelectedService] = useState(null);
+    const [refresh, setRefresh] = useState(1);
+    const [display, setDisplay] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    console.log(display)
 
     useEffect(() => {
-        const response = asyncRemote({
+        setLoading(true);
+        asyncRemote({
             url: "/tracardi-pro"
         }).then(
             (response) => {
-                if (response.status == 200) {
-                    setEndpoint(response.data)
+
+                if (response.status === 200) {
+                    const _endpoint = response.data
+                    if(_endpoint === null) {
+                        setDisplay(1);
+                    } else {
+                        setDisplay(2);
+                    }
+                    setEndpoint(_endpoint)
                 }
             }
+
         ).catch((e) => {
             alert(e.toString())
+        }).finally(() => {
+            setLoading(false);
         })
 
     }, [])
 
-    const handleServiceClick = (service) => {
+
+
+    const handleServiceAddClick = (service) => {
         setSelectedService(service)
     }
 
-    const handleRegisteredServiceClick = (service) => {
+    const handleServiceEditClick = (service) => {
         setSelectedService(service)
     }
 
-    return <div style={{height: "100%", overflow: "auto"}}>
-        {!endpoint && <TracardiProForm value={endpoint}/>}
-        {endpoint && <div>
-            <h1>Services</h1>
-            <TracardiProAvailableServicesList onServiceClick={handleServiceClick}/>
-            <h1>Configured services</h1>
-            <TracardiProAddedServicesList onServiceClick={handleRegisteredServiceClick}/>
-        </div>}
+    const handleServiceSaveClick = async () => {
+        setSelectedService(null);
+        try {
+            const response = await asyncRemote({
+                url: "/tracardi-pro/services",
+                method: "PUT"
+            })
 
-        <FormDrawer
+            if(response.status === 200) {
+                setRefresh(refresh + 1);
+            }
+        } catch (e) {
+            alert(e.toString())
+        }
+    }
+
+    const handleRegistrationSubmit = (endpoint) => {
+       setEndpoint(endpoint)
+    }
+
+    return <div className="TracardiPro">
+        {loading && <CenteredCircularProgress/>}
+        {display === 1 && <TracardiProForm value={endpoint} onSubmit={handleRegistrationSubmit}/>}
+        {display === 2 && endpoint && <TuiForm style={{width:"100%"}}>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Available services" />
+                <TuiFormGroupContent>
+                    <TracardiProAvailableServicesList onServiceClick={handleServiceAddClick}/>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Configured services" />
+                <TuiFormGroupContent>
+                    <TracardiProAddedServicesList onServiceClick={handleServiceEditClick} refresh={refresh}/>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>}
+
+        {selectedService && <FormDrawer
             width={550}
             label="Configure"
             onClose={() => setSelectedService(null)}
             open={selectedService !== null}>
-            <TracardiProServiceConfigForm
-                endpoint={endpoint}
-                service={selectedService}
-                onSubmit={() => setSelectedService(null)}
-            />
-        </FormDrawer>
+
+            <div style={{padding: 20}}>
+                <TracardiProServiceConfigForm
+                    endpoint={endpoint}
+                    service={selectedService}
+                    onSubmit={handleServiceSaveClick}
+                />
+            </div>
+
+        </FormDrawer>}
 
     </div>
 }

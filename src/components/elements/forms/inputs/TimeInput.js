@@ -67,10 +67,10 @@ const TimeInput = ({ value, onChange, disabled }) => {
             value={localValue?.date?.inputDate || ""}
             style={{
               height: '40.73px',
-              borderRadius: '4px',
+              borderRadius: 4,
               border: '1px solid rgb(196, 196, 196)',
-              fontSize: '16px',
-              padding: '10px',
+              fontSize: 16,
+              padding: 10,
             }}
           />
         </>

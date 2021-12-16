@@ -59,3 +59,16 @@ export const getError = (e) => {
         return [{msg:e.message, type: "Exception"}];
     }
 }
+
+export const covertErrorIntoObject = (errors) => {
+    let obj = {}
+    if(Array.isArray(errors)) {
+        errors.map((error) => {
+            if(error?.loc) {
+                const path = error.loc.slice(1)
+                obj[path.join(".")] = error.msg
+            }
+        })
+    }
+    return obj;
+}

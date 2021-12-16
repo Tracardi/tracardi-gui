@@ -57,7 +57,7 @@ const ScheduledForm = () => {
                     >
                         <label
                             style={{
-                                fontSize: '12px',
+                                fontSize: 12,
                                 position: 'absolute',
                                 top: '-10px',
                                 left: '20px',
