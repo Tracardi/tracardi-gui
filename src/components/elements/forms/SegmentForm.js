@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import Switch from "@material-ui/core/Switch";
 import {v4 as uuid4} from "uuid";
 import {request} from "../../../remote_api/uql_api_endpoint";
-import {remote} from "../../../remote_api/entrypoint";
+import {asyncRemote} from "../../../remote_api/entrypoint";
 import PropTypes from 'prop-types';
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
@@ -35,7 +35,7 @@ export default function SegmentForm({onSubmit, init}) {
 
     const onTqlValidate = async () => {
         try {
-            const response = await remote({
+            const response = await asyncRemote({
                     url: '/tql/validate',
                     method: 'post',
                     data: condition

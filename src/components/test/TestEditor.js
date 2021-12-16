@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import "./TestEditor.css";
 import {RequestForm} from "./RequestForm";
 import "./RequestResponse.css";
-import {remote} from "../../remote_api/entrypoint";
+import {asyncRemote} from "../../remote_api/entrypoint";
 import ResponseForm from "./ResponseFrom";
 
 export default function TestEditor() {
@@ -15,7 +15,7 @@ export default function TestEditor() {
         setRequest(data);
         setLoading(true)
         try {
-            const resp = await remote({
+            const resp = await asyncRemote({
                     url: '/track',
                     method: 'post',
                     data: data

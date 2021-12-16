@@ -19,6 +19,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import {request} from '../../remote_api/uql_api_endpoint';
 import version from '../../misc/version';
 import storageValue from "../../misc/localStorageDriver";
+import {asyncRemote} from "../../remote_api/entrypoint";
 
 function Copyright() {
     return (
@@ -66,7 +67,17 @@ const SignInForm = ({showAlert}) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        request({url: "/info/version"}, setLoading, () => {}, setReady);
+        setLoading(true);
+        asyncRemote(
+            {url: "/info/version"}
+        ).then((response) => {
+            setLoading(false);
+            if (response?.status == 200) {
+                setReady(response.data)
+            }
+        }).catch((e) => {
+            setLoading(false);
+        });
     }, [])
 
     const nodeRef = useRef(null);
@@ -81,8 +92,12 @@ const SignInForm = ({showAlert}) => {
     const {from} = state || {from: {pathname: urlPrefix("/home")}};
     const [redirectToReferrer, setRedirectToReferrer] = useState(false);
 
-    const handleEmailChange = (evt) => { setEmail(evt.target.value); }
-    const handlePassChange = (evt) => { setPassword(evt.target.value); }
+    const handleEmailChange = (evt) => {
+        setEmail(evt.target.value);
+    }
+    const handlePassChange = (evt) => {
+        setPassword(evt.target.value);
+    }
 
     const handleEndpoint = (value) => {
         setEndpoint(value);
@@ -105,11 +120,11 @@ const SignInForm = ({showAlert}) => {
     const onSubmit = event => {
         const api = loginUser(email, password);
         api.then(response => {
-                setToken(response.data['access_token']);
-                setRoles(response.data['roles'])
-                setRedirectToReferrer(true);
-                handleSubmitEndpoint();
-            })
+            setToken(response.data['access_token']);
+            setRoles(response.data['roles'])
+            setRedirectToReferrer(true);
+            handleSubmitEndpoint();
+        })
             .catch(e => {
                 let message = e.message;
                 if (typeof e.response == "undefined") {
@@ -121,110 +136,110 @@ const SignInForm = ({showAlert}) => {
                 }
                 showAlert({type: "error", message: message, hideAfter: 3000})
             });
-            event.preventDefault();
-        };
+        event.preventDefault();
+    };
 
-        if (redirectToReferrer) {
-            return <Redirect to={from}/>;
-        }
-
-        return (
-            <ThemeProvider theme={signInTheme}>
-                <Container component="main" maxWidth="xs">
-                    <div className={classes.paper}>
-                        <Avatar className={classes.avatar}>
-                            <LockOutlinedIcon/>
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Sign in
-                        </Typography>
-
-                        {!loading && ready.data !== ver ? (
-                            <p style={{
-                                backgroundColor: "#c2185b",
-                                padding: "3px 6px",
-                                borderRadius: 4,
-                                color: "white",
-                                marginTop: "10px",
-                                fontSize: "90%"
-
-                            }}>The GUI version {ver} does not match API version {ready?.data}.</p>
-                        ) : null}
-
-                        <form onSubmitCapture={onSubmit} className={classes.form} noValidate>
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                size="small"
-                                autoFocus
-                                onChange={handleEmailChange}/>
-                            <TextField
-                                style={{color: "black"}}
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                size="small"
-                                autoComplete="current-password"
-                                onChange={handlePassChange}
-                            />
-                            <div
-                                ref={nodeRef}
-                                style={{
-                                    width: '100%',
-                                }}
-                            >
-                                <Autocomplete
-                                    options={
-                                        new storageValue('tracardi-api-urls').read() || []
-                                    }
-                                    value={endpoint}
-                                    onChange={(e, v) => handleEndpoint(v)}
-                                    freeSolo
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            onChange={({target}) => handleEndpoint(target.value)}
-                                            label='API Endpoint URL'
-                                            margin='normal'
-                                            size="small"
-                                            variant='outlined'
-                                            placeholder="http://localhost:8686"
-                                        />
-                                    )}
-                                />
-                            </div>
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-
-                            >
-                                Sign In
-                            </Button>
-                        </form>
-                        <Box mt={8}>
-                            <Copyright/>
-                        </Box>
-                    </div>
-                </Container>
-            </ThemeProvider>
-        );
+    if (redirectToReferrer) {
+        return <Redirect to={from}/>;
     }
 
-    export default connect(
-        null,
-        {showAlert}
-    )(SignInForm)
+    return (
+        <ThemeProvider theme={signInTheme}>
+            <Container component="main" maxWidth="xs">
+                <div className={classes.paper}>
+                    <Avatar className={classes.avatar}>
+                        <LockOutlinedIcon/>
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
+
+                    {!loading && ready.data !== ver ? (
+                        <p style={{
+                            backgroundColor: "#c2185b",
+                            padding: "3px 6px",
+                            borderRadius: 4,
+                            color: "white",
+                            marginTop: "10px",
+                            fontSize: "90%"
+
+                        }}>The GUI version {ver} does not match API version {ready?.data}.</p>
+                    ) : null}
+
+                    <form onSubmitCapture={onSubmit} className={classes.form} noValidate>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            size="small"
+                            autoFocus
+                            onChange={handleEmailChange}/>
+                        <TextField
+                            style={{color: "black"}}
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            size="small"
+                            autoComplete="current-password"
+                            onChange={handlePassChange}
+                        />
+                        <div
+                            ref={nodeRef}
+                            style={{
+                                width: '100%',
+                            }}
+                        >
+                            <Autocomplete
+                                options={
+                                    new storageValue('tracardi-api-urls').read() || []
+                                }
+                                value={endpoint}
+                                onChange={(e, v) => handleEndpoint(v)}
+                                freeSolo
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        onChange={({target}) => handleEndpoint(target.value)}
+                                        label='API Endpoint URL'
+                                        margin='normal'
+                                        size="small"
+                                        variant='outlined'
+                                        placeholder="http://localhost:8686"
+                                    />
+                                )}
+                            />
+                        </div>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+
+                        >
+                            Sign In
+                        </Button>
+                    </form>
+                    <Box mt={8}>
+                        <Copyright/>
+                    </Box>
+                </div>
+            </Container>
+        </ThemeProvider>
+    );
+}
+
+export default connect(
+    null,
+    {showAlert}
+)(SignInForm)

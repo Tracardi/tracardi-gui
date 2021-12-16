@@ -24,18 +24,6 @@ export const api = (headers) => {
     })
 }
 
-export const remote = (config) => {
-    config = {
-        ...config,
-        baseURL: apiUrl()
-    }
-    config.headers = {
-        ...config.headers,
-        'Authorization': authToken()
-    }
-    return axios(config)
-}
-
 export const asyncRemote = async (config) => {
     if(!config?.baseURL) {
         config = {
