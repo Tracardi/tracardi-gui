@@ -22,6 +22,7 @@ import TryOut from "./pages/TryOut";
 import TestEditor from "./pages/TestEditor";
 import NewUser from "./pages/NewUser";
 import EventSources from "./pages/EventSources";
+import TracardiPro from "./pages/TracardiPro";
 
 const AppBox = () => {
 
@@ -60,6 +61,9 @@ const AppBox = () => {
             </PrivateRoute>
             <PrivateRoute path={urlPrefix("/setup/flows")} roles={["admin"]}>
                 <Flows/>
+            </PrivateRoute>
+            <PrivateRoute path={urlPrefix("/setup/pro")} roles={["admin"]}>
+                <TracardiPro/>
             </PrivateRoute>
             <PrivateRoute exact path={urlPrefix("/setup/flow/edit/:id")} roles={["admin"]}>
                 <FlowEditor/>

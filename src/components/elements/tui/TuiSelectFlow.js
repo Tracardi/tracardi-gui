@@ -22,7 +22,6 @@ export default function TuiSelectFlow({value, disabled=false, errorMessage=null,
                 if (result) {
                     let flows = []
                     for (const flow of result?.data?.result) {
-                        console.log(flow)
                         if (typeof flow.name !== "undefined" && typeof flow.id !== "undefined") {
                             flows.push({name: flow.name, id: flow.id})
                         }

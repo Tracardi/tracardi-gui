@@ -1,0 +1,16 @@
+.ServiceCard {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    border: solid 1px #ccc;
+    border-radius: 5px;
+    margin: 5px;
+}
+.ServiceCard > .Title {
+    padding: 10px;
+    font-size: 140%;
+    font-weight: 600;
+}
+.ServiceCard > .Desc {
+    padding: 5px 10px;
+}
