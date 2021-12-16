@@ -11,22 +11,14 @@ import TuiTagger from "../tui/TuiTagger";
 import Button from "./Button";
 import PropTypes from "prop-types";
 import ErrorsBox from "../../errors/ErrorsBox";
-import MenuItem from "@material-ui/core/MenuItem";
-import {isObject} from "../../../misc/typeChecking";
-import {objectMap} from "../../../misc/mappers";
-import Url from "url-parse";
 
-const EventSourceCreateForm = ({value, onConfig, onClose}) => {
+const EventSourceCreateForm = ({value, style, onClose}) => {
 
     if (!value) {
         value = {
             id: uuid4(),
-            username: "",
-            password: "",
             name: "",
             url: "",
-            token: "",
-            service: "",
             type: null,
             description: "",
             enabled: false,
@@ -38,13 +30,8 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
     const [enabledSource, setEnabledSource] = useState(value?.enabled);
     const [type, setType] = useState(null);  // It is set in useEffects after the types are loaded
     const [name, setName] = useState(value?.name);
-    const [username, setUsername] = useState(value?.username);
-    const [password, setPassword] = useState(value?.password);
     const [url, setUrl] = useState(value?.url);
-    const [token, setToken] = useState(value?.token);
     const [id, setId] = useState(value?.id);
-    const [service, setService] = useState(value?.service);
-    const [availableService, setAvailableService] = useState({"none": "Click load services"});
     const [tags, setTags] = useState(value?.tags);
     const [description, setDescription] = useState(value?.description);
     const [errorTypeMessage, setTypeErrorMessage] = useState('');
@@ -52,7 +39,6 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
     const [errorUrlMessage, setUrlErrorMessage] = useState('');
     const [processing, setProcessing] = useState(false);
     const [errors, setError] = useState(null);
-    const [displayCredentials, setDisplayCredentials] = useState(false);
 
     const getIdNameFromType = (type, types) => {
         if (type in types) {
@@ -60,10 +46,6 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
         }
         return {id: type, name: type}
     }
-
-    useEffect(() => {
-        setDisplayCredentials(type?.id === 'tracardi-pro')
-    }, [type])
 
     useEffect(() => {
         request(
@@ -107,7 +89,6 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
             return;
         }
 
-
         setProcessing(true);
 
         try {
@@ -118,10 +99,6 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
                     id: (!id) ? uuid4() : id,
                     name: name,
                     url: url,
-                    token: token,
-                    service: service,
-                    username: username,
-                    password: password,
                     description: description,
                     type: type.id,  // Save only type id not the whole object.
                     enabled: enabledSource,
@@ -134,9 +111,7 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
                 method: "GET",
             })
 
-            if (response.status === 206) {
-                onConfig(response.data);
-            } else if (response.status === 404) {
+            if (response.status === 404) {
                 setError(response.data)
             } else {
                 if (onClose) {
@@ -153,33 +128,9 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
 
     const handleTypeChange = (type) => {
         setType(type);
-        setDisplayCredentials(type?.id === 'tracardi-pro')
     }
 
-    const handleServiceChange = (e) => {
-        setService(e.target.value)
-    }
-
-    const handleLoadServices = async () => {
-        const u = new Url(url)
-
-        u.set("pathname", '')
-        u.set("query", '')
-        u.set("hash", '')
-
-        try {
-            const respose = await asyncRemote({
-                baseURL: u.href,
-                url: '/services',
-                method: "GET",
-            })
-            setAvailableService(respose.data)
-        } catch (e) {
-            alert(e.toString())
-        }
-    }
-
-    return <TuiForm>
+    return <TuiForm style={style}>
         {errors && <ErrorsBox errorList={errors}/>}
         <TuiFormGroup>
             <TuiFormGroupHeader header="Event source configuration"
@@ -216,65 +167,6 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
                         variant="outlined"
                         fullWidth
                     />
-                    {displayCredentials && <div style={{marginTop: 15}}>
-                        <TextField
-                            label="Token"
-                            value={token}
-                            onChange={(ev) => {
-                                setToken(ev.target.value)
-                            }}
-                            size="small"
-                            variant="outlined"
-                            style={{marginRight: 10}}
-                        />
-                        <TextField
-                            label="User name"
-                            value={username}
-                            // error={(typeof errorUrlMessage !== "undefined" && errorUrlMessage !== '' && errorUrlMessage !== null)}
-                            // helperText={errorUrlMessage}
-                            onChange={(ev) => {
-                                setUsername(ev.target.value)
-                            }}
-                            size="small"
-                            variant="outlined"
-                            style={{marginRight: 10}}
-                        />
-                        <TextField
-                            label="Password"
-                            value={password}
-                            type="password"
-                            // error={(typeof errorUrlMessage !== "undefined" && errorUrlMessage !== '' && errorUrlMessage !== null)}
-                            // helperText={errorUrlMessage}
-                            onChange={(ev) => {
-                                setPassword(ev.target.value)
-                            }}
-                            size="small"
-                            variant="outlined"
-                        />
-                        <div style={{display: "flex", marginTop: 15}}>
-                            <TextField
-                                select
-                                value={service}
-                                label="Available services"
-                                variant="outlined"
-                                size="small"
-                                onChange={handleServiceChange}
-                                fullWidth
-
-                            >
-                                {isObject(availableService) && objectMap(availableService, (key, value) => {
-                                    if(typeof value === 'string') {
-                                        return <MenuItem value={key}>{value}</MenuItem>
-                                    }
-                                })}
-                            </TextField>
-
-                            <div>
-                                <Button label="Load services" onClick={handleLoadServices} style={{width: 160, padding: "6px 10px", justifyContent: "center"}}/>
-                            </div>
-                        </div>
-
-                    </div>}
 
                 </TuiFormGroupField>
             </TuiFormGroupContent>
@@ -343,6 +235,7 @@ const EventSourceCreateForm = ({value, onConfig, onClose}) => {
 
 EventSourceCreateForm.propTypes = {
     value: PropTypes.object,
+    style: PropTypes.object,
     onClose: PropTypes.func
 }
 

@@ -16,7 +16,6 @@ import {showAlert} from "../../redux/reducers/alertSlice";
 import {connect} from "react-redux";
 import urlPrefix from "../../misc/UrlPrefix";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {request} from '../../remote_api/uql_api_endpoint';
 import version from '../../misc/version';
 import storageValue from "../../misc/localStorageDriver";
 import {asyncRemote} from "../../remote_api/entrypoint";
@@ -72,7 +71,7 @@ const SignInForm = ({showAlert}) => {
             {url: "/info/version"}
         ).then((response) => {
             setLoading(false);
-            if (response?.status == 200) {
+            if (response?.status === 200) {
                 setApiVersion(response.data)
             }
         }).catch((e) => {

@@ -11,10 +11,9 @@ import {request} from "../../../remote_api/uql_api_endpoint";
 import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
-import ResourceForm from "../forms/ResourceForm";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
-import EventSourceForm from "../forms/EventSourceForm";
+import EventSourceCreateForm from "../forms/EventSourceCreateForm";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -146,9 +145,13 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                 setEditData(null)
             }}
             open={editData !== null}>
-            <EventSourceForm value={editData} onClose={() => {
-                setEditData(null)
-            }}/>
+
+            <EventSourceCreateForm value={editData}
+                                   style={{margin: 20}}
+                                   onClose={() => {
+                                       setEditData(null)
+                                   }}/>
+
         </FormDrawer>
     </div>
 

@@ -2,14 +2,14 @@ import React, {useCallback} from "react";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import EventSourceDetails from "../elements/details/EventSourceDetails";
-import EventSourceForm from "../elements/forms/EventSourceForm";
 import {BsBoxArrowInUpRight} from "@react-icons/all-files/bs/BsBoxArrowInUpRight";
+import EventSourceCreateForm from "../elements/forms/EventSourceCreateForm";
 
 
 export default function EventSources() {
 
     const urlFunc = useCallback((query) => ('/event-sources/by_type' + ((query) ? "?query=" + query : "")), []);
-    const addFunc = useCallback((close) => <EventSourceForm onClose={close}/>, []);
+    const addFunc = useCallback((close) => <EventSourceCreateForm onClose={close} style={{margin: 20}}/>, []);
     const detailsFunc = useCallback((id, close) => <EventSourceDetails id={id} onDeleteComplete={close}/>, []);
 
     const sources = (data, onClick) => {
