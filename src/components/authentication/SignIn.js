@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SignInForm = ({showAlert}) => {
     const ver = version()
-    const [ready, setReady] = useState({data: null});
+    const [apiVersion, setApiVersion] = useState("");
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -73,7 +73,7 @@ const SignInForm = ({showAlert}) => {
         ).then((response) => {
             setLoading(false);
             if (response?.status == 200) {
-                setReady(response.data)
+                setApiVersion(response.data)
             }
         }).catch((e) => {
             setLoading(false);
@@ -154,7 +154,7 @@ const SignInForm = ({showAlert}) => {
                         Sign in
                     </Typography>
 
-                    {!loading && ready.data !== ver ? (
+                    {!loading && apiVersion !== ver ? (
                         <p style={{
                             backgroundColor: "#c2185b",
                             padding: "3px 6px",
@@ -163,7 +163,7 @@ const SignInForm = ({showAlert}) => {
                             marginTop: "10px",
                             fontSize: "90%"
 
-                        }}>The GUI version {ver} does not match API version {ready?.data}.</p>
+                        }}>The GUI version {ver} does not match API version {apiVersion}.</p>
                     ) : null}
 
                     <form onSubmitCapture={onSubmit} className={classes.form} noValidate>
