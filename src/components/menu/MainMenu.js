@@ -20,6 +20,7 @@ import { BsBug } from "react-icons/bs";
 import {VscDebugConsole} from "@react-icons/all-files/vsc/VscDebugConsole";
 import {VscPulse} from "@react-icons/all-files/vsc/VscPulse";
 import {BsBoxArrowInUpRight} from "@react-icons/all-files/bs/BsBoxArrowInUpRight";
+import {BsStar} from "@react-icons/all-files/bs/BsStar";
 
 export default function MainMenu() {
 
@@ -32,7 +33,7 @@ export default function MainMenu() {
         <div>
             <MenuIcon icon={<BsFolder size={25}/>} label="Data">
                 <MenuItem onClick={go("/setup/pro")}>
-                    <BsBoxArrowInUpRight size={20} style={{marginRight: 8}}/>Tracardi Pro
+                    <BsStar size={20} style={{marginRight: 8}}/>Tracardi Pro
                 </MenuItem>
                 <MenuItem onClick={go("/setup/event-sources")}>
                     <BsBoxArrowInUpRight size={20} style={{marginRight: 8}}/>Event sources

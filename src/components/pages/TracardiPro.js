@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {asyncRemote} from "../../remote_api/entrypoint";
-import TracardiProServicesList from "../elements/lists/TracardiProServicesList";
+import TracardiProAvailableServicesList from "../elements/lists/TracardiProAvailableServicesList";
 import TracardiProForm from "../elements/forms/TracardiProForm";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import TracardiProServiceConfigForm from "../elements/forms/TracardiProServiceConfigForm";
-import TracardiProServicesRegisteredList from "../elements/lists/TracardiProServicesRegisteredList";
+import TracardiProAddedServicesList from "../elements/lists/TracardiProAddedServicesList";
 
 export default function TracardiPro() {
 
@@ -13,7 +13,7 @@ export default function TracardiPro() {
 
     useEffect(() => {
         const response = asyncRemote({
-            url: "/tracardi/pro"
+            url: "/tracardi-pro"
         }).then(
             (response) => {
                 if (response.status == 200) {
@@ -38,13 +38,13 @@ export default function TracardiPro() {
         {!endpoint && <TracardiProForm value={endpoint}/>}
         {endpoint && <div>
             <h1>Services</h1>
-            <TracardiProServicesList endpoint={endpoint} onServiceClick={handleServiceClick}/>
+            <TracardiProAvailableServicesList onServiceClick={handleServiceClick}/>
             <h1>Configured services</h1>
-            <TracardiProServicesRegisteredList onServiceClick={handleRegisteredServiceClick}/>
+            <TracardiProAddedServicesList onServiceClick={handleRegisteredServiceClick}/>
         </div>}
 
         <FormDrawer
-            width={500}
+            width={550}
             label="Configure"
             onClose={() => setSelectedService(null)}
             open={selectedService !== null}>
