@@ -4,7 +4,7 @@ import TracardiProAvailableServicesList from "../elements/lists/TracardiProAvail
 import TracardiProForm from "../elements/forms/TracardiProForm";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import TracardiProServiceConfigForm from "../elements/forms/TracardiProServiceConfigForm";
-import TracardiProAddedServicesList from "../elements/lists/TracardiProAddedServicesList";
+import TracardiProRunningServicesList from "../elements/lists/TracardiProRunningServicesList";
 import './TracardiPro.css';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
@@ -28,7 +28,7 @@ export default function TracardiPro() {
 
                 if (response.status === 200) {
                     const _endpoint = response.data
-                    if(_endpoint === null) {
+                    if (_endpoint === null) {
                         setDisplay(1);
                     } else {
                         setDisplay(2);
@@ -36,7 +36,6 @@ export default function TracardiPro() {
                     setEndpoint(_endpoint)
                 }
             }
-
         ).catch((e) => {
             alert(e.toString())
         }).finally(() => {
@@ -44,7 +43,6 @@ export default function TracardiPro() {
         })
 
     }, [])
-
 
 
     const handleServiceAddClick = (service) => {
@@ -63,7 +61,7 @@ export default function TracardiPro() {
                 method: "PUT"
             })
 
-            if(response.status === 200) {
+            if (response.status === 200) {
                 setRefresh(refresh + 1);
             }
         } catch (e) {
@@ -72,28 +70,30 @@ export default function TracardiPro() {
     }
 
     const handleRegistrationSubmit = (endpoint) => {
-       setEndpoint(endpoint)
+        setEndpoint(endpoint)
     }
 
     return <div className="TracardiPro">
         {loading && <CenteredCircularProgress/>}
         {display === 1 && <TracardiProForm value={endpoint} onSubmit={handleRegistrationSubmit}/>}
-        {display === 2 && endpoint && <TuiForm style={{width:"100%"}}>
+        {display === 2 && endpoint && <TuiForm style={{width: "100%"}}>
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Available services" />
+                <TuiFormGroupHeader header="Available services"/>
                 <TuiFormGroupContent>
                     <TracardiProAvailableServicesList onServiceClick={handleServiceAddClick}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Configured services" />
+                <TuiFormGroupHeader header="Configured services"/>
                 <TuiFormGroupContent>
-                    <TracardiProAddedServicesList onServiceClick={handleServiceEditClick} refresh={refresh}/>
+                    <TracardiProRunningServicesList
+                        onEditClick={handleServiceEditClick}
+                        refresh={refresh}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>}
 
-        {selectedService && <FormDrawer
+        <FormDrawer
             width={550}
             label="Configure"
             onClose={() => setSelectedService(null)}
@@ -107,7 +107,7 @@ export default function TracardiPro() {
                 />
             </div>
 
-        </FormDrawer>}
+        </FormDrawer>
 
     </div>
 }

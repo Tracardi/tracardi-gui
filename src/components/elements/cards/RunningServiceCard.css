@@ -16,11 +16,6 @@
     background-color: #f5f5f5;
     color: #444;
     border-radius: 10px 10px 0 0 ;
-    justify-content: space-between;
-}
-.ServiceCard > .Title > SPAN {
-    display: flex;
-    align-items: center;
 }
 .ServiceCard > .Desc {
     padding: 15px;

@@ -1,14 +1,20 @@
 import React from "react";
 import "./ServiceCard.css";
-import Button from "../forms/Button";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import Chip from "@material-ui/core/Chip";
+import {BsPlayCircle} from "react-icons/all";
+import IconButton from "../misc/IconButton";
 
 const ServiceCard = ({service, onClick}) => {
-    return <div className="ServiceCard" onClick={() => onClick(service)}>
+    return <div className="ServiceCard">
         <div className="Title">
-            <FlowNodeIcons icon={service.icon} size={30}/>
-            <span style={{marginLeft: 10}}>{service?.name}</span>
+            <span>
+                <FlowNodeIcons icon={service.icon} size={30}/>
+                <span style={{marginLeft: 10}}>{service?.name}</span>
+            </span>
+            <IconButton label="Start" onClick={() => onClick(service)}>
+                <BsPlayCircle size={23}/>
+            </IconButton>
         </div>
         <div className="Desc">
             <div style={{marginBottom: 10}}>
@@ -16,10 +22,6 @@ const ServiceCard = ({service, onClick}) => {
             </div>
             <Chip size="small" label={service.prefix} style={{marginRight: 5}}></Chip>
             <Chip size="small"label={service.traffic} style={{marginRight: 5}}></Chip>
-            <div style={{display: "flex", justifyContent: "flex-end", marginTop: 15}}>
-                <Button label={service.id ? "Edit" : "Add"} style={{padding: "2px 4px", width: 80, justifyContent: "center"}}/>
-            </div>
-
         </div>
     </div>
 }
