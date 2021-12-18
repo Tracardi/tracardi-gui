@@ -13,7 +13,7 @@ import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
-import EventSourceCreateForm from "../forms/EventSourceCreateForm";
+import EventSourceForm from "../forms/EventSourceForm";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -22,7 +22,6 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
 
     const confirm = useConfirm();
     const [data, setData] = React.useState(null);
-    const [credentials, setCredentials] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [editData, setEditData] = React.useState(null);
 
@@ -41,8 +40,6 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             },
             (response) => {
                 if (response) {
-                    setCredentials(response.data.credentials);
-                    delete response.data.credentials;
                     setData(response.data);
                 }
             }
@@ -146,9 +143,9 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             }}
             open={editData !== null}>
 
-            <EventSourceCreateForm value={editData}
-                                   style={{margin: 20}}
-                                   onClose={() => {
+            <EventSourceForm value={editData}
+                             style={{margin: 20}}
+                             onClose={() => {
                                        setEditData(null)
                                    }}/>
 

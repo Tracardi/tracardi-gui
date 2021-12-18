@@ -20,8 +20,10 @@ const ServiceCard = ({service, onClick}) => {
             <div style={{marginBottom: 10}}>
                 {service?.description}
             </div>
-            <Chip size="small" label={service.prefix} style={{marginRight: 5}}></Chip>
-            <Chip size="small"label={service.traffic} style={{marginRight: 5}}></Chip>
+            <div style={{lineHeight: 2}}>
+                <Chip size="small" label={service.prefix} style={{marginRight: 5}}></Chip>
+                {service.tags.map((tag, key) => <Chip size="small" key={key} label={tag} style={{marginRight: 5}}/>)}
+            </div>
         </div>
     </div>
 }

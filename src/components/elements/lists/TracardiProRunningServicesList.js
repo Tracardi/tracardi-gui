@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {asyncRemote} from "../../../remote_api/entrypoint";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import "./TracardiProRunningServicesList.css";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import RunningServiceCard from "../cards/RunningServiceCard";
+import ErrorsBox from "../../errors/ErrorsBox";
 
 const TracardiProRunningServicesList = ({onEditClick, refresh}) => {
 
     const [services, setServices] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         if (services === null) {
@@ -19,7 +21,7 @@ const TracardiProRunningServicesList = ({onEditClick, refresh}) => {
         }).then((response) => {
             setServices(response.data)
         }).catch((e) => {
-            alert(e.toString())
+            setError(getError(e))
         }).finally(() => {
             setLoading(false);
         })
@@ -41,12 +43,13 @@ const TracardiProRunningServicesList = ({onEditClick, refresh}) => {
             })
             setServices(newResposne.data);
         } catch (e) {
-            alert(e.toString())
+            alert("Could not refresh services")
         }
     }
 
     return <div className="TracardiProAddedServicesList">
         {loading && <CenteredCircularProgress/>}
+        {error && <ErrorsBox errorList={error}/>}
         {Array.isArray(services) && services.map((service, key) => {
             return <RunningServiceCard key={key}
                                        service={service}

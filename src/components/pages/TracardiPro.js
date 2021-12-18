@@ -37,7 +37,7 @@ export default function TracardiPro() {
                 }
             }
         ).catch((e) => {
-            alert(e.toString())
+            alert("Could not load the service endpoint.")
         }).finally(() => {
             setLoading(false);
         })
@@ -65,7 +65,7 @@ export default function TracardiPro() {
                 setRefresh(refresh + 1);
             }
         } catch (e) {
-            alert(e.toString())
+            alert("Could not save the service.")
         }
     }
 

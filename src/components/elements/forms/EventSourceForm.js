@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 import ErrorsBox from "../../errors/ErrorsBox";
 import Chip from "@material-ui/core/Chip";
 
-const EventSourceCreateForm = ({value, style, onClose}) => {
+const EventSourceForm = ({value, style, onClose}) => {
 
     if (!value) {
         value = {
@@ -45,13 +45,6 @@ const EventSourceCreateForm = ({value, style, onClose}) => {
             return {id: type, name: types[type]['name']}
         }
         return {id: type, name: type}
-    }
-
-    const getIdTagsFromType = (type, types) => {
-        if (type in types) {
-            return {id: type, name: types[type]['tags']}
-        }
-        return {id: type, name: []}
     }
 
     useEffect(() => {
@@ -227,11 +220,11 @@ const EventSourceCreateForm = ({value, style, onClose}) => {
     </TuiForm>
 }
 
-EventSourceCreateForm.propTypes = {
+EventSourceForm.propTypes = {
     value: PropTypes.object,
     style: PropTypes.object,
     onClose: PropTypes.func
 }
 
 
-export default EventSourceCreateForm;
+export default EventSourceForm;

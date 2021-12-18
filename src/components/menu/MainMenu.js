@@ -15,7 +15,6 @@ import {BsGear} from "@react-icons/all-files/bs/BsGear";
 import {VscJson} from "@react-icons/all-files/vsc/VscJson";
 import {AiOutlineFieldTime} from "@react-icons/all-files/ai/AiOutlineFieldTime";
 import {VscVmRunning} from "@react-icons/all-files/vsc/VscVmRunning";
-import {AiOutlineCloudServer} from "@react-icons/all-files/ai/AiOutlineCloudServer";
 import { BsBug } from "react-icons/bs";
 import {VscDebugConsole} from "@react-icons/all-files/vsc/VscDebugConsole";
 import {VscPulse} from "@react-icons/all-files/vsc/VscPulse";

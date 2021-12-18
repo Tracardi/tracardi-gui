@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from "react";
-import {asyncRemote} from "../../../remote_api/entrypoint";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import "./TracardiProAvailableServicesList.css";
 import {isObject} from "../../../misc/typeChecking";
 import {objectMap} from "../../../misc/mappers";
 import ServiceCard from "../cards/ServiceCard";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import ErrorsBox from "../../errors/ErrorsBox";
 
 const TracardiProAvailableServicesList = ({onServiceClick}) => {
 
     const [services, setServices] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         setLoading(true);
@@ -19,7 +21,7 @@ const TracardiProAvailableServicesList = ({onServiceClick}) => {
         }).then((response) => {
             setServices(response.data)
         }).catch((e) => {
-            alert(e.toString())
+            setError(getError(e))
         }).finally(() => {
             setLoading(false);
         })
@@ -27,6 +29,7 @@ const TracardiProAvailableServicesList = ({onServiceClick}) => {
 
     return <div className="TracardiProAvailableServicesList">
         {loading && <CenteredCircularProgress/>}
+        {error && <ErrorsBox errorList={error} /> }
         {isObject(services) && objectMap(services, (key, service) => {
             return <ServiceCard key={key} service={service} onClick={onServiceClick}/>
         })}

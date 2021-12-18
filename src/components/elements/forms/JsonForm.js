@@ -13,7 +13,6 @@ import {
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
     SelectInput, BoolInput, ReadOnlyTags
 } from "./JsonFormComponents";
-import Chip from "@material-ui/core/Chip";
 
 const getComponentByType = ({value, errorMessage, componentType, fieldId, onChange}) => {
 

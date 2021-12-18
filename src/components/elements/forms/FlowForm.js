@@ -5,7 +5,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import {v4 as uuid4} from 'uuid';
-import Rows from "../misc/Rows";
 import TuiTaggerFlow from "../tui/TuiTaggerFlow";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {connect} from "react-redux";
