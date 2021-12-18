@@ -71,6 +71,7 @@ export default function TracardiPro() {
 
     const handleRegistrationSubmit = (endpoint) => {
         setEndpoint(endpoint)
+        setDisplay(2)
     }
 
     return <div className="TracardiPro">

@@ -11,8 +11,9 @@ import {
     KeyValueInput,
     ListOfDotPaths,
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
-    SelectInput, BoolInput
+    SelectInput, BoolInput, ReadOnlyTags
 } from "./JsonFormComponents";
+import Chip from "@material-ui/core/Chip";
 
 const getComponentByType = ({value, errorMessage, componentType, fieldId, onChange}) => {
 
@@ -28,6 +29,9 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
     // console.log('errorMessage', errorMessage);
 
     switch (componentType) {
+        case "readOnlyTags":
+            return () => <ReadOnlyTags value={value}/>
+
         case "resource":
             return (props) => <ResourceSelect value={value}
                                               errorMessage={errorMessage}

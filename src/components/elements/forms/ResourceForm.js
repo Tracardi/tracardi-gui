@@ -13,6 +13,7 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import DisabledInput from "./inputs/DisabledInput";
 import Chip from "@material-ui/core/Chip";
 import Tabs, {TabCase} from "../tabs/Tabs";
+import TuiTagger from "../tui/TuiTagger";
 
 
 function ResourceForm({init, onClose, showAlert}) {
@@ -29,7 +30,8 @@ function ResourceForm({init, onClose, showAlert}) {
             },
             consent: false,
             enabled: false,
-            tags: []
+            tags: [],
+            groups: []
         }
     }
 
@@ -39,6 +41,7 @@ function ResourceForm({init, onClose, showAlert}) {
     const [name, setName] = useState(init?.name);
     const [id, setId] = useState(init?.id);
     const [tags, setTags] = useState(init?.tags);
+    const [groups, setGroups] = useState(init?.groups);
     const [description, setDescription] = useState(init?.description);
     const [errorTypeMessage, setTypeErrorMessage] = useState('');
     const [errorNameMessage, setNameErrorMessage] = useState('');
@@ -150,7 +153,8 @@ function ResourceForm({init, onClose, showAlert}) {
                 },
                 consent: requiresConsent,
                 enabled: enabledSource,
-                tags: tags
+                tags: tags,
+                groups: groups
             };
             onSubmit(payload)
         } catch (e) {
@@ -209,7 +213,10 @@ function ResourceForm({init, onClose, showAlert}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Tags" description="Resources are auto-tagged. This is only information on
+                <TuiFormGroupField header="Grouping" description="Resources can be grouped with tags that are typed here.">
+                    <TuiTagger tags={groups} value={groups} onChange={setGroups}/>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="System tags" description="System tags are auto-tagged. This is only information on
                 resource type. It is used internally by the system.">
                     {Array.isArray(tags) && tags.map((tag, index) => <Chip label={tag} key={index} style={{marginLeft: 5}}/>)}
                 </TuiFormGroupField>

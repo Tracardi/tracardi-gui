@@ -36,7 +36,6 @@ export default function TuiTagger({label, placeholder, value, tags, onChange, fr
                 <Autocomplete
                     multiple={multiple}
                     freeSolo={freeSolo}
-                    id="tags-text"
                     size="small"
                     onChange={(ev, value, reason) =>
                     { handleChange (ev, value, reason)} }

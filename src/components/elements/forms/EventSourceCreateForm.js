@@ -11,6 +11,7 @@ import TuiTagger from "../tui/TuiTagger";
 import Button from "./Button";
 import PropTypes from "prop-types";
 import ErrorsBox from "../../errors/ErrorsBox";
+import Chip from "@material-ui/core/Chip";
 
 const EventSourceCreateForm = ({value, style, onClose}) => {
 
@@ -18,33 +19,39 @@ const EventSourceCreateForm = ({value, style, onClose}) => {
         value = {
             id: uuid4(),
             name: "",
-            url: "",
             type: null,
             description: "",
             enabled: false,
             tags: [],
-            configurable: false
+            groups: []
         }
     }
 
     const [enabledSource, setEnabledSource] = useState(value?.enabled);
     const [type, setType] = useState(null);  // It is set in useEffects after the types are loaded
     const [name, setName] = useState(value?.name);
-    const [url, setUrl] = useState(value?.url);
     const [id, setId] = useState(value?.id);
     const [tags, setTags] = useState(value?.tags);
+    const [groups, setGroups] = useState(value?.groups);
     const [description, setDescription] = useState(value?.description);
     const [errorTypeMessage, setTypeErrorMessage] = useState('');
     const [errorNameMessage, setNameErrorMessage] = useState('');
-    const [errorUrlMessage, setUrlErrorMessage] = useState('');
     const [processing, setProcessing] = useState(false);
     const [errors, setError] = useState(null);
+    const [credentialTypes, setCredentialTypes] = useState({});
 
     const getIdNameFromType = (type, types) => {
         if (type in types) {
             return {id: type, name: types[type]['name']}
         }
         return {id: type, name: type}
+    }
+
+    const getIdTagsFromType = (type, types) => {
+        if (type in types) {
+            return {id: type, name: types[type]['tags']}
+        }
+        return {id: type, name: []}
     }
 
     useEffect(() => {
@@ -56,10 +63,12 @@ const EventSourceCreateForm = ({value, style, onClose}) => {
             },
             (response) => {
                 if (response) {
+                    setCredentialTypes(response.data.result);
                     // Original type value is an id  e.g "aws", but "type" state is and object with id and name,
                     // e.g {name" "AWS credentials", id: "aws"}
                     // It must be set after the available list of event sources are loaded.
                     setType(getIdNameFromType(value?.type, response.data.result));
+                    // setTags(getIdTagsFromType(value?.type, response.data.result));
                 }
             }
         )
@@ -67,7 +76,7 @@ const EventSourceCreateForm = ({value, style, onClose}) => {
 
     const handleSubmit = async () => {
 
-        if (!name || name.length === 0 || !type?.name || !url || url.length === 0) {
+        if (!name || name.length === 0 || !type?.name) {
             if (!name || name.length === 0) {
                 setNameErrorMessage("Source name can not be empty");
             } else {
@@ -78,12 +87,6 @@ const EventSourceCreateForm = ({value, style, onClose}) => {
                 setTypeErrorMessage("Source type can not be empty");
             } else {
                 setTypeErrorMessage("");
-            }
-
-            if (!url || url.length === 0) {
-                setUrlErrorMessage("Source URL can not be empty");
-            } else {
-                setUrlErrorMessage("");
             }
 
             return;
@@ -98,11 +101,11 @@ const EventSourceCreateForm = ({value, style, onClose}) => {
                 data: {
                     id: (!id) ? uuid4() : id,
                     name: name,
-                    url: url,
                     description: description,
                     type: type.id,  // Save only type id not the whole object.
                     enabled: enabledSource,
-                    tags: tags
+                    tags: tags,
+                    groups:  groups
                 }
             })
 
@@ -128,6 +131,10 @@ const EventSourceCreateForm = ({value, style, onClose}) => {
 
     const handleTypeChange = (type) => {
         setType(type);
+        if (type?.id in credentialTypes) {
+            const template = credentialTypes[type?.id]
+            setTags(template?.tags)
+        }
     }
 
     return <TuiForm style={style}>
@@ -150,23 +157,6 @@ const EventSourceCreateForm = ({value, style, onClose}) => {
                     <TuiSelectEventSourceType value={type}
                                               onSetValue={handleTypeChange}
                                               errorMessage={errorTypeMessage}/>
-
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Source URL" description="Event source URL is required for Tracardi PRO services.
-                Web page source needs it only for informational purposes.">
-
-                    <TextField
-                        label="Event source URL"
-                        value={url}
-                        error={(typeof errorUrlMessage !== "undefined" && errorUrlMessage !== '' && errorUrlMessage !== null)}
-                        helperText={errorUrlMessage}
-                        onChange={(ev) => {
-                            setUrl(ev.target.value)
-                        }}
-                        size="small"
-                        variant="outlined"
-                        fullWidth
-                    />
 
                 </TuiFormGroupField>
             </TuiFormGroupContent>
@@ -216,8 +206,12 @@ const EventSourceCreateForm = ({value, style, onClose}) => {
                     </span>
                     </div>
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Tags">
-                    <TuiTagger tags={tags} onChange={setTags} value={tags}/>
+                <TuiFormGroupField header="Grouping" description="Sources can be grouped with tags that are typed here.">
+                    <TuiTagger tags={groups} value={groups} onChange={setGroups}/>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Tags" description="Set tags. Sources will be grouped by tags that lets you
+                find sources quickly.">
+                    {Array.isArray(tags) && tags.map((tag, index) => <Chip label={tag} key={index} style={{marginLeft: 5}}/>)}
                 </TuiFormGroupField>
 
             </TuiFormGroupContent>

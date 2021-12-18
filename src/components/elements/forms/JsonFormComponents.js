@@ -14,6 +14,7 @@ import ErrorLine from "../../errors/ErrorLine";
 import SqlEditor from "../editors/SqlEditor";
 import TuiSelectResource from "../tui/TuiSelectResource";
 import {isEmptyStringOrNull} from "../../../misc/typeChecking";
+import Chip from "@material-ui/core/Chip";
 
 export function TextInput({value, label, errorMessage, onChange}) {
 
@@ -329,4 +330,9 @@ export function ResourceSelect({value, errorMessage, onChange = null, tag=null})
     };
 
     return <TuiSelectResource value={value} errorMessage={errorMessage} onSetValue={handleChange} tag={tag}/>
+}
+
+
+export function ReadOnlyTags({value}) {
+    return Array.isArray(value) && value.map((tag, index) => <Chip label={tag} key={index} style={{marginLeft: 5}}/>)
 }
