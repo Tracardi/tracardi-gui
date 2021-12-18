@@ -28,6 +28,8 @@
     "@material-ui/styles": "^4.11.4",
     "@react-icons/all-files": "^4.1.0",
     "@reduxjs/toolkit": "^1.5.0",
+    "@sentry/react": "^6.16.1",
+    "@sentry/tracing": "^6.16.1",
     "@szhsin/react-menu": "^1.10.1",
     "@uiw/react-heat-map": "^1.4.6",
     "@uiw/react-tooltip": "^4.9.7",

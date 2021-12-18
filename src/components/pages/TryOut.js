@@ -11,6 +11,7 @@ export default function TryOut() {
 
   return (
     <div style={{height: "100%", overflow: "auto"}}>
+        <button onClick={() => {throw TypeError("test")}}>Break the world</button>;
       <ScheduledForm  />
       <NewUser/>
       <IconSelector value="alert" onChange={(ic) => console.log(ic)} />
