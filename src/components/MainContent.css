@@ -67,16 +67,18 @@
 }
 
 .Brand > .Version {
-    font-size: 50%;
+    font-family: "Lato", "Arial", sans-serif;
+    font-size: 60%;
     font-weight: 300;
     text-transform: none;
 }
 
 .Brand > .BrandTag {
-    font-size: 60%;
+    font-family: "Lato", "Arial", sans-serif;
+    font-size: 70%;
     text-transform: none;
     margin-left: 5px;
-    font-weight: 300;
+    font-weight: 400;
 }
 
 .MainPane > .Top > .User {

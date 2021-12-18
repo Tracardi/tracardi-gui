@@ -17,9 +17,9 @@
 }
 
 .SquareCard:hover {
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.46);
-    -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.46);
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.46);
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.46);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.46);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.46);
 }
 
 .SquareCard .name {
@@ -27,6 +27,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
+    sont-size: 110%;
     text-align: center;
 }
 
@@ -35,7 +36,6 @@
     text-overflow: ellipsis;
     width: 100%;
     font-size: 70%;
-    font-weight: 300;
     text-align: center;
     max-height: 60px;
 }

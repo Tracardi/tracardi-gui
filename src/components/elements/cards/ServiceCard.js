@@ -17,7 +17,7 @@ const ServiceCard = ({service, onClick}) => {
             </IconButton>
         </div>
         <div className="Desc">
-            <div style={{marginBottom: 10}}>
+            <div style={{marginBottom: 40}}>
                 {service?.description}
             </div>
             <div style={{lineHeight: 2}}>
