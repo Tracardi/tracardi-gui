@@ -42,6 +42,7 @@ export default function TracardiProForm({value, onSubmit}) {
     return <TuiForm style={{maxWidth: 500}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Tracardi PRO registration" description="Authorize Tracardi in Tracardi PRO service to get commercial services abailable." />
+                {error && <ErrorsBox errorList={error} style={{borderRadius: 0}}/> }
                 <TuiFormGroupContent>
                     <TuiFormGroupContent>
                         <TuiFormGroupField header="Service URL" description="Please copy and paste the service URL you received while purchasing the service.
@@ -121,7 +122,7 @@ export default function TracardiProForm({value, onSubmit}) {
                 </TuiFormGroupContent>
 
             </TuiFormGroup>
-            {error && <ErrorsBox errorList={error}/> }
+
             <Button label="Register" onClick={handleRegisterTracardiPro}
                     style={{ padding: "6px 10px", justifyContent: "center"}}/>
 

@@ -2,7 +2,7 @@ import React from "react";
 import "./ErrorsBox.css";
 import {VscError} from "@react-icons/all-files/vsc/VscError";
 
-export default function ErrorsBox({errorList, fillWidth}) {
+export default function ErrorsBox({errorList, fillWidth, style}) {
 
     const visual = (typeof fillWidth === "undefined") ? "ErrorsBox NotFullErrorBox" : "ErrorsBox";
 
@@ -13,7 +13,7 @@ export default function ErrorsBox({errorList, fillWidth}) {
 
     const displayBox = (errorLst) => {
         if(errorLst) {
-            return <div className={visual}>
+            return <div className={visual} style={style}>
                 <div style={{width: 40}}><VscError size={40}/></div>
                 <div className="ErrorDetails">
                     <div className="Header">The following errors occurred:</div>
