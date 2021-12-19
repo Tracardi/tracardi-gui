@@ -10,6 +10,8 @@ import {VscJson} from "@react-icons/all-files/vsc/VscJson";
 import "../elements/forms/JsonForm"
 import {VscTools} from "@react-icons/all-files/vsc/VscTools";
 import {NodeInitForm, NodeInitJsonForm} from "../elements/forms/NodeInitForm";
+import {TracardiProPluginForm} from "../elements/forms/TracardiProPluginForm";
+import {BsStar} from "@react-icons/all-files/bs/BsStar";
 
 export function NodeDetails({node, onConfig, onLabelSet}) {
 
@@ -21,13 +23,22 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
                 setTab(0)
             }
 
+            if (tab === 5 && node?.data?.metadata?.pro !== true) {
+                setTab(3)
+            }
+
             if (tab === 3 && !node?.data?.spec?.form) {
-                setTab(2)
+                if(node?.data?.metadata?.pro === true) {
+                    setTab(5)
+                } else {
+                    setTab(2)
+                }
             }
 
             if (tab === 2 && !node?.data?.spec?.init) {
                 setTab(0)
             }
+
         },
         [node, tab])
 
@@ -56,6 +67,12 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
                     selected={tab === 3}>
                     <GoSettings size={22}/>
                 </IconButton>}
+                {node?.data?.metadata?.pro === true && <IconButton
+                    label="Service Editor"
+                    onClick={() => setTab(5)}
+                    selected={tab === 5}>
+                        <BsStar size={22}/>
+                </IconButton>}
                 {node?.data?.spec?.init && <IconButton
                     label="Json Config"
                     onClick={() => setTab(2)}
@@ -68,6 +85,7 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
                     selected={tab === 4}>
                         <VscJson size={22}/>
                 </IconButton>
+
 
                 </span>
         </div>
@@ -90,6 +108,8 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
             />}
 
             {tab === 4 && <ConsoleView label="Action raw data" data={node}/>}
+
+            {node?.data?.metadata?.pro === true && tab === 5 && <TracardiProPluginForm />}
 
         </div>
     </div>

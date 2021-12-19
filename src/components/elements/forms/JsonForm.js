@@ -11,7 +11,7 @@ import {
     KeyValueInput,
     ListOfDotPaths,
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
-    SelectInput, BoolInput, ReadOnlyTags, TracardiProServiceSelect
+    SelectInput, BoolInput, ReadOnlyTags
 } from "./JsonFormComponents";
 
 const getComponentByType = ({value, errorMessage, componentType, fieldId, onChange}) => {
@@ -26,12 +26,6 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
     switch (componentType) {
         case "readOnlyTags":
             return () => <ReadOnlyTags value={value}/>
-
-        case 'tracardiProService':
-            return (props) => <TracardiProServiceSelect value={value}
-                                                   errorMessage={errorMessage}
-                                                   onChange={(value) => handleOnChange(value, fieldId)}
-                                                   {...props}/>
 
         case "resource":
             return (props) => <ResourceSelect value={value}
@@ -160,7 +154,7 @@ export const JsonForm = ({schema, values = {}, errorMessages={}, onSubmit, onCha
                 return <TuiFormGroupField key={fieldId + key}
                                           header={fieldObject.name}
                                           description={fieldObject.description}>
-                    {component(props)}
+                    {component(props)}&nbsp;
                 </TuiFormGroupField>
             } else {
                 return ""
