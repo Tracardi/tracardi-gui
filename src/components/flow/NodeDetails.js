@@ -109,7 +109,10 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
 
             {tab === 4 && <ConsoleView label="Action raw data" data={node}/>}
 
-            {node?.data?.metadata?.pro === true && tab === 5 && <TracardiProPluginForm />}
+            {node?.data?.metadata?.pro === true && tab === 5 && <TracardiProPluginForm
+                init={node?.data?.spec?.init}
+                onSubmit={handleSubmit}/>
+            }
 
         </div>
     </div>

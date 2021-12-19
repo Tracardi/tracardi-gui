@@ -7,8 +7,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {JsonForm} from "./JsonForm";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
+// import FormSchema from "../../../domain/formSchema";
 
-export function TracardiProPluginForm({value, errorMessage, tag = null}) {
+export function TracardiProPluginForm({value, errorMessage, tag = null, onSubmit}) {
 
     const [actions, setActions] = useState({})
     const [actionsDisabled, setActionsDisabled] = useState(true)
@@ -16,6 +17,8 @@ export function TracardiProPluginForm({value, errorMessage, tag = null}) {
     const [selectedAction, setSelectedAction] = useState("")
     const [selectedForm, setSelectedForm] = useState(null)
     const [actionFormData, setActionFormData] = useState({})
+    // const [formErrorMessages, setFormErrorMessages] = useState({});
+    // const [saveOK, setSaveOk] = useState(false);
 
     const handleResourceChange = async (value) => {
         if (value === null) {
@@ -57,7 +60,28 @@ export function TracardiProPluginForm({value, errorMessage, tag = null}) {
     }
 
     const handleActionFormSubmit = () => {
-        console.log(actionFormData)
+        if(onSubmit) {
+            onSubmit(actionFormData)
+        }
+
+        // const form = new FormSchema(selectedForm)
+        // form.validate(pluginId, actionFormData).then(
+        //     (result) => {
+        //         if (result === true) {
+        //
+        //             if(formErrorMessages !== {}) {
+        //                 setFormErrorMessages({})
+        //             }
+        //
+        //             // onSubmit(actionFormData)
+        //             setSaveOk(true)
+        //
+        //         } else {
+        //             setFormErrorMessages(result);
+        //             setSaveOk(false)
+        //         }
+        //     }
+        // )
     }
 
     return <div>
