@@ -2,9 +2,10 @@ import React, {useEffect} from 'react';
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {ObjectInspector} from 'react-inspector';
 import theme from '../../../themes/inspector_light_theme'
-import {fetchData} from "../../../remote_api/uql_api_endpoint";
+// import {fetchData} from "../../../remote_api/uql_api_endpoint";
 import {connect, useDispatch} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
+import { asyncRemote } from '../../../remote_api/entrypoint';
 
 export function JsObjectList({uql}) {
 
@@ -14,7 +15,22 @@ export function JsObjectList({uql}) {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        fetchData(uql, '/console/select', setLoading, setError, setReady)
+        // fetchData(uql, '/console/select', setLoading, setError, setReady)
+        setLoading(true);
+        asyncRemote(
+            {   
+                url: "/console/select",
+                method: "POST",
+                data: {data: uql},
+            }
+        ).then((response) => {
+            if (response?.status === 200) {
+                setReady(response.data);
+            }
+        }).catch((e) => {
+            setError(true);
+        }).finally(() => {setLoading(false)})
+
     }, [uql])
 
     const loadingCircle = () => {
