@@ -15,6 +15,8 @@ import SqlEditor from "../editors/SqlEditor";
 import TuiSelectResource from "../tui/TuiSelectResource";
 import {isEmptyStringOrNull} from "../../../misc/typeChecking";
 import Chip from "@material-ui/core/Chip";
+import {asyncRemote} from "../../../remote_api/entrypoint";
+import {JsonForm} from "./JsonForm";
 
 export function TextInput({value, label, errorMessage, onChange}) {
 
@@ -323,13 +325,79 @@ export function SqlInput({value, onChange = null}) {
     </>
 }
 
-export function ResourceSelect({value, errorMessage, onChange = null, tag=null}) {
+export function ResourceSelect({value, errorMessage, onChange = null, tag = null}) {
 
     const handleChange = (value) => {
         onChange(value);
     };
 
     return <TuiSelectResource value={value} errorMessage={errorMessage} onSetValue={handleChange} tag={tag}/>
+}
+
+export function TracardiProServiceSelect({value, errorMessage, onChange = null, tag = null}) {
+
+    const [actions, setActions] = useState({})
+    const [actionsDisabled, setActionsDisabled] = useState(true)
+    const [forms, setForms] = useState({})
+    const [selectedAction, setSelectedAction] = useState("")
+    const [selectedForm, setSelectedForm] = useState(null)
+
+    const handleResourceChange = async (value) => {
+       if(value === null) {
+           setActionsDisabled(true);
+       } else {
+           try {
+               const response = await asyncRemote({
+                   url: `/tracardi-pro/service/${value.id}/actions`
+               })
+
+               if (response.status === 200) {
+                   setForms(response.data)
+                   let ids = {}
+                   objectMap(response.data, (key, values) => {
+                       ids[key] = values['name']
+                   })
+                   setActions(ids);
+                   setActionsDisabled(false)
+               }
+
+           } catch (e) {
+
+           }
+       }
+
+        // onChange(value);
+    };
+
+    const handleActionChange = async (value) => {
+        setSelectedAction(value);
+        if (value in forms) {
+            setSelectedForm(forms[value].form)
+        }
+    }
+
+    return <div>
+
+        <TuiSelectResource value={value} errorMessage={errorMessage} onSetValue={handleResourceChange} tag={tag}/>
+        <div style={{margin: "15px 0"}}>
+            <TextField select fullWidth
+                       value={selectedAction}
+                       variant="outlined"
+                       size="small"
+                       label="Available actions"
+                       disabled={actionsDisabled}
+                       onChange={(e) => handleActionChange(e.target.value)}>
+                {objectMap(actions, (key, value) => {
+                    return <MenuItem key={key} value={key}>
+                        {value}
+                    </MenuItem>
+                })}
+            </TextField>
+        </div>
+
+        {selectedForm && <JsonForm schema={selectedForm}/>}
+    </div>
+
 }
 
 

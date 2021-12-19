@@ -11,7 +11,7 @@ import {
     KeyValueInput,
     ListOfDotPaths,
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
-    SelectInput, BoolInput, ReadOnlyTags
+    SelectInput, BoolInput, ReadOnlyTags, TracardiProServiceSelect
 } from "./JsonFormComponents";
 
 const getComponentByType = ({value, errorMessage, componentType, fieldId, onChange}) => {
@@ -23,13 +23,15 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
         }
     }
 
-    // console.log('id', fieldId);
-    // console.log('value', value);
-    // console.log('errorMessage', errorMessage);
-
     switch (componentType) {
         case "readOnlyTags":
             return () => <ReadOnlyTags value={value}/>
+
+        case 'tracardiProService':
+            return (props) => <TracardiProServiceSelect value={value}
+                                                   errorMessage={errorMessage}
+                                                   onChange={(value) => handleOnChange(value, fieldId)}
+                                                   {...props}/>
 
         case "resource":
             return (props) => <ResourceSelect value={value}
