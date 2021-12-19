@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SignInForm = ({showAlert}) => {
     const ver = version()
-    const [apiVersion, setApiVersion] = useState("");
+    const [errorMessage, setErrorMessage] = useState(null);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -72,10 +72,17 @@ const SignInForm = ({showAlert}) => {
         ).then((response) => {
             setLoading(false);
             if (response?.status === 200) {
-                setApiVersion(response.data)
+                if (response.data.version !== ver) {
+                    setErrorMessage(
+                        `The GUI verision ${ver} does not match the API verision.`
+                    )
+                }
             }
         }).catch((e) => {
             setLoading(false);
+            setErrorMessage(
+                'Could not connect to the API server. Please try again later.'
+            )
         });
     }, [])
 
@@ -153,7 +160,7 @@ const SignInForm = ({showAlert}) => {
                         Sign in
                     </Typography>
 
-                    {!loading && apiVersion !== ver ? (
+                    {!loading && errorMessage ? (
                         <p style={{
                             backgroundColor: "#c2185b",
                             padding: "3px 6px",
@@ -162,7 +169,7 @@ const SignInForm = ({showAlert}) => {
                             marginTop: "10px",
                             fontSize: "90%"
 
-                        }}>The GUI version {ver} does not match API version {apiVersion}.</p>
+                        }}>{errorMessage}</p>
                     ) : null}
 
                     <form onSubmitCapture={onSubmit} className={classes.form} noValidate>
