@@ -72,7 +72,7 @@ const SignInForm = ({showAlert}) => {
         ).then((response) => {
             setLoading(false);
             if (response?.status === 200) {
-                if (response.data.version !== ver) {
+                if (response.data !== ver) {
                     setErrorMessage(
                         `The GUI verision ${ver} does not match the API verision.`
                     )

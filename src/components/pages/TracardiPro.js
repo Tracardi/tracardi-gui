@@ -85,7 +85,7 @@ export default function TracardiPro() {
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Configured services"/>
+                <TuiFormGroupHeader header="Running services"/>
                 <TuiFormGroupContent>
                     <TracardiProRunningServicesList
                         onEditClick={handleServiceEditClick}

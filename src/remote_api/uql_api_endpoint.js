@@ -1,30 +1,4 @@
-import {api, getError, asyncRemote} from "./entrypoint";
-
-export const fetchData = (uqlStatement, url, setLoading, setError, setReady, setDefaultValues = true) => {
-    if (setDefaultValues) {
-        setError(false);
-        setReady(false);
-        setLoading(true);
-    }
-    try {
-        api({"Content-type": "text/plain"})
-            .post(url, uqlStatement)
-            .then(response => {
-                setLoading(false);
-                setReady({"data": response.data});
-            })
-            .catch((e) => {
-                setLoading(false);
-                if (typeof (e.response) != "undefined") {
-                    setError(e.response.data.detail);
-                } else {
-                    setError(e.message);
-                }
-            });
-    } catch (e) {
-        setError(e.message);
-    }
-};
+import {getError, asyncRemote} from "./entrypoint";
 
 export const request = ({url, header, method, data}, setLoading, setError, setReady, setDefaultValues=true) => {
 
