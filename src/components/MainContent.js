@@ -79,7 +79,7 @@ export default function MainContent({children, style}) {
             <div className="Top">
                 <Brand/>
                 <aside className="User">
-                    <MenuIcon icon={<FiShare2 size={25}/>} label="Share" direction="bottom">
+                    <MenuIcon icon={<FiShare2 size={25}/>} label="Share" direction="bottom" style={{color: "red"}}>
                         <MenuItem onClick={external("https://twitter.com/tracardi" , true)}>
                             <VscTwitter size={20} style={{marginRight: 8}}/> Twitter
                         </MenuItem>

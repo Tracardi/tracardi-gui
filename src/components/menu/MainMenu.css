@@ -1,7 +1,6 @@
 .MainMenu {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     color: white;
     background: #004A98;
     -webkit-box-shadow: inset -10px -1px 10px -13px rgba(0,0,0,0.75);
@@ -13,10 +12,61 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    padding: 40px 5px 10px 0;
+    padding: 5px 5px 10px 0;
 }
 
-.MainMenu > DIV {
+.MainMenu > DIV > .Tracardi {
+    font-size: 120%;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-family: Viga, Roboto, serif;
+}
+
+.MainMenu > DIV > .Version {
+    font-size: 80%;
+    font-weight: 300;
+}
+
+.MainMenu .MenuRow {
     display: flex;
-    flex-direction: column;
+    flex-wrap: nowrap;
+    color: rgba(225,225,225, 0.7);
+    align-items: center;
+    width: 200px;
+    flex-direction: row;
+    padding: 6px 15px;
+    cursor: pointer;
+}
+
+@keyframes fadeInMenu {
+    0% {
+        opacity: .7;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+.MainMenu .MenuRow:hover {
+    color: white;
+    animation-name: fadeInMenu;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: 0.4s;
+}
+
+.MainMenu .MenuRow > SPAN:first-child {
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 155%;
+}
+
+.MainMenu .MenuRow > SPAN:last-child {
+    display: flex;
+    margin-left: 10px;
+    align-items: center;
+    font-size: 112%;
 }
