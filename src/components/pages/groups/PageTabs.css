@@ -7,9 +7,10 @@
 .PageTabs > .Title {
     background-color: #e1f5fe;
     padding: 10px 37px;
-    font-weight: 300;
+    font-weight: 400;
     font-size: 220%;
     margin: 0;
+    color: #444;
 }
 
 .PageTabs > .TabNav {

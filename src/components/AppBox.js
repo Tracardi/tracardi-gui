@@ -73,8 +73,7 @@ const AppBox = () => {
                       tabs={{
                           "Workflows": <Flows/>,
                           "Rules": <Rules/>,
-                          "Segments": <Segments/>,
-                          "Actions": <ActionPlugins/>
+                          "Segments": <Segments/>
                       }}
             />
 
@@ -108,7 +107,13 @@ const AppBox = () => {
         {/*Settings*/}
 
         <PrivateRoute path={urlPrefix("/settings")} roles={["admin"]}>
-            <Settings/>
+            <PageTabs title="Settings"
+                      tabs={{
+                          "Workflow actions": <ActionPlugins/>,
+                          "System settings": <Settings/>,
+                      }}
+            />
+
         </PrivateRoute>
 
         {/*Other*/}

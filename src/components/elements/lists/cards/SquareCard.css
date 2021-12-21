@@ -1,7 +1,7 @@
 .SquareCard {
     display: inline-flex;
     align-items: center;
-    background: whitesmoke;
+    background: rgba(225,225,225, 0.8);
     cursor: pointer;
     width: 190px;
     height: 190px;
@@ -17,9 +17,8 @@
 }
 
 .SquareCard:hover {
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.46);
-    -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.46);
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.46);
+    border: solid #ccc 1px;
+    background: whitesmoke;
 }
 
 .SquareCard .name {

@@ -30,9 +30,9 @@ FORM.TuiForm > .TuiFormGroup > .TuiFormGroupHeader {
 }
 
 FORM.TuiForm > .TuiFormGroup > .TuiFormGroupHeader > H2 {
-    font-size: 200%;
+    font-size: 185%;
     margin: 0 0 15px 0;
-    font-weight: 300;
+    font-weight: 400;
     color: #444;
     text-transform: none;
 }
