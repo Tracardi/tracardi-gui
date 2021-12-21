@@ -11,6 +11,7 @@
 .MainContent > .MainPane {
     width: inherit;
     height: inherit;
+    overflow: auto;
 }
 
 .MainContent > .MainPane > .Top {
@@ -29,8 +30,6 @@
     display: flex;
     width:100%;
     flex-direction: row;
-    height: calc(100% - 45px);
-    background-color: aliceblue;
 }
 
 .About {

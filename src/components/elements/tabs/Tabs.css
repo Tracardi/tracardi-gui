@@ -8,6 +8,7 @@
 .Tabs > .Navigation {
     border-bottom: solid 1px #ccc;
     display: flex;
+    height: 45px;
 }
 
 .Tabs > .Navigation > .Tab {
@@ -25,6 +26,7 @@
 
 .Tabs .TabContent {
     height: inherit;
+    flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
 }

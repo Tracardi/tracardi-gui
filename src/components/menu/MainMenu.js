@@ -11,10 +11,11 @@ import {FiMoreHorizontal} from "react-icons/fi";
 import {AiOutlinePoweroff} from "react-icons/ai";
 import {IoLogoYoutube} from "react-icons/io";
 import {VscBook, VscInfo, VscTwitter, VscPulse} from "react-icons/vsc";
+import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
 
 export default function MainMenu() {
 
-    const [collapsed, setCollapsed] = useState(true);
+    const [collapsed, setCollapsed] = useState(false);
 
     const history = useHistory();
     const go = (url) => {
@@ -39,11 +40,12 @@ export default function MainMenu() {
         <div>
             <Branding collapsed={collapsed}/>
             <div>
-                <MenuRow icon={<BsStar size={20}/>} label="Tracardi Pro" collapsed={collapsed}/>
-                <MenuRow icon={<BsBoxArrowInUpRight size={20}/>} label="Traffic" collapsed={collapsed}/>
-                <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed}/>
-                <MenuRow icon={<VscPulse size={20}/>} label="Monitoring" collapsed={collapsed}/>
-                <MenuRow icon={<BsBug size={20}/>} label="Test" collapsed={collapsed}/>
+                <MenuRow icon={<BsStar size={20}/>} label="Tracardi Pro" collapsed={collapsed} onClick={go("/pro")}/>
+                <MenuRow icon={<BsBoxArrowInUpRight size={20}/>} label="Traffic" collapsed={collapsed} onClick={go("/traffic")}/>
+                <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")}/>
+                <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Processing" collapsed={collapsed} onClick={go("/processing")}/>
+                <MenuRow icon={<VscPulse size={20}/>} label="Monitoring" collapsed={collapsed} onClick={go("/monitoring")}/>
+                <MenuRow icon={<BsBug size={20}/>} label="Test" collapsed={collapsed} onClick={go("/testing")}/>
             </div>
         </div>
         <div>

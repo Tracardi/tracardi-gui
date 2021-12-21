@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from "react";
-import { useDispatch } from "react-redux";
+import {useDispatch} from "react-redux";
 import {resetPage} from '../../../redux/reducers/pagingSlice'
 import TextField from "@material-ui/core/TextField";
 import Button from "./Button";
@@ -17,12 +17,12 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
     const dispatch = useDispatch();
 
     const onSetDateFrom = useCallback((date) => {
-        localStorage.setItem(type+"DateFrom", JSON.stringify(date));
+        localStorage.setItem(type + "DateFrom", JSON.stringify(date));
         setFromDate(date);
     }, [type])
 
-    const onSetDateTo= useCallback((date) => {
-        localStorage.setItem(type+"DateTo", JSON.stringify(date));
+    const onSetDateTo = useCallback((date) => {
+        localStorage.setItem(type + "DateTo", JSON.stringify(date));
         setToDate(date)
     }, [type]);
 
@@ -41,7 +41,7 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
     }
 
     function onReady() {
-        localStorage.setItem(type+"Query", query);
+        localStorage.setItem(type + "Query", query);
         dispatch(resetPage());
         onFilterClick({
             from: fromDate,
@@ -57,7 +57,7 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
                 variant="outlined"
                 size="small"
                 value={initRefresh}
-                style={{width: 130, marginRight:5}}
+                style={{width: 130, marginRight: 5}}
                 onChange={(ev) => setRefreshRate(ev.target.value)}
             >
                 <MenuItem value={0} selected>No refresh</MenuItem>
@@ -92,4 +92,10 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
     </section>
 }
 
-ObjectFiltering.propTypes = {type: PropTypes.string, initDate: PropTypes.object, onFilterClick: PropTypes.func, initRefresh: PropTypes.number, onRefreshChange: PropTypes.func}
+ObjectFiltering.propTypes = {
+    type: PropTypes.string,
+    initDate: PropTypes.object,
+    onFilterClick: PropTypes.func,
+    initRefresh: PropTypes.number,
+    onRefreshChange: PropTypes.func
+}

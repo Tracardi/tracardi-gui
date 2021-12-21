@@ -1,7 +1,6 @@
 .DataBrowsingList {
-    height: 100%;
-    display: grid;
-    grid-template-rows: 200px calc(100% - 205px)
+    display: flex;
+    flex-direction: column;
 }
 
 .DataBrowsingList > .Chart {
@@ -9,6 +8,5 @@
 }
 
 .DataBrowsingList > .Data {
-    height: 100%;
 }
 

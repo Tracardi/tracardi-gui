@@ -1,0 +1,13 @@
+.PageTabs {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+}
+
+.PageTabs > .Title {
+    background-color: aliceblue;
+    padding: 10px 37px;
+    font-weight: 300;
+    font-size: 220%;
+    margin: 0;
+}

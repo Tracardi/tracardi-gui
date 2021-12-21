@@ -6,11 +6,8 @@
     grid-template-columns: auto 215px;
     width: inherit;
     align-items: center;
-    padding: 10px;
-    background-color: whitesmoke;
-    grid-gap: 5px;
-    border-radius: 5px;
     width: 100%;
+
 }
 
 .FilterAddForm > DIV.FullGrid {

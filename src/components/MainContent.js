@@ -77,40 +77,7 @@ export default function MainContent({children, style}) {
         <MainMenu/>
         <div className="MainPane">
             <div className="Top">
-                <Brand/>
-                <aside className="User">
-                    <MenuIcon icon={<FiShare2 size={25}/>} label="Share" direction="bottom" style={{color: "red"}}>
-                        <MenuItem onClick={external("https://twitter.com/tracardi" , true)}>
-                            <VscTwitter size={20} style={{marginRight: 8}}/> Twitter
-                        </MenuItem>
-                        <MenuItem onClick={external("https://www.facebook.com/TRACARDI/", true)}>
-                            <FaFacebookSquare size={20} style={{marginRight: 8}}/> Facebook
-                        </MenuItem>
-                        <MenuItem onClick={external("https://www.youtube.com/channel/UC0atjYqW43MdqNiSJBvN__Q", true)}>
-                            <IoLogoYoutube size={20} style={{marginRight: 8}}/> Youtube
-                        </MenuItem>
-                        <MenuItem onClick={external("https://github.com/atompie/tracardi", true)}>
-                            <VscGithubInverted size={20} style={{marginRight: 8}}/> GitHub
-                        </MenuItem>
-                    </MenuIcon>
-                    <MenuIcon icon={<FiMoreHorizontal size={30}/>} label="Settings" direction="bottom">
-                        <MenuItem onClick={go("/settings")}>
-                            <VscSettingsGear size={20} style={{marginRight: 8}}/>Settings
-                        </MenuItem>
-                        <MenuItem onClick={external(`${apiUrl()}/manual/en/site`, true)}>
-                            <VscBook size={20} style={{marginRight: 8}}/>Manual
-                        </MenuItem>
-                        <MenuItem onClick={() => setOpenAbout(true)}>
-                            <VscInfo size={20} style={{marginRight: 8}}/>About
-                        </MenuItem>
-                    </MenuIcon>
-
-                    <MenuIcon icon={<IoPersonCircleOutline size={30}/>} label="Profile" direction="bottom">
-                        <MenuItem onClick={go("/logout")}>
-                            <AiOutlinePoweroff size={20} style={{marginRight: 8}}/>Logout
-                        </MenuItem>
-                    </MenuIcon>
-                </aside>
+                
             </div>
             <div className="Bottom">
                 {children}

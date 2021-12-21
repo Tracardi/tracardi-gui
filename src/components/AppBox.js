@@ -23,88 +23,109 @@ import TestEditor from "./pages/TestEditor";
 import NewUser from "./pages/NewUser";
 import EventSources from "./pages/EventSources";
 import TracardiPro from "./pages/TracardiPro";
+import PageTabs from "./pages/groups/PageTabs";
 
 const AppBox = () => {
 
     return <MainContent>
 
+        {/*Redirects*/}
+
         <PrivateRoute exact path={urlPrefix("")} roles={["admin"]}>
-            <Redirect to={urlPrefix("/home/events")}/>
+            <Redirect to={urlPrefix("/data/events")}/>
         </PrivateRoute>
 
         <PrivateRoute exact path={urlPrefix("/home")} roles={["admin"]}>
-            <Redirect to={urlPrefix("/home/events")}/>
+            <Redirect to={urlPrefix("/data/events")}/>
         </PrivateRoute>
 
         <div className="Content">
-            <PrivateRoute path={urlPrefix("/home/events")} roles={["admin"]}>
-                <EventsAnalytics/>
-            </PrivateRoute>
 
-            <PrivateRoute path={urlPrefix("/home/profiles")} roles={["admin"]}>
-                <ProfilesAnalytics/>
-            </PrivateRoute>
+            {/*Pro*/}
 
-            <PrivateRoute path={urlPrefix("/home/sessions")} roles={["admin"]}>
-                <SessionsAnalytics/>
-            </PrivateRoute>
-
-            <PrivateRoute exact path={urlPrefix("")} roles={["admin"]}>
-
-            </PrivateRoute>
-
-            <PrivateRoute path={urlPrefix("/setup/event-sources")} roles={["admin"]}>
-                <EventSources/>
-            </PrivateRoute>
-            <PrivateRoute path={urlPrefix("/setup/resources")} roles={["admin"]}>
-                <Resources/>
-            </PrivateRoute>
-            <PrivateRoute path={urlPrefix("/setup/flows")} roles={["admin"]}>
-                <Flows/>
-            </PrivateRoute>
-            <PrivateRoute path={urlPrefix("/setup/pro")} roles={["admin"]}>
+            <PrivateRoute path={urlPrefix("/pro")} roles={["admin"]}>
                 <TracardiPro/>
             </PrivateRoute>
+
+            {/*Traffic*/}
+
+            <PrivateRoute path={urlPrefix("/traffic")} roles={["admin"]}>
+                <PageTabs title="Traffic"
+                          tabs={{
+                              "Inbound": <EventSources/>,
+                              "Outbound": <Resources/>
+                          }}
+                />
+            </PrivateRoute>
+
+            {/*Data*/}
+
+            <PrivateRoute path={urlPrefix("/data")} roles={["admin"]}>
+                <PageTabs title="Data"
+                          tabs={{
+                              "Events": <EventsAnalytics/>,
+                              "Profiles": <ProfilesAnalytics/>,
+                              "Sessions": <SessionsAnalytics/>
+                          }}
+                />
+
+            </PrivateRoute>
+
+            {/*Processing*/}
+
+
+            <PrivateRoute path={urlPrefix("/processing")} roles={["admin"]}>
+                <PageTabs title="Processing"
+                          tabs={{
+                              "Workflows": <Flows/>,
+                              "Rules": <Rules/>,
+                              "Segments": <Segments/>,
+                              "Actions": <ActionPlugins/>
+                          }}
+                />
+
+            </PrivateRoute>
+
             <PrivateRoute exact path={urlPrefix("/setup/flow/edit/:id")} roles={["admin"]}>
                 <FlowEditor/>
             </PrivateRoute>
             <PrivateRoute exact path={urlPrefix("/setup/flow/:id")} roles={["admin"]}>
                 <FlowReader/>
             </PrivateRoute>
-            <PrivateRoute path={urlPrefix("/setup/flow-actions")} roles={["admin"]}>
-                <ActionPlugins/>
-            </PrivateRoute>
-            <PrivateRoute path={urlPrefix("/setup/rules")} roles={["admin"]}>
-                <Rules/>
-            </PrivateRoute>
-            <PrivateRoute path={urlPrefix("/setup/segments")} roles={["admin"]}>
-                <Segments/>
+
+            {/*Monitoring*/}
+
+            <PrivateRoute path={urlPrefix("/monitoring")} roles={["admin"]}>
+                <PageTabs title="Monitoring"
+                          tabs={{
+                              "Running instances": <Instances/>,
+                              "Scheduled tasks": <Tasks/>,
+                          }}
+                />
+
             </PrivateRoute>
 
-            <PrivateRoute path={urlPrefix("/setup/instances")} roles={["admin"]}>
-                <Instances/>
-            </PrivateRoute>
+            {/*Testing*/}
 
-            <PrivateRoute path={urlPrefix("/setup/tasks")} roles={["admin"]}>
-                <Tasks/>
-            </PrivateRoute>
+            <Route exact path={urlPrefix("/testing")}>
+                <TestEditor/>
+            </Route>
+
+            {/*Settings*/}
 
             <PrivateRoute path={urlPrefix("/settings")} roles={["admin"]}>
                 <Settings/>
             </PrivateRoute>
 
-            <PrivateRoute exact path={urlPrefix("/setup")} roles={["admin"]}>
-                <Flows/>
-            </PrivateRoute>
+            {/*Other*/}
+
             <Route exact path={urlPrefix("/tryout")}>
                 <TryOut/>
             </Route>
             <Route exact path={urlPrefix("/user/new")}>
                 <NewUser/>
             </Route>
-            <Route exact path={urlPrefix("/editor/test")}>
-                <TestEditor/>
-            </Route>
+
         </div>
 
     </MainContent>
