@@ -11,7 +11,7 @@ export default function FormDrawer(
     }) {
 
     return <Drawer anchor="right" open={open} onClose={onClose}>
-        <div style={{width: (width) ? width : 1200, overflowX: "hidden"}}>
+        <div style={{width: (width) ? width : 1200, overflowX: "hidden", height:"inherit"}}>
             {open && children}
         </div>
     </Drawer>

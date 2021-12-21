@@ -343,7 +343,7 @@ export function FlowEditorPane(
     return <div className="FlowEditorGrid" style={displayDebugHeight}>
         <div className="FlowPane" ref={reactFlowWrapper}>
             {flowLoading && <CenteredCircularProgress/>}
-            {elements && <ReactFlow
+            {!flowLoading && elements && <ReactFlow
                 elements={elements}
                 zoomOnDoubleClick={false}
                 zoomOnScroll={false}
