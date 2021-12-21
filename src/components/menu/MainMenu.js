@@ -79,9 +79,5 @@ export default function MainMenu() {
                 </MenuItem>
             </MenuIcon>
         </div>
-        <div>
-
-        </div>
-
     </div>
 }

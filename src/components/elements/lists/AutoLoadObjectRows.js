@@ -1,6 +1,6 @@
 import { connect, useDispatch } from "react-redux";
 import { increasePage } from "../../../redux/reducers/pagingSlice";
-import {MemoObjectRow} from "./rows/ObjectRow";
+import {ObjectRow} from "./rows/ObjectRow";
 import React from "react";
 
 const AutoLoadObjectRows = ({ timeField, timeFieldWidth, filterFields, onDetails, onDetailsRequest, paging, rows }) => {
@@ -11,7 +11,7 @@ const AutoLoadObjectRows = ({ timeField, timeFieldWidth, filterFields, onDetails
     if (Array.isArray(rows)) {
       return rows.map((row, index) => {
         return (
-          <MemoObjectRow
+          <ObjectRow
             key={index}
             row={row}
             timeField={timeField}
