@@ -5,9 +5,15 @@
 }
 
 .PageTabs > .Title {
-    background-color: aliceblue;
+    background-color: #e1f5fe;
     padding: 10px 37px;
     font-weight: 300;
     font-size: 220%;
     margin: 0;
+}
+
+.PageTabs > .TabNav {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
 }

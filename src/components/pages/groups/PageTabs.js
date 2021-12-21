@@ -10,13 +10,15 @@ export default function PageTabs({title, tabs = {}}) {
 
     return <div className="PageTabs">
         <h1 className="Title">{title}</h1>
-        <div>
+
             <Tabs
+                className="TabNav"
                 tabs={Object.keys(tabs)}
                 defaultTab={tab}
                 onTabSelect={setTab}
                 tabStyle={{flex: "initial"}}
-                tabsStyle={{paddingLeft: 30, backgroundColor: "aliceblue"}}
+                tabContentStyle={{overflow: "initial"}}
+                tabsStyle={{paddingLeft: 30, backgroundColor: "#e1f5fe", borderBottom: "solid 1px #b3e5fc"}}
             >
                 {objectMap(tabs, (key, component) => {
                     i = i + 1;
@@ -27,6 +29,5 @@ export default function PageTabs({title, tabs = {}}) {
                     </TabCase>
                 })}
             </Tabs>
-        </div>
     </div>
 }

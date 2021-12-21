@@ -95,7 +95,7 @@ const SignInForm = ({showAlert}) => {
     const [endpoint, setEndpoint] = useState(new storageValue('tracardi-api-url').read([]));
 
     const {state} = useLocation();
-    const {from} = state || {from: {pathname: urlPrefix("/home")}};
+    const {from} = state || {from: {pathname: urlPrefix("/")}};
     const [redirectToReferrer, setRedirectToReferrer] = useState(false);
 
     const handleEmailChange = (evt) => {

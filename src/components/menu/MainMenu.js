@@ -10,7 +10,7 @@ import {BiChevronLeftCircle, BiChevronRightCircle} from "react-icons/bi";
 import {FiMoreHorizontal} from "react-icons/fi";
 import {AiOutlinePoweroff} from "react-icons/ai";
 import {IoLogoYoutube} from "react-icons/io";
-import {VscBook, VscInfo, VscTwitter, VscPulse} from "react-icons/vsc";
+import {VscBook, VscTwitter, VscPulse} from "react-icons/vsc";
 import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
 
 export default function MainMenu() {
@@ -20,6 +20,14 @@ export default function MainMenu() {
     const history = useHistory();
     const go = (url) => {
         return () => history.push(urlPrefix(url));
+    }
+
+    const external = (url, newWindow=false) => {
+        if(newWindow===true) {
+            return () => window.open(url, '_blank', 'location=yes,scrollbars=yes,status=yes')
+        } else {
+            return () => window.location.href = url;
+        }
     }
 
     const MenuRow = ({label, icon, onClick, style, collapsed=false}) => {
@@ -53,10 +61,18 @@ export default function MainMenu() {
             <MenuRow icon={<VscTwitter size={20}/>} label="Twitter" collapsed={collapsed}/>
             <MenuRow icon={<VscBook size={20}/>} label="Manual" collapsed={collapsed} style={{marginBottom: 15}}/>
 
-            <MenuRow icon={<FiMoreHorizontal size={20}/>} label="Settings" collapsed={collapsed}/>
-            <MenuRow icon={<VscInfo size={20}/>} label="About" collapsed={collapsed} style={{marginBottom: 15}}/>
+            <MenuRow icon={<FiMoreHorizontal size={20}/>}
+                     label="Settings"
+                     collapsed={collapsed}
+                     onClick={go("/settings")}/>
 
-            <MenuRow icon={<AiOutlinePoweroff size={20}/>} label="Logout" collapsed={collapsed} style={{marginBottom: 20}}/>
+
+            <MenuRow icon={<AiOutlinePoweroff size={20}/>}
+                label="Logout"
+                collapsed={collapsed}
+                style={{marginBottom: 20}}
+                onClick={go("/logout")}
+                />
 
             <MenuRow icon={collapsed ? <BiChevronRightCircle size={20}/> : <BiChevronLeftCircle size={20}/>}
                      collapsed={collapsed}

@@ -67,7 +67,7 @@ export function FlowEditorPane(
     });
     const [displayRightSidebar, setDisplayRightSidebar] = useState(false);
     const [displayDebugPane, setDisplayDebugPane] = useState(false);
-    const [displayDebugHeight, setDisplayDebugHeight] = useState({gridTemplateRows: "calc(100% - 80px) 80px"});
+    const [displayDebugHeight, setDisplayDebugHeight] = useState({gridTemplateRows: "calc(100% - 33px) 33px"});
     const [displayNodeContextMenu, setDisplayNodeContextMenu] = useState(false);
     const [animatedEdge, setAnimatedEdge] = useState(null);
     const [elements, setElements] = useState([]);
@@ -189,7 +189,7 @@ export function FlowEditorPane(
             setDisplayDebugHeight({gridTemplateRows: "calc(100% - 400px) 400px"});
         } else {
             setDisplayDebugPane(false);
-            setDisplayDebugHeight({gridTemplateRows: "calc(100% - 80px) 80px"})
+            setDisplayDebugHeight({gridTemplateRows: "calc(100% - 33px) 33px"})
         }
     }
 

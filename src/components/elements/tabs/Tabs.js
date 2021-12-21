@@ -23,7 +23,7 @@ TabCase.propTypes = {
     id: PropTypes.number.isRequired,
 }
 
-export default function Tabs({tabs, children, defaultTab=0, onTabSelect, className, tabStyle, tabsStyle}) {
+export default function Tabs({tabs, children, defaultTab=0, onTabSelect, className, tabStyle, tabsStyle, tabContentStyle}) {
 
     const [tabId, setTabId] = useState((defaultTab) ? defaultTab : 0);
 
@@ -70,7 +70,7 @@ export default function Tabs({tabs, children, defaultTab=0, onTabSelect, classNa
                 }
             )}
         </nav>
-        <div className="TabContent">
+        <div className="TabContent" style={tabContentStyle}>
             <TabCases tabId={tabId}>
                 {children}
             </TabCases>
