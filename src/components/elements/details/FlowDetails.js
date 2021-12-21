@@ -158,7 +158,7 @@ export default function FlowDetails({id, onDeleteComplete}) {
 
     </TuiForm>
 
-    return <div className="Box10">
+    return <div className="Box10" style={{height: "100%"}}>
         {loading && <CenteredCircularProgress/>}
         {data && <Details/>}
         <FormDrawer

@@ -149,7 +149,6 @@ export default function DataAnalytics({
         />
       </div>
       <div className="Data">
-      <SemiHeader>{label}</SemiHeader>
         <DataBrowsingList
           label={label}
           onLoadDataRequest={onLoadDataRequest}

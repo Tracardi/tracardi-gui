@@ -131,7 +131,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
 
     </>
 
-    return <div className="Box10">
+    return <div className="Box10" style={{height: "100%"}}>
         {loading && <CenteredCircularProgress/>}
         {data && <Details/>}
 

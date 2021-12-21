@@ -104,7 +104,7 @@ export default function SegmentDetails({id, onDeleteComplete}) {
         </TuiFormGroup>
     </TuiForm>
 
-    return <div className="Box10">
+    return <div className="Box10" style={{height: "100%"}}>
         {loading && <CenteredCircularProgress/>}
         {data && <Details/>}
         <FormDrawer

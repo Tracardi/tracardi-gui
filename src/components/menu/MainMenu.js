@@ -1,83 +1,83 @@
-import React from "react";
+import React, {useState} from "react";
 import "./MainMenu.css";
-import {MenuIcon} from "./Menu";
-import {MenuItem} from "@szhsin/react-menu";
-import {BsFolder} from "@react-icons/all-files/bs/BsFolder";
-import {VscServerProcess} from "@react-icons/all-files/vsc/VscServerProcess";
-import {VscOrganization} from "@react-icons/all-files/vsc/VscOrganization";
+import {BsFolder} from "react-icons/bs";
 import {useHistory} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
-import {VscPlug} from "@react-icons/all-files/vsc/VscPlug";
+import {BsBoxArrowInUpRight} from "react-icons/bs";
+import {BsStar, BsBug} from "react-icons/bs";
+import version from '../../misc/version';
+import {BiChevronLeftCircle, BiChevronRightCircle} from "react-icons/bi";
+import {AiOutlinePoweroff} from "react-icons/ai";
+import {IoLogoYoutube} from "react-icons/io";
+import {VscBook, VscTwitter, VscPulse} from "react-icons/vsc";
 import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
-import {BsPerson} from "@react-icons/all-files/bs/BsPerson";
-import {BsLightning} from "@react-icons/all-files/bs/BsLightning";
-import {BsGear} from "@react-icons/all-files/bs/BsGear";
-import {VscJson} from "@react-icons/all-files/vsc/VscJson";
-import {AiOutlineFieldTime} from "@react-icons/all-files/ai/AiOutlineFieldTime";
-import {VscVmRunning} from "@react-icons/all-files/vsc/VscVmRunning";
-import { BsBug } from "react-icons/bs";
-import {VscDebugConsole} from "@react-icons/all-files/vsc/VscDebugConsole";
-import {VscPulse} from "@react-icons/all-files/vsc/VscPulse";
-import {BsBoxArrowInUpRight} from "@react-icons/all-files/bs/BsBoxArrowInUpRight";
-import {BsStar} from "@react-icons/all-files/bs/BsStar";
-import {BsBoxArrowUpRight} from "@react-icons/all-files/bs/BsBoxArrowUpRight";
+import {GoSettings} from "react-icons/go";
 
 export default function MainMenu() {
+
+    const [collapsed, setCollapsed] = useState(false);
 
     const history = useHistory();
     const go = (url) => {
         return () => history.push(urlPrefix(url));
     }
 
-    return <div className="MainMenu">
+    const external = (url, newWindow=false) => {
+        if(newWindow===true) {
+            return () => window.open(url, '_blank', 'location=yes,scrollbars=yes,status=yes')
+        } else {
+            return () => window.location.href = url;
+        }
+    }
+
+    const MenuRow = ({label, icon, onClick, style, collapsed=false}) => {
+        return <div className="MenuRow" onClick={onClick} style={style}><span className="Icon">{icon}</span>{!collapsed && <span className="Label">{label}</span>}</div>
+    }
+
+    const Branding = ({collapsed=false}) => {
+        if(collapsed === true) {
+            return <div className="Branding"><div className="T">T</div></div>
+        }
+        return <div className="Branding">
+                <div className="Tracardi">TRACARDI</div>
+                <div className="Version">v. {version()}</div>
+            </div>
+    }
+
+    return <div className={collapsed ? "MainMenu CollapsedMainMenu": "MainMenu FullMainMenu"}>
         <div>
-            <MenuIcon icon={<BsFolder size={25}/>} label="Data">
-                <MenuItem onClick={go("/setup/pro")}>
-                    <BsStar size={20} style={{marginRight: 8}}/>Tracardi Pro
-                </MenuItem>
-                <MenuItem onClick={go("/setup/event-sources")}>
-                    <BsBoxArrowInUpRight size={20} style={{marginRight: 8}}/>Event sources
-                </MenuItem>
-                <MenuItem onClick={go("/setup/resources")}>
-                    <BsBoxArrowUpRight size={20} style={{marginRight: 8}}/> External resources
-                </MenuItem>
-                <MenuItem onClick={go("/home/events")}>
-                    <BsLightning size={20} style={{marginRight: 8}}/> Events
-                </MenuItem>
-                <MenuItem onClick={go("/home/profiles")}>
-                    <BsPerson size={20} style={{marginRight: 8}}/> Profiles
-                </MenuItem>
-                <MenuItem onClick={go("/home/sessions")}>
-                    <VscJson size={20} style={{marginRight: 8}}/> Sessions
-                </MenuItem>
-            </MenuIcon>
-            <MenuIcon icon={<VscServerProcess size={25}/>} label="Processing">
-                <MenuItem onClick={go("/setup/rules")}>
-                    <BsGear size={20} style={{marginRight: 8}}/> Rules
-                </MenuItem>
-                <MenuItem onClick={go("/setup/flows")}>
-                    <IoGitNetworkSharp size={20} style={{marginRight: 8}}/> Flows
-                </MenuItem>
-                <MenuItem onClick={go("/setup/segments")}>
-                    <VscOrganization size={20} style={{marginRight: 8}}/> Segments
-                </MenuItem>
-                <MenuItem onClick={go("/setup/flow-actions")}>
-                    <VscPlug size={20} style={{marginRight: 8}}/> Action plugins
-                </MenuItem>
-            </MenuIcon>
-            <MenuIcon icon={<VscPulse size={25}/>} label="Settings">
-                <MenuItem onClick={go("/setup/instances")}>
-                    <VscVmRunning size={20} style={{marginRight: 8}}/> Running instances
-                </MenuItem>
-                <MenuItem onClick={go("/setup/tasks")}>
-                    <AiOutlineFieldTime size={20} style={{marginRight: 8}}/> Scheduled tasks
-                </MenuItem>
-            </MenuIcon>
-            <MenuIcon icon={<BsBug size={25}/>} label="Test & monitor">
-                <MenuItem onClick={go("/editor/test")}>
-                    <VscDebugConsole size={20} style={{marginRight: 8}}/>Test console
-                </MenuItem>
-            </MenuIcon>
+            <Branding collapsed={collapsed}/>
+            <div>
+                <MenuRow icon={<BsStar size={20}/>} label="Tracardi Pro" collapsed={collapsed} onClick={go("/pro")}/>
+                <MenuRow icon={<BsBoxArrowInUpRight size={20}/>} label="Traffic" collapsed={collapsed} onClick={go("/traffic")}/>
+                <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")}/>
+                <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Processing" collapsed={collapsed} onClick={go("/processing")}/>
+                <MenuRow icon={<VscPulse size={20}/>} label="Monitoring" collapsed={collapsed} onClick={go("/monitoring")}/>
+                <MenuRow icon={<BsBug size={20}/>} label="Test" collapsed={collapsed} onClick={go("/testing")}/>
+                <MenuRow icon={<GoSettings size={20}/>}
+                         label="Settings"
+                         collapsed={collapsed}
+                         onClick={go("/settings")}/>
+            </div>
         </div>
+        <div>
+            <MenuRow icon={<IoLogoYoutube size={20}/>} label="YouTube" collapsed={collapsed}/>
+            <MenuRow icon={<VscTwitter size={20}/>} label="Twitter" collapsed={collapsed}/>
+            <MenuRow icon={<VscBook size={20}/>} label="Manual" collapsed={collapsed} style={{marginBottom: 15}}/>
+
+            <MenuRow icon={<AiOutlinePoweroff size={20}/>}
+                label="Logout"
+                collapsed={collapsed}
+                style={{marginBottom: 20}}
+                onClick={go("/logout")}
+                />
+
+            <MenuRow icon={collapsed ? <BiChevronRightCircle size={20}/> : <BiChevronLeftCircle size={20}/>}
+                     collapsed={collapsed}
+                     label="Collapse"
+                     onClick={() => setCollapsed(!collapsed)}
+            />
+        </div>
+
     </div>
 }
