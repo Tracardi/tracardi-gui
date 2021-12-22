@@ -3,13 +3,13 @@ import Button from "./Button";
 import TextField from "@material-ui/core/TextField";
 import {v4 as uuid4} from 'uuid';
 import PropTypes from 'prop-types';
-import TuiSelectResource from "../tui/TuiSelectResource";
 import TuiSelectFlow from "../tui/TuiSelectFlow";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import TuiFormError from "../tui/TuiFormError";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
+import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 
 export default function RuleForm({onReady, init}) {
 
@@ -126,8 +126,10 @@ export default function RuleForm({onReady, init}) {
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Resource" description="Select event resource. Event without selected resource will be
                     discarded.">
-                    <TuiSelectResource value={source} disabled={sourceDisabled} onSetValue={handleSourceSet}
-                                       errorMessage={sourceErrorMessage}/>
+                    <TuiSelectEventSource value={source}
+                                          disabled={sourceDisabled}
+                                          onSetValue={handleSourceSet}
+                                          errorMessage={sourceErrorMessage}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Workflow"
                                    description="Select existing workflow. If there is none create it on workflow page.">
