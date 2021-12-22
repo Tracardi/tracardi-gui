@@ -10,6 +10,7 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import {request} from "../../../remote_api/uql_api_endpoint";
 import TuiFormError from "../tui/TuiFormError";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
+import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 
 export default function RuleForm({onReady, init}) {
 
@@ -101,21 +102,22 @@ export default function RuleForm({onReady, init}) {
                 method: "post",
                 data: payload
             },
-            () => { },
-            (e)=>{
-                if(e) {
+            () => {
+            },
+            (e) => {
+                if (e) {
                     setErrorMessage(e[0].msg);
                 }
             },
             (data) => {
-                if(data) {
+                if (data) {
                     onReady(data)
                 }
             }
         )
     }
 
-    return <TuiForm style={{margin:20}}>
+    return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Rule trigger and workflow" description="Workflow engine will trigger given flow
             only if incoming event type and resource are equal to the values set in this form. "/>
@@ -126,8 +128,10 @@ export default function RuleForm({onReady, init}) {
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Resource" description="Select event resource. Event without selected resource will be
                     discarded.">
-                    <TuiSelectResource value={source} disabled={sourceDisabled} onSetValue={handleSourceSet}
-                                       errorMessage={sourceErrorMessage}/>
+                    <TuiSelectEventSource value={source}
+                                          disabled={sourceDisabled}
+                                          onSetValue={handleSourceSet}
+                                          errorMessage={sourceErrorMessage}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Workflow"
                                    description="Select existing workflow. If there is none create it on workflow page.">
@@ -171,7 +175,7 @@ export default function RuleForm({onReady, init}) {
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
-        {errorMessage && <TuiFormError message={errorMessage} />}
+        {errorMessage && <TuiFormError message={errorMessage}/>}
         <Button label="Save" onClick={handleSubmit} style={{justifyContent: "center"}}/>
     </TuiForm>
 }
