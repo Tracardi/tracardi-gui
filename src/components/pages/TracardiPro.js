@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {asyncRemote} from "../../remote_api/entrypoint";
+import {asyncRemote, getError} from "../../remote_api/entrypoint";
 import TracardiProAvailableServicesList from "../elements/lists/TracardiProAvailableServicesList";
 import TracardiProForm from "../elements/forms/TracardiProForm";
 import FormDrawer from "../elements/drawers/FormDrawer";
@@ -8,6 +8,7 @@ import TracardiProRunningServicesList from "../elements/lists/TracardiProRunning
 import './TracardiPro.css';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
+import ErrorsBox from "../errors/ErrorsBox";
 
 export default function TracardiPro() {
 
@@ -16,6 +17,7 @@ export default function TracardiPro() {
     const [refresh, setRefresh] = useState(1);
     const [display, setDisplay] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     console.log(display)
 
@@ -37,7 +39,7 @@ export default function TracardiPro() {
                 }
             }
         ).catch((e) => {
-            alert("Could not load the service endpoint.")
+            setError(getError(e))
         }).finally(() => {
             setLoading(false);
         })
@@ -75,6 +77,7 @@ export default function TracardiPro() {
     }
 
     return <div className="TracardiPro">
+        {error && <ErrorsBox errorList={error} />}
         {loading && <CenteredCircularProgress/>}
         {display === 1 && <TracardiProForm value={endpoint} onSubmit={handleRegistrationSubmit}/>}
         {display === 2 && endpoint && <TuiForm style={{width: "100%"}}>
