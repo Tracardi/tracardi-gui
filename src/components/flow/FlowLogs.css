@@ -25,9 +25,16 @@
     align-items: stretch;
     padding: 5px;
     border-bottom: solid #ccc 1px;
+    flex-direction: column;
+    cursor: pointer;
 }
 
 .FlowLogRow .FlowLogMessage {
     display: flex;
-    align-content: center;
+    align-items: center;
+}
+
+.FlowLogRow .FlowLogDetails {
+    display: flex;
+    align-items: center;
 }

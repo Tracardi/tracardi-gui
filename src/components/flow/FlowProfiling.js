@@ -4,8 +4,6 @@ import DebugBox from "./DebugBox";
 
 export function FlowProfiling({profilingData, onCallSelect}) {
 
-    console.log("FlowProfiling", profilingData)
-
     const [currentNode, setCurrentNode] = useState(null);
 
     const sort = (profilingData) => {

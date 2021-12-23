@@ -1,12 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import './FlowLogs.css';
 import {FiAlertTriangle} from "@react-icons/all-files/fi/FiAlertTriangle";
 import {VscError} from "@react-icons/all-files/vsc/VscError";
 import {AiOutlineCheckCircle} from "@react-icons/all-files/ai/AiOutlineCheckCircle";
+import JsonStringify from "../elements/misc/JsonStingify";
 
 const FlowLogs = ({logs}) => {
 
     const Row = ({log}) => {
+
+        const [showDetails, setShowDetails] = useState(false);
 
         const Icon = ({type}) => {
             let icon;
@@ -21,8 +24,15 @@ const FlowLogs = ({logs}) => {
             return <span style={{minWidth: 35, display: "flex", alignItems: 'center'}}>{icon}</span>
         }
 
-        return <div className="FlowLogRow">
-            <div className="FlowLogMessage"><Icon type={log.type}/>{log.message}</div>
+        return <div className="FlowLogRow" onClick={()=>setShowDetails(!showDetails)}>
+            <div className="FlowLogMessage"><Icon type={log.type}/>{log.message} | {log.origin} | {log.module}.{log.class_name}</div>
+            {showDetails && <div className="FlowLogDetails">
+                <fieldset style={{width: "100%", margin: 5, padding: 10}}>
+                    <legend>Log details</legend>
+                    <JsonStringify data={log} unfold={true}/>
+                </fieldset>
+
+            </div>}
         </div>
     }
 
