@@ -57,6 +57,5 @@ function DebugPane({profilingData, logs, onDetails, onDebug}) {
 
 export const MemoDebugPane = React.memo(DebugPane,
     (prevProps, nextProps) => {
-        console.log("MemoDebugPane",prevProps.profilingData === nextProps.profilingData)
         return prevProps.profilingData === nextProps.profilingData;
     });

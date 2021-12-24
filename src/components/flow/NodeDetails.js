@@ -119,7 +119,6 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
 }
 
 function areEqual(prevProps, nextProps) {
-    console.log("MemoNodeDetails", prevProps.node.id===nextProps.node.id, prevProps, nextProps)
     return prevProps.node.id===nextProps.node.id;
 }
 export const MemoNodeDetails = React.memo(NodeDetails, areEqual);

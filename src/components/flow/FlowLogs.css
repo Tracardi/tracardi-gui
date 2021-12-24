@@ -16,7 +16,7 @@
 
 .FlowLogRows {
     overflow: auto;
-    height: calc(100% - 105px);
+    height: calc(100% - 53px);
 }
 
 .FlowLogRow {

@@ -15,7 +15,7 @@ export default function DottedPathInput({value, onChange,
                                             defaultPathValue = "",
                                             forceMode,
                                             errorMessage,
-                                            width = 460}) {
+                                            width = 300}) {
 
     let computedMode;
     const re = new RegExp("^(payload|profile|session|event|flow)@");

@@ -49,11 +49,7 @@
   line-height: 1;
 }
 
-.CopyTraitsForm > .CopyTraitsInput {
-  width: 560px;
-}
-
 .CopyTraitsForm > .CopyTraitsInput .Target {
   display: grid;
-  grid-template-columns: 100% 35px;
+  grid-template-columns: 1fr 35px;
 }
