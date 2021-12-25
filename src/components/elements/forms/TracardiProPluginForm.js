@@ -9,7 +9,7 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
 // import FormSchema from "../../../domain/formSchema";
 
-export function TracardiProPluginForm({value, errorMessage, tag = null, onSubmit}) {
+export function TracardiProPluginForm({value, errorMessage, onSubmit}) {
 
     const [actions, setActions] = useState({})
     const [actionsDisabled, setActionsDisabled] = useState(true)
@@ -21,6 +21,7 @@ export function TracardiProPluginForm({value, errorMessage, tag = null, onSubmit
     // const [saveOK, setSaveOk] = useState(false);
 
     const handleResourceChange = async (value) => {
+
         if (value === null) {
             setActionsDisabled(true);
         } else {
@@ -92,7 +93,7 @@ export function TracardiProPluginForm({value, errorMessage, tag = null, onSubmit
                     <TuiFormGroupField header="Resource"
                                        description="Select Tracardi Pro resource you would like to use.">
                         <TuiSelectResource value={value} errorMessage={errorMessage} onSetValue={handleResourceChange}
-                                           tag={tag}/>
+                                           tag={"pro"}/>
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Available actions" description="Select action you would like to make.">
                         <TextField select fullWidth

@@ -78,6 +78,7 @@ import {VscRadioTower} from "@react-icons/all-files/vsc/VscRadioTower";
 import {AiOutlineCloudServer} from "@react-icons/all-files/ai/AiOutlineCloudServer";
 import {BsCalculator} from "react-icons/bs";
 import {SiTwilio} from "@react-icons/all-files/si/SiTwilio";
+import {FaMailchimp} from "@react-icons/all-files/fa/FaMailchimp";
 
 export const icons = {
     "store":            (size) => <FiDatabase size={size}/>,
@@ -159,8 +160,9 @@ export const icons = {
     'pie-chart':        (size) => <AiOutlinePieChart size={size}/>,
     'tower':            (size) => <VscRadioTower size={size}/>,
     'resource':         (size) => <AiOutlineCloudServer size={size}/>,
-    'calculator':         (size) => <BsCalculator size={size}/>,
-    'twilio':         (size) => <SiTwilio size={size} />
+    'calculator':       (size) => <BsCalculator size={size}/>,
+    'twilio':           (size) => <SiTwilio size={size} />,
+    'mailchimp':        (size) => <FaMailchimp size={size}/>
 }
 
 

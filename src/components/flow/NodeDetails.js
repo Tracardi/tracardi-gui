@@ -111,7 +111,8 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
 
             {node?.data?.metadata?.pro === true && tab === 5 && <TracardiProPluginForm
                 init={node?.data?.spec?.init}
-                onSubmit={handleSubmit}/>
+                onSubmit={handleSubmit}
+            />
             }
 
         </div>

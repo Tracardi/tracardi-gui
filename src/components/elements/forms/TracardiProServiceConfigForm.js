@@ -12,7 +12,7 @@ export default function TracardiProServiceConfigForm({service, endpoint, onSubmi
     const [errorMessages, setErrorMessages] = useState(null)
 
     const path = service?.id ? `/${service?.prefix}/settings/${endpoint.token}?id=${service.id}` : `/${service?.prefix}/settings/${endpoint.token}`;
-    console.log("service cofig", config)
+
     useEffect(() => {
         asyncRemote({
             baseURL: endpoint?.url,
