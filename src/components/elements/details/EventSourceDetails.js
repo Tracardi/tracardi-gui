@@ -14,6 +14,8 @@ import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import EventSourceForm from "../forms/EventSourceForm";
+import TextField from "@material-ui/core/TextField";
+import {asyncRemote} from "../../../remote_api/entrypoint";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -24,27 +26,41 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [editData, setEditData] = React.useState(null);
+    const [refresh, setRefresh] = React.useState(0);
 
     useEffect(() => {
         setLoading(true);
-        request(
-            {
-                url: '/event-source/' + id,
-                method: "GET"
-            },
-            setLoading,
-            (e) => {
-                if (e) {
-                    console.error(e)
-                }
-            },
-            (response) => {
-                if (response) {
-                    setData(response.data);
-                }
+        asyncRemote({
+            url: '/event-source/' + id,
+            method: "GET"
+        }).then((response) => {
+            if (response) {
+                setData(response.data);
             }
-        )
+        }).catch((e) => {
+            if (e) {
+                console.error(e)
+            }
+        }).finally(() => {
+            setLoading(false);
+        })
     }, [id])
+
+    // Loads data without loading indicator
+    useEffect(() => {
+        asyncRemote({
+            url: '/event-source/' + id,
+            method: "GET"
+        }).then((response) => {
+            if (response) {
+                setData(response.data);
+            }
+        }).catch((e) => {
+            if (e) {
+                console.error(e)
+            }
+        })
+    }, [id, refresh])
 
     const onEdit = () => {
         setEditData(data)
@@ -108,9 +124,34 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                 </TuiFormGroupContent>
 
             </TuiFormGroup>
+
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Web hook"
+                                    description="For every event source there is a web hook created. Calling it will emit
+                                profile less event. For full fledged events call regular /track endpoint."/>
+                <TuiFormGroupContent>
+                    <h3>Web hook URL</h3>
+                    <p>Event properties should be send inthe body of request and <b>event-type</b> inside URL should be
+                        replaced with the event type you would like to emit. Please refer to the documentation to see
+                        what are profile less events as calling this web hook will emit one of them.
+                    </p>
+
+                    <TextField
+                        label="Web hook"
+                        value={`/collect/event-type/${data.id}`}
+                        size="small"
+                        disabled={true}
+                        variant="outlined"
+                        fullWidth
+                    />
+
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+
         </TuiForm>
 
-        {data.type === "web-page" && <TuiForm>
+
+        {data.type === "javascript" && <TuiForm>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Integration"
                                     description="Please paste this code into your web page. This code should appear on every page."/>
@@ -121,7 +162,8 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
 
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Javascript example"
-                                    description="This is an example of event sending. This code sends multiple events. Please refer to Tracardi documentation on more complex configuration."/>
+                                    description="This is an example of event sending. This code sends multiple events.
+                                    Please refer to Tracardi documentation on more complex configuration."/>
                 <TuiFormGroupContent>
                     <Suspense fallback={<CenteredCircularProgress/>}><TrackerUseScript/></Suspense>
                 </TuiFormGroupContent>
@@ -146,8 +188,9 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             <EventSourceForm value={editData}
                              style={{margin: 20}}
                              onClose={() => {
-                                       setEditData(null)
-                                   }}/>
+                                 setEditData(null);
+                                 setRefresh(refresh + 1)
+                             }}/>
 
         </FormDrawer>
     </div>
