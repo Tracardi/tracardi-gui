@@ -19,8 +19,6 @@ export default function TracardiPro() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    console.log(display)
-
     useEffect(() => {
         setLoading(true);
         asyncRemote({

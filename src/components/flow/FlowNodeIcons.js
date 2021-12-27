@@ -76,7 +76,7 @@ import {FaAws} from "@react-icons/all-files/fa/FaAws";
 import {AiOutlinePieChart} from "@react-icons/all-files/ai/AiOutlinePieChart";
 import {VscRadioTower} from "@react-icons/all-files/vsc/VscRadioTower";
 import {AiOutlineCloudServer} from "@react-icons/all-files/ai/AiOutlineCloudServer";
-import {BsCalculator} from "react-icons/bs";
+import {BsCalculator, BsBoxArrowInUpRight} from "react-icons/bs";
 import {SiTwilio} from "@react-icons/all-files/si/SiTwilio";
 import {FaMailchimp} from "@react-icons/all-files/fa/FaMailchimp";
 
@@ -162,7 +162,8 @@ export const icons = {
     'resource':         (size) => <AiOutlineCloudServer size={size}/>,
     'calculator':       (size) => <BsCalculator size={size}/>,
     'twilio':           (size) => <SiTwilio size={size} />,
-    'mailchimp':        (size) => <FaMailchimp size={size}/>
+    'mailchimp':        (size) => <FaMailchimp size={size}/>,
+    'inbound':          (size) => <BsBoxArrowInUpRight size={size} />
 }
 
 

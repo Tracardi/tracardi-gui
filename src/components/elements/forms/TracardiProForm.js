@@ -41,14 +41,14 @@ export default function TracardiProForm({value, onSubmit}) {
 
     return <TuiForm style={{maxWidth: 500}}>
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Tracardi PRO registration" description="Authorize Tracardi in Tracardi PRO service to get commercial services abailable." />
+                <TuiFormGroupHeader header="Tracardi Pro Registration" description="Authorize Tracardi in Tracardi Pro service to get commercial services abailable." />
                 {error && <ErrorsBox errorList={error} style={{borderRadius: 0}}/> }
                 <TuiFormGroupContent>
                     <TuiFormGroupContent>
                         <TuiFormGroupField header="Service URL" description="Please copy and paste the service URL you received while purchasing the service.
                         This is the server Tracardi will connect to when commercial services are executed.">
                             <TextField
-                                label="Tracardi PRO Server URL"
+                                label="Tracardi Pro Server URL"
                                 value={data.url}
                                 onChange={(ev) => {
                                     setData({...data, url: ev.target.value})
@@ -80,7 +80,7 @@ export default function TracardiProForm({value, onSubmit}) {
                         <TuiFormGroupField>
                             <TuiColumnsFlex width={200} style={{marginTop: 20}}>
                                 <TuiTopHeaderWrapper header="User name"
-                                                     description="Please type username to Tracardi PRO server"
+                                                     description="Please type username to Tracardi Pro Server"
                                                      descHeight={40}
                                 >
                                     <TextField
@@ -97,7 +97,7 @@ export default function TracardiProForm({value, onSubmit}) {
                                     />
                                 </TuiTopHeaderWrapper>
                                 <TuiTopHeaderWrapper header="Password"
-                                                     description="Please type password to Tracardi PRO server"
+                                                     description="Please type password to Tracardi Pro Server"
                                                      descHeight={40}
                                 >
                                     <TextField
