@@ -153,7 +153,7 @@ export default function SegmentForm({onSubmit, init}) {
         <TuiFormGroup>
             <TuiFormGroupHeader header="Describe segment"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Name" description="he segment name will be its id, after spaces are
+                <TuiFormGroupField header="Name" description="The segment name will be its id, after spaces are
                 replaced with dashes and letters lowercased">
                     <TextField
                         label={"Segment name"}

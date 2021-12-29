@@ -1,10 +1,14 @@
 import React, {useCallback} from "react";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
 import FlowForm from "../elements/forms/FlowForm";
 import FlowDetails from "../elements/details/FlowDetails";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
+import AdvancedSquareCard from "../elements/lists/cards/AdvancedSquareCard";
+import {useHistory} from "react-router-dom";
+import urlPrefix from "../../misc/UrlPrefix";
+import {request} from "../../remote_api/uql_api_endpoint";
+import {useConfirm} from "material-ui-confirm";
 
 
 export default function Flows() {
@@ -13,19 +17,59 @@ export default function Flows() {
     const addFunc = useCallback((close) => <FlowForm projects={[]} onFlowSaveComplete={close}/>,[]);
     const detailsFunc= useCallback((id, close) => <FlowDetails id={id} onDeleteComplete={close}/>, [])
 
+    const history = useHistory();
+    const confirm = useConfirm();
+
+    const handleFlowEdit = (id) => {
+        history.push(urlPrefix("/setup/flow/edit/" + id))
+    }
+
+    const onDelete = (id) => {
+        confirm({title: "Do you want to delete this workflow?", description: "This action can not be undone."})
+            .then(() => {
+                    request({
+                            url: '/flow/' + id,
+                            method: "delete"
+                        },
+                        () => {},
+                        () => {},
+                        (result) => {
+                            if (result !== false) {
+                                request({
+                                        url: '/flow/metadata/refresh'
+                                    },
+                                    ()=>{},
+                                    ()=>{},
+                                    ()=>{
+
+                                    }
+                                )
+                            }
+                        }
+                    );
+
+                }
+            )
+            .catch(() => {
+            })
+    }
+
     const flows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="CardGroup" key={index}>
                 <header>{category}</header>
                 <div>
                     {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
+                        return <AdvancedSquareCard key={index + "-" + subIndex}
                                            id={row?.id}
                                            icon={<IoGitNetworkSharp size={45}/>}
                                            status={row?.enabled}
                                            name={row?.name}
                                            description={row?.description}
-                                           onClick={() => onClick(row?.id)}/>
+                                           onClick={() => onClick(row?.id)}
+                                           onEdit={handleFlowEdit}
+                                           onDelete={onDelete}
+                        />
                     })}
                 </div>
             </div>

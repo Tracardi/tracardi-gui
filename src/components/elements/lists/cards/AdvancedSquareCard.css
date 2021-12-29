@@ -1,6 +1,5 @@
-.SquareCard {
+.AdvancedSquareCard {
     display: inline-flex;
-    align-items: center;
     border: solid rgba(225,225,225, 0.8) 1px;
     background: rgba(225,225,225, 0.8);
     cursor: pointer;
@@ -8,30 +7,39 @@
     height: 190px;
     max-height: 200px;
     margin: 6px;
-    padding: 15px;
     border-radius: 10px;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     font-size: 120%;
     font-weight: 400;
     position: relative;
 }
 
-.SquareCard:hover {
+.AdvancedSquareCard:hover {
     border: solid #ccc 1px;
     background: whitesmoke;
 }
 
-.SquareCard .name {
+.AdvancedSquareCard > .Details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex: 1;
+    padding: 10px;
+    height: 44px;
+}
+
+.AdvancedSquareCard .name {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
-    font-size: 110%;
+    sont-size: 110%;
     text-align: center;
 }
 
-.SquareCard .desc {
+.AdvancedSquareCard .desc {
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
@@ -40,15 +48,21 @@
     max-height: 60px;
 }
 
-.SquareCard .icon {
+.AdvancedSquareCard .icon {
     margin: 10px;
     color: #666666;
 }
 
-.SquareCard .enabled {
+.AdvancedSquareCard .enabled {
     border-bottom: #00c853 solid 7px;
 }
 
-.SquareCard .disabled {
+.AdvancedSquareCard .disabled {
     border-bottom: #d81b60 solid 7px;
+}
+
+.AdvancedSquareCard > .Buttons {
+    display: flex;
+    width: 100%;
+    flex-direction: row-reverse;
 }

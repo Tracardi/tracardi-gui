@@ -79,6 +79,7 @@ import {AiOutlineCloudServer} from "@react-icons/all-files/ai/AiOutlineCloudServ
 import {BsCalculator, BsBoxArrowInUpRight} from "react-icons/bs";
 import {SiTwilio} from "@react-icons/all-files/si/SiTwilio";
 import {FaMailchimp} from "@react-icons/all-files/fa/FaMailchimp";
+import {SiElasticsearch} from "react-icons/si";
 
 export const icons = {
     "store":            (size) => <FiDatabase size={size}/>,
@@ -163,7 +164,8 @@ export const icons = {
     'calculator':       (size) => <BsCalculator size={size}/>,
     'twilio':           (size) => <SiTwilio size={size} />,
     'mailchimp':        (size) => <FaMailchimp size={size}/>,
-    'inbound':          (size) => <BsBoxArrowInUpRight size={size} />
+    'inbound':          (size) => <BsBoxArrowInUpRight size={size} />,
+    'elasticsearch':    (size) => <SiElasticsearch size={size}/>
 }
 
 

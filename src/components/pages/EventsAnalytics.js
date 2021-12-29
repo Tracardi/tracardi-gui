@@ -51,6 +51,7 @@ export default function EventsAnalytics() {
         onLoadDetails={onLoadDetails}
         detailsDrawerWidth={1000}
         displayDetails={displayDetails}
+        displayChart={true}
     />
 
 }

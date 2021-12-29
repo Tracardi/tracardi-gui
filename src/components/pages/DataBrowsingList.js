@@ -15,12 +15,13 @@ export default function DataBrowsingList(
         initQuery,
         displayDetails,
         detailsDrawerWidth,
+        displayChart=true
     }) {
 
     return <section className="DataBrowsingList">
-        <div className="Chart">
+        {displayChart === true && <div className="Chart">
             {children}
-        </div>
+        </div>}
         <div className="Data">
             <DetailsObjectList
                 label={label}

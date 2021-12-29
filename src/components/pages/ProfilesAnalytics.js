@@ -44,6 +44,7 @@ export default function ProfilesAnalytics() {
         onLoadDetails={onLoadDetails}
         displayDetails={displayDetails}
         detailsDrawerWidth={1200}
+        displayChart={false}
     />
 
 }
