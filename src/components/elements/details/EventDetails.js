@@ -18,7 +18,7 @@ export default function EventDetails({data}) {
         <div className="RightTabScroller">
             <Tabs tabs={["Event", "Context", "Raw", "Flow debug", "Flow logs", "Profile logs"]}>
                 <TabCase id={0}>
-                    <TuiForm style={{margin: 20}}>
+                    <TuiForm style={{padding: 20}}>
                         <TuiFormGroup>
                             <TuiFormGroupHeader header="Event Metadata and Properties"/>
                             <TuiFormGroupContent>
@@ -41,7 +41,7 @@ export default function EventDetails({data}) {
                     </TuiForm>
                 </TabCase>
                 <TabCase id={1}>
-                    <TuiForm style={{margin: 20}}>
+                    <TuiForm style={{padding: 20}}>
                         <TuiFormGroup>
                             <TuiFormGroupHeader header="Event context"/>
                             <TuiFormGroupContent>
@@ -73,7 +73,7 @@ export default function EventDetails({data}) {
                     </TuiForm>
                 </TabCase>
                 <TabCase id={2}>
-                    <TuiForm style={{margin: 20}}>
+                    <TuiForm style={{padding: 20}}>
                         <TuiFormGroup>
                             <TuiFormGroupHeader header="Event context"/>
                             <TuiFormGroupContent>
@@ -83,17 +83,17 @@ export default function EventDetails({data}) {
                     </TuiForm>
                 </TabCase>
                 <TabCase id={3}>
-                    <div style={{margin:20, height: 'inherit'}}>
+                    <div style={{padding:20, height: 'inherit'}}>
                         <EventProfilingDetails eventId={data?.event?.id}/>
                     </div>
                 </TabCase>
                 <TabCase id={4}>
-                    <div style={{margin:20, height: 'inherit'}}>
+                    <div style={{padding:20, height: 'inherit'}}>
                         <EventLogDetails eventId={data?.event?.id}/>
                     </div>
                 </TabCase>
                 <TabCase id={5}>
-                    <div style={{margin:20, height: 'inherit'}}>
+                    <div style={{padding:20, height: 'inherit'}}>
                         <ProfileLogDetails profileId={data?.event?.profile?.id}
                                            sessionProfileId={data?.event?.session?.profile?.id}/>
                     </div>
