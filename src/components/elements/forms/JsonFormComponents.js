@@ -15,8 +15,6 @@ import SqlEditor from "../editors/SqlEditor";
 import TuiSelectResource from "../tui/TuiSelectResource";
 import {isEmptyStringOrNull} from "../../../misc/typeChecking";
 import Chip from "@material-ui/core/Chip";
-import {asyncRemote} from "../../../remote_api/entrypoint";
-import {JsonForm} from "./JsonForm";
 
 export function TextInput({value, label, errorMessage, onChange}) {
 

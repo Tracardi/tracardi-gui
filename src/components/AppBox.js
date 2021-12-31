@@ -23,6 +23,7 @@ import NewUser from "./pages/NewUser";
 import EventSources from "./pages/EventSources";
 import TracardiPro from "./pages/TracardiPro";
 import PageTabs from "./pages/groups/PageTabs";
+import Consents from "./pages/Consents";
 
 const AppBox = () => {
 
@@ -76,7 +77,14 @@ const AppBox = () => {
                           "Segments": <Segments/>
                       }}
             />
+        </PrivateRoute>
 
+        <PrivateRoute path={urlPrefix("/consents")} roles={["admin"]}>
+            <PageTabs title="Consents"
+                      tabs={{
+                          "Consent types": <Consents/>
+                      }}
+            />
         </PrivateRoute>
 
         <PrivateRoute exact path={urlPrefix("/setup/flow/edit/:id")} roles={["admin"]}>
