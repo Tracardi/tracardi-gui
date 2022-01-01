@@ -6,12 +6,13 @@ import KeyValueForm from "../elements/forms/KeyValueForm";
 import IconSelector from "../elements/IconSelector";
 import ScheduledForm from "../elements/forms/ScheduledForm";
 import NewUser from "./NewUser";
+import TuiPieChart from "../elements/charts/PieChart";
 
 export default function TryOut() {
 
   return (
     <div style={{height: "100%", overflow: "auto"}}>
-        <button onClick={() => {throw TypeError("test")}}>Break the world</button>;
+      <TuiPieChart/>
       <ScheduledForm  />
       <NewUser/>
       <IconSelector value="alert" onChange={(ic) => console.log(ic)} />

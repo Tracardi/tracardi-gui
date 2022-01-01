@@ -24,6 +24,7 @@ import EventSources from "./pages/EventSources";
 import TracardiPro from "./pages/TracardiPro";
 import PageTabs from "./pages/groups/PageTabs";
 import Consents from "./pages/Consents";
+import Dashboard from "./pages/Dashboard";
 
 const AppBox = () => {
 
@@ -35,6 +36,17 @@ const AppBox = () => {
             <Redirect to={urlPrefix("/data")}/>
         </PrivateRoute>
 
+
+        {/*Dashboard*/}
+
+        <Route exact path={urlPrefix("/dashboard")}>
+            <PageTabs title="Dashboard"
+                      tabs={{
+                          "Events": <Dashboard/>
+                      }}
+            />
+
+        </Route>
 
         {/*Pro*/}
 

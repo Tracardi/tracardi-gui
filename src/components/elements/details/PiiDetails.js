@@ -18,7 +18,7 @@ const PiiDetails = ({data}) => {
                 </div>
                 <div>
                     <header className="Name">
-                        {data.pii?.name} {data.pii?.surname ? data.pii?.surname : "Anonymous"}
+                        {data.pii?.name} {data.pii?.last_name ? data.pii?.last_name : "Anonymous"}
                     </header>
                     <div>
                         Last event: {data.metadata?.time?.lastVisit ? data.metadata.time?.lastVisit : "not available"}
@@ -31,7 +31,7 @@ const PiiDetails = ({data}) => {
             <div className="PiiData">
                 <section>
                     <div>
-                        <FaBirthdayCake style={{marginRight: 5}}/> {data.pii?.birthDate ? data.pii?.birthDate : "not available"}
+                        <FaBirthdayCake style={{marginRight: 5}}/> {data.pii?.birth_date ? data.pii?.birth_date : "not available"}
                     </div>
                     <div>
                         <FiMail style={{marginRight: 5}}/> {data.pii?.email ? data.pii?.email : "not available"}

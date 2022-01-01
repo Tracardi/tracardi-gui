@@ -6,6 +6,7 @@ import "./Chart.css";
 import PropTypes from "prop-types";
 import NoDataError from "../../errors/NoDataError";
 
+
 // todo onLoadRequest is a misleading name - it is an object with information on endpoint to call
 // todo this needs to be refactored.
 export default function BarChartElement({onLoadRequest, columns}) {
