@@ -14,7 +14,7 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 
 export default function ProfileDetails({data}) {
 
-    return <div style={{height: "inherit"}}>
+    return <div style={{height: "inherit", display: "flex", flexDirection: "column"}}>
         <PiiDetails data={data}/>
         <div className="RightTabScroller">
             <Tabs tabs={["Traits", "Segments", "Events", "Raw"]} className="ProfileDetailsTabs">
