@@ -389,7 +389,7 @@ export function FlowEditorPane(
                 </div>}
 
                 <WfSchema schema={schema}
-                          style={{position: "absolute", color: "#555", bottom: 5, right: 10, fontSize: "80%"}}/>
+                          style={{position: "absolute", color: "#555", bottom: 5, right: 10, fontSize: "80%", display: "flex", alignItems: "center"}}/>
                 <Background color="#444" gap={16}/>
             </ReactFlow>}
         </div>
