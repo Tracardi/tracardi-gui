@@ -1,37 +1,55 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './SidebarLeft.css';
 import FlowMenuNode from "./FlowMenuNode";
-import {request} from "../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
 import {FlowEditorIcons} from "./FlowEditorButtons";
+import {asyncRemote} from "../../remote_api/entrypoint";
 
-function SidebarLeft({showAlert, onEdit, onDebug, debugInProgress}) {
+function SidebarLeft({showAlert, onDebug, debugInProgress}) {
 
     const [filterActions, setFilterActions] = useState("*not-hidden");
     const [plugins, setPlugins] = useState(null);
     const [pluginsLoading, setPluginsLoading] = useState(false);
     const [refresh, setRefresh] = useState(Math.random)
 
+    const mounted = useRef(false);
 
     useEffect(() => {
-        setPluginsLoading(true);
-        request({
-                url: "/flow/action/plugins?rnd=" + refresh + "&query=" + filterActions
-            },
-            setPluginsLoading,
-            (e) => {
-                if (e) {
-                    showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
+        mounted.current = true;
+        return () => {
+            mounted.current = false;
+        };
+    }, []);
+
+    useEffect(() => {
+        if (mounted) {
+            setPluginsLoading(true);
+            asyncRemote({
+                    url: "/flow/action/plugins?rnd=" + refresh + "&query=" + filterActions
                 }
-            },
-            (response) => {
-                if (response) {
-                    setPlugins(response.data);
+            ).then(
+                (response) => {
+                    if (response) {
+                        setPlugins(response.data);
+                    }
                 }
-            })
+            ).catch(
+                (e) => {
+                    if (e) {
+                        showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
+                    }
+                }
+            ).finally(
+                () => {
+                    if (mounted) {
+                        setPluginsLoading(false);
+                    }
+                }
+            )
+        }
     }, [showAlert, refresh, filterActions])
 
     const onDragStart = (event, row) => {
@@ -39,11 +57,6 @@ function SidebarLeft({showAlert, onEdit, onDebug, debugInProgress}) {
         event.dataTransfer.setData('application/json', JSON.stringify(data));
         event.dataTransfer.effectAllowed = 'move';
     };
-
-    // const onRegisterClick = (event) => {
-    //     setAnchorEl(event.currentTarget);
-    //     setShowResisterPopOver(true);
-    // }
 
     const onRegister = () => {
         setPlugins(null);

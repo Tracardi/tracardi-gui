@@ -370,8 +370,7 @@ export function FlowEditorPane(
                 style={{background: "white"}}
                 defaultZoom={1}
             >
-                <SidebarLeft onEdit={onEditClick}
-                             onDebug={onDebug}
+                <SidebarLeft onDebug={onDebug}
                              debugInProgress={debugInProgress}
                 />
 

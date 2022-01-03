@@ -4,7 +4,7 @@ import EventDetails from "../elements/details/EventDetails";
 import DataAnalytics from "./DataAnalytics";
 import EventStatusTag from "../elements/misc/EventStatusTag";
 
-export default function EventsAnalytics() {
+export default function EventsAnalytics({displayChart=true}) {
 
     const onLoadDataRequest = (query) => {
         return {
@@ -51,7 +51,7 @@ export default function EventsAnalytics() {
         onLoadDetails={onLoadDetails}
         detailsDrawerWidth={1000}
         displayDetails={displayDetails}
-        displayChart={true}
+        displayChart={displayChart}
     />
 
 }

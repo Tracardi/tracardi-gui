@@ -3,8 +3,7 @@ import "./DataAnalytics.css";
 import DataAnalytics from "./DataAnalytics";
 import ProfileDetails from "../elements/details/ProfileDetails";
 
-export default function ProfilesAnalytics() {
-
+export default function ProfilesAnalytics({displayChart=true}) {
 
     const onLoadDataRequest = (query) => {
         return {
@@ -44,7 +43,7 @@ export default function ProfilesAnalytics() {
         onLoadDetails={onLoadDetails}
         displayDetails={displayDetails}
         detailsDrawerWidth={1200}
-        displayChart={true}
+        displayChart={displayChart}
     />
 
 }
