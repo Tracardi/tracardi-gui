@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, {useEffect} from "react";
 import Properties from "./DetailProperties";
 import Button from "../forms/Button";
 import Rows from "../misc/Rows";
@@ -10,9 +10,9 @@ import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote} from "../../../remote_api/entrypoint";
-import ConsentForm from "../forms/ConsentForm";
+import EventValidationForm from "../forms/EventValidationForm";
 
-export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
+export default function EventValidationDetails({id, onDeleteComplete, onEditComplete}) {
 
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -21,19 +21,10 @@ export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
 
     const confirm = useConfirm();
 
-    const mounted = useRef(false);
-
-    useEffect(() => {
-        mounted.current = true;
-        return () => {
-            mounted.current = false;
-        };
-    }, []);
-
     useEffect(() => {
             setLoading(true);
             asyncRemote({
-                url: '/consent/type/' + id,
+                url: '/event/validation-schema/' + id,
                 method: "get"
             })
                 .then((result) => {
@@ -41,7 +32,7 @@ export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
                 })
                 .catch()
                 .finally(
-                    () => {if(mounted) setLoading(false)}
+                    () => setLoading(false)
                 )
         },
         [id])
@@ -53,12 +44,12 @@ export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
     }
 
     const onDelete = () => {
-        confirm({title: "Do you want to delete this consent type?", description: "This action can not be undone."})
+        confirm({title: "Do you want to delete this validation schema?", description: "This action can not be undone."})
             .then(async () => {
                     setDeleteProgress(true);
                     try {
-                        await asyncRemote({
-                            url: '/consent/type/' + id,
+                        const response = await asyncRemote({
+                            url: '/event/validation-schema/' + id,
                             method: "delete"
                         })
                         if (onDeleteComplete) {
@@ -77,7 +68,7 @@ export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
 
     const Details = () => <TuiForm>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Consent type" description="Information on consent type"/>
+            <TuiFormGroupHeader header="Event validation schema" description="Information on event validation schema"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header={data.name} description={data.description}>
                     <Rows style={{marginTop: 20}}>
@@ -95,7 +86,7 @@ export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Consent type properties"/>
+            <TuiFormGroupHeader header="Event validation schema properties"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Data">
                     <Properties properties={data}/>
@@ -109,12 +100,12 @@ export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
         {data && <Details/>}
         <FormDrawer
             width={800}
-            label="Edit consent type"
+            label="Edit schema"
             onClose={() => {
                 setDisplayEdit(false)
             }}
             open={displayEdit}>
-            {displayEdit && <ConsentForm
+            {displayEdit && <EventValidationForm
                 onSaveComplete={onEditComplete}
                 {...data}
             />}
@@ -122,7 +113,7 @@ export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
     </div>
 }
 
-ConsentDetails.propTypes = {
+EventValidationDetails.propTypes = {
     id: PropTypes.string,
     onDeleteComplete: PropTypes.func,
     onEditComplete: PropTypes.func

@@ -25,6 +25,7 @@ import TracardiPro from "./pages/TracardiPro";
 import PageTabs from "./pages/groups/PageTabs";
 import Consents from "./pages/Consents";
 import Dashboard from "./pages/Dashboard";
+import EventValidation from "./pages/EventValidation";
 
 const AppBox = () => {
 
@@ -59,8 +60,17 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/traffic")} roles={["admin"]}>
             <PageTabs title="Traffic"
                       tabs={{
-                          "Inbound": <EventSources/>,
-                          "Outbound": <Resources/>
+                          "Inbound sources": <EventSources/>,
+                          "Outbound resources": <Resources/>
+                      }}
+            />
+        </PrivateRoute>
+
+        {/* Validation */}
+        <PrivateRoute path={urlPrefix("/validation")} roles={["admin"]}>
+            <PageTabs title="Data validation"
+                      tabs={{
+                          "Event validation schemas": <EventValidation/>,
                       }}
             />
         </PrivateRoute>

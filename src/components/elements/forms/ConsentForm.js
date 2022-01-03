@@ -1,14 +1,10 @@
 import TextField from "@material-ui/core/TextField";
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Button from "./Button";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import {request} from "../../../remote_api/uql_api_endpoint";
 import {v4 as uuid4} from 'uuid';
-import TuiTaggerFlow from "../tui/TuiTaggerFlow";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import {connect} from "react-redux";
-import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from 'prop-types';
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
@@ -22,6 +18,8 @@ export default function ConsentForm({
                                         enabled,
                                         revokable,
                                         default_value,
+                                        auto_revoke,
+                                        required,
                                         tags,
                                         onSaveComplete
                                     }) {
@@ -29,13 +27,25 @@ export default function ConsentForm({
     const [consentType, setConsentType] = useState((name) ? name : "");
     const [consentDescription, setConsentDescription] = useState((description) ? description : "");
     const [consentEnabled, setConsentEnabled] = useState((typeof enabled === "boolean") ? enabled : true);
+    const [consentRequired, setConsentRequired] = useState((typeof revokable === "boolean") ? required : true);
     const [consentRevokable, setConsentRevokable] = useState((typeof revokable === "boolean") ? revokable : true);
     const [consentDefaultValue, setConsentDefaultValue] = useState(default_value || "grant");
     const [consentTags, setConsentTags] = useState(tags);
+    const [consentAutoRevoke, setConsentAutoRevoke] = useState(auto_revoke || "");
     const [processing, setProcessing] = useState(false);
     const [consentTypeErrorMessage, setConsentTypeErrorMessage] = useState("");
     const [consentDescErrorMessage, setConsentDescErrorMessage] = useState("");
     const [error, setError] = useState(false);
+
+    const mounted = useRef(false);
+
+    useEffect(() => {
+        mounted.current = true;
+
+        return () => {
+            mounted.current = false;
+        };
+    }, []);
 
     const onSave = async () => {
 
@@ -60,6 +70,8 @@ export default function ConsentForm({
             revokable: consentRevokable,
             default_value: consentDefaultValue,
             enabled: consentEnabled,
+            auto_revoke: consentAutoRevoke,
+            required: consentRequired,
             tags: consentTags && Array.isArray(consentTags) && consentTags.length > 0 ? consentTags : ["General"]
         }
 
@@ -73,9 +85,6 @@ export default function ConsentForm({
             })
 
             if (response?.data) {
-                await asyncRemote({
-                    url: '/consents/type/refresh'
-                })
                 if (onSaveComplete) {
                     onSaveComplete(payload)
                 }
@@ -87,7 +96,9 @@ export default function ConsentForm({
                 // todo error;
             }
         } finally {
-            setProcessing(false);
+            if(mounted) {
+                setProcessing(false);
+            }
         }
     }
 
@@ -112,10 +123,9 @@ export default function ConsentForm({
                                size="small"
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description" description="Flow description. Be as descriptive as possible.">
-                    <TextField id="flow-description"
-                               variant="outlined"
-                               label="Flow description"
+                <TuiFormGroupField header="Description" description="Consent type description. Be as descriptive as possible.">
+                    <TextField variant="outlined"
+                               label="Consent type"
                                multiline
                                rows={5}
                                value={consentDescription}
@@ -159,6 +169,21 @@ export default function ConsentForm({
                         label="Enable consent type"
                     />
                 </TuiFormGroupField>
+                <TuiFormGroupField header="Can customer not agree to this consent type "
+                                   description="Some consents are required for the site to work.">
+                    <FormControlLabel
+                        style={{marginLeft: 2}}
+                        control={
+                            <Checkbox
+                                checked={consentRequired}
+                                onChange={(e) => setConsentRequired(e.target.checked)}
+                                name="enable"
+                                color="primary"
+                            />
+                        }
+                        label="Is this consent type required for the site to work?"
+                    />
+                </TuiFormGroupField>
                 <TuiFormGroupField header="Can customer revoke this consent "
                                    description="Most of the consents must should be revokable.">
                     <FormControlLabel
@@ -172,6 +197,18 @@ export default function ConsentForm({
                             />
                         }
                         label="Is consent type to be revokable?"
+                    />
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Auto revoke this consent "
+                                   description="If you set this option the consent will revoke after defined time. e.g. +14 days">
+                    <TextField variant="outlined"
+                               label="Auto revoke time"
+                               value={consentAutoRevoke}
+                               onChange={(ev) => {
+                                   setConsentAutoRevoke(ev.target.value)
+                               }}
+                               fullWidth
+                               size="small"
                     />
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Consent tags"
@@ -191,5 +228,9 @@ ConsentForm.propTypes = {
     description: PropTypes.string,
     enabled: PropTypes.bool,
     tags: PropTypes.array,
+    revokable: PropTypes.bool,
+    default_value: PropTypes.string,
+    auto_revoke: PropTypes.string,
+    required: PropTypes.bool,
     onSaveComplete: PropTypes.func
 }

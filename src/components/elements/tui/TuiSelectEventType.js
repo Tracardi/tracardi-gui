@@ -3,7 +3,7 @@ import React from "react";
 
 export default function TuiSelectEventType({value, errorMessage=null, onSetValue=null}) {
     return <AutoComplete
-        solo={false}
+        solo={true}
         disabled={false}
         error={errorMessage}
         placeholder="Event type"

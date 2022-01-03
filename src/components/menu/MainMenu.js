@@ -13,6 +13,7 @@ import {VscBook, VscTwitter, VscPulse} from "react-icons/vsc";
 import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
 import {GoSettings} from "react-icons/go";
 import {VscLaw} from "@react-icons/all-files/vsc/VscLaw";
+import {BsFolderCheck} from "react-icons/bs";
 
 export default function MainMenu() {
 
@@ -51,9 +52,10 @@ export default function MainMenu() {
             <div>
                 <MenuRow icon={<BsStar size={20}/>} label="Tracardi Pro" collapsed={collapsed} onClick={go("/pro")}/>
                 <MenuRow icon={<BsBoxArrowInUpRight size={20}/>} label="Traffic" collapsed={collapsed} onClick={go("/traffic")}/>
+                <MenuRow icon={<VscLaw size={20}/>} label="Consents" collapsed={collapsed} onClick={go("/consents")}/>
+                <MenuRow icon={<BsFolderCheck size={20}/>} label="Data Validation" collapsed={collapsed} onClick={go("/validation")}/>
                 <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")}/>
                 <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Processing" collapsed={collapsed} onClick={go("/processing")}/>
-                <MenuRow icon={<VscLaw size={20}/>} label="Consents" collapsed={collapsed} onClick={go("/consents")}/>
                 <MenuRow icon={<VscPulse size={20}/>} label="Monitoring" collapsed={collapsed} onClick={go("/monitoring")}/>
                 <MenuRow icon={<BsBug size={20}/>} label="Test" collapsed={collapsed} onClick={go("/testing")}/>
                 <MenuRow icon={<GoSettings size={20}/>}
