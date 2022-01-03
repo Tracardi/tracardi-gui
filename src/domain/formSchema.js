@@ -10,24 +10,30 @@ export default class FormSchema {
 
         const remoteValidation = async (pluginId, values) => {
             try {
-                await asyncRemote({
+                const response = await asyncRemote({
                     url: `/action/${pluginId}/config/validate`,
                     method: "POST",
                     data: values
                 })
 
-                return true;
+                return {
+                    data: response.data,
+                    status: true
+                };
 
             } catch (e) {
                 if (e?.response?.status === 422) {
-                    return e.response.data;
-                }
-                if (e?.response?.status === 404) {
-                    return true
+                    return {
+                        data: e.response.data,
+                        status: false
+                    }
                 }
             }
 
-            return false
+            return {
+                data: null,
+                status: false
+            };
         }
 
         return await remoteValidation(pluginId, formValues)

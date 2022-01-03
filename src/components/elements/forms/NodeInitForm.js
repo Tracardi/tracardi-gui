@@ -17,26 +17,28 @@ export function NodeInitJsonForm({pluginId, formSchema, init, manual, onSubmit})
         setFormErrorMessages({})
     }, [init])
 
+    const handleValidationData = (result) => {
+        if (result.status === true) {
+
+            if (formErrorMessages !== {}) {
+                setFormErrorMessages({})
+            }
+
+            setData(result.data)  // result.data is validated config
+            onSubmit(result.data)
+            setSaveOk(true);
+
+        } else {
+            if (result.data !== null) {
+                setFormErrorMessages(result.data);
+                setSaveOk(false);
+            }
+        }
+    }
+
     const handleSubmit = (config) => {
         const form = new FormSchema(formSchema)
-        form.validate(pluginId, config).then(
-            (result) => {
-                if (result === true) {
-
-                    if(formErrorMessages !== {}) {
-                        setFormErrorMessages({})
-                    }
-
-                    setData(config)
-                    onSubmit(config)
-                    setSaveOk(true);
-
-                } else {
-                    setFormErrorMessages(result);
-                    setSaveOk(false);
-                }
-            }
-        )
+        form.validate(pluginId, config).then(handleValidationData)
     }
 
     return <ConfigEditor
@@ -61,25 +63,28 @@ export function NodeInitForm({pluginId, init, formSchema, onSubmit}) {
         setFormErrorMessages({})
     }, [init])
 
+    const handleValidationData = (result) => {
+        if (result.status === true) {
+
+            if (formErrorMessages !== {}) {
+                setFormErrorMessages({})
+            }
+
+            setData(result.data)  // result.data is validated config
+            onSubmit(result.data)
+            setSaveOk(true);
+
+        } else {
+            if (result.data !== null) {
+                setFormErrorMessages(result.data);
+                setSaveOk(false);
+            }
+        }
+    }
+
     const handleFormSubmit = () => {
         const form = new FormSchema(formSchema)
-        form.validate(pluginId, data).then(
-            (result) => {
-                if (result === true) {
-
-                    if(formErrorMessages !== {}) {
-                        setFormErrorMessages({})
-                    }
-
-                    onSubmit(data)
-                    setSaveOk(true)
-
-                } else {
-                    setFormErrorMessages(result);
-                    setSaveOk(false)
-                }
-            }
-        )
+        form.validate(pluginId, data).then(handleValidationData)
     }
 
     const handleFormChange = (value) => {
