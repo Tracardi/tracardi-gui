@@ -213,7 +213,7 @@ export default function ConsentForm({
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Consent tags"
                                    description="Tag the consent type to group it into meaningful groups.">
-                    <TuiTagger tags={tags} value={tags} onChange={handleTagChange}/>
+                    <TuiTagger tags={tags} onChange={handleTagChange}/>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>

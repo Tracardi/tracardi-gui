@@ -13,13 +13,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function TuiTagger({label, placeholder, value, tags, onChange, freeSolo=true, multiple=true}) {
+export default function TuiTagger({label, placeholder, tags, onChange, freeSolo=true, multiple=true}) {
 
     const classes = useStyles();
-
-    if(!value) {
-        value = []
-    }
 
     if(!tags) {
         tags = []
@@ -40,7 +36,7 @@ export default function TuiTagger({label, placeholder, value, tags, onChange, fr
                     onChange={(ev, value, reason) =>
                     { handleChange (ev, value, reason)} }
                     options={tags}
-                    defaultValue={value}
+                    defaultValue={[...tags]}
                     renderTags={(value, getTagProps) =>
                         value.map((option, index) => (
                             <Chip size="small" label={option} {...getTagProps({index})} />
@@ -58,7 +54,6 @@ TuiTagger.propTypes = {
     label: PropTypes.string,
     placeholder: PropTypes.string,
     onChange: PropTypes.func,
-    value: PropTypes.array,
     tags: PropTypes.array,
     freeSolo: PropTypes.bool,
     multiple: PropTypes.bool,

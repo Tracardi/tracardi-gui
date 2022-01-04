@@ -200,7 +200,7 @@ const EventSourceForm = ({value, style, onClose}) => {
                     </div>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Grouping" description="Sources can be grouped with tags that are typed here.">
-                    <TuiTagger tags={groups} value={groups} onChange={setGroups}/>
+                    <TuiTagger tags={groups} onChange={setGroups}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Tags" description="Set tags. Sources will be grouped by tags that lets you
                 find sources quickly.">

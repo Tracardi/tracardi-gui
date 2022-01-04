@@ -152,7 +152,7 @@ export default function EventValidationForm({
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Validation tags"
                                    description="Tag the validation schema to group it into meaningful groups.">
-                    <TuiTagger tags={tags} value={tags} onChange={handleTagChange}/>
+                    <TuiTagger tags={tags}  onChange={handleTagChange}/>
                 </TuiFormGroupField>
 
             </TuiFormGroupContent>
