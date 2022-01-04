@@ -11,7 +11,7 @@ import Breadcrumps from "../elements/misc/Breadcrumps";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import RuleFormDrawer from "../elements/drawers/RuleFormDrawer";
 import Button from "../elements/forms/Button";
-import {BsFolderPlus} from "@react-icons/all-files/bs/BsFolderPlus";
+import {FaUncharted} from "react-icons/fa";
 
 const Rules = ({showAlert}) => {
 
@@ -95,7 +95,7 @@ const Rules = ({showAlert}) => {
         <TopInfoBar buttons={[<Button
             label="New rule"
             onClick={onAdd}
-            icon={<BsFolderPlus size={24} style={{marginRight: 10}}/>}/>]}>
+            icon={<FaUncharted size={24} style={{marginRight: 10}}/>}/>]}>
             <Breadcrumps/>
         </TopInfoBar>
         <ListDetailView list={blocks} detail={details}/>

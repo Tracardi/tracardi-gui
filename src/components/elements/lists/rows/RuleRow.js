@@ -2,7 +2,7 @@ import React from 'react';
 import './RuleRow.css';
 import {VscSymbolEvent} from "@react-icons/all-files/vsc/VscSymbolEvent";
 import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
-import {BsGear} from "@react-icons/all-files/bs/BsGear";
+import {FaUncharted} from "react-icons/fa";
 
 const RuleRow = ({data, flow}) => {
 
@@ -11,7 +11,7 @@ const RuleRow = ({data, flow}) => {
             <span className="EventBox"><VscSymbolEvent size={20} style={{marginRight:10}}/> {data.event.type}</span>
             >>
             <span className="RuleBox">
-                <BsGear size={20} style={{marginRight: 10}}/>
+                <FaUncharted size={20} style={{marginRight: 5}}/>
                 {data.name}
             </span>
             >>

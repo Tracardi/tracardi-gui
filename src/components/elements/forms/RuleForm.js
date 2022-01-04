@@ -1,16 +1,15 @@
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Button from "./Button";
 import TextField from "@material-ui/core/TextField";
 import {v4 as uuid4} from 'uuid';
 import PropTypes from 'prop-types';
-import TuiSelectResource from "../tui/TuiSelectResource";
 import TuiSelectFlow from "../tui/TuiSelectFlow";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import {request} from "../../../remote_api/uql_api_endpoint";
 import TuiFormError from "../tui/TuiFormError";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
+import {asyncRemote} from "../../../remote_api/entrypoint";
 
 export default function RuleForm({onReady, init}) {
 
@@ -37,7 +36,17 @@ export default function RuleForm({onReady, init}) {
     const [flowErrorMessage, setFlowErrorMessage] = useState("");
     const [sourceErrorMessage, setSourceErrorMessage] = useState("");
     const [sourceDisabled, setSourceDisabled] = useState(init.sourceDisabled);
+    const [processing, setProcessing] = useState(false);
 
+    const mounted = useRef(false);
+
+    useEffect(() => {
+        mounted.current = true;
+
+        return () => {
+            mounted.current = false;
+        };
+    }, []);
 
     const handleType = (value) => {
         setType(value);
@@ -56,9 +65,7 @@ export default function RuleForm({onReady, init}) {
         setFlow(value)
     }
 
-    const handleSubmit = () => {
-        console.log(source, isEmptyObjectOrNull(source))
-
+    const handleSubmit = async () => {
         if (isEmptyObjectOrNull(type) || isEmptyObjectOrNull(source) || isEmptyObjectOrNull(flow) || !name) {
 
             if (isEmptyObjectOrNull(source)) {
@@ -97,24 +104,26 @@ export default function RuleForm({onReady, init}) {
             flow: flow
         };
 
-        request({
+        try {
+            setProcessing(true);
+            const response = await asyncRemote({
                 url: "/rule",
                 method: "post",
                 data: payload
-            },
-            () => {
-            },
-            (e) => {
-                if (e) {
-                    setErrorMessage(e[0].msg);
-                }
-            },
-            (data) => {
-                if (data) {
-                    onReady(data)
-                }
+            })
+
+            if (response.data) {
+                onReady(response.data)
             }
-        )
+        } catch (e) {
+            if (e) {
+                setErrorMessage(e[0].msg);
+            }
+        } finally {
+            if(mounted) {
+                setProcessing(false)
+            }
+        }
     }
 
     return <TuiForm style={{margin: 20}}>
@@ -176,7 +185,7 @@ export default function RuleForm({onReady, init}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         {errorMessage && <TuiFormError message={errorMessage}/>}
-        <Button label="Save" onClick={handleSubmit} style={{justifyContent: "center"}}/>
+        <Button label="Save" onClick={handleSubmit} style={{justifyContent: "center"}} progress={processing}/>
     </TuiForm>
 }
 

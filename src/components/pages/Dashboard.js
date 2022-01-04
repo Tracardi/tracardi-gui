@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import TuiPieChart, {Pie1} from "../elements/charts/PieChart";
+import TuiPieChart from "../elements/charts/PieChart";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import ProfileEventHeatMap from "../elements/details/ProfileEventHeatMap";

@@ -11,10 +11,24 @@ import EventsAnalytics from "../pages/EventsAnalytics";
 import Tabs, {TabCase} from "../elements/tabs/Tabs";
 import ProfilesAnalytics from "../pages/ProfilesAnalytics";
 import SessionsAnalytics from "../pages/SessionsAnalytics";
+import FlowRules from "../rules/FlowRules";
+import {
+    TuiForm,
+    TuiFormGroup,
+    TuiFormGroupContent,
+    TuiFormGroupField,
+    TuiFormGroupHeader
+} from "../elements/tui/TuiForm";
+import RuleForm from "../elements/forms/RuleForm";
+import Drawer from "@material-ui/core/Drawer";
+import {FaUncharted} from "react-icons/fa";
 
-export default function FlowEditorTitle({title, modified, deployed, onSave, onDeploy}) {
+export default function FlowEditorTitle({flowId, title, modified, deployed, onSave, onDeploy}) {
 
     const [eventsOpened, setEventsOpened] = useState(false);
+    const [rulesOpened, setRulesOpened] = useState(false);
+    const [openRuleForm, setOpenRuleForm] = useState(false);
+    const [refresh, setRefresh] = useState(1);
 
     const Saved = ({onClick}) => {
         const button = () => (modified)
@@ -43,8 +57,11 @@ export default function FlowEditorTitle({title, modified, deployed, onSave, onDe
                     icon={<BsFolder size={20}/>}
                     style={{padding: "4px", width: 100, fontSize: 14, justifyContent: "center"}}
                     onClick={() => setEventsOpened(true)}/>
+            <Button label="Rules"
+                    icon={<BsFolder size={20}/>}
+                    style={{padding: "4px", width: 100, fontSize: 14, justifyContent: "center"}}
+                    onClick={() => setRulesOpened(true)}/>
         </div>
-
 
 
         <FormDrawer
@@ -66,6 +83,54 @@ export default function FlowEditorTitle({title, modified, deployed, onSave, onDe
                 </TabCase>
             </Tabs>
             }
+        </FormDrawer>
+
+        <FormDrawer
+            width={800}
+            label="Rule details"
+            onClose={() => {
+                setRulesOpened(false)
+            }}
+            open={rulesOpened}>
+            {rulesOpened && <div style={{padding: 15}}>
+                <div style={{padding: "10px 0", display: "flex", justifyContent: "flex-end"}}>
+                    <Button label="Add rule"
+                            onClick={() => {
+                                setOpenRuleForm(true)
+                            }}
+                    icon={<FaUncharted size={20}/>}/>
+                </div>
+                <TuiForm>
+                    <TuiFormGroup>
+                        <TuiFormGroupHeader header="Rules" description="Information on rules connected to workflow"/>
+                        <TuiFormGroupContent>
+                            <TuiFormGroupField header="Active rules" description="Rules that trigger this flow">
+                                <FlowRules flowName={title} id={flowId} refresh={refresh}/>
+                            </TuiFormGroupField>
+                        </TuiFormGroupContent>
+                    </TuiFormGroup>
+                </TuiForm>
+                <Drawer anchor="right" open={openRuleForm} onClose={() => setOpenRuleForm(false)}>
+                    <div style={{width: 600}}>
+                        {openRuleForm && <RuleForm
+                            init={{
+                                flow: {
+                                    id: flowId,
+                                    name: title
+                                },
+                                event: {},
+                                name: "",
+                                description: "",
+                                source: {},
+                                sourceDisabled: true
+                            }}
+                            onReady={() => {
+                                setOpenRuleForm(false);
+                                setRefresh(refresh + 1)
+                            }}/>}
+                    </div>
+                </Drawer>
+            </div>}
         </FormDrawer>
 
     </aside>

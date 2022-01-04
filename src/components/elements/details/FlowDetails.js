@@ -4,7 +4,6 @@ import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
 import {request} from "../../../remote_api/uql_api_endpoint";
-import RuleRow from "../lists/rows/RuleRow";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
 import urlPrefix from "../../../misc/UrlPrefix";
@@ -15,12 +14,12 @@ import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
 import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
+import FlowRules from "../../rules/FlowRules";
 
 export default function FlowDetails({id, onDeleteComplete}) {
 
     const history = useHistory();
 
-    const [rules, setRules] = React.useState([]);
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [displayEdit, setDisplayEdit] = React.useState(false);
@@ -40,24 +39,6 @@ export default function FlowDetails({id, onDeleteComplete}) {
                     setData(result.data);
                 }
             );
-        },
-        [id])
-
-    useEffect(() => {
-            request({
-                    url: '/rules/by_flow/' + id
-                },
-                () => {
-                    setRules([])
-                },
-                () => {
-                },
-                (response) => {
-                    if (response) {
-                        setRules(response.data)
-                    }
-                }
-            )
         },
         [id])
 
@@ -112,12 +93,6 @@ export default function FlowDetails({id, onDeleteComplete}) {
             })
     }
 
-    const RulesList = ({flow, rules}) => {
-        return rules.map((rule, index) => {
-            return <RuleRow data={rule} flow={flow} key={index}/>
-        })
-    }
-
     const Details = () => <TuiForm>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Workflow" description="Information on workflow"/>
@@ -147,14 +122,14 @@ export default function FlowDetails({id, onDeleteComplete}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
 
-        {Array.isArray(rules) && rules.length > 0 && <TuiFormGroup>
+        <TuiFormGroup>
             <TuiFormGroupHeader header="Rules" description="List of rules connected with the workflow."/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Active rules" description="Rules that trigger this flow">
-                    <RulesList flow={data.name} rules={rules}/>
+                    <FlowRules flowName={data.name} id={id}/>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
-        </TuiFormGroup>}
+        </TuiFormGroup>
 
     </TuiForm>
 

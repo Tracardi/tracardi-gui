@@ -103,6 +103,7 @@ const FlowEditor = ({showAlert}) => {
             <ReactFlowProvider>
                 <FlowEditorTitle
                     title={flowMetaData?.name}
+                    flowId={id}
                     modified={modified}
                     deployed={deployed}
                     onSave={() => onSaveDraft(false)}
