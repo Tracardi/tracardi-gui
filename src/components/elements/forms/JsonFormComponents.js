@@ -268,11 +268,12 @@ export function JsonInput({value, onChange = null}) {
             if (typeof value === 'string' && value.length > 0) {
                 return [JSON.stringify(JSON.parse(value), null, '  '), null]
             }
-            return [value, null]
+            return [JSON.stringify(value, null, '  '), null]
         } catch (e) {
             return [value, e.toString()]
         }
     }
+
     const [formatedValue, error] = getFormattedValue(value)
     const [json, setJson] = useState(formatedValue);
     const [errorMsg, setErrorMsg] = useState(error);
@@ -282,7 +283,7 @@ export function JsonInput({value, onChange = null}) {
         setJson(value);
         setErrorMsg(error)
         if (onChange) {
-            onChange(formattedValue);
+            onChange(value);
         }
     }
 

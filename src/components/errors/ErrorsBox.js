@@ -6,9 +6,18 @@ export default function ErrorsBox({errorList, fillWidth, style}) {
 
     const visual = (typeof fillWidth === "undefined") ? "ErrorsBox NotFullErrorBox" : "ErrorsBox";
 
+    const Message = ({location, msg, type}) => {
+        if(location) {
+            return <>{location}: {msg} [{type}]</>
+        }
+        return <>{msg} [{type}]</>
+    }
+
     const displayErrors = (errorLst) => errorLst.map(({msg, loc, type}, index)=>{
-        const location = Array.isArray(loc) ? loc.join(".") : "unknown-location"
-        return <li key={index} title={location}>{location}: {msg} [{type}]</li>
+        const location = Array.isArray(loc) ? loc.join(".") : null
+        return <li key={index} title={location}>
+            <Message location={location} msg={msg} type={type}/>
+        </li>
     })
 
     const displayBox = (errorLst) => {

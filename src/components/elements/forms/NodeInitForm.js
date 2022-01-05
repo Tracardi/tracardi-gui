@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import FormSchema from "../../../domain/formSchema";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
 import ConfigEditor from "../../flow/editors/ConfigEditor";
+import {getError} from "../../../remote_api/entrypoint";
 
 export function NodeInitJsonForm({pluginId, formSchema, init, manual, onSubmit}) {
 
@@ -55,6 +56,7 @@ export function NodeInitForm({pluginId, init, formSchema, onSubmit}) {
     const [data, setData] = useState({...init})
     const [formErrorMessages, setFormErrorMessages] = useState({});
     const [saveOK, setSaveOk] = useState(false);
+    const [serverSideError, setServerSideError] = useState(null)
 
     useEffect(() => {
         // Reset to default values
@@ -73,11 +75,18 @@ export function NodeInitForm({pluginId, init, formSchema, onSubmit}) {
             setData(result.data)  // result.data is validated config
             onSubmit(result.data)
             setSaveOk(true);
+            setServerSideError(null)
 
         } else {
             if (result.data !== null) {
-                setFormErrorMessages(result.data);
                 setSaveOk(false);
+                if(result?.error && result?.error?.response.status === 422) {
+                    setFormErrorMessages(result.data);
+                    setServerSideError(null)
+                } else {
+                    setFormErrorMessages({});
+                    setServerSideError(getError(result.error))
+                }
             }
         }
     }
@@ -95,6 +104,7 @@ export function NodeInitForm({pluginId, init, formSchema, onSubmit}) {
         pluginId={pluginId}
         values={data}
         errorMessages={formErrorMessages}
+        serverSideError={serverSideError}
         schema={formSchema}
         onSubmit={handleFormSubmit}
         onChange={handleFormChange}

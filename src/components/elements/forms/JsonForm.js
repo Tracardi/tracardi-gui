@@ -13,6 +13,7 @@ import {
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
     SelectInput, BoolInput, ReadOnlyTags
 } from "./JsonFormComponents";
+import ErrorsBox from "../../errors/ErrorsBox";
 
 const getComponentByType = ({value, errorMessage, componentType, fieldId, onChange}) => {
 
@@ -104,7 +105,7 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
     }
 }
 
-export const JsonForm = ({schema, values = {}, errorMessages={}, onSubmit, onChange, processing=false, confirmed=false}) => {
+export const JsonForm = ({schema, values = {}, errorMessages={}, serverSideError, onSubmit, onChange, processing=false, confirmed=false}) => {
     const keyValueMapOfComponentValues = object2dot(values)
     const hasErrors = errorMessages && Object.keys(errorMessages).length
 
@@ -192,10 +193,12 @@ export const JsonForm = ({schema, values = {}, errorMessages={}, onSubmit, onCha
     if (schema) {
         return <TuiForm>
             {schema.title && <Title title={schema.title}/>}
+
             {schema.groups && <Groups
                 groups={schema.groups}
                 onChange={onChange}
             />}
+            {serverSideError && <ErrorsBox errorList={serverSideError}/> }
             <Button onClick={() => handleSubmit(schema)}
                     confirmed={confirmed}
                     error={hasErrors}

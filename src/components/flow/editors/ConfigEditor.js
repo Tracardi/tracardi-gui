@@ -53,7 +53,7 @@ const ConfigEditor = ({config, manual, onConfig, errorMessages={}, confirmed = f
             <TuiFormGroupHeader header="JSON Configuration"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Advanced Plug-in Configuration"
-                                   description="This is plugin configuration as JSON data. Use is with caution. Everything you type into
+                                   description="This is plugin configuration as JSON data. Use it with caution. Everything you type into
                         plug-in configuration form gets translated into this JSON.">
                     <fieldset style={{marginTop: 20}}>
                         <legend>JSON Configuration</legend>

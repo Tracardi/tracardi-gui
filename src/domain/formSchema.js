@@ -18,22 +18,17 @@ export default class FormSchema {
 
                 return {
                     data: response.data,
+                    error: null,
                     status: true
                 };
 
             } catch (e) {
-                if (e?.response?.status === 422) {
-                    return {
-                        data: e.response.data,
-                        status: false
-                    }
+                return {
+                    data: e.response.data,
+                    error: e,
+                    status: false
                 }
             }
-
-            return {
-                data: null,
-                status: false
-            };
         }
 
         return await remoteValidation(pluginId, formValues)
