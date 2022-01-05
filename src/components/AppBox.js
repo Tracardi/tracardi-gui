@@ -95,7 +95,7 @@ const AppBox = () => {
             <PageTabs title="Processing"
                       tabs={{
                           "Workflows": <Flows/>,
-                          "Rules": <Rules/>,
+                          "Routing Rules": <Rules/>,
                           "Segments": <Segments/>
                       }}
             />

@@ -31,15 +31,15 @@ export default function Rules() {
     }
 
     return <CardBrowser
-        label="Rules"
+        label="Routing Rules"
         urlFunc={urlFunc}
         cardFunc={segments}
-        buttomLabel="New rule"
+        buttomLabel="New routing rule"
         buttonIcon={<FaUncharted size={20} style={{marginRight: 10}}/>}
         drawerDetailsTitle="Rule details"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
-        drawerAddTitle="New rule"
+        drawerAddTitle="New routing rule"
         drawerAddWidth={800}
         addFunc={addFunc}
         className="Pad10"

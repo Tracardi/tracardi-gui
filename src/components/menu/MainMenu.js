@@ -65,9 +65,9 @@ export default function MainMenu() {
             </div>
         </div>
         <div>
-            <MenuRow icon={<IoLogoYoutube size={20}/>} label="YouTube" collapsed={collapsed}/>
-            <MenuRow icon={<VscTwitter size={20}/>} label="Twitter" collapsed={collapsed}/>
-            <MenuRow icon={<VscBook size={20}/>} label="Manual" collapsed={collapsed} style={{marginBottom: 15}}/>
+            <MenuRow icon={<IoLogoYoutube size={20}/>} label="YouTube" collapsed={collapsed} onClick={external("https://www.youtube.com/channel/UC0atjYqW43MdqNiSJBvN__Q", true)}/>
+            <MenuRow icon={<VscTwitter size={20}/>} label="Twitter" collapsed={collapsed} onClick={external("http://twitter.com/tracardi", true)}/>
+            <MenuRow icon={<VscBook size={20}/>} label="Manual" collapsed={collapsed} style={{marginBottom: 15}} onClick={external("http://docs.tracardi.com", true)}/>
 
             <MenuRow icon={<AiOutlinePoweroff size={20}/>}
                 label="Logout"
