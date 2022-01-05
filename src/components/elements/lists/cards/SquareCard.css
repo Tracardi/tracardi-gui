@@ -38,11 +38,12 @@
     font-size: 70%;
     text-align: center;
     max-height: 60px;
+    color: #444;
 }
 
 .SquareCard .icon {
     margin: 10px;
-    color: #666666;
+    color: #444;
 }
 
 .SquareCard .enabled {

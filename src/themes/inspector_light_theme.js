@@ -1,5 +1,5 @@
 const theme = {
-    BASE_FONT_FAMILY: 'Roboto Mono, sans-serif',
+    BASE_FONT_FAMILY: 'IBM Plex Mono, sans-serif',
     BASE_FONT_SIZE: '15px',
     BASE_LINE_HEIGHT: 1.2,
 
@@ -31,7 +31,7 @@ const theme = {
     ARROW_FONT_SIZE: 10,
     ARROW_ANIMATION_DURATION: '0',
 
-    TREENODE_FONT_FAMILY: 'Roboto Mono, sans-serif',
+    TREENODE_FONT_FAMILY: 'IBM Plex Mono, sans-serif',
     TREENODE_FONT_SIZE: '13px',
     TREENODE_LINE_HEIGHT: 1.2,
     TREENODE_PADDING_LEFT: 10,

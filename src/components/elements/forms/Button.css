@@ -18,11 +18,12 @@
  }
 
  SPAN.Button:hover {
-     background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
+     color: white;
+     background: #006db3 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;
  }
 
  SPAN.Button:active {
-     background-color: #6eb9f7;
+     background-color: #006db3;
      background-size: 100%;
      transition: background 0s;
  }
@@ -52,8 +53,6 @@
 }
 
  SPAN.EnabledButton:hover {
-    background-color: #006db3;
-    color: white;
     -webkit-box-shadow: 0 0 8px -1px rgba(0,0,0,0.75);
     -moz-box-shadow: 0 0 8px -1px rgba(0,0,0,0.75);
     box-shadow: 0 0 8px -1px rgba(0,0,0,0.75);

@@ -3,7 +3,7 @@ import {createTheme} from '@material-ui/core/styles';
 
 export const mainTheme = createTheme({
     typography: {
-        "fontFamily": `"Lato", "Arial", sans-serif`,
+        "fontFamily": `"IBM Plex Sans", "Arial", sans-serif`,
         "fontSize": 15,
         "fontWeightLight": 300,
         "fontWeightRegular": 400,

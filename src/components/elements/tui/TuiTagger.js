@@ -15,12 +15,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TuiTagger({label, placeholder, tags, onChange, freeSolo=true, multiple=true}) {
 
-    const classes = useStyles();
-    const [defaultValues, setDefaultValues]  = useState([...tags])
-
-    if(!tags) {
+    if(typeof tags === 'undefined' || !tags) {
         tags = []
     }
+
+    const classes = useStyles();
+    const [defaultValues, setDefaultValues]  = useState([...tags])
 
     const handleChange = (ev, value, reason) => {
         if(onChange) {

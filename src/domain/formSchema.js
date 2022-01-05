@@ -17,14 +17,14 @@ export default class FormSchema {
                 })
 
                 return {
-                    data: response.data,
+                    data: response?.data,
                     error: null,
                     status: true
                 };
 
             } catch (e) {
                 return {
-                    data: e.response.data,
+                    data: e?.response?.data,
                     error: e,
                     status: false
                 }

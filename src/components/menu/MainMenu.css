@@ -52,7 +52,7 @@
     font-weight: 600;
     justify-content: center;
     border-radius: 6px;
-    font-family: Viga, Roboto, serif;
+    font-family: Viga, "IBM Plex Sans", serif;
 }
 .MainMenu .Branding > .Tracardi {
     margin-top: 20px;
@@ -60,7 +60,7 @@
     font-size: 120%;
     text-transform: uppercase;
     font-weight: 400;
-    font-family: Viga, Roboto, serif;
+    font-family: Viga, "IBM Plex Sans", serif;
 }
 
 .MainMenu .Branding > .Version {
@@ -113,5 +113,5 @@
     display: flex;
     margin-left: 10px;
     align-items: center;
-    font-size: 15px;
+    font-size: 14px;
 }

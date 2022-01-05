@@ -66,26 +66,26 @@ export function NodeInitForm({pluginId, init, formSchema, onSubmit}) {
     }, [init])
 
     const handleValidationData = (result) => {
-        if (result.status === true) {
+        if (result?.status === true) {
 
             if (formErrorMessages !== {}) {
                 setFormErrorMessages({})
             }
 
-            setData(result.data)  // result.data is validated config
-            onSubmit(result.data)
+            setData(result?.data)  // result.data is validated config
+            onSubmit(result?.data)
             setSaveOk(true);
             setServerSideError(null)
 
         } else {
-            if (result.data !== null) {
+            if (result?.data !== null) {
                 setSaveOk(false);
-                if(result?.error && result?.error?.response.status === 422) {
-                    setFormErrorMessages(result.data);
+                if(result?.error && result?.error?.response?.status === 422) {
+                    setFormErrorMessages(result?.data);
                     setServerSideError(null)
                 } else {
                     setFormErrorMessages({});
-                    setServerSideError(getError(result.error))
+                    setServerSideError(getError(result?.error))
                 }
             }
         }
