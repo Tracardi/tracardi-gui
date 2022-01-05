@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Chip from '@material-ui/core/Chip';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import {makeStyles} from '@material-ui/core/styles';
@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
 export default function TuiTagger({label, placeholder, tags, onChange, freeSolo=true, multiple=true}) {
 
     const classes = useStyles();
+    const [defaultValues, setDefaultValues]  = useState([...tags])
 
     if(!tags) {
         tags = []
@@ -36,7 +37,7 @@ export default function TuiTagger({label, placeholder, tags, onChange, freeSolo=
                     onChange={(ev, value, reason) =>
                     { handleChange (ev, value, reason)} }
                     options={tags}
-                    defaultValue={[...tags]}
+                    defaultValue={defaultValues}
                     renderTags={(value, getTagProps) =>
                         value.map((option, index) => (
                             <Chip size="small" label={option} {...getTagProps({index})} />

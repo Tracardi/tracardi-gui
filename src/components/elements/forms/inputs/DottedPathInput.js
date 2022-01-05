@@ -145,9 +145,9 @@ export default function DottedPathInput({value, onChange,
 
     const pathMode = () => <div className="DottedInputPath">
         <TextField select
-                   label={label}
                    variant="outlined"
                    size="small"
+                   label="Source"
                    value={source}
                    onChange={handleSourceChange}
                    style={{width: 120}}
@@ -159,7 +159,7 @@ export default function DottedPathInput({value, onChange,
             ))}
         </TextField>
         <Separator/>
-        <TextField label="Path"
+        <TextField label={label}
                    value={path}
                    onChange={handlePathChange}
                    variant="outlined"
