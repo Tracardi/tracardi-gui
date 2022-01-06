@@ -82,6 +82,7 @@ import {FaMailchimp} from "@react-icons/all-files/fa/FaMailchimp";
 import {SiElasticsearch} from "react-icons/si";
 import {DiReact} from "react-icons/di";
 import {FaTrello} from "@react-icons/all-files/fa/FaTrello";
+import {IoCalendarOutline} from "@react-icons/all-files/io5/IoCalendarOutline";
 
 export const icons = {
     "store":            (size) => <FiDatabase size={size}/>,
@@ -169,7 +170,8 @@ export const icons = {
     'inbound':          (size) => <BsBoxArrowInUpRight size={size} />,
     'elasticsearch':    (size) => <SiElasticsearch size={size}/>,
     'react':            (size) => <DiReact size={size} />,
-    'trello':           (size) => <FaTrello size={size}/>
+    'trello':           (size) => <FaTrello size={size}/>,
+    'calendar':         (size) => <IoCalendarOutline size={size}/>,
 }
 
 
