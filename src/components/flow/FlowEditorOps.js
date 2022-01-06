@@ -1,5 +1,6 @@
 import {isEdge, isNode} from "react-flow-renderer";
 import {request} from "../../remote_api/uql_api_endpoint";
+import {asyncRemote} from "../../remote_api/entrypoint";
 
 export function prepareGraph(reactFlowInstance) {
     const flow = reactFlowInstance.toObject();
@@ -37,24 +38,21 @@ export function prepareFlowPayload(id, flowMetaData, reactFlowInstance) {
 export function save(id, flowMetaData, reactFlowInstance, onError, onReady, progress, deploy = false) {
     const payload = prepareFlowPayload(id, flowMetaData, reactFlowInstance)
     progress(true);
-    request(
-        {
-            url: (deploy === false) ? "/flow/draft" : "/flow/production",
-            method: "POST",
-            data: payload
-        },
-        progress,
-        (e) => {
-            if (e) {
-                onError({message: e[0].msg, type: "error", hideAfter: 2000});
-            }
-        },
-        (data) => {
-            if (data) {
-                onReady(data);
-            }
+    asyncRemote({
+        url: (deploy === false) ? "/flow/draft" : "/flow/production",
+        method: "POST",
+        data: payload
+    }).then((response) => {
+        if (response) {
+            onReady(response?.data);
         }
-    )
+    }).catch((e) => {
+        if (e) {
+            onError({message: e[0].msg, type: "error", hideAfter: 2000});
+        }
+    }).finally(()=> {
+        progress(false);
+    })
 }
 
 export function debug(id, reactFlowInstance, onError, progress, onReady) {

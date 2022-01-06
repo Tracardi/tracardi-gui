@@ -53,7 +53,7 @@ function RuleDetails({id, onDelete, onEdit}) {
                 }
             }
         )
-    }, [])
+    }, [id])
 
     const handleEdit = () => {
         setOpenEdit(true)

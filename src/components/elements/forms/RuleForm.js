@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import TuiSelectFlow from "../tui/TuiSelectFlow";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import TuiFormError from "../tui/TuiFormError";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
@@ -29,7 +28,7 @@ export default function RuleForm({onEnd, init}) {
 
     const [flow, setFlow] = useState(init?.flow || {});
     const [type, setType] = useState(init?.event?.type ? {name: init.event.type, id: init.event.type} : {});
-    const [name, setName] = useState(init?.name || {});
+    const [name, setName] = useState(init?.name || "");
     const [description, setDescription] = useState(init.description);
     const [source, setSource] = useState(init.source);
     const [error, setError] = useState(null);
