@@ -26,7 +26,7 @@ const TracardiProRunningServicesList = ({onEditClick, refresh}) => {
             setLoading(false);
         })
 
-    }, [refresh])
+    }, [refresh, services])
 
     const handleServiceEditClick = (service) => {
         if (onEditClick) {

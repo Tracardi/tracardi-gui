@@ -1,7 +1,7 @@
  SPAN.Button {
     display: flex;
     align-items: center;
-    padding: 9px;
+    padding: 6px 9px;
     margin: 2px;
     cursor: pointer;
     border-radius: 5px;

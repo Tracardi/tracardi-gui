@@ -48,7 +48,7 @@ export default function EventValidationDetails({id, onDeleteComplete, onEditComp
             .then(async () => {
                     setDeleteProgress(true);
                     try {
-                        const response = await asyncRemote({
+                        await asyncRemote({
                             url: '/event/validation-schema/' + id,
                             method: "delete"
                         })

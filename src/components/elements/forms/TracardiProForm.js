@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {asyncRemote, covertErrorIntoObject, getError} from "../../../remote_api/entrypoint";
 import TextField from "@material-ui/core/TextField";
 import Button from "./Button";
@@ -10,13 +10,25 @@ import ErrorsBox from "../../errors/ErrorsBox";
 export default function TracardiProForm({value, onSubmit}) {
 
     const [data, setData] = useState(value || {});
-    const [error, setError] = useState(false)
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false)
     const [fieldErrors, setFieldErrors] = useState({})
+
+    const mounted = useRef(false);
+
+    useEffect(() => {
+        mounted.current = true;
+
+        return () => {
+            mounted.current = false;
+        };
+    }, []);
 
     const handleRegisterTracardiPro = async () => {
         try {
             setFieldErrors({});
             setError(false);
+            setLoading(true);
             const response = await asyncRemote({
                 url: '/tracardi-pro',
                 method: "POST",
@@ -36,6 +48,10 @@ export default function TracardiProForm({value, onSubmit}) {
             const errors = getError(e);
             setFieldErrors(covertErrorIntoObject(errors));
             setError(errors);
+        } finally {
+            if(mounted) {
+                setLoading(false);
+            }
         }
     }
 
@@ -124,7 +140,9 @@ export default function TracardiProForm({value, onSubmit}) {
             </TuiFormGroup>
 
             <Button label="Register" onClick={handleRegisterTracardiPro}
-                    style={{ padding: "6px 10px", justifyContent: "center"}}/>
+                    style={{ padding: "6px 10px", justifyContent: "center"}}
+                    progress={loading}
+            />
 
         </TuiForm>
 }

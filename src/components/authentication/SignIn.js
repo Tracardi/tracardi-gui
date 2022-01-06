@@ -84,7 +84,7 @@ const SignInForm = ({showAlert}) => {
                 'Could not connect to the API server. Please try again later.'
             )
         });
-    }, [])
+    }, [ver])
 
     const nodeRef = useRef(null);
 
