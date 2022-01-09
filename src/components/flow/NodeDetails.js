@@ -9,9 +9,10 @@ import FilterTextField from "../elements/forms/inputs/FilterTextField";
 import {VscJson} from "@react-icons/all-files/vsc/VscJson";
 import "../elements/forms/JsonForm"
 import {VscTools} from "@react-icons/all-files/vsc/VscTools";
-import {NodeInitForm, NodeInitJsonForm} from "../elements/forms/NodeInitForm";
+import {NodeInitForm, NodeInitJsonForm, NodeMetaForm} from "../elements/forms/NodeInitForm";
 import {TracardiProPluginForm} from "../elements/forms/TracardiProPluginForm";
 import {BsStar} from "@react-icons/all-files/bs/BsStar";
+import {VscRunErrors} from "react-icons/vsc";
 
 export function NodeDetails({node, onConfig, onLabelSet}) {
 
@@ -67,6 +68,12 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
                     selected={tab === 3}>
                     <GoSettings size={22}/>
                 </IconButton>}
+                {node?.data?.metadata && <IconButton
+                    label="Metadata Editor"
+                    onClick={() => setTab(6)}
+                    selected={tab === 6}>
+                    <VscRunErrors size={22}/>
+                </IconButton>}
                 {node?.data?.metadata?.pro === true && <IconButton
                     label="Service Editor"
                     onClick={() => setTab(5)}
@@ -114,6 +121,12 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
                 onSubmit={handleSubmit}
             />
             }
+
+            {tab === 6 && node?.data?.spec && <NodeMetaForm
+                pluginId={node?.data?.spec?.id}
+                init={node?.data?.spec?.init}
+                onSubmit={() => {}}
+            />}
 
         </div>
     </div>
