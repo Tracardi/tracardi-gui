@@ -72,7 +72,7 @@ export function FlowEditorPane(
     const [animatedEdge, setAnimatedEdge] = useState(null);
     const [elements, setElements] = useState([]);
     const [logs, setLogs] = useState([]);
-    const [label, setLabel] = useState({name: "", id: null});
+    const [refreshNodeId, setRefreshNodeId] = useState([null, null]);  // [nodeId, nodeData]
     const [debugInProgress, setDebugInProgress] = useState(false);
     const [clientX, setClientX] = useState(0);
     const [clientY, setClientY] = useState(0);
@@ -214,17 +214,14 @@ export function FlowEditorPane(
 
     useEffect(() => {
         setElements((els) => els.map((el) => {
-                if (isNode(el) && el.id === label.id) {
-                    el.data = {
-                        ...el.data,
-                        metadata: {...el.data.metadata, name: label.name},
-                    }
+                if (isNode(el) && el.id === refreshNodeId[0]) {
+                    el.data = {...refreshNodeId[1].data}
                 }
                 return el;
             })
         );
 
-    }, [label, setElements]);
+    }, [refreshNodeId, setElements]);
 
     const handleUpdate = () => {
         setModified(true);
@@ -358,9 +355,25 @@ export function FlowEditorPane(
         selectNode(element);
     }
 
-    const onConfigSave = (value) => {
+    const handleConfigSave = (value) => {
         currentNode.data.spec.init = value
         handleUpdate()
+    }
+
+    const handleRuntimeConfig = (nodeId, value) => {
+        if(currentNode.data.spec.id === nodeId) {
+            currentNode.data.spec = {...currentNode.data.spec, ...value}
+
+            // Refresh flow node
+            if (elements) {
+                setRefreshNodeId([currentNode.id, currentNode])
+            }
+
+            handleUpdate();
+        } else {
+            console.warn("Current node changed")
+        }
+
     }
 
     const onConnectionDetails = (nodeId, edgeId) => {
@@ -376,7 +389,8 @@ export function FlowEditorPane(
 
     const handleLabelSet = (label) => {
         if (elements) {
-            setLabel({id: currentNode.id, name: label})
+            currentNode.data.metadata = {...currentNode.data.metadata, name: label}
+            setRefreshNodeId([currentNode.id, currentNode])
         }
         handleUpdate()
     }
@@ -472,7 +486,7 @@ export function FlowEditorPane(
                                     pluginId={currentNode?.data?.spec?.id}
                                     init={currentNode?.data?.spec?.init}
                                     formSchema={currentNode?.data?.spec?.form}
-                                    onSubmit={onConfigSave}
+                                    onSubmit={handleConfigSave}
                                 />
                             </div>}
 
@@ -497,7 +511,8 @@ export function FlowEditorPane(
                         <MemoNodeDetails
                             onLabelSet={handleLabelSet}
                             node={currentNode}
-                            onConfig={onConfigSave}
+                            onConfig={handleConfigSave}
+                            onRuntimeConfig={handleRuntimeConfig}
                         />
                     </SidebarRight>}
 

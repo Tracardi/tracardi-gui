@@ -6,9 +6,9 @@ import ExecutionNumber from "./ExecutionNumber";
 import {isObject} from '../../misc/typeChecking';
 
 
-export default memo(({data}) => {
+const FlowNodeDynamic = ({data}) => {
 
-    const InputPort = ({value, doc}) => {
+    const InputPort = ({value, doc, style}) => {
 
         const [showHint, setShowHint] = useState(false);
         const [showDesc, setShowDesc] = useState(false);
@@ -18,6 +18,7 @@ export default memo(({data}) => {
             {showDesc && doc && <span className="InputPortDesc PortHint">{doc}</span>}
 
             <Handle
+                style={style}
                 type="target"
                 position="top"
                 id={value}
@@ -29,7 +30,7 @@ export default memo(({data}) => {
         </div>
     }
 
-    const OutputPort = ({value, doc}) => {
+    const OutputPort = ({value, doc, style}) => {
 
         const [showHint, setShowHint] = useState(false);
         const [showDesc, setShowDesc] = useState(false);
@@ -37,6 +38,7 @@ export default memo(({data}) => {
         return <>
           <div className="NodePortContainer">
             <Handle
+                style={style}
                 type="source"
                 position="bottom"
                 id={value}
@@ -51,39 +53,43 @@ export default memo(({data}) => {
         </>
     }
 
-    const Outputs = ({spec, documentation}) => {
+    const Outputs = ({spec, documentation, style}) => {
 
         if (spec?.outputs) {
             return <div className="NodePorts" style={{marginTop: "-7px"}}>
                 {
                     spec.outputs.map((value, index) => {
                         const doc = isObject(documentation) && value in documentation ? documentation[value].desc : null
-                        return <OutputPort key={index} value={value} doc={doc}/>
+                        return <OutputPort key={index} value={value} doc={doc} style={style}/>
                     })
                 }
             </div>
         }
+        return "Error no spec"
     }
 
-    const Inputs = ({spec, documentation}) => {
+    const Inputs = ({spec, documentation, style}) => {
         if (spec?.inputs) {
             return <div className="NodePorts" style={{marginBottom: "-7px"}}>
                 {
                     spec.inputs.map((value, index) => {
                         const doc = isObject(documentation) && value in documentation ? documentation[value].desc : null
-                        return <InputPort key={index} value={value} doc={doc}/>
+                        return <InputPort key={index} value={value} doc={doc} style={style}/>
                     })
                 }
             </div>
         }
+        return "Error no spec"
     }
 
     const nodeClass = (data?.metadata?.selected === true) ? "NodePanel DebugNode" : "NodePanel"
+    const style = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {borderColor: "#ccc", color: "#999"} : {}
+    const backgroundStyle = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {backgroundColor: "#aaa"} : {}
 
     return (
         <div style={{position: "relative"}}>
-            <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs}/>
-            <div className={nodeClass}>
+            <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={style}/>
+            <div className={nodeClass} style={style}>
                 <ExecutionNumber data={data}/>
                 <div className="NodePadding">
                     <div className="NodeIcon"><FlowNodeIcons icon={data?.metadata?.icon}/></div>
@@ -93,9 +99,12 @@ export default memo(({data}) => {
                         <aside>v.{data?.spec?.version}</aside>
                     </div>
                 </div>
-                {data?.metadata?.pro ? <div className="NodePro">Pro</div> : ""}
+                {data?.metadata?.pro ? <div className="NodePro" style={backgroundStyle}>Pro</div> : ""}
             </div>
-            <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs}/>
+            <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={style}/>
         </div>
     );
-});
+};
+
+const FlowNode = React.memo(FlowNodeDynamic);
+export default FlowNode;

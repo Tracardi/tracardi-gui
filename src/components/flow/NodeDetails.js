@@ -9,12 +9,12 @@ import FilterTextField from "../elements/forms/inputs/FilterTextField";
 import {VscJson} from "@react-icons/all-files/vsc/VscJson";
 import "../elements/forms/JsonForm"
 import {VscTools} from "@react-icons/all-files/vsc/VscTools";
-import {NodeInitForm, NodeInitJsonForm, NodeMetaForm} from "../elements/forms/NodeInitForm";
+import {NodeInitForm, NodeInitJsonForm, NodeRuntimeConfigForm} from "../elements/forms/NodeInitForm";
 import {TracardiProPluginForm} from "../elements/forms/TracardiProPluginForm";
 import {BsStar} from "@react-icons/all-files/bs/BsStar";
 import {VscRunErrors} from "react-icons/vsc";
 
-export function NodeDetails({node, onConfig, onLabelSet}) {
+export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
 
     const [tab, setTab] = useState(3);
 
@@ -43,7 +43,7 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
         },
         [node, tab])
 
-    const handleSubmit = (init) => {
+    const handleInitSubmit = (init) => {
         if(onConfig){
             onConfig(init)
         }
@@ -62,6 +62,12 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
                     selected={tab === 0}>
                         <BsInfoCircle size={22}/>
                 </IconButton>
+                {node?.data?.metadata?.pro === true && <IconButton
+                    label="Tracardi Pro Editor"
+                    onClick={() => setTab(5)}
+                    selected={tab === 5}>
+                    <BsStar size={22}/>
+                </IconButton>}
                 {node?.data?.spec?.form && <IconButton
                     label="Config Editor"
                     onClick={() => setTab(3)}
@@ -69,16 +75,10 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
                     <GoSettings size={22}/>
                 </IconButton>}
                 {node?.data?.metadata && <IconButton
-                    label="Metadata Editor"
+                    label="Advanced Runtime Editor"
                     onClick={() => setTab(6)}
                     selected={tab === 6}>
                     <VscRunErrors size={22}/>
-                </IconButton>}
-                {node?.data?.metadata?.pro === true && <IconButton
-                    label="Service Editor"
-                    onClick={() => setTab(5)}
-                    selected={tab === 5}>
-                        <BsStar size={22}/>
                 </IconButton>}
                 {node?.data?.spec?.init && <IconButton
                     label="Json Config"
@@ -92,8 +92,6 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
                     selected={tab === 4}>
                         <VscJson size={22}/>
                 </IconButton>
-
-
                 </span>
         </div>
         <div className="Pane">
@@ -104,28 +102,38 @@ export function NodeDetails({node, onConfig, onLabelSet}) {
                 formSchema={node?.data?.spec?.form}
                 init={node?.data?.spec?.init}
                 manual={node?.data?.spec?.manual}
-                onSubmit={handleSubmit}
+                onSubmit={handleInitSubmit}
             />}
             {tab === 3 && node?.data?.spec?.form &&
             <NodeInitForm
                 pluginId={node?.data?.spec?.id}
                 init={node?.data?.spec?.init}
                 formSchema={node?.data?.spec?.form}
-                onSubmit={handleSubmit}
+                onSubmit={handleInitSubmit}
             />}
 
             {tab === 4 && <ConsoleView label="Action raw data" data={node}/>}
 
             {node?.data?.metadata?.pro === true && tab === 5 && <TracardiProPluginForm
                 init={node?.data?.spec?.init}
-                onSubmit={handleSubmit}
+                onSubmit={handleInitSubmit}
             />
             }
 
-            {tab === 6 && node?.data?.spec && <NodeMetaForm
+            {tab === 6 && node?.data?.spec && <NodeRuntimeConfigForm
                 pluginId={node?.data?.spec?.id}
-                init={node?.data?.spec?.init}
-                onSubmit={() => {}}
+                value={
+                    {
+                        skip: node?.data?.spec?.skip || false,
+                        block_flow: node?.data?.spec?.block_flow || false,
+                        on_connection_error_repeat: node?.data?.spec?.on_connection_error_repeat || "0",
+                        run_in_background: node?.data?.spec?.run_in_background || false,
+                        on_connection_continue: node?.data?.spec?.on_connection_continue || false,
+                        join_input_payload: node?.data?.spec?.join_input_payload || false,
+                        append_input_payload: node?.data?.spec?.append_input_payload || false,
+                    }
+                }
+                onChange={onRuntimeConfig}
             />}
 
         </div>

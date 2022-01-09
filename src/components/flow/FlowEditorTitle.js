@@ -24,8 +24,6 @@ import {BiReset} from "@react-icons/all-files/bi/BiReset";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import {save} from "./FlowEditorOps";
 import {useConfirm} from "material-ui-confirm";
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
 
 export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onDraftRestore, onDeploy, onSaveDraft}) {
 
@@ -145,11 +143,11 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
 
     return <aside className="FlowEditorTitle">
         <div>
-            <TextField select style={{width: 130, marginRight: 10}}>
-                <MenuItem value="draft">Draft</MenuItem>
-                <MenuItem value="production">Production</MenuItem>
-                <MenuItem value="backup">Back-up</MenuItem>
-            </TextField>
+            {/*<TextField select style={{width: 130, marginRight: 10}} value="draft">*/}
+            {/*    <MenuItem value="draft">Draft</MenuItem>*/}
+            {/*    <MenuItem value="production">Production</MenuItem>*/}
+            {/*    <MenuItem value="backup">Back-up</MenuItem>*/}
+            {/*</TextField>*/}
             <span style={{marginLeft: 10}}>{flowMetaData?.name}</span>
         </div>
         <div>
