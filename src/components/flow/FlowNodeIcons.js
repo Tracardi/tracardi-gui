@@ -83,6 +83,8 @@ import {SiElasticsearch} from "react-icons/si";
 import {DiReact} from "react-icons/di";
 import {FaTrello} from "@react-icons/all-files/fa/FaTrello";
 import {IoCalendarOutline} from "@react-icons/all-files/io5/IoCalendarOutline";
+import {SiGoogletranslate} from "@react-icons/all-files/si/SiGoogletranslate";
+import {AiFillGoogleCircle} from "@react-icons/all-files/ai/AiFillGoogleCircle";
 
 export const icons = {
     "store":            (size) => <FiDatabase size={size}/>,
@@ -172,6 +174,8 @@ export const icons = {
     'react':            (size) => <DiReact size={size} />,
     'trello':           (size) => <FaTrello size={size}/>,
     'calendar':         (size) => <IoCalendarOutline size={size}/>,
+    'translate':        (size) => <SiGoogletranslate size={size} />,
+    'google':           (size) => <AiFillGoogleCircle size={size}/>
 }
 
 

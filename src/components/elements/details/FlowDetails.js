@@ -73,7 +73,7 @@ export default function FlowDetails({id, onDeleteComplete}) {
                         (result) => {
                             if (result !== false) {
                                 request({
-                                        url: '/flow/metadata/refresh'
+                                        url: '/flows/refresh'
                                     },
                                     ()=>{},
                                     ()=>{},

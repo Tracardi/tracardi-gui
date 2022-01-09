@@ -66,7 +66,7 @@ function FlowForm({
                         setProcessing(true);
                         // Refresh index in elastic so we can see it in the list.
                         request({
-                                url: '/flow/metadata/refresh'
+                                url: '/flows/refresh'
                             },
                             setProcessing,
                             () => {

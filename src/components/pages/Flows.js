@@ -36,7 +36,7 @@ export default function Flows() {
                         (result) => {
                             if (result !== false) {
                                 request({
-                                        url: '/flow/metadata/refresh'
+                                        url: '/flows/refresh'
                                     },
                                     ()=>{},
                                     ()=>{},

@@ -4,7 +4,7 @@ import './EventStatusTag.css';
 export default function EventStatusTag({label}) {
     if(label==='error')
         return <span className="EventStatusTag ErrorColor">{label}</span>
-    if(label==='ok')
+    if(label==='processed')
         return <span className="EventStatusTag OKColor">{label}</span>
     if(label==='warning')
         return <span className="EventStatusTag WarnColor">{label}</span>
