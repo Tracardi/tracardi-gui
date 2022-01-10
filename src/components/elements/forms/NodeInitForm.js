@@ -142,7 +142,7 @@ export function NodeRuntimeConfigForm({pluginId, value: initValue, onChange}) {
                         label="Join output data"
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Append result to output" description="This will append each result to the output.">
+                <TuiFormGroupField header="Append input to output" description="This will append input payload to the output. If there is a conflict in data some data may be overridden.">
                     <FormControlLabel
                         control={
                             <Switch
@@ -152,7 +152,7 @@ export function NodeRuntimeConfigForm({pluginId, value: initValue, onChange}) {
                                 color="primary"
                             />
                         }
-                        label="Append result to output"
+                        label="Append input payload to output result"
                     />
                 </TuiFormGroupField>
             </TuiFormGroupContent>

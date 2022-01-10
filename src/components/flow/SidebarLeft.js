@@ -39,7 +39,9 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
             ).catch(
                 (e) => {
                     if (e) {
-                        showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
+                        if(e.length > 0) {
+                            showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
+                        }
                     }
                 }
             ).finally(

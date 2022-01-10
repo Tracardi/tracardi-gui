@@ -48,7 +48,9 @@ export function save(id, flowMetaData, reactFlowInstance, onError, onReady, prog
         }
     }).catch((e) => {
         if (e) {
-            onError({message: e[0].msg, type: "error", hideAfter: 2000});
+            if(e.length > 0) {
+                onError({message: e[0].msg, type: "error", hideAfter: 2000});
+            }
         }
     }).finally(()=> {
         progress(false);

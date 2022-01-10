@@ -163,10 +163,10 @@ export function FlowEditorPane(
                 setFlowLoading,
                 (e) => {
                     if (e) {
-                        if(e.response.status === 404) {
+                        if(e?.response?.status === 404) {
                             showAlert({message: "Workflow does not exist.", type: "error", hideAfter: 4000});
                         } else {
-                            showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
+                            if(e.length > 0) showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
                         }
                     }
                 },
