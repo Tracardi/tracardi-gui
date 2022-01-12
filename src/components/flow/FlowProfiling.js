@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import './FlowProfiling.css';
 import DebugBox from "./DebugBox";
 
-export function FlowProfiling({profilingData, onCallSelect, orientation="vertical"}) {
+export function FlowProfiling({profilingData, flow, onCallSelect, orientation="vertical"}) {
 
     const [currentNode, setCurrentNode] = useState(null);
 
@@ -33,7 +33,7 @@ export function FlowProfiling({profilingData, onCallSelect, orientation="vertica
     }
 
     const handleClick = (debugProfile) => {
-        setCurrentNode((debugProfile))
+        setCurrentNode(debugProfile)
         if (onCallSelect) {
             onCallSelect(
                 debugProfile?.id,
@@ -63,6 +63,7 @@ export function FlowProfiling({profilingData, onCallSelect, orientation="vertica
     const Rows = ({profilingData}) => {
         if (profilingData && Array.isArray(profilingData.calls)) {
             const wholeTime = maxTime(profilingData) * 1.1;
+
             return sort(profilingData).calls.map((obj, index) => {
                     const relativeStartTime = (obj.startTime / wholeTime) * 100;
                     const _relativeRunTime = (obj.runTime / wholeTime) * 100;
@@ -110,6 +111,7 @@ export function FlowProfiling({profilingData, onCallSelect, orientation="vertica
     const flexDirection = (orientation === "vertical") ? "row": "column"
 
     return <div className="DebugAndProfile" style={{flexDirection: flexDirection}}>
+        {orientation !== "vertical" && <h1 style={{fontWeight: 300, borderBottom: "solid #ccc 1px"}}>Flow: {flow?.name}</h1>}
         <div className="Profiling">
             <div className="TaskHeader">
                 <div className="TaskSq">&nbsp;</div>

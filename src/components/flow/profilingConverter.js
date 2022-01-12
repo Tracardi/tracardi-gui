@@ -68,7 +68,9 @@ export function convertDebugInfoToProfilingData(debugInfo) {
                                         input: call.input,
                                         output: call.output,
                                         error: call.error,
-                                        profile: call.profile
+                                        profile: call.profile || {},
+                                        event: call.event || {},
+                                        session: call.session || {}
                                     }
                                 }
                             )

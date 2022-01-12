@@ -16,7 +16,7 @@ const EventProfilingDetails = ({eventId, showAlert}) => {
         if (Array.isArray(data)) {
             if(data.length>0) {
                 return profilingData.map(
-                    (data, index) => <FlowProfiling key={index} profilingData={convertDebugInfoToProfilingData(data)} orientation="horizontal"/>
+                    (data, index) => <FlowProfiling key={index} flow={data?.flow} profilingData={convertDebugInfoToProfilingData(data)} orientation="horizontal"/>
                 )
             }
             return <NoData header="This event was not configured to store debug data.">

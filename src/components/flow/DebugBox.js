@@ -8,7 +8,7 @@ import theme from "../../themes/inspector_light_theme";
 import {ObjectInspector} from "react-inspector";
 
 export default function DebugBox({call, onTabSelect}) {
-
+    console.log("call", call)
     const PortsAccordion = ({portsData}) => {
         if(Array.isArray(portsData) && portsData.length>0) {
             const accordionItems = portsData.map((item, idx) => {
@@ -51,7 +51,7 @@ export default function DebugBox({call, onTabSelect}) {
             </TabCase>
             <TabCase id={2}>
                 <Padder>
-                    <DebugContextAccordions profile={call?.profile} event={call?.event}/>
+                    <DebugContextAccordions profile={call?.profile} event={call?.event} session={call?.session}/>
                 </Padder>
             </TabCase>
         </Tabs>}

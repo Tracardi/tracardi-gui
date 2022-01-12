@@ -41,7 +41,7 @@ export default function DebugContextAccordions({profile, event, session}) {
 
                 >
                     <Typography className={classes.heading}>Profile data</Typography>
-                    <Typography className={classes.secondaryHeading}>Profile data is mutable</Typography>
+                    <Typography className={classes.secondaryHeading}>Profile data object</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <ObjectInspector data={profile} theme={theme} expandLevel={5}/>
@@ -55,7 +55,7 @@ export default function DebugContextAccordions({profile, event, session}) {
                 >
                     <Typography className={classes.heading}>Event data</Typography>
                     <Typography className={classes.secondaryHeading}>
-                        Event data is NOT mutable
+                        Event data object
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -70,7 +70,7 @@ export default function DebugContextAccordions({profile, event, session}) {
                 >
                     <Typography className={classes.heading}>Session</Typography>
                     <Typography className={classes.secondaryHeading}>
-                        Session data is NOT mutable
+                        Session data object
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
