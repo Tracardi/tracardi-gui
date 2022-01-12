@@ -20,6 +20,7 @@ export default function TuiTagger({label, placeholder, tags, onChange, freeSolo=
     }
 
     const classes = useStyles();
+    // eslint-disable-next-line
     const [defaultValues, setDefaultValues]  = useState([...tags])
 
     const handleChange = (ev, value, reason) => {

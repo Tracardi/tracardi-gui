@@ -39,7 +39,7 @@ const CardBrowser = ({
             const url = urlFunc(query)
             setLoading(true);
             let isSubscribed = true
-            const call = asyncRemote({url})
+            asyncRemote({url})
                 .then((response) => {
                     if (response && isSubscribed) {
                         setCards(response.data);

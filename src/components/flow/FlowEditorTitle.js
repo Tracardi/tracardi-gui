@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useState} from "react";
 import {TiTickOutline} from "@react-icons/all-files/ti/TiTickOutline";
 import {BsToggleOn} from "@react-icons/all-files/bs/BsToggleOn";
 import "./FlowEditorTitle.css";

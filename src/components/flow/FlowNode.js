@@ -1,4 +1,4 @@
-import React, {memo, useState} from 'react';
+import React, {useState} from 'react';
 import {Handle} from 'react-flow-renderer';
 import './FlowNode.css';
 import FlowNodeIcons from "./FlowNodeIcons";

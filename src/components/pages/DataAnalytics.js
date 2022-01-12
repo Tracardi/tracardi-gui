@@ -6,6 +6,7 @@ import ObjectFiltering from "../elements/forms/ObjectFiltering";
 import moment from "moment";
 import DataBrowsingList from "./DataBrowsingList";
 import BarChartElement from "../elements/charts/BarChart";
+import {isString} from "../../misc/typeChecking";
 
 export default function DataAnalytics({
                                           type,
@@ -135,7 +136,13 @@ export default function DataAnalytics({
     };
 
     function getRefreshRate() {
-        const rate = localStorage.getItem(type + "RefreshRate");
+        let rate = localStorage.getItem(type + "RefreshRate");
+        if(isString(rate)) {
+            const value = parseInt(rate)
+            if(isNaN(value)) {
+                rate = value
+            }
+        }
         return rate ? rate : 0;
     }
 

@@ -25,11 +25,11 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
 
     useEffect(() => {
         mounted.current = true;
+        setValue(initValue)
 
         return () => {
             mounted.current = false;
         }
-        setValue(initValue)
     }, [initValue])
 
     const handleDataLoaded = (response, onDataLoaded) => {

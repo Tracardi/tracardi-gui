@@ -3,7 +3,6 @@ import React, {useEffect, useRef, useState} from "react";
 import Button from "./Button";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import {request} from "../../../remote_api/uql_api_endpoint";
 import {v4 as uuid4} from 'uuid';
 import TuiTaggerFlow from "../tui/TuiTaggerFlow";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";

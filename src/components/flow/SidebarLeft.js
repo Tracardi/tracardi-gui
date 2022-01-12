@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './SidebarLeft.css';
 import FlowMenuNode from "./FlowMenuNode";
 import {connect} from "react-redux";

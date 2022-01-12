@@ -7,7 +7,6 @@ import CardBrowser from "../elements/lists/CardBrowser";
 import AdvancedSquareCard from "../elements/lists/cards/AdvancedSquareCard";
 import {useHistory} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
-import {request} from "../../remote_api/uql_api_endpoint";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote} from "../../remote_api/entrypoint";
 
