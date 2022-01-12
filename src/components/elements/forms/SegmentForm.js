@@ -9,13 +9,14 @@ import PropTypes from 'prop-types';
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import TuiFormError from "../tui/TuiFormError";
+import {isString} from "../../../misc/typeChecking";
 
 export default function SegmentForm({onSubmit, init}) {
 
     if (!init) {
         init = {
             id: (!init?.id) ? uuid4() : init.id,
-            eventType: "",
+            eventType: null,
             condition: "",
             name: "",
             description: "",
@@ -31,7 +32,10 @@ export default function SegmentForm({onSubmit, init}) {
     const [conditionErrorMessage, setConditionErrorMessage] = useState(null);
     const [enabled, setEnabled] = useState(init.enabled);
     const [processing, setProcessing] = useState(false);
-    const [type, setType] = useState(init.eventType);
+    const [type, setType] = useState(isString(init.eventType) ? {
+        id: init.eventType,
+        name: init.eventType
+    } : init.eventType);
 
     const onTqlValidate = async () => {
         try {
@@ -95,18 +99,9 @@ export default function SegmentForm({onSubmit, init}) {
             },
             (response) => {
                 if (response !== false) {
-                    request({
-                            url: '/segments/refresh'
-                        },
-                        setProcessing,
-                        () => {
-                        },
-                        () => {
-                            if (onSubmit) {
-                                onSubmit(payload)
-                            }
-                        }
-                    )
+                    if (onSubmit) {
+                        onSubmit(payload)
+                    }
                 }
             }
         )
@@ -118,7 +113,7 @@ export default function SegmentForm({onSubmit, init}) {
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Event type" description="Bind this segment event type. You can select
                 None then segment will be checked at every event. against all events.">
-                    <TuiSelectEventType value={{name: type, id: type}} onSetValue={setType}/>
+                    <TuiSelectEventType value={type} onSetValue={setType}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Condition" description="Segments are created after the event is processed.
                     Then Profile properties are evaluated against the condition you type below.
