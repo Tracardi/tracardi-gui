@@ -83,13 +83,14 @@ const FlowNodeDynamic = ({data}) => {
     }
 
     const nodeClass = (data?.metadata?.selected === true) ? "NodePanel DebugNode" : "NodePanel"
-    const style = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {borderColor: "#ccc", color: "#999"} : {}
+    const nodeStyle = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {borderColor: "#ccc", color: "#999"} : {}
+    const portStyle = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {borderColor: "#ccc"} : {borderColor: "#1565c0"}
     const backgroundStyle = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {backgroundColor: "#aaa"} : {}
 
     return (
         <div style={{position: "relative"}}>
-            <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={style}/>
-            <div className={nodeClass} style={style}>
+            <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={portStyle}/>
+            <div className={nodeClass} style={nodeStyle}>
                 <ExecutionNumber data={data}/>
                 <div className="NodePadding">
                     <div className="NodeIcon"><FlowNodeIcons icon={data?.metadata?.icon}/></div>
@@ -101,7 +102,7 @@ const FlowNodeDynamic = ({data}) => {
                 </div>
                 {data?.metadata?.pro ? <div className="NodePro" style={backgroundStyle}>Pro</div> : ""}
             </div>
-            <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={style}/>
+            <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={portStyle}/>
         </div>
     );
 };
