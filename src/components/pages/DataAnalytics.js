@@ -8,8 +8,6 @@ import DataBrowsingList from "./DataBrowsingList";
 import BarChartElement from "../elements/charts/BarChart";
 import {isString} from "../../misc/typeChecking";
 
-export const LoadingContext = React.createContext(true);
-
 export default function DataAnalytics({
                                           type,
                                           label,
@@ -23,8 +21,6 @@ export default function DataAnalytics({
                                           filterFields,
                                           displayChart = true
                                       }) {
-
-    const [allowLoadingSpinner, setAllowLoadingSpinner] = useState(true);
 
     const dispatch = useDispatch();
 
@@ -110,13 +106,9 @@ export default function DataAnalytics({
         let timer;
         dispatch(resetPage());
         if (refresh > 0) {
-            if(allowLoadingSpinner === true) {
-                setAllowLoadingSpinner(false);
-            }
             dispatch(setRefreshOn());
             timer = setInterval(() => setQuery(encodeParams(query)), refresh * 1000);
         } else {
-            setAllowLoadingSpinner(true);
             dispatch(setRefreshOff());
         }
 
@@ -155,7 +147,6 @@ export default function DataAnalytics({
     }
 
     return (
-        <LoadingContext.Provider value={allowLoadingSpinner}>
         <div className="DataAnalytics">
             <div className="Filtering">
                 <ObjectFiltering
@@ -187,6 +178,5 @@ export default function DataAnalytics({
                 </DataBrowsingList>
             </div>
         </div>
-        </LoadingContext.Provider>
     );
 }

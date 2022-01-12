@@ -17,23 +17,36 @@ const AutoLoadObjectList = ({
                                 onLoadRequest,
                                 paging,
                             }) => {
+
     const {page, shown, total} = paging;
     const [rows, setRows] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
+    const [allowLoadingSpinner, setAllowLoadingSpinner] = useState(true);
+
     const dispatch = useDispatch();
 
     useEffect(() => {
         let isSubscribed = true;
         const oldUrl = onLoadRequest.url;
         if (page > 0 || total === 0) {
+
+            if(allowLoadingSpinner) {
+                setLoading(true);
+            }
+
             onLoadRequest.url = `${onLoadRequest.url}/page/${page}`;
             if (rows.length >= page) {
-                request(onLoadRequest, setLoading, setError, (response) => {
+                request(
+                    onLoadRequest,
+                    (state) => {if(isSubscribed && allowLoadingSpinner) {setLoading(state)}},
+                    (e)=> {if(isSubscribed) {setError(e)}},
+                    (response) => {
                         if (response) {
                             if (isSubscribed) {
                                 dispatch(updateCounts({total: response.data.total, shown: response.data.result.length}));
                                 setRows(page === 0 ? [...response.data.result] : [...rows, ...response.data.result]);
+                                setAllowLoadingSpinner(false);
                             }
                         }
                     }

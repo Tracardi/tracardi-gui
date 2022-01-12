@@ -1,11 +1,10 @@
 import {BarChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Bar} from 'recharts';
-import React, {useContext, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import "./Chart.css";
 import PropTypes from "prop-types";
 import NoDataError from "../../errors/NoDataError";
-import {LoadingContext} from "../../pages/DataAnalytics";
 
 
 // todo onLoadRequest is a misleading name - it is an object with information on endpoint to call
@@ -16,20 +15,19 @@ export default function BarChartElement({onLoadRequest, columns}) {
     const [error, setError] = React.useState(false);
     const [ready, setReady] = React.useState(false);
 
-    const loadingContext = useContext(LoadingContext);
+    const [allowLoadingSpinner, setAllowLoadingSpinner] = useState(true);
 
     useEffect(() => {
+
         let isSubscribed = true
-        if(loadingContext) {
+        if(allowLoadingSpinner) {
             setLoading(true);
-        } else if(loading === true) {
-            setLoading(false)
         }
         request(
             onLoadRequest,
-            (value)=> {if(isSubscribed && loadingContext) setLoading(value);},
+            (value)=> {if(isSubscribed && allowLoadingSpinner) setLoading(value);},
             (value) => {if(isSubscribed) setError(value);},
-            (value) => {if(isSubscribed) setReady(value);}
+            (value) => {if(isSubscribed) setReady(value); setAllowLoadingSpinner(false);}
         );
         return () => isSubscribed = false
     }, [onLoadRequest])
