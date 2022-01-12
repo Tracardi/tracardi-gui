@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import './FlowProfiling.css';
 import DebugBox from "./DebugBox";
 
-export function FlowProfiling({profilingData, onCallSelect}) {
+export function FlowProfiling({profilingData, onCallSelect, orientation="vertical"}) {
 
     const [currentNode, setCurrentNode] = useState(null);
 
@@ -107,7 +107,9 @@ export function FlowProfiling({profilingData, onCallSelect}) {
         return currentNode?.id === obj.id && currentNode?.call?.input?.edge?.id === obj?.call?.input?.edge?.id;
     }
 
-    return <div className="DebugAndProfile">
+    const flexDirection = (orientation === "vertical") ? "row": "column"
+
+    return <div className="DebugAndProfile" style={{flexDirection: flexDirection}}>
         <div className="Profiling">
             <div className="TaskHeader">
                 <div className="TaskSq">&nbsp;</div>

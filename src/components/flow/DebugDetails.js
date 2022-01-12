@@ -12,6 +12,7 @@ const DebugDetails = ({profilingData, onConnectionDetails}) => {
                         onConnectionDetails(nodeId, edgeId)
                     }
                 }}
+                orientation="vertical"
             />
     </section>
 }

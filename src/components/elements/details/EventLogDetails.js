@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import FlowLogs from "../../flow/FlowLogs";
+import NoData from "../misc/NoData";
 
 const EventLogDetails = ({eventId, showAlert}) => {
 
@@ -37,7 +38,16 @@ const EventLogDetails = ({eventId, showAlert}) => {
         return <CenteredCircularProgress/>
     }
 
-    return <FlowLogs logs={logData} />
+    if (Array.isArray(logData)) {
+        if(logData.length > 0) {
+            return <FlowLogs logs={logData}/>
+        }
+        return <NoData header="This event has no flow logs.">
+            <p>Here is logged information on flow progress.</p>
+        </NoData>
+    }
+
+    return ""
 }
 const mapProps = (state) => {
     return {
