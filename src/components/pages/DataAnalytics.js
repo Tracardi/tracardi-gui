@@ -8,6 +8,8 @@ import DataBrowsingList from "./DataBrowsingList";
 import BarChartElement from "../elements/charts/BarChart";
 import {isString} from "../../misc/typeChecking";
 
+export const LoadingContext = React.createContext(true);
+
 export default function DataAnalytics({
                                           type,
                                           label,
@@ -21,6 +23,8 @@ export default function DataAnalytics({
                                           filterFields,
                                           displayChart = true
                                       }) {
+
+    const [allowLoadingSpinner, setAllowLoadingSpinner] = useState(true);
 
     const dispatch = useDispatch();
 
@@ -106,9 +110,13 @@ export default function DataAnalytics({
         let timer;
         dispatch(resetPage());
         if (refresh > 0) {
+            if(allowLoadingSpinner === true) {
+                setAllowLoadingSpinner(false);
+            }
             dispatch(setRefreshOn());
             timer = setInterval(() => setQuery(encodeParams(query)), refresh * 1000);
         } else {
+            setAllowLoadingSpinner(true);
             dispatch(setRefreshOff());
         }
 
@@ -130,7 +138,7 @@ export default function DataAnalytics({
         );
     };
 
-    const onRefreshChange = (rate) => {
+    const handleRefreshChange = (rate) => {
         localStorage.setItem(type + "RefreshRate", rate);
         setRefresh(rate);
     };
@@ -139,7 +147,7 @@ export default function DataAnalytics({
         let rate = localStorage.getItem(type + "RefreshRate");
         if(isString(rate)) {
             const value = parseInt(rate)
-            if(isNaN(value)) {
+            if(!isNaN(value)) {
                 rate = value
             }
         }
@@ -147,6 +155,7 @@ export default function DataAnalytics({
     }
 
     return (
+        <LoadingContext.Provider value={allowLoadingSpinner}>
         <div className="DataAnalytics">
             <div className="Filtering">
                 <ObjectFiltering
@@ -154,7 +163,7 @@ export default function DataAnalytics({
                     initDate={query}
                     initRefresh={refresh}
                     onFilterClick={onFilter}
-                    onRefreshChange={onRefreshChange}
+                    onRefreshChange={handleRefreshChange}
                 />
             </div>
             <div className="Data">
@@ -178,5 +187,6 @@ export default function DataAnalytics({
                 </DataBrowsingList>
             </div>
         </div>
+        </LoadingContext.Provider>
     );
 }

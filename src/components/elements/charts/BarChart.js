@@ -1,10 +1,11 @@
 import {BarChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Bar} from 'recharts';
-import React, {useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import "./Chart.css";
 import PropTypes from "prop-types";
 import NoDataError from "../../errors/NoDataError";
+import {LoadingContext} from "../../pages/DataAnalytics";
 
 
 // todo onLoadRequest is a misleading name - it is an object with information on endpoint to call
@@ -15,11 +16,18 @@ export default function BarChartElement({onLoadRequest, columns}) {
     const [error, setError] = React.useState(false);
     const [ready, setReady] = React.useState(false);
 
+    const loadingContext = useContext(LoadingContext);
+
     useEffect(() => {
         let isSubscribed = true
+        if(loadingContext) {
+            setLoading(true);
+        } else if(loading === true) {
+            setLoading(false)
+        }
         request(
             onLoadRequest,
-            (value)=> {if(isSubscribed) setLoading(value);},
+            (value)=> {if(isSubscribed && loadingContext) setLoading(value);},
             (value) => {if(isSubscribed) setError(value);},
             (value) => {if(isSubscribed) setReady(value);}
         );
@@ -42,8 +50,8 @@ export default function BarChartElement({onLoadRequest, columns}) {
     return (
         <div style={{height: 200, width: '100%'}}>
             {loading === true && <CenteredCircularProgress/>}
-            {error !== false && <NoDataError msg="Data is unavailable"/>}
-            {ready !== false && <ResponsiveContainer>
+            {error !== false && loading === false && <NoDataError msg="Data is unavailable"/>}
+            {ready !== false && loading === false && <ResponsiveContainer>
                 <BarChart data={ready.data.result} margin={{top: 15, right: 20, bottom: 5, left: 0}}>
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip isAnimationActive={false} content={<CustomTooltip/>}/>
