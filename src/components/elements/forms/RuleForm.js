@@ -198,4 +198,4 @@ export default function RuleForm({onEnd, init}) {
     </TuiForm>
 }
 
-RuleForm.propTypes = {onSubmit: PropTypes.func, init: PropTypes.object}
+RuleForm.propTypes = {onEnd: PropTypes.func, init: PropTypes.object}

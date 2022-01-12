@@ -236,7 +236,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                                 source: {},
                                 sourceDisabled: true
                             }}
-                            onReady={() => {
+                            onEnd={() => {
                                 setOpenRuleForm(false);
                                 setRefresh(refresh + 1)
                             }}/>}
