@@ -538,7 +538,7 @@ export function FlowEditorPane(
 
 FlowEditorPane.propTypes = {
     id: PropTypes.string.isRequired,
-    flowMetaData: PropTypes.object.isRequired,
+    flowMetaData: PropTypes.object,
     onFlowLoad: PropTypes.func.isRequired,
     onEditorReady: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
