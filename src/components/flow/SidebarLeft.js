@@ -15,43 +15,35 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
     const [pluginsLoading, setPluginsLoading] = useState(false);
     const [refresh, setRefresh] = useState(Math.random)
 
-    const mounted = useRef(false);
-
     useEffect(() => {
-        mounted.current = true;
-        return () => {
-            mounted.current = false;
-        };
-    }, []);
+        let isSubscribed = true
 
-    useEffect(() => {
-        if (mounted) {
-            setPluginsLoading(true);
-            asyncRemote({
-                    url: "/flow/action/plugins?rnd=" + refresh + "&query=" + filterActions
+        setPluginsLoading(true);
+        asyncRemote({
+                url: "/flow/action/plugins?rnd=" + refresh + "&query=" + filterActions
+            }
+        ).then(
+            (response) => {
+                if (response && isSubscribed) {
+                    setPlugins(response.data);
                 }
-            ).then(
-                (response) => {
-                    if (response) {
-                        setPlugins(response.data);
+            }
+        ).catch(
+            (e) => {
+                if (e && isSubscribed) {
+                    if (e.length > 0) {
+                        showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
                     }
                 }
-            ).catch(
-                (e) => {
-                    if (e) {
-                        if(e.length > 0) {
-                            showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
-                        }
-                    }
+            }
+        ).finally(
+            () => {
+                if (isSubscribed) {
+                    setPluginsLoading(false);
                 }
-            ).finally(
-                () => {
-                    if (mounted) {
-                        setPluginsLoading(false);
-                    }
-                }
-            )
-        }
+            }
+        )
+        return () => isSubscribed = false
     }, [showAlert, refresh, filterActions])
 
     const onDragStart = (event, row) => {

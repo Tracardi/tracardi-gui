@@ -84,19 +84,19 @@ export default function ConsentForm({
                 data: payload
             })
 
-            if (response?.data) {
+            if (response?.data && mounted.current) {
                 if (onSaveComplete) {
                     onSaveComplete(payload)
                 }
             }
 
         } catch (e) {
-            if (e) {
+            if (e && mounted.current) {
                 setError(getError(e))
                 // todo error;
             }
         } finally {
-            if(mounted) {
+            if(mounted.current) {
                 setProcessing(false);
             }
         }

@@ -1,13 +1,13 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
 import {isObject} from "../../../misc/typeChecking";
 import {objectMap} from "../../../misc/mappers";
+import {asyncRemote} from "../../../remote_api/entrypoint";
 
 const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoaded, onSetValue, onChange, solo, disabled}) => {
 
@@ -21,41 +21,42 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
     const [progress, setProgress] = React.useState(false);
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
 
+    const mounted = useRef(false);
+
     useEffect(() => {
+        mounted.current = true;
+
+        return () => {
+            mounted.current = false;
+        }
         setValue(initValue)
     }, [initValue])
 
-    const handleDataLoaded = (result, onDataLoaded) => {
+    const handleDataLoaded = (response, onDataLoaded) => {
         if (!onDataLoaded) {
-            if(Array.isArray(result.data?.result)) {
-                return result.data?.result.map((key) => {
+            if(Array.isArray(response.data?.result)) {
+                return response.data?.result.map((key) => {
                     return {name: key, id: key}
                 });
-            } else if(isObject(result.data?.result)) {
-                return objectMap(result.data?.result, (key, value) => {
+            } else if(isObject(response.data?.result)) {
+                return objectMap(response.data?.result, (key, value) => {
                     return {name: value, id: key}
                 })
             }
             return []
         } else {
-            return onDataLoaded(result)
+            return onDataLoaded(response)
         }
     }
 
-    const handleLoading = () => {
-        setProgress(true);
-        request(
-            {url},
-            setProgress,
-            (e) => {
-                if (e) {
-                    showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
-                }
-            },
-            (result) => {
+    const handleLoading = async () => {
+        if(mounted.current) {
+            setProgress(true);
+            try {
                 setOpen(true);
-                if (result) {
-                    const options = handleDataLoaded(result, onDataLoaded)
+                const response = await asyncRemote({url})
+                if (response && mounted.current) {
+                    const options = handleDataLoaded(response, onDataLoaded)
 
                     if (typeof options !== "undefined" && options !== null) {
                         setOptions(options);
@@ -63,9 +64,17 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
                         setOptions([])
                     }
                 }
-            }
-        );
 
+            } catch(e) {
+                if(mounted.current && e) {
+                            showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
+                }
+            } finally {
+                 if(mounted.current) {
+                     setProgress(false);
+                 }
+            }
+        }
     }
 
     const handleValueSet = (value) => {

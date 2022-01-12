@@ -115,15 +115,15 @@ export default function RuleForm({onEnd, init}) {
                 data: payload
             })
 
-            if (response.data) {
+            if (response.data && mounted.current) {
                 onEnd(response.data)
             }
         } catch (e) {
-            if (e) {
+            if (e && mounted.current) {
                 setError(getError(e));
             }
         } finally {
-            if(mounted) {
+            if(mounted.current) {
                 setProcessing(false)
             }
         }

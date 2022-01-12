@@ -95,18 +95,18 @@ export default function EventValidationForm({
                 data: payload
             })
 
-            if (response?.data) {
+            if (response?.data && mounted.current) {
                 if (onSaveComplete) {
                     onSaveComplete(payload)
                 }
             }
 
         } catch (e) {
-            if (e) {
+            if (e && mounted.current) {
                 setError(getError(e))
             }
         } finally {
-            if (mounted) {
+            if (mounted.current) {
                 setProcessing(false);
             }
         }

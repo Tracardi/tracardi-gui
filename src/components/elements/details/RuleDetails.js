@@ -39,16 +39,16 @@ function RuleDetails({id, onDelete, onEdit}) {
                 method: "get"
             }
         ).then((response) => {
-            if (response?.data) {
+            if (response?.data && mounted.current) {
                 setData(response?.data)
             }
         }).catch((e) => {
-            if (e) {
+            if (e && mounted.current) {
 
             }
         }).finally(
             () => {
-                if (mounted) {
+                if (mounted.current) {
                     setLoading(false)
                 }
             }

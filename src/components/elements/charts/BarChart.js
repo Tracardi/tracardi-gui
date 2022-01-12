@@ -16,12 +16,14 @@ export default function BarChartElement({onLoadRequest, columns}) {
     const [ready, setReady] = React.useState(false);
 
     useEffect(() => {
+        let isSubscribed = true
         request(
             onLoadRequest,
-            (value)=> {setLoading(value);},
-            (value) => {setError(value);},
-            (value) => {setReady(value);}
+            (value)=> {if(isSubscribed) setLoading(value);},
+            (value) => {if(isSubscribed) setError(value);},
+            (value) => {if(isSubscribed) setReady(value);}
         );
+        return () => isSubscribed = false
     }, [onLoadRequest])
 
     const CustomTooltip = ({ active, payload, label }) => {

@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
 import FlowForm from "../elements/forms/FlowForm";
 import FlowDetails from "../elements/details/FlowDetails";
@@ -9,13 +9,16 @@ import {useHistory} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import {request} from "../../remote_api/uql_api_endpoint";
 import {useConfirm} from "material-ui-confirm";
+import {asyncRemote} from "../../remote_api/entrypoint";
 
 
 export default function Flows() {
 
-    const urlFunc= useCallback((query) => ('/flows/by_tag' + ((query) ? "?query=" + query : "")),[]);
-    const addFunc = useCallback((close) => <FlowForm projects={[]} onFlowSaveComplete={close}/>,[]);
-    const detailsFunc= useCallback((id, close) => <FlowDetails id={id} onDeleteComplete={close}/>, [])
+    const [refresh, setRefresh] = useState(0);
+
+    const urlFunc = useCallback((query) => ('/flows/by_tag' + ((query) ? "?query=" + query : "")), []);
+    const addFunc = useCallback((close) => <FlowForm projects={[]} onFlowSaveComplete={close}/>, []);
+    const detailsFunc = useCallback((id, close) => <FlowDetails id={id} onDeleteComplete={close}/>, [])
 
     const history = useHistory();
     const confirm = useConfirm();
@@ -24,34 +27,36 @@ export default function Flows() {
         history.push(urlPrefix("/setup/flow/edit/" + id))
     }
 
-    const onDelete = (id) => {
+    const mounted = useRef(false);
+
+    useEffect(() => {
+        mounted.current = true;
+
+        return () => {
+            mounted.current = false;
+        }
+    }, [])
+
+    const onDelete = async (id) => {
         confirm({title: "Do you want to delete this workflow?", description: "This action can not be undone."})
-            .then(() => {
-                    request({
+            .then(async () => {
+                    try {
+                        const response = await asyncRemote({
                             url: '/flow/' + id,
                             method: "delete"
-                        },
-                        () => {},
-                        () => {},
-                        (result) => {
-                            if (result !== false) {
-                                request({
-                                        url: '/flows/refresh'
-                                    },
-                                    ()=>{},
-                                    ()=>{},
-                                    ()=>{
+                        })
 
-                                    }
-                                )
-                            }
+                        if (response && mounted.current) {
+                            await asyncRemote({
+                                url: '/flows/refresh'
+                            })
+                            setRefresh(Math.random())
                         }
-                    );
+                    } catch (e) {
 
+                    }
                 }
             )
-            .catch(() => {
-            })
     }
 
     const flows = (data, onClick) => {
@@ -61,14 +66,14 @@ export default function Flows() {
                 <div>
                     {plugs.map((row, subIndex) => {
                         return <AdvancedSquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<IoGitNetworkSharp size={45}/>}
-                                           status={row?.enabled}
-                                           name={row?.name}
-                                           description={row?.description}
-                                           onClick={() => onClick(row?.id)}
-                                           onEdit={handleFlowEdit}
-                                           onDelete={onDelete}
+                                                   id={row?.id}
+                                                   icon={<IoGitNetworkSharp size={45}/>}
+                                                   status={row?.enabled}
+                                                   name={row?.name}
+                                                   description={row?.description}
+                                                   onClick={() => onClick(row?.id)}
+                                                   onEdit={handleFlowEdit}
+                                                   onDelete={onDelete}
                         />
                     })}
                 </div>
@@ -89,5 +94,6 @@ export default function Flows() {
         drawerAddTitle="New workflow"
         drawerAddWidth={600}
         addFunc={addFunc}
+        refresh={refresh}
     />
 }

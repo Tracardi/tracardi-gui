@@ -38,16 +38,6 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
 
     const confirm = useConfirm();
 
-    const mounted = useRef(false);
-
-    useEffect(() => {
-        mounted.current = true;
-
-        return () => {
-            mounted.current = false;
-        };
-    }, []);
-
     const handleDraftSave = useCallback((progress, deploy = false) => {
 
         if (reactFlowInstance) {

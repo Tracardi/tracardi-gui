@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
 import './CardBrowser.css';
-import {request} from "../../../remote_api/uql_api_endpoint";
 import CenteredCircularProgress from "../../elements/progress/CenteredCircularProgress";
 import FormDrawer from "../../elements/drawers/FormDrawer";
 import FilterAddForm from "../../elements/forms/inputs/FilterAddForm";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import ErrorsBox from "../../errors/ErrorsBox";
+import {asyncRemote} from "../../../remote_api/entrypoint";
 
 const CardBrowser = ({
                          label,
@@ -16,11 +16,14 @@ const CardBrowser = ({
                          buttonIcon,
                          drawerDetailsTitle = "Details",
                          drawerDetailsWidth = 600,
-                         detailsFunc = () => {},
+                         detailsFunc = () => {
+                         },
                          drawerAddWidth = 600,
                          drawerAddTitle = "New",
-                         addFunc = () => {},
-                         className
+                         addFunc = () => {
+                         },
+                         className,
+                         refresh: forceRefresh
                      }) => {
 
     const [cards, setCards] = useState(null);
@@ -28,30 +31,36 @@ const CardBrowser = ({
     const [query, setQuery] = useState(null);
     const [loading, setLoading] = useState(false);
     const [displayAddForm, setDisplayAddForm] = useState(false);
-    const [refresh, setRefresh] = useState(Math.random);
+    const [refresh, setRefresh] = useState(forceRefresh || 0);
     const [errors, setErrors] = useState(null);
 
     useEffect(() => {
-        setCards(null);
-        setLoading(true);
-        const url = urlFunc(query)
-
-        request({
-                url
-            },
-            setLoading,
-            (e) => {
-                if (e) {
-                    setErrors(e)
-                }
-            },
-            (response) => {
-                if (response) {
-                    setCards(response.data);
-                }
+            setCards(null);
+            const url = urlFunc(query)
+            setLoading(true);
+            let isSubscribed = true
+            const call = asyncRemote({url})
+                .then((response) => {
+                    if (response && isSubscribed) {
+                        setCards(response.data);
+                    }
+                })
+                .catch((e) => {
+                    if (e && isSubscribed) {
+                        setErrors(e)
+                    }
+                })
+                .finally(() => {
+                        if (isSubscribed) {
+                            setLoading(false);
+                        }
+                    }
+                )
+            return () => {
+                isSubscribed = false
             }
-        )
-    }, [query, refresh, urlFunc])
+        }
+        , [query, refresh, urlFunc, forceRefresh])
 
     const onClick = (id) => {
         setCardId(id);
@@ -59,12 +68,12 @@ const CardBrowser = ({
 
     const closeEdit = (data) => {
         setDisplayAddForm(false);
-        setRefresh(Math.random());
+        setRefresh(refresh + 1);
     }
 
     const closeDetails = () => {
         setCardId(null);
-        setRefresh(Math.random());
+        setRefresh(refresh + 1);
     }
 
     const onFilter = (query) => {
@@ -90,10 +99,10 @@ const CardBrowser = ({
                 <TuiFormGroupHeader header={label} description={description}/>
                 <TuiFormGroupContent>
                     <TuiFormGroupField>
-                        <section className={className} style={{display: "flex",flexWrap: "wrap", width: "100%"}}>
+                        <section className={className} style={{display: "flex", flexWrap: "wrap", width: "100%"}}>
                             {loading && <CenteredCircularProgress/>}
                             {cards && cardFunc(cards, onClick)}
-                            {errors && <ErrorsBox errorList={errors}/> }
+                            {errors && <ErrorsBox errorList={errors}/>}
                         </section>
                     </TuiFormGroupField>
                 </TuiFormGroupContent>

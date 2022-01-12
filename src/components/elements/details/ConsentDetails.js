@@ -37,11 +37,11 @@ export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
                 method: "get"
             })
                 .then((result) => {
-                    setData(result.data);
+                    if(mounted.current) setData(result.data);
                 })
                 .catch()
                 .finally(
-                    () => {if(mounted) setLoading(false)}
+                    () => {if(mounted.current) setLoading(false)}
                 )
         },
         [id])

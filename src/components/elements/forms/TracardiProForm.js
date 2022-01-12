@@ -38,18 +38,20 @@ export default function TracardiProForm({value, onSubmit}) {
                 }
             })
 
-            if(response.status === 200) {
+            if(response.status === 200 && mounted.current) {
                 if (onSubmit) {
                     onSubmit(response.data)
                 }
             }
 
         } catch (e) {
-            const errors = getError(e);
-            setFieldErrors(covertErrorIntoObject(errors));
-            setError(errors);
+            if(mounted.current) {
+                const errors = getError(e);
+                setFieldErrors(covertErrorIntoObject(errors));
+                setError(errors);
+            }
         } finally {
-            if(mounted) {
+            if(mounted.current) {
                 setLoading(false);
             }
         }
