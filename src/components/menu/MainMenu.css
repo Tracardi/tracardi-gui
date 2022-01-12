@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     color: white;
-    background: #004A98;
+    background: #1976d2;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -72,7 +72,7 @@
 .MainMenu .MenuRow {
     display: flex;
     flex-wrap: nowrap;
-    color: rgba(225,225,225, 0.8);
+    color: rgba(225,225,225, 0.95);
     align-items: center;
     flex-direction: row;
     padding: 6px 7px;
