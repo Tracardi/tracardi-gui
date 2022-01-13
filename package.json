@@ -39,7 +39,7 @@
     "axios": "^0.21.2",
     "dot-object": "^2.1.4",
     "history": "^4.10.1",
-    "material-ui-confirm": "^2.1.2",
+    "material-ui-confirm": "^3.0.3",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
     "raw-loader": "^4.0.2",

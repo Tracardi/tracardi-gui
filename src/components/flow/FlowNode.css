@@ -116,6 +116,7 @@ DIV.NodePadding {
     padding: 7px;
     width: inherit;
     display: flex;
+    align-items: center;
 }
 
 DIV.NodePro {
@@ -143,6 +144,7 @@ DIV.NodeLabel {
     align-items: center;
     overflow: hidden;
     flex-direction: row;
+    font-size: 14px;
 }
 
 DIV.NodeLabel > P {
