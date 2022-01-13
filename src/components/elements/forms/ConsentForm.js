@@ -1,15 +1,15 @@
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import React, {useEffect, useRef, useState} from "react";
 import Button from "./Button";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import {v4 as uuid4} from 'uuid';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import PropTypes from 'prop-types';
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import TuiTagger from "../tui/TuiTagger";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function ConsentForm({
                                         id,

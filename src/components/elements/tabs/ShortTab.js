@@ -1,5 +1,5 @@
-import withStyles from "@material-ui/core/styles/withStyles";
-import Tab from "@material-ui/core/Tab";
+import withStyles from '@mui/styles/withStyles';
+import Tab from "@mui/material/Tab";
 import React from "react";
 
 const ShortTab = withStyles((theme) => ({

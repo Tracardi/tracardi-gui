@@ -1,12 +1,12 @@
 import React, {useCallback, useState} from "react";
 import {useDispatch} from "react-redux";
 import {resetPage} from '../../../redux/reducers/pagingSlice'
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import Button from "./Button";
 import "./ObjectFiltering.css";
 import {AiOutlineFilter} from "react-icons/ai";
 import DataTimePicker from "../datepickers/DateTimePicker";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import PropTypes from 'prop-types';
 
 export default function ObjectFiltering({type, initDate, onFilterClick, initRefresh, onRefreshChange}) {

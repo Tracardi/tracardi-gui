@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import CircularProgress from '@mui/material/CircularProgress';
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
@@ -103,7 +103,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
                 setOpen(false);
                 setOptions([]);
             }}
-            getOptionSelected={(option, value) => (option.id === value.id)}
+            isOptionEqualToValue={(option, value) => (option.id === value.id)}
             getOptionLabel={(option) => {
                 return option?.name || option?.id || ""
             }}

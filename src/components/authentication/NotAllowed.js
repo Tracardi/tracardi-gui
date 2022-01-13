@@ -1,6 +1,6 @@
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 import React from "react";
-import Link from "@material-ui/core/Link";
+import Link from "@mui/material/Link";
 import urlPrefix from "../../misc/UrlPrefix";
 
 export default function NotAllowed() {

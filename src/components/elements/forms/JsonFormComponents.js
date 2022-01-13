@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import TextField from "@material-ui/core/TextField";
-import Switch from "@material-ui/core/Switch";
+import TextField from "@mui/material/TextField";
+import Switch from "@mui/material/Switch";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import JsonEditor from "../editors/JsonEditor";
 import HtmlEditor from "../editors/HtmlEditor";
 import {objectMap} from "../../../misc/mappers";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import ListOfDottedInputs from "./ListOfDottedInputs";
 import DottedPathInput from "./inputs/DottedPathInput";
 import KeyValueForm from "./KeyValueForm";
@@ -14,7 +14,7 @@ import ErrorLine from "../../errors/ErrorLine";
 import SqlEditor from "../editors/SqlEditor";
 import TuiSelectResource from "../tui/TuiSelectResource";
 import {isEmptyStringOrNull} from "../../../misc/typeChecking";
-import Chip from "@material-ui/core/Chip";
+import Chip from "@mui/material/Chip";
 
 export function TextInput({value, label, errorMessage, onChange}) {
 

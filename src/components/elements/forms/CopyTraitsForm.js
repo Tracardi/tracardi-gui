@@ -1,9 +1,9 @@
-import {MenuItem} from "@material-ui/core";
+import {MenuItem} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import "./CopyTraitsForm.css";
 import DottedPathInput from "./inputs/DottedPathInput";
 import {AiOutlinePlusCircle} from "react-icons/ai";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import {VscTrash} from "react-icons/vsc";
 import {objectMap} from "../../../misc/mappers";
 

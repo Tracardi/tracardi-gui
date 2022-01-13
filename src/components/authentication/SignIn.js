@@ -1,21 +1,22 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {Redirect, useLocation} from "react-router-dom";
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import {makeStyles, ThemeProvider} from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
+import makeStyles from '@mui/styles/makeStyles';
+import Container from '@mui/material/Container';
 import {setRoles, setToken} from "./login";
 import {loginUser} from "../../remote_api/user";
 import {signInTheme} from "../../themes";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import {connect} from "react-redux";
 import urlPrefix from "../../misc/UrlPrefix";
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@mui/material/Autocomplete';
 import version from '../../misc/version';
 import storageValue from "../../misc/localStorageDriver";
 import {asyncRemote} from "../../remote_api/entrypoint";
@@ -150,98 +151,100 @@ const SignInForm = ({showAlert}) => {
     }
 
     return (
-        <ThemeProvider theme={signInTheme}>
-            <Container component="main" maxWidth="xs">
-                <div className={classes.paper}>
-                    <Avatar className={classes.avatar}>
-                        <LockOutlinedIcon/>
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={signInTheme}>
+                <Container component="main" maxWidth="xs">
+                    <div className={classes.paper}>
+                        <Avatar className={classes.avatar}>
+                            <LockOutlinedIcon/>
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
 
-                    {!loading && errorMessage ? (
-                        <p style={{
-                            backgroundColor: "#c2185b",
-                            padding: "3px 6px",
-                            borderRadius: 4,
-                            color: "white",
-                            marginTop: "10px",
-                            fontSize: "90%"
+                        {!loading && errorMessage ? (
+                            <p style={{
+                                backgroundColor: "#c2185b",
+                                padding: "3px 6px",
+                                borderRadius: 4,
+                                color: "white",
+                                marginTop: "10px",
+                                fontSize: "90%"
 
-                        }}>{errorMessage}</p>
-                    ) : null}
+                            }}>{errorMessage}</p>
+                        ) : null}
 
-                    <form onSubmitCapture={onSubmit} className={classes.form} noValidate>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            size="small"
-                            autoFocus
-                            onChange={handleEmailChange}/>
-                        <TextField
-                            style={{color: "black"}}
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            size="small"
-                            autoComplete="current-password"
-                            onChange={handlePassChange}
-                        />
-                        <div
-                            ref={nodeRef}
-                            style={{
-                                width: '100%',
-                            }}
-                        >
-                            <Autocomplete
-                                options={
-                                    new storageValue('tracardi-api-urls').read() || []
-                                }
-                                value={endpoint}
-                                onChange={(e, v) => handleEndpoint(v)}
-                                freeSolo
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        onChange={({target}) => handleEndpoint(target.value)}
-                                        label='API Endpoint URL'
-                                        margin='normal'
-                                        size="small"
-                                        variant='outlined'
-                                        placeholder="http://localhost:8686"
-                                    />
-                                )}
+                        <form onSubmitCapture={onSubmit} className={classes.form} noValidate>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                size="small"
+                                autoFocus
+                                onChange={handleEmailChange}/>
+                            <TextField
+                                style={{color: "black"}}
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                size="small"
+                                autoComplete="current-password"
+                                onChange={handlePassChange}
                             />
-                        </div>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
+                            <div
+                                ref={nodeRef}
+                                style={{
+                                    width: '100%',
+                                }}
+                            >
+                                <Autocomplete
+                                    options={
+                                        new storageValue('tracardi-api-urls').read() || []
+                                    }
+                                    value={endpoint}
+                                    onChange={(e, v) => handleEndpoint(v)}
+                                    freeSolo
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            onChange={({target}) => handleEndpoint(target.value)}
+                                            label='API Endpoint URL'
+                                            margin='normal'
+                                            size="small"
+                                            variant='outlined'
+                                            placeholder="http://localhost:8686"
+                                        />
+                                    )}
+                                />
+                            </div>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
 
-                        >
-                            Sign In
-                        </Button>
-                    </form>
-                    <Box mt={8}>
-                        <Copyright/>
-                    </Box>
-                </div>
-            </Container>
-        </ThemeProvider>
+                            >
+                                Sign In
+                            </Button>
+                        </form>
+                        <Box mt={8}>
+                            <Copyright/>
+                        </Box>
+                    </div>
+                </Container>
+            </ThemeProvider>
+        </StyledEngineProvider>
     );
 }
 

@@ -1,4 +1,4 @@
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import React, {useState} from "react";
 import Button from "../Button";
 import {VscLock, VscUnlock} from "react-icons/vsc";

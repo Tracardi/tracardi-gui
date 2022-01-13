@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {isString} from "../../../../misc/typeChecking";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import "./DottedInputPath.css";
-import MenuItem from "@material-ui/core/MenuItem";
-import Popover from "@material-ui/core/Popover";
+import MenuItem from "@mui/material/MenuItem";
+import Popover from "@mui/material/Popover";
 import {IoTextOutline, IoAt} from "react-icons/io5";
 
 

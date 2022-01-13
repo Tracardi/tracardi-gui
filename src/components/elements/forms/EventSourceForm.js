@@ -5,13 +5,13 @@ import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import DisabledInput from "./inputs/DisabledInput";
 import TuiSelectEventSourceType from "../tui/TuiSelectEventSourceType";
-import TextField from "@material-ui/core/TextField";
-import Switch from "@material-ui/core/Switch";
+import TextField from "@mui/material/TextField";
+import Switch from "@mui/material/Switch";
 import TuiTagger from "../tui/TuiTagger";
 import Button from "./Button";
 import PropTypes from "prop-types";
 import ErrorsBox from "../../errors/ErrorsBox";
-import Chip from "@material-ui/core/Chip";
+import Chip from "@mui/material/Chip";
 
 const EventSourceForm = ({value, style, onClose}) => {
 

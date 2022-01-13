@@ -1,8 +1,8 @@
 import React, {useEffect, useRef} from "react";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import "./ObjectList.css";
-import Drawer from "@material-ui/core/Drawer";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import Drawer from "@mui/material/Drawer";
+import makeStyles from '@mui/styles/makeStyles';
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import AutoLoadObjectList from "./AutoLoadObjectList";
 

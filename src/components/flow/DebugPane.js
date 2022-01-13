@@ -39,20 +39,30 @@ function DebugPane({profilingData, logs, onDetails, onDebug}) {
         return ""
     }
 
-    return <div className="DebugPane">
-        <div className="ResizeHorizontalHandler"></div>
-        <div className="WorkArea">
-            <div className="Icons">
-                <IconButton label="Debug" onClick={handleDisplayDebug} selected={displayDebug}>
-                    <VscDebugAlt size={24}/>
-                </IconButton>
-                <IconButton label="Logs" onClick={handleDisplayLog} selected={displayLog}>
-                    <VscRunErrors size={24}/>
-                </IconButton>
+    return (
+        <div className="DebugPane">
+            <div className="ResizeHorizontalHandler"></div>
+            <div className="WorkArea">
+                <div className="Icons">
+                    <IconButton
+                        label="Debug"
+                        onClick={handleDisplayDebug}
+                        selected={displayDebug}
+                        size="large">
+                        <VscDebugAlt size={24}/>
+                    </IconButton>
+                    <IconButton
+                        label="Logs"
+                        onClick={handleDisplayLog}
+                        selected={displayLog}
+                        size="large">
+                        <VscRunErrors size={24}/>
+                    </IconButton>
+                </div>
+                <DebugToggler/>
             </div>
-            <DebugToggler/>
         </div>
-    </div>
+    );
 }
 
 export const MemoDebugPane = React.memo(DebugPane,

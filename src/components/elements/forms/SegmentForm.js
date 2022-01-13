@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import Button from "./Button";
-import TextField from "@material-ui/core/TextField";
-import Switch from "@material-ui/core/Switch";
+import TextField from "@mui/material/TextField";
+import Switch from "@mui/material/Switch";
 import {v4 as uuid4} from "uuid";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import {asyncRemote} from "../../../remote_api/entrypoint";
@@ -72,7 +72,7 @@ export default function SegmentForm({onSubmit, init}) {
             return;
         }
 
-        if (!await onTqlValidate()) {
+        if (!(await onTqlValidate())) {
             return;
         }
 

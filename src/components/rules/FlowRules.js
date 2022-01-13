@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import RuleRow from "../elements/lists/rows/RuleRow";
 import {asyncRemote} from "../../remote_api/entrypoint";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function FlowRules({flowName, id, refresh}) {
 

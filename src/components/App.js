@@ -4,8 +4,8 @@ import {
     Switch,
     Route
 } from "react-router-dom";
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import AppBox from "./AppBox";
 import {connect, useDispatch} from "react-redux";
 import {hideAlert} from "../redux/reducers/alertSlice";
@@ -14,7 +14,7 @@ import SignIn from "./authentication/SignIn";
 import PrivateRoute from "./authentication/PrivateRoute";
 import "./App.css";
 import urlPrefix from "../misc/UrlPrefix";
-import AlertTitle from "@material-ui/lab/AlertTitle";
+import AlertTitle from '@mui/material/AlertTitle';
 import FormDrawer from "./elements/drawers/FormDrawer";
 import {close} from "../redux/reducers/newResource";
 import ResourceForm from "./elements/forms/ResourceForm";

@@ -2,7 +2,7 @@ import {ObjectInspector} from "react-inspector";
 import React, {useEffect, useState} from "react";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import "../../flow/InfoTable.css";
-import Switch from "@material-ui/core/Switch";
+import Switch from "@mui/material/Switch";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import {BsXSquare, BsCheckCircle} from "react-icons/bs";
 import PropTypes from 'prop-types';

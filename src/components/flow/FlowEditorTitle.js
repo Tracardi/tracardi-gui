@@ -18,7 +18,7 @@ import {
     TuiFormGroupHeader
 } from "../elements/tui/TuiForm";
 import RuleForm from "../elements/forms/RuleForm";
-import Drawer from "@material-ui/core/Drawer";
+import Drawer from "@mui/material/Drawer";
 import {FaUncharted} from "react-icons/fa";
 import {BiReset} from "@react-icons/all-files/bi/BiReset";
 import {asyncRemote} from "../../remote_api/entrypoint";

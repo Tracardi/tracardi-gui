@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader } from "../tui/TuiForm";
 import TuiFormError from "../tui/TuiFormError";
 
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
 import BoolInput from "./BoolInput";
 
 import { request } from "../../../remote_api/uql_api_endpoint";

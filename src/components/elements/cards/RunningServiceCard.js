@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import "./ServiceCard.css";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
-import Chip from "@material-ui/core/Chip";
+import Chip from "@mui/material/Chip";
 import {BsGear} from "react-icons/bs";
 import IconButton from "../misc/IconButton";
 import {asyncRemote} from "../../../remote_api/entrypoint";
@@ -35,30 +35,36 @@ const RunningServiceCard = ({service, onEditClick, onDelete}) => {
             }).catch(()=>{})
     }
 
-    return <div className="ServiceCard" >
-        <div className="Title">
-            <FlowNodeIcons icon={service.icon} size={30}/>
-            <span style={{marginLeft: 10}}>{service?.name}</span>
-        </div>
-        <div className="Desc">
-            <div style={{marginBottom: 10}}>
-                {service?.description}
+    return (
+        <div className="ServiceCard" >
+            <div className="Title">
+                <FlowNodeIcons icon={service.icon} size={30}/>
+                <span style={{marginLeft: 10}}>{service?.name}</span>
             </div>
-            <div style={{lineHeight: 2}}>
-                <Chip size="small" label={service.prefix} style={{marginRight: 5}}></Chip>
-                {service.tags.map((tag, key) => <Chip size="small" key={key} label={tag} style={{marginRight: 5}}/>)}
-            </div>
-            <div style={{display: "flex", justifyContent: "flex-end"}}>
-                <IconButton label="Stop" onClick={() => handleOnStopClick(service)} progress={stopProgress}>
-                    <BsStopCircle size={20}/>
-                </IconButton>
-                <IconButton label="Edit" onClick={() => onEditClick(service)}>
-                    <BsGear size={20}/>
-                </IconButton>
-            </div>
+            <div className="Desc">
+                <div style={{marginBottom: 10}}>
+                    {service?.description}
+                </div>
+                <div style={{lineHeight: 2}}>
+                    <Chip size="small" label={service.prefix} style={{marginRight: 5}}></Chip>
+                    {service.tags.map((tag, key) => <Chip size="small" key={key} label={tag} style={{marginRight: 5}}/>)}
+                </div>
+                <div style={{display: "flex", justifyContent: "flex-end"}}>
+                    <IconButton
+                        label="Stop"
+                        onClick={() => handleOnStopClick(service)}
+                        progress={stopProgress}
+                        size="large">
+                        <BsStopCircle size={20}/>
+                    </IconButton>
+                    <IconButton label="Edit" onClick={() => onEditClick(service)} size="large">
+                        <BsGear size={20}/>
+                    </IconButton>
+                </div>
 
+            </div>
         </div>
-    </div>
+    );
 }
 
 export default RunningServiceCard;

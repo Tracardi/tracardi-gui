@@ -5,10 +5,10 @@ import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
 import ConfigEditor from "../../flow/editors/ConfigEditor";
 import {getError} from "../../../remote_api/entrypoint";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import NotImplemented from "../misc/NotImplemented";
-import Switch from "@material-ui/core/Switch";
+import Switch from "@mui/material/Switch";
 
 export function NodeInitJsonForm({pluginId, formSchema, init, manual, onSubmit}) {
 

@@ -1,4 +1,4 @@
-import Chip from "@material-ui/core/Chip";
+import Chip from "@mui/material/Chip";
 import React from "react";
 import {VscError} from "react-icons/vsc";
 import {BsCheckCircle} from "react-icons/bs";

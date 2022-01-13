@@ -6,7 +6,7 @@ import {
     Select,
     Switch,
     TextField,
-  } from '@material-ui/core';
+  } from '@mui/material';
   import Button from '../elements/forms/Button';
   import {
     TuiForm, TuiFormGroup,

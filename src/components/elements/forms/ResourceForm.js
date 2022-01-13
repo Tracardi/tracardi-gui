@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Button from "./Button";
-import TextField from "@material-ui/core/TextField";
-import Switch from "@material-ui/core/Switch";
+import TextField from "@mui/material/TextField";
+import Switch from "@mui/material/Switch";
 import {v4 as uuid4} from 'uuid';
 import JsonEditor from "../editors/JsonEditor";
 import {request} from "../../../remote_api/uql_api_endpoint";
@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import {TuiSelectResourceTypeMemo} from "../tui/TuiSelectResourceType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import DisabledInput from "./inputs/DisabledInput";
-import Chip from "@material-ui/core/Chip";
+import Chip from "@mui/material/Chip";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import TuiTagger from "../tui/TuiTagger";
 

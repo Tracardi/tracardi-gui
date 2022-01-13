@@ -13,7 +13,7 @@ import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import EventSourceForm from "../forms/EventSourceForm";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));

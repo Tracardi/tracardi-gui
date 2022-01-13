@@ -1,8 +1,8 @@
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import React, {useState} from "react";
 import "./ModuleRegisterForm.css";
 import {request} from "../../remote_api/uql_api_endpoint";
-import Checkbox from "@material-ui/core/Checkbox";
+import Checkbox from "@mui/material/Checkbox";
 
 export default function ModuleRegisterForm({onReady}) {
 

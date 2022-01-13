@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import "./DateTimePicker.css";
-import Popover from "@material-ui/core/Popover";
-import {makeStyles} from "@material-ui/core";
+import Popover from "@mui/material/Popover";
+import makeStyles from '@mui/styles/makeStyles';
 import Button from "../forms/Button";
 import CalendarPicker from "./CalendarPicker";
 import RelativePicker from "./RelativePicker";

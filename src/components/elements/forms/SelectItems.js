@@ -1,8 +1,8 @@
-import {makeStyles} from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
+import makeStyles from '@mui/styles/makeStyles';
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 import React from "react";
-import Select from "@material-ui/core/Select";
+import Select from "@mui/material/Select";
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({

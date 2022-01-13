@@ -1,6 +1,6 @@
-import LinearProgress from "@material-ui/core/LinearProgress";
+import LinearProgress from "@mui/material/LinearProgress";
 import React from "react";
-import makeStyles from "@material-ui/core/styles/makeStyles";
+import makeStyles from '@mui/styles/makeStyles';
 import {connect} from "react-redux";
 
 function TopProgress({progressBar}) {

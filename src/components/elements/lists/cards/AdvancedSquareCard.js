@@ -17,10 +17,16 @@ const AdvancedSquareCard = ({id, status, name, description, onClick, icon, onEdi
                 <div className="desc">{description}</div>
             </div>
             <div className="Buttons">
-                <IconButton label="Edit Workflow" onClick={(e) => {onEdit(id); e.preventDefault(); e.stopPropagation();}}>
+                <IconButton
+                    label="Edit Workflow"
+                    onClick={(e) => {onEdit(id); e.preventDefault(); e.stopPropagation();}}
+                    size="large">
                     <BiMessageSquareEdit size={20}/>
                 </IconButton>
-                <IconButton label="Delete Workflow" onClick={(e) => {onDelete(id); e.preventDefault(); e.stopPropagation();}}>
+                <IconButton
+                    label="Delete Workflow"
+                    onClick={(e) => {onDelete(id); e.preventDefault(); e.stopPropagation();}}
+                    size="large">
                     <BsTrash size={20}/>
                 </IconButton>
             </div>
