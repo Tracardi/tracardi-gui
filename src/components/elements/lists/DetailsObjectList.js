@@ -53,8 +53,10 @@ function DetailsObjectList({
         if (typeof id === "undefined") {
             console.error("Undefined id in onDetails")
         } else if (onLoadDetails) {
-            setLoadingDetails(true);
-            openDetails();
+            if (mounted.current) {
+                setLoadingDetails(true);
+                openDetails();
+            }
             request(onLoadDetails(id),
                 (state) => {
                     if (mounted.current) setLoadingDetails(state)

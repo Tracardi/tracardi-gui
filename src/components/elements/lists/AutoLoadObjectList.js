@@ -39,6 +39,7 @@ const AutoLoadObjectList = ({
     const loadData = useCallback((fresh=false, progress=false) => {
         if (mounted.current===true && progress) {
             setLoading(true);
+            setAllowLoadingSpinner(false);
         }
         const endpoint = {...onLoadRequest, url: `${onLoadRequest.url}/page/${page}`};
         request(
@@ -64,12 +65,15 @@ const AutoLoadObjectList = ({
                 }
             }
         );
-    }, [page]);
+    }, [page, onLoadRequest]);
 
     useEffect(() => {
         let timer;
         if (refreshInterval > 0) {
             setPage(0);
+            if (timer) {
+                clearInterval(timer);
+            }
             timer = setInterval(() => {loadData(true, false)}, refreshInterval * 1000);
         } else {
             if (timer) {
@@ -86,7 +90,6 @@ const AutoLoadObjectList = ({
 
     useEffect(() => {
         loadData(false, allowLoadingSpinner);
-        setAllowLoadingSpinner(false);
     }, [loadData]);
 
     const widthStyle =

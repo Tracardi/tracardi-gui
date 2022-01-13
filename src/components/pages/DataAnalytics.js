@@ -1,6 +1,4 @@
-import React, {useEffect, useState} from "react";
-import {useDispatch} from "react-redux";
-import {resetPage, setRefreshOn, setRefreshOff} from "../../redux/reducers/pagingSlice";
+import React, {useState} from "react";
 import "./DataAnalytics.css";
 import ObjectFiltering from "../elements/forms/ObjectFiltering";
 import moment from "moment";
@@ -21,8 +19,6 @@ export default function DataAnalytics({
                                           filterFields,
                                           displayChart = true
                                       }) {
-
-    const dispatch = useDispatch();
 
     const getQuery = (type, label) => {
         const key = type + label;
@@ -102,22 +98,6 @@ export default function DataAnalytics({
             limit: 30,
         })
     );
-    // useEffect(() => {
-    //     let timer;
-    //     dispatch(resetPage());
-    //     if (refresh > 0) {
-    //         dispatch(setRefreshOn());
-    //         timer = setInterval(() => setQuery(encodeParams(query)), refresh * 1000);
-    //     } else {
-    //         dispatch(setRefreshOff());
-    //     }
-    //
-    //     return () => {
-    //         if (timer) {
-    //             clearInterval(timer);
-    //         }
-    //     };
-    // }, [refresh, query, dispatch]);
 
     const onFilter = ({to, from, where}) => {
         setQuery(
@@ -175,6 +155,7 @@ export default function DataAnalytics({
                   <BarChartElement
                         onLoadRequest={onLoadHistogramRequest(query)}
                         columns={[{label: "count", color: "#039be5", stackId: "count"}]}
+                        refreshInterval={refresh}
                     />
                 </DataBrowsingList>
             </div>

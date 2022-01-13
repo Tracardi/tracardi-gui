@@ -9,7 +9,7 @@ import NoDataError from "../../errors/NoDataError";
 
 // todo onLoadRequest is a misleading name - it is an object with information on endpoint to call
 // todo this needs to be refactored.
-export default function BarChartElement({onLoadRequest, columns}) {
+export default function BarChartElement({onLoadRequest: endpoint, columns, refreshInterval}) {
 
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
@@ -24,13 +24,42 @@ export default function BarChartElement({onLoadRequest, columns}) {
             setLoading(true);
         }
         request(
-            onLoadRequest,
+            endpoint,
             (value)=> {if(isSubscribed===true && allowLoadingSpinner) setLoading(value);},
             (value) => {if(isSubscribed===true) setError(value);},
             (value) => {if(isSubscribed===true) setReady(value); setAllowLoadingSpinner(false);}
         );
         return () => isSubscribed = false
-    }, [onLoadRequest, allowLoadingSpinner])
+    }, [endpoint])
+
+    useEffect(() => {
+        let timer;
+        let isSubscribed = true
+        if (refreshInterval > 0) {
+            if (timer) {
+                clearInterval(timer);
+            }
+            timer = setInterval(() => {
+                request(
+                    endpoint,
+                    ()=> {},
+                    (value) => {if(isSubscribed===true) setError(value);},
+                    (value) => {if(isSubscribed===true) setReady(value);}
+                );
+            }, refreshInterval * 1000);
+        } else {
+            if (timer) {
+                clearInterval(timer);
+            }
+        }
+
+        return () => {
+            if (timer) {
+                clearInterval(timer);
+                isSubscribed = false;
+            }
+        };
+    }, [refreshInterval, endpoint]);
 
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
