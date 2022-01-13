@@ -15,7 +15,7 @@
 .Profiling {
     position: relative;
     display: grid;
-    grid-template-rows: 49px 1fr;
+    grid-template-rows: 45px 1fr;
     border-right: solid 1px #ccc;
     height: inherit;
     flex: 1;

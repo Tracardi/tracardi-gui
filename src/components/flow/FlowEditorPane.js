@@ -236,7 +236,7 @@ export function FlowEditorPane(
     const handleDisplayDebugPane = (flag) => {
         if (flag === true) {
             setDisplayDebugPane(true);
-            setDisplayDebugHeight({gridTemplateRows: "calc(100% - 400px) 400px"});
+            setDisplayDebugHeight({gridTemplateRows: "calc(100% - 310px) 310px"});
         } else {
             setDisplayDebugPane(false);
             setDisplayDebugHeight({gridTemplateRows: "calc(100% - 33px) 33px"})
