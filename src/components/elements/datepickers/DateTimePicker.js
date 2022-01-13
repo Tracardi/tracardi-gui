@@ -6,7 +6,7 @@ import {makeStyles} from "@material-ui/core";
 import Button from "../forms/Button";
 import CalendarPicker from "./CalendarPicker";
 import RelativePicker from "./RelativePicker";
-import {IoCalendarOutline} from "@react-icons/all-files/io5/IoCalendarOutline";
+import {IoCalendarOutline} from "react-icons/io5";
 import NowDateTime from "./NowDateTime";
 import PropTypes from "prop-types";
 

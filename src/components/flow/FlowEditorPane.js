@@ -407,7 +407,7 @@ export function FlowEditorPane(
         }}>not saved</span>
     }
 
-    const DeployedTag = () => {
+    const DraftTag = () => {
         return <span style={{
             color: "white",
             fontSize: 12,
@@ -415,8 +415,8 @@ export function FlowEditorPane(
             padding:"3px 9px",
             borderRadius: 15,
             marginLeft: 5,
-            backgroundColor: "green"
-        }}>deployed</span>
+            backgroundColor: "#ef6c00"
+        }}>This is draft</span>
     }
 
     const StatusTag = () => {
@@ -427,7 +427,7 @@ export function FlowEditorPane(
             display: "flex",
         }}>
             {modified && <ModifiedTag/>}
-            {deployed && <DeployedTag/>}
+            {!deployed && <DraftTag/>}
         </div>
     }
 

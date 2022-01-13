@@ -2,9 +2,9 @@ import {MenuItem} from "@material-ui/core";
 import React, {useEffect, useState} from "react";
 import "./CopyTraitsForm.css";
 import DottedPathInput from "./inputs/DottedPathInput";
-import {AiOutlinePlusCircle} from "@react-icons/all-files/ai/AiOutlinePlusCircle";
+import {AiOutlinePlusCircle} from "react-icons/ai";
 import TextField from "@material-ui/core/TextField";
-import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
+import {VscTrash} from "react-icons/vsc";
 import {objectMap} from "../../../misc/mappers";
 
 const CopyTraitsForm = ({

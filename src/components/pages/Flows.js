@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
+import {IoGitNetworkSharp} from "react-icons/io5";
 import FlowForm from "../elements/forms/FlowForm";
 import FlowDetails from "../elements/details/FlowDetails";
 import "../elements/lists/CardBrowser.css";

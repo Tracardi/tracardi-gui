@@ -4,8 +4,7 @@ import TextField from "@material-ui/core/TextField";
 import "./DottedInputPath.css";
 import MenuItem from "@material-ui/core/MenuItem";
 import Popover from "@material-ui/core/Popover";
-import {IoTextOutline} from "@react-icons/all-files/io5/IoTextOutline";
-import {IoAt} from "@react-icons/all-files/io5/IoAt";
+import {IoTextOutline, IoAt} from "react-icons/io5";
 
 
 export default function DottedPathInput({value, onChange,

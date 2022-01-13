@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlinePlusCircle } from "@react-icons/all-files/ai/AiOutlinePlusCircle";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 import TextField from "@material-ui/core/TextField";
-import { VscTrash } from "@react-icons/all-files/vsc/VscTrash";
+import { VscTrash } from "react-icons/vsc";
 import "./KeyValueForm.css";
 
 const KeyValueForm = ({ value, onChange }) => {

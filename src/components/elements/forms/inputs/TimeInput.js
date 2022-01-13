@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
-import { VscCalendar } from "@react-icons/all-files/vsc/VscCalendar";
-import { VscRefresh } from "@react-icons/all-files/vsc/VscRefresh";
-import { VscArrowRight } from "@react-icons/all-files/vsc/VscArrowRight";
+import { VscCalendar, VscRefresh, VscArrowRight } from "react-icons/vsc";
 
 const TimeInput = ({ value, onChange, disabled }) => {
   const [type, setType] = useState("date");

@@ -2,10 +2,10 @@ import React, {useState} from "react";
 import "./ServiceCard.css";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import Chip from "@material-ui/core/Chip";
-import {BsGear} from "@react-icons/all-files/bs/BsGear";
+import {BsGear} from "react-icons/bs";
 import IconButton from "../misc/IconButton";
 import {asyncRemote} from "../../../remote_api/entrypoint";
-import {BsStopCircle} from "react-icons/all";
+import {BsStopCircle} from "react-icons/bs";
 import {useConfirm} from "material-ui-confirm";
 
 const RunningServiceCard = ({service, onEditClick, onDelete}) => {

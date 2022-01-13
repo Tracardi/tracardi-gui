@@ -2,7 +2,7 @@ import React from "react";
 import "./ServiceCard.css";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import Chip from "@material-ui/core/Chip";
-import {BsPlayCircle} from "react-icons/all";
+import {BsPlayCircle} from "react-icons/bs";
 import IconButton from "../misc/IconButton";
 
 const ServiceCard = ({service, onClick}) => {

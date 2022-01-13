@@ -1,7 +1,7 @@
 import Chip from "@material-ui/core/Chip";
 import React from "react";
-import {VscError} from "@react-icons/all-files/vsc/VscError";
-import {BsCheckCircle} from "@react-icons/all-files/bs/BsCheckCircle";
+import {VscError} from "react-icons/vsc";
+import {BsCheckCircle} from "react-icons/bs";
 import PropTypes from 'prop-types';
 
 const WhenChips = ({condition, onDelete}) => {

@@ -1,12 +1,10 @@
 import React from "react";
-import {FiMail} from "@react-icons/all-files/fi/FiMail";
+import {FiMail} from "react-icons/fi";
 import './PiiDetails.css';
-import {BiPhoneCall} from "@react-icons/all-files/bi/BiPhoneCall";
-import {FaBirthdayCake} from "@react-icons/all-files/fa/FaBirthdayCake";
-import {FaFacebookSquare} from "@react-icons/all-files/fa/FaFacebookSquare";
-import {VscTwitter} from "@react-icons/all-files/vsc/VscTwitter";
-import {FaWhatsapp} from "@react-icons/all-files/fa/FaWhatsapp";
-import {VscPerson} from "@react-icons/all-files/vsc/VscPerson";
+import {BiPhoneCall} from "react-icons/bi";
+import {FaBirthdayCake, FaFacebookSquare} from "react-icons/fa";
+import {VscTwitter, VscPerson} from "react-icons/vsc";
+import {FaWhatsapp} from "react-icons/fa";
 
 const PiiDetails = ({data}) => {
 

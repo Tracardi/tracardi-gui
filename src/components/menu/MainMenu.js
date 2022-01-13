@@ -10,7 +10,7 @@ import {BiChevronLeftCircle, BiChevronRightCircle} from "react-icons/bi";
 import {AiOutlinePoweroff} from "react-icons/ai";
 import {IoLogoYoutube} from "react-icons/io";
 import {VscBook, VscTwitter, VscPulse} from "react-icons/vsc";
-import {IoGitNetworkSharp} from "@react-icons/all-files/io5/IoGitNetworkSharp";
+import {IoGitNetworkSharp} from "react-icons/io5";
 import {GoSettings} from "react-icons/go";
 import {VscLaw} from "@react-icons/all-files/vsc/VscLaw";
 import {BsFolderCheck} from "react-icons/bs";

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import DottedPathInput from "./inputs/DottedPathInput";
-import {AiOutlinePlusCircle} from "@react-icons/all-files/ai/AiOutlinePlusCircle";
+import {AiOutlinePlusCircle} from "react-icons/ai";
 import './ListOfDottedInputs.css';
 import DottedValue from "./inputs/DottedValue";
 import ErrorLine from "../../errors/ErrorLine";

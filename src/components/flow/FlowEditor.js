@@ -39,7 +39,6 @@ const FlowEditor = () => {
                                 draft={true}
                                 schema={flowMetaData?.wf_schema}
                 />
-
                 <FormDrawer
                     width={800}
                     label="Flow details"

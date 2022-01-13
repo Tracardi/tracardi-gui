@@ -1,7 +1,7 @@
 import React from "react";
 import "./Button.css";
 import IconCircularProgress from "../progress/IconCircularProgress";
-import {AiOutlineCheckCircle} from "@react-icons/all-files/ai/AiOutlineCheckCircle";
+import {AiOutlineCheckCircle} from "react-icons/ai";
 import PropTypes from 'prop-types';
 
 export default function Button({label, onClick, className, style, icon, disabled, selected = false, progress = false, confirmed = false, error = false}) {

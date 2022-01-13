@@ -1,8 +1,7 @@
 import TextField from "@material-ui/core/TextField";
 import React, {useState} from "react";
 import Button from "../Button";
-import {VscLock} from "@react-icons/all-files/vsc/VscLock";
-import {VscUnlock} from "@react-icons/all-files/vsc/VscUnlock";
+import {VscLock, VscUnlock} from "react-icons/vsc";
 
 export default function DisabledInput({value, label, onChange}) {
 

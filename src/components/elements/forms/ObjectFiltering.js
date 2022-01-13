@@ -4,7 +4,7 @@ import {resetPage} from '../../../redux/reducers/pagingSlice'
 import TextField from "@material-ui/core/TextField";
 import Button from "./Button";
 import "./ObjectFiltering.css";
-import {AiOutlineFilter} from "@react-icons/all-files/ai/AiOutlineFilter";
+import {AiOutlineFilter} from "react-icons/ai";
 import DataTimePicker from "../datepickers/DateTimePicker";
 import MenuItem from "@material-ui/core/MenuItem";
 import PropTypes from 'prop-types';

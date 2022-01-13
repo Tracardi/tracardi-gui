@@ -5,7 +5,7 @@ import { TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormG
 import TuiFormError from "../tui/TuiFormError";
 import CenteredCircularProgress from "../../elements/progress/CenteredCircularProgress";
 import { request } from "../../../remote_api/uql_api_endpoint";
-import { VscTrash } from "@react-icons/all-files/vsc/VscTrash";
+import { VscTrash } from "react-icons/vsc";
 import "./ConsentTypeList.css";
 
 const ConsentTypeList = () => {
