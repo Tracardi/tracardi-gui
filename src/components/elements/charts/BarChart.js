@@ -20,17 +20,17 @@ export default function BarChartElement({onLoadRequest, columns}) {
     useEffect(() => {
 
         let isSubscribed = true
-        if(allowLoadingSpinner) {
+        if(isSubscribed===true && allowLoadingSpinner) {
             setLoading(true);
         }
         request(
             onLoadRequest,
-            (value)=> {if(isSubscribed && allowLoadingSpinner) setLoading(value);},
-            (value) => {if(isSubscribed) setError(value);},
-            (value) => {if(isSubscribed) setReady(value); setAllowLoadingSpinner(false);}
+            (value)=> {if(isSubscribed===true && allowLoadingSpinner) setLoading(value);},
+            (value) => {if(isSubscribed===true) setError(value);},
+            (value) => {if(isSubscribed===true) setReady(value); setAllowLoadingSpinner(false);}
         );
         return () => isSubscribed = false
-    }, [onLoadRequest])
+    }, [onLoadRequest, allowLoadingSpinner])
 
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {

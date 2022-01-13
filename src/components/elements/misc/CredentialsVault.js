@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 import Properties from "../details/DetailProperties";
 import Button from "../forms/Button";
-import {VscUnlock} from "@react-icons/all-files/vsc/VscUnlock";
-import {VscLock} from "@react-icons/all-files/vsc/VscLock";
+import {VscUnlock, VscLock} from "react-icons/vsc";
 import {isEmptyObjectOrNull} from '../../../misc/typeChecking';
 
 export default function CredentialsVault({production, test}) {

@@ -4,7 +4,7 @@ import {
     getEdgeCenter,
     getMarkerEnd,
 } from 'react-flow-renderer';
-import {AiOutlineCloseCircle} from "@react-icons/all-files/ai/AiOutlineCloseCircle";
+import {AiOutlineCloseCircle} from "react-icons/ai";
 
 const foreignObjectSize = 20;
 

@@ -1,10 +1,9 @@
 import React from "react";
 import {CopyBlock, tomorrow} from "react-code-blocks";
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import tracker from "!!raw-loader!./tracker.txt";
+import raw from 'raw.macro';
 
 const TrackerScript = ({sourceId}) => {
-
+    const tracker = raw('./tracker.txt');
     const trackerWithId = tracker.replace('<paste-your-source-id>', sourceId)
     return <CopyBlock
         text={trackerWithId}

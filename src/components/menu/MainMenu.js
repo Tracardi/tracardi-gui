@@ -12,7 +12,7 @@ import {IoLogoYoutube} from "react-icons/io";
 import {VscBook, VscTwitter, VscPulse} from "react-icons/vsc";
 import {IoGitNetworkSharp} from "react-icons/io5";
 import {GoSettings} from "react-icons/go";
-import {VscLaw} from "@react-icons/all-files/vsc/VscLaw";
+import {VscLaw} from "react-icons/vsc";
 import {BsFolderCheck} from "react-icons/bs";
 
 export default function MainMenu() {

@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import './FlowLogs.css';
-import {FiAlertTriangle} from "@react-icons/all-files/fi/FiAlertTriangle";
-import {VscError} from "@react-icons/all-files/vsc/VscError";
-import {AiOutlineCheckCircle} from "@react-icons/all-files/ai/AiOutlineCheckCircle";
+import {FiAlertTriangle} from "react-icons/fi";
+import {VscError} from "react-icons/vsc";
+import {AiOutlineCheckCircle} from "react-icons/ai";
 import JsonStringify from "../elements/misc/JsonStingify";
 
 const FlowLogs = ({logs}) => {

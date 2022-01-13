@@ -14,7 +14,8 @@ function DetailsObjectList({
                                onLoadRequest,
                                onLoadDetails,
                                detailsDrawerWidth,
-                               displayDetails
+                               displayDetails,
+                               refreshInterval=0
                            }) {
 
 
@@ -87,6 +88,7 @@ function DetailsObjectList({
             onLoadDetails={onLoadDetails}
             onDetails={onDetails}
             onLoadRequest={onLoadRequest}
+            refreshInterval={refreshInterval}
         />
 
         {onLoadDetails &&

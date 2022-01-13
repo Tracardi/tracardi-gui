@@ -1,7 +1,5 @@
-import React, {useEffect} from "react";
+import React from "react";
 import AutoLoadObjectList from "../elements/lists/AutoLoadObjectList";
-import {connect, useDispatch} from "react-redux";
-import {resetPage} from "../../redux/reducers/pagingSlice";
 import {
     TuiForm,
     TuiFormGroup,
@@ -12,16 +10,10 @@ import {
 
 const Tasks = () => {
 
-    const dispatch = useDispatch();
-
     const onLoadRequest = {
         url: `/tasks`,
         method: "GET"
     }
-
-    useEffect(() => {
-        dispatch(resetPage());
-    }, [dispatch])
 
     return <TuiForm style={{margin: 20, width: "calc(100% - 40px)"}}>
         <TuiFormGroup fitHeight={true}>
@@ -43,10 +35,4 @@ const Tasks = () => {
     </TuiForm>
 }
 
-const mapState = state => {
-    return {
-        paging: state.pagingReducer
-    }
-}
-
-export default connect(mapState)(Tasks);
+export default Tasks;

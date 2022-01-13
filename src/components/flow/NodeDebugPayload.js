@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import './NodeDebugWindow.css';
-import {VscDebug} from "@react-icons/all-files/vsc/VscDebug";
+import {VscDebug} from "react-icons/vsc";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/theme-tomorrow";

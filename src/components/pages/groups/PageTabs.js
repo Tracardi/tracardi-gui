@@ -8,7 +8,7 @@ export default function PageTabs({title, tabs = {}}) {
     const [tab, setTab] = useState(0);
     let i = -1;
 
-    return <div className="PageTabs">
+    return <div className="PageTabs" style={{height: "initial"}}>
         <h1 className="Title">{title}</h1>
 
             <Tabs

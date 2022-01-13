@@ -4,7 +4,7 @@ import {
     getEdgeCenter,
     getMarkerEnd,
 } from 'react-flow-renderer';
-import {BiStopCircle} from "@react-icons/all-files/bi/BiStopCircle";
+import {BiStopCircle} from "react-icons/bi";
 
 const foreignObjectSize = 20;
 

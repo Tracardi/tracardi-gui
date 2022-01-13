@@ -12,7 +12,7 @@ import {
     TuiFormGroupHeader
 } from "../../elements/tui/TuiForm";
 import {objectMap} from "../../../misc/mappers";
-import {BiError} from "@react-icons/all-files/bi/BiError";
+import {BiError} from "react-icons/bi";
 
 const ConfigEditor = ({config, manual, onConfig, errorMessages={}, confirmed = false}) => {
 

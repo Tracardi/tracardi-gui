@@ -1,17 +1,17 @@
 import React, {useEffect, useState} from "react";
 import './NodeDetails.css';
-import {BsInfoCircle} from "@react-icons/all-files/bs/BsInfoCircle";
+import {BsInfoCircle} from "react-icons/bs";
 import IconButton from "../elements/misc/IconButton";
-import {GoSettings} from "@react-icons/all-files/go/GoSettings";
+import {GoSettings} from "react-icons/go";
 import ConsoleView from "../elements/misc/ConsoleView";
 import NodeInfo from "./NodeInfo";
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
-import {VscJson} from "@react-icons/all-files/vsc/VscJson";
+import {VscJson} from "react-icons/vsc";
 import "../elements/forms/JsonForm"
-import {VscTools} from "@react-icons/all-files/vsc/VscTools";
+import {VscTools} from "react-icons/vsc";
 import {NodeInitForm, NodeInitJsonForm, NodeRuntimeConfigForm} from "../elements/forms/NodeInitForm";
 import {TracardiProPluginForm} from "../elements/forms/TracardiProPluginForm";
-import {BsStar} from "@react-icons/all-files/bs/BsStar";
+import {BsStar} from "react-icons/bs";
 import {VscRunErrors} from "react-icons/vsc";
 
 export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {

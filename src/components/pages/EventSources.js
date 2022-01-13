@@ -2,7 +2,7 @@ import React, {useCallback} from "react";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import EventSourceDetails from "../elements/details/EventSourceDetails";
-import {BsBoxArrowInUpRight} from "@react-icons/all-files/bs/BsBoxArrowInUpRight";
+import {BsBoxArrowInUpRight} from "react-icons/bs";
 import EventSourceForm from "../elements/forms/EventSourceForm";
 
 

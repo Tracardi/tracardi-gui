@@ -1,7 +1,7 @@
 import React, {useCallback} from "react";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
-import {VscOrganization} from "@react-icons/all-files/vsc/VscOrganization";
+import {VscOrganization} from "react-icons/vsc";
 import SegmentForm from "../elements/forms/SegmentForm";
 import SegmentDetails from "../elements/details/SegmentDetails";
 

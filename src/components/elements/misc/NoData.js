@@ -1,4 +1,4 @@
-import {BsEyeSlash} from "@react-icons/all-files/bs/BsEyeSlash";
+import {BsEyeSlash} from "react-icons/bs";
 import React from "react";
 
 export default function NoData({header, children}) {

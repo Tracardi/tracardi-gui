@@ -2,7 +2,7 @@ import React, {useCallback} from "react";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
 import SquareCard from "../elements/lists/cards/SquareCard";
-import {VscLaw} from "@react-icons/all-files/vsc/VscLaw";
+import {VscLaw} from "react-icons/vsc";
 import ConsentDetails from "../elements/details/ConsentDetails";
 import ConsentForm from "../elements/forms/ConsentForm";
 

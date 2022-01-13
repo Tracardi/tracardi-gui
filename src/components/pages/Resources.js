@@ -3,7 +3,7 @@ import ResourceDetails from "../elements/details/ResourceDetails";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import ResourceForm from "../elements/forms/ResourceForm";
-import {AiOutlineCloudServer} from "@react-icons/all-files/ai/AiOutlineCloudServer";
+import {AiOutlineCloudServer} from "react-icons/ai";
 
 
 export default function Resources() {

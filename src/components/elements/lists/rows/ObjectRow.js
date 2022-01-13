@@ -2,9 +2,8 @@ import React, {useState} from "react";
 import "./ObjectRow.css";
 import JsonStringify from "../../misc/JsonStingify";
 import Button from "../../forms/Button";
-import {TiBusinessCard} from "@react-icons/all-files/ti/TiBusinessCard";
-import {BsArrowsExpand} from "@react-icons/all-files/bs/BsArrowsExpand";
-import {BsArrowsCollapse} from "@react-icons/all-files/bs/BsArrowsCollapse";
+import {TiBusinessCard} from "react-icons/ti";
+import {BsArrowsExpand, BsArrowsCollapse} from "react-icons/bs";
 
 export function ObjectRow({row, timeField, onClick, filterFields, displayDetailButton, timeFieldWidth}) {
 

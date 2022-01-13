@@ -1,10 +1,10 @@
-import {VscDebugAlt} from "@react-icons/all-files/vsc/VscDebugAlt";
+import {VscDebugAlt} from "react-icons/vsc";
 import React, {useState} from "react";
 import './FlowEditorButtons.css'
 import Popover from "@mui/material/Popover";
 import ModuleRegisterForm from "./ModuleRegisterForm";
 import IconButton from "../elements/misc/IconButton";
-import {VscPlug} from "@react-icons/all-files/vsc/VscPlug";
+import {VscPlug} from "react-icons/vsc";
 
 export function FlowEditorIcons({onDebug, onRegister, debugInProgress}) {
 

@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from "react";
-import {TiTickOutline} from "@react-icons/all-files/ti/TiTickOutline";
-import {BsToggleOn} from "@react-icons/all-files/bs/BsToggleOn";
+import {TiTickOutline} from "react-icons/ti";
+import {BsToggleOn} from "react-icons/bs";
 import "./FlowEditorTitle.css";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import Button from "../elements/forms/Button";
@@ -20,7 +20,7 @@ import {
 import RuleForm from "../elements/forms/RuleForm";
 import Drawer from "@mui/material/Drawer";
 import {FaUncharted} from "react-icons/fa";
-import {BiReset} from "@react-icons/all-files/bi/BiReset";
+import {BiReset} from "react-icons/bi";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import {save} from "./FlowEditorOps";
 import {useConfirm} from "material-ui-confirm";

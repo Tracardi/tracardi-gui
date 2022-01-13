@@ -1,8 +1,8 @@
 import React from "react";
 import './FlowEditorBottomLine.css';
-import {AiOutlinePlusCircle} from "@react-icons/all-files/ai/AiOutlinePlusCircle";
-import {AiOutlineMinusCircle} from "@react-icons/all-files/ai/AiOutlineMinusCircle";
-import {BsPencil} from "@react-icons/all-files/bs/BsPencil";
+import {AiOutlinePlusCircle} from "react-icons/ai";
+import {AiOutlineMinusCircle} from "react-icons/ai";
+import {BsPencil} from "react-icons/bs";
 import {VscDebugAlt} from "react-icons/vsc";
 
 export const FlowEditorBottomLine = ({onDebug, onEdit, onZoomIn, onZoomOut}) => {

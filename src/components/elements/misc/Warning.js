@@ -1,4 +1,4 @@
-import {VscWarning} from "@react-icons/all-files/vsc/VscWarning";
+import {VscWarning} from "react-icons/vsc";
 import React from "react";
 
 const Warning = ({message}) => {

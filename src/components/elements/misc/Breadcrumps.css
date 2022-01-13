@@ -1,9 +1,0 @@
-.Breadcrumps {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-}
-
-.Breadcrumps SPAN {
-    margin: 4px;
-}

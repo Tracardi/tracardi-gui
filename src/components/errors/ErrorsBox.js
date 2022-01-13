@@ -1,6 +1,6 @@
 import React from "react";
 import "./ErrorsBox.css";
-import {VscError} from "@react-icons/all-files/vsc/VscError";
+import {VscError} from "react-icons/vsc";
 
 export default function ErrorsBox({errorList, fillWidth, style}) {
 

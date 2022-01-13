@@ -102,22 +102,22 @@ export default function DataAnalytics({
             limit: 30,
         })
     );
-    useEffect(() => {
-        let timer;
-        dispatch(resetPage());
-        if (refresh > 0) {
-            dispatch(setRefreshOn());
-            timer = setInterval(() => setQuery(encodeParams(query)), refresh * 1000);
-        } else {
-            dispatch(setRefreshOff());
-        }
-
-        return () => {
-            if (timer) {
-                clearInterval(timer);
-            }
-        };
-    }, [refresh, query, dispatch]);
+    // useEffect(() => {
+    //     let timer;
+    //     dispatch(resetPage());
+    //     if (refresh > 0) {
+    //         dispatch(setRefreshOn());
+    //         timer = setInterval(() => setQuery(encodeParams(query)), refresh * 1000);
+    //     } else {
+    //         dispatch(setRefreshOff());
+    //     }
+    //
+    //     return () => {
+    //         if (timer) {
+    //             clearInterval(timer);
+    //         }
+    //     };
+    // }, [refresh, query, dispatch]);
 
     const onFilter = ({to, from, where}) => {
         setQuery(
@@ -170,6 +170,7 @@ export default function DataAnalytics({
                     displayDetails={displayDetails}
                     detailsDrawerWidth={detailsDrawerWidth}
                     displayChart={displayChart}
+                    refreshInterval={refresh}
                 >
                   <BarChartElement
                         onLoadRequest={onLoadHistogramRequest(query)}
