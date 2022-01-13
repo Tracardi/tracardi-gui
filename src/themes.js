@@ -1,7 +1,7 @@
 import {red} from '@mui/material/colors';
-import { createTheme, adaptV4Theme } from '@mui/material/styles';
+import { createTheme} from '@mui/material/styles';
 
-export const mainTheme = createTheme(adaptV4Theme({
+export const mainTheme = createTheme({
     typography: {
         "fontFamily": `"IBM Plex Sans", "Arial", sans-serif`,
         "fontSize": 15,
@@ -26,9 +26,9 @@ export const mainTheme = createTheme(adaptV4Theme({
             primary: '#000'
         }
     },
-}));
+});
 
-export const signInTheme = createTheme(adaptV4Theme({
+export const signInTheme = createTheme({
     palette: {
         primary: {
             // light: will be calculated from palette.primary.main,
@@ -49,9 +49,9 @@ export const signInTheme = createTheme(adaptV4Theme({
             primary: '#000'
         }
     },
-}));
+});
 
-export const plusPopOverTheme = createTheme(adaptV4Theme({
+export const plusPopOverTheme = createTheme({
     palette: {
         primary: {
             // light: will be calculated from palette.primary.main,
@@ -75,4 +75,4 @@ export const plusPopOverTheme = createTheme(adaptV4Theme({
             disabled: "#999"
         },
     },
-}));
+});
