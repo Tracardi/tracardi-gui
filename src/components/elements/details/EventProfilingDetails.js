@@ -20,7 +20,8 @@ const EventProfilingDetails = ({eventId, showAlert}) => {
                 )
             }
             return <NoData header="This event was not configured to store debug data.">
-                <p>In order to see debug data, event options debbuger must be set to <b>true</b>, and environment variable TRACK_DEBUG must be equal <b>yes</b>.</p>
+                <p style={{textAlign: "center"}}>In order to see debug data, start node in workflow must be configured to collect debbuger
+                    information, and environment variable TRACK_DEBUG must be equal to <b>yes</b>. You can also force debugging with track payload options set to debugger=true.</p>
             </NoData>
         }
         return ""
