@@ -33,7 +33,10 @@ import {
     VscCopy,
     VscGitMerge,
     VscOrganization,
-    VscMail
+    VscMail,
+    VscBracketError,
+    VscRunErrors,
+    VscExclude
 } from "react-icons/vsc";
 import {MdLibraryAdd} from "react-icons/md";
 import {GoBrowser} from "react-icons/go";
@@ -46,7 +49,8 @@ import {
     SiTwilio,
     SiCurl,
     SiGoogletranslate,
-    SiElasticsearch
+    SiElasticsearch,
+    SiInfluxdb
 } from "react-icons/si";
 import {GrMysql} from "react-icons/gr";
 import {AiOutlineSlack, AiOutlinePieChart, AiOutlineCloudServer} from "react-icons/ai";
@@ -157,6 +161,10 @@ export const icons = {
     'translate': (size) => <SiGoogletranslate size={size}/>,
     'google': (size) => <AiFillGoogleCircle size={size}/>,
     'shuffle': (size) => <BsShuffle size={size}/>,
+    'influxdb': (size) => <SiInfluxdb size={size}/>,
+    'json-error': (size) => <VscBracketError size={size}/>,
+    'run-error': (size) => <VscRunErrors size={size}/>,
+    'config-error': (size) => <VscExclude size={size}/>
 }
 
 

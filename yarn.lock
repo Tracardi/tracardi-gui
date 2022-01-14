@@ -8231,10 +8231,10 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-picky-date-time@^1.6.1:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/react-picky-date-time/-/react-picky-date-time-1.8.0.tgz#2c44447f923c454993e676d698a0e518499facd8"
-  integrity sha512-dQoKZMCK1ooS/72eteodypg8oqoRN3REaRL8hJRpaC7/o9PSTni5zpMHYkXxaiYeyPJz7grMVDwJ4UkQzGPnXg==
+react-picky-date-time@^1.8.1:
+  version "1.8.7"
+  resolved "https://registry.yarnpkg.com/react-picky-date-time/-/react-picky-date-time-1.8.7.tgz#b0b0effdfa1adfa3f404b884135b791ae09820cd"
+  integrity sha512-8LA5JMyrOnNjVIRp7FXeKnRFyRS18sby+RL7KYoK7GwMlF7GNfIMcIJxHtwnaRb1QfAGNUpDCjAUqCqqvVplCg==
 
 react-redux@^7.2.2, react-redux@^7.2.6:
   version "7.2.6"

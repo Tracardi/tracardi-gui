@@ -74,19 +74,19 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                         size="large">
                         <GoSettings size={22}/>
                     </IconButton>}
-                    {node?.data?.metadata && <IconButton
-                        label="Advanced Runtime Editor"
-                        onClick={() => setTab(6)}
-                        selected={tab === 6}
-                        size="large">
-                        <VscRunErrors size={22}/>
-                    </IconButton>}
                     {node?.data?.spec?.init && <IconButton
                         label="Json Config"
                         onClick={() => setTab(2)}
                         selected={tab === 2}
                         size="large">
                         <VscTools size={22}/>
+                    </IconButton>}
+                    {node?.data?.metadata && <IconButton
+                        label="Advanced Runtime Editor"
+                        onClick={() => setTab(6)}
+                        selected={tab === 6}
+                        size="large">
+                        <VscRunErrors size={22}/>
                     </IconButton>}
                     <IconButton label="Raw" onClick={() => setTab(4)} selected={tab === 4} size="large">
                             <VscJson size={22}/>
