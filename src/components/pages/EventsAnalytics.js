@@ -3,6 +3,7 @@ import "./DataAnalytics.css";
 import EventDetails from "../elements/details/EventDetails";
 import DataAnalytics from "./DataAnalytics";
 import EventStatusTag from "../elements/misc/EventStatusTag";
+import EventTypeTag from "../elements/misc/EventTypeTag";
 
 export default function EventsAnalytics({displayChart=true}) {
 
@@ -45,7 +46,7 @@ export default function EventsAnalytics({displayChart=true}) {
             'profile.operation',
             'metadata.time'
         ]}
-        timeField={(row) => [row.metadata.time.insert, row.type, <EventStatusTag label={row.metadata.status}/>]}
+        timeField={(row) => [row.metadata.time.insert, <EventTypeTag eventType={row.type} profile={row?.profile?.id}/>, <EventStatusTag label={row.metadata.status}/>]}
         onLoadHistogramRequest={onLoadHistogramRequest}
         onLoadDataRequest={onLoadDataRequest}
         onLoadDetails={onLoadDetails}
