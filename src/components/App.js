@@ -34,7 +34,7 @@ const App = ({alert, resource, close}) => {
     const application = () => {
         return (
             <Router>
-                <Switch>
+                {/* <Switch>
                     <Route exact path={urlPrefix("/login")}>
                         <SignIn/>
                     </Route>
@@ -53,7 +53,7 @@ const App = ({alert, resource, close}) => {
                 </Snackbar>
                 <FormDrawer open={resource.show} onClose={() => {close()}} width={550}>
                     <ResourceForm onClose={() => {close()}}/>
-                </FormDrawer>
+                </FormDrawer> */}
             </Router>
         );
     }
