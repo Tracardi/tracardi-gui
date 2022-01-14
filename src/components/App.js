@@ -19,10 +19,6 @@ import FormDrawer from "./elements/drawers/FormDrawer";
 import {close} from "../redux/reducers/newResource";
 import ResourceForm from "./elements/forms/ResourceForm";
 
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
 const App = ({alert, resource, close}) => {
 
     const dispatch = useDispatch()
@@ -45,14 +41,21 @@ const App = ({alert, resource, close}) => {
                         <AppBox/>
                     </PrivateRoute>
                 </Switch>
-                <Snackbar open={alert.show} autoHideDuration={alert.hideAfter} onClose={handleClose}>
-                    <Alert onClose={handleClose} severity={alert.type}>
+                <Snackbar open={alert.show} autoHideDuration={alert.hideAfter} onClose={handleClose} anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center'
+                }}>
+                    <MuiAlert variant="filled" elevation={6} onClose={handleClose} severity={alert.type}>
                         <AlertTitle style={{textTransform: "uppercase"}}>{alert.type}</AlertTitle>
                         <span style={{fontWeight: 400}}>{alert.message}</span>
-                    </Alert>
+                    </MuiAlert>
                 </Snackbar>
-                <FormDrawer open={resource.show} onClose={() => {close()}} width={550}>
-                    <ResourceForm onClose={() => {close()}}/>
+                <FormDrawer open={resource.show} onClose={() => {
+                    close()
+                }} width={550}>
+                    <ResourceForm onClose={() => {
+                        close()
+                    }}/>
                 </FormDrawer>
             </Router>
         );
@@ -70,4 +73,4 @@ const mapState = (state) => {
 export default connect(
     mapState,
     {close}
-    )(App);
+)(App);
