@@ -1,7 +1,7 @@
 import {BiGitRepoForked} from "react-icons/bi";
 import React from "react";
 import {FiDatabase, FiMapPin, FiAlertTriangle} from "react-icons/fi";
-import {BsDiamond, BsPerson, BsCalculator, BsBoxArrowInUpRight} from "react-icons/bs";
+import {BsDiamond, BsPerson, BsCalculator, BsBoxArrowInUpRight, BsShuffle} from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime} from "react-icons/ai";
 import {MdTimelapse} from "react-icons/md";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -155,7 +155,8 @@ export const icons = {
     'trello': (size) => <FaTrello size={size}/>,
     'calendar': (size) => <IoCalendarOutline size={size}/>,
     'translate': (size) => <SiGoogletranslate size={size}/>,
-    'google': (size) => <AiFillGoogleCircle size={size}/>
+    'google': (size) => <AiFillGoogleCircle size={size}/>,
+    'shuffle': (size) => <BsShuffle size={size}/>,
 }
 
 

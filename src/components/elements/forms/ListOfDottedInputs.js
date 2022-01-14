@@ -6,7 +6,7 @@ import DottedValue from "./inputs/DottedValue";
 import ErrorLine from "../../errors/ErrorLine";
 
 
-const ListOfDottedInputs = ({onChange, value, errorMessage}) => {
+const ListOfDottedInputs = ({onChange, value, errorMessage, defaultMode}) => {
 
     const [inputValue, setInputValue] = useState('')
     const [listOfValues, setListOfValues] = useState(value || [])
@@ -33,7 +33,7 @@ const ListOfDottedInputs = ({onChange, value, errorMessage}) => {
 
     return <div className="ListOfDottedInputs">
         <div className="AddForm">
-            <DottedPathInput value={inputValue} onChange={setInputValue} width={300}/>
+            <DottedPathInput value={inputValue} onChange={setInputValue} width={300} defaultMode={defaultMode}/>
             <AiOutlinePlusCircle size={25} onClick={handleAdd} style={{cursor: "pointer", marginLeft: 10}}/>
         </div>
 
