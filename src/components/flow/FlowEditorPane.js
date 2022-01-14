@@ -158,21 +158,23 @@ export function FlowEditorPane(
         setFlowLoading(true);
 
         request({
-                    url: ((draft) ? "/flow/draft/" : "/flow/production/") + id,
-                },
-                setFlowLoading,
-                (e) => {
-                    if (e) {
-                        if(e?.response?.status === 404) {
-                            showAlert({message: "Workflow does not exist.", type: "error", hideAfter: 4000});
-                        } else {
-                            if(e.length > 0) showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
-                        }
+                url: ((draft) ? "/flow/draft/" : "/flow/production/") + id,
+            },
+            setFlowLoading,
+            (e) => {
+                if (e) {
+                    if (e?.response?.status === 404) {
+                        showAlert({message: "Workflow does not exist.", type: "error", hideAfter: 4000});
+                    } else {
+                        if (e.length > 0) showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
                     }
-                },
-                (response) => {
+                }
+            },
+            (response) => {
+                if (response) {
                     updateFlow(response?.data);
-                })
+                }
+            })
 
 
     }, [id, draft, showAlert, updateFlow])
@@ -361,7 +363,7 @@ export function FlowEditorPane(
     }
 
     const handleRuntimeConfig = (nodeId, value) => {
-        if(currentNode.data.spec.id === nodeId) {
+        if (currentNode.data.spec.id === nodeId) {
             currentNode.data.spec = {...currentNode.data.spec, ...value}
 
             // Refresh flow node
@@ -400,7 +402,7 @@ export function FlowEditorPane(
             color: "white",
             fontSize: 12,
             fontWeight: 500,
-            padding:"3px 9px",
+            padding: "3px 9px",
             borderRadius: 15,
             marginLeft: 5,
             backgroundColor: "orange"
@@ -412,7 +414,7 @@ export function FlowEditorPane(
             color: "white",
             fontSize: 12,
             fontWeight: 500,
-            padding:"3px 9px",
+            padding: "3px 9px",
             borderRadius: 15,
             marginLeft: 5,
             backgroundColor: "#ef6c00"
@@ -436,9 +438,11 @@ export function FlowEditorPane(
             flowId={id}
             reactFlowInstance={reactFlowInstance}
             flowMetaData={flowMetaData}
-            onDraftRestore={(flow) => {updateFlow(flow)}}
-            onDeploy={()=>setDeployed(true)}
-            onSaveDraft={()=>setModified(false)}
+            onDraftRestore={(flow) => {
+                updateFlow(flow)
+            }}
+            onDeploy={() => setDeployed(true)}
+            onSaveDraft={() => setModified(false)}
         />
         <div className="FlowEditor">
             <div className="WorkArea">

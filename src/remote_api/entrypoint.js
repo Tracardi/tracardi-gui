@@ -49,8 +49,8 @@ export const getError = (e) => {
         }
 
         if( Array.isArray(e.response?.data?.detail)) {
-            return e.response.data.detail;
-        } else if (e.response?.data.detail && typeof e.response?.data?.detail === 'string') {
+            return e.response?.data?.detail;
+        } else if (e.response?.data?.detail && typeof e.response?.data?.detail === 'string') {
             return [{msg:e.response.data.detail, type: "Exception", response: e.response}];
         } else {
             return [{msg:e.message, type: "Exception", response: e.response}];
