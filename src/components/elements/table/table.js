@@ -1,4 +1,4 @@
-import React, { createRef, Fragment, PureComponent } from "react";
+import React, { Fragment } from "react";
 import { FixedSizeList as List } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
 import "./table.css"
