@@ -1,6 +1,7 @@
 import React, { createRef, Fragment, PureComponent } from "react";
 import { FixedSizeList as List } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
+import "./table.css"
 
 const LOADING = 1;
 const LOADED = 2;
