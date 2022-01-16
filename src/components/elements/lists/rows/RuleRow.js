@@ -8,6 +8,8 @@ const RuleRow = ({data, flow}) => {
 
     return (
         <div className="RuleRow">
+            <span className="RuleBox">{data.source.name}</span>
+            >>
             <span className="EventBox"><VscSymbolEvent size={20} style={{marginRight:10}}/> {data.event.type}</span>
             >>
             <span className="RuleBox">

@@ -12,7 +12,8 @@ export default function EventsAnalytics({displayChart=true}) {
             url: '/event/select/range',
             method: "post",
             data: query,
-            limit: 30
+            limit: 30,
+            page: 0
         }
     }
 
@@ -21,7 +22,8 @@ export default function EventsAnalytics({displayChart=true}) {
             url: '/event/select/histogram',
             method: "post",
             data: query,
-            limit: 30
+            limit: 30,
+            page: 0
         }
     }
 

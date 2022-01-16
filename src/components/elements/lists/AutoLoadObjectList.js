@@ -25,6 +25,7 @@ const AutoLoadObjectList = ({
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [allowLoadingSpinner, setAllowLoadingSpinner] = useState(true);
+    const [lastQuery, setLastQuery] = useState("")
 
     const mounted = useRef(false);
 
@@ -41,7 +42,17 @@ const AutoLoadObjectList = ({
             setLoading(true);
             setAllowLoadingSpinner(false);
         }
-        const endpoint = {...onLoadRequest, url: `${onLoadRequest.url}/page/${page}`};
+
+        let endpoint;
+
+        if(onLoadRequest?.data?.where !== lastQuery) {  // query changed, start search form beginning
+            endpoint = {...onLoadRequest, url: `${onLoadRequest.url}/page/0`};
+            setLastQuery(endpoint?.data?.where);
+            setPage(0);
+        } else {
+            endpoint = {...onLoadRequest, url: `${onLoadRequest.url}/page/${page}`};
+        }
+
         request(
             endpoint,
             (state) => {
