@@ -1,12 +1,11 @@
 import {BiGitRepoForked} from "react-icons/bi";
 import React from "react";
 import {FiDatabase, FiMapPin, FiAlertTriangle} from "react-icons/fi";
-import {BsDiamond, BsPerson, BsCalculator, BsBoxArrowInUpRight, BsShuffle} from "react-icons/bs";
-import {AiOutlineSisternode, AiOutlineFieldTime} from "react-icons/ai";
+import {BsDiamond, BsPerson, BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill} from "react-icons/bs";
+import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {MdTimelapse} from "react-icons/md";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
 import {BiMessageRoundedError, BiTimeFive, BiMessageRoundedCheck, BiMessageRoundedX, BiGroup} from "react-icons/bi";
-import {AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {RiIncreaseDecreaseLine, RiScissorsCutFill} from "react-icons/ri";
 import {IoCloudOutline, IoPush} from "react-icons/io5";
 import {
@@ -65,7 +64,7 @@ import {IoLanguageOutline} from "react-icons/io5";
 import {AiOutlineCheckCircle} from "react-icons/ai";
 import {IoTextOutline} from "react-icons/io5";
 import {ImInsertTemplate} from "react-icons/im";
-import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp} from "react-icons/fa";
+import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp, FaHtml5} from "react-icons/fa";
 import {DiReact} from "react-icons/di";
 import {IoCalendarOutline} from "react-icons/io5";
 import {AiFillGoogleCircle} from "react-icons/ai";
@@ -164,7 +163,9 @@ export const icons = {
     'influxdb': (size) => <SiInfluxdb size={size}/>,
     'json-error': (size) => <VscBracketError size={size}/>,
     'run-error': (size) => <VscRunErrors size={size}/>,
-    'config-error': (size) => <VscExclude size={size}/>
+    'config-error': (size) => <VscExclude size={size}/>,
+    'geo-fence': (size) => <BsFillGeoFill size={size}/>,
+    'html5': (size) => <FaHtml5 size={size}/>
 }
 
 
