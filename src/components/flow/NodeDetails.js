@@ -52,7 +52,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
     return (
         <div className="NodeDetails">
             <div className="Title">
-                <FilterTextField label={null}
+                <FilterTextField label="Node name"
                                  initValue={node?.data?.metadata?.name}
                                  onSubmit={onLabelSet}
                                  onChange={(event) => onLabelSet(event.target.value)}/>

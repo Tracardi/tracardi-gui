@@ -5,6 +5,7 @@ import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {ObjectRow} from "./rows/ObjectRow";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CircularProgress from "@mui/material/CircularProgress";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const AutoLoadObjectList = ({
                                 label,
@@ -26,6 +27,7 @@ const AutoLoadObjectList = ({
     const [error, setError] = useState(false);
     const [allowLoadingSpinner, setAllowLoadingSpinner] = useState(true);
     const [lastQuery, setLastQuery] = useState("")
+    const [progress, setProgress] = useState(false)
 
     const mounted = useRef(false);
 
@@ -38,9 +40,12 @@ const AutoLoadObjectList = ({
     }, []);
 
     const loadData = useCallback((fresh=false, progress=false) => {
-        if (mounted.current===true && progress) {
-            setLoading(true);
-            setAllowLoadingSpinner(false);
+        if (mounted.current===true) {
+            setProgress(true);
+            if(progress) {
+                setLoading(true);
+                setAllowLoadingSpinner(false);
+            }
         }
 
         let endpoint;
@@ -56,8 +61,11 @@ const AutoLoadObjectList = ({
         request(
             endpoint,
             (state) => {
-                if (mounted.current===true && progress) {
-                    setLoading(state)
+                if (mounted.current===true) {
+                    if(progress) {
+                        setLoading(state);
+                    }
+                    setProgress(false);
                 }
             },
             (e) => {
@@ -154,6 +162,7 @@ const AutoLoadObjectList = ({
     return (
         <div className="ObjectList">
             {renderHeader(timeFieldLabel)}
+            <div style={{height: 5}}>{progress &&<LinearProgress />}</div>
             <InfiniteScroll
                 dataLength={rows.length}
                 next={() => {

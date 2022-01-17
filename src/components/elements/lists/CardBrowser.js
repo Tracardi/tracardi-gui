@@ -5,7 +5,7 @@ import FormDrawer from "../../elements/drawers/FormDrawer";
 import FilterAddForm from "../../elements/forms/inputs/FilterAddForm";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import ErrorsBox from "../../errors/ErrorsBox";
-import {asyncRemote} from "../../../remote_api/entrypoint";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 
 const CardBrowser = ({
                          label,
@@ -47,7 +47,7 @@ const CardBrowser = ({
                 })
                 .catch((e) => {
                     if (e && isSubscribed) {
-                        setErrors(e)
+                        setErrors(getError(e))
                     }
                 })
                 .finally(() => {
