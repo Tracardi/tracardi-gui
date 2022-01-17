@@ -1441,14 +1441,14 @@
     prop-types "^15.7.2"
     react-is "^17.0.2"
 
-"@mui/icons-material@^5.2.5":
+"@mui/icons-material@^5.0.0", "@mui/icons-material@^5.2.5":
   version "5.2.5"
   resolved "https://registry.yarnpkg.com/@mui/icons-material/-/icons-material-5.2.5.tgz#c6575430b565c023232147934c45775630a53f02"
   integrity sha512-uQiUz+l0xy+2jExyKyU19MkMAR2F7bQFcsQ5hdqAtsB14Jw2zlmIAD55mV6f0NxKCut7Rx6cA3ZpfzlzAfoK8Q==
   dependencies:
     "@babel/runtime" "^7.16.3"
 
-"@mui/material@^5.2.8":
+"@mui/material@^5.0.0", "@mui/material@^5.2.8":
   version "5.2.8"
   resolved "https://registry.yarnpkg.com/@mui/material/-/material-5.2.8.tgz#50bbf7f04306c122524a02dd2a0827d79b2bbd05"
   integrity sha512-GYNYoTDw3C07D1rkB9pTS3xMH3gL0p3kb27SVMrMqP3AWrFxfrS73OnsonJh6Uy/F22pYX6rJxiFOhPq5+i4Eg==
@@ -1484,7 +1484,7 @@
     "@emotion/cache" "^11.7.1"
     prop-types "^15.7.2"
 
-"@mui/styles@^5.2.3":
+"@mui/styles@^5.0.0", "@mui/styles@^5.2.3":
   version "5.2.3"
   resolved "https://registry.yarnpkg.com/@mui/styles/-/styles-5.2.3.tgz#fece4be72efe63368c3b2476db68074d2a4bc8d6"
   integrity sha512-Art4qjlEI9H2h34mLL8s+CE9nWZWZbuJLbNpievaIM6DGuayz3DYkJHcH5mXJYFPhTNoe9IQYbpyKofjE0YVag==
@@ -3355,7 +3355,7 @@ classcat@^5.0.3:
   resolved "https://registry.yarnpkg.com/classcat/-/classcat-5.0.3.tgz#38eaa0ec6eb1b10faf101bbcef2afb319c23c17b"
   integrity sha512-6dK2ke4VEJZOFx2ZfdDAl5OhEL8lvkl6EHF92IfRePfHxQTqir5NlcNVUv+2idjDqCX2NDc8m8YSAI5NI975ZQ==
 
-classnames@^2.2.5:
+classnames@^2.2.5, classnames@^2.2.6:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
   integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
@@ -6804,6 +6804,18 @@ material-ui-confirm@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/material-ui-confirm/-/material-ui-confirm-3.0.3.tgz#0809fbd1797b1392415ab058e3568fb0705265a8"
   integrity sha512-lS1hIGhY4ANsXQkyObfyMILdegwEVHe5UaRvt0Oul/47cfSVycVosZDFCUSbRyJbeQVeY9R2avw1pQTQmRit3A==
+
+material-ui-popup-state@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/material-ui-popup-state/-/material-ui-popup-state-2.0.0.tgz#8050421a9d00df67d7f63e7b2b73ab5b331051ff"
+  integrity sha512-1sbb9xpMs7OxG0SOGfGO0ZnwiLtqZSoXda0/AqqJkpouT4e0nADXutQtDJFMa9GUMNAODVDlYnNmfqM+MhFjsg==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@mui/icons-material" "^5.0.0"
+    "@mui/material" "^5.0.0"
+    "@mui/styles" "^5.0.0"
+    classnames "^2.2.6"
+    prop-types "^15.7.2"
 
 mdn-data@2.0.14:
   version "2.0.14"

@@ -24,14 +24,6 @@ export default function MainMenu() {
         return () => history.push(urlPrefix(url));
     }
 
-    const external = (url, newWindow=false) => {
-        if(newWindow===true) {
-            return () => window.open(url, '_blank', 'location=yes,scrollbars=yes,status=yes')
-        } else {
-            return () => window.location.href = url;
-        }
-    }
-
     const MenuRow = ({label, icon, onClick, style, collapsed=false}) => {
         return <div className="MenuRow" onClick={onClick} style={style}><span className="Icon">{icon}</span>{!collapsed && <span className="Label">{label}</span>}</div>
     }
@@ -65,10 +57,6 @@ export default function MainMenu() {
             </div>
         </div>
         <div>
-            <MenuRow icon={<IoLogoYoutube size={20}/>} label="YouTube" collapsed={collapsed} onClick={external("https://www.youtube.com/channel/UC0atjYqW43MdqNiSJBvN__Q", true)}/>
-            <MenuRow icon={<VscTwitter size={20}/>} label="Twitter" collapsed={collapsed} onClick={external("http://twitter.com/tracardi", true)}/>
-            <MenuRow icon={<VscBook size={20}/>} label="Manual" collapsed={collapsed} style={{marginBottom: 15}} onClick={external("http://docs.tracardi.com", true)}/>
-
             <MenuRow icon={<AiOutlinePoweroff size={20}/>}
                 label="Logout"
                 collapsed={collapsed}
