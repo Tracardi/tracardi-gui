@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {Redirect, useLocation} from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
@@ -20,6 +19,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import version from '../../misc/version';
 import storageValue from "../../misc/localStorageDriver";
 import {asyncRemote} from "../../remote_api/entrypoint";
+import Button from "../elements/forms/Button";
 
 function Copyright() {
     return (
@@ -94,10 +94,22 @@ const SignInForm = ({showAlert}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [endpoint, setEndpoint] = useState(new storageValue('tracardi-api-url').read([]));
+    const [progress, setProgress] = useState(false);
 
     const {state} = useLocation();
     const {from} = state || {from: {pathname: urlPrefix("/")}};
     const [redirectToReferrer, setRedirectToReferrer] = useState(false);
+
+    const mounted = useRef(false);
+
+    useEffect(() => {
+        mounted.current = true;
+
+        return () => {
+            mounted.current = false;
+        }
+    }, [])
+
 
     const handleEmailChange = (evt) => {
         setEmail(evt.target.value);
@@ -124,15 +136,15 @@ const SignInForm = ({showAlert}) => {
         }
     };
 
-    const onSubmit = event => {
+    const handleSubmit = event => {
         const api = loginUser(email, password);
+        setProgress(true);
         api.then(response => {
             setToken(response.data['access_token']);
             setRoles(response.data['roles'])
             setRedirectToReferrer(true);
             handleSubmitEndpoint();
-        })
-            .catch(e => {
+        }).catch(e => {
                 let message = e.message;
                 if (typeof e.response == "undefined") {
                     message = 'Api unavailable.';
@@ -142,7 +154,11 @@ const SignInForm = ({showAlert}) => {
                     message = e.response.data['detail']
                 }
                 showAlert({type: "error", message: message, hideAfter: 3000})
-            });
+            }).finally(()=>{
+                if(mounted.current === true) {
+                    setProgress(false)
+                }
+        });
         event.preventDefault();
     };
 
@@ -174,7 +190,7 @@ const SignInForm = ({showAlert}) => {
                             }}>{errorMessage}</p>
                         ) : null}
 
-                        <form onSubmitCapture={onSubmit} className={classes.form} noValidate>
+                        <form onSubmitCapture={handleSubmit} className={classes.form} noValidate>
                             <TextField
                                 variant="outlined"
                                 margin="normal"
@@ -228,17 +244,13 @@ const SignInForm = ({showAlert}) => {
                                 />
                             </div>
                             <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
-
-                            >
-                                Sign In
-                            </Button>
+                                style={{justifyContent: "center", marginTop: 20}}
+                                label="Sign In"
+                                onClick={handleSubmit}
+                                progress={progress}
+                            />
                         </form>
-                        <Box mt={8}>
+                        <Box mt={1}>
                             <Copyright/>
                         </Box>
                     </div>
