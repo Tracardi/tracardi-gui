@@ -90,6 +90,7 @@ const FlowNodeDynamic = ({data}) => {
 
     return (
         <div style={{position: "relative"}}>
+            {data?.spec?.run_once?.enabled && <ThresholdIcon/>}
             <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={portStyle}/>
             <div className={nodeClass} style={nodeStyle}>
                 <ExecutionNumber data={data}/>
@@ -104,7 +105,6 @@ const FlowNodeDynamic = ({data}) => {
                 {data?.metadata?.pro ? <div className="NodePro" style={backgroundStyle}>Pro</div> : ""}
             </div>
             <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={portStyle}/>
-            {data?.spec?.run_once?.enabled && <ThresholdIcon/>}
         </div>
     );
 };

@@ -82,6 +82,27 @@ export function NodeRuntimeConfigForm({pluginId, value: initValue, onChange}) {
         }
     }
 
+    const Select = ({value, onChange, label, children}) => {
+
+        const [selectValue, setSelectValue] = useState(value || "value");
+
+        const handleChange = (ev) => {
+            setSelectValue(ev.target.value);
+            onChange(ev.target.value)
+        }
+
+        return <TextField variant="outlined"
+                          label={label}
+                          value={selectValue}
+                          onChange={handleChange}
+                          select
+                          size="small"
+                          style={{width: 150, marginRight: 5}}
+        >
+            {children}
+        </TextField>
+    }
+
     const TurnOnOff = ({value, label, onChange}) => {
 
         const [toggleValue, setToggleValue] = useState(value);
@@ -159,19 +180,19 @@ export function NodeRuntimeConfigForm({pluginId, value: initValue, onChange}) {
                         <p>What trigger value should be monitored for changes. Value also can be a condition.
                         </p>
                         <div style={{display: "flex"}}>
-                            <TextField variant="outlined"
-                                       label="type"
-                                       value={"value"}
-                                       onChange={(ev) => {
-
-                                       }}
-                                       select
-                                       size="small"
-                                       style={{width: 150, marginRight: 5}}
+                            <Select
+                                label="type"
+                                value={value?.run_once?.type}
+                                onChange={(v) => {
+                                    value.run_once.type = v
+                                    if (onChange) {
+                                        onChange(pluginId, value)
+                                    }
+                                }}
                             >
                                 <MenuItem value="value">Value</MenuItem>
                                 <MenuItem value="condition">Condition</MenuItem>
-                            </TextField>
+                            </Select>
                             <Input label="Value to monitor"
                                    value={value?.run_once?.value}
                                    onChange={(v) => {
