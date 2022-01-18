@@ -420,7 +420,7 @@ export function FlowEditorPane(
             borderRadius: 15,
             marginLeft: 5,
             backgroundColor: "#ef6c00"
-        }}>This is draft</span>
+        }}>This is a draft</span>
     }
 
     const StatusTag = () => {

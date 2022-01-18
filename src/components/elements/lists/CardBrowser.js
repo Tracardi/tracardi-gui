@@ -6,6 +6,8 @@ import FilterAddForm from "../../elements/forms/inputs/FilterAddForm";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
+import NoData from "../misc/NoData";
 
 const CardBrowser = ({
                          label,
@@ -84,7 +86,23 @@ const CardBrowser = ({
         setDisplayAddForm(true)
     }
 
-    return <div className="CardBrowser">
+    const Content = () => {
+        return <TuiForm style={{margin: 20, marginTop: 0}}>
+            <TuiFormGroup fitHeight={true}>
+                <TuiFormGroupHeader header={label} description={description}/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField>
+                        <section className={className} style={{display: "flex", flexWrap: "wrap", width: "100%"}}>
+                            {cards && cardFunc(cards, onClick)}
+                            {errors && <ErrorsBox errorList={errors}/>}
+                        </section>
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>
+    }
+
+    const Container = () => <div className="CardBrowser">
         <FilterAddForm
             style={{margin: "0 20px", marginTop: 5}}
             textFieldLabel="Type to filter"
@@ -93,22 +111,12 @@ const CardBrowser = ({
             onFilter={onFilter}
             onAdd={onAdd}/>
 
-
-        <TuiForm style={{margin: 20, marginTop: 0}}>
-            <TuiFormGroup fitHeight={true}>
-                <TuiFormGroupHeader header={label} description={description}/>
-                <TuiFormGroupContent>
-                    <TuiFormGroupField>
-                        <section className={className} style={{display: "flex", flexWrap: "wrap", width: "100%"}}>
-                            {loading && <CenteredCircularProgress/>}
-                            {cards && cardFunc(cards, onClick)}
-                            {errors && <ErrorsBox errorList={errors}/>}
-                        </section>
-                    </TuiFormGroupField>
-                </TuiFormGroupContent>
-            </TuiFormGroup>
-        </TuiForm>
-
+        {loading && <div style={{height: 300}}><CenteredCircularProgress/></div>}
+        {!loading && isEmptyObjectOrNull(cards?.grouped) && <NoData header="There is no data here.">
+            <p>Please click create button in the upper right corner.</p>
+            </NoData>
+        }
+        {!loading && !isEmptyObjectOrNull(cards?.grouped) && <Content/>}
 
         <FormDrawer
             width={drawerDetailsWidth}
@@ -131,6 +139,9 @@ const CardBrowser = ({
         </FormDrawer>}
 
     </div>
+
+    return <Container/>
+
 }
 
 export default CardBrowser;

@@ -5,9 +5,20 @@ import {BsDiamond, BsPerson, BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFil
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {MdTimelapse} from "react-icons/md";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
-import {BiMessageRoundedError, BiTimeFive, BiMessageRoundedCheck, BiMessageRoundedX, BiGroup} from "react-icons/bi";
+import {
+    BiMessageRoundedError,
+    BiTimeFive,
+    BiMessageRoundedCheck,
+    BiMessageRoundedX,
+    BiGroup,
+    BiBarChartAlt,
+    BiCloudRain,
+    BiTime,
+    BiParagraph,
+    BiArrowToRight
+} from "react-icons/bi";
 import {RiIncreaseDecreaseLine, RiScissorsCutFill} from "react-icons/ri";
-import {IoCloudOutline, IoPush} from "react-icons/io5";
+import {IoCloudOutline, IoPush, IoLanguageOutline, IoTextOutline, IoCalendarOutline} from "react-icons/io5";
 import {
     VscSymbolEvent,
     VscRegex,
@@ -37,9 +48,8 @@ import {
     VscRunErrors,
     VscExclude
 } from "react-icons/vsc";
-import {MdLibraryAdd} from "react-icons/md";
+import {MdLibraryAdd, MdTimer} from "react-icons/md";
 import {GoBrowser} from "react-icons/go";
-import {SiZapier} from "react-icons/si";
 import {
     SiRabbitmq,
     SiMongodb,
@@ -49,25 +59,25 @@ import {
     SiCurl,
     SiGoogletranslate,
     SiElasticsearch,
-    SiInfluxdb
+    SiInfluxdb,
+    SiZapier
 } from "react-icons/si";
 import {GrMysql} from "react-icons/gr";
-import {AiOutlineSlack, AiOutlinePieChart, AiOutlineCloudServer} from "react-icons/ai";
+import {
+    AiOutlineSlack,
+    AiOutlinePieChart,
+    AiOutlineCloudServer,
+    AiOutlineSplitCells,
+    AiOutlineCheckCircle,
+    AiFillGoogleCircle
+} from "react-icons/ai";
 import {FaFacebookSquare, FaDiscord} from "react-icons/fa";
-import {BiBarChartAlt, BiCloudRain, BiTime, BiParagraph} from "react-icons/bi";
-import {MdTimer} from "react-icons/md";
 import {RiRestTimeLine} from "react-icons/ri";
 import {IoIosTimer, IoIosContact, IoIosAttach} from "react-icons/io";
 import {CgCalendarToday} from "react-icons/cg";
-import {AiOutlineSplitCells} from "react-icons/ai";
-import {IoLanguageOutline} from "react-icons/io5";
-import {AiOutlineCheckCircle} from "react-icons/ai";
-import {IoTextOutline} from "react-icons/io5";
 import {ImInsertTemplate} from "react-icons/im";
 import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp, FaHtml5} from "react-icons/fa";
 import {DiReact} from "react-icons/di";
-import {IoCalendarOutline} from "react-icons/io5";
-import {AiFillGoogleCircle} from "react-icons/ai";
 
 export const icons = {
     "store": (size) => <FiDatabase size={size}/>,
@@ -165,7 +175,8 @@ export const icons = {
     'run-error': (size) => <VscRunErrors size={size}/>,
     'config-error': (size) => <VscExclude size={size}/>,
     'geo-fence': (size) => <BsFillGeoFill size={size}/>,
-    'html5': (size) => <FaHtml5 size={size}/>
+    'html5': (size) => <FaHtml5 size={size}/>,
+    'threshold': (size) => <BiArrowToRight size={size}/>
 }
 
 
