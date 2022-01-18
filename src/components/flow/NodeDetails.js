@@ -127,9 +127,10 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                             block_flow: node?.data?.spec?.block_flow || false,
                             on_connection_error_repeat: node?.data?.spec?.on_connection_error_repeat || "0",
                             run_in_background: node?.data?.spec?.run_in_background || false,
-                            on_connection_continue: node?.data?.spec?.on_connection_continue || false,
+                            on_error_continue: node?.data?.spec?.on_error_continue || false,
                             join_input_payload: node?.data?.spec?.join_input_payload || false,
                             append_input_payload: node?.data?.spec?.append_input_payload || false,
+                            run_once: node?.data?.spec?.run_once || {value: "", ttl: 0, type: "value", enabled: false},
                         }
                     }
                     onChange={onRuntimeConfig}

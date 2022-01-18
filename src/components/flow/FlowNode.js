@@ -4,6 +4,7 @@ import './FlowNode.css';
 import FlowNodeIcons from "./FlowNodeIcons";
 import ExecutionNumber from "./ExecutionNumber";
 import {isObject} from '../../misc/typeChecking';
+import ThresholdIcon from "./ThresholdIcon";
 
 
 const FlowNodeDynamic = ({data}) => {
@@ -103,6 +104,7 @@ const FlowNodeDynamic = ({data}) => {
                 {data?.metadata?.pro ? <div className="NodePro" style={backgroundStyle}>Pro</div> : ""}
             </div>
             <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={portStyle}/>
+            {data?.spec?.run_once?.enabled && <ThresholdIcon/>}
         </div>
     );
 };
