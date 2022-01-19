@@ -28,6 +28,7 @@ import convertNodesToProfilingData from "./profilingConverter";
 import {FlowEditorBottomLine} from "./FlowEditorBottomLine";
 import FlowEditorTitle from "./FlowEditorTitle";
 import FlowNodeWithEvents from "./FlowNodeWithEvents";
+import StartNode from "./StartNode";
 
 export function FlowEditorPane(
     {
@@ -46,7 +47,8 @@ export function FlowEditorPane(
     const snapGrid = [20, 20];
     const nodeTypes = {
         flowNode: FlowNode,
-        flowNodeWithEvents: FlowNodeWithEvents
+        flowNodeWithEvents: FlowNodeWithEvents,
+        startNode: StartNode
     };
 
     const edgeTypes = {

@@ -11,7 +11,7 @@ import {
     KeyValueInput,
     ListOfDotPaths,
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
-    SelectInput, BoolInput, ReadOnlyTags
+    SelectInput, BoolInput, ReadOnlyTags, EventTypes
 } from "./JsonFormComponents";
 import ErrorsBox from "../../errors/ErrorsBox";
 
@@ -28,6 +28,10 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
         case "readOnlyTags":
             return () => <ReadOnlyTags value={value}/>
 
+        case "eventTypes":
+            return (props) => <EventTypes value={value}
+                                          onChange={(value) => handleOnChange(value, fieldId)}
+                                          {...props}/>
         case "resource":
             return (props) => <ResourceSelect value={value}
                                               errorMessage={errorMessage}
@@ -105,7 +109,7 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
     }
 }
 
-export const JsonForm = ({schema, values = {}, errorMessages={}, serverSideError, onSubmit, onChange, processing=false, confirmed=false}) => {
+export const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
     const keyValueMapOfComponentValues = object2dot(values)
     const hasErrors = errorMessages && Object.keys(errorMessages).length
 
@@ -198,7 +202,7 @@ export const JsonForm = ({schema, values = {}, errorMessages={}, serverSideError
                 groups={schema.groups}
                 onChange={onChange}
             />}
-            {serverSideError && <ErrorsBox errorList={serverSideError}/> }
+            {serverSideError && <ErrorsBox errorList={serverSideError}/>}
             <Button onClick={() => handleSubmit(schema)}
                     confirmed={confirmed}
                     error={hasErrors}

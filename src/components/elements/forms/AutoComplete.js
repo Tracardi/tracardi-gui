@@ -9,7 +9,7 @@ import {isObject} from "../../../misc/typeChecking";
 import {objectMap} from "../../../misc/mappers";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 
-const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoaded, onSetValue, onChange, solo, disabled}) => {
+const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoaded, onSetValue, onChange, solo, disabled, multiple=false, fullWidth=false}) => {
 
     if (typeof solo == "undefined") {
         solo = true
@@ -93,8 +93,9 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
     return (
         <Autocomplete
             freeSolo={solo}
-
-            style={{width: 300}}
+            multiple={multiple}
+            fullWidth={fullWidth}
+            style={fullWidth ? {width: "100%"} : {width: 300}}
             open={open}
             onOpen={() => {
                 handleLoading();
@@ -151,7 +152,8 @@ AutoComplete.propTypes = {
     onSetValue: PropTypes.func,
     solo: PropTypes.bool,
     disabled: PropTypes.bool,
-    initValue: PropTypes.object
+    fullWidth: PropTypes.bool,
+    multiple: PropTypes.bool,
 }
 
 const mapProps = (state) => {
