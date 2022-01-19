@@ -78,6 +78,7 @@ import {CgCalendarToday} from "react-icons/cg";
 import {ImInsertTemplate} from "react-icons/im";
 import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp, FaHtml5} from "react-icons/fa";
 import {DiReact} from "react-icons/di";
+import {GiPathDistance} from "react-icons/gi";
 
 export const icons = {
     "store": (size) => <FiDatabase size={size}/>,
@@ -176,7 +177,8 @@ export const icons = {
     'config-error': (size) => <VscExclude size={size}/>,
     'geo-fence': (size) => <BsFillGeoFill size={size}/>,
     'html5': (size) => <FaHtml5 size={size}/>,
-    'threshold': (size) => <BiArrowToRight size={size}/>
+    'threshold': (size) => <BiArrowToRight size={size}/>,
+    'path': (size) => <GiPathDistance size={size}/>
 }
 
 
