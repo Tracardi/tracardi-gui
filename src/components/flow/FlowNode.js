@@ -5,11 +5,12 @@ import FlowNodeIcons from "./FlowNodeIcons";
 import ExecutionNumber from "./ExecutionNumber";
 import {isObject} from '../../misc/typeChecking';
 import ThresholdIcon from "./ThresholdIcon";
+import {BsArrowDownShort} from "react-icons/bs";
 
 
 const FlowNodeDynamic = ({data}) => {
 
-    const InputPort = ({value, doc, style}) => {
+    const InputPort = ({value, doc, style, append}) => {
 
         const [showHint, setShowHint] = useState(false);
         const [showDesc, setShowDesc] = useState(false);
@@ -26,12 +27,13 @@ const FlowNodeDynamic = ({data}) => {
                 onMouseOver={() => setShowHint(true)}
                 onMouseOut={() => {setShowHint(false); setShowDesc(false);}}
                 onClick={()=>{setShowDesc(true)}}
-            />
-
+            >
+                {append === true && <BsArrowDownShort size={20} style={{color: "#1565c0"}}/>}
+            </Handle>
         </div>
     }
 
-    const OutputPort = ({value, doc, style}) => {
+    const OutputPort = ({value, doc, style, append}) => {
 
         const [showHint, setShowHint] = useState(false);
         const [showDesc, setShowDesc] = useState(false);
@@ -46,7 +48,9 @@ const FlowNodeDynamic = ({data}) => {
                 onMouseOver={() => setShowHint(true)}
                 onMouseOut={() => {setShowHint(false); setShowDesc(false);}}
                 onClick={()=>{setShowDesc(true)}}
-            />
+            >
+                {append === true && <BsArrowDownShort size={20} style={{color: "#1565c0"}}/>}
+            </Handle>
             {showHint && <span className="OutputPortHint PortHint">{value}</span>}
             {showDesc && doc && <span className="OutputPortDesc PortHint">{doc}</span>}
         </div>
@@ -54,14 +58,14 @@ const FlowNodeDynamic = ({data}) => {
         </>
     }
 
-    const Outputs = ({spec, documentation, style}) => {
+    const Outputs = ({spec, documentation, style, append}) => {
 
         if (spec?.outputs) {
-            return <div className="NodePorts" style={{marginTop: "-7px"}}>
+            return <div className="NodePorts" style={{marginTop: "-9px"}}>
                 {
                     spec.outputs.map((value, index) => {
                         const doc = isObject(documentation) && value in documentation ? documentation[value].desc : null
-                        return <OutputPort key={index} value={value} doc={doc} style={style}/>
+                        return <OutputPort key={index} value={value} doc={doc} style={style} append={append}/>
                     })
                 }
             </div>
@@ -69,13 +73,13 @@ const FlowNodeDynamic = ({data}) => {
         return "Error no spec"
     }
 
-    const Inputs = ({spec, documentation, style}) => {
+    const Inputs = ({spec, documentation, style, append}) => {
         if (spec?.inputs) {
-            return <div className="NodePorts" style={{marginBottom: "-7px"}}>
+            return <div className="NodePorts" style={{marginBottom: "-9px"}}>
                 {
                     spec.inputs.map((value, index) => {
                         const doc = isObject(documentation) && value in documentation ? documentation[value].desc : null
-                        return <InputPort key={index} value={value} doc={doc} style={style}/>
+                        return <InputPort key={index} value={value} doc={doc} style={style} append={append}/>
                     })
                 }
             </div>
@@ -83,7 +87,9 @@ const FlowNodeDynamic = ({data}) => {
         return "Error no spec"
     }
 
-    const nodeClass = (data?.metadata?.selected === true) ? "NodePanel DebugNode" : "NodePanel"
+    let nodeClass = "NodePanel"
+    nodeClass = (data?.metadata?.selected === true) ? nodeClass+" DebugNode" : nodeClass
+
     const nodeStyle = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {borderColor: "#ccc", color: "#999"} : {}
     const portStyle = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {borderColor: "#ccc"} : {borderColor: "#1565c0", borderWidth: 2}
     const backgroundStyle = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {backgroundColor: "#aaa"} : {}
@@ -91,7 +97,7 @@ const FlowNodeDynamic = ({data}) => {
     return (
         <div style={{position: "relative"}}>
             {data?.spec?.run_once?.enabled && <ThresholdIcon/>}
-            <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={portStyle}/>
+            <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={portStyle} append={data?.spec?.append_input_payload}/>
             <div className={nodeClass} style={nodeStyle}>
                 <ExecutionNumber data={data}/>
                 <div className="NodePadding">
@@ -104,7 +110,7 @@ const FlowNodeDynamic = ({data}) => {
                 </div>
                 {data?.metadata?.pro ? <div className="NodePro" style={backgroundStyle}>Pro</div> : ""}
             </div>
-            <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={portStyle}/>
+            <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={portStyle} append={data?.spec?.append_input_payload}/>
         </div>
     );
 };

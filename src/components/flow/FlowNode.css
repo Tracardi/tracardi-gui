@@ -1,11 +1,13 @@
 .react-flow__handle {
-    width: 14px !important;
-    height: 14px !important;
+    width: 17px !important;
+    height: 17px !important;
     background-color: white !important;
     border-radius: 100% !important;
     position: unset !important;
-    border:2px solid #1565c0;
+    border: 2px solid #1565c0;
     transform: none !important;
+    display: flex;
+    align-items: center;
 }
 
 .react-flow__handle-bottom {
@@ -31,6 +33,7 @@
 }
 .react-flow__node-flowNodeWithEvents.selected .NodePanel,
 .react-flow__node-flowNode.selected .NodePanel,
+.react-flow__node-flowNode.selected .NodePanelPassValue,
 .react-flow__node-flowNode.selected:hover .NodePanel{
     cursor: grab;
     background-color: rgb(0, 105, 192);
@@ -106,8 +109,18 @@ DIV.NodePanel {
     display: flex;
     flex-direction: row;
     border-style: solid;
-    border-radius: 6px;
+    border-radius: 10px;
     border-width: 2px;
+    background-color: white;
+    position: relative;
+    color: #444444;
+}
+
+DIV.NodePanelPassValue {
+    display: flex;
+    flex-direction: row;
+    border-style: solid;
+    border-width: 2px 6px 2px 6px;
     background-color: white;
     position: relative;
     color: #444444;
@@ -194,6 +207,7 @@ DIV.NodeOutboundEvents SPAN.Event {
     cursor: pointer;
 }
 
+DIV.NodeInboundEvents SPAN.Event:hover,
 DIV.NodeOutboundEvents SPAN.Event:hover {
     background-color: #ddd;
 }

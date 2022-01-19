@@ -100,7 +100,7 @@ const StartNodeDynamic = ({data}) => {
                     <div className={nodeClass} style={nodeStyle}>
                         <ExecutionNumber data={data} style={{top: 9, right: -16}}/>
                         <div className="NodePadding">
-                            <BsPlayCircleFill size={24}/>
+                            <BsPlayCircleFill size={24} style={{margin: 10}}/>
                         </div>
                     </div>
                     <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={portStyle}/>

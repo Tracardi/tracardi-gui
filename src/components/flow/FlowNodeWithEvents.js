@@ -108,7 +108,7 @@ const FlowNodeWithEventsDynamic = ({data}) => {
                     <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={portStyle}/>
                 </div>
                 {isObject(data?.metadata?.emits_event) && <div className="NodeOutboundEvents">
-                    {objectMap(data?.metadata?.emits_event,(name, eventType)  => <span className="Event">{name}</span>)}
+                    {objectMap(data?.metadata?.emits_event,(name, eventType)  => <span className="Event" key={name}>{name}</span>)}
                 </div>}
 
             </div>
