@@ -101,10 +101,10 @@ const FlowNodeDynamic = ({data}) => {
             <div className={nodeClass} style={nodeStyle}>
                 <ExecutionNumber data={data}/>
                 <div className="NodePadding">
-                    <div className="NodeIcon"><FlowNodeIcons icon={data?.metadata?.icon}/></div>
+                    <FlowNodeIcons icon={data?.metadata?.icon} size={20}/>
                     <div className="NodeLabel"
                          style={{maxWidth: data?.metadata?.width, maxHeight: data?.metadata?.height}}>
-                        <p>{data?.metadata?.name}</p>
+                        <p style={{marginLeft: 5}}>{data?.metadata?.name}</p>
                         <aside>v.{data?.spec?.version}</aside>
                     </div>
                 </div>

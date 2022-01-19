@@ -159,11 +159,6 @@ DIV.DebugNode {
     color: white !important;
 }
 
-DIV.NodeIcon {
-    width: 24px;
-    display: grid;
-}
-
 DIV.NodeLabel {
     display: flex;
     align-items: center;
