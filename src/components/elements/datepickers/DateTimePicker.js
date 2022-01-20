@@ -72,7 +72,7 @@ export default function DataTimePicker({type, datetime, onDatetimeSelect}) {
     return <div>
         <Button
             icon={<IoCalendarOutline size={24} style={{marginRight: 5}}/>}
-            style={{width: 240, marginLeft: 5}}
+            style={{width: 240, margin:0, marginLeft: 5}}
             label={datetimeString(datetime)}
             onClick={handleDisplay}
         />

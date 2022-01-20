@@ -14,7 +14,16 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
     const [fromDate, setFromDate] = useState(initDate.minDate);
     const [toDate, setToDate] = useState(initDate.maxDate);
     const [query, setQuery] = useState(initDate.where);
+
     const dispatch = useDispatch();
+
+    const external = (url, newWindow=false) => {
+        if(newWindow===true) {
+            return () => window.open(url, '_blank', 'location=yes,scrollbars=yes,status=yes')
+        } else {
+            return () => window.location.href = url;
+        }
+    }
 
     const onSetDateFrom = useCallback((date) => {
         localStorage.setItem(type + "DateFrom", JSON.stringify(date));
@@ -76,6 +85,7 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
                        variant="outlined"
                        fullWidth
             />
+            <div style={{fontSize: 11}}>Do not know how to filter. Click <a style={{textDecoration: "underline", cursor: "pointer"}} onClick={external("http://docs.tracardi.com/running/filtering/", true)}>here</a> for information.</div>
         </div>
         <div className="Date">
             <DataTimePicker type="FromDate" datetime={fromDate} onDatetimeSelect={onSetDateFrom}/>
@@ -85,7 +95,7 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
         </div>
         <div className="Action">
             <Button label="Filter"
-                    style={{padding: "8px 14px"}}
+                    style={{padding: "7px 14px", margin:"0 0 0 5px"}}
                     onClick={onReady}
                     icon={<AiOutlineFilter size={20} style={{marginRight: 5}}/>}/>
         </div>
