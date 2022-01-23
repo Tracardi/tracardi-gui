@@ -11,7 +11,6 @@ import {ThemeProvider} from "@material-ui/core/styles";
 import {ConfirmProvider} from "material-ui-confirm";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
-import Table from "./components/elements/table/table"
 
 Sentry.init({
     dsn: "https://2721a09bf1144c10930117609a67f4d5@o1093519.ingest.sentry.io/6112822",
@@ -26,13 +25,12 @@ Sentry.init({
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            {/* <ThemeProvider theme={mainTheme}>
+            <ThemeProvider theme={mainTheme}>
                 <CssBaseline/>
                 <ConfirmProvider>
                     <App/>
                 </ConfirmProvider>
-            </ThemeProvider> */}
-            <Table rows={["Hey, ", 3, 3]} columns={["Hey", 1, 2]}/>
+            </ThemeProvider>
         </Provider>
     </React.StrictMode>,
     document.querySelector('#root'),
