@@ -1,6 +1,8 @@
 import React, { Fragment } from "react";
 import { FixedSizeList as List } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
+import propTypes from 'prop-types';
+
 import "./table.css"
 
 const LOADING = 1;
@@ -24,47 +26,59 @@ const loadMoreItems = (startIndex, stopIndex) => {
 
 
 
-export default function Table(props) {
-  const height = props.height | 200,
-  width = props.width | 300,
-  items = props.items,
-  itemSize = props.itemSize | 35;
-
-  const Row = ({ index, style }) => {
-    let label;
-    if (itemStatusMap[index] === LOADED) {
-      label = `${items[index]}`;
-    } else {
-      label = "Loading...";
+class Table extends React.Component {
+  render() {
+    const height = this.props.height | 200,
+    width = this.props.width | 300,
+    items = this.props.items,
+    itemSize = this.props.itemSize | 35;
+  
+    const Row = ({ index, style }) => {
+      let label;
+      if (itemStatusMap[index] === LOADED) {
+        label = `${items[index]}`;
+      } else {
+        label = "Loading...";
+      }
+      return (
+        <div className="list-item" style={style}>
+          {label}
+        </div>
+      );
     }
+  
     return (
-      <div className="ListItem" style={style}>
-        {label}
-      </div>
+      <Fragment>
+        <InfiniteLoader
+          isItemLoaded={isItemLoaded}
+          itemCount={1000}
+          loadMoreItems={loadMoreItems}
+        >
+          {({ onItemsRendered, ref }) => (
+            <List
+              className="List"
+              height={height}
+              itemCount={items.length}
+              itemSize={itemSize}
+              onItemsRendered={onItemsRendered}
+              ref={ref}
+              width={width}
+            >
+              {Row}
+            </List>
+          )}
+        </InfiniteLoader>
+      </Fragment>
     );
+  
   }
-
-  return (
-    <Fragment>
-      <InfiniteLoader
-        isItemLoaded={isItemLoaded}
-        itemCount={1000}
-        loadMoreItems={loadMoreItems}
-      >
-        {({ onItemsRendered, ref }) => (
-          <List
-            className="List"
-            height={height}
-            itemCount={items.length}
-            itemSize={itemSize}
-            onItemsRendered={onItemsRendered}
-            ref={ref}
-            width={width}
-          >
-            {Row}
-          </List>
-        )}
-      </InfiniteLoader>
-    </Fragment>
-  );
 }
+
+Table.propTypes = {
+  height: propTypes.number,
+  width: propTypes.number,
+  items: propTypes.array.isRequired,
+  itemSize: propTypes.number
+}
+
+export default Table;

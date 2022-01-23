@@ -1,7 +1,3 @@
-.white {
-    background-color: white;
-}
-
-.yellow {
-    background-color: #ffffe1;
+.list-item {
+    border-bottom: 1px #E0E0E0 solid;
 }
