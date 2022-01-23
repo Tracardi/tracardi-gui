@@ -6,13 +6,17 @@ import {useParams} from "react-router-dom";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import FlowNode from "./FlowNode";
+import FlowNodeWithEvents from "./FlowNodeWithEvents";
+import StartNode from "./StartNode";
 
 export function FlowReader({showAlert}) {
 
     let {id} = useParams();
 
     const nodeTypes = {
-        flowNode: FlowNode
+        flowNode: FlowNode,
+        flowNodeWithEvents: FlowNodeWithEvents,
+        startNode: StartNode
     };
 
     const [elements, setElements] = useState(null);
