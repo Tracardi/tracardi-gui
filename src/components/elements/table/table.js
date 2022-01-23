@@ -4,6 +4,10 @@ import propTypes from 'prop-types';
 
 import "./table.css"
 
+/* 
+  Usage example:
+  <Table rows={[1, 2, 3]} columns={[1, 2, 2]}/> 
+*/ 
 class Table extends React.Component {
   render() {
     const height = this.props.height | 200,
