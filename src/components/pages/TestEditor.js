@@ -3,5 +3,5 @@ import TestEditor from "../test/TestEditor";
 
 
 export default function TestEditorPage() {
-    return <TestEditor/>
+    return <TestEditor style={{display: "flex"}} />
 }

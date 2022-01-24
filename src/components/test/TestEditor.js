@@ -5,7 +5,7 @@ import "./RequestResponse.css";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import ResponseForm from "./ResponseFrom";
 
-export default function TestEditor() {
+export default function TestEditor({style, eventType = 'page-view'}) {
 
     const [request, setRequest] = useState({});
     const [response, setResponse] = useState({});
@@ -36,9 +36,9 @@ export default function TestEditor() {
         console.error(e)
     }
 
-    return <div className="TestEditor">
+    return <div className="TestEditor" style={style}>
         <div className="LeftColumn">
-            <RequestForm onRequest={handleRequest} onError={handlerError}/>
+            <RequestForm onRequest={handleRequest} onError={handlerError} eventType={eventType}/>
         </div>
         <div className="RightColumn">
             <ResponseForm loading={loading} response={response} request={request}/>

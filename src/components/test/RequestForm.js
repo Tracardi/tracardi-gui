@@ -16,12 +16,12 @@ import TuiColumnsFlex from "../elements/tui/TuiColumnsFlex";
 import TuiTopHeaderWrapper from "../elements/tui/TuiTopHeaderWrapper";
 import {TuiSelectEventSource} from "../elements/tui/TuiSelectEventSource";
 
-export const RequestForm = ({onError, onRequest}) => {
+export const RequestForm = ({onError, onRequest, eventType: evType}) => {
 
     const [resource, setResource] = useState(null);
-    const [session, setSession] = useState(uuid4());
-    const [profile, setProfile] = useState("");
-    const [eventType, setEventType] = useState('page-view');
+    const [session, setSession] = useState("@debug-session");
+    const [profile, setProfile] = useState("@debug-profile");
+    const [eventType, setEventType] = useState(evType);
     const [properties, setProperties] = useState(JSON.stringify({}));
     const [context, setContext] = useState(JSON.stringify({}));
     const [profileFlag, setProfileFlag] = useState(true);
@@ -137,7 +137,7 @@ export const RequestForm = ({onError, onRequest}) => {
                 <TuiFormGroupField header="Event properties" description="Event properties is the data data is sent to Tracardi for further processing.">
                     <fieldset>
                         <legend>Properties</legend>
-                        <JsonEditor value={properties} onChange={setProperties} height="200px"/>
+                        <JsonEditor value={properties} onChange={setProperties} height="150px"/>
                     </fieldset>
                 </TuiFormGroupField>
             </TuiFormGroupContent>

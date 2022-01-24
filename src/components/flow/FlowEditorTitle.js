@@ -24,9 +24,12 @@ import {BiReset} from "react-icons/bi";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import {save} from "./FlowEditorOps";
 import {useConfirm} from "material-ui-confirm";
+import TestEditor from "../test/TestEditor";
+import {BsClipboardCheck} from "react-icons/bs";
 
 export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onDraftRestore, onDeploy, onSaveDraft}) {
 
+    const [testConsoleOpened, setTestConsoleOpened] = useState(false);
     const [eventsOpened, setEventsOpened] = useState(false);
     const [rulesOpened, setRulesOpened] = useState(false);
     const [openRuleForm, setOpenRuleForm] = useState(false);
@@ -165,15 +168,32 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                     onClick={handleDeploy}
                     progress={deployProgress}
             />
+            <Button label="Test"
+                    icon={<BsClipboardCheck size={20}/>}
+                    style={{padding: "4px 8px", fontSize: 14, justifyContent: "center"}}
+                    onClick={() => setTestConsoleOpened(true)}
+            />
             <Button label="Data"
                     icon={<BsFolder size={20}/>}
                     style={{padding: "4px", width: 100, fontSize: 14, justifyContent: "center"}}
-                    onClick={() => setEventsOpened(true)}/>
+                    onClick={() => setEventsOpened(true)}
+            />
             <Button label="Rules"
                     icon={<FaUncharted size={20}/>}
                     style={{padding: "4px", width: 100, fontSize: 14, justifyContent: "center"}}
-                    onClick={() => setRulesOpened(true)}/>
+                    onClick={() => setRulesOpened(true)}
+            />
         </div>
+
+        <FormDrawer
+            width={750}
+            label="Test console"
+            onClose={() => {
+                setTestConsoleOpened(false)
+            }}
+            open={testConsoleOpened}>
+            {testConsoleOpened && <TestEditor eventType="page-view"/>}
+        </FormDrawer>
 
 
         <FormDrawer
