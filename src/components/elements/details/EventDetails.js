@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import theme from "../../../themes/inspector_light_theme";
 import {ObjectInspector} from "react-inspector";
 import "../lists/cards/SourceCard.css";
@@ -12,11 +12,47 @@ import EventLogDetails from "./EventLogDetails";
 import ProfileLogDetails from "./ProfileLogDetails";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {isEmptyObject, isEmptyObjectOrNull} from "../../../misc/typeChecking";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import ErrorsBox from "../../errors/ErrorsBox";
 
 export default function EventDetails({data}) {
+
+
+    const ProfileRawData = ({profileId}) => {
+
+        const [errors, setErrors] = useState(null)
+        const [loading, setLoading] = useState(false)
+        const [profileData, setProfileData] = useState({})
+
+        useEffect(() => {
+            let isSubscribed = true
+            setLoading(true);
+            asyncRemote({
+                url: `/profile/${profileId}`
+            }).then((response)=>{
+                if(response && isSubscribed===true) {
+                    setErrors(null);
+                    setProfileData(response?.data);
+                }
+            }).catch((e) => {
+                if(isSubscribed === true) setErrors(getError(e))
+            }).finally(() => {
+                if(isSubscribed === true) setLoading(false)
+            })
+            return () => isSubscribed = false
+        }, [profileId])
+
+        return <>
+            {errors && <ErrorsBox errorList={errors}/>}
+            {loading && <CenteredCircularProgress/>}
+            {errors === null && profileData && <ObjectInspector data={profileData} theme={theme} expandLevel={3}/>}
+            </>
+    }
+
     return <div style={{height: "inherit"}}>
         <div className="RightTabScroller">
-            <Tabs tabs={["Event", "Context", "Raw", "Flow debug", "Flow logs", "Profile logs"]}>
+            <Tabs tabs={["Event", "Context", "Raw", "Flow debug", "Flow logs", "Profile logs", "Profile"]}>
                 <TabCase id={0}>
                     <TuiForm style={{padding: 20}}>
                         <TuiFormGroup>
@@ -75,7 +111,7 @@ export default function EventDetails({data}) {
                 <TabCase id={2}>
                     <TuiForm style={{padding: 20}}>
                         <TuiFormGroup>
-                            <TuiFormGroupHeader header="Event context"/>
+                            <TuiFormGroupHeader header="Event raw data"/>
                             <TuiFormGroupContent>
                                 <ObjectInspector data={data} theme={theme} expandLevel={3}/>
                             </TuiFormGroupContent>
@@ -97,6 +133,16 @@ export default function EventDetails({data}) {
                         <ProfileLogDetails profileId={data?.event?.profile?.id}
                                            sessionProfileId={data?.event?.session?.profile?.id}/>
                     </div>
+                </TabCase>
+                <TabCase id={6}>
+                    <TuiForm style={{padding: 20}}>
+                            <TuiFormGroup>
+                                <TuiFormGroupHeader header="Profile raw data" description="This is current profile state. Not the state when the event was collected."/>
+                                <TuiFormGroupContent>
+                                    <ProfileRawData profileId={data?.event?.profile?.id}/>
+                                </TuiFormGroupContent>
+                            </TuiFormGroup>
+                        </TuiForm>
                 </TabCase>
             </Tabs>
 

@@ -71,7 +71,7 @@
 }
 .TaskHeader .TaskName,
 .TaskRow .TaskName {
-    width: 130px;
+    width: 300px;
     border-right: solid 1px #ccc;
     padding: 0 5px;
     position: sticky;

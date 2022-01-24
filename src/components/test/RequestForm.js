@@ -97,7 +97,7 @@ export const RequestForm = ({onError, onRequest}) => {
 
                 <TuiFormGroupField header="Options">
                     <BoolInput label="Return profile data" value={profileFlag} onChange={setProfileFlag}/>
-                    <BoolInput label="Return debugger data" value={debug} onChange={setDebug}/>
+                    <BoolInput label="Return debugger data, TRACK_DEBUG env must be set to yes" value={debug} onChange={setDebug}/>
                 </TuiFormGroupField>
 
                 <TuiFormGroupField header="Context" description="Context is the additional data describing event context.">
