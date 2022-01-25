@@ -21,7 +21,6 @@ export default function RuleForm({onEnd, init}) {
             flow: {},
             name: "",
             description: "",
-            sourceDisabled: true,
             tags: []
         }
     }
@@ -36,7 +35,6 @@ export default function RuleForm({onEnd, init}) {
     const [typeErrorMessage, setTypeErrorMessage] = useState("");
     const [flowErrorMessage, setFlowErrorMessage] = useState("");
     const [sourceErrorMessage, setSourceErrorMessage] = useState("");
-    const [sourceDisabled, setSourceDisabled] = useState(init.sourceDisabled);
     const [processing, setProcessing] = useState(false);
     const [tags, setTags] = useState(init?.tags || []);
 
@@ -52,11 +50,6 @@ export default function RuleForm({onEnd, init}) {
 
     const handleType = (value) => {
         setType(value);
-        if (value) {
-            setSourceDisabled(false);
-        } else {
-            setSourceDisabled(true);
-        }
     }
 
     const handleSourceSet = (value) => {
@@ -132,7 +125,7 @@ export default function RuleForm({onEnd, init}) {
     return <TuiForm style={{margin: 20}}>
 
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Rule trigger and workflow" description="Workflow engine will trigger given flow
+            <TuiFormGroupHeader header="Routing rule settings" description="Workflow engine will trigger selected flow
             only if incoming event type and resource are equal to the values set in this form. "/>
             {error && <ErrorsBox errorList={error} style={{borderRadius: 0}}/>}
             <TuiFormGroupContent>
@@ -143,7 +136,6 @@ export default function RuleForm({onEnd, init}) {
                 <TuiFormGroupField header="Source" description="Select event source. Event without selected source will be
                     discarded.">
                     <TuiSelectEventSource value={source}
-                                          disabled={sourceDisabled}
                                           onSetValue={handleSourceSet}
                                           errorMessage={sourceErrorMessage}/>
                 </TuiFormGroupField>

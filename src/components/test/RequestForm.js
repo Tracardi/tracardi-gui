@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import {v4 as uuid4} from "uuid";
 import Input from "../elements/forms/inputs/Input";
 import JsonEditor from "../elements/editors/JsonEditor";
 import Button from "../elements/forms/Button";
@@ -38,26 +37,35 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
 
             const props = JSON.parse(properties);
             const ctx = JSON.parse(context);
-            let requestBody = {
-                context: ctx,
-                session: {id: session},
-                source: resource,
-                events: [
-                    {
-                        type: eventType, properties: props
+
+            if(eventType === "" || eventType === null) {
+                throw new Error("Event type is empty.");
+            }
+
+            if(ctx !== null && props !== null) {
+
+                let requestBody = {
+                    context: ctx,
+                    session: {id: session},
+                    source: resource,
+                    events: [
+                        {
+                            type: eventType, properties: props
+                        }
+                    ],
+                    options: {
+                        profile: profileFlag,
+                        debugger: debug
                     }
-                ],
-                options: {
-                    profile: profileFlag,
-                    debugger: debug
                 }
+
+                if (profile) {
+                    requestBody = {...requestBody, profile: {id: profile}}
+                }
+
+                await onRequest(requestBody);
             }
 
-            if (profile) {
-                requestBody = {...requestBody, profile: {id: profile}}
-            }
-
-            await onRequest(requestBody);
 
         } catch (e) {
             onError(e)
