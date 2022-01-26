@@ -26,6 +26,7 @@ import PageTabs from "./pages/groups/PageTabs";
 import Consents from "./pages/Consents";
 import Dashboard from "./pages/Dashboard";
 import EventValidation from "./pages/EventValidation";
+import Logs from "./pages/Logs";
 
 const AppBox = () => {
 
@@ -123,6 +124,7 @@ const AppBox = () => {
                       tabs={{
                           "Running instances": <Instances/>,
                           "Scheduled tasks": <Tasks/>,
+                          "Logs": <Logs/>,
                       }}
             />
 
