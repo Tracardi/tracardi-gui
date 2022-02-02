@@ -22,7 +22,7 @@ export default function TracardiPro() {
     useEffect(() => {
         setLoading(true);
         asyncRemote({
-            url: "/tracardi-pro"
+            url: "/tpro"
         }).then(
             (response) => {
 

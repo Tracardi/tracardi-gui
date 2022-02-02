@@ -16,7 +16,7 @@ const TracardiProAvailableServicesList = ({onServiceClick}) => {
     useEffect(() => {
         setLoading(true);
         asyncRemote({
-            url: '/tracardi-pro/services?available=1',
+            url: '/tpro/available_services',
             method: "GET",
         }).then((response) => {
             setServices(response.data)
@@ -30,7 +30,7 @@ const TracardiProAvailableServicesList = ({onServiceClick}) => {
     return <div className="TracardiProAvailableServicesList">
         {loading && <CenteredCircularProgress/>}
         {error && <ErrorsBox errorList={error} /> }
-        {isObject(services) && objectMap(services, (key, service) => {
+        {isObject(services) && objectMap(services?.services, (key, service) => {
             return <ServiceCard key={key} service={service} onClick={onServiceClick}/>
         })}
     </div>

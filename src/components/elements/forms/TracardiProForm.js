@@ -30,7 +30,7 @@ export default function TracardiProForm({value, onSubmit}) {
             setError(false);
             setLoading(true);
             const response = await asyncRemote({
-                url: '/tracardi-pro',
+                url: '/tpro/authorize',
                 method: "POST",
                 data: {
                     ...data,
