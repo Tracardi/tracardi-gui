@@ -11,6 +11,7 @@ import {IoGitNetworkSharp} from "react-icons/io5";
 import {GoSettings} from "react-icons/go";
 import {VscLaw} from "react-icons/vsc";
 import {BsFolderCheck, BsClipboardCheck, BsStar, BsBoxArrowInUpRight} from "react-icons/bs";
+import {commercial} from "../../config";
 
 export default function MainMenu() {
 
@@ -39,7 +40,7 @@ export default function MainMenu() {
         <div>
             <Branding collapsed={collapsed}/>
             <div>
-                <MenuRow icon={<BsStar size={20}/>} label="Tracardi Pro" collapsed={collapsed} onClick={go("/pro")}/>
+                {commercial && <MenuRow icon={<BsStar size={20}/>} label="Tracardi Pro" collapsed={collapsed} onClick={go("/pro")}/>}
                 <MenuRow icon={<BsBoxArrowInUpRight size={20}/>} label="Traffic" collapsed={collapsed} onClick={go("/traffic")}/>
                 <MenuRow icon={<VscLaw size={20}/>} label="Consents" collapsed={collapsed} onClick={go("/consents")}/>
                 <MenuRow icon={<BsFolderCheck size={20}/>} label="Validation" collapsed={collapsed} onClick={go("/validation")}/>
