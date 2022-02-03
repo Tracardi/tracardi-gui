@@ -2,42 +2,37 @@ import {JsonForm} from "./JsonForm";
 import React, {useEffect, useState} from "react";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
+import { v4 as uuid4 } from "uuid";
 
-export default function TracardiProServiceConfigForm({service, endpoint, onSubmit}) {
-
-
+export default function TracardiProServiceConfigForm({service, onSubmit}) {
 
     const [data, setData] = useState({});
-    const [config, setConfig] = useState(null);
     const [errorMessages, setErrorMessages] = useState(null)
 
-    const path = service?.id ? `/${service?.prefix}/settings/${endpoint.token}?id=${service.id}` : `/${service?.prefix}/settings/${endpoint.token}`;
-
-    useEffect(() => {
-        asyncRemote({
-            baseURL: endpoint?.url,
-            url: path,
-            method: "GET"
-        }).then((response)=>{
-            setConfig(response.data);
-            setData(response.data.values);
-        }).catch((e)=> {
-            // todo global error - when wrong service url
-        })
-    }, []);
-
     const handleChange = (value) => {
-        setData(MutableMergeRecursive(data, value))
+        const newValues = MutableMergeRecursive(data, value)
+        console.log(newValues)
+        setData(newValues)
     }
 
     const handleSubmit = async () => {
 
         try {
             const response = await asyncRemote({
-                baseURL: endpoint?.url,
-                url: path,
+                url: '/resource',
                 method: "POST",
-                data: config?.values
+                data: {
+                    id: uuid4(),
+                    name: data.name,
+                    description: data.description,
+                    tags: data.tags,
+                    groups:[],
+                    type: "pro",
+                    credentials: {
+                        production: data,
+                        test: data
+                    }
+                }
             })
 
             if (onSubmit instanceof Function) {
@@ -55,8 +50,8 @@ export default function TracardiProServiceConfigForm({service, endpoint, onSubmi
 
     }
 
-    return <JsonForm schema={config?.form}
-                     values={data}
+    return <JsonForm schema={service?.form}
+                     values={{tags: service?.metadata?.tags}}
                      errorMessages={errorMessages}
                      onChange={handleChange}
                      onSubmit={handleSubmit}/>

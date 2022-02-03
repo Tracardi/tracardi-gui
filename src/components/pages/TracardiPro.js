@@ -49,24 +49,8 @@ export default function TracardiPro() {
         setSelectedService(service)
     }
 
-    const handleServiceEditClick = (service) => {
-        setSelectedService(service)
-    }
-
     const handleServiceSaveClick = async () => {
         setSelectedService(null);
-        try {
-            const response = await asyncRemote({
-                url: "/tracardi-pro/services",
-                method: "PUT"
-            })
-
-            if (response.status === 200) {
-                setRefresh(refresh + 1);
-            }
-        } catch (e) {
-            alert("Could not save the service.")
-        }
     }
 
     const handleRegistrationSubmit = (endpoint) => {
@@ -85,14 +69,14 @@ export default function TracardiPro() {
                     <TracardiProAvailableServicesList onServiceClick={handleServiceAddClick}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
-            <TuiFormGroup>
-                <TuiFormGroupHeader header="Running services"/>
-                <TuiFormGroupContent>
-                    <TracardiProRunningServicesList
-                        onEditClick={handleServiceEditClick}
-                        refresh={refresh}/>
-                </TuiFormGroupContent>
-            </TuiFormGroup>
+            {/*<TuiFormGroup>*/}
+            {/*    <TuiFormGroupHeader header="Running services"/>*/}
+            {/*    <TuiFormGroupContent>*/}
+            {/*        <TracardiProRunningServicesList*/}
+            {/*            onEditClick={handleServiceEditClick}*/}
+            {/*            refresh={refresh}/>*/}
+            {/*    </TuiFormGroupContent>*/}
+            {/*</TuiFormGroup>*/}
         </TuiForm>}
 
         <FormDrawer
@@ -103,7 +87,6 @@ export default function TracardiPro() {
 
             <div style={{padding: 20}}>
                 <TracardiProServiceConfigForm
-                    endpoint={endpoint}
                     service={selectedService}
                     onSubmit={handleServiceSaveClick}
                 />
