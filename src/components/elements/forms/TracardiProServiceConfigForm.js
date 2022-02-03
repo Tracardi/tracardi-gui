@@ -25,9 +25,9 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
                     id: uuid4(),
                     name: data.name,
                     description: data.description,
-                    tags: data.tags,
+                    tags: service?.metadata?.tags,
                     groups:[],
-                    type: "pro",
+                    type: "scheduler",
                     credentials: {
                         production: data,
                         test: data
