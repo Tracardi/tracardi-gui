@@ -1,5 +1,5 @@
 import {JsonForm} from "./JsonForm";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
 import { v4 as uuid4 } from "uuid";
@@ -11,7 +11,6 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
 
     const handleChange = (value) => {
         const newValues = MutableMergeRecursive(data, value)
-        console.log(newValues)
         setData(newValues)
     }
 
