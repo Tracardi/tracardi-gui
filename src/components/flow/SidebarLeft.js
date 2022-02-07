@@ -7,6 +7,10 @@ import CenteredCircularProgress from "../elements/progress/CenteredCircularProgr
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
 import {FlowEditorIcons} from "./FlowEditorButtons";
 import {asyncRemote} from "../../remote_api/entrypoint";
+import ResponsiveDialog from "../elements/dialog/ResponsiveDialog";
+import Button from "../elements/forms/Button";
+import {BsXCircle} from "react-icons/bs";
+import MdManual from "./actions/MdManual";
 
 function SidebarLeft({showAlert, onDebug, debugInProgress}) {
 
@@ -14,6 +18,7 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
     const [plugins, setPlugins] = useState(null);
     const [pluginsLoading, setPluginsLoading] = useState(false);
     const [refresh, setRefresh] = useState(Math.random)
+    const [manual, setManual] = useState(null);
 
     useEffect(() => {
         let isSubscribed = true
@@ -57,6 +62,24 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
         setRefresh(Math.random);
     };
 
+    const handleDoubleClick = (row) => {
+        console.log(row?.plugin?.spec?.manual)
+        setManual(row?.plugin?.spec?.manual);
+    }
+
+    const DocumentationDialog = () => {
+        if(manual === null) {
+            return ""
+        }
+        return <ResponsiveDialog title="Node documentation"
+                                 open={manual !== null}
+                                 button={<Button label="Close"
+                                                 icon={<BsXCircle size={20}/>}
+                                                 onClick={() => setManual(null)}/>}>
+            <MdManual mdFile={manual}/>
+        </ResponsiveDialog>
+    }
+
     return (
         <div className="SidebarSection">
             <div className="TaskFilter">
@@ -73,14 +96,18 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
                             return <div key={index}>
                                 <p>{category}</p>
                                 {plugs.map((row, subIndex) => {
-                                    return <FlowMenuNode key={index + "-" + subIndex} row={row}
-                                                         onDragStart={onDragStart} draggable/>
+                                    return <FlowMenuNode key={index + "-" + subIndex}
+                                                         row={row}
+                                                         onDoubleClick={()=> handleDoubleClick(row)}
+                                                         onDragStart={onDragStart}
+                                                         draggable/>
                                 })}
                             </div>
                         })
                     }
                 </div>
             </div>
+            <DocumentationDialog />
         </div>
     );
 };
