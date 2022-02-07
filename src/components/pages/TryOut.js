@@ -12,6 +12,7 @@ export default function TryOut() {
 
   return (
     <div style={{height: "100%", overflow: "auto"}}>
+        <DottedPathInput value={"event@id"} onChange={(v)=>console.log(v)} defaultPathValue={'xxx'} defaultSourceValue={"profile"}/>
       <TuiPieChart/>
       <ScheduledForm  />
       <NewUser/>

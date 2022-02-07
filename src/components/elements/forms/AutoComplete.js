@@ -67,7 +67,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
 
             } catch(e) {
                 if(mounted.current && e) {
-                            showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
+                    showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
                 }
             } finally {
                  if(mounted.current) {
@@ -97,9 +97,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
             fullWidth={fullWidth}
             style={fullWidth ? {width: "100%"} : {width: 300}}
             open={open}
-            onOpen={() => {
-                handleLoading();
-            }}
+            onOpen={handleLoading}
             onClose={() => {
                 setOpen(false);
                 setOptions([]);
@@ -133,7 +131,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
                         ...params.InputProps,
                         endAdornment: (
                             <>
-                                {progress ? <CircularProgress color="inherit" size={20}/> : null}
+                                {progress ? <CircularProgress color="inherit" size={20} style={{marginRight: 25}}/> : null}
                                 {params.InputProps.endAdornment}
                             </>
                         ),

@@ -5,20 +5,36 @@ import "./DottedInputPath.css";
 import MenuItem from "@mui/material/MenuItem";
 import Popover from "@mui/material/Popover";
 import {IoTextOutline, IoAt} from "react-icons/io5";
+import TuiSelectDotField from "../../tui/TuiSelectDotField";
 
 
-export default function DottedPathInput({value, onChange,
+export default function DottedPathInput({
+                                            value,
+                                            onChange,
                                             label = "Source",
                                             defaultMode = 1,
                                             defaultSourceValue = "",
                                             defaultPathValue = "",
                                             forceMode,
                                             errorMessage,
-                                            width = 300}) {
+                                            width = 300
+                                        }) {
 
-    let computedMode;
     const re = new RegExp("^(payload|profile|session|event|flow)@");
 
+    let [sourceValue, pathValue] = (isString(value) && value !== "")
+        ? (value !== null && re.test(value) ? [value.split('@')[0], value.split('@').slice(1).join('@')]
+            : ["", value]) : [defaultSourceValue, defaultPathValue];
+
+    if (typeof pathValue === 'undefined' && sourceValue) {
+        pathValue = sourceValue
+        sourceValue = ''
+    }
+
+    const [path, setPath] = React.useState(pathValue);
+    const [source, setSource] = React.useState(sourceValue);
+
+    let computedMode;
     if (typeof value === 'undefined' || value === null || value === '') {
         // No value provided
         if (forceMode) {
@@ -30,24 +46,9 @@ export default function DottedPathInput({value, onChange,
         computedMode = re.test(value) ? 1 : 2;
     }
 
-    let [sourceValue, pathValue] = isString(value)
-        ? (value!== null && re.test(value) ? [value.split('@')[0], value.split('@').slice(1).join('@')]
-            : ["", value]) : [defaultSourceValue, defaultPathValue];
     const [mode, setMode] = useState(computedMode);
 
-    if (typeof pathValue === 'undefined' && sourceValue) {
-        pathValue = sourceValue
-        sourceValue = ''
-    }
-
-    const [path, setPath] = React.useState(pathValue || "");
-    const [source, setSource] = React.useState(sourceValue || "");
-
     const sources = [
-        {
-            value: '',
-            label: '',
-        },
         {
             value: 'payload',
             label: 'payload',
@@ -85,10 +86,9 @@ export default function DottedPathInput({value, onChange,
         setMode(mode);
     }
 
-    const handlePathChange = (event) => {
-        setPath(event.target.value);
-        handleExternalOnChange(mode, event.target.value, source);
-        event.preventDefault();
+    const handlePathChange = (value) => {
+        setPath(value);
+        handleExternalOnChange(mode, value, source);
     };
 
     const handleSourceChange = (event) => {
@@ -158,15 +158,12 @@ export default function DottedPathInput({value, onChange,
             ))}
         </TextField>
         <Separator/>
-        <TextField label={label}
-                   value={path}
-                   onChange={handlePathChange}
-                   variant="outlined"
-                   size="small"
-                   style={{width: width}}
-                   error={errorMessage}
-                   helperText={errorMessage}
-        />
+        <TuiSelectDotField index={source}
+                           value={pathValue}
+                           onChange={handlePathChange}
+                           style={{width: width}}
+                           error={errorMessage}
+                           helperText={errorMessage}/>
     </div>
 
     const valueMode = () => <div className="DottedInputPath">
