@@ -1,0 +1,129 @@
+.Table {
+    font-family: sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 50%;
+}
+
+.VTContainer {
+    position: relative;
+    border-radius: 10px;
+}
+
+.VTList {
+    overflow-y: scroll !important;
+}
+
+.VTHeader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #ff5722;
+}
+
+.VTGrid {
+    outline: 1px solid #5c7080;
+}
+
+.VTHeader {
+    position: absolute;
+    display: flex;
+    flex-flow: row nowrap;
+    height: 100%;
+    align-items: stretch;
+    overflow: hidden;
+}
+
+.VTRow {
+    display: flex;
+    flex-flow: row nowrap;
+    height: 100%;
+    align-items: stretch;
+    box-sizing: border-box;
+}
+
+.VTRowOdd {
+    background-color: #fff;
+}
+
+.VTRowEven {
+    background-color: #f5f8fa;
+}
+
+.VTCell,
+.VTHeaderCell {
+    flex-grow: 1;
+    box-sizing: border-box;
+    position: relative;
+
+    -ms-flex-align: center;
+    align-items: center;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.VTHeaderCell {
+    border-right: 1px solid #bfccd6;
+}
+
+.VTCell {
+    border-right: 1px solid #e1e8ed;
+    border-bottom: 1px solid #ced9e0;
+}
+
+.VTHeader {
+    box-sizing: border-box;
+    border-bottom: 2px solid #5c7080;
+    font-weight: bold;
+}
+
+.VTHeaderCell:last-of-type {
+    border-right: 0;
+}
+
+.VTCellContent {
+    overflow: hidden;
+    padding: 0 0.5em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.VTColumnResizer {
+    cursor: col-resize;
+    position: absolute;
+    right: -3px;
+    top: 0;
+    height: 100%;
+    background-color: #1f4b99;
+    opacity: 0;
+    width: 6px;
+    z-index: 20;
+}
+
+.VTColumnResizer:hover {
+    opacity: 0.1;
+}
+
+.VTColumnResizerActive {
+    opacity: 0.5 !important;
+    transition: opacity 200ms;
+}
+
+.VTNoItemsLabel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-size: 1em;
+    color: #bdbdbd;
+}
