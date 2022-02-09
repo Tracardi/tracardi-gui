@@ -18,21 +18,13 @@ function TuiSelectDotField({index, label = "Path to field", value = "", disabled
         e.preventDefault();
     }
 
-    const handleValueSelect = (value) => {
+    const handleValueChange = (value) => {
         if (value !== null) {
             setSelectValue(value);
             setTextValue(value?.name);
             if (onChange) {
                 onChange(value?.name)
             }
-        }
-    }
-
-    const handleValueChange = (value) => {
-        setSelectValue({id: value, name: value});
-        setTextValue(value);
-        if (onChange) {
-            onChange(value)
         }
     }
 
@@ -56,7 +48,7 @@ function TuiSelectDotField({index, label = "Path to field", value = "", disabled
             placeholder={label}
             url={url}
             initValue={selectValue}
-            onSetValue={handleValueSelect}
+            onSetValue={handleValueChange}
             onChange={handleValueChange}
             multiple={false}
         />

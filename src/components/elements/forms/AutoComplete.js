@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
-import {isObject} from "../../../misc/typeChecking";
+import {isObject, isString} from "../../../misc/typeChecking";
 import {objectMap} from "../../../misc/mappers";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 
@@ -15,8 +15,24 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
         solo = true
     }
 
+    if(multiple === true) {
+        if(isString(initValue)) {
+            if(initValue === "") {
+                initValue = []
+            } else {
+                initValue = [initValue]
+            }
+        } else if (isObject(initValue)) {
+            initValue = undefined
+        }
+    } else {
+        if(!initValue) {
+            initValue = {}
+        }
+    }
+
     const [open, setOpen] = React.useState(false);
-    const [value, setValue] = React.useState(initValue || {});
+    const [value, setValue] = React.useState(initValue);
     const [options, setOptions] = React.useState([]);
     const [progress, setProgress] = React.useState(false);
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
@@ -25,12 +41,10 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
 
     useEffect(() => {
         mounted.current = true;
-        setValue(initValue)
-
         return () => {
             mounted.current = false;
         }
-    }, [initValue])
+    }, [])
 
     const handleDataLoaded = (response, onDataLoaded) => {
         if (!onDataLoaded) {
@@ -78,13 +92,23 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
     }
 
     const handleValueSet = (value) => {
+        if(multiple === true && Array.isArray(value)) {
+            value = value.map((v) => { return isString(v) ? {id:v, name: v} : v })
+        } else if (typeof value === "string") {
+            value = {id: value, name: value}
+        }
+
         setValue(value);
+
         if (onSetValue) {
             onSetValue(value);
         }
     }
 
     const handleChange = (value) => {
+        if(isString(value)) {
+            value = {id: value, name: value}
+        }
         if (onChange) {
             onChange(value);
         }
@@ -110,11 +134,8 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
             loading={loading}
             value={value}
             disabled={disabled}
-            onChange={(event, newValue) => {
-                if (typeof newValue === "string") {
-                    newValue = {id: null, name: newValue}
-                }
-                handleValueSet(newValue);
+            onChange={(event, value) => {
+                handleValueSet(value);
             }}
             onInputChange={(ev, value, reason) => {
                 handleChange(value)
@@ -148,10 +169,11 @@ AutoComplete.propTypes = {
     url: PropTypes.string.isRequired,
     onDataLoaded: PropTypes.func,
     onSetValue: PropTypes.func,
+    onChange: PropTypes.func,
     solo: PropTypes.bool,
     disabled: PropTypes.bool,
     fullWidth: PropTypes.bool,
-    multiple: PropTypes.bool,
+    multiple: PropTypes.bool
 }
 
 const mapProps = (state) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import AutoComplete from "../forms/AutoComplete";
 
-export default function TuiSelectResourceType({value, onSetValue, errorMessage=""}) {
+function TuiSelectResourceType({value, onSetValue, errorMessage=""}) {
     return <AutoComplete
         solo={false}
         disabled={false}
