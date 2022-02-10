@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, Switch, TextField, Box, Typography, IconButton, Snackbar, SnackbarContent} from "@mui/material";
+import { Checkbox, FormControlLabel, Switch, TextField, Box, Typography, IconButton } from "@mui/material";
 import React from "react";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../elements/tui/TuiForm";
@@ -7,15 +7,14 @@ import { AiOutlineUserAdd } from "react-icons/ai";
 import FilterAddForm from "../elements/forms/inputs/FilterAddForm";
 import { FaUserAlt, FaRegEdit } from "react-icons/fa";
 import { MdOutlineDelete } from "react-icons/md";
-import { CgClose } from "react-icons/cg";
-import { RiCloseCircleLine } from "react-icons/ri";
 import { asyncRemote, getError } from "../../remote_api/entrypoint";
 import { v4 as uuid4 } from "uuid";
 import ErrorsBox from "../errors/ErrorsBox"; 
+import { useConfirm } from "material-ui-confirm";
+
 
 function NewUserForm({ refresh, setRefresh, closeForm }) {
 
-    const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
     const [fullName, setFullName] = React.useState("");
@@ -30,7 +29,7 @@ function NewUserForm({ refresh, setRefresh, closeForm }) {
     const mounted = React.useRef(false);
 
     const handleSave = async () => {
-        if (username && password && confirmPassword === password && fullName && email) {
+        if (password && confirmPassword === password && fullName && email) {
             setLoading(true);
             setErrorMessage(null);
             setError(false);
@@ -45,7 +44,6 @@ function NewUserForm({ refresh, setRefresh, closeForm }) {
                     data: {
                         id: uuid4(),
                         password: password,
-                        username: username,
                         roles: rolesToSend,
                         disabled: !enabled,
                         full_name: fullName,
@@ -76,16 +74,16 @@ function NewUserForm({ refresh, setRefresh, closeForm }) {
                     <TuiFormGroupField>
                         {errorMessage && <ErrorsBox errorList={errorMessage}/>}
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Username" description="The username of the new user. This will be used for logging in.">
+                    <TuiFormGroupField header="Email" description="Please type in the email address of the new user.">
                         <TextField 
                             fullWidth
                             variant="outlined"
-                            label="Username"
-                            value={username}
-                            onChange={event => setUsername(event.target.value)}
+                            label="Email"
+                            value={email}
+                            onChange={event => setEmail(event.target.value)}
                             size="small"
-                            error={!username && error}
-                            helperText={!username && error && "Username cannot be empty"}
+                            error={!email && error}
+                            helperText={!email && error && "Email cannot be empty"}
                         />
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Password" description="The password of the new user. This will be also used for logging in.">
@@ -122,18 +120,6 @@ function NewUserForm({ refresh, setRefresh, closeForm }) {
                             size="small"
                             error={!fullName && error}
                             helperText={!fullName && error && "Full name cannot be empty"}
-                        />
-                    </TuiFormGroupField>
-                    <TuiFormGroupField header="Email" description="Please type in the email address of the new user.">
-                        <TextField 
-                            fullWidth
-                            variant="outlined"
-                            label="Email"
-                            value={email}
-                            onChange={event => setEmail(event.target.value)}
-                            size="small"
-                            error={!email && error}
-                            helperText={!email && error && "Email cannot be empty"}
                         />
                     </TuiFormGroupField>
                 </TuiFormGroupContent>
@@ -197,7 +183,7 @@ function EditUserForm({ user, refresh, setRefresh, closeForm }) {
                 closeForm();
             }
             catch (error) {
-                if (mounted.current) setErrorMessage(getError(error)); // TODO ERROR HANDLING
+                if (mounted.current) setErrorMessage(getError(error));
             }
             if (mounted.current) setLoading(false);
         }
@@ -254,7 +240,7 @@ function EditUserForm({ user, refresh, setRefresh, closeForm }) {
                             helperText={!fullName && error && "Full name cannot be empty"}
                         />
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Email" description="You can edit the email of this user.">
+                    <TuiFormGroupField header="Email" description="You can edit the email address of this user.">
                         <TextField 
                             fullWidth
                             variant="outlined"
@@ -322,88 +308,38 @@ function UserCard({ fullName, email, roles, enabled, setUserToEdit, setUserToDel
 }
 
 
-function UserCards({ users, setUserToEdit, setUserToDelete }) {
+function UserCards({ users, setUserToEdit, onDelete }) {
+    
+    const confirm = useConfirm();
+
+    const handleUserDelete = user => {
+        confirm({title: `Do you want to delete user ${user.fullName}?`, description: "This action can not be undone."})
+            .then(async () => {
+                    try {
+                        await asyncRemote({
+                            url: '/user/' + user.id,
+                            method: "delete"
+                        })
+                        if (onDelete) onDelete();
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
+            )
+    }
 
     return (
         <div style={{ margin: 15, display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
             {users.map( user =>  <UserCard 
-                                    key={user.username} 
+                                    key={user.email} 
                                     fullName={user.fullName} 
                                     email={user.email} 
                                     roles={user.roles.map(role => role.charAt(0).toUpperCase() + role.slice(1)).join(", ")} 
                                     enabled={!user.disabled} 
                                     setUserToEdit={() => setUserToEdit(user)}
-                                    setUserToDelete={() => setUserToDelete(user)}
+                                    setUserToDelete={() => handleUserDelete(user)}
                                     /> )}
         </div>
-    );
-}
-
-function UserDeleteForm({ userToDelete, clearUserToDelete, refresh, setRefresh }) {
-
-    const [deleting, setDeleting] = React.useState(false);
-    const [errorMessage, setErrorMessage] = React.useState(null);
-    const mounted = React.useRef(false);
-
-    const deleteUser = async () => {
-        setDeleting(true);
-        try {
-            setErrorMessage(null);
-            await asyncRemote({
-                url: `/user/${userToDelete.id}`,
-                method: "DELETE"
-            })
-            clearUserToDelete();
-            setRefresh(refresh + 1);
-        }
-        catch (error) {
-            if (mounted.current) setErrorMessage(getError(error));
-        }
-        finally {
-            if (mounted.current) setDeleting(false);
-        }
-    }
-
-    React.useEffect(() => {
-        mounted.current = true;
-        return () => mounted.current = false;
-    }, [])
-
-    return (
-        <Box style={{ position: "absolute", top: 0, left: 0, background: "rgba(0 , 0, 0, 50%)", width: "100vw", height: "100vh", zIndex: 1 }}>
-            <Snackbar anchorOrigin={{ vertical: "bottom", horizontal: "right" }} open={errorMessage !== null}>
-                <SnackbarContent
-                    style={{
-                        backgroundColor: "#d81b60"
-                    }}
-                    message={
-                        <ErrorsBox errorList={errorMessage}/>
-                    }
-                />
-            </Snackbar>
-            <Box 
-                style={{ 
-                    position: "absolute", 
-                    bottom: "50vh", 
-                    right: "50vw", 
-                    background: "#ffffff", 
-                    width: 700, 
-                    height: 200, 
-                    transform: "translate(50%, 0%)",
-                    borderRadius: 15
-                }}
-            >
-                <IconButton style={{ position: "absolute", right: 0, marginLeft: 10, marginBottom: 10 }} onClick={clearUserToDelete}>
-                    <CgClose />
-                </IconButton>
-                <Typography variant="h6" fontSize={24} style={{ margin: 20, color: "#444444" }}>{`Do you really want to delete user ${userToDelete.fullName}?`}</Typography>
-                <Typography variant="h6" fontSize={18} style={{ marginLeft: 22, color: "#555555" }}>This action cannot be undone.</Typography>
-                <Box style={{position: "absolute", bottom: 10, right: 10, display: "flex", gap: 5}}>
-                    <Button variant="outlined" size="large" onClick={clearUserToDelete} label="Cancel" icon={<RiCloseCircleLine size={20}/>}></Button>
-                    <Button variant="outlined" size="large" onClick={deleteUser} label="OK" progress={deleting}></Button>
-                </Box>
-            </Box>
-        </Box>
     );
 }
 
@@ -413,7 +349,6 @@ export default function Users() {
     const [userToEdit, setUserToEdit] = React.useState(null);
     const [refresh, setRefresh] = React.useState(0);
     const [filter, setFilter] = React.useState("");
-    const [userToDelete, setUserToDelete] = React.useState(null);
     const [users, setUsers] = React.useState([]);
     const [errorMessage, setErrorMessage] = React.useState(null);
     const mounted = React.useRef(false);
@@ -445,7 +380,7 @@ export default function Users() {
             { errorMessage ?
                 <div style={{ margin: 25 }}><ErrorsBox errorList={errorMessage}/></div>
                     :
-                <UserCards refresh={refresh} setUserToEdit={setUserToEdit} setUserToDelete={setUserToDelete} users={users}/>
+                <UserCards refresh={refresh} setUserToEdit={setUserToEdit} users={users} onDelete={() => setRefresh(refresh + 1)}/>
             }
             <FormDrawer
                 open={newUserFormOpened}
@@ -465,7 +400,6 @@ export default function Users() {
             >
                 {userToEdit !== null && <EditUserForm refresh={refresh} setRefresh={setRefresh} user={userToEdit} closeForm={() => setUserToEdit(null)}/>}
             </FormDrawer>
-            {userToDelete !== null && <UserDeleteForm userToDelete={userToDelete} clearUserToDelete={() => setUserToDelete(null)} refresh={refresh} setRefresh={setRefresh}/>}
         </div>
     );
 
