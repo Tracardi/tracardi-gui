@@ -125,7 +125,6 @@ const AppBox = () => {
                       tabs={{
                           "Running instances": <Instances/>,
                           "Scheduled tasks": <Tasks/>,
-                          "Users": <Users />,
                           "Logs": <Logs/>,
                       }}
             />
@@ -145,6 +144,7 @@ const AppBox = () => {
                       tabs={{
                           "Workflow actions": <ActionPlugins/>,
                           "System settings": <Settings/>,
+                          "Users": <Users />
                       }}
             />
 
