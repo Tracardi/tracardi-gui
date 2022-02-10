@@ -11,6 +11,7 @@ import { CgClose } from "react-icons/cg";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { asyncRemote } from "../../remote_api/entrypoint";
 import { v4 as uuid4 } from "uuid";
+import ErrorsBox from "../errors/ErrorsBox"; 
 
 function NewUserForm({ refresh, setRefresh, closeForm }) {
 
