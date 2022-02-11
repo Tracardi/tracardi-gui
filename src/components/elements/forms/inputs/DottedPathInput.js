@@ -170,7 +170,7 @@ export default function DottedPathInput({
         <Separator/>
         <TextField label={label}
                    value={path}
-                   onChange={handlePathChange}
+                   onChange={(e) => handlePathChange(e.target.value)}
                    variant="outlined"
                    size="small"
                    style={{width: width + 120}}
