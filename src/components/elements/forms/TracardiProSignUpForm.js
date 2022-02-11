@@ -13,7 +13,7 @@ export default function TracardiProSignUpForm({onSubmit, onCancel}) {
 
     const [step, setStep] = useState(1);
     const [data, setData] = useState({
-        url: "",
+        host: "",
         type: "",
         name: "",
         username: "",
@@ -92,8 +92,8 @@ export default function TracardiProSignUpForm({onSubmit, onCancel}) {
                             size="small"
                             variant="outlined"
                             required={true}
-                            error={"url" in fieldErrors}
-                            helperText={"url" in fieldErrors && fieldErrors['url']}
+                            error={"type" in fieldErrors}
+                            helperText={"type" in fieldErrors && fieldErrors['type']}
                             style={{marginTop: 10, width: 160}}
                         >
                             <MenuItem value="company">Company</MenuItem>
@@ -111,8 +111,8 @@ export default function TracardiProSignUpForm({onSubmit, onCancel}) {
                             size="small"
                             variant="outlined"
                             required={true}
-                            error={"url" in fieldErrors}
-                            helperText={"url" in fieldErrors && fieldErrors['url']}
+                            error={"name" in fieldErrors}
+                            helperText={"name" in fieldErrors && fieldErrors['name']}
                             fullWidth
                             style={{marginTop: 10}}
                         />
@@ -140,18 +140,18 @@ export default function TracardiProSignUpForm({onSubmit, onCancel}) {
             {error && <ErrorsBox errorList={error} style={{borderRadius: 0}}/>}
             <TuiFormGroupContent>
                 <TuiFormGroupContent>
-                    <TuiFormGroupField header="Service URL" description="Please any of the available service URLs.">
+                    <TuiFormGroupField header="Service Host" description="Please any of the available service Hosts.">
                         <TextField
-                            label="Tracardi Pro Server URL"
-                            value={data.url}
+                            label="Tracardi Pro Server Host"
+                            value={data.host}
                             onChange={(ev) => {
-                                setData({...data, url: ev.target.value})
+                                setData({...data, host: ev.target.value})
                             }}
                             size="small"
                             variant="outlined"
                             required={true}
-                            error={"url" in fieldErrors}
-                            helperText={"url" in fieldErrors && fieldErrors['url']}
+                            error={"host" in fieldErrors}
+                            helperText={"host" in fieldErrors && fieldErrors['host']}
                             select
                             fullWidth
                             style={{marginTop: 10}}

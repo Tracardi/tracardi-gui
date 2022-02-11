@@ -4,7 +4,6 @@ import TracardiProAvailableServicesList from "../elements/lists/TracardiProAvail
 import TracardiProSignUpForm from "../elements/forms/TracardiProSignUpForm";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import TracardiProServiceConfigForm from "../elements/forms/TracardiProServiceConfigForm";
-import TracardiProRunningServicesList from "../elements/lists/TracardiProRunningServicesList";
 import './TracardiPro.css';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
@@ -13,6 +12,7 @@ import Button from "../elements/forms/Button";
 import {BsStar, BsPlusCircle} from "react-icons/bs";
 import {VscSignIn} from "react-icons/vsc";
 import TracardiProSignInForm from "../elements/forms/TracardiProSignInForm";
+import Resources from "./Resources";
 
 export default function TracardiPro() {
 
@@ -30,10 +30,10 @@ export default function TracardiPro() {
         }).then(
             (response) => {
                 if (response.status === 200) {
-                    if(response.data === true) {
+                    if (response.data === true) {
                         setStage(3);
                     } else {
-                        if(response.data === false) {
+                        if (response.data === false) {
                             setSignIn(false);
                             setSignUp(true);
                         } else {
@@ -73,15 +73,17 @@ export default function TracardiPro() {
                 membership.
             </header>
             <nav style={{display: "flex", marginTop: 20}}>
-                <Button label="Sign-in" icon={<VscSignIn size={20}/>} onClick={() => setStage(2)} selected={signIn}></Button>
-                <Button label="Sign-up" icon={<BsPlusCircle size={20}/>} onClick={() => setStage(1)} selected={signUp}></Button>
+                <Button label="Sign-in" icon={<VscSignIn size={20}/>} onClick={() => setStage(2)}
+                        selected={signIn}></Button>
+                <Button label="Sign-up" icon={<BsPlusCircle size={20}/>} onClick={() => setStage(1)}
+                        selected={signUp}></Button>
             </nav>
 
         </div>
     }
 
     const handleSingIn = (data) => {
-        if(data === true) {
+        if (data === true) {
             setStage(3);
         }
     }
@@ -90,34 +92,38 @@ export default function TracardiPro() {
         if (stage === null) {
             return ""
         } else if (stage === 0) {
-            return <EntryPoint/>
+            return <div style={{padding: 20}}><EntryPoint/></div>
         } else if (stage === 1) {
-            return <TracardiProSignUpForm onSubmit={() => setStage(3)} onCancel = {() => setStage(0)}/>
+            return <div style={{padding: 20}}><TracardiProSignUpForm onSubmit={() => setStage(3)}
+                                                                     onCancel={() => setStage(0)}/></div>
         } else if (stage === 2) {
-            return  <TracardiProSignInForm onSubmit={handleSingIn} onCancel={()=>setStage(0)}/>
+            return <div style={{padding: 20}}><TracardiProSignInForm onSubmit={handleSingIn}
+                                                                     onCancel={() => setStage(0)}/></div>
         } else if (stage === 3) {
-            return <><TuiForm style={{width: "100%"}}>
-                <TuiFormGroup>
-                    <TuiFormGroupHeader header="Premium services"/>
-                    <TuiFormGroupContent>
-                        <TracardiProAvailableServicesList onServiceClick={handleServiceAddClick}/>
-                    </TuiFormGroupContent>
-                </TuiFormGroup>
-            </TuiForm>
-            <FormDrawer
-                width={550}
-                label="Configure"
-                onClose={() => setSelectedService(null)}
-                open={selectedService !== null}>
+            return <>
+                <TuiForm style={{width: "100%", padding: 20}}>
+                    <TuiFormGroup>
+                        <TuiFormGroupHeader header="Premium services"/>
+                        <TuiFormGroupContent>
+                            <TracardiProAvailableServicesList onServiceClick={handleServiceAddClick}/>
+                        </TuiFormGroupContent>
+                    </TuiFormGroup>
+                </TuiForm>
+                <Resources/>
+                <FormDrawer
+                    width={550}
+                    label="Configure"
+                    onClose={() => setSelectedService(null)}
+                    open={selectedService !== null}>
 
-                <div style={{padding: 20}}>
-                    <TracardiProServiceConfigForm
-                        service={selectedService}
-                        onSubmit={handleServiceSaveClick}
-                    />
-                </div>
+                    <div style={{padding: 20}}>
+                        <TracardiProServiceConfigForm
+                            service={selectedService}
+                            onSubmit={handleServiceSaveClick}
+                        />
+                    </div>
 
-            </FormDrawer></>
+                </FormDrawer></>
         }
     }
 

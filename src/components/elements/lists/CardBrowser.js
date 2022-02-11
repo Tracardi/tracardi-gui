@@ -22,8 +22,7 @@ const CardBrowser = ({
                          },
                          drawerAddWidth = 600,
                          drawerAddTitle = "New",
-                         addFunc = () => {
-                         },
+                         addFunc = () => {},
                          className,
                          refresh: forceRefresh
                      }) => {
@@ -78,11 +77,11 @@ const CardBrowser = ({
         setRefresh(refresh + 1);
     }
 
-    const onFilter = (query) => {
+    const handleFilter = (query) => {
         setQuery(query);
     }
 
-    const onAdd = () => {
+    const handleAdd = () => {
         setDisplayAddForm(true)
     }
 
@@ -108,8 +107,8 @@ const CardBrowser = ({
             textFieldLabel="Type to filter"
             buttonLabel={buttomLabel}
             buttonIcon={buttonIcon}
-            onFilter={onFilter}
-            onAdd={onAdd}/>
+            onFilter={handleFilter}
+            onAdd={handleAdd}/>
 
         {loading && <div style={{height: 300}}><CenteredCircularProgress/></div>}
         {!loading && isEmptyObjectOrNull(cards?.grouped) && <NoData header="There is no data here.">

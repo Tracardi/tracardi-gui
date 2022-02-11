@@ -6,12 +6,11 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import TuiColumnsFlex from "../tui/TuiColumnsFlex";
 import TuiTopHeaderWrapper from "../tui/TuiTopHeaderWrapper";
 import ErrorsBox from "../../errors/ErrorsBox";
-import {MenuItem} from "@mui/material";
 import {BsArrowLeftCircle} from "react-icons/bs";
 import AlertBox from "../../errors/AlertBox";
 import {VscSignIn} from "react-icons/vsc";
 
-export default function TracardiProSignUpForm({onSubmit, onCancel}) {
+export default function TracardiProSignInForm({onSubmit, onCancel}) {
 
     const [data, setData] = useState({
         url: "",
@@ -21,24 +20,12 @@ export default function TracardiProSignUpForm({onSubmit, onCancel}) {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false)
     const [fieldErrors, setFieldErrors] = useState({})
-    const [hosts, setHosts] = useState([]);
     const [accessDenied, setAccessDenied] = useState(false);
 
     const mounted = useRef(false);
 
     useEffect(() => {
         mounted.current = true;
-        asyncRemote({
-            url: "/tpro/available_hosts"
-        }).then((response) => {
-            if (response.data?.hosts && mounted.current === true) {
-                setHosts(response.data.hosts);
-            }
-        }).catch((e) => {
-
-        }).finally(() => {
-
-        })
         return () => {
             mounted.current = false;
         };
@@ -86,25 +73,6 @@ export default function TracardiProSignUpForm({onSubmit, onCancel}) {
             {accessDenied && <AlertBox>Access denied. Please check your e-mail and password.</AlertBox>}
             <TuiFormGroupContent>
                 <TuiFormGroupContent>
-                    <TuiFormGroupField header="Service URL" description="Please any of the available service URLs.">
-                        <TextField
-                            label="Tracardi Pro Server URL"
-                            value={data.url}
-                            onChange={(ev) => {
-                                setData({...data, url: ev.target.value})
-                            }}
-                            size="small"
-                            variant="outlined"
-                            required={true}
-                            error={"url" in fieldErrors}
-                            helperText={"url" in fieldErrors && fieldErrors['url']}
-                            select
-                            fullWidth
-                            style={{marginTop: 10}}
-                        >
-                            {hosts.map((host, index) => <MenuItem value={host} key={index}>{host}</MenuItem>)}
-                        </TextField>
-                    </TuiFormGroupField>
                     <TuiFormGroupField>
                         <TuiColumnsFlex width={200} style={{marginTop: 20}}>
                             <TuiTopHeaderWrapper header="E-mail"
