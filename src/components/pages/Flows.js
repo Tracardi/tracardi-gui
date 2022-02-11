@@ -52,7 +52,7 @@ export default function Flows() {
                             setRefresh(Math.random())
                         }
                     } catch (e) {
-
+                        console.error(e)
                     }
                 }
             )

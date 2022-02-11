@@ -69,7 +69,7 @@ export default function TracardiPro() {
         return <div style={{display: "flex", alignItems: "center", flexDirection: "column", padding: 30}}>
             <BsStar size={80} style={{color: "gray", margin: 20}}/>
             <header style={{fontSize: "150%", fontWeight: 300, maxWidth: 600, textAlign: "center"}}>Please join Tracardi
-                Pro for more free and premium connectors and services. No credit cards required. It is a free lifetime
+                Pro for more free and premium connectors and services. No credit card required. It is a free lifetime
                 membership.
             </header>
             <nav style={{display: "flex", marginTop: 20}}>
