@@ -10,8 +10,6 @@ import {VscJson} from "react-icons/vsc";
 import "../elements/forms/JsonForm"
 import {VscTools} from "react-icons/vsc";
 import {NodeInitForm, NodeInitJsonForm, NodeRuntimeConfigForm} from "../elements/forms/NodeInitForm";
-import {TracardiProPluginForm} from "../elements/forms/TracardiProPluginForm";
-import {BsStar} from "react-icons/bs";
 import {VscRunErrors} from "react-icons/vsc";
 
 export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
@@ -24,16 +22,8 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                 setTab(0)
             }
 
-            if (tab === 5 && node?.data?.metadata?.pro !== true) {
-                setTab(3)
-            }
-
             if (tab === 3 && !node?.data?.spec?.form) {
-                if(node?.data?.metadata?.pro === true) {
-                    setTab(5)
-                } else {
-                    setTab(2)
-                }
+                setTab(2)
             }
 
             if (tab === 2 && !node?.data?.spec?.init) {
@@ -55,13 +45,6 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                     <IconButton label="Info" onClick={() => setTab(0)} selected={tab === 0} size="large">
                             <BsInfoCircle size={22}/>
                     </IconButton>
-                {node?.data?.metadata?.pro === true && <IconButton
-                    label="Tracardi Pro Editor"
-                    onClick={() => setTab(5)}
-                    selected={tab === 5}
-                    size="large">
-                    <BsStar size={22}/>
-                </IconButton>}
                 {node?.data?.spec?.form && <IconButton
                     label="Config Editor"
                     onClick={() => setTab(3)}
@@ -114,12 +97,6 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                     />}
 
                     {tab === 4 && <ConsoleView label="Action raw data" data={node}/>}
-
-                    {node?.data?.metadata?.pro === true && tab === 5 && <TracardiProPluginForm
-                        init={node?.data?.spec?.init}
-                        onSubmit={handleInitSubmit}
-                    />
-                    }
 
                     {tab === 6 && node?.data?.spec && <NodeRuntimeConfigForm
                         pluginId={node?.data?.spec?.id}
