@@ -17,13 +17,17 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
     const handleSubmit = async () => {
 
         try {
+            const name = data.name
+            const description = data.description
+            delete data.name
+            delete data.description
             const response = await asyncRemote({
-                url: '/resource',
+                url: '/tpro/resource',
                 method: "POST",
                 data: {
                     id: uuid4(),
-                    name: data.name,
-                    description: data.description,
+                    name: name,
+                    description: description,
                     tags: service?.metadata?.tags,
                     groups:[],
                     type: "scheduler",

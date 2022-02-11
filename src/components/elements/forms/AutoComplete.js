@@ -46,6 +46,10 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
         }
     }, [])
 
+    useEffect(() => {
+        setValue(initValue)
+    }, [initValue])
+
     const handleDataLoaded = (response, onDataLoaded) => {
         if (!onDataLoaded) {
             if(Array.isArray(response.data?.result)) {
