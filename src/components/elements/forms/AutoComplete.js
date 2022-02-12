@@ -7,7 +7,7 @@ import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
 import {isObject, isString} from "../../../misc/typeChecking";
 import {objectMap} from "../../../misc/mappers";
-import {asyncRemote} from "../../../remote_api/entrypoint";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 
 const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoaded, onSetValue, onChange, solo, disabled, multiple=false, fullWidth=false}) => {
 
@@ -31,8 +31,9 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
         }
     }
 
+    console.log(initValue)
+
     const [open, setOpen] = React.useState(false);
-    const [value, setValue] = React.useState(initValue);
     const [options, setOptions] = React.useState([]);
     const [progress, setProgress] = React.useState(false);
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
@@ -45,10 +46,6 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
             mounted.current = false;
         }
     }, [])
-
-    useEffect(() => {
-        setValue(initValue)
-    }, [initValue])
 
     const handleDataLoaded = (response, onDataLoaded) => {
         if (!onDataLoaded) {
@@ -85,7 +82,8 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
 
             } catch(e) {
                 if(mounted.current && e) {
-                    showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
+                    const errors = getError(e)
+                    showAlert({message: errors[0].msg, type: "error", hideAfter: 4000});
                 }
             } finally {
                  if(mounted.current) {
@@ -101,8 +99,6 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
         } else if (typeof value === "string") {
             value = {id: value, name: value}
         }
-
-        setValue(value);
 
         if (onSetValue) {
             onSetValue(value);
@@ -130,13 +126,13 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
                 setOpen(false);
                 setOptions([]);
             }}
-            isOptionEqualToValue={(option, value) => (option.id === value.id)}
+            isOptionEqualToValue={(option, value) => {return option.id === value.id}}
             getOptionLabel={(option) => {
                 return option?.name || option?.id || ""
             }}
             options={options}
             loading={loading}
-            value={value}
+            value={initValue}
             disabled={disabled}
             onChange={(event, value) => {
                 handleValueSet(value);
