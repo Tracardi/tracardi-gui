@@ -15,7 +15,7 @@ import SqlEditor from "../editors/SqlEditor";
 import TuiSelectResource from "../tui/TuiSelectResource";
 import {isEmptyStringOrNull} from "../../../misc/typeChecking";
 import Chip from "@mui/material/Chip";
-import TuiSelectEventType from "../tui/TuiSelectEventType";
+import TuiMultiSelectEventType from "../tui/TuiSelectMultiEventType";
 
 export function TextInput({value, label, errorMessage, onChange}) {
 
@@ -334,13 +334,18 @@ export function ResourceSelect({value, errorMessage, onChange = null, tag = null
     return <TuiSelectResource value={value} errorMessage={errorMessage} onSetValue={handleChange} tag={tag}/>
 }
 
-export function EventTypes({value, onChange = null}) {
+export function EventTypes({value: initValue, onChange = null}) {
+
+    const [value, setValue] = useState(initValue);
 
     const handleChange = (value) => {
-        onChange(value);
+        setValue(value);
+        if(onChange) {
+            onChange(value);
+        }
     };
 
-    return <TuiSelectEventType value={value} label="Event types" onSetValue={handleChange} multiple={true} fullWidth={true}/>
+    return <TuiMultiSelectEventType value={value} label="Event types" onSetValue={handleChange} fullWidth={true}/>
 }
 
 export function ReadOnlyTags({value}) {

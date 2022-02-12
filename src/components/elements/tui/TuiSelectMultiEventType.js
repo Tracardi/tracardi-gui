@@ -1,7 +1,7 @@
-import AutoComplete from "../forms/AutoComplete";
+import AutoMultiComplete from "../forms/AutoMultiComplete";
 import React from "react";
 
-export default function TuiSelectEventType({value, label="Event type", errorMessage=null, onSetValue=null, multiple=false, fullWidth=false, solo=true}) {
+export default function TuiMultiSelectEventType({value, label="Event types", errorMessage=null, onSetValue=null, fullWidth=false}) {
 
     const handleChange = (v) => {
         if(onSetValue) {
@@ -9,16 +9,14 @@ export default function TuiSelectEventType({value, label="Event type", errorMess
         }
     }
 
-    return <AutoComplete
-        solo={solo}
+    return <AutoMultiComplete
+        solo={true}
         disabled={false}
         error={errorMessage}
         placeholder={label}
         url="/events/metadata/type"
         initValue={value}
         onSetValue={handleChange}
-        multiple={multiple}
         fullWidth={fullWidth}
-        onChange={handleChange}
     />
 }

@@ -5,22 +5,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
+import {isString} from "../../../misc/typeChecking";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {convertResponseToAutoCompleteOptions} from "../../../misc/converters";
-import {isString} from "../../../misc/typeChecking";
 
-const AutoComplete = ({showAlert, placeholder, error, url, initValue, onSetValue, onChange, solo = true, disabled, fullWidth = false}) => {
-
-    const getValue = (initValue) => {
-        if (!initValue) {
-            initValue = {id: "", name: ""}
-        } else if(isString(initValue)) {
-            initValue = {name: initValue, id: initValue}
-        }
-        return initValue
-    }
-
-    initValue = getValue(initValue);
+const AutoMultiComplete = ({showAlert, placeholder, error, url, initValue, onSetValue, solo = true, disabled, fullWidth = false}) => {
 
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState([]);
@@ -66,8 +55,13 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onSetValue
     }
 
     const handleValueSet = (value) => {
-        if (typeof value === "string") {
-            value = {id: value, name: value}
+        if(Array.isArray(value)) {
+            value = value.map((v) => {
+                return isString(v) ? {id: v, name: v} : v
+            })
+        } else {
+            console.error(`Expected value to be Array.`);
+            console.error(value)
         }
 
         if (onSetValue) {
@@ -75,20 +69,10 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onSetValue
         }
     }
 
-    const handleChange = (value) => {
-        if (typeof value === "string") {
-            value = {id: value, name: value}
-        }
-
-        if (onChange) {
-            onChange(value);
-        }
-    }
-
     return (
         <Autocomplete
             freeSolo={solo}
-            multiple={false}
+            multiple={true}
             fullWidth={fullWidth}
             style={fullWidth ? {width: "100%"} : {width: 300}}
             open={open}
@@ -109,9 +93,6 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onSetValue
             disabled={disabled}
             onChange={(event, value) => {
                 handleValueSet(value);
-            }}
-            onInputChange={(ev, value, reason) => {
-                handleChange(value)
             }}
             renderInput={(params) => (
                 <TextField
@@ -137,12 +118,11 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onSetValue
     );
 }
 
-AutoComplete.propTypes = {
+AutoMultiComplete.propTypes = {
     placeholder: PropTypes.string,
     error: PropTypes.string,
     url: PropTypes.string.isRequired,
     onSetValue: PropTypes.func,
-    onChange: PropTypes.func,
     solo: PropTypes.bool,
     disabled: PropTypes.bool,
     fullWidth: PropTypes.bool,
@@ -156,4 +136,4 @@ const mapProps = (state) => {
 export default connect(
     mapProps,
     {showAlert}
-)(AutoComplete)
+)(AutoMultiComplete)

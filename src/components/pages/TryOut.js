@@ -10,9 +10,10 @@ import TuiPieChart from "../elements/charts/PieChart";
 import Table from "../elements/table/Table";
 import {Column} from "react-vt-table";
 import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
+import TuiSelectMultiEventType from "../elements/tui/TuiSelectMultiEventType";
 
 export default function TryOut() {
-
+    const [v,setV] = React.useState("page-view");
     const data = [
         { id: 1, title: "test", status: "status" },
         { id: 2, title: "test 2", status: "status" },
@@ -29,7 +30,8 @@ export default function TryOut() {
     ];
 
   return (<>
-      <TuiSelectEventType value={""} onSetValue={(v) => console.log(v)} multiple={true}/>
+      <TuiSelectEventType value={v} onSetValue={(v) => {console.log("value", v); setV(v)}} solo={true}/>
+      {/*    <TuiSelectMultiEventType value={v} onSetValue={(v) => {console.log(v); setV(v)}}/>*/}
     <div style={{height: "100%", overflow: "auto"}}>
         {/*<Table data={data} disableHeader={false}>*/}
         {/*    <Column dataKey="id" label="ID" width={20}/>*/}
@@ -50,7 +52,7 @@ export default function TryOut() {
         {/*        </div>*/}
         {/*    }}/>*/}
         {/*</Table>*/}
-        <DottedPathInput value={"event@id"} onChange={(v)=>console.log(v)} defaultPathValue={'xxx'} defaultSourceValue={"profile"}/>
+        {/*<DottedPathInput value={"event@id"} onChange={(v)=>console.log(v)} defaultPathValue={'xxx'} defaultSourceValue={"profile"}/>*/}
       {/*<TuiPieChart/>*/}
       {/*<ScheduledForm  />*/}
       {/*<NewUser/>*/}

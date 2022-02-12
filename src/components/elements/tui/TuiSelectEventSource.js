@@ -18,18 +18,6 @@ export function TuiSelectEventSource({value = null, disabled = false, errorMessa
                       initValue={value}
                       error={errorMessage}
                       onSetValue={handleValueSet}
-                      onDataLoaded={
-                          (result) => {
-                              if (result) {
-                                  let sources = []
-                                  for (const source of result?.data?.result) {
-                                      if (typeof source.name !== "undefined" && typeof source.id !== "undefined") {
-                                          sources.push({name: source.name, id: source.id})
-                                      }
-                                  }
-                                  return sources
-                              }
-                          }
-                      }/>
+        />
     </div>
 }

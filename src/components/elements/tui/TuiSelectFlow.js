@@ -17,17 +17,5 @@ export default function TuiSelectFlow({value, disabled=false, errorMessage=null,
         error={errorMessage}
         initValue={value}
         onSetValue={handleValueSet}
-        onDataLoaded={
-            (result) => {
-                if (result) {
-                    let flows = []
-                    for (const flow of result?.data?.result) {
-                        if (typeof flow.name !== "undefined" && typeof flow.id !== "undefined") {
-                            flows.push({name: flow.name, id: flow.id})
-                        }
-                    }
-                    return flows
-                }
-            }
-        }/>
+    />
 }
