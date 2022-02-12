@@ -1,9 +1,4 @@
 .DebugDetails {
     height: 100%;
-}
-
-.DebugDetails > .DebugContent {
-    padding: 10px;
     width: 100%;
-    height: inherit;
 }

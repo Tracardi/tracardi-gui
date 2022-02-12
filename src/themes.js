@@ -1,10 +1,10 @@
-import {red} from '@material-ui/core/colors';
-import {createTheme} from '@material-ui/core/styles';
+import {red} from '@mui/material/colors';
+import { createTheme} from '@mui/material/styles';
 
 export const mainTheme = createTheme({
     typography: {
-        "fontFamily": `"Lato", "Arial", sans-serif`,
-        "fontSize": "1em",
+        "fontFamily": `"IBM Plex Sans", "Arial", sans-serif`,
+        "fontSize": 15,
         "fontWeightLight": 300,
         "fontWeightRegular": 400,
         "fontWeightMedium": 500

@@ -2,14 +2,14 @@ import React, {useCallback} from "react";
 import ResourceDetails from "../elements/details/ResourceDetails";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
-import {VscRadioTower} from "@react-icons/all-files/vsc/VscRadioTower";
-import SourceForm from "../elements/forms/ResourceForm";
+import ResourceForm from "../elements/forms/ResourceForm";
+import {AiOutlineCloudServer} from "react-icons/ai";
 
 
 export default function Resources() {
 
-    const urlFunc = useCallback((query) => ('/resources/by_tag' + ((query) ? "?query=" + query : "")), []);
-    const addFunc = useCallback((close) => <SourceForm onClose={close}/>, []);
+    const urlFunc = useCallback((query) => ('/resources/by_type' + ((query) ? "?query=" + query : "")), []);
+    const addFunc = useCallback((close) => <ResourceForm onClose={close}/>, []);
     const detailsFunc = useCallback((id, close) => <ResourceDetails id={id} onDeleteComplete={close}/>, []);
 
     const sources = (data, onClick) => {
@@ -20,7 +20,7 @@ export default function Resources() {
                     {plugs.map((row, subIndex) => {
                         return <SquareCard key={index + "-" + subIndex}
                                            id={row?.id}
-                                           icon={<VscRadioTower size={45}/>}
+                                           icon={<AiOutlineCloudServer size={45}/>}
                                            status={row?.enabled}
                                            name={row?.name}
                                            description={row?.description}
@@ -36,7 +36,7 @@ export default function Resources() {
         urlFunc={urlFunc}
         cardFunc={sources}
         buttomLabel="New resource"
-        buttonIcon={<VscRadioTower size={20} style={{marginRight: 10}}/>}
+        buttonIcon={<AiOutlineCloudServer size={20} style={{marginRight: 10}}/>}
         drawerDetailsTitle="Resource details"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}

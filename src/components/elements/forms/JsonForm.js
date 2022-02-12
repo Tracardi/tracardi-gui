@@ -11,8 +11,9 @@ import {
     KeyValueInput,
     ListOfDotPaths,
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
-    SelectInput, BoolInput
+    SelectInput, BoolInput, ReadOnlyTags, EventTypes
 } from "./JsonFormComponents";
+import ErrorsBox from "../../errors/ErrorsBox";
 
 const getComponentByType = ({value, errorMessage, componentType, fieldId, onChange}) => {
 
@@ -23,11 +24,14 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
         }
     }
 
-    // console.log('id', fieldId);
-    // console.log('value', value);
-    // console.log('errorMessage', errorMessage);
-
     switch (componentType) {
+        case "readOnlyTags":
+            return () => <ReadOnlyTags value={value}/>
+
+        case "eventTypes":
+            return (props) => <EventTypes value={value}
+                                          onChange={(value) => handleOnChange(value, fieldId)}
+                                          {...props}/>
         case "resource":
             return (props) => <ResourceSelect value={value}
                                               errorMessage={errorMessage}
@@ -105,11 +109,9 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
     }
 }
 
-export const JsonForm = ({schema, values = {}, errorMessages={}, onSubmit, onChange, confirmed=false}) => {
+export const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
     const keyValueMapOfComponentValues = object2dot(values)
     const hasErrors = errorMessages && Object.keys(errorMessages).length
-
-    console.log("JsonForm rerender", keyValueMapOfComponentValues, errorMessages)
 
     const Title = ({title}) => {
         if (typeof title != 'undefined') {
@@ -157,7 +159,7 @@ export const JsonForm = ({schema, values = {}, errorMessages={}, onSubmit, onCha
                 return <TuiFormGroupField key={fieldId + key}
                                           header={fieldObject.name}
                                           description={fieldObject.description}>
-                    {component(props)}
+                    {component(props)}&nbsp;
                 </TuiFormGroupField>
             } else {
                 return ""
@@ -195,13 +197,16 @@ export const JsonForm = ({schema, values = {}, errorMessages={}, onSubmit, onCha
     if (schema) {
         return <TuiForm>
             {schema.title && <Title title={schema.title}/>}
+
             {schema.groups && <Groups
                 groups={schema.groups}
                 onChange={onChange}
             />}
+            {serverSideError && <ErrorsBox errorList={serverSideError}/>}
             <Button onClick={() => handleSubmit(schema)}
                     confirmed={confirmed}
                     error={hasErrors}
+                    progress={processing}
                     label="Save"
                     style={{justifyContent: "center"}}
             />
@@ -209,7 +214,5 @@ export const JsonForm = ({schema, values = {}, errorMessages={}, onSubmit, onCha
     }
 
     return ""
-
-
 
 }

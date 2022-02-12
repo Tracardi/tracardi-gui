@@ -1,29 +1,27 @@
-import React from 'react';
-import Chip from '@material-ui/core/Chip';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import {makeStyles} from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
+import React, {useState} from 'react';
+import Chip from '@mui/material/Chip';
+import Autocomplete from '@mui/material/Autocomplete';
+import makeStyles from '@mui/styles/makeStyles';
+import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        width: 480,
         '& > * + *': {
             marginTop: theme.spacing(3),
         },
     },
 }));
 
-export default function TuiTagger({label, placeholder, defaultTags, tags, onChange, freeSolo=true, multiple=true}) {
-    const classes = useStyles();
+export default function TuiTagger({label, placeholder, tags, onChange, freeSolo=true, multiple=true}) {
 
-    if(!defaultTags) {
-        defaultTags = []
-    }
-
-    if(!tags) {
+    if(typeof tags === 'undefined' || !tags) {
         tags = []
     }
+
+    const classes = useStyles();
+    // eslint-disable-next-line
+    const [defaultValues, setDefaultValues]  = useState([...tags])
 
     const handleChange = (ev, value, reason) => {
         if(onChange) {
@@ -36,12 +34,11 @@ export default function TuiTagger({label, placeholder, defaultTags, tags, onChan
                 <Autocomplete
                     multiple={multiple}
                     freeSolo={freeSolo}
-                    id="tags-text"
                     size="small"
                     onChange={(ev, value, reason) =>
                     { handleChange (ev, value, reason)} }
                     options={tags}
-                    defaultValue={defaultTags}
+                    defaultValue={defaultValues}
                     renderTags={(value, getTagProps) =>
                         value.map((option, index) => (
                             <Chip size="small" label={option} {...getTagProps({index})} />
@@ -59,7 +56,6 @@ TuiTagger.propTypes = {
     label: PropTypes.string,
     placeholder: PropTypes.string,
     onChange: PropTypes.func,
-    defaultTags: PropTypes.array,
     tags: PropTypes.array,
     freeSolo: PropTypes.bool,
     multiple: PropTypes.bool,

@@ -1,8 +1,7 @@
 .ObjectFiltering {
-    margin: 5px;
+    margin: 5px 5px 0 5px;
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: center;
 }
 
@@ -13,5 +12,5 @@
     width: 245px;
 }
 .ObjectFiltering > .Action {
-    width: 100px;
+    width: 115px;
 }

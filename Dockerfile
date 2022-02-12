@@ -5,6 +5,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY yarn.lock ./
 COPY src ./src
 COPY public ./public
+COPY src/config.prod.js ./src/config.js
 
 RUN yarn install --network-timeout 180000
 COPY . ./

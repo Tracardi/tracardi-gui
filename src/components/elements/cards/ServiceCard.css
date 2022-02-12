@@ -1,0 +1,27 @@
+.ServiceCard {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    border: solid 1px #ccc;
+    border-radius: 10px;
+    margin: 5px;
+}
+.ServiceCard > .Title {
+    padding: 15px;
+    font-size: 140%;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    background-color: #f5f5f5;
+    color: #444;
+    border-radius: 10px 10px 0 0 ;
+    justify-content: space-between;
+}
+.ServiceCard > .Title > SPAN {
+    display: flex;
+    align-items: center;
+}
+.ServiceCard > .Desc {
+    padding: 15px;
+}

@@ -4,7 +4,7 @@ import {
     getEdgeCenter,
     getMarkerEnd,
 } from 'react-flow-renderer';
-import {BiPlayCircle} from "@react-icons/all-files/bi/BiPlayCircle";
+import {BiPlayCircle} from "react-icons/bi";
 
 const foreignObjectSize = 20;
 

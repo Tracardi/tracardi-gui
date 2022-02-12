@@ -4,7 +4,7 @@ import "./IconSelector.css";
 import {
     TextField,
     Popover,
-} from '@material-ui/core';
+} from '@mui/material';
 import Button from "./forms/Button";
 
 const IconSelector = ({value="", onChange}) => {

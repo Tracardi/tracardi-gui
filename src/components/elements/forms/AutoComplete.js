@@ -1,16 +1,34 @@
-import React from 'react';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import {request} from "../../../remote_api/uql_api_endpoint";
+import React, {useEffect, useRef} from 'react';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+import CircularProgress from '@mui/material/CircularProgress';
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
+import {isObject, isString} from "../../../misc/typeChecking";
+import {objectMap} from "../../../misc/mappers";
+import {asyncRemote} from "../../../remote_api/entrypoint";
 
-const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoaded, onSetValue, onChange, solo, disabled}) => {
+const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoaded, onSetValue, onChange, solo, disabled, multiple=false, fullWidth=false}) => {
 
     if (typeof solo == "undefined") {
         solo = true
+    }
+
+    if(multiple === true) {
+        if(isString(initValue)) {
+            if(initValue === "") {
+                initValue = []
+            } else {
+                initValue = [initValue]
+            }
+        } else if (isObject(initValue)) {
+            initValue = undefined
+        }
+    } else {
+        if(!initValue) {
+            initValue = {}
+        }
     }
 
     const [open, setOpen] = React.useState(false);
@@ -19,30 +37,44 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
     const [progress, setProgress] = React.useState(false);
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
 
-    const handleDataLoaded = (result, onDataLoaded) => {
+    const mounted = useRef(false);
+
+    useEffect(() => {
+        mounted.current = true;
+        return () => {
+            mounted.current = false;
+        }
+    }, [])
+
+    useEffect(() => {
+        setValue(initValue)
+    }, [initValue])
+
+    const handleDataLoaded = (response, onDataLoaded) => {
         if (!onDataLoaded) {
-            return result.data?.result.map((key) => {
-                return {name: key, id: key}
-            });
+            if(Array.isArray(response.data?.result)) {
+                return response.data?.result.map((key) => {
+                    return {name: key, id: key}
+                });
+            } else if(isObject(response.data?.result)) {
+                return objectMap(response.data?.result, (key, value) => {
+                    return {name: value, id: key}
+                })
+            }
+            return []
         } else {
-            return onDataLoaded(result)
+            return onDataLoaded(response)
         }
     }
 
-    const handleLoading = () => {
-        setProgress(true);
-        request(
-            {url},
-            setProgress,
-            (e) => {
-                if (e) {
-                    showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
-                }
-            },
-            (result) => {
+    const handleLoading = async () => {
+        if(mounted.current) {
+            setProgress(true);
+            try {
                 setOpen(true);
-                if (result) {
-                    const options = handleDataLoaded(result, onDataLoaded)
+                const response = await asyncRemote({url})
+                if (response && mounted.current) {
+                    const options = handleDataLoaded(response, onDataLoaded)
 
                     if (typeof options !== "undefined" && options !== null) {
                         setOptions(options);
@@ -50,19 +82,37 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
                         setOptions([])
                     }
                 }
-            }
-        );
 
+            } catch(e) {
+                if(mounted.current && e) {
+                    showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
+                }
+            } finally {
+                 if(mounted.current) {
+                     setProgress(false);
+                 }
+            }
+        }
     }
 
     const handleValueSet = (value) => {
+        if(multiple === true && Array.isArray(value)) {
+            value = value.map((v) => { return isString(v) ? {id:v, name: v} : v })
+        } else if (typeof value === "string") {
+            value = {id: value, name: value}
+        }
+
         setValue(value);
+
         if (onSetValue) {
             onSetValue(value);
         }
     }
 
     const handleChange = (value) => {
+        if(isString(value)) {
+            value = {id: value, name: value}
+        }
         if (onChange) {
             onChange(value);
         }
@@ -71,17 +121,16 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
     return (
         <Autocomplete
             freeSolo={solo}
-
-            style={{width: 300}}
+            multiple={multiple}
+            fullWidth={fullWidth}
+            style={fullWidth ? {width: "100%"} : {width: 300}}
             open={open}
-            onOpen={() => {
-                handleLoading();
-            }}
+            onOpen={handleLoading}
             onClose={() => {
                 setOpen(false);
                 setOptions([]);
             }}
-            getOptionSelected={(option, value) => option.id === value.id}
+            isOptionEqualToValue={(option, value) => (option.id === value.id)}
             getOptionLabel={(option) => {
                 return option?.name || option?.id || ""
             }}
@@ -89,12 +138,8 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
             loading={loading}
             value={value}
             disabled={disabled}
-            onChange={(event, newValue) => {
-                if (typeof newValue === "string") {
-                    newValue = {id: null, name: newValue}
-                }
-                console.log("onChange", newValue)
-                handleValueSet(newValue);
+            onChange={(event, value) => {
+                handleValueSet(value);
             }}
             onInputChange={(ev, value, reason) => {
                 handleChange(value)
@@ -111,7 +156,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onDataLoad
                         ...params.InputProps,
                         endAdornment: (
                             <>
-                                {progress ? <CircularProgress color="inherit" size={20}/> : null}
+                                {progress ? <CircularProgress color="inherit" size={20} style={{marginRight: 25}}/> : null}
                                 {params.InputProps.endAdornment}
                             </>
                         ),
@@ -128,9 +173,11 @@ AutoComplete.propTypes = {
     url: PropTypes.string.isRequired,
     onDataLoaded: PropTypes.func,
     onSetValue: PropTypes.func,
+    onChange: PropTypes.func,
     solo: PropTypes.bool,
     disabled: PropTypes.bool,
-    initValue: PropTypes.object
+    fullWidth: PropTypes.bool,
+    multiple: PropTypes.bool
 }
 
 const mapProps = (state) => {

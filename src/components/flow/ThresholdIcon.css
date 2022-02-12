@@ -1,0 +1,12 @@
+.ThresholdIcon {
+    border-radius: 4px;
+    padding: 5px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: aliceblue;
+    margin-bottom: 5px;
+    color: #444;
+    text-decoration: underline;
+}

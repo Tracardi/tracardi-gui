@@ -2,6 +2,7 @@
 
 /public/env-config.js
 env-config.js
+package.lock
 
 # dependencies
 /node_modules

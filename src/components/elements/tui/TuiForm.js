@@ -1,5 +1,6 @@
 import React from "react";
 import "./TuiForm.css";
+import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 
 export const TuiForm = ({children, className, style}) => {
 
@@ -13,13 +14,21 @@ export const TuiForm = ({children, className, style}) => {
     </form>
 }
 
-export const TuiFormGroup = ({children, className, style}) => {
+export const TuiFormGroup = ({children, className, style, fitHeight=false}) => {
 
     let baseClassName = ["TuiFormGroup"]
 
     if(className) {
         baseClassName.push(className)
     }
+
+    if(fitHeight === true) {
+        if(isEmptyObjectOrNull(style)) {
+            style = {}
+        }
+        style['height'] = "100%"
+    }
+
     return <div className={baseClassName.join(" ")} style={style}>
         {children}
     </div>

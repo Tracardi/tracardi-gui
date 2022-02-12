@@ -1,6 +1,6 @@
 import React from "react";
 import "./ErrorBox.css";
-import {VscError} from "@react-icons/all-files/vsc/VscError";
+import {VscError} from "react-icons/vsc";
 
 export default function ErrorBox({children}) {
 
@@ -8,9 +8,9 @@ export default function ErrorBox({children}) {
         <div>
             <VscError size={25}/>
         </div>
-        <pre className="ErrorDetails">
+        <div className="ErrorDetails">
             {children}
-        </pre>
+        </div>
     </div>
 
 }

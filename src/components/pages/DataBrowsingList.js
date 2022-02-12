@@ -15,12 +15,14 @@ export default function DataBrowsingList(
         initQuery,
         displayDetails,
         detailsDrawerWidth,
+        displayChart=true,
+        refreshInterval=0
     }) {
 
     return <section className="DataBrowsingList">
-        <div className="Chart">
+        {displayChart === true && <div className="Chart">
             {children}
-        </div>
+        </div>}
         <div className="Data">
             <DetailsObjectList
                 label={label}
@@ -31,6 +33,7 @@ export default function DataBrowsingList(
                 timeFieldLabel={timeFieldLabel}
                 displayDetails={displayDetails}
                 detailsDrawerWidth={detailsDrawerWidth}
+                refreshInterval={refreshInterval}
             />
         </div>
     </section>

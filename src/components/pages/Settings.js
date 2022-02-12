@@ -1,35 +1,38 @@
 import React, {useEffect, useState} from "react";
-import {request} from "../../remote_api/uql_api_endpoint";
-import {connect} from "react-redux";
-import {showAlert} from "../../redux/reducers/alertSlice";
 import KeyValueDesc from "../elements/misc/KeyValueDesc";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
+import ErrorsBox from "../errors/ErrorsBox";
+import {asyncRemote, getError} from "../../remote_api/entrypoint";
 
-function Settings({showAlert}) {
+export default function Settings() {
 
-    const [loading, setLoading] =useState(false);
-    const [setting, setSettings] =useState([false]);
+    const [loading, setLoading] = useState(false);
+    const [setting, setSettings] = useState([false]);
+    const [error, setError] = useState(null);
 
-    useEffect(()=>{
+    useEffect(() => {
         setLoading(true);
-        request({
+        asyncRemote(
+            {
                 method: "get",
                 url: "/settings"
-            },
-            setLoading,
-            (e) => {
+            }
+        ).then((response) => {
+            setLoading(false);
+            if (response) {
+                setSettings(response.data);
+            }
+        }).catch((e) => {
+            if (e) {
+                setLoading(false);
                 if (e) {
-                    showAlert({message: e[0].msg, type: "error", hideAfter: 3000});
-                }
-            },
-            (response) => {
-                if (response) {
-                    setSettings(response.data);
+                    setError(getError(e));
                 }
             }
-        )
-    }, [showAlert])
+        })
+
+    }, [])
 
     return <TuiForm style={{height: "inherit", overflowY: "auto"}}>
         <TuiFormGroup style={{margin: 20}}>
@@ -38,18 +41,11 @@ function Settings({showAlert}) {
             />
             <TuiFormGroupContent>
                 {loading && <CenteredCircularProgress/>}
-                {!loading && setting.map((row, index) => {
-                    return <KeyValueDesc key={index} label={row.label} value={row.value} description={row.desc} />
+                {!loading && !error && setting.map((row, index) => {
+                    return <KeyValueDesc key={index} label={row.label} value={row.value} description={row.desc}/>
                 })}
+                {error && <ErrorsBox errorList={error}/>}
             </TuiFormGroupContent>
         </TuiFormGroup>
     </TuiForm>
 }
-
-const mapProps = (state) => {
-    return {}
-}
-export default connect(
-    mapProps,
-    {showAlert}
-)(Settings)

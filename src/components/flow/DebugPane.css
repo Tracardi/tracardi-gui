@@ -1,0 +1,32 @@
+.DebugPane {
+    height: inherit;
+    width: 100%;
+    background: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    grid-area: debug;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: .3s;
+}
+
+.DebugPane .ResizeHorizontalHandler {
+    height: 5px;
+    border-top: solid #ccc 1px;
+    border-bottom: solid #ccc 1px;
+    background-color: #ddd;
+    width: 100%;
+}
+
+.DebugPane > .WorkArea {
+    height: calc(100% - 5px);
+    display: flex;
+}
+
+.DebugPane > .WorkArea> .Icons {
+    padding: 4px;
+    border-right: 1px solid #ccc;
+    width: 50px;
+}

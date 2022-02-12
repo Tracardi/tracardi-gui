@@ -2,7 +2,7 @@ import React from "react";
 import "./DataAnalytics.css";
 import DataAnalytics from "./DataAnalytics";
 
-export default function SessionsAnalytics() {
+export default function SessionsAnalytics({displayChart=true}) {
 
     const onLoadDataRequest = (query) => {
         return {
@@ -29,6 +29,7 @@ export default function SessionsAnalytics() {
         timeField={(row) => [row.metadata.time.insert]}
         onLoadHistogramRequest={onLoadHistogramRequest}
         onLoadDataRequest={onLoadDataRequest}
+        displayChart={displayChart}
     />
 
 }

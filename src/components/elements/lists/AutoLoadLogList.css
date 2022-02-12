@@ -1,0 +1,10 @@
+.LogListTable {
+    width: 100%;
+}
+.LogListRow {
+    padding: 2px;
+}
+.LogListRow > TD {
+    padding: 1px 5px;
+    border-bottom: solid 1px #ccc;
+}

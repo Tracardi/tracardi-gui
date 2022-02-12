@@ -14,7 +14,7 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 
 export default function ProfileDetails({data}) {
 
-    return <div style={{height: "inherit"}}>
+    return <div style={{height: "inherit", display: "flex", flexDirection: "column"}}>
         <PiiDetails data={data}/>
         <div className="RightTabScroller">
             <Tabs tabs={["Traits", "Segments", "Events", "Raw"]} className="ProfileDetailsTabs">
@@ -32,10 +32,18 @@ export default function ProfileDetails({data}) {
                             </TuiFormGroupContent>
                         </TuiFormGroup>
                         <TuiFormGroup>
-                            <TuiFormGroupHeader header="Personally Identifiable Information "/>
+                            <TuiFormGroupHeader header="Personally Identifiable Information"/>
                             <TuiFormGroupContent>
                                 <TuiFormGroupField>
                                     <Properties properties={data?.pii}/>
+                                </TuiFormGroupField>
+                            </TuiFormGroupContent>
+                        </TuiFormGroup>
+                        <TuiFormGroup>
+                            <TuiFormGroupHeader header="Customer consents"/>
+                            <TuiFormGroupContent>
+                                <TuiFormGroupField>
+                                    <Properties properties={data?.consents}/>
                                 </TuiFormGroupField>
                             </TuiFormGroupContent>
                         </TuiFormGroup>

@@ -1,12 +1,12 @@
 import React, {useCallback, useState} from "react";
-import { useDispatch } from "react-redux";
+import {useDispatch} from "react-redux";
 import {resetPage} from '../../../redux/reducers/pagingSlice'
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import Button from "./Button";
 import "./ObjectFiltering.css";
-import {AiOutlineFilter} from "@react-icons/all-files/ai/AiOutlineFilter";
+import {AiOutlineFilter} from "react-icons/ai";
 import DataTimePicker from "../datepickers/DateTimePicker";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import PropTypes from 'prop-types';
 
 export default function ObjectFiltering({type, initDate, onFilterClick, initRefresh, onRefreshChange}) {
@@ -14,15 +14,24 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
     const [fromDate, setFromDate] = useState(initDate.minDate);
     const [toDate, setToDate] = useState(initDate.maxDate);
     const [query, setQuery] = useState(initDate.where);
+
     const dispatch = useDispatch();
 
+    const external = (url, newWindow=false) => {
+        if(newWindow===true) {
+            return () => window.open(url, '_blank', 'location=yes,scrollbars=yes,status=yes')
+        } else {
+            return () => window.location.href = url;
+        }
+    }
+
     const onSetDateFrom = useCallback((date) => {
-        localStorage.setItem(type+"DateFrom", JSON.stringify(date));
+        localStorage.setItem(type + "DateFrom", JSON.stringify(date));
         setFromDate(date);
     }, [type])
 
-    const onSetDateTo= useCallback((date) => {
-        localStorage.setItem(type+"DateTo", JSON.stringify(date));
+    const onSetDateTo = useCallback((date) => {
+        localStorage.setItem(type + "DateTo", JSON.stringify(date));
         setToDate(date)
     }, [type]);
 
@@ -41,7 +50,7 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
     }
 
     function onReady() {
-        localStorage.setItem(type+"Query", query);
+        localStorage.setItem(type + "Query", query);
         dispatch(resetPage());
         onFilterClick({
             from: fromDate,
@@ -57,7 +66,7 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
                 variant="outlined"
                 size="small"
                 value={initRefresh}
-                style={{width: 130, marginRight:5}}
+                style={{width: 130, marginRight: 5}}
                 onChange={(ev) => setRefreshRate(ev.target.value)}
             >
                 <MenuItem value={0} selected>No refresh</MenuItem>
@@ -76,6 +85,7 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
                        variant="outlined"
                        fullWidth
             />
+            <div style={{fontSize: 11}}>Do not know how to filter. Click <a style={{textDecoration: "underline", cursor: "pointer"}} onClick={external("http://docs.tracardi.com/running/filtering/", true)}>here</a> for information.</div>
         </div>
         <div className="Date">
             <DataTimePicker type="FromDate" datetime={fromDate} onDatetimeSelect={onSetDateFrom}/>
@@ -85,11 +95,17 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
         </div>
         <div className="Action">
             <Button label="Filter"
-                    style={{padding: "8px 14px"}}
+                    style={{padding: "7px 14px", margin:"0 0 0 5px"}}
                     onClick={onReady}
                     icon={<AiOutlineFilter size={20} style={{marginRight: 5}}/>}/>
         </div>
     </section>
 }
 
-ObjectFiltering.propTypes = {type: PropTypes.string, initDate: PropTypes.object, onFilterClick: PropTypes.func, initRefresh: PropTypes.number, onRefreshChange: PropTypes.func}
+ObjectFiltering.propTypes = {
+    type: PropTypes.string,
+    initDate: PropTypes.object,
+    onFilterClick: PropTypes.func,
+    initRefresh: PropTypes.number,
+    onRefreshChange: PropTypes.func
+}

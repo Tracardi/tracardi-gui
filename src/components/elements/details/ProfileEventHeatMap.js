@@ -3,7 +3,7 @@ import HeatMap from "@uiw/react-heat-map";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 
-export default function ProfileEventHeatMap({profileId}) {
+export default function ProfileEventHeatMap({profileId=null}) {
 
     const [loading, setLoading] = useState(false)
     const [events, setEvents] = useState(false)
@@ -11,7 +11,7 @@ export default function ProfileEventHeatMap({profileId}) {
     useEffect(()=>{
         setLoading(true);
         request({
-                url: '/events/heatmap/profile/' + profileId,
+                url: (profileId!== null) ? '/events/heatmap/profile/' + profileId : '/events/heatmap',
                 method: "get"
             },
             setLoading,
@@ -42,7 +42,7 @@ export default function ProfileEventHeatMap({profileId}) {
                     }}
                     panelColors={{
                         0: '#eee',
-                        2: '#ddd',
+                        2: '#00a9a4',
                         4: '#00a9a4',
                         10: '#0288d1',
                         20: '#1976d2',

@@ -1,5 +1,5 @@
 import Button from "../forms/Button";
-import {BiTimeFive} from "@react-icons/all-files/bi/BiTimeFive";
+import {BiTimeFive} from "react-icons/bi";
 import React from "react";
 import PropTypes from "prop-types";
 

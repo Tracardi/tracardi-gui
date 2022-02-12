@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import PropTypes from 'prop-types';
 
 const FilterTextField = ({label, onChange, onSubmit, initValue="", variant="outlined"}) => {

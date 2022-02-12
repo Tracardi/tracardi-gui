@@ -1,12 +1,10 @@
 import React from "react";
-import {FiMail} from "@react-icons/all-files/fi/FiMail";
+import {FiMail} from "react-icons/fi";
 import './PiiDetails.css';
-import {BiPhoneCall} from "@react-icons/all-files/bi/BiPhoneCall";
-import {FaBirthdayCake} from "@react-icons/all-files/fa/FaBirthdayCake";
-import {FaFacebookSquare} from "@react-icons/all-files/fa/FaFacebookSquare";
-import {VscTwitter} from "@react-icons/all-files/vsc/VscTwitter";
-import {FaWhatsapp} from "@react-icons/all-files/fa/FaWhatsapp";
-import {VscPerson} from "@react-icons/all-files/vsc/VscPerson";
+import {BiPhoneCall} from "react-icons/bi";
+import {FaBirthdayCake, FaFacebookSquare} from "react-icons/fa";
+import {VscTwitter, VscPerson} from "react-icons/vsc";
+import {FaWhatsapp} from "react-icons/fa";
 
 const PiiDetails = ({data}) => {
 
@@ -18,7 +16,7 @@ const PiiDetails = ({data}) => {
                 </div>
                 <div>
                     <header className="Name">
-                        {data.pii?.name} {data.pii?.surname ? data.pii?.surname : "Anonymous"}
+                        {data.pii?.name} {data.pii?.last_name ? data.pii?.last_name : "Anonymous"}
                     </header>
                     <div>
                         Last event: {data.metadata?.time?.lastVisit ? data.metadata.time?.lastVisit : "not available"}
@@ -31,7 +29,7 @@ const PiiDetails = ({data}) => {
             <div className="PiiData">
                 <section>
                     <div>
-                        <FaBirthdayCake style={{marginRight: 5}}/> {data.pii?.birthDate ? data.pii?.birthDate : "not available"}
+                        <FaBirthdayCake style={{marginRight: 5}}/> {data.pii?.birth_date ? data.pii?.birth_date : "not available"}
                     </div>
                     <div>
                         <FiMail style={{marginRight: 5}}/> {data.pii?.email ? data.pii?.email : "not available"}

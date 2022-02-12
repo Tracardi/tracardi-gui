@@ -1,7 +1,7 @@
 import React, {useCallback} from "react";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
-import {VscOrganization} from "@react-icons/all-files/vsc/VscOrganization";
+import {VscOrganization} from "react-icons/vsc";
 import SegmentForm from "../elements/forms/SegmentForm";
 import SegmentDetails from "../elements/details/SegmentDetails";
 
@@ -32,6 +32,8 @@ export default function Segments() {
 
     return <CardBrowser
         label="Segments"
+        description="Segmentation is triggered every time the profile is updated. It evalutes the segment condition and
+        if it is met then the profile is assigned to defined segment. Segments can be added dynamically inside the workflow."
         urlFunc={urlFunc}
         cardFunc={segments}
         buttomLabel="New segment"

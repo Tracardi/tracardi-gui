@@ -1,22 +1,19 @@
 import React from "react";
 import './DebugDetails.css';
-import convertNodesToProfilingData from "./profilingConverter";
 import {FlowProfiling} from "./FlowProfiling";
 
-const DebugDetails = ({nodes, node, onConnectionDetails}) => {
+const DebugDetails = ({profilingData, onConnectionDetails}) => {
 
     return <section className="DebugDetails">
-        <div className="DebugContent">
             <FlowProfiling
-                profilingData={convertNodesToProfilingData(nodes)}
-                node={node}
+                profilingData={profilingData}
                 onCallSelect={(nodeId, edgeId) => {
                     if(onConnectionDetails) {
                         onConnectionDetails(nodeId, edgeId)
                     }
                 }}
+                orientation="vertical"
             />
-        </div>
     </section>
 }
 

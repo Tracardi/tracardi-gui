@@ -1,0 +1,21 @@
+.PageTabs {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+}
+
+.PageTabs > DIV > .Title {
+    font-weight: 400;
+    font-size: 220%;
+    margin: 0;
+    color: #444;
+}
+.PageTabs > DIV {
+    background-color: #e1f5fe;
+    padding: 10px 37px;
+}
+.PageTabs > .TabNav {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+}

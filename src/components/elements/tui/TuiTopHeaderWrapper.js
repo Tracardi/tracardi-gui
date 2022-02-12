@@ -1,11 +1,12 @@
 import React from "react";
+import './TuiTopHeaderWrapper.css';
 
-export default function TuiTopHeaderWrapper({children, header, description, gap = 10, descHeight = 60}) {
+export default function TuiTopHeaderWrapper({children, header, description, style, descHeight = 70}) {
 
-    return <div style={{display: "flex", gap: gap, flexDirection: "column"}}>
+    return <div className="TuiTopHeaderWrapper" style={style}>
             <div>
-                <h3>{header}</h3>
-                {description &&<p style={{height: descHeight, textOverflow: "ellipsis", overflow: "hidden"}}>{description}</p>}
+                <div className="Title">{header}</div>
+                {description &&<div style={{height: descHeight, textOverflow: "ellipsis", overflow: "hidden"}}>{description}</div>}
             </div>
             <div>
                 {children}

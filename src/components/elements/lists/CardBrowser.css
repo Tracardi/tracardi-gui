@@ -2,8 +2,9 @@
     overflow: auto;
     height: inherit;
     align-items: flex-start;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: 55px calc(100% - 55px);
+    width: inherit;
 }
 .CardBrowser > H3 {
     display: flex;
@@ -29,13 +30,15 @@
     display: flex;
     flex-direction: column;
     margin:  10px;
+    width: fit-content;
 }
 
 .CardBrowser .CardGroup > HEADER {
-    padding: 10px;
+    padding: 5px 10px 5px 10px;
     font-size: 120%;
-    text-transform: uppercase;
-    border-bottom: 2px #777 solid;
+    border-bottom: 1px #ccc solid;
+    margin-bottom: 10px;
+    text-transform: capitalize;
 }
 
 .CardBrowser .CardGroup > DIV {

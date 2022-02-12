@@ -1,6 +1,7 @@
 import {isNode} from "react-flow-renderer";
 
 export default function convertNodesToProfilingData(nodes) {
+
     let profilingData = {
         startTime: 0,
         endTime: 0,
@@ -25,7 +26,9 @@ export default function convertNodesToProfilingData(nodes) {
                                     input: call.input,
                                     output: call.output,
                                     error: call.error,
-                                    profile: call.profile
+                                    profile: call.profile,
+                                    event: call.event,
+                                    session: call.session
                                 }
                             }
                         )
@@ -67,7 +70,9 @@ export function convertDebugInfoToProfilingData(debugInfo) {
                                         input: call.input,
                                         output: call.output,
                                         error: call.error,
-                                        profile: call.profile
+                                        profile: call.profile || {},
+                                        event: call.event || {},
+                                        session: call.session || {}
                                     }
                                 }
                             )

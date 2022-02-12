@@ -1,25 +1,39 @@
 import React from "react";
 import "./ErrorsBox.css";
-import {VscError} from "@react-icons/all-files/vsc/VscError";
+import {VscError} from "react-icons/vsc";
 
-export default function ErrorsBox({errorList, fillWidth}) {
+export default function ErrorsBox({errorList, fillWidth, style}) {
 
     const visual = (typeof fillWidth === "undefined") ? "ErrorsBox NotFullErrorBox" : "ErrorsBox";
 
-    const displayErrors = (errorLst) => errorLst.map(({msg, loc, type}, index)=>{
-        return <li key={index} title={loc}>{msg} [{type}]</li>
-    })
+    const Message = ({location, msg, type}) => {
+        if (location) {
+            return <>{location}: {msg} [{type}]</>
+        }
+        return <>{msg} [{type}]</>
+    }
+
+    const displayErrors = (errorLst) => {
+        if(Array.isArray(errorLst)) {
+            return errorLst.map(({msg, loc, type}, index) => {
+                const location = Array.isArray(loc) ? loc.join(".") : null
+                return <li key={index} title={location}>
+                    <Message location={location} msg={msg} type={type}/>
+                </li>
+            })
+        }
+    }
 
     const displayBox = (errorLst) => {
-        if(errorLst) {
-            return <div className={visual}>
-                <VscError size={50}/>
-                <section className="ErrorDetails">
+        if (errorLst) {
+            return <div className={visual} style={style}>
+                <div style={{width: 40}}><VscError size={40}/></div>
+                <div className="ErrorDetails">
                     <div className="Header">The following errors occurred:</div>
                     <ul className="ErrorList">
                         {errorLst && displayErrors(errorLst)}
                     </ul>
-                </section>
+                </div>
             </div>
         }
     }

@@ -1,6 +1,6 @@
 import React from "react";
 import "./IconicCircularProgress.css"
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function IconicCircularProgress({icon, size = 40, color = "primary", progress=false}) {
     return <div style={{width: size, height: size}} className="Relative">

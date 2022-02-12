@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import Switch from "@material-ui/core/Switch";
+import Switch from "@mui/material/Switch";
 
 export default function BoolInput({value = false, label, onChange = () => {}}) {
     const [boolValue, setBoolValue] = useState(value || false);

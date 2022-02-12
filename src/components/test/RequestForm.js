@@ -1,6 +1,4 @@
 import React, {useState} from "react";
-import {v4 as uuid4} from "uuid";
-import TuiSelectResource from "../elements/tui/TuiSelectResource";
 import Input from "../elements/forms/inputs/Input";
 import JsonEditor from "../elements/editors/JsonEditor";
 import Button from "../elements/forms/Button";
@@ -15,13 +13,14 @@ import {
 } from "../elements/tui/TuiForm";
 import TuiColumnsFlex from "../elements/tui/TuiColumnsFlex";
 import TuiTopHeaderWrapper from "../elements/tui/TuiTopHeaderWrapper";
+import {TuiSelectEventSource} from "../elements/tui/TuiSelectEventSource";
 
-export const RequestForm = ({onError, onRequest}) => {
+export const RequestForm = ({onError, onRequest, eventType: evType}) => {
 
     const [resource, setResource] = useState(null);
-    const [session, setSession] = useState(uuid4());
-    const [profile, setProfile] = useState("");
-    const [eventType, setEventType] = useState('page-view');
+    const [session, setSession] = useState("@debug-session");
+    const [profile, setProfile] = useState("@debug-profile");
+    const [eventType, setEventType] = useState(evType);
     const [properties, setProperties] = useState(JSON.stringify({}));
     const [context, setContext] = useState(JSON.stringify({}));
     const [profileFlag, setProfileFlag] = useState(true);
@@ -38,26 +37,35 @@ export const RequestForm = ({onError, onRequest}) => {
 
             const props = JSON.parse(properties);
             const ctx = JSON.parse(context);
-            let requestBody = {
-                context: ctx,
-                session: {id: session},
-                source: resource,
-                events: [
-                    {
-                        type: eventType, properties: props
+
+            if(eventType === "" || eventType === null) {
+                throw new Error("Event type is empty.");
+            }
+
+            if(ctx !== null && props !== null) {
+
+                let requestBody = {
+                    context: ctx,
+                    session: {id: session},
+                    source: resource,
+                    events: [
+                        {
+                            type: eventType, properties: props
+                        }
+                    ],
+                    options: {
+                        profile: profileFlag,
+                        debugger: debug
                     }
-                ],
-                options: {
-                    profile: profileFlag,
-                    debugger: debug
                 }
+
+                if (profile) {
+                    requestBody = {...requestBody, profile: {id: profile}}
+                }
+
+                await onRequest(requestBody);
             }
 
-            if (profile) {
-                requestBody = {...requestBody, profile: {id: profile}}
-            }
-
-            await onRequest(requestBody);
 
         } catch (e) {
             onError(e)
@@ -97,7 +105,7 @@ export const RequestForm = ({onError, onRequest}) => {
 
                 <TuiFormGroupField header="Options">
                     <BoolInput label="Return profile data" value={profileFlag} onChange={setProfileFlag}/>
-                    <BoolInput label="Return debugger data" value={debug} onChange={setDebug}/>
+                    <BoolInput label="Return debugger data, TRACK_DEBUG env must be set to yes" value={debug} onChange={setDebug}/>
                 </TuiFormGroupField>
 
                 <TuiFormGroupField header="Context" description="Context is the additional data describing event context.">
@@ -117,8 +125,8 @@ export const RequestForm = ({onError, onRequest}) => {
             <TuiFormGroupContent>
                 <TuiFormGroupField>
                     <TuiColumnsFlex width={320}>
-                        <TuiTopHeaderWrapper header="Source">
-                            <TuiSelectResource
+                        <TuiTopHeaderWrapper header="Event source">
+                            <TuiSelectEventSource
                                 value={resource}
                                 onSetValue={setResource}
                             />
@@ -137,7 +145,7 @@ export const RequestForm = ({onError, onRequest}) => {
                 <TuiFormGroupField header="Event properties" description="Event properties is the data data is sent to Tracardi for further processing.">
                     <fieldset>
                         <legend>Properties</legend>
-                        <JsonEditor value={properties} onChange={setProperties} height="200px"/>
+                        <JsonEditor value={properties} onChange={setProperties} height="150px"/>
                     </fieldset>
                 </TuiFormGroupField>
             </TuiFormGroupContent>

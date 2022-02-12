@@ -56,7 +56,6 @@ export default function TuiTaggerFlow({tags, onChange}) {
 
     return <TuiTagger label="Flow tags"
                       onChange={handleChange}
-                      defaultTags={tags}
                       tags={flowTags}/>
 }
 

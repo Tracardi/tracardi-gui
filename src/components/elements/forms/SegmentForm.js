@@ -1,26 +1,46 @@
 import React, {useState} from "react";
 import Button from "./Button";
-import TextField from "@material-ui/core/TextField";
-import Switch from "@material-ui/core/Switch";
+import TextField from "@mui/material/TextField";
+import Switch from "@mui/material/Switch";
 import {v4 as uuid4} from "uuid";
 import {request} from "../../../remote_api/uql_api_endpoint";
-import {remote} from "../../../remote_api/entrypoint";
+import {asyncRemote} from "../../../remote_api/entrypoint";
 import PropTypes from 'prop-types';
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import TuiFormError from "../tui/TuiFormError";
+import {isString, isObject} from "../../../misc/typeChecking";
 
 export default function SegmentForm({onSubmit, init}) {
 
     if (!init) {
         init = {
             id: (!init?.id) ? uuid4() : init.id,
-            eventType: "",
+            eventType: [],
             condition: "",
             name: "",
             description: "",
             enabled: false
         }
+    }
+
+    // Convert event types into list of entity names. Required for DropDown.
+    let eventTypes = [];
+
+    if(isString(init.eventType)) {
+        eventTypes = [{
+            id: init.eventType,
+            name: init.eventType
+        }]
+    } else if(!init.eventType) {
+        eventTypes = []
+    } else if(Array.isArray(init.eventType)) {
+        eventTypes = init.eventType.map((item) => {
+            return isString(item) ? {
+                id: item,
+                name: item
+            } : (isObject(item)) ? item : {id: "", name: ""}
+        })
     }
 
     const [name, setName] = useState(init.name);
@@ -31,11 +51,11 @@ export default function SegmentForm({onSubmit, init}) {
     const [conditionErrorMessage, setConditionErrorMessage] = useState(null);
     const [enabled, setEnabled] = useState(init.enabled);
     const [processing, setProcessing] = useState(false);
-    const [type, setType] = useState(init.eventType);
+    const [type, setType] = useState(eventTypes);
 
     const onTqlValidate = async () => {
         try {
-            const response = await remote({
+            const response = await asyncRemote({
                     url: '/tql/validate',
                     method: 'post',
                     data: condition
@@ -68,15 +88,16 @@ export default function SegmentForm({onSubmit, init}) {
             return;
         }
 
-        if (!await onTqlValidate()) {
+        if (!(await onTqlValidate())) {
             return;
         }
 
+        const eventTypeList = type.map(item => item.id)
         const payload = {
             id: (!init?.id) ? uuid4() : init.id,
             name: name,
             description: description,
-            eventType: type.id,
+            eventType: eventTypeList ? eventTypeList : null,
             condition: condition,
             enabled: enabled,
         }
@@ -95,18 +116,9 @@ export default function SegmentForm({onSubmit, init}) {
             },
             (response) => {
                 if (response !== false) {
-                    request({
-                            url: '/segments/refresh'
-                        },
-                        setProcessing,
-                        () => {
-                        },
-                        () => {
-                            if (onSubmit) {
-                                onSubmit(payload)
-                            }
-                        }
-                    )
+                    if (onSubmit) {
+                        onSubmit(payload)
+                    }
                 }
             }
         )
@@ -118,7 +130,7 @@ export default function SegmentForm({onSubmit, init}) {
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Event type" description="Bind this segment event type. You can select
                 None then segment will be checked at every event. against all events.">
-                    <TuiSelectEventType value={{name: type, id: type}} onSetValue={setType}/>
+                    <TuiSelectEventType value={type} onSetValue={setType} multiple={true}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Condition" description="Segments are created after the event is processed.
                     Then Profile properties are evaluated against the condition you type below.
@@ -129,7 +141,7 @@ export default function SegmentForm({onSubmit, init}) {
                         multiline
                         rows={3}
                         error={(typeof conditionErrorMessage !== "undefined" && conditionErrorMessage !== '' && conditionErrorMessage !== null)}
-                        helperText={conditionErrorMessage ? conditionErrorMessage : "Condition example: stats.visits>10 AND properties.public.boughtProducts>1"}
+                        helperText={conditionErrorMessage ? conditionErrorMessage : "Condition example: profile@stats.visits>10 AND profile@traits.public.boughtProducts>1"}
                         onChange={(ev) => {
                             setCondition(ev.target.value)
                         }}
@@ -153,7 +165,7 @@ export default function SegmentForm({onSubmit, init}) {
         <TuiFormGroup>
             <TuiFormGroupHeader header="Describe segment"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Name" description="he segment name will be its id, after spaces are
+                <TuiFormGroupField header="Name" description="The segment name will be its id, after spaces are
                 replaced with dashes and letters lowercased">
                     <TextField
                         label={"Segment name"}

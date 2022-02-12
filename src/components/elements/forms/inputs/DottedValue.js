@@ -1,5 +1,5 @@
 import React from "react";
-import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
+import {VscTrash} from "react-icons/vsc";
 import './DottedValue.css'
 
 const DottedValue = ({children, onDelete}) => {

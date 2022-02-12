@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import MarkdownElement from "../../elements/misc/MarkdownElement";
 import "./MdManual.css";
+import {apiUrl} from "../../../remote_api/entrypoint";
 
 const MdManual = ({mdFile}) => {
 
@@ -8,12 +9,11 @@ const MdManual = ({mdFile}) => {
 
     async function loadMdFile(fileName) {
         try {
-            const response = await fetch(window._env_.API_URL+'/manual/en/docs/flow/actions/'+fileName+'.md?'+ Math.random());
+            const response = await fetch(apiUrl()+'/manual/en/docs/flow/actions/'+fileName+'.md?'+ Math.random());
             return await response.text();
         } catch (e) {
             return e.toString()
         }
-
     }
 
     useEffect(()=> {

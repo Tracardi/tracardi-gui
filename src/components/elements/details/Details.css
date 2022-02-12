@@ -1,8 +1,9 @@
 .RightTabScroller {
-    height: calc(100% - 50px);
+    height: 100%;
     overflow-y: scroll;
     padding: 5px 8px;
     overflow-x: hidden;
+    flex: 1 1;
 }
 .DetailActionButtons {
     padding: 10px;

@@ -4,8 +4,8 @@ import {
     Switch,
     Route
 } from "react-router-dom";
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import AppBox from "./AppBox";
 import {connect, useDispatch} from "react-redux";
 import {hideAlert} from "../redux/reducers/alertSlice";
@@ -14,13 +14,12 @@ import SignIn from "./authentication/SignIn";
 import PrivateRoute from "./authentication/PrivateRoute";
 import "./App.css";
 import urlPrefix from "../misc/UrlPrefix";
-import AlertTitle from "@material-ui/lab/AlertTitle";
+import AlertTitle from '@mui/material/AlertTitle';
+import FormDrawer from "./elements/drawers/FormDrawer";
+import {close} from "../redux/reducers/newResource";
+import ResourceForm from "./elements/forms/ResourceForm";
 
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
-const App = ({alert}) => {
+const App = ({alert, resource, close}) => {
 
     const dispatch = useDispatch()
 
@@ -42,12 +41,22 @@ const App = ({alert}) => {
                         <AppBox/>
                     </PrivateRoute>
                 </Switch>
-                <Snackbar open={alert.show} autoHideDuration={alert.hideAfter} onClose={handleClose}>
-                    <Alert onClose={handleClose} severity={alert.type}>
+                <Snackbar open={alert.show} autoHideDuration={alert.hideAfter} onClose={handleClose} anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center'
+                }}>
+                    <MuiAlert variant="filled" elevation={6} onClose={handleClose} severity={alert.type}>
                         <AlertTitle style={{textTransform: "uppercase"}}>{alert.type}</AlertTitle>
                         <span style={{fontWeight: 400}}>{alert.message}</span>
-                    </Alert>
+                    </MuiAlert>
                 </Snackbar>
+                <FormDrawer open={resource.show} onClose={() => {
+                    close()
+                }} width={550}>
+                    <ResourceForm onClose={() => {
+                        close()
+                    }}/>
+                </FormDrawer>
             </Router>
         );
     }
@@ -58,6 +67,10 @@ const App = ({alert}) => {
 const mapState = (state) => {
     return {
         alert: state.alertReducer,
+        resource: state.newResource
     }
 }
-export default connect(mapState)(App);
+export default connect(
+    mapState,
+    {close}
+)(App);

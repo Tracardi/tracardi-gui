@@ -1,8 +1,7 @@
 import React from 'react';
 import "./SourceCard.css";
 import "./Card.css";
-import {VscVmRunning} from "@react-icons/all-files/vsc/VscVmRunning";
-import {VscVmOutline} from "@react-icons/all-files/vsc/VscVmOutline";
+import {VscVmRunning, VscVmOutline} from "react-icons/vsc";
 
 export default function SourceCard({data, onClick}) {
 

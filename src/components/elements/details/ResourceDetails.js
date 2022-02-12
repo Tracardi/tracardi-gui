@@ -9,11 +9,11 @@ import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import FormDrawer from "../drawers/FormDrawer";
-import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
-import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
+import {VscTrash,VscEdit} from "react-icons/vsc";
 import ResourceForm from "../forms/ResourceForm";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
+import CredentialsVault from "../misc/CredentialsVault";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -22,6 +22,7 @@ export default function ResourceDetails({id, onDeleteComplete}) {
 
     const confirm = useConfirm();
     const [data, setData] = React.useState(null);
+    const [credentials, setCredentials] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [editData, setEditData] = React.useState(null);
 
@@ -40,7 +41,9 @@ export default function ResourceDetails({id, onDeleteComplete}) {
             },
             (response) => {
                 if (response) {
-                    setData(response.data)
+                    setCredentials(response.data.credentials);
+                    delete response.data.credentials;
+                    setData(response.data);
                 }
             }
         )
@@ -48,7 +51,7 @@ export default function ResourceDetails({id, onDeleteComplete}) {
 
     const onEdit = () => {
         const editData = JSON.parse(JSON.stringify(data));
-        editData.type = {name: editData.type, id: editData.type}
+        editData.credentials = JSON.parse(JSON.stringify(credentials));
         setEditData(editData)
     }
 
@@ -108,6 +111,13 @@ export default function ResourceDetails({id, onDeleteComplete}) {
                                 disabled={typeof data === "undefined"}/>
                     </Rows>
                 </TuiFormGroupContent>
+
+            </TuiFormGroup>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Credentials"/>
+                <TuiFormGroupContent header={"Data"}>
+                    <CredentialsVault production={credentials?.production} test={credentials?.test}/>
+                </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>
 
@@ -132,7 +142,7 @@ export default function ResourceDetails({id, onDeleteComplete}) {
 
     </>
 
-    return <div className="Box10">
+    return <div className="Box10" style={{height: "100%"}}>
         {loading && <CenteredCircularProgress/>}
         {data && <Details/>}
 

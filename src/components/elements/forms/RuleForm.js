@@ -1,50 +1,55 @@
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Button from "./Button";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 import {v4 as uuid4} from 'uuid';
 import PropTypes from 'prop-types';
-import TuiSelectResource from "../tui/TuiSelectResource";
 import TuiSelectFlow from "../tui/TuiSelectFlow";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import {request} from "../../../remote_api/uql_api_endpoint";
-import TuiFormError from "../tui/TuiFormError";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
+import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import TuiTagger from "../tui/TuiTagger";
+import ErrorsBox from "../../errors/ErrorsBox";
 
-export default function RuleForm({onReady, init}) {
+export default function RuleForm({onEnd, init}) {
 
     if (!init) {
         init = {
-            flow: {},
+            source: {},
             event: {},
+            flow: {},
             name: "",
             description: "",
-            source: {},
-            sourceDisabled: true
+            tags: []
         }
-
     }
 
-    const [flow, setFlow] = useState(init.flow);
-    const [type, setType] = useState(init.event);
-    const [name, setName] = useState(init.name);
+    const [flow, setFlow] = useState(init?.flow || {});
+    const [type, setType] = useState(init?.event?.type ? {name: init.event.type, id: init.event.type} : {});
+    const [name, setName] = useState(init?.name || "");
     const [description, setDescription] = useState(init.description);
     const [source, setSource] = useState(init.source);
-    const [errorMessage, setErrorMessage] = useState("");
+    const [error, setError] = useState(null);
     const [nameErrorMessage, setNameErrorMessage] = useState("");
     const [typeErrorMessage, setTypeErrorMessage] = useState("");
     const [flowErrorMessage, setFlowErrorMessage] = useState("");
     const [sourceErrorMessage, setSourceErrorMessage] = useState("");
-    const [sourceDisabled, setSourceDisabled] = useState(init.sourceDisabled);
+    const [processing, setProcessing] = useState(false);
+    const [tags, setTags] = useState(init?.tags || []);
 
+    const mounted = useRef(false);
+
+    useEffect(() => {
+        mounted.current = true;
+
+        return () => {
+            mounted.current = false;
+        };
+    }, []);
 
     const handleType = (value) => {
         setType(value);
-        if (value) {
-            setSourceDisabled(false);
-        } else {
-            setSourceDisabled(true);
-        }
     }
 
     const handleSourceSet = (value) => {
@@ -55,9 +60,7 @@ export default function RuleForm({onReady, init}) {
         setFlow(value)
     }
 
-    const handleSubmit = () => {
-        console.log(source, isEmptyObjectOrNull(source))
-
+    const handleSubmit = async () => {
         if (isEmptyObjectOrNull(type) || isEmptyObjectOrNull(source) || isEmptyObjectOrNull(flow) || !name) {
 
             if (isEmptyObjectOrNull(source)) {
@@ -93,41 +96,48 @@ export default function RuleForm({onReady, init}) {
             event: {type: type.name},
             source: (source?.id) ? source : null,
             description: description,
-            flow: flow
+            flow: flow,
+            tags: tags
         };
 
-        request({
+        try {
+            setProcessing(true);
+            const response = await asyncRemote({
                 url: "/rule",
                 method: "post",
                 data: payload
-            },
-            () => { },
-            (e)=>{
-                if(e) {
-                    setErrorMessage(e[0].msg);
-                }
-            },
-            (data) => {
-                if(data) {
-                    onReady(data)
-                }
+            })
+
+            if (response.data && mounted.current) {
+                onEnd(response.data)
             }
-        )
+        } catch (e) {
+            if (e && mounted.current) {
+                setError(getError(e));
+            }
+        } finally {
+            if(mounted.current) {
+                setProcessing(false)
+            }
+        }
     }
 
-    return <TuiForm style={{margin:20}}>
+    return <TuiForm style={{margin: 20}}>
+
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Rule trigger and workflow" description="Workflow engine will trigger given flow
+            <TuiFormGroupHeader header="Routing rule settings" description="Workflow engine will trigger selected flow
             only if incoming event type and resource are equal to the values set in this form. "/>
+            {error && <ErrorsBox errorList={error} style={{borderRadius: 0}}/>}
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Event type" description="Type event type to filter incoming events. If there
                 are no events please start collecting data first.">
                     <TuiSelectEventType value={type} errorMessage={typeErrorMessage} onSetValue={handleType}/>
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Resource" description="Select event resource. Event without selected resource will be
+                <TuiFormGroupField header="Source" description="Select event source. Event without selected source will be
                     discarded.">
-                    <TuiSelectResource value={source} disabled={sourceDisabled} onSetValue={handleSourceSet}
-                                       errorMessage={sourceErrorMessage}/>
+                    <TuiSelectEventSource value={source}
+                                          onSetValue={handleSourceSet}
+                                          errorMessage={sourceErrorMessage}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Workflow"
                                    description="Select existing workflow. If there is none create it on workflow page.">
@@ -169,11 +179,15 @@ export default function RuleForm({onReady, init}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
+                <TuiFormGroupField header="Rule tags"
+                                   description="Tag the rules type to group it into meaningful groups.">
+                    <TuiTagger tags={tags} onChange={setTags}/>
+                </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
-        {errorMessage && <TuiFormError message={errorMessage} />}
-        <Button label="Save" onClick={handleSubmit} style={{justifyContent: "center"}}/>
+
+        <Button label="Save" onClick={handleSubmit} style={{justifyContent: "center"}} progress={processing} error={error !== null}/>
     </TuiForm>
 }
 
-RuleForm.propTypes = {onSubmit: PropTypes.func, init: PropTypes.object}
+RuleForm.propTypes = {onEnd: PropTypes.func, init: PropTypes.object}

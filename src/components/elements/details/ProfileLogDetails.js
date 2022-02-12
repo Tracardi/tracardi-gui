@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import LogsList from "../../flow/LogsList";
+import FlowLogs from "../../flow/FlowLogs";
+import {asyncRemote} from "../../../remote_api/entrypoint";
+import NoData from "../misc/NoData";
 
 const ProfileLogDetails = ({profileId, sessionProfileId, showAlert}) => {
 
@@ -12,46 +13,63 @@ const ProfileLogDetails = ({profileId, sessionProfileId, showAlert}) => {
 
     useEffect(() => {
         let id = null;
-        if(profileId === null || typeof profileId === 'undefined') {
+        let isSubscribed = true
+        if (profileId === null || typeof profileId === 'undefined') {
 
-            if(sessionProfileId !== null && typeof sessionProfileId !== 'undefined') {
+            if (sessionProfileId !== null && typeof sessionProfileId !== 'undefined') {
                 id = sessionProfileId
             }
 
-            showAlert({message: "This event has no profile attached. That means the profile was deleted.", type: "warning", hideAfter: 4000});
+            showAlert({
+                message: "This event has no profile attached. That means the profile was deleted.",
+                type: "warning",
+                hideAfter: 4000
+            });
 
         } else {
             id = profileId
         }
 
-        if(id !== null) {
+        if (id !== null) {
             setLoading(true);
-            request({
-                    url: "/profile/logs/" + id,
-                },
-                setLoading,
-                (e) => {
-                    if (e) {
+            asyncRemote({url: "/profile/logs/" + id})
+                .then((response) => {
+                    if (response !== null && isSubscribed) {
+                        setLogData(response.data);
+                    }
+                })
+                .catch((e) => {
+                    if (e && isSubscribed) {
                         if (showAlert) {
                             showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
                         } else {
                             alert(e[0].msg)
                         }
                     }
-                },
-                (response) => {
-                    if(response !== null) {
-                        setLogData(response.data);
+                })
+                .finally(() => {
+                    if (isSubscribed) {
+                        setLoading(false)
                     }
                 })
         }
+        return () => isSubscribed = false
     }, [profileId, sessionProfileId, showAlert]);
 
-    if(loading) {
+    if (loading) {
         return <CenteredCircularProgress/>
     }
 
-    return <LogsList logs={logData} />
+    if (Array.isArray(logData)) {
+        if(logData.length > 0) {
+            return <FlowLogs logs={logData}/>
+        }
+        return <NoData header="This event has no profile logs.">
+            <p>Here is logged information on merging and segmentation errors.</p>
+        </NoData>
+    }
+
+    return ""
 }
 const mapProps = (state) => {
     return {

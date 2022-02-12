@@ -1,15 +1,12 @@
 .FlowPane .react-flow {
-    /*font-family: inherit !important;*/
     height: inherit !important;
 }
 
 .FlowPane .react-flow .react-flow__edge-path {
     stroke-width: 2;
-}
-
-.FlowPane .react-flow__edge-default .react-flow__edge-path {
     stroke: #1565c0;
 }
+
 .FlowPane .react-flow__edge-default.selected .react-flow__edge-path {
     stroke: #644;
 }
@@ -18,11 +15,15 @@
 
 }
 
-.FlowPane .react-flow__edge-path-selector:hover { cursor: pointer }
-.FlowPane .react-flow__edge-path-selector:hover + .react-flow__edge-path, .react-flow__edge-path:hover  {
+.FlowPane .react-flow__edge-path-selector:hover {
+    cursor: pointer
+}
+
+.FlowPane .react-flow__edge-path-selector:hover + .react-flow__edge-path, .react-flow__edge-path:hover {
     stroke: black;
     cursor: pointer;
 }
+
 .FlowPane .react-flow__edge-path-selector {
     fill: none;
     stroke: transparent;
@@ -37,7 +38,32 @@
     flex-direction: column;
     height: inherit;
     user-select: none;
+    overflow-y: auto;
 }
+
+.FlowEditor > .WorkArea .FlowEditorGrid {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+    grid-template-rows: 100%;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: "editor properties"
+                         "debug debug";
+}
+
+/*.FlowEditor > .WorkArea .FlowEditorGridDebug {*/
+/*    height: 100%;*/
+/*    width: 100%;*/
+/*    display: grid;*/
+/*    grid-column-gap: 0;*/
+/*    grid-row-gap: 0;*/
+/*    grid-template-rows: calc(100% - 500px) 500px;*/
+/*    grid-template-columns: 1fr auto;*/
+/*    grid-template-areas: "editor properties"*/
+/*                         "debug debug";*/
+/*}*/
 
 .FlowEditor > .WorkArea {
     display: flex;
@@ -45,18 +71,12 @@
     height: inherit;
 }
 
-.FlowEditor > .WorkArea > .LeftColumn {
-    display: flex;
-    flex-direction: column;
+.FlowEditor .WorkArea .FlowPane {
+    width: inherit;
     height: inherit;
-    width: 100%;
-    position: relative;
+    grid-area: editor;
 }
 
-.FlowEditor .WorkArea > .LeftColumn > .FlowPane {
-    flex: 1;
-    height: inherit;
-}
 .FlowEditor .NodeContextForm {
     position: absolute;
     z-index: 12;

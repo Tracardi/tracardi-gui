@@ -1,11 +1,13 @@
 .react-flow__handle {
-    width: 14px !important;
-    height: 14px !important;
+    width: 17px !important;
+    height: 17px !important;
     background-color: white !important;
     border-radius: 100% !important;
     position: unset !important;
-    border:2px solid #1565c0 !important;
+    border: 2px solid #1565c0;
     transform: none !important;
+    display: flex;
+    align-items: center;
 }
 
 .react-flow__handle-bottom {
@@ -29,8 +31,9 @@
     z-index: 10;
     position: relative;
 }
-
+.react-flow__node-flowNodeWithEvents.selected .NodePanel,
 .react-flow__node-flowNode.selected .NodePanel,
+.react-flow__node-flowNode.selected .NodePanelPassValue,
 .react-flow__node-flowNode.selected:hover .NodePanel{
     cursor: grab;
     background-color: rgb(0, 105, 192);
@@ -106,16 +109,39 @@ DIV.NodePanel {
     display: flex;
     flex-direction: row;
     border-style: solid;
-    border-radius: 6px;
+    border-radius: 10px;
     border-width: 2px;
     background-color: white;
     position: relative;
+    color: #444444;
+}
+
+DIV.NodePanelPassValue {
+    display: flex;
+    flex-direction: row;
+    border-style: solid;
+    border-width: 2px 6px 2px 6px;
+    background-color: white;
+    position: relative;
+    color: #444444;
+}
+
+DIV.StartNode {
+    display: flex;
+    flex-direction: row;
+    border-style: solid;
+    border-radius: 15px;
+    border-width: 2px;
+    background-color: white;
+    position: relative;
+    color: #444444;
 }
 
 DIV.NodePadding {
     padding: 7px;
     width: inherit;
     display: flex;
+    align-items: center;
 }
 
 DIV.NodePro {
@@ -124,6 +150,7 @@ DIV.NodePro {
     align-items: center;
     background-color: #333;
     padding: 0 10px;
+    border-radius: 0 6px 6px 0;
 }
 
 DIV.DebugNode {
@@ -132,16 +159,12 @@ DIV.DebugNode {
     color: white !important;
 }
 
-DIV.NodeIcon {
-    width: 24px;
-    display: grid;
-}
-
 DIV.NodeLabel {
     display: flex;
     align-items: center;
     overflow: hidden;
     flex-direction: row;
+    font-size: 14px;
 }
 
 DIV.NodeLabel > P {
@@ -151,4 +174,35 @@ DIV.NodeLabel > P {
 DIV.NodeLabel ASIDE {
     font-size: 70%;
     margin-left: 5px;
+}
+
+DIV.NodeOutboundEvents {
+    display: flex;
+    flex-direction: column
+}
+
+DIV.NodeInboundEvents {
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-end;
+    align-items: flex-end;
+    margin-right: 5px;
+}
+
+DIV.NodeInboundEvents SPAN.Event,
+DIV.NodeOutboundEvents SPAN.Event {
+    display: inline-flex;
+    font-size: 10px;
+    border-radius: 3px;
+    color: #444;
+    margin: 1px 0 1px 5px;
+    padding: 1px 10px 1px 5px;
+    background-color: aliceblue;
+    width: fit-content;
+    cursor: pointer;
+}
+
+DIV.NodeInboundEvents SPAN.Event:hover,
+DIV.NodeOutboundEvents SPAN.Event:hover {
+    background-color: #ddd;
 }

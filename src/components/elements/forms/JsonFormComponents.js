@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import TextField from "@material-ui/core/TextField";
-import Switch from "@material-ui/core/Switch";
+import TextField from "@mui/material/TextField";
+import Switch from "@mui/material/Switch";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import JsonEditor from "../editors/JsonEditor";
 import HtmlEditor from "../editors/HtmlEditor";
 import {objectMap} from "../../../misc/mappers";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import ListOfDottedInputs from "./ListOfDottedInputs";
 import DottedPathInput from "./inputs/DottedPathInput";
 import KeyValueForm from "./KeyValueForm";
@@ -14,6 +14,8 @@ import ErrorLine from "../../errors/ErrorLine";
 import SqlEditor from "../editors/SqlEditor";
 import TuiSelectResource from "../tui/TuiSelectResource";
 import {isEmptyStringOrNull} from "../../../misc/typeChecking";
+import Chip from "@mui/material/Chip";
+import TuiSelectEventType from "../tui/TuiSelectEventType";
 
 export function TextInput({value, label, errorMessage, onChange}) {
 
@@ -267,11 +269,12 @@ export function JsonInput({value, onChange = null}) {
             if (typeof value === 'string' && value.length > 0) {
                 return [JSON.stringify(JSON.parse(value), null, '  '), null]
             }
-            return [value, null]
+            return [JSON.stringify(value, null, '  '), null]
         } catch (e) {
             return [value, e.toString()]
         }
     }
+
     const [formatedValue, error] = getFormattedValue(value)
     const [json, setJson] = useState(formatedValue);
     const [errorMsg, setErrorMsg] = useState(error);
@@ -281,7 +284,7 @@ export function JsonInput({value, onChange = null}) {
         setJson(value);
         setErrorMsg(error)
         if (onChange) {
-            onChange(formattedValue);
+            onChange(value);
         }
     }
 
@@ -322,11 +325,24 @@ export function SqlInput({value, onChange = null}) {
     </>
 }
 
-export function ResourceSelect({value, errorMessage, onChange = null}) {
+export function ResourceSelect({value, errorMessage, onChange = null, tag = null}) {
 
     const handleChange = (value) => {
         onChange(value);
     };
 
-    return <TuiSelectResource value={value} errorMessage={errorMessage} onSetValue={handleChange}/>
+    return <TuiSelectResource value={value} errorMessage={errorMessage} onSetValue={handleChange} tag={tag}/>
+}
+
+export function EventTypes({value, onChange = null}) {
+
+    const handleChange = (value) => {
+        onChange(value);
+    };
+
+    return <TuiSelectEventType value={value} label="Event types" onSetValue={handleChange} multiple={true} fullWidth={true}/>
+}
+
+export function ReadOnlyTags({value}) {
+    return Array.isArray(value) && value.map((tag, index) => <Chip label={tag} key={index} style={{marginLeft: 5}}/>)
 }

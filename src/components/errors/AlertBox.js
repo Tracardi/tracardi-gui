@@ -1,6 +1,6 @@
 import React from "react";
 import "./AlertBox.css";
-import {FiAlertTriangle} from "@react-icons/all-files/fi/FiAlertTriangle";
+import {FiAlertTriangle} from "react-icons/fi";
 
 export default function AlertBox({children}) {
 

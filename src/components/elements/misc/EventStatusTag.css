@@ -1,0 +1,26 @@
+.EventStatusTag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 7px;
+    border-radius: 6px;
+}
+
+.ErrorColor {
+    color: whitesmoke;
+    background-color: #d81b60;
+}
+
+.OKColor {
+    color: whitesmoke;
+    background-color: #43a047;
+}
+
+.WarnColor {
+    color: whitesmoke;
+    background-color: #ef6c00;
+}
+
+.InfoColor {
+    color: whitesmoke;
+    background-color: #006db3;
+}

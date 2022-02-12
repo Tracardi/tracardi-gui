@@ -1,7 +1,7 @@
 import React from "react";
 import "./ExecutionNumber.css";
 
-const ExecutionNumber = ({data}) => {
+const ExecutionNumber = ({data, style}) => {
 
     const hasError = (calls) => {
         if (Array.isArray(calls)) {
@@ -12,7 +12,7 @@ const ExecutionNumber = ({data}) => {
 
     if (data.debugging?.node?.executionNumber) {
         let status = hasError(data.debugging?.node?.calls) ? " Error" : " Ok"
-        return <div className={"ExecutionNumber" + status}>{data.debugging.node.executionNumber}</div>
+        return <div className={"ExecutionNumber" + status} style={style}>{data.debugging.node.executionNumber}</div>
     } else {
         return ""
     }

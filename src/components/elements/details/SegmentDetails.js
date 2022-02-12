@@ -7,8 +7,7 @@ import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
 import FormDrawer from "../drawers/FormDrawer";
 import SegmentForm from "../forms/SegmentForm";
-import {VscTrash} from "@react-icons/all-files/vsc/VscTrash";
-import {VscEdit} from "@react-icons/all-files/vsc/VscEdit";
+import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 
@@ -104,7 +103,7 @@ export default function SegmentDetails({id, onDeleteComplete}) {
         </TuiFormGroup>
     </TuiForm>
 
-    return <div className="Box10">
+    return <div className="Box10" style={{height: "100%"}}>
         {loading && <CenteredCircularProgress/>}
         {data && <Details/>}
         <FormDrawer

@@ -1,38 +1,46 @@
 .NodeDetails {
     height: 100%;
+    display: flex;
 }
-.NodeDetails > .Title {
+
+.NodeDetails > .NodeDetailsIcons {
+    display: flex;
+    flex-direction: column;
+    width: 50px;
+    padding: 4px;
+}
+
+.NodeDetails > .NodeDetailsContent {
+    border-left: solid 1px #cccccc;
+}
+
+.NodeDetails > .NodeDetailsContent > .Title {
     display: flex;
     align-items: center;
     align-content: center;
     font-size: 20px;
-    text-transform: uppercase;
     font-weight: 400;
     justify-content: space-between;
     padding: 10px;
-    -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.28);
-    -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.28);
-    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.28);
-    font-family: Viga, Roboto, serif;
     color: #444;
     background-color: whitesmoke;
     height: 62px;
+    border-bottom: solid 1px #ccc;
 }
 
-.NodeDetails > .Title:hover {
-    background-color: white;
+.NodeDetails > .NodeDetailsContent > .Title:hover {
     -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.28);
     -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.28);
     box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.28);
 }
 
-.NodeDetails > .Title> SPAN {
+.NodeDetails > .NodeDetailsContent > .Title> SPAN {
     display: flex;
     flex-wrap: nowrap;
     margin-left: 10px;
 }
 
-.NodeDetails .TaskDetails {
+.NodeDetails > .NodeDetailsContent .TaskDetails {
     position: absolute;
     height: 300px;
     width: 100%;
@@ -42,7 +50,7 @@
     flex-direction: row;
 }
 
-.NodeDetails > .Pane {
+.NodeDetails > .NodeDetailsContent > .Pane {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -52,7 +60,7 @@
     overflow-y: auto;
 }
 
-.NodeDetails > .Pane .SubTitle {
+.NodeDetails > .NodeDetailsContent > .Pane .SubTitle {
     display: flex;
     align-items: center;
     padding: 10px;
@@ -63,28 +71,28 @@
 }
 
 
-.NodeDetails > .Pane TABLE {
+.NodeDetails > .NodeDetailsContent > .Pane TABLE {
     width: 100%;
     border: solid 1px #ccc;
     border-collapse: collapse;
     border-spacing: 0;
 }
 
-.NodeDetails > .Pane TD:first-child {
+.NodeDetails > .NodeDetailsContent > .Pane TD:first-child {
     border-right: solid 1px #ccc;
     background-color: #f5f5f5;
 }
 
-.NodeDetails > .Pane TD {
+.NodeDetails > .NodeDetailsContent > .Pane TD {
     padding: 7px 15px;
 }
 
-.NodeDetails > .Pane .InfoBox {
+.NodeDetails > .NodeDetailsContent > .Pane .InfoBox {
     padding: 15px 5px;
     font-size: 120%;
 }
 
-.NodeDetails > .Pane TR {
+.NodeDetails > .NodeDetailsContent > .Pane TR {
     border-top: solid 1px #ccc;
     border-bottom: solid 1px #ccc;
 }

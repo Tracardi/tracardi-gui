@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
-import { VscCalendar } from "@react-icons/all-files/vsc/VscCalendar";
-import { VscRefresh } from "@react-icons/all-files/vsc/VscRefresh";
-import { VscArrowRight } from "@react-icons/all-files/vsc/VscArrowRight";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import { VscCalendar, VscRefresh, VscArrowRight } from "react-icons/vsc";
 
 const TimeInput = ({ value, onChange, disabled }) => {
   const [type, setType] = useState("date");
@@ -65,6 +63,13 @@ const TimeInput = ({ value, onChange, disabled }) => {
             onChange={handleDateChange}
             name="date"
             value={localValue?.date?.inputDate || ""}
+            style={{
+              height: '40.73px',
+              borderRadius: 4,
+              border: '1px solid rgb(196, 196, 196)',
+              fontSize: 16,
+              padding: 10,
+            }}
           />
         </>
       );
@@ -79,6 +84,10 @@ const TimeInput = ({ value, onChange, disabled }) => {
             onChange={handleChange}
             name="amount"
             value={localValue[type]?.amount || ""}
+            style={
+              type === 'interval' ? {width: '150px'} : {width: '168px'}
+      
+            }
           />
           {timeIntervalMenu()}
         </>
@@ -89,7 +98,7 @@ const TimeInput = ({ value, onChange, disabled }) => {
   };
 
   return (
-    <div className="TimeInput" style={{ padding: "20px" }}>
+    <div className="TimeInput" style={{ padding: "20px", width: '500px' }}>
       <div className="TimeInputSelect">
         <TextField
           select
@@ -112,7 +121,9 @@ const TimeInput = ({ value, onChange, disabled }) => {
         </TextField>
         {timeInputSelect()}
       </div>
-      <fieldset>
+      {/* <fieldset style={{
+        width: '350px'
+      }}>
         <legend>Time Settings</legend>
         <ul style={{ listStyleType: "none" }}>
           <li>
@@ -125,7 +136,7 @@ const TimeInput = ({ value, onChange, disabled }) => {
             <VscRefresh /> {`${localValue?.interval?.amount || ""} ${localValue?.interval?.type || ""}`}
           </li>
         </ul>
-      </fieldset>
+      </fieldset> */}
     </div>
   );
 };

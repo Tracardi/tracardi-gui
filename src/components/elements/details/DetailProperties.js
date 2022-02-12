@@ -37,9 +37,9 @@ export default function Properties({properties, show}) {
             }
         }
     )
-    return <React.Fragment>
+    return <>
         {keyValues()}
-    </React.Fragment>
+    </>
 }
 
 Properties.propTypes = {

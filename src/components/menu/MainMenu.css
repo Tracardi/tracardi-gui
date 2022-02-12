@@ -1,22 +1,117 @@
 .MainMenu {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     color: white;
-    background: #004A98;
-    -webkit-box-shadow: inset -10px -1px 10px -13px rgba(0,0,0,0.75);
-    -moz-box-shadow: inset -10px -1px 10px -13px rgba(0,0,0,0.75);
-    box-shadow: inset -10px -1px 10px -13px rgba(0,0,0,0.75);
+    background: #1976d2;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    padding: 40px 5px 10px 0;
+    padding: 5px 5px 10px 0;
+    justify-content: space-between;
 }
 
-.MainMenu > DIV {
+.FullMainMenu {
+    width: 190px;
+}
+
+.CollapsedMainMenu {
+    width: 61px;
+}
+
+.MainMenu .Branding {
+    height: 80px;
+    padding: 5px;
+}
+
+.CollapsedMainMenu > .BottomIcons,
+.CollapsedMainMenu > .TopIcons {
     display: flex;
     flex-direction: column;
+    font-size: 155%;
+    align-items: center;
+}
+
+.CollapsedMainMenu > .TopIcons > DIV {
+    cursor: pointer;
+    margin: 6px;
+}
+
+.CollapsedMainMenu > .BottomIcons > DIV {
+    cursor: pointer;
+}
+.MainMenu .Branding > .T {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    font-size: 175%;
+    background-color: whitesmoke;
+    color: #004A98;
+    font-weight: 600;
+    justify-content: center;
+    border-radius: 6px;
+    font-family: Viga, "IBM Plex Sans", serif;
+}
+.MainMenu .Branding > .Tracardi {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-size: 120%;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-family: Viga, "IBM Plex Sans", serif;
+}
+
+.MainMenu .Branding > .Version {
+    margin-left: 20px;
+    font-size: 80%;
+    font-weight: 300;
+}
+
+.MainMenu .MenuRow {
+    display: flex;
+    flex-wrap: nowrap;
+    color: rgba(225,225,225, 0.95);
+    align-items: center;
+    flex-direction: row;
+    padding: 6px 7px;
+    margin: 3px 3px 3px 6px;
+    cursor: pointer;
+    font-size: 150%;
+    height: 30px;
+    border-radius: 5px;
+}
+
+@keyframes fadeInMenu {
+    0% {
+        opacity: .8;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+.MainMenu .MenuRow:hover {
+    color: white;
+    animation-name: fadeInMenu;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: 0.4s;
+    background-color: #ef6c00;
+}
+
+.MainMenu .MenuRow > SPAN.Icon {
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.MainMenu .MenuRow > SPAN.Label {
+    display: flex;
+    margin-left: 10px;
+    align-items: center;
+    font-size: 14px;
 }

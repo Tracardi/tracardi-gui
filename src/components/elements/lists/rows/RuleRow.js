@@ -1,21 +1,28 @@
 import React from 'react';
 import './RuleRow.css';
-import EnabledIcon from "../../misc/EnabledIcon";
-import {BsArrowRight} from "@react-icons/all-files/bs/BsArrowRight";
-import {VscSymbolEvent} from "@react-icons/all-files/vsc/VscSymbolEvent";
+import {VscSymbolEvent} from "react-icons/vsc";
+import {IoGitNetworkSharp} from "react-icons/io5";
+import {FaUncharted} from "react-icons/fa";
 
-const RuleRow = ({data}) => {
+const RuleRow = ({data, flow}) => {
 
     return (
         <div className="RuleRow">
-            <EnabledIcon enabled={data?.enabled} style={{marginRight: 10, marginTop:3}}/>
-            <span className="event"><VscSymbolEvent size={20} style={{marginRight:10}}/> {data.event.type}</span>
-            <BsArrowRight size={20} style={{marginRight:10, marginTop:5}}/>
-            <span className="rule">
-                {data.name}: {data.description}
+            <span className="RuleBox">{data.source.name}</span>
+            >>
+            <span className="EventBox"><VscSymbolEvent size={20} style={{marginRight:10}}/> {data.event.type}</span>
+            >>
+            <span className="RuleBox">
+                <FaUncharted size={20} style={{marginRight: 5}}/>
+                {data.name}
+            </span>
+            >>
+            <span className="RuleBox">
+                <IoGitNetworkSharp size={20} style={{marginRight: 10}}/>
+                {flow}
             </span>
         </div>
     );
 }
 
-export default React.memo(RuleRow);
+export default RuleRow;

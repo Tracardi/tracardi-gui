@@ -1,8 +1,6 @@
 import './KeyValueDesc.css';
 import React from "react";
-import {IoCheckmarkCircleOutline} from "@react-icons/all-files/io5/IoCheckmarkCircleOutline";
-import {IoCloseCircleOutline} from "@react-icons/all-files/io5/IoCloseCircleOutline";
-import {IoBanOutline} from "@react-icons/all-files/io5/IoBanOutline";
+import {IoCheckmarkCircleOutline, IoCloseCircleOutline, IoBanOutline} from "react-icons/io5";
 
 export default function KeyValueDesc({label, value, description}) {
 

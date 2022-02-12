@@ -1,7 +1,7 @@
-import Chip from "@material-ui/core/Chip";
+import Chip from "@mui/material/Chip";
 import React from "react";
-import {VscError} from "@react-icons/all-files/vsc/VscError";
-import {AiOutlinePlayCircle} from "@react-icons/all-files/ai/AiOutlinePlayCircle";
+import {VscError} from "react-icons/vsc";
+import {AiOutlinePlayCircle} from "react-icons/ai";
 import ErrorsBox from "../../../errors/ErrorsBox";
 import PropTypes from 'prop-types';
 

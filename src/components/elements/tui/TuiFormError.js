@@ -1,6 +1,6 @@
 import React from "react";
 import "./TuiForm.css";
-import {BiError} from "@react-icons/all-files/bi/BiError";
+import {BiError} from "react-icons/bi";
 
 export default function TuiFormError({message}) {
     return <div className="TuiFormError">

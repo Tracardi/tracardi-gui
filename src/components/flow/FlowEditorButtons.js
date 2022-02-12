@@ -1,20 +1,15 @@
-import {FiEdit3} from "@react-icons/all-files/fi/FiEdit3";
-import {VscDebugAlt} from "@react-icons/all-files/vsc/VscDebugAlt";
+import {VscDebugAlt} from "react-icons/vsc";
 import React, {useState} from "react";
 import './FlowEditorButtons.css'
-import Popover from "@material-ui/core/Popover";
+import Popover from "@mui/material/Popover";
 import ModuleRegisterForm from "./ModuleRegisterForm";
-import {VscAdd} from "@react-icons/all-files/vsc/VscAdd";
 import IconButton from "../elements/misc/IconButton";
-import {VscZoomIn} from "@react-icons/all-files/vsc/VscZoomIn";
-import {VscZoomOut} from "@react-icons/all-files/vsc/VscZoomOut";
-import {useZoomPanHelper} from "react-flow-renderer";
+import {VscPlug} from "react-icons/vsc";
 
-export function FlowEditorIcons({onEdit, onDebug, onRegister, debugInProgress}) {
+export function FlowEditorIcons({onDebug, onRegister, debugInProgress}) {
 
     const [showResisterPopOver, setShowResisterPopOver] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const { zoomIn, zoomOut } = useZoomPanHelper();
 
     const onRegisterClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -27,41 +22,30 @@ export function FlowEditorIcons({onEdit, onDebug, onRegister, debugInProgress}) 
         onRegister(null);
     };
 
-    return <div className="FlowEditorButtons">
-        <IconButton label="Zoom in" onClick={zoomIn}>
-            <VscZoomIn size={40} className="CircleIcon"/>
-        </IconButton>
-        <IconButton label="Zoom out" onClick={zoomOut}>
-            <VscZoomOut size={40} className="CircleIcon"/>
-        </IconButton>
-        <IconButton label="Add plugin" onClick={onRegisterClick}>
-            <VscAdd size={40} className="CircleIcon"/>
-        </IconButton>
-
-        <IconButton label="Edit" onClick={onEdit}>
-            <FiEdit3 size={40} className="CircleIcon"/>
-        </IconButton>
-
-        <IconButton label="Debug"
-                    onClick={onDebug}
-                    progress={debugInProgress}>
-            <VscDebugAlt size={20}/>
-        </IconButton>
-        <Popover
-            id="register"
-            open={showResisterPopOver}
-            anchorEl={anchorEl}
-            onClose={handlePopoverClose}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-            }}
-            transformOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-            }}
-        >
-            <ModuleRegisterForm onReady={handlePopoverClose}/>
-        </Popover>
-    </div>
+    return (
+        <div className="FlowEditorButtons">
+            <IconButton label="Add plugin" onClick={onRegisterClick} size="large">
+                <VscPlug size={24}/>
+            </IconButton>
+            <IconButton label="Debug" onClick={onDebug} progress={debugInProgress} size="large">
+                <VscDebugAlt size={20}/>
+            </IconButton>
+            <Popover
+                id="register"
+                open={showResisterPopOver}
+                anchorEl={anchorEl}
+                onClose={handlePopoverClose}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+            >
+                <ModuleRegisterForm onReady={handlePopoverClose}/>
+            </Popover>
+        </div>
+    );
 }

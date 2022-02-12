@@ -1,14 +1,12 @@
 .ObjectList {
     display: grid;
-    height: 100%;
     width: 100%;
     padding: 10px;
     border-bottom: 2px transparent solid;
-    grid-template-rows: 30px calc(100% - 30px);
 }
 
 .EndOfList {
-    border-bottom: 2px #006db3 solid !important;
+    /*border-bottom: 2px #006db3 solid !important;*/
 }
 
 .ObjectList > .Header {

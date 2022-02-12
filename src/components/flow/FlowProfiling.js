@@ -2,11 +2,9 @@ import React, {useState} from "react";
 import './FlowProfiling.css';
 import DebugBox from "./DebugBox";
 
-export function FlowProfiling({profilingData, node, onCallSelect}) {
+export function FlowProfiling({profilingData, flow, onCallSelect, orientation="vertical"}) {
 
-    const [currentCall, setCurrentCall] = useState(null);
-
-
+    const [currentNode, setCurrentNode] = useState(null);
 
     const sort = (profilingData) => {
 
@@ -35,8 +33,8 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
     }
 
     const handleClick = (debugProfile) => {
-        setCurrentCall(debugProfile)
-        if(onCallSelect) {
+        setCurrentNode(debugProfile)
+        if (onCallSelect) {
             onCallSelect(
                 debugProfile?.id,
                 debugProfile?.call?.input?.edge?.id
@@ -63,12 +61,13 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
     }
 
     const Rows = ({profilingData}) => {
-        if(profilingData && Array.isArray(profilingData.calls)) {
+        if (profilingData && Array.isArray(profilingData.calls)) {
             const wholeTime = maxTime(profilingData) * 1.1;
+
             return sort(profilingData).calls.map((obj, index) => {
                     const relativeStartTime = (obj.startTime / wholeTime) * 100;
                     const _relativeRunTime = (obj.runTime / wholeTime) * 100;
-                    const relativeRunTime = (_relativeRunTime<2) ? 2 :  _relativeRunTime;
+                    const relativeRunTime = (_relativeRunTime < 2) ? 2 : _relativeRunTime;
 
                     return <Row name={obj.name}
                                 sq={obj.sq}
@@ -76,7 +75,6 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
                                 runTime={(obj.runTime * 1000).toFixed(2) + 'ms'}
                                 relativeRunTime={obj.runTime.toFixed(3) + " from " + wholeTime.toFixed(2) +
                                 " makes " + relativeRunTime.toFixed(1) + "%"}
-                                highlighed={node && node.id === obj.id}
                                 currentCall={isCurrentCall(obj)}
                                 onClick={() => handleClick(obj)}
                                 key={index}
@@ -91,11 +89,11 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
                             <div
                                 className="TaskBall"
                                 title={obj.startTime}
-                            ></div>
+                            />
                             <div
                                 className="TaskBall"
                                 title={obj.endTime}
-                            ></div>
+                            />
                         </div>
                     </Row>
                 }
@@ -107,23 +105,27 @@ export function FlowProfiling({profilingData, node, onCallSelect}) {
     }
 
     const isCurrentCall = (obj) => {
-        return currentCall && currentCall.id === obj.id && currentCall.call.input.edge === obj.call.input.edge;
+        return currentNode?.id === obj.id && currentNode?.call?.input?.edge?.id === obj?.call?.input?.edge?.id;
     }
 
-    return <div className="DebugAndProfile">
+    const flexDirection = (orientation === "vertical") ? "row": "column"
+
+    return <div className="DebugAndProfile" style={{flexDirection: flexDirection}}>
+        {orientation !== "vertical" && <h1 style={{fontWeight: 300, borderBottom: "solid #ccc 1px"}}>Flow: {flow?.name}</h1>}
         <div className="Profiling">
-            <div style={{minWidth: 400, padding: 6}}>
-                <div className="TaskHeader" style={{position: "sticky", top: 0, zIndex: 3}}>
-                    <div className="TaskSq">&nbsp;</div>
-                    <div className="TaskName">Actions</div>
-                    <div className="TaskRunTime">Run time</div>
-                    <div className="TaskBar">Execution time span</div>
-                </div>
+            <div className="TaskHeader">
+                <div className="TaskSq">&nbsp;</div>
+                <div className="TaskName">Actions</div>
+                <div className="TaskRunTime">Run time</div>
+                <div className="TaskBar">Execution time span</div>
+            </div>
+            <div className="TaskRows">
                 <Rows profilingData={profilingData}/>
             </div>
 
         </div>
-
-        {currentCall && <div className="Debugging"><DebugBox call={currentCall?.call}/></div>}
+        <div className="Debugging">
+            {currentNode && <DebugBox call={currentNode?.call}/>}
+        </div>
     </div>
 }

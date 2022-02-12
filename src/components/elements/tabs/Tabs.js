@@ -23,7 +23,7 @@ TabCase.propTypes = {
     id: PropTypes.number.isRequired,
 }
 
-export default function Tabs({tabs, children, defaultTab=0, onTabSelect, className}) {
+export default function Tabs({tabs, children, defaultTab=0, onTabSelect, className, tabStyle, tabsStyle, tabContentStyle}) {
 
     const [tabId, setTabId] = useState((defaultTab) ? defaultTab : 0);
 
@@ -38,8 +38,10 @@ export default function Tabs({tabs, children, defaultTab=0, onTabSelect, classNa
         }
     }
 
-    function Tab({label, index, selected}) {
-        return <span className={(selected) ? "Tab Selected" : "Tab"} onClick={() => onTabClick(index)}>{label}</span>
+    function Tab({label, index, selected, style}) {
+        return <span className={(selected) ? "Tab Selected" : "Tab"}
+                     style={style}
+                     onClick={() => onTabClick(index)}>{label}</span>
     }
 
     const css = () => {
@@ -50,16 +52,25 @@ export default function Tabs({tabs, children, defaultTab=0, onTabSelect, classNa
     }
 
     return <section className="Tabs">
-        <nav className={css()}>
+        <nav className={css()} style={tabsStyle}>
             {tabs.map((label, key) => {
                     if (tabId === key) {
-                        return <Tab label={label} key={key} index={key} selected={true}/>
+                        return <Tab label={label}
+                                    key={key}
+                                    index={key}
+                                    selected={true}
+                                    style={tabStyle}
+                        />
                     }
-                    return <Tab label={label} key={key} index={key} selected={false}/>
+                    return <Tab label={label}
+                                key={key}
+                                index={key}
+                                style={tabStyle}
+                                selected={false}/>
                 }
             )}
         </nav>
-        <div className="TabContent">
+        <div className="TabContent" style={tabContentStyle}>
             <TabCases tabId={tabId}>
                 {children}
             </TabCases>

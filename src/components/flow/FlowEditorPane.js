@@ -4,7 +4,7 @@ import ReactFlow, {
     Background,
     isEdge,
     isNode,
-    removeElements
+    removeElements, useZoomPanHelper
 } from "react-flow-renderer";
 import React, {useCallback, useEffect, useRef, useState} from "react";
 import PropTypes from 'prop-types';
@@ -13,35 +13,42 @@ import {v4 as uuid4} from "uuid";
 import {request} from "../../remote_api/uql_api_endpoint";
 import SidebarLeft from "./SidebarLeft";
 import SidebarRight from "./SidebarRight";
-import {debug} from "./FlowEditorOps";
+import {debug, save} from "./FlowEditorOps";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
-import DebugDetails from "./DebugDetails";
-import LogsList from "./LogsList";
-import {NodeDetails} from "./NodeDetails";
+import {MemoNodeDetails} from "./NodeDetails";
 import InfoEdge from "./edges/InfoEdge";
 import StopEdge from "./edges/StopEdge";
 import CancelEdge from "./edges/CancelEdge";
 import BoldEdge from "./edges/BoldEdge";
 import {NodeInitForm} from "../elements/forms/NodeInitForm";
+import WfSchema from "./WfSchema";
+import {MemoDebugPane} from "./DebugPane";
+import convertNodesToProfilingData from "./profilingConverter";
+import {FlowEditorBottomLine} from "./FlowEditorBottomLine";
+import FlowEditorTitle from "./FlowEditorTitle";
+import FlowNodeWithEvents from "./FlowNodeWithEvents";
+import StartNode from "./StartNode";
 
 export function FlowEditorPane(
     {
         id,
+        flowMetaData,
         reactFlowInstance = null,
         onFlowLoad,
         onEditorReady,
-        onChange,
         onEdit,
-        onConfig,
         locked = false,
         draft = true,
+        schema,
         showAlert
     }) {
 
     const snapGrid = [20, 20];
     const nodeTypes = {
-        flowNode: FlowNode
+        flowNode: FlowNode,
+        flowNodeWithEvents: FlowNodeWithEvents,
+        startNode: StartNode
     };
 
     const edgeTypes = {
@@ -51,25 +58,41 @@ export function FlowEditorPane(
         default: BoldEdge
     };
 
+    const {zoomIn, zoomOut} = useZoomPanHelper();
+
     const reactFlowWrapper = useRef(null);
     const [flowLoading, setFlowLoading] = useState(false);
     const [currentNode, setCurrentNode] = useState({});
     const [debugNodeId, setDebugNode] = useState(null);
+    const [profilingData, setProfilingData] = useState({
+        startTime: 0,
+        endTime: 0,
+        calls: []
+    });
     const [displayRightSidebar, setDisplayRightSidebar] = useState(false);
+    const [displayDebugPane, setDisplayDebugPane] = useState(false);
+    const [displayDebugHeight, setDisplayDebugHeight] = useState({gridTemplateRows: "calc(100% - 33px) 33px"});
     const [displayNodeContextMenu, setDisplayNodeContextMenu] = useState(false);
-    const [rightSidebarTab, setRightSidebarTab] = useState(0);
     const [animatedEdge, setAnimatedEdge] = useState(null);
     const [elements, setElements] = useState([]);
     const [logs, setLogs] = useState([]);
-    const [label, setLabel] = useState({name: "", id: null});
+    const [refreshNodeId, setRefreshNodeId] = useState([null, null]);  // [nodeId, nodeData]
     const [debugInProgress, setDebugInProgress] = useState(false);
     const [clientX, setClientX] = useState(0);
     const [clientY, setClientY] = useState(0);
+
+    const [modified, setModified] = useState(false);
+    const [deployed, setDeployed] = useState(false);
 
     const updateFlow = useCallback((data) => {
         if (data) {
             if (onFlowLoad) {
                 const payload = {
+                    wf_schema: {
+                        uri: data?.wf_schema?.uri,
+                        version: data?.wf_schema?.version,
+                        server_version: data?.wf_schema?.server_version
+                    },
                     name: data?.name,
                     description: data?.description,
                     enabled: data?.enabled,
@@ -94,32 +117,79 @@ export function FlowEditorPane(
         }
     }, [showAlert, onFlowLoad]);
 
+    const handleDraftSave = useCallback((deploy = false) => {
+
+        if (reactFlowInstance) {
+            save(id,
+                flowMetaData,
+                reactFlowInstance,
+                (e) => {
+                    showAlert({message: e.toString(), type: "error", hideAfter: 2000});
+                },
+                () => {
+                    setModified(false);
+                    if (deploy) {
+                        setDeployed(true);
+                    }
+                },
+                () => {
+                },
+                deploy);
+        } else {
+            showAlert({message: "Can not save Editor not ready.", type: "warning", hideAfter: 2000});
+        }
+    }, [flowMetaData, reactFlowInstance, id, showAlert]);
+
+    useEffect(() => {
+        const timer = setInterval(
+            () => {
+                if (modified === true) {
+                    handleDraftSave(false);
+                }
+            },
+            5000
+        );
+
+        return () => {
+            if (timer) {
+                clearInterval(timer);
+            }
+
+        };
+    }, [modified, handleDraftSave])
+
     useEffect(() => {
         setFlowLoading(true);
+
         request({
-                url: ((draft) ? "/flow/draft/" : "/flow/") + id,
+                url: ((draft) ? "/flow/draft/" : "/flow/production/") + id,
             },
             setFlowLoading,
             (e) => {
                 if (e) {
-                    if (showAlert) {
-                        showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
+                    if (e?.response?.status === 404) {
+                        showAlert({message: "Workflow does not exist.", type: "error", hideAfter: 4000});
                     } else {
-                        alert(e[0].msg)
+                        if (e.length > 0) showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
                     }
                 }
             },
             (response) => {
-                updateFlow(response?.data);
+                if (response) {
+                    updateFlow(response?.data);
+                }
             })
+
+
     }, [id, draft, showAlert, updateFlow])
+
 
     useEffect(() => {
         setElements((els) => els.map((el) => {
                 if (isEdge(el)) {
                     if (animatedEdge === null) {
-                        if(el?.style?.stroke === '#ad1457') {
-                            const { stroke, ...newStyle } = el.style
+                        if (el?.style?.stroke === '#ad1457') {
+                            const {stroke, ...newStyle} = el.style
                             el.style = newStyle
                         }
 
@@ -128,8 +198,8 @@ export function FlowEditorPane(
                             stroke: '#ad1457'
                         }
                     } else {
-                        if(el?.style?.stroke === '#ad1457') {
-                            const { stroke, ...newStyle } = el.style
+                        if (el?.style?.stroke === '#ad1457') {
+                            const {stroke, ...newStyle} = el.style
                             el.style = newStyle
                         }
                     }
@@ -150,27 +220,38 @@ export function FlowEditorPane(
 
     useEffect(() => {
         setElements((els) => els.map((el) => {
-                if (isNode(el) && el.id === label.id) {
-                    el.data = {
-                        ...el.data,
-                        metadata: {...el.data.metadata, name: label.name},
-                    }
+                if (isNode(el) && el.id === refreshNodeId[0]) {
+                    el.data = {...refreshNodeId[1].data}
                 }
                 return el;
             })
         );
 
-    }, [label, setElements]);
+    }, [refreshNodeId, setElements]);
+
+    const handleUpdate = () => {
+        setModified(true);
+        setDeployed(false);
+    }
 
     const onLoad = (reactFlowInstance) => {
         reactFlowInstance.fitView();
         onEditorReady(reactFlowInstance)
     };
 
+    const handleDisplayDebugPane = (flag) => {
+        if (flag === true) {
+            setDisplayDebugPane(true);
+            setDisplayDebugHeight({gridTemplateRows: "calc(100% - 310px) 310px"});
+        } else {
+            setDisplayDebugPane(false);
+            setDisplayDebugHeight({gridTemplateRows: "calc(100% - 33px) 33px"})
+        }
+    }
+
     const onDebug = () => {
         setDebugNode(null);
         setAnimatedEdge(null);
-        setRightSidebarTab(1);
         setDisplayNodeContextMenu(false);
         debug(
             id,
@@ -180,30 +261,21 @@ export function FlowEditorPane(
             ({elements, logs}) => {
                 setElements(elements);
                 setLogs(logs);
-                setDisplayRightSidebar(true);
+                setProfilingData(convertNodesToProfilingData(elements))
+                handleDisplayDebugPane(true);
             }
         )
     }
 
     const onElementsRemove = (elementsToRemove) => {
         setElements((els) => removeElements(elementsToRemove, els));
-        if (onChange) {
-            onChange();
-        }
-    }
-
-    const onDebugClick = (data) => {
-        if (onDebug) {
-            onDebug(data)
-        }
+        handleUpdate();
     }
 
     const onConnect = (params) => {
         setElements((els) => addEdge(params, els));
         setDisplayNodeContextMenu(false);
-        if (onChange) {
-            onChange();
-        }
+        handleUpdate();
     }
 
     const onDrop = (event) => {
@@ -225,9 +297,7 @@ export function FlowEditorPane(
                 data: data
             };
             setElements((es) => es.concat(newNode));
-            if (onChange) {
-                onChange();
-            }
+            handleUpdate();
         } catch (e) {
             alert("Json error. Dropped element without json.");
         }
@@ -254,6 +324,7 @@ export function FlowEditorPane(
 
     const onPaneClick = () => {
         setDisplayRightSidebar(false);
+        handleDisplayDebugPane(false);
         setDebugNode(null);
         setAnimatedEdge(null);
         selectNode(null);
@@ -279,7 +350,6 @@ export function FlowEditorPane(
     }
 
     const onNodeClick = (event, element) => {
-        console.log(event)
         selectNode(element);
         setDisplayNodeContextMenu(false);
         if (element.data?.debugging && Array.isArray(element.data?.debugging)
@@ -291,11 +361,25 @@ export function FlowEditorPane(
         selectNode(element);
     }
 
-    const onConfigSave = (value) => {
+    const handleConfigSave = (value) => {
         currentNode.data.spec.init = value
-        if (onConfig) {
-            onConfig()
+        handleUpdate()
+    }
+
+    const handleRuntimeConfig = (nodeId, value) => {
+        if (currentNode.data.spec.id === nodeId) {
+            currentNode.data.spec = {...currentNode.data.spec, ...value}
+
+            // Refresh flow node
+            if (elements) {
+                setRefreshNodeId([currentNode.id, currentNode])
+            }
+
+            handleUpdate();
+        } else {
+            console.warn("Current node changed")
         }
+
     }
 
     const onConnectionDetails = (nodeId, edgeId) => {
@@ -303,7 +387,7 @@ export function FlowEditorPane(
         setAnimatedEdge(edgeId);
     }
 
-    const onEditClick = (data) => {
+    const handleEditClick = (data) => {
         if (onEdit) {
             onEdit(data);
         }
@@ -311,86 +395,161 @@ export function FlowEditorPane(
 
     const handleLabelSet = (label) => {
         if (elements) {
-            setLabel({id: currentNode.id, name: label})
+            currentNode.data.metadata = {...currentNode.data.metadata, name: label}
+            setRefreshNodeId([currentNode.id, currentNode])
         }
-        if (onConfig) {
-            onConfig()
-        }
+        handleUpdate()
     }
 
-    return <div className="FlowPane" ref={reactFlowWrapper}>
-        {flowLoading && <CenteredCircularProgress/>}
-        {elements && <ReactFlow
-            elements={elements}
-            zoomOnDoubleClick={false}
-            zoomOnScroll={false}
-            panOnScroll={true}
-            onElementsRemove={onElementsRemove}
-            onElementClick={onElementClick}
-            onNodeDoubleClick={onNodeDoubleClick}
-            // onSelectionChange={onSelectionChange}
-            onNodeContextMenu={onNodeContextMenu}
-            onEdgeContextMenu={onEdgeContextMenu}
-            onPaneClick={onPaneClick}
-            nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
-            onConnect={onConnect}
-            deleteKeyCode={46}
-            zoomActivationKeyCode={32}
-            onLoad={onLoad}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
-            snapToGrid={true}
-            snapGrid={snapGrid}
-            nodesDraggable={!locked}
-            style={{background: "white"}}
-            defaultZoom={1}
-        >
-            <SidebarLeft onEdit={onEditClick}
-                     onDebug={onDebugClick}
-                     debugInProgress={debugInProgress}
-            />
-            {displayRightSidebar && <SidebarRight
-                defaultTab={rightSidebarTab}
-                onTabSelect={setRightSidebarTab}
-                inspectTab={<NodeDetails
-                    onLabelSet={handleLabelSet}
-                    node={currentNode}
-                    onConfig={onConfigSave}
-                />}
-                debugTab={<DebugDetails
-                    nodes={elements}
-                    node={currentNode}
-                    onConnectionDetails={onConnectionDetails}
-                />}
-                logTab={
-                    <LogsList logs={logs}/>
-                }
-            />
-            }
-            {displayNodeContextMenu && currentNode?.data?.spec?.form && <div className="NodeContextForm"
-                                            style={{
-                                                left: clientX,
-                                                top: clientY
-                                            }}
-            >
-                <NodeInitForm
-                    pluginId={currentNode?.data?.spec?.id}
-                    init={currentNode?.data?.spec?.init}
-                    formSchema={currentNode?.data?.spec?.form}
-                    onSubmit={onConfigSave}
-                />
-            </div>}
-            <Background color="#444" gap={16}/>
-        </ReactFlow>}
-    </div>
+    const ModifiedTag = () => {
+        return <span style={{
+            color: "white",
+            fontSize: 12,
+            fontWeight: 500,
+            padding: "3px 9px",
+            borderRadius: 15,
+            marginLeft: 5,
+            backgroundColor: "orange"
+        }}>not saved</span>
+    }
+
+    const DraftTag = () => {
+        return <span style={{
+            color: "white",
+            fontSize: 12,
+            fontWeight: 500,
+            padding: "3px 9px",
+            borderRadius: 15,
+            marginLeft: 5,
+            backgroundColor: "#ef6c00"
+        }}>This is a draft</span>
+    }
+
+    const StatusTag = () => {
+        return <div style={{
+            position: "absolute",
+            top: 5,
+            right: 5,
+            display: "flex",
+        }}>
+            {modified && <ModifiedTag/>}
+            {!deployed && <DraftTag/>}
+        </div>
+    }
+
+    return <>
+        <FlowEditorTitle
+            flowId={id}
+            reactFlowInstance={reactFlowInstance}
+            flowMetaData={flowMetaData}
+            onDraftRestore={(flow) => {
+                updateFlow(flow)
+            }}
+            onDeploy={() => setDeployed(true)}
+            onSaveDraft={() => setModified(false)}
+        />
+        <div className="FlowEditor">
+            <div className="WorkArea">
+                <div className="FlowEditorGrid" style={displayDebugHeight}>
+                    <div className="FlowPane" ref={reactFlowWrapper}>
+                        {flowLoading && <CenteredCircularProgress/>}
+                        {!flowLoading && elements && <ReactFlow
+                            elements={elements}
+                            zoomOnDoubleClick={false}
+                            zoomOnScroll={false}
+                            panOnScroll={true}
+                            onElementsRemove={onElementsRemove}
+                            onElementClick={onElementClick}
+                            onNodeDoubleClick={onNodeDoubleClick}
+                            // onSelectionChange={onSelectionChange}
+                            onNodeContextMenu={onNodeContextMenu}
+                            onEdgeContextMenu={onEdgeContextMenu}
+                            onPaneClick={onPaneClick}
+                            nodeTypes={nodeTypes}
+                            edgeTypes={edgeTypes}
+                            onConnect={onConnect}
+                            deleteKeyCode={46}
+                            zoomActivationKeyCode={32}
+                            multiSelectionKeyCode={32}
+                            onLoad={onLoad}
+                            onDrop={onDrop}
+                            onDragOver={onDragOver}
+                            snapToGrid={false}
+                            snapGrid={snapGrid}
+                            nodesDraggable={!locked}
+                            style={{background: "white"}}
+                            defaultZoom={1}
+                        >
+                            <SidebarLeft onDebug={onDebug}
+                                         debugInProgress={debugInProgress}
+                            />
+
+                            {displayNodeContextMenu && currentNode?.data?.spec?.form && <div className="NodeContextForm"
+                                                                                             style={{
+                                                                                                 left: clientX,
+                                                                                                 top: clientY
+                                                                                             }}
+                            >
+                                <NodeInitForm
+                                    pluginId={currentNode?.data?.spec?.id}
+                                    init={currentNode?.data?.spec?.init}
+                                    formSchema={currentNode?.data?.spec?.form}
+                                    onSubmit={handleConfigSave}
+                                />
+                            </div>}
+
+                            <WfSchema schema={schema}
+                                      style={{
+                                          position: "absolute",
+                                          color: "#555",
+                                          bottom: 5,
+                                          right: 10,
+                                          fontSize: "80%",
+                                          display: "flex",
+                                          alignItems: "center"
+                                      }}/>
+
+                            <StatusTag/>
+
+                            <Background color="#444" gap={16}/>
+                        </ReactFlow>}
+                    </div>
+
+                    {displayRightSidebar && <SidebarRight>
+                        <MemoNodeDetails
+                            onLabelSet={handleLabelSet}
+                            node={currentNode}
+                            onConfig={handleConfigSave}
+                            onRuntimeConfig={handleRuntimeConfig}
+                        />
+                    </SidebarRight>}
+
+                    {displayDebugPane && <MemoDebugPane
+                        profilingData={profilingData}
+                        logs={logs}
+                        onDetails={onConnectionDetails}
+                        onDebug={onDebug}
+                    />}
+
+                    {!displayDebugPane && <FlowEditorBottomLine
+                        onZoomIn={zoomIn}
+                        onZoomOut={zoomOut}
+                        onEdit={handleEditClick}
+                        onDebug={() => handleDisplayDebugPane(true)}
+                    />}
+
+                </div>
+            </div>
+        </div>
+    </>
 }
 
 FlowEditorPane.propTypes = {
     id: PropTypes.string.isRequired,
+    flowMetaData: PropTypes.object,
     onFlowLoad: PropTypes.func.isRequired,
     onEditorReady: PropTypes.func.isRequired,
-    onChange: PropTypes.func,
+    onEdit: PropTypes.func.isRequired,
     reactFlowInstance: PropTypes.object,
     locked: PropTypes.bool,
     draft: PropTypes.bool

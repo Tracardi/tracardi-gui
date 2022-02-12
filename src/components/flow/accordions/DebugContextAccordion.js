@@ -1,10 +1,10 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import makeStyles from '@mui/styles/makeStyles';
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import theme from "../../../themes/inspector_light_theme";
 import {ObjectInspector} from "react-inspector";
 
@@ -41,7 +41,7 @@ export default function DebugContextAccordions({profile, event, session}) {
 
                 >
                     <Typography className={classes.heading}>Profile data</Typography>
-                    <Typography className={classes.secondaryHeading}>Profile data is mutable</Typography>
+                    <Typography className={classes.secondaryHeading}>Profile data object</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <ObjectInspector data={profile} theme={theme} expandLevel={5}/>
@@ -55,7 +55,7 @@ export default function DebugContextAccordions({profile, event, session}) {
                 >
                     <Typography className={classes.heading}>Event data</Typography>
                     <Typography className={classes.secondaryHeading}>
-                        Event data is NOT mutable
+                        Event data object
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -70,7 +70,7 @@ export default function DebugContextAccordions({profile, event, session}) {
                 >
                     <Typography className={classes.heading}>Session</Typography>
                     <Typography className={classes.secondaryHeading}>
-                        Session data is NOT mutable
+                        Session data object
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>

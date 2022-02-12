@@ -1,0 +1,9 @@
+.NeedHelpButton {
+    padding: 20px;
+    width: 350px;
+    background-color: aliceblue;
+}
+
+.NeedHelpButton > DIV:not(:first-child) {
+    margin-top: 20px
+}
