@@ -56,8 +56,8 @@ export default function BarChartElement({onLoadRequest: endpoint, columns, refre
         return () => {
             if (timer) {
                 clearInterval(timer);
-                isSubscribed = false;
             }
+            isSubscribed = false;
         };
     }, [refreshInterval, endpoint]);
 
