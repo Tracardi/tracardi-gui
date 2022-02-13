@@ -1,6 +1,5 @@
 import ReactFlow, {Background} from "react-flow-renderer";
 import React, {useEffect, useState} from "react";
-import {request} from "../../remote_api/uql_api_endpoint";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {useParams} from "react-router-dom";
 import {connect} from "react-redux";
@@ -8,6 +7,7 @@ import {showAlert} from "../../redux/reducers/alertSlice";
 import FlowNode from "./FlowNode";
 import FlowNodeWithEvents from "./FlowNodeWithEvents";
 import StartNode from "./StartNode";
+import {asyncRemote, getError} from "../../remote_api/entrypoint";
 
 export function FlowReader({showAlert}) {
 
@@ -24,26 +24,34 @@ export function FlowReader({showAlert}) {
 
     useEffect(() => {
         setFlowLoading(true);
-        request({
-                url: "/flow/production/" + id,
-            },
-            setFlowLoading,
-            (e) => {
-                if (e) {
-                   showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
-                }
-            },
-            (response) => {
+        let isSubscribed = true;
+
+        asyncRemote({
+            url: "/flow/production/" + id,
+        }).then(response => {
+            if (response && isSubscribed === true) {
                 let flowGraph = []
                 if (response?.data?.flowGraph) {
                     flowGraph = response?.data?.flowGraph.nodes.slice();
                     flowGraph = flowGraph.concat(response?.data?.flowGraph.edges.slice())
                 }
                 setElements(flowGraph);
-            })
+            }
+        }).catch(e => {
+            if (e && isSubscribed === true) {
+                const errors = getError(e)
+                showAlert({message: errors[0].msg, type: "error", hideAfter: 4000});
+            }
+        }).finally(() => {
+            if(isSubscribed === true) setFlowLoading(false)
+        })
+
+        return () => {
+            isSubscribed = false
+        }
     }, [id, showAlert])
 
-    return <div style={{flex: 1,height: "inherit"}}>
+    return <div style={{flex: 1, height: "inherit"}}>
         {flowLoading && <CenteredCircularProgress/>}
         {elements && <ReactFlow
             elements={elements}

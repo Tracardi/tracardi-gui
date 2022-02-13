@@ -10,7 +10,6 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import PropTypes from 'prop-types';
 import FlowNode from "./FlowNode";
 import {v4 as uuid4} from "uuid";
-import {request} from "../../remote_api/uql_api_endpoint";
 import SidebarLeft from "./SidebarLeft";
 import SidebarRight from "./SidebarRight";
 import {debug, save} from "./FlowEditorOps";
@@ -29,6 +28,7 @@ import {FlowEditorBottomLine} from "./FlowEditorBottomLine";
 import FlowEditorTitle from "./FlowEditorTitle";
 import FlowNodeWithEvents from "./FlowNodeWithEvents";
 import StartNode from "./StartNode";
+import {asyncRemote} from "../../remote_api/entrypoint";
 
 export function FlowEditorPane(
     {
@@ -160,26 +160,29 @@ export function FlowEditorPane(
 
     useEffect(() => {
         setFlowLoading(true);
+        let isSubscribed = true;
 
-        request({
-                url: ((draft) ? "/flow/draft/" : "/flow/production/") + id,
-            },
-            setFlowLoading,
-            (e) => {
-                if (e) {
-                    if (e?.response?.status === 404) {
-                        showAlert({message: "Workflow does not exist.", type: "error", hideAfter: 4000});
-                    } else {
-                        if (e.length > 0) showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
-                    }
+        asyncRemote({
+            url: ((draft) ? "/flow/draft/" : "/flow/production/") + id,
+        }).then((response) => {
+            if (response && isSubscribed === true) {
+                updateFlow(response?.data);
+            }
+        }).catch((e)  => {
+            if (e && isSubscribed === true) {
+                if (e?.response?.status === 404) {
+                    showAlert({message: "Workflow does not exist.", type: "error", hideAfter: 4000});
+                } else {
+                    if (e.length > 0) showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
                 }
-            },
-            (response) => {
-                if (response) {
-                    updateFlow(response?.data);
-                }
-            })
+            }
+        }).finally(() => {
+            if(isSubscribed === true) setFlowLoading(false)
+        })
 
+        return () => {
+            isSubscribed = false
+        }
 
     }, [id, draft, showAlert, updateFlow])
 

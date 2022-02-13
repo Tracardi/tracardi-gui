@@ -7,7 +7,6 @@ import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
-import {request} from "../../../remote_api/uql_api_endpoint";
 import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
@@ -69,39 +68,20 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
         confirm({
             title: "Do you want to delete this event source?",
             description: "This action can not be undone."
-        }).then(() => {
-            request(
-                {
+        }).then(async () => {
+            try {
+                const response = await asyncRemote({
                     url: '/event-source/' + data.id,
                     method: "DELETE"
-                },
-                () => {
-                },
-                (e) => {
-                    if (e) {
-                        console.error(e);
-                    }
-                }, (reponse) => {
-                    request({
-                            url: '/event-sources/refresh'
-                        },
-                        () => {
-                        },
-                        (e) => {
-                            if (e) {
-                                console.error(e);
-                            }
-                        },
-                        () => {
-                            if (onDeleteComplete) {
-                                onDeleteComplete(reponse)
-                            }
-                        }
-                    )
+                })
+                if (onDeleteComplete) {
+                    onDeleteComplete(response)
                 }
-            )
-        }).catch(() => {
-        })
+            } catch (e) {
+                console.error(e);
+            }
+
+        }).catch(() => {})
     }
 
     const Details = () => <>

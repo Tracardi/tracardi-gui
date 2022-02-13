@@ -10,17 +10,24 @@ export default function FlowRules({flowName, id, refresh}) {
 
     useEffect(() => {
             setLoading(true);
+            let isSubscribed = true
             asyncRemote({
                 url: '/rules/by_flow/' + id
             }).then((response) => {
-                if (response) {
+                if (response && isSubscribed) {
                     setRules(response.data)
                 }
             }).catch((e) => {
-
+                console.error(e)
             }).finally(() => {
-                setLoading(false);
+                if(isSubscribed) {
+                    setLoading(false);
+                }
             })
+
+            return () => {
+                isSubscribed = false
+            }
         },
         [id, refresh]
     )

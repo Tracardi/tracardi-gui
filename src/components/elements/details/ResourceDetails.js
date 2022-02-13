@@ -7,13 +7,13 @@ import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
-import {request} from "../../../remote_api/uql_api_endpoint";
 import FormDrawer from "../drawers/FormDrawer";
-import {VscTrash,VscEdit} from "react-icons/vsc";
+import {VscTrash, VscEdit} from "react-icons/vsc";
 import ResourceForm from "../forms/ResourceForm";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import CredentialsVault from "../misc/CredentialsVault";
+import {asyncRemote} from "../../../remote_api/entrypoint";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -28,25 +28,29 @@ export default function ResourceDetails({id, onDeleteComplete}) {
 
     useEffect(() => {
         setLoading(true);
-        request(
+        let isSubscribed = true;
+        asyncRemote(
             {
                 url: '/resource/' + id,
                 method: "GET"
-            },
-            setLoading,
-            (e) => {
-                if (e) {
-                    console.error(e)
-                }
-            },
-            (response) => {
-                if (response) {
+            }).then(response => {
+                if (response && isSubscribed === true) {
                     setCredentials(response.data.credentials);
                     delete response.data.credentials;
                     setData(response.data);
                 }
-            }
-        )
+            }).catch(e => {
+                if (e && isSubscribed === true) {
+                    console.error(e)
+                }
+            }).finally(() => {
+                if(isSubscribed === true) setLoading(false)
+            })
+
+        return () => {
+            isSubscribed = false
+        }
+
     }, [id])
 
     const onEdit = () => {
@@ -59,37 +63,19 @@ export default function ResourceDetails({id, onDeleteComplete}) {
         confirm({
             title: "Do you want to delete this resource?",
             description: "This action can not be undone."
-        }).then(() => {
-            request(
-                {
-                    url: '/resource/' + data.id,
-                    method: "DELETE"
-                },
-                () => {
-                },
-                (e) => {
-                    if (e) {
-                        console.error(e);
-                    }
-                }, (reponse) => {
-                    request({
-                            url: '/resources/refresh'
-                        },
-                        () => {
-                        },
-                        (e) => {
-                            if (e) {
-                                console.error(e);
-                            }
-                        },
-                        () => {
-                            if (onDeleteComplete) {
-                                onDeleteComplete(reponse)
-                            }
-                        }
-                    )
+        }).then(async () => {
+            try {
+                const response = await asyncRemote(
+                    {
+                        url: '/resource/' + data.id,
+                        method: "DELETE"
+                    })
+                if (onDeleteComplete) {
+                    onDeleteComplete(response)
                 }
-            )
+            } catch(e) {
+                console.error(e)
+            }
         }).catch(() => {
         })
     }

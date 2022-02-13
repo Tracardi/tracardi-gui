@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import FlowLogs from "../../flow/FlowLogs";
 import NoData from "../misc/NoData";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 
 const EventLogDetails = ({eventId, showAlert}) => {
 
@@ -13,24 +13,27 @@ const EventLogDetails = ({eventId, showAlert}) => {
 
     useEffect(() => {
         setLoading(true);
-        request({
-                url: "/event/logs/" + eventId,
-            },
-            setLoading,
-            (e) => {
-                if (e) {
-                    if (showAlert) {
-                        showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
-                    } else {
-                        alert(e[0].msg)
-                    }
+        let isSubscribed = true;
+
+        asyncRemote({
+            url: "/event/logs/" + eventId,
+        }).then((response) => {
+            if(response && isSubscribed===true) {
+                setLogData(response.data);
+            }
+        }).catch((e) => {
+            if (e && isSubscribed === true) {
+                const errors = getError(e)
+                if (showAlert) {
+                    showAlert({message: errors[0].msg, type: "error", hideAfter: 4000});
+                } else {
+                    alert(errors[0].msg)
                 }
-            },
-            (response) => {
-                if(response !== null) {
-                    setLogData(response.data);
-                }
-            })
+            }
+        })
+        return () => {
+            isSubscribed = false
+        }
 
     }, [eventId, showAlert]);
 

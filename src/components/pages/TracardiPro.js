@@ -25,11 +25,12 @@ export default function TracardiPro() {
 
     useEffect(() => {
         setLoading(true);
+        let isSubscribed = true;
         asyncRemote({
             url: "/tpro/validate"
         }).then(
             (response) => {
-                if (response.status === 200) {
+                if (response.status === 200 && isSubscribed === true) {
                     if (response.data === true) {
                         setStage(3);
                     } else {
@@ -45,14 +46,21 @@ export default function TracardiPro() {
                 }
             }
         ).catch((e) => {
-            if (e?.response?.status === 403) {
+            if(isSubscribed === true) {
+                if (e?.response?.status === 403) {
 
-            } else {
-                setError(getError(e))
+                } else {
+                    setError(getError(e))
+                }
             }
+
         }).finally(() => {
-            setLoading(false);
+            if(isSubscribed === true) setLoading(false);
         })
+
+        return () => {
+            isSubscribed = false
+        }
 
     }, [])
 
