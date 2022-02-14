@@ -1,8 +1,7 @@
 import React from 'react';
 import "./AdvancedSquareCard.css";
-import {BiMessageSquareEdit} from "react-icons/bi";
-import IconButton from "../../misc/IconButton";
-import {BsTrash} from "react-icons/bs";
+import {BsXCircle} from "react-icons/bs";
+import {FiEdit3} from "react-icons/fi";
 
 const AdvancedSquareCard = ({id, status, name, description, onClick, icon, onEdit, onDelete}) => {
     const statusClass = (status) => {
@@ -17,18 +16,9 @@ const AdvancedSquareCard = ({id, status, name, description, onClick, icon, onEdi
                 <div className="desc">{description}</div>
             </div>
             <div className="Buttons">
-                <IconButton
-                    label="Edit Workflow"
-                    onClick={(e) => {onEdit(id); e.preventDefault(); e.stopPropagation();}}
-                    size="large">
-                    <BiMessageSquareEdit size={20}/>
-                </IconButton>
-                <IconButton
-                    label="Delete Workflow"
-                    onClick={(e) => {onDelete(id); e.preventDefault(); e.stopPropagation();}}
-                    size="large">
-                    <BsTrash size={20}/>
-                </IconButton>
+                <div className="Button" style={{borderRadius: "0 0 0 10px"}}> <FiEdit3 size={18} style={{marginRight: 8}}/> Edit</div>
+                <div className="Button" style={{borderRadius: "0 0 10px 0"}}><BsXCircle size={18} style={{marginRight: 8}}/> Delete
+                </div>
             </div>
 
         </div>

@@ -11,6 +11,7 @@ import Table from "../elements/table/Table";
 import {Column} from "react-vt-table";
 import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
 import TuiSelectMultiEventType from "../elements/tui/TuiSelectMultiEventType";
+import PasswordInput from "../elements/forms/inputs/PasswordInput";
 
 export default function TryOut() {
     const [v,setV] = React.useState("page-view");
@@ -29,7 +30,8 @@ export default function TryOut() {
         { id: 3, title: "test 3", status: "status" }
     ];
 
-  return (<>
+  return (<div style={{padding: 10}}>
+          <PasswordInput value={"test"} onChange={(v)=>console.log(v)}/>
       <TuiSelectEventType value={v} onSetValue={(v) => {console.log("value", v); setV(v)}} solo={true}/>
       {/*    <TuiSelectMultiEventType value={v} onSetValue={(v) => {console.log(v); setV(v)}}/>*/}
     <div style={{height: "100%", overflow: "auto"}}>
@@ -61,6 +63,6 @@ export default function TryOut() {
       {/*<TimeInput />*/}
       {/*<DottedPathInput value={"ala.kk"} onChange={(v) => console.log(v)} forceMode={2} width={300} />*/}
       {/*<ListOfDottedInputs onChange={(x) => console.log(x)} />*/}
-    </div></>
+    </div></div>
   );
 }

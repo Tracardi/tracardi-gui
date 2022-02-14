@@ -4,6 +4,7 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import ErrorsBox from "../../errors/ErrorsBox";
 import {Checkbox, FormControlLabel, Switch, TextField} from "@mui/material";
 import Button from "./Button";
+import ErrorLine from "../../errors/ErrorLine";
 
 export default function EditUserForm({ user, onSubmit}) {
 
@@ -88,7 +89,7 @@ export default function EditUserForm({ user, onSubmit}) {
                             onChange={event => setConfirmPassword(event.target.value)}
                             size="small"
                             error={password !== confirmPassword && error}
-                            helperText={password !== confirmPassword && error && "Passwords don't match"}
+                            helperText={password !== confirmPassword && error && <ErrorLine>Passwords don't match</ErrorLine>}
                         />
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Full name" description="User's name and surname.">
@@ -100,7 +101,7 @@ export default function EditUserForm({ user, onSubmit}) {
                             onChange={event => setFullName(event.target.value)}
                             size="small"
                             error={!fullName && error}
-                            helperText={!fullName && error && "Full name cannot be empty"}
+                            helperText={!fullName && error && <ErrorLine>Full name cannot be empty</ErrorLine>}
                         />
                     </TuiFormGroupField>
                     <TuiFormGroupField header="E-mail">
@@ -112,7 +113,7 @@ export default function EditUserForm({ user, onSubmit}) {
                             onChange={event => setEmail(event.target.value)}
                             size="small"
                             error={!email && error}
-                            helperText={!email && error && "E-mail address cannot be empty"}
+                            helperText={!email && error && <ErrorLine>E-mail address cannot be empty</ErrorLine>}
                         />
                     </TuiFormGroupField>
                 </TuiFormGroupContent>

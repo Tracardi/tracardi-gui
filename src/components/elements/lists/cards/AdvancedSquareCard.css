@@ -64,5 +64,21 @@
 .AdvancedSquareCard > .Buttons {
     display: flex;
     width: 100%;
-    flex-direction: row-reverse;
+    justify-content: space-between;
+    border-top: solid 2px #1565c0;
+}
+
+.AdvancedSquareCard .Buttons .Button {
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+    color: #1565c0;
+    width: 100%;
+    justify-content: center;
+    padding: 9px;
+}
+
+.AdvancedSquareCard .Buttons .Button:hover {
+    background-color: #1565c0;
+    color: white;
 }

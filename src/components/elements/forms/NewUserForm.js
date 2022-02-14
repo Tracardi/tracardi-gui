@@ -5,6 +5,8 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import ErrorsBox from "../../errors/ErrorsBox";
 import {Checkbox, FormControlLabel, Switch, TextField} from "@mui/material";
 import Button from "./Button";
+import PasswordInput from "./inputs/PasswordInput";
+import ErrorLine from "../../errors/ErrorLine";
 
 export default function NewUserForm({ onSubmit}) {
 
@@ -76,23 +78,22 @@ export default function NewUserForm({ onSubmit}) {
                             onChange={event => setEmail(event.target.value)}
                             size="small"
                             error={!email && error}
-                            helperText={!email && error && "Email cannot be empty"}
+                            helperText={!email && error && <ErrorLine>Email cannot be empty</ErrorLine>}
                         />
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Password" description="Type new user's password.">
-                        <TextField
+                        <PasswordInput
                             fullWidth
                             variant="outlined"
                             label="Password"
                             value={password}
                             onChange={event => setPassword(event.target.value)}
-                            size="small"
                             error={!password && error}
-                            helperText={!password && error && "Password cannot be empty"}
+                            helperText={!password && error && <ErrorLine>Password cannot be empty</ErrorLine>}
                         />
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Confirm password" description="Please retype the password for confirmation that it is correct.">
-                        <TextField
+                        <PasswordInput
                             fullWidth
                             variant="outlined"
                             label="Confirm password"
@@ -100,7 +101,7 @@ export default function NewUserForm({ onSubmit}) {
                             onChange={event => setConfirmPassword(event.target.value)}
                             size="small"
                             error={(!confirmPassword || confirmPassword !== password) && error}
-                            helperText={(!confirmPassword || confirmPassword !== password) && error && (confirmPassword !== password ? "Passwords don't match" : "This field cannot be empty")}
+                            helperText={(!confirmPassword || confirmPassword !== password) && error && <ErrorLine>{(confirmPassword !== password ? "Passwords don't match" : "This field cannot be empty")}</ErrorLine>}
                         />
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Full name" description="Please type in the name and surname of the new user.">
@@ -112,7 +113,7 @@ export default function NewUserForm({ onSubmit}) {
                             onChange={event => setFullName(event.target.value)}
                             size="small"
                             error={!fullName && error}
-                            helperText={!fullName && error && "Full name cannot be empty"}
+                            helperText={!fullName && error && <ErrorLine>Full name cannot be empty</ErrorLine>}
                         />
                     </TuiFormGroupField>
                 </TuiFormGroupContent>
