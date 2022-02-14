@@ -27,6 +27,7 @@ import Consents from "./pages/Consents";
 import Dashboard from "./pages/Dashboard";
 import EventValidation from "./pages/EventValidation";
 import Logs from "./pages/Logs";
+import Users from "./pages/Users";
 
 const AppBox = () => {
 
@@ -143,6 +144,7 @@ const AppBox = () => {
                       tabs={{
                           "Workflow actions": <ActionPlugins/>,
                           "System settings": <Settings/>,
+                          "Users": <Users />
                       }}
             />
 
