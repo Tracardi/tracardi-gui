@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import ListOfDottedInputs from "../elements/forms/ListOfDottedInputs";
-import DottedPathInput from "../elements/forms/inputs/DottedPathInput";
 import TimeInput from "../elements/forms/inputs/TimeInput";
 import KeyValueForm from "../elements/forms/KeyValueForm";
 import IconSelector from "../elements/IconSelector";
@@ -13,10 +12,11 @@ import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
 import TuiSelectMultiEventType from "../elements/tui/TuiSelectMultiEventType";
 import PasswordInput from "../elements/forms/inputs/PasswordInput";
 import EvalInput from "../elements/forms/inputs/EvalInput";
+import {Button} from "@mui/material";
 import DotAccessor from "../elements/forms/inputs/DotAccessor";
 
 export default function TryOut() {
-    const [v,setV] = React.useState("page-view");
+    const [v,setV] = React.useState("`profile@`");
     // const data = [
     //     { id: 1, title: "test", status: "status" },
     //     { id: 2, title: "test 2", status: "status" },
@@ -33,7 +33,8 @@ export default function TryOut() {
     // ];
 
   return (<div style={{padding: 10}}>
-          <DotAccessor label="E-mail" value={v} onChange={(e)=>setV(e.target.value)}/>
+          <DotAccessor label="E-mail" value={v} onChange={(e)=>{console.log("READY", e);setV(e)}}/>
+          <Button onClick={()=>setV("test")}>xxx</Button>
       {/*<TuiSelectEventType value={v} onSetValue={(v) => {console.log("value", v); setV(v)}} solo={true}/>*/}
       {/*    <TuiSelectMultiEventType value={v} onSetValue={(v) => {console.log(v); setV(v)}}/>*/}
     <div style={{height: "100%", overflow: "auto"}}>
@@ -64,7 +65,7 @@ export default function TryOut() {
       {/*<KeyValueForm value={{ kw: "value" }} onChange={(v) => console.log(v)} />*/}
       {/*<TimeInput />*/}
       {/*<DottedPathInput value={"ala.kk"} onChange={(v) => console.log(v)} forceMode={2} width={300} />*/}
-      {/*<ListOfDottedInputs onChange={(x) => console.log(x)} />*/}
+      <ListOfDottedInputs onChange={(x) => console.log(x)} />
     </div></div>
   );
 }

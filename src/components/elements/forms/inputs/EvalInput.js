@@ -7,15 +7,24 @@ import PathTextAdornment from "./PathTextAdornment";
 export function SourceInput({value, onChange}) {
     return <PathTextAdornment value={value} onChange={onChange}/>
 }
-export function EvalInput({label, value, onChange, fullWidth = false, error, helperText, style, required, autoCastValue}) {
+export function EvalInput({label, value: initValue, onChange, fullWidth = false, error, helperText, style, required, autoCastValue}) {
 
     const [castValue, setCastValue] = useState(autoCastValue || false);
+    const [value,setValue] = React.useState(initValue || "");
 
     const handleChange = (event) => {
+        setValue(event.target.value)
         if (onChange) {
-            onChange(event, castValue)
+            onChange(event.target.value, castValue)
         }
     };
+
+    const handleCastChange = (cast) => {
+        setCastValue(cast)
+        if (onChange) {
+            onChange(value, cast)
+        }
+    }
 
     return <TextField
         required={required}
@@ -30,7 +39,7 @@ export function EvalInput({label, value, onChange, fullWidth = false, error, hel
         helperText={helperText}
         InputProps={{
             endAdornment: <InputAdornment position="end">
-                <EvalAdornment value={castValue} onChange={setCastValue}/>
+                <EvalAdornment value={castValue} onChange={handleCastChange}/>
             </InputAdornment>,
 
         }}

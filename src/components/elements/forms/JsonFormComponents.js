@@ -7,7 +7,6 @@ import HtmlEditor from "../editors/HtmlEditor";
 import {objectMap} from "../../../misc/mappers";
 import MenuItem from "@mui/material/MenuItem";
 import ListOfDottedInputs from "./ListOfDottedInputs";
-import DottedPathInput from "./inputs/DottedPathInput";
 import KeyValueForm from "./KeyValueForm";
 import CopyTraitsForm from "./CopyTraitsForm";
 import ErrorLine from "../../errors/ErrorLine";
@@ -16,6 +15,7 @@ import TuiSelectResource from "../tui/TuiSelectResource";
 import {isEmptyStringOrNull} from "../../../misc/typeChecking";
 import Chip from "@mui/material/Chip";
 import TuiMultiSelectEventType from "../tui/TuiSelectMultiEventType";
+import DotAccessor from "./inputs/DotAccessor";
 
 export function TextInput({value, label, errorMessage, onChange}) {
 
@@ -212,7 +212,7 @@ export function DotPathInput({value, props, errorMessage, onChange = null}) {
         }
     }
 
-    return <DottedPathInput value={value}
+    return <DotAccessor value={value}
                             forceMode={1}
                             onChange={handleChange}
                             errorMessage={errorMessage}
@@ -227,7 +227,7 @@ export function DotPathAndTextInput({value, props, errorMessage, onChange}) {
         }
     }
 
-    return <DottedPathInput value={value}
+    return <DotAccessor value={value}
                             onChange={handleChange}
                             errorMessage={errorMessage}
                             {...props}

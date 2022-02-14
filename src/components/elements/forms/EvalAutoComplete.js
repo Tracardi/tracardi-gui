@@ -11,7 +11,7 @@ import {isString} from "../../../misc/typeChecking";
 import EvalAdornment from "./inputs/EvalAdornment";
 import {InputAdornment} from "@mui/material";
 
-const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChange, solo = true, disabled, fullWidth = false, autoCastValue: castValue}) => {
+const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChange, solo = true, disabled, fullWidth = false, autoCastValue: initCast}) => {
 
     const getValue = (initValue) => {
         if (!initValue) {
@@ -27,7 +27,8 @@ const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChang
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState([]);
     const [progress, setProgress] = React.useState(false);
-    const [autoCastValue, setAutoCastValue] = React.useState(castValue || false);
+    const [autoCastValue, setAutoCastValue] = React.useState(initCast || false);
+    const [value, setValue] = React.useState(initValue || false);
 
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
 
@@ -79,29 +80,30 @@ const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChang
         }
     }
 
-    const handleChange = (value) => {
+    const handleInputChange = (value) => {
         if (typeof value === "string") {
             value = {id: value, name: value}
         }
+
+        setValue(value)
 
         if (onChange) {
             onChange(value, autoCastValue);
         }
     }
 
-    const Adornments = ({progress}) => {
-        return <>
-            {progress ? <CircularProgress color="inherit" size={20} style={{marginRight: 3}}/> : null}
-            <EvalAdornment position="end" value={autoCastValue} onChange={(e) => {console.log(e); setAutoCastValue(e)}}/>
-        </>
+    const handleCastChange = (cast) => {
+        setAutoCastValue(cast);
+        if (onChange) {
+            onChange(value, cast);
+        }
     }
 
     return (
         <Autocomplete
             freeSolo={solo}
             multiple={false}
-            fullWidth={fullWidth}
-            style={fullWidth ? {width: "100%"} : {width: 300}}
+            style={fullWidth ? {width: "100%"} : {minWidth: 270}}
             open={open}
             onOpen={handleLoading}
             onClose={() => {
@@ -116,13 +118,13 @@ const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChang
             }}
             options={options}
             loading={loading}
-            value={initValue}
+            value={value}
             disabled={disabled}
             onChange={(event, value) => {
                 handleValueSet(value);
             }}
             onInputChange={(ev, value, reason) => {
-                handleChange(value)
+                handleInputChange(value)
             }}
             renderInput={(params) => (
                 <TextField
@@ -134,7 +136,11 @@ const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChang
                     InputProps={{
                         ...params.InputProps,
                         endAdornment: <InputAdornment position="end">
-                            <Adornments progress={progress}/>
+                            <>
+                                {progress ? <CircularProgress color="inherit" size={20} style={{marginRight: 3}}/> : null}
+                                <EvalAdornment position="end" value={autoCastValue} onChange={handleCastChange}/>
+                                {params.InputProps.endAdornment}
+                            </>
                         </InputAdornment>
                     }}
                 />

@@ -87,6 +87,6 @@ export default function PathTextAdornment({value, onChange}) {
         onClick={handleIconClick}
         onMouseDown={handleMouseDown}
     >
-        {path ? <Path/> : <IoTextOutline size={20} title="Value" style={{color: "gray"}}/>}
+        {path ? <Path/> : <IoTextOutline size={20} title="Value" style={{color: "gray", marginRight: 10}}/>}
     </span>
 }
