@@ -69,7 +69,7 @@ export default function EditUserForm({ user, onSubmit}) {
                 <TuiFormGroupHeader header="Edit user" description="Here you can edit selected user."/>
                 {errorMessage && <ErrorsBox errorList={errorMessage}/>}
                 <TuiFormGroupContent>
-                    <TuiFormGroupField header="New password" description="You can edit the password of this user.">
+                    <TuiFormGroupField header="Edit password" description="Type new user password.">
                         <TextField
                             fullWidth
                             variant="outlined"
@@ -79,7 +79,7 @@ export default function EditUserForm({ user, onSubmit}) {
                             size="small"
                         />
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Confirm new password" description="Please type in the password for one more time.">
+                    <TuiFormGroupField header="Confirm new password" description="Please retype the new password .">
                         <TextField
                             fullWidth
                             variant="outlined"
@@ -91,7 +91,7 @@ export default function EditUserForm({ user, onSubmit}) {
                             helperText={password !== confirmPassword && error && "Passwords don't match"}
                         />
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Full name" description="You can edit the full name of this user.">
+                    <TuiFormGroupField header="Full name" description="User's name and surname.">
                         <TextField
                             fullWidth
                             variant="outlined"
@@ -103,22 +103,22 @@ export default function EditUserForm({ user, onSubmit}) {
                             helperText={!fullName && error && "Full name cannot be empty"}
                         />
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Email" description="You can edit the email address of this user.">
+                    <TuiFormGroupField header="E-mail">
                         <TextField
                             fullWidth
                             variant="outlined"
-                            label="Email"
+                            label="E-mail"
                             value={email}
                             onChange={event => setEmail(event.target.value)}
                             size="small"
                             error={!email && error}
-                            helperText={!email && error && "Email address cannot be empty"}
+                            helperText={!email && error && "E-mail address cannot be empty"}
                         />
                     </TuiFormGroupField>
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Roles" description="You can edit the roles of this user."/>
+                <TuiFormGroupHeader header="Roles in the system"/>
                 <TuiFormGroupField>
                     <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Checkbox size="medium" checked={admin} onChange={() => setAdmin(!admin)}/>} label="Admin"/>
                     <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Checkbox size="medium" checked={marketer} onChange={()=> setMarketer(!marketer)}/>} label="Marketer"/>
@@ -126,9 +126,9 @@ export default function EditUserForm({ user, onSubmit}) {
                 </TuiFormGroupField>
             </TuiFormGroup>
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Enabled" description="You can disable this user if you want."/>
+                <TuiFormGroupHeader header="Active user account" description="User account can be turned off with this switch."/>
                 <TuiFormGroupField>
-                    <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Switch size="medium" checked={enabled} onChange={() => setEnabled(!enabled)}/>} label="Enable user"/>
+                    <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Switch size="medium" checked={enabled} onChange={() => setEnabled(!enabled)}/>} label="Activate user account"/>
                 </TuiFormGroupField>
             </TuiFormGroup>
             <Button label="Save" onClick={handleSave} progress={loading} style={{justifyContent: "center"}} error={error}/>

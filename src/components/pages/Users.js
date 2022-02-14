@@ -1,10 +1,7 @@
-import {Box, Typography, IconButton} from "@mui/material";
 import React from "react";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import {AiOutlineUserAdd} from "react-icons/ai";
 import FilterAddForm from "../elements/forms/inputs/FilterAddForm";
-import {FaUserAlt, FaRegEdit} from "react-icons/fa";
-import {MdOutlineDelete} from "react-icons/md";
 import {asyncRemote, getError} from "../../remote_api/entrypoint";
 import ErrorsBox from "../errors/ErrorsBox";
 import {useConfirm} from "material-ui-confirm";
@@ -20,6 +17,8 @@ import {
 } from "../elements/tui/TuiForm";
 import {BsPersonCircle} from "react-icons/bs";
 import AdvancedSquareCard from "../elements/lists/cards/AdvancedSquareCard";
+import {isEmptyObjectOrNull} from "../../misc/typeChecking";
+import NoData from "../elements/misc/NoData";
 
 function UserCards({users, setUserToEdit, onDelete}) {
 
@@ -44,17 +43,17 @@ function UserCards({users, setUserToEdit, onDelete}) {
     return (
         <div style={{margin: 15, display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
             {users.map(user =>
-                    <AdvancedSquareCard
-                        key={user.email}
-                        id={user.email}
-                        status={!user.disabled}
-                        name={user.fullName}
-                        description={user.roles.map(role => role.charAt(0).toUpperCase() + role.slice(1)).join(", ")}
-                        onClick={() => setUserToEdit(user)}
-                        onEdit={() => setUserToEdit(user)}
-                        onDelete={() => handleUserDelete(user)}
-                        icon={<BsPersonCircle size={40}/>}
-                    />
+                <AdvancedSquareCard
+                    key={user.email}
+                    id={user.email}
+                    status={!user.disabled}
+                    name={user.fullName}
+                    description={user.roles.map(role => role.charAt(0).toUpperCase() + role.slice(1)).join(", ")}
+                    onClick={() => setUserToEdit(user)}
+                    onEdit={() => setUserToEdit(user)}
+                    onDelete={() => handleUserDelete(user)}
+                    icon={<BsPersonCircle size={40}/>}
+                />
             )}
         </div>
     );
@@ -95,6 +94,34 @@ export default function Users() {
         }
     }, [refresh, filter])
 
+    const Content = () => {
+        if (loading) {
+            return <div style={{height: 300}}><CenteredCircularProgress/></div>
+        }
+        console.log(users)
+        if (isEmptyObjectOrNull(users) || (Array.isArray(users) && users.length === 0)) {
+            return <NoData header="There is no data here.">
+                <p>Please click create button in the upper right corner.</p>
+            </NoData>
+        }
+
+        return <TuiForm style={{margin: 20}}>
+
+            <TuiFormGroup fitHeight={true}>
+                <TuiFormGroupHeader header="Users" description="List of users registered in the system. Active user accounts have a green dash."/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField>
+
+                        {errorMessage && <div style={{margin: 25}}><ErrorsBox errorList={errorMessage}/></div>}
+                        {!errorMessage && <UserCards refresh={refresh} setUserToEdit={setUserToEdit} users={users}
+                                                     onDelete={() => setRefresh(refresh + 1)}/>}
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>
+    }
+
+
     return (
         <>
             <FilterAddForm
@@ -105,20 +132,9 @@ export default function Users() {
                 onAdd={() => setNewUserFormOpened(true)}
                 textFieldLabel="Type here to filter by user's full name"
             />
-            {loading && <CenteredCircularProgress/>}
-            {!loading && <TuiForm style={{margin: 20}}>
-                <TuiFormGroup fitHeight={true}>
-                    <TuiFormGroupHeader header="Users" description="List of users registered in the system."/>
-                    <TuiFormGroupContent>
-                        <TuiFormGroupField>
 
-                            {errorMessage && <div style={{margin: 25}}><ErrorsBox errorList={errorMessage}/></div>}
-                            {!errorMessage && <UserCards refresh={refresh} setUserToEdit={setUserToEdit} users={users}
-                                                         onDelete={() => setRefresh(refresh + 1)}/>}
-                        </TuiFormGroupField>
-                    </TuiFormGroupContent>
-                </TuiFormGroup>
-            </TuiForm>}
+            <Content/>
+
             <FormDrawer
                 open={newUserFormOpened}
                 width={600}

@@ -34,18 +34,21 @@ export default function Settings() {
 
     }, [])
 
-    return <TuiForm style={{height: "inherit", overflowY: "auto"}}>
-        <TuiFormGroup style={{margin: 20}}>
-            <TuiFormGroupHeader header="Settings"
-                                description="Use environment variables to set these settings."
-            />
-            <TuiFormGroupContent>
-                {loading && <CenteredCircularProgress/>}
-                {!loading && !error && setting.map((row, index) => {
-                    return <KeyValueDesc key={index} label={row.label} value={row.value} description={row.desc}/>
-                })}
-                {error && <ErrorsBox errorList={error}/>}
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-    </TuiForm>
+    return <>
+        {loading &&  <div style={{height: 300}}><CenteredCircularProgress/></div>}
+        {!loading && <TuiForm style={{height: "inherit", overflowY: "auto"}}>
+            <TuiFormGroup style={{margin: 20}}>
+                <TuiFormGroupHeader header="Settings"
+                                    description="Use environment variables to set these settings."
+                />
+                <TuiFormGroupContent>
+                    {!error && setting.map((row, index) => {
+                        return <KeyValueDesc key={index} label={row.label} value={row.value} description={row.desc}/>
+                    })}
+                    {error && <ErrorsBox errorList={error}/>}
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>}
+
+    </>
 }
