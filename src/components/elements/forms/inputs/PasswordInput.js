@@ -1,15 +1,14 @@
-import FormControl from "@mui/material/FormControl";
 import InputAdornment from "@mui/material/InputAdornment";
 import React, {useState} from "react";
 import {BsEye, BsEyeSlashFill} from "react-icons/bs";
 import TextField from "@mui/material/TextField";
 
-export default function PasswordInput({label="Password", value, onChange, fullWidth=false, error, helperText }) {
+export default function PasswordInput({label = "Password", value, onChange, fullWidth = false, error, helperText, style, required}) {
 
     const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (event) => {
-        if(onChange) {
+        if (onChange) {
             onChange(event)
         }
     };
@@ -23,17 +22,18 @@ export default function PasswordInput({label="Password", value, onChange, fullWi
     };
 
 
-    return <FormControl variant="outlined">
-        <TextField
-            fullWidth={fullWidth}
-            size="small"
-            type={showPassword ? 'text' : 'password'}
-            value={value}
-            onChange={handleChange}
-            error={error}
-            helperText={helperText}
-            InputProps={{
-                endAdornment: <InputAdornment position="end">
+    return <TextField
+        required={required}
+        fullWidth={fullWidth}
+        size="small"
+        style={style}
+        type={showPassword ? 'text' : 'password'}
+        value={value}
+        onChange={handleChange}
+        error={error}
+        helperText={helperText}
+        InputProps={{
+            endAdornment: <InputAdornment position="end">
                 <span
                     style={{display: "flex", alignItems: "center", cursor: "pointer"}}
                     onClick={handleClickShowPassword}
@@ -41,9 +41,9 @@ export default function PasswordInput({label="Password", value, onChange, fullWi
                 >
                 {showPassword ? <BsEyeSlashFill size={20}/> : <BsEye size={20}/>}
                 </span>
-                </InputAdornment>
-            }}
-            label={label}
-        />
-    </FormControl>
+            </InputAdornment>
+        }}
+        label={label}
+        variant="outlined"
+    />
 }

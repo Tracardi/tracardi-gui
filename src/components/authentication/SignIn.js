@@ -20,6 +20,7 @@ import version from '../../misc/version';
 import storageValue from "../../misc/localStorageDriver";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import Button from "../elements/forms/Button";
+import PasswordInput from "../elements/forms/inputs/PasswordInput";
 
 function Copyright() {
     return (
@@ -203,19 +204,13 @@ const SignInForm = ({showAlert}) => {
                                 size="small"
                                 autoFocus
                                 onChange={handleEmailChange}/>
-                            <TextField
-                                style={{color: "black"}}
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
+                            <PasswordInput
+                                fullWidth={true}
                                 label="Password"
-                                type="password"
                                 id="password"
-                                size="small"
                                 autoComplete="current-password"
                                 onChange={handlePassChange}
+                                required={true}
                             />
                             <div
                                 ref={nodeRef}

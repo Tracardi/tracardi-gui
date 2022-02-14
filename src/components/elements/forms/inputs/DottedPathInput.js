@@ -33,6 +33,7 @@ export default function DottedPathInput({
 
     const [path, setPath] = React.useState(pathValue);
     const [source, setSource] = React.useState(sourceValue);
+    const [autoCastValue, setAutoCastValue] = React.useState(false);
 
     let computedMode;
     if (typeof value === 'undefined' || value === null || value === '') {
@@ -74,9 +75,9 @@ export default function DottedPathInput({
     const handleExternalOnChange = (mode, path, source) => {
         if (onChange) {
             if (mode === 1) {
-                onChange(`${source}@${path}`)
+                onChange(`${source}@${path}`, autoCastValue)
             } else {
-                onChange(path)
+                onChange(path, autoCastValue)
             }
         }
     }
@@ -86,7 +87,9 @@ export default function DottedPathInput({
         setMode(mode);
     }
 
-    const handlePathChange = (value) => {
+    const handlePathChange = (value, autoCastValue) => {
+        console.log(autoCastValue)
+        setAutoCastValue(autoCastValue)
         setPath(value);
         handleExternalOnChange(mode, value, source);
     };
@@ -163,7 +166,9 @@ export default function DottedPathInput({
                            onChange={handlePathChange}
                            style={{width: width}}
                            error={errorMessage}
-                           helperText={errorMessage}/>
+                           helperText={errorMessage}
+                           autoCastValue={autoCastValue}
+        />
     </div>
 
     const valueMode = () => <div className="DottedInputPath">

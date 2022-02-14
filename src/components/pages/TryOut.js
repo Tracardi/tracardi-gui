@@ -12,27 +12,29 @@ import {Column} from "react-vt-table";
 import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
 import TuiSelectMultiEventType from "../elements/tui/TuiSelectMultiEventType";
 import PasswordInput from "../elements/forms/inputs/PasswordInput";
+import EvalInput from "../elements/forms/inputs/EvalInput";
+import DotAccessor from "../elements/forms/inputs/DotAccessor";
 
 export default function TryOut() {
     const [v,setV] = React.useState("page-view");
-    const data = [
-        { id: 1, title: "test", status: "status" },
-        { id: 2, title: "test 2", status: "status" },
-        { id: 3, title: "test 3", status: "status" },
-        { id: 1, title: "test", status: "status" },
-        { id: 2, title: "test 2", status: "status" },
-        { id: 3, title: "test 3", status: "status" },
-        { id: 1, title: "test", status: "status" },
-        { id: 2, title: "test 2", status: "status" },
-        { id: 3, title: "test 3", status: "status" },
-        { id: 1, title: "test", status: "status" },
-        { id: 2, title: "test 2", status: "status" },
-        { id: 3, title: "test 3", status: "status" }
-    ];
+    // const data = [
+    //     { id: 1, title: "test", status: "status" },
+    //     { id: 2, title: "test 2", status: "status" },
+    //     { id: 3, title: "test 3", status: "status" },
+    //     { id: 1, title: "test", status: "status" },
+    //     { id: 2, title: "test 2", status: "status" },
+    //     { id: 3, title: "test 3", status: "status" },
+    //     { id: 1, title: "test", status: "status" },
+    //     { id: 2, title: "test 2", status: "status" },
+    //     { id: 3, title: "test 3", status: "status" },
+    //     { id: 1, title: "test", status: "status" },
+    //     { id: 2, title: "test 2", status: "status" },
+    //     { id: 3, title: "test 3", status: "status" }
+    // ];
 
   return (<div style={{padding: 10}}>
-          <PasswordInput value={"test"} onChange={(v)=>console.log(v)}/>
-      <TuiSelectEventType value={v} onSetValue={(v) => {console.log("value", v); setV(v)}} solo={true}/>
+          <DotAccessor label="E-mail" value={v} onChange={(e)=>setV(e.target.value)}/>
+      {/*<TuiSelectEventType value={v} onSetValue={(v) => {console.log("value", v); setV(v)}} solo={true}/>*/}
       {/*    <TuiSelectMultiEventType value={v} onSetValue={(v) => {console.log(v); setV(v)}}/>*/}
     <div style={{height: "100%", overflow: "auto"}}>
         {/*<Table data={data} disableHeader={false}>*/}

@@ -9,6 +9,7 @@ import ErrorsBox from "../../errors/ErrorsBox";
 import {BsArrowLeftCircle} from "react-icons/bs";
 import AlertBox from "../../errors/AlertBox";
 import {VscSignIn} from "react-icons/vsc";
+import PasswordInput from "./inputs/PasswordInput";
 
 export default function TracardiProSignInForm({onSubmit, onCancel}) {
 
@@ -96,17 +97,14 @@ export default function TracardiProSignInForm({onSubmit, onCancel}) {
                                                  description="Please type password."
                                                  descHeight={40}
                             >
-                                <TextField
+                                <PasswordInput
                                     label="Password"
                                     value={data.password}
-                                    type="password"
                                     onChange={(ev) => {
                                         setData({...data, password: ev.target.value})
                                     }}
-                                    size="small"
                                     error={"password" in fieldErrors}
                                     helperText={"password" in fieldErrors && fieldErrors['password']}
-                                    variant="outlined"
                                     required={true}
                                 />
                             </TuiTopHeaderWrapper>
