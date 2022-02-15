@@ -16,6 +16,7 @@ import {isEmptyStringOrNull} from "../../../misc/typeChecking";
 import Chip from "@mui/material/Chip";
 import TuiMultiSelectEventType from "../tui/TuiSelectMultiEventType";
 import DotAccessor from "./inputs/DotAccessor";
+import TuiSelectEventType from "../tui/TuiSelectEventType";
 
 export function TextInput({value, label, errorMessage, onChange}) {
 
@@ -346,6 +347,20 @@ export function EventTypes({value: initValue, onChange = null}) {
     };
 
     return <TuiMultiSelectEventType value={value} label="Event types" onSetValue={handleChange} fullWidth={true}/>
+}
+
+export function EventType({value: initValue, onChange = null}) {
+
+    const [value, setValue] = useState(initValue);
+
+    const handleChange = (value) => {
+        setValue(value);
+        if(onChange) {
+            onChange(value);
+        }
+    };
+
+    return <TuiSelectEventType value={value} label="Event type" onSetValue={handleChange} fullWidth={true}/>
 }
 
 export function ReadOnlyTags({value}) {

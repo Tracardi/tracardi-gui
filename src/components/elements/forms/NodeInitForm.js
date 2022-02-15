@@ -1,4 +1,3 @@
-import {JsonForm} from "./JsonForm";
 import React, {useEffect, useState} from "react";
 import FormSchema from "../../../domain/formSchema";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
@@ -10,6 +9,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import NotImplemented from "../misc/NotImplemented";
 import Switch from "@mui/material/Switch";
 import {MenuItem} from "@mui/material";
+import JsonForm from "./JsonForm";
+
 
 export function NodeInitJsonForm({pluginId, formSchema, init, manual, onSubmit}) {
 

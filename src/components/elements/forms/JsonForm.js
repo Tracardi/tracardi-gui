@@ -11,7 +11,7 @@ import {
     KeyValueInput,
     ListOfDotPaths,
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
-    SelectInput, BoolInput, ReadOnlyTags, EventTypes
+    SelectInput, BoolInput, ReadOnlyTags, EventTypes, EventType
 } from "./JsonFormComponents";
 import ErrorsBox from "../../errors/ErrorsBox";
 
@@ -30,6 +30,10 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
 
         case "eventTypes":
             return (props) => <EventTypes value={value}
+                                          onChange={(value) => handleOnChange(value, fieldId)}
+                                          {...props}/>
+        case "eventType":
+            return (props) => <EventType value={value}
                                           onChange={(value) => handleOnChange(value, fieldId)}
                                           {...props}/>
         case "resource":
@@ -109,7 +113,7 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
     }
 }
 
-export const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
+const JsonForm = React.memo(({schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
     const keyValueMapOfComponentValues = object2dot(values)
     const hasErrors = errorMessages && Object.keys(errorMessages).length
 
@@ -188,6 +192,8 @@ export const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideErr
 
     }
 
+    const MemoGroups = React.memo(Groups);
+
     const handleSubmit = () => {
         if (onSubmit) {
             onSubmit()
@@ -198,7 +204,7 @@ export const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideErr
         return <TuiForm>
             {schema.title && <Title title={schema.title}/>}
 
-            {schema.groups && <Groups
+            {schema.groups && <MemoGroups
                 groups={schema.groups}
                 onChange={onChange}
             />}
@@ -215,4 +221,6 @@ export const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideErr
 
     return ""
 
-}
+})
+
+export default JsonForm;

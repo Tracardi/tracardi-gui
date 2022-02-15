@@ -65,7 +65,8 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
-    border-top: solid 2px #1565c0;
+    background-color: white;
+    border-radius: 0 0 10px 10px;
 }
 
 .AdvancedSquareCard .Buttons .Button {

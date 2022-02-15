@@ -1,4 +1,4 @@
-import {JsonForm} from "./JsonForm";
+import JsonForm from "./JsonForm";
 import React, {useState} from "react";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
