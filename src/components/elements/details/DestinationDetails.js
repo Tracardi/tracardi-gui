@@ -94,8 +94,8 @@ function DestinationDetails({id, onDelete, onEdit}) {
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <div style={{display: "flex"}}>
-                <Button label="Edit" onClick={()=>{setOpenEdit(true)}}/>
-                <Button label="Delete" onClick={handleDelete}/>
+                <Button label="Edit" onClick={handleEdit}/>
+                <Button label="Delete" onClick={handleDelete} progress={deleteProgress}/>
             </div>
 
             <FormDrawer
