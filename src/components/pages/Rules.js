@@ -11,7 +11,7 @@ export default function Rules() {
     const addFunc = useCallback((close) => <RuleForm onEnd={close}/>, [])
     const detailsFunc = useCallback((id, close) => <RuleDetails id={id} onDelete={close} onEdit={close}/>, []);
 
-    const segments = (data, onClick) => {
+    const rules = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="CardGroup" key={index}>
                 <header>{category}</header>
@@ -33,7 +33,7 @@ export default function Rules() {
     return <CardBrowser
         label="Routing Rules"
         urlFunc={urlFunc}
-        cardFunc={segments}
+        cardFunc={rules}
         buttomLabel="New routing rule"
         buttonIcon={<FaUncharted size={20} style={{marginRight: 10}}/>}
         drawerDetailsTitle="Rule details"

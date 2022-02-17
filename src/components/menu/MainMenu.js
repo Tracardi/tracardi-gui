@@ -10,8 +10,9 @@ import {VscPulse} from "react-icons/vsc";
 import {IoGitNetworkSharp} from "react-icons/io5";
 import {GoSettings} from "react-icons/go";
 import {VscLaw} from "react-icons/vsc";
-import {BsFolderCheck, BsClipboardCheck, BsStar, BsBoxArrowInUpRight} from "react-icons/bs";
+import {BsFolderCheck, BsClipboardCheck, BsStar} from "react-icons/bs";
 import {commercial} from "../../config";
+import {RiArrowLeftRightFill} from "react-icons/ri";
 
 export default function MainMenu() {
 
@@ -41,7 +42,7 @@ export default function MainMenu() {
             <Branding collapsed={collapsed}/>
             <div>
                 {commercial && <MenuRow icon={<BsStar size={20}/>} label="Tracardi Pro" collapsed={collapsed} onClick={go("/pro")}/>}
-                <MenuRow icon={<BsBoxArrowInUpRight size={20}/>} label="Traffic" collapsed={collapsed} onClick={go("/traffic")}/>
+                <MenuRow icon={<RiArrowLeftRightFill size={20}/>} label="Traffic" collapsed={collapsed} onClick={go("/traffic")}/>
                 <MenuRow icon={<VscLaw size={20}/>} label="Consents" collapsed={collapsed} onClick={go("/consents")}/>
                 <MenuRow icon={<BsFolderCheck size={20}/>} label="Validation" collapsed={collapsed} onClick={go("/validation")}/>
                 <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")}/>

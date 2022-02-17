@@ -2,6 +2,7 @@ import dot from "dot-object";
 import DetailKeyValue from "./DetailKeyValue";
 import React from "react";
 import PropTypes from "prop-types";
+import {isString} from "../../../misc/typeChecking";
 
 export default function Properties({properties, show}) {
 
@@ -16,6 +17,8 @@ export default function Properties({properties, show}) {
             return "null";
         } else if(empty(value)) {
             return "{}"
+        } if(isString(value) && value === "") {
+            return "<empty string>";
         } else if(Array.isArray(value) &&  value.length === 0) {
             return "[]"
         } else {

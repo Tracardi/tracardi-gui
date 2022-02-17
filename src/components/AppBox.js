@@ -28,6 +28,7 @@ import Dashboard from "./pages/Dashboard";
 import EventValidation from "./pages/EventValidation";
 import Logs from "./pages/Logs";
 import Users from "./pages/Users";
+import Destinations from "./pages/Destinations";
 
 const AppBox = () => {
 
@@ -62,8 +63,9 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/traffic")} roles={["admin"]}>
             <PageTabs title="Traffic"
                       tabs={{
-                          "Inbound sources": <EventSources/>,
-                          "Outbound resources": <Resources/>
+                          "Sources": <EventSources/>,
+                          "Resources": <Resources/>,
+                          "Destinations": <Destinations />
                       }}
             />
         </PrivateRoute>
