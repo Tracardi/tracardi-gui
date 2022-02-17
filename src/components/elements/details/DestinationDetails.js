@@ -64,7 +64,7 @@ function DestinationDetails({id, onDelete, onEdit}) {
                         url: '/destination/' + id,
                         method: "delete"
                     })
-                    if (onDelete) {
+                    if (onDelete && mounted.current === true) {
                         onDelete(data.id)
                     }
                 }
@@ -73,7 +73,7 @@ function DestinationDetails({id, onDelete, onEdit}) {
                 () => {
                 }
             ).finally(() => {
-                if (mounted) {
+                if (mounted.current === true) {
                     setDeleteProgress(false);
                 }
             }
