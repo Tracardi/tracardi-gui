@@ -23,7 +23,8 @@ export default function DestinationForm({onSubmit, value: initValue}) {
         enabled: false,
         tags: [],
         package: "",
-        mapping: "{}"
+        mapping: "{}",
+        config: "{}"
     });
 
     const mounted = useRef(false);
@@ -43,7 +44,7 @@ export default function DestinationForm({onSubmit, value: initValue}) {
             const response = await asyncRemote({
                 url: "destination",
                 method: "POST",
-                data: {...data, mapping: JSON.parse(data.mapping)}
+                data: {...data, mapping: JSON.parse(data.mapping), config: JSON.parse(data.config)}
             })
 
             setError(null)
@@ -62,6 +63,10 @@ export default function DestinationForm({onSubmit, value: initValue}) {
 
     }
 
+    const handleDestinationChange = (value, params) => {
+        setData({...data, package: value, config: JSON.stringify(params?.config, null, '  ')})
+    }
+
     return <TuiForm style={{margin: 20}}>
 
         <TuiFormGroup>
@@ -73,7 +78,7 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                                              description="Select destination system.">
                             <DestinationInput
                                 value={data?.package}
-                                onChange={(value) => setData({...data, package: value})}/>
+                                onChange={handleDestinationChange}/>
                         </TuiTopHeaderWrapper>
                         <TuiTopHeaderWrapper header="Is active"
                                              description="Profile will NOT be sent to deactivated destination.">
@@ -132,6 +137,18 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                     <fieldset>
                         <legend>Data mapping</legend>
                         <JsonEditor value={data?.mapping} onChange={(value) =>setData({...data, mapping: value})}/>
+                    </fieldset>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Destination configuration"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Configuration">
+                    <fieldset>
+                        <legend>Configuration</legend>
+                        <JsonEditor value={data?.config} onChange={(value) =>setData({...data, config: value})}/>
                     </fieldset>
                 </TuiFormGroupField>
             </TuiFormGroupContent>

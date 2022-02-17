@@ -30,6 +30,8 @@ const EventLogDetails = ({eventId, showAlert}) => {
                     alert(errors[0].msg)
                 }
             }
+        }).finally(() => {
+            if(isSubscribed === true) setLoading(false);
         })
         return () => {
             isSubscribed = false

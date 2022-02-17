@@ -37,7 +37,10 @@ function DestinationDetails({id, onDelete, onEdit}) {
             }
         ).then((response) => {
             if (response?.data && mounted.current) {
-                setData({...response?.data, mapping: JSON.stringify(response?.data.mapping)})
+                setData({...response?.data,
+                    mapping: JSON.stringify(response?.data.mapping, null, " "),
+                    config: JSON.stringify(response?.data.config, null, " ")
+                })
             }
         }).catch((e) => {
             if (e && mounted.current) {

@@ -1,21 +1,33 @@
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import FlowNodeIcons from "../../../flow/FlowNodeIcons";
+import {asyncRemote} from "../../../../remote_api/entrypoint";
 
 export default function DestinationInput({value, onChange}) {
 
-    const destinations = [
-        {
-            name: "RabbitMQ",
-            icon: "rabbitmq",
-            package: "module1",
-        }
-    ]
+    const [destinations, setDestinations] = useState([]);
+    const [destinationsDb, setDestionationsDb] = useState({})
+
+    useEffect(()=> {
+        let isSubscribed = true
+        asyncRemote({
+            url: '/destinations/type'
+        }).then((response) => {
+            setDestinations(Object.values(response.data));
+            setDestionationsDb(response.data);
+        }).catch(e => {
+            console.error(e)
+        }).finally(() => {
+
+        })
+
+        return () => isSubscribed = false
+    },[])
 
     const handleOnChange = (ev) => {
-        if(onChange) {
-            onChange(ev.target.value)
+        if(onChange && ev.target.value in destinationsDb) {
+            onChange(ev.target.value, destinationsDb[ev.target.value])
         }
     }
 

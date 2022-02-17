@@ -9,7 +9,7 @@ import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {convertResponseToAutoCompleteOptions} from "../../../misc/converters";
 import {isString} from "../../../misc/typeChecking";
 
-const AutoComplete = ({showAlert, placeholder, error, url, initValue, onSetValue, onChange, solo = true, disabled, fullWidth = false}) => {
+const AutoComplete = ({showAlert, placeholder, error, url, initValue, onSetValue, onChange, solo = true, disabled, fullWidth = false, renderOption}) => {
 
     const getValue = (initValue) => {
         if (!initValue) {
@@ -113,6 +113,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onSetValue
             onInputChange={(ev, value, reason) => {
                 handleChange(value)
             }}
+            renderOption={renderOption}
             renderInput={(params) => (
                 <TextField
                     {...params}
