@@ -13,7 +13,6 @@ import TuiTopHeaderWrapper from "../tui/TuiTopHeaderWrapper";
 import TuiColumnsFlex from "../tui/TuiColumnsFlex";
 
 export default function DestinationForm({onSubmit, value: initValue}) {
-    console.log(initValue)
 
     const [processing, setProcessing] = useState(false);
     const [error, setError] = useState(null);
