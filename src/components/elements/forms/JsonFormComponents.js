@@ -326,13 +326,18 @@ export function SqlInput({value, onChange = null}) {
     </>
 }
 
-export function ResourceSelect({value, errorMessage, onChange = null, tag = null}) {
+export function ResourceSelect({value, errorMessage, onChange = null, tag = null, pro=false}) {
 
     const handleChange = (value) => {
         onChange(value);
     };
 
-    return <TuiSelectResource value={value} errorMessage={errorMessage} onSetValue={handleChange} tag={tag}/>
+    return <TuiSelectResource value={value}
+                              errorMessage={errorMessage}
+                              onSetValue={handleChange}
+                              tag={tag}
+                              pro={pro}
+    />
 }
 
 export function EventTypes({value: initValue, onChange = null}) {

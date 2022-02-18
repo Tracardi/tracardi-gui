@@ -28,7 +28,75 @@ import {FlowEditorBottomLine} from "./FlowEditorBottomLine";
 import FlowEditorTitle from "./FlowEditorTitle";
 import FlowNodeWithEvents from "./FlowNodeWithEvents";
 import StartNode from "./StartNode";
-import {asyncRemote} from "../../remote_api/entrypoint";
+import {asyncRemote, getError} from "../../remote_api/entrypoint";
+import NoData from "../elements/misc/NoData";
+import Button from "../elements/forms/Button";
+import ErrorsBox from "../errors/ErrorsBox";
+import {useHistory} from "react-router-dom";
+import urlPrefix from "../../misc/UrlPrefix";
+
+function NodeDetailsHandler({node, onLabelSet, onConfig, onRuntimeConfig, pro}) {
+
+    const [loading, setLoading] = useState(false);
+    const [available, setAvailable] = useState(null);
+    const [error, setError] = useState(null);
+
+    const history = useHistory();
+    const go = (url) => {
+        return () => history.push(urlPrefix(url));
+    }
+
+    useEffect(() => {
+        let isSubscribed = true;
+
+        if(pro === true) {
+            setLoading(true)
+            asyncRemote({
+                url: "/tpro/validate"
+            }).then(response=> {
+                if(isSubscribed) {
+                    setAvailable(response?.data)
+                    setError(null)
+                }
+            }).catch(e=>{
+                setError(getError(e))
+            }).finally(() => {
+                if(isSubscribed)  setLoading(false)
+            })
+        } else {
+            setAvailable(true);
+            setError(null);
+        }
+
+        return () => {
+            isSubscribed = false;
+        }
+
+    }, [pro])
+
+    if(error !== null) {
+        return <ErrorsBox errorList={error}/>
+    }
+
+    if (loading || available === null) {
+        return <CenteredCircularProgress/>
+    }
+
+    if(available === true) {
+        return <MemoNodeDetails
+            onLabelSet={onLabelSet}
+            node={node}
+            onConfig={onConfig}
+            onRuntimeConfig={onRuntimeConfig}
+        />
+    }
+
+    return <NoData header="Available only as Tracardi Pro service">
+        <p style={{textAlign: "center"}}>Please join Tracardi Pro for free and premium connectors and services. It is a free lifetime membership.</p>
+        <Button label="Sure" onClick={go("/pro")}/>
+    </NoData>
+
+}
 
 export function FlowEditorPane(
     {
@@ -519,11 +587,12 @@ export function FlowEditorPane(
                     </div>
 
                     {displayRightSidebar && <SidebarRight>
-                        <MemoNodeDetails
+                        <NodeDetailsHandler
                             onLabelSet={handleLabelSet}
                             node={currentNode}
                             onConfig={handleConfigSave}
                             onRuntimeConfig={handleRuntimeConfig}
+                            pro={currentNode?.data?.metadata?.pro}
                         />
                     </SidebarRight>}
 

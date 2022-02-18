@@ -14,9 +14,12 @@ import DisabledInput from "./inputs/DisabledInput";
 import Chip from "@mui/material/Chip";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import TuiTagger from "../tui/TuiTagger";
+import TuiTags from "../tui/TuiTags";
 
 
 function ResourceForm({init, onClose, showAlert}) {
+
+    const inEditMode = !init;
 
     if (!init) {
         init = {
@@ -170,7 +173,7 @@ function ResourceForm({init, onClose, showAlert}) {
         <TuiFormGroup>
             <TuiFormGroupHeader header="Resource"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Resource id"
+                {inEditMode && <><TuiFormGroupField header="Resource id"
                                    description="Resource id is auto-generated. In most cases you do not have to do nothing
                                    just leave it like it is. In rare cases when you would like to create a resource
                                    with user defined value, then unlock the field and type your resource id. If you change
@@ -184,7 +187,7 @@ function ResourceForm({init, onClose, showAlert}) {
                     <TuiSelectResourceTypeMemo value={type}
                                            onSetValue={setTypeAndDefineCredentialsTemplate}
                                            errorMessage={errorTypeMessage}/>
-                </TuiFormGroupField>
+                </TuiFormGroupField></>}
                 <TuiFormGroupField header="Name" description="Resource name can be any string that
                     identifies resource.">
                     <TextField
@@ -218,7 +221,7 @@ function ResourceForm({init, onClose, showAlert}) {
                 </TuiFormGroupField>
                 <TuiFormGroupField header="System tags" description="System tags are auto-tagged. This is only information on
                 resource type. It is used internally by the system.">
-                    {Array.isArray(tags) && tags.map((tag, index) => <Chip label={tag} key={index} style={{marginLeft: 5}}/>)}
+                    <TuiTags tags={tags}/>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
