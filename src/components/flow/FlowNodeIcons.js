@@ -60,7 +60,8 @@ import {
     SiGoogletranslate,
     SiElasticsearch,
     SiInfluxdb,
-    SiZapier
+    SiZapier,
+    SiAirtable
 } from "react-icons/si";
 import {GrMysql} from "react-icons/gr";
 import {
@@ -178,7 +179,8 @@ export const icons = {
     'geo-fence': (size) => <BsFillGeoFill size={size}/>,
     'html5': (size) => <FaHtml5 size={size}/>,
     'threshold': (size) => <BiArrowToRight size={size}/>,
-    'path': (size) => <GiPathDistance size={size}/>
+    'path': (size) => <GiPathDistance size={size}/>,
+    'airtable': (size) => <SiAirtable size={size}/>
 }
 
 
