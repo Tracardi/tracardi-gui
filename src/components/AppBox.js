@@ -29,6 +29,8 @@ import EventValidation from "./pages/EventValidation";
 import Logs from "./pages/Logs";
 import Users from "./pages/Users";
 import Destinations from "./pages/Destinations";
+import EventTags from "./pages/EventTags";
+
 
 const AppBox = () => {
 
@@ -146,7 +148,8 @@ const AppBox = () => {
                       tabs={{
                           "Workflow actions": <ActionPlugins/>,
                           "System settings": <Settings/>,
-                          "Users": <Users />
+                          "Users": <Users />,
+                          "Event tags": <EventTags />
                       }}
             />
 
