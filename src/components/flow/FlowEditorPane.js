@@ -338,7 +338,21 @@ export function FlowEditorPane(
         )
     }
 
+    const getElementsWithRunOnce = (elements) => {
+        return elements.reduce((results, element) => {
+            if(element?.data?.spec?.run_once?.enabled === true) {
+                results.push(element.id)
+            }
+            return results
+        }, [])
+    }
+
     const onElementsRemove = (elementsToRemove) => {
+
+        if(Array.isArray(elementsToRemove)) {
+            console.log(getElementsWithRunOnce(elementsToRemove))
+        }
+
         setElements((els) => removeElements(elementsToRemove, els));
         handleUpdate();
     }

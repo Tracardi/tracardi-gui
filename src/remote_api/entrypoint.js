@@ -37,7 +37,7 @@ export const asyncRemote = async (config) => {
         'Authorization': authToken()
     }
 
-    config.timeout = 1000 * 15
+    config.timeout = 1000 * 60
 
     return axios(config)
 }

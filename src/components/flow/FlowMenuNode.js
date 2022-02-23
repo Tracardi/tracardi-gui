@@ -10,7 +10,7 @@ export default function FlowMenuNode({onDragStart, onDoubleClick, row}) {
             <FlowNodeIcons icon={row.plugin?.metadata?.icon}/>
             <div style={{marginLeft: 10}}>
                 <div>{row.plugin?.metadata?.name}</div>
-                <div style={{fontSize: "70%"}}>{row.plugin?.spec?.version}</div>
+                <div style={{fontSize: "70%"}}>{row.plugin?.metadata?.brand} {row.plugin?.spec?.version}</div>
             </div>
 
         </div>

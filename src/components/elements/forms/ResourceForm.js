@@ -11,7 +11,6 @@ import PropTypes from 'prop-types';
 import {TuiSelectResourceTypeMemo} from "../tui/TuiSelectResourceType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import DisabledInput from "./inputs/DisabledInput";
-import Chip from "@mui/material/Chip";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import TuiTagger from "../tui/TuiTagger";
 import TuiTags from "../tui/TuiTags";

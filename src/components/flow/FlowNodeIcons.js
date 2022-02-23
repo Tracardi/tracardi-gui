@@ -50,6 +50,7 @@ import {
 } from "react-icons/vsc";
 import {MdLibraryAdd, MdTimer} from "react-icons/md";
 import {GoBrowser} from "react-icons/go";
+import { ReactComponent as MauticLogo } from "../../svg/mautic.svg"
 import {
     SiRabbitmq,
     SiMongodb,
@@ -77,7 +78,7 @@ import {RiRestTimeLine} from "react-icons/ri";
 import {IoIosTimer, IoIosContact, IoIosAttach} from "react-icons/io";
 import {CgCalendarToday} from "react-icons/cg";
 import {ImInsertTemplate} from "react-icons/im";
-import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp, FaHtml5} from "react-icons/fa";
+import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp, FaHtml5, FaRobot} from "react-icons/fa";
 import {DiReact} from "react-icons/di";
 import {GiPathDistance} from "react-icons/gi";
 
@@ -180,7 +181,9 @@ export const icons = {
     'html5': (size) => <FaHtml5 size={size}/>,
     'threshold': (size) => <BiArrowToRight size={size}/>,
     'path': (size) => <GiPathDistance size={size}/>,
-    'airtable': (size) => <SiAirtable size={size}/>
+    'airtable': (size) => <SiAirtable size={size}/>,
+    'mautic': (size) => <MauticLogo style={{width: size, height: size}}/>,
+    'ai': (size) => <FaRobot size={size} />
 }
 
 
