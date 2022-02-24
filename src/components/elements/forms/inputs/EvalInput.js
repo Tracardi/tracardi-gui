@@ -4,8 +4,12 @@ import EvalAdornment from "./EvalAdornment";
 import InputAdornment from "@mui/material/InputAdornment";
 import PathTextAdornment from "./PathTextAdornment";
 
-export function SourceInput({value, onChange}) {
-    return <PathTextAdornment value={value} onChange={onChange}/>
+export function SourceInput({value, onChange, lock=true, lockValue=null}) {
+    return <PathTextAdornment value={value}
+                              onChange={onChange}
+                              lock={lock}
+                              lockValue={lockValue}
+    />
 }
 export function EvalInput({label, value: initValue, onChange, fullWidth = false, error, helperText, style, required, autoCastValue}) {
 

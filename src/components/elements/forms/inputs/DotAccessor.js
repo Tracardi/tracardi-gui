@@ -57,7 +57,8 @@ export default function DotAccessor({
                                         defaultPathValue,
                                         onChange,
                                         error, errorMessage,
-                                        forceMode = 2
+                                        forceMode = 2,
+                                        lockSource=false
                                     }) {
 
     const parseValue = useCallback((initValue) => {
@@ -125,7 +126,10 @@ export default function DotAccessor({
     return <fieldset style={{display: "flex", padding: "0px 15px 7px", width: "fit-content", margin: 0}}>
         <legend>{label}</legend>
         <SourceInput value={dataSource}
-                     onChange={handleSourceChange}/>
+                     onChange={handleSourceChange}
+                     lock={lockSource}
+                     lockValue={defaultSourceValue}
+        />
         <ValueInput
             source={dataSource}
             value={pathValue}

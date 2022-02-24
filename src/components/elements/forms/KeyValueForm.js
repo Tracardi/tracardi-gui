@@ -1,25 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, {useRef, useState} from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import TextField from "@mui/material/TextField";
 import { VscTrash } from "react-icons/vsc";
 import "./KeyValueForm.css";
+import DotAccessor from "./inputs/DotAccessor";
+import Button from "./Button";
 
-const KeyValueForm = ({ value, onChange }) => {
+const KeyValueForm = ({ value, onChange, defaultKeySource, defaultValueSource, lockKeySource}) => {
+
   const [localValue, setLocalValue] = useState(value || {});
-  const [key, setKey] = useState("");
-  const [val, setVal] = useState("");
 
-  useEffect(() => {}, [localValue]);
+  const key = useRef("")
+  const val = useRef("");
 
   const handleAdd = () => {
-    if (key.length > 0 && val.length > 0) {
-      const newValue = { ...localValue, [key]: val }
+    if (key.current.length > 0 && val.current.length > 0) {
+      const newValue = { ...localValue, [key.current]: val.current }
       setLocalValue(newValue);
       if (onChange) {
         onChange(newValue);
       }
-      setKey("");
-      setVal("");
     }
   };
 
@@ -29,34 +28,29 @@ const KeyValueForm = ({ value, onChange }) => {
     setLocalValue({ ...newCopy });
   };
 
+  const handleKeyChange = (value) => {
+    key.current = value;
+  }
+  const handleValueChange = (value) => {
+    val.current = value;
+  }
+
   return (
     <div className="KeyValueForm">
       <div className="KeyValueInput">
-        <TextField
-          variant="outlined"
-          type="text"
-          size="small"
-          label="Key"
-          onChange={(e) => {
-            setKey(e.target.value);
-          }}
-          style={{ marginRight: 8, flexGrow: 1 }}
-          value={key}
-        />
-        <TextField
-          variant="outlined"
-          type="text"
-          size="small"
-          label="Value"
-          onChange={(e) => {
-            setVal(e.target.value);
-          }}
-          value={val}
-          style={{ marginRight: 8, flexGrow: 1 }}
-        />
-        <AiOutlinePlusCircle size={25} onClick={handleAdd} className="Button AddButton" style={{cursor: "pointer"}}/>
+        <div>Key:</div>
+        <DotAccessor label="Key" value={key.current} onChange={handleKeyChange} defaultSourceValue={defaultKeySource} lockSource={lockKeySource}/>
+        <div style={{marginTop: 10}}>Value:</div>
+        <DotAccessor label="Value" value={val.current} onChange={handleValueChange} defaultSourceValue={defaultValueSource}/>
+
       </div>
-      <fieldset style={{height: 130, overflowY: "auto", margin:"5px 0"}}>
+      <div style={{marginTop: 10, display: "flex"}}>
+        <Button icon={<AiOutlinePlusCircle size={25} style={{marginRight: 10}}/>}
+                onClick={handleAdd}
+                label="Add Key-Value Pair"/>
+      </div>
+
+      <fieldset style={{height: 160, overflowY: "auto", margin:"5px 0"}}>
         <legend>List of key-value pairs</legend>
         <ul className="KeyValueList">
           {Object.keys(localValue).map((item, i) => {

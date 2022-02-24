@@ -3,7 +3,7 @@ import {IoTextOutline, IoAt} from "react-icons/io5";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 
-export default function PathTextAdornment({value, onChange}) {
+export default function PathTextAdornment({value, onChange, lock=false, lockValue=null}) {
 
     const sources = [
         {
@@ -59,6 +59,20 @@ export default function PathTextAdornment({value, onChange}) {
         }
     }
 
+    function values() {
+        if(lock === true && lockValue) {
+            return <MenuItem value={lockValue}>
+                {lockValue}
+            </MenuItem>
+        }
+
+        return sources.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+                {option.label}
+            </MenuItem>
+        ))
+    }
+
     const Path = () => {
         return <div style={{display: "flex", alignItems: "center"}}>
             <TextField select
@@ -72,11 +86,7 @@ export default function PathTextAdornment({value, onChange}) {
                            e.stopPropagation()
                        }}
             >
-                {sources.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                    </MenuItem>
-                ))}
+                {values()}
             </TextField>
             <IoAt size={24} title="Path to value" style={{color: "gray", margin: "0 5px"}}/>
         </div>

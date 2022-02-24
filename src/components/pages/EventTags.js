@@ -14,7 +14,6 @@ import Button from "../elements/forms/Button";
 import TuiTags from "../elements/tui/TuiTags";
 import FilterAddForm from "../elements/forms/inputs/FilterAddForm";
 import { IoIosAddCircleOutline } from "react-icons/io";
-import { SiMetafilter } from "react-icons/si";
 import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
 import NoData from "../elements/misc/NoData";
 
@@ -183,7 +182,7 @@ export default function EventTags() {
                         setRefresh(refresh + 1);
                     }
                     catch (e) {
-                        console.log(e);
+                        console.error(e);
                     }
                     finally {
                         setLoading(false);
@@ -199,9 +198,9 @@ export default function EventTags() {
     return (
         <div>
             <FilterAddForm
-            style={{
-                marginLeft: "20px"
-            }} 
+                style={{
+                    marginLeft: "20px"
+                }}
                 textFieldLabel="Type here to filter tags by event type"
                 buttonLabel="New tags"
                 buttonIcon={<IoIosAddCircleOutline size={23} style={{marginRight: "10px", marginLeft: "20px"}} />}
