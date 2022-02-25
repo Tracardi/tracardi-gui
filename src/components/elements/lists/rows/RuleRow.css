@@ -3,7 +3,7 @@
     align-items: center;
     padding: 5px;
     border-bottom: 1px solid #cecece;
-    grid-template-columns: 1fr 30px 1fr 30px 1fr 30px 1fr;
+    grid-template-columns: 1fr 30px 1fr 30px 1fr;
 }
 .RuleRow > .EventBox,
 .RuleRow > .RuleBox,

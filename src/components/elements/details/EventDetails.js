@@ -52,7 +52,7 @@ export default function EventDetails({data}) {
 
     return <div style={{height: "inherit"}}>
         <div className="RightTabScroller">
-            <Tabs tabs={["Event", "Context", "Raw", "Flow debug", "Flow logs", "Profile logs", "Profile"]}>
+            <Tabs tabs={["Event", "Context", "Raw", "Flow debug", "Flow logs", "Tracker logs", "Profile"]}>
                 <TabCase id={0}>
                     <TuiForm style={{padding: 20}}>
                         <TuiFormGroup>
