@@ -33,7 +33,13 @@ function ResourceForm({init, onClose, showAlert}) {
             consent: false,
             enabled: false,
             tags: [],
-            groups: []
+            groups: [],
+            destination: {
+                package: null,
+                init: {},
+                form: {}
+            },
+            icon: null
         }
     }
 
@@ -44,6 +50,8 @@ function ResourceForm({init, onClose, showAlert}) {
     const [id, setId] = useState(init?.id);
     const [tags, setTags] = useState(init?.tags);
     const [groups, setGroups] = useState(init?.groups);
+    const [icon, setIcon] = useState(init?.icon);
+    const [destination, setDestination] = useState(init?.destination);
     const [description, setDescription] = useState(init?.description);
     const [errorTypeMessage, setTypeErrorMessage] = useState('');
     const [errorNameMessage, setNameErrorMessage] = useState('');
@@ -123,6 +131,8 @@ function ResourceForm({init, onClose, showAlert}) {
             setProductionConfig(JSON.stringify(template?.config, null, '  '))
             setTestConfig(JSON.stringify(template?.config, null, '  '))
             setTags(template?.tags)
+            setDestination(template?.destination)
+            setIcon(template?.icon)
         }
     }
 
@@ -153,6 +163,8 @@ function ResourceForm({init, onClose, showAlert}) {
                     production: (productionConfig === "") ? {} : JSON.parse(productionConfig),
                     test: (testConfig === "") ? {} : JSON.parse(testConfig)
                 },
+                destination: destination,
+                icon: icon,
                 consent: requiresConsent,
                 enabled: enabledSource,
                 tags: tags,
@@ -173,7 +185,7 @@ function ResourceForm({init, onClose, showAlert}) {
             <TuiFormGroupHeader header="Resource"/>
             <TuiFormGroupContent>
                 {inEditMode && <><TuiFormGroupField header="Resource id"
-                                   description="Resource id is auto-generated. In most cases you do not have to do nothing
+                                                    description="Resource id is auto-generated. In most cases you do not have to do nothing
                                    just leave it like it is. In rare cases when you would like to create a resource
                                    with user defined value, then unlock the field and type your resource id. If you change
                                    the id of existing resource new resource will be created.">
@@ -181,12 +193,12 @@ function ResourceForm({init, onClose, showAlert}) {
                                    value={id}
                                    onChange={setId}/>
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Resource type"
-                                   description="Resource type defines storage or endpoint type. ">
-                    <TuiSelectResourceTypeMemo value={type}
-                                           onSetValue={setTypeAndDefineCredentialsTemplate}
-                                           errorMessage={errorTypeMessage}/>
-                </TuiFormGroupField></>}
+                    <TuiFormGroupField header="Resource type"
+                                       description="Resource type defines storage or endpoint type. ">
+                        <TuiSelectResourceTypeMemo value={type}
+                                                   onSetValue={setTypeAndDefineCredentialsTemplate}
+                                                   errorMessage={errorTypeMessage}/>
+                    </TuiFormGroupField></>}
                 <TuiFormGroupField header="Name" description="Resource name can be any string that
                     identifies resource.">
                     <TextField
@@ -202,7 +214,8 @@ function ResourceForm({init, onClose, showAlert}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description" description="Description will help you understand what kind of resource it is.">
+                <TuiFormGroupField header="Description"
+                                   description="Description will help you understand what kind of resource it is.">
                     <TextField
                         label={"Resource description"}
                         value={description}
@@ -215,7 +228,8 @@ function ResourceForm({init, onClose, showAlert}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Grouping" description="Resources can be grouped with tags that are typed here.">
+                <TuiFormGroupField header="Grouping"
+                                   description="Resources can be grouped with tags that are typed here.">
                     <TuiTagger tags={groups} onChange={setGroups}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="System tags" description="System tags are auto-tagged. This is only information on

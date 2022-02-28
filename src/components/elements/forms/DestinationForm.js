@@ -14,18 +14,36 @@ import TuiColumnsFlex from "../tui/TuiColumnsFlex";
 
 export default function DestinationForm({onSubmit, value: initValue}) {
 
+    console.log(initValue)
+
+    if(initValue) {
+        initValue = {
+            ...initValue,
+            mapping: JSON.stringify(initValue?.mapping, null, " "),
+            destination: {
+                ...initValue?.destination,
+                init: JSON.stringify(initValue?.destination.init, null, " ")
+            }
+        }
+    } else {
+        initValue = {
+            id: uuid4(),
+            name: "",
+            description: "",
+            enabled: false,
+            tags: [],
+            destination: {
+                package: "",
+                init: "{}",
+                form: null
+            },
+            mapping: "{}",
+            resource: null
+        }
+    }
     const [processing, setProcessing] = useState(false);
     const [error, setError] = useState(null);
-    const [data, setData] = useState(initValue || {
-        id: uuid4(),
-        name: "",
-        description: "",
-        enabled: false,
-        tags: [],
-        package: "",
-        mapping: "{}",
-        config: "{}"
-    });
+    const [data, setData] = useState(initValue);
 
     const mounted = useRef(false);
 
@@ -40,11 +58,23 @@ export default function DestinationForm({onSubmit, value: initValue}) {
     const handleSubmit = async () => {
         setProcessing(true);
         try {
-
             const response = await asyncRemote({
                 url: "destination",
                 method: "POST",
-                data: {...data, mapping: JSON.parse(data.mapping), config: JSON.parse(data.config)}
+                data: {
+                    id: data.id,
+                    name:data?.name,
+                    description:data?.description,
+                    enabled: data?.enabled,
+                    tags: data?.tags,
+                    destination: {
+                        package: data?.destination?.package,
+                        init: JSON.parse(data?.destination?.init),
+                        form: data?.destination?.form
+                    },
+                    mapping: JSON.parse(data.mapping),
+                    resource: data.resource
+                }
             })
 
             setError(null)
@@ -64,7 +94,15 @@ export default function DestinationForm({onSubmit, value: initValue}) {
     }
 
     const handleDestinationChange = (value, params) => {
-        setData({...data, package: value, config: JSON.stringify(params?.config, null, '  ')})
+        const d = {...data,
+            destination: {
+                package: params?.destination?.package,
+                init: JSON.stringify(params?.destination?.init, null, " "),
+                form: params?.destination?.form
+            },
+            resource: {id: params?.id}
+        }
+        setData(d)
     }
 
     return <TuiForm style={{margin: 20}}>
@@ -73,11 +111,11 @@ export default function DestinationForm({onSubmit, value: initValue}) {
             <TuiFormGroupHeader header="Destination"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Destination" description="Select destination system.">
-                    <TuiColumnsFlex width={320}>
+                    <TuiColumnsFlex width={300}>
                         <TuiTopHeaderWrapper header="Destination"
                                              description="Select destination system.">
                             <DestinationInput
-                                value={data?.package}
+                                value={data?.resource?.id || ""}
                                 onChange={handleDestinationChange}/>
                         </TuiTopHeaderWrapper>
                         <TuiTopHeaderWrapper header="Is active"
@@ -97,6 +135,11 @@ export default function DestinationForm({onSubmit, value: initValue}) {
 
 
                 </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Destination description"/>
+            <TuiFormGroupContent>
                 <TuiFormGroupField header="Name" description="Destination name can be any string that
                     identifies destination.">
                     <TextField
@@ -136,25 +179,31 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                 <TuiFormGroupField header="Mapping" description="Map data from profile to destination schema.">
                     <fieldset>
                         <legend>Data mapping</legend>
-                        <JsonEditor value={data?.mapping} onChange={(value) =>setData({...data, mapping: value})}/>
+                        <JsonEditor value={data?.mapping}
+                                    onChange={(value) =>setData({...data, mapping: value})}/>
                     </fieldset>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
 
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Destination configuration"/>
+            <TuiFormGroupHeader header="Destination settings"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Configuration">
                     <fieldset>
-                        <legend>Configuration</legend>
-                        <JsonEditor value={data?.config} onChange={(value) =>setData({...data, config: value})}/>
+                        <legend>Settings</legend>
+                        <JsonEditor value={data?.destination?.init}
+                                    onChange={(value) =>setData({...data, destination: {...data.destination, init: value}})}/>
                     </fieldset>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
         {error && <ErrorsBox errorList={error} style={{borderRadius: 0}}/>}
-        <Button label="Save" onClick={handleSubmit} style={{justifyContent: "center"}} progress={processing} error={error !== null}/>
+        <Button label="Save"
+                onClick={handleSubmit}
+                style={{justifyContent: "center"}} p
+                rogress={processing}
+                error={error !== null}/>
     </TuiForm>
 }
 

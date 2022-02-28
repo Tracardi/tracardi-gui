@@ -4,15 +4,16 @@ import React, {useEffect, useState} from "react";
 import FlowNodeIcons from "../../../flow/FlowNodeIcons";
 import {asyncRemote} from "../../../../remote_api/entrypoint";
 
-export default function DestinationInput({value, onChange}) {
+export default function DestinationInput({value: initValue, onChange}) {
 
     const [destinations, setDestinations] = useState([]);
     const [destinationsDb, setDestionationsDb] = useState({})
+    const [value, setValue] = useState(initValue)
 
     useEffect(()=> {
         let isSubscribed = true
         asyncRemote({
-            url: '/destinations/type'
+            url: '/destinations/entity'
         }).then((response) => {
             setDestinations(Object.values(response.data));
             setDestionationsDb(response.data);
@@ -26,8 +27,10 @@ export default function DestinationInput({value, onChange}) {
     },[])
 
     const handleOnChange = (ev) => {
-        if(onChange && ev.target.value in destinationsDb) {
-            onChange(ev.target.value, destinationsDb[ev.target.value])
+        const id = ev.target.value
+        setValue(id)
+        if(onChange && id in destinationsDb) {
+            onChange(id, destinationsDb[id])
         }
     }
 
@@ -35,12 +38,12 @@ export default function DestinationInput({value, onChange}) {
         select
         variant="outlined"
         size="small"
-        value={value || {}}
+        value={value}
         style={{width: 150}}
         onChange={handleOnChange}
     >
         {destinations.map((item) => {
-            return <MenuItem value={item.package} key={item.package}>
+            return <MenuItem value={item.id} key={item.id}>
                 <div style={{display: "flex", alignItems:"center"}}><FlowNodeIcons icon={item.icon} /> <span style={{marginLeft: 10}}>{item.name}</span></div>
             </MenuItem>
         })}
