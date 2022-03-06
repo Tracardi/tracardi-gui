@@ -10,6 +10,7 @@ import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import FormDrawer from "../drawers/FormDrawer";
 import Properties from "./DetailProperties";
 import DestinationForm from "../forms/DestinationForm";
+import { VscEdit, VscTrash } from "react-icons/vsc";
 
 
 function DestinationDetails({id, onDelete, onEdit}) {
@@ -94,8 +95,8 @@ function DestinationDetails({id, onDelete, onEdit}) {
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <div style={{display: "flex"}}>
-                <Button label="Edit" onClick={handleEdit}/>
-                <Button label="Delete" onClick={handleDelete} progress={deleteProgress}/>
+                <Button label="Edit" onClick={handleEdit} icon={<VscEdit size={20}/>}/>
+                <Button label="Delete" onClick={handleDelete} progress={deleteProgress} icon={<VscTrash size={20}/>}/>
             </div>
 
             <FormDrawer
