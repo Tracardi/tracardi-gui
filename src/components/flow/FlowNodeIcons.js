@@ -46,7 +46,8 @@ import {
     VscMail,
     VscBracketError,
     VscRunErrors,
-    VscExclude
+    VscExclude,
+    VscSymbolArray
 } from "react-icons/vsc";
 import {MdLibraryAdd, MdTimer} from "react-icons/md";
 import {GoBrowser} from "react-icons/go";
@@ -188,6 +189,7 @@ export const icons = {
     'ai': (size) => <FaRobot size={size} />,
     'amplitude': (size) => <Amplitude style={{width: size, height: size}}/>,
     'mixpanel': (size) => <Mixpanel style={{width: size, height: size}}/>,
+    'array': (size) => <VscSymbolArray size={size} />
 }
 
 

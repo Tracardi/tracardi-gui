@@ -22,12 +22,14 @@ const EventSourceForm = ({value, style, onClose}) => {
             type: null,
             description: "",
             enabled: false,
+            transitional: false,
             tags: [],
             groups: []
         }
     }
 
     const [enabledSource, setEnabledSource] = useState(value?.enabled);
+    const [transitional, setTransitional] = useState(value?.transitional);
     const [type, setType] = useState(null);  // It is set in useEffects after the types are loaded
     const [name, setName] = useState(value?.name);
     const [id, setId] = useState(value?.id);
@@ -97,6 +99,7 @@ const EventSourceForm = ({value, style, onClose}) => {
                     description: description,
                     type: type.id,  // Save only type id not the whole object.
                     enabled: enabledSource,
+                    transitional: transitional,
                     tags: tags,
                     groups:  groups
                 }
@@ -152,6 +155,35 @@ const EventSourceForm = ({value, style, onClose}) => {
                                               errorMessage={errorTypeMessage}/>
 
                 </TuiFormGroupField>
+                <TuiFormGroupField header="Event source access"
+                                   description="Disabled event sources will not be accessible.">
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <Switch
+                            checked={enabledSource}
+                            onChange={(ev) => setEnabledSource(ev.target.checked)}
+                            name="enabledSource"
+                        />
+                        <span>
+                        This event source is enabled
+                    </span>
+                    </div>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Are events from this source transitional?"
+                                   description="Transitional events are only processed but not saved in database. If you set
+                                   source to collect only transitional event then no event will be stored in Tracardi. By default
+                                   events are saved in Tracardi storage.  Control over event is passed to the client. That
+                                   means the event may become transitional if it is sent with options set to saveEvents: false.">
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <Switch
+                            checked={transitional}
+                            onChange={(ev) => setTransitional(ev.target.checked)}
+                            name="transitional"
+                        />
+                        <span>
+                        Event from this source are transitional (ephemeral)
+                    </span>
+                    </div>
+                </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
@@ -186,19 +218,7 @@ const EventSourceForm = ({value, style, onClose}) => {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Event source access"
-                                   description="Disabled event sources will not be accessible.">
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Switch
-                            checked={enabledSource}
-                            onChange={() => setEnabledSource(!enabledSource)}
-                            name="enabledSource"
-                        />
-                        <span>
-                        This event source is enabled
-                    </span>
-                    </div>
-                </TuiFormGroupField>
+
                 <TuiFormGroupField header="Grouping" description="Sources can be grouped with tags that are typed here.">
                     <TuiTagger tags={groups} onChange={setGroups}/>
                 </TuiFormGroupField>
