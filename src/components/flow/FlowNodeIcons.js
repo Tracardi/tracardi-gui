@@ -1,7 +1,7 @@
 import {BiGitRepoForked} from "react-icons/bi";
 import React from "react";
 import {FiDatabase, FiMapPin, FiAlertTriangle} from "react-icons/fi";
-import {BsDiamond, BsPerson, BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill} from "react-icons/bs";
+import {BsDiamond, BsPerson, BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill, BsHddNetwork} from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {MdTimelapse} from "react-icons/md";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -18,7 +18,7 @@ import {
     BiArrowToRight
 } from "react-icons/bi";
 import {RiIncreaseDecreaseLine, RiScissorsCutFill} from "react-icons/ri";
-import {IoCloudOutline, IoPush, IoLanguageOutline, IoTextOutline, IoCalendarOutline} from "react-icons/io5";
+import {IoCloudOutline, IoPush, IoLanguageOutline, IoTextOutline, IoCalendarOutline, IoGitNetworkSharp} from "react-icons/io5";
 import {
     VscSymbolEvent,
     VscRegex,
@@ -71,7 +71,6 @@ import {GrMysql} from "react-icons/gr";
 import {
     AiOutlineSlack,
     AiOutlinePieChart,
-    AiOutlineCloudServer,
     AiOutlineSplitCells,
     AiOutlineCheckCircle,
     AiFillGoogleCircle
@@ -81,7 +80,7 @@ import {RiRestTimeLine} from "react-icons/ri";
 import {IoIosTimer, IoIosContact, IoIosAttach} from "react-icons/io";
 import {CgCalendarToday} from "react-icons/cg";
 import {ImInsertTemplate} from "react-icons/im";
-import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp, FaHtml5, FaRobot} from "react-icons/fa";
+import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp, FaHtml5, FaRobot, FaUncharted} from "react-icons/fa";
 import {DiReact} from "react-icons/di";
 import {GiPathDistance} from "react-icons/gi";
 
@@ -164,7 +163,6 @@ export const icons = {
     'aws': (size) => <FaAws size={size}/>,
     'pie-chart': (size) => <AiOutlinePieChart size={size}/>,
     'tower': (size) => <VscRadioTower size={size}/>,
-    'resource': (size) => <AiOutlineCloudServer size={size}/>,
     'calculator': (size) => <BsCalculator size={size}/>,
     'twilio': (size) => <SiTwilio size={size}/>,
     'mailchimp': (size) => <FaMailchimp size={size}/>,
@@ -189,19 +187,20 @@ export const icons = {
     'ai': (size) => <FaRobot size={size} />,
     'amplitude': (size) => <Amplitude style={{width: size, height: size}}/>,
     'mixpanel': (size) => <Mixpanel style={{width: size, height: size}}/>,
-    'array': (size) => <VscSymbolArray size={size} />
+    'array': (size) => <VscSymbolArray size={size} />,
+    'resource': (size) => <BsHddNetwork size={size}/>,
+    'flow': (size) => <IoGitNetworkSharp size={size}/>,
+    'route': (size) => <FaUncharted size={size}/>
 }
 
 
-export default function FlowNodeIcons({icon, size = 20}) {
-
-    const defaultIcon = <VscPlug size={size}/>
+export default function FlowNodeIcons({icon, size = 20, defaultIcon="plugin"}) {
 
     const renderIcon = () => {
         if (icon in icons) {
             return icons[icon](size)
         } else {
-            return defaultIcon
+            return icons[defaultIcon](size)
         }
     }
 

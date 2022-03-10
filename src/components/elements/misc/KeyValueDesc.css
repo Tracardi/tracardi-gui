@@ -1,37 +1,33 @@
 .KeyValueDesc {
     display: grid;
     grid-template-columns: auto 200px;
-    border-radius: 5px;
-    border: solid 1px #ddd;
-    margin-bottom: 10px;
+    border-bottom: solid 1px #ddd;
 }
 
 .KeyValueDesc:hover {
-    box-shadow:
-            0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-            0 6.7px 5.3px rgba(0, 0, 0, 0.048);
     background-color: #f5f5f5;
 }
 
 .KeyValueDesc > .KeyDesc {
-    padding: 20px;
+    padding: 10px;
 }
 
 .KeyValueDesc > .KeyDesc > H1 {
     font-weight: 400;
     margin: 0;
+    font-size: 16px;
 }
 
 .KeyValueDesc > .KeyDesc > ASIDE {
     color: #666;
+    font-size: 14px;
 }
 
 .KeyValueDesc > .Value {
     align-items: center;
     display: flex;
-    border-left: 1px solid #ddd;
     padding: 20px;
     justify-content: center;
-    background-color: whitesmoke;
     border-radius:  0 5px 5px 0;
+    font-weight: 500;
 }

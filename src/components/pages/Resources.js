@@ -4,6 +4,8 @@ import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import ResourceForm from "../elements/forms/ResourceForm";
 import {AiOutlineCloudServer} from "react-icons/ai";
+import FlowNodeIcons from "../flow/FlowNodeIcons";
+import BrowserRow from "../elements/lists/rows/BrowserRow";
 
 
 export default function Resources() {
@@ -12,7 +14,7 @@ export default function Resources() {
     const addFunc = useCallback((close) => <ResourceForm onClose={close}/>, []);
     const detailsFunc = useCallback((id, close) => <ResourceDetails id={id} onDeleteComplete={close}/>, []);
 
-    const sources = (data, onClick) => {
+    const sourceCards = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="CardGroup" key={index}>
                 <header>{category}</header>
@@ -20,7 +22,7 @@ export default function Resources() {
                     {plugs.map((row, subIndex) => {
                         return <SquareCard key={index + "-" + subIndex}
                                            id={row?.id}
-                                           icon={<AiOutlineCloudServer size={45}/>}
+                                           icon={<FlowNodeIcons icon={row?.icon} size={45} defaultIcon="resource"/>}
                                            status={row?.enabled}
                                            name={row?.name}
                                            description={row?.description}
@@ -31,10 +33,27 @@ export default function Resources() {
         })
     }
 
+    const sourceRows = (data, onClick) => {
+        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
+            return <div className="RowGroup" style={{width: "100%"}} key={index}>
+                <header>{category}</header>
+                <div>
+                    {plugs.map((row, subIndex) => {
+                        return <BrowserRow key={index + "-" + subIndex}
+                                           id={row?.id}
+                                           data={row}
+                                           onClick={() => onClick(row?.id)}/>
+                    })}
+                </div>
+            </div>
+        })
+    }
+
     return <CardBrowser
         label="Resources"
         urlFunc={urlFunc}
-        cardFunc={sources}
+        cardFunc={sourceCards}
+        rowFunc={sourceRows}
         buttomLabel="New resource"
         buttonIcon={<AiOutlineCloudServer size={20} style={{marginRight: 10}}/>}
         drawerDetailsTitle="Resource details"

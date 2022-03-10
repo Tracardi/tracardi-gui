@@ -8,12 +8,15 @@ import ErrorsBox from "../../errors/ErrorsBox";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
+import {BsGrid, BsList} from "react-icons/bs";
+import IconButton from "../misc/IconButton";
 
 const CardBrowser = ({
                          label,
                          description,
                          urlFunc,
                          cardFunc,
+                         rowFunc = null,
                          buttomLabel = null,
                          buttonIcon,
                          drawerDetailsTitle = "Details",
@@ -23,24 +26,26 @@ const CardBrowser = ({
                          drawerAddTitle = "New",
                          addFunc = () => {},
                          className,
-                         refresh: forceRefresh
+                         refresh: forceRefresh,
+                         defaultLayout="cards"
                      }) => {
 
     const Content = ({query, onClick, urlFunc, refresh, forceRefresh}) => {
 
-        const [cards, setCards] = useState(null);
+        const [data, setData] = useState(null);
         const [loading, setLoading] = useState(false);
         const [errors, setErrors] = useState(null);
+        const [layoutVert, setLayoutVert] = useState(defaultLayout!=="cards");
 
         useEffect(() => {
-                setCards(null);
+                setData(null);
                 const url = urlFunc(query)
                 setLoading(true);
                 let isSubscribed = true
                 asyncRemote({url})
                     .then((response) => {
                         if (response && isSubscribed) {
-                            setCards(response.data);
+                            setData(response.data);
                         }
                     })
                     .catch((e) => {
@@ -64,20 +69,29 @@ const CardBrowser = ({
             return <div style={{height: 300}}><CenteredCircularProgress/></div>
         }
 
-        if (!loading && isEmptyObjectOrNull(cards?.grouped)) {
+        if (!loading && isEmptyObjectOrNull(data?.grouped)) {
             return <NoData header="There is no data here.">
                 <p>Please click create button in the upper right corner.</p>
             </NoData>
         }
 
-        if (!loading && !isEmptyObjectOrNull(cards?.grouped))
+        if (!loading && !isEmptyObjectOrNull(data?.grouped))
             return <TuiForm style={{margin: 20, marginTop: 0}}>
                 <TuiFormGroup fitHeight={true}>
                     <TuiFormGroupHeader header={label} description={description}/>
                     <TuiFormGroupContent>
                         <TuiFormGroupField>
+                            {cardFunc && rowFunc && <div style={{display: "flex", justifyContent: "flex-end", color: "#333"}}>
+                                <IconButton onClick={()=>setLayoutVert(false)} selected={!layoutVert}>
+                                    <BsGrid size={20}/>
+                                </IconButton>
+                                <IconButton onClick={()=>setLayoutVert(true)} selected={layoutVert}>
+                                    <BsList size={20}/>
+                                </IconButton>
+                            </div>}
                             <section className={className} style={{display: "flex", flexWrap: "wrap", width: "100%"}}>
-                                {cards && cardFunc(cards, onClick)}
+                                {!layoutVert && data && cardFunc && cardFunc(data, onClick)}
+                                {layoutVert  && data && rowFunc && rowFunc(data, onClick)}
                                 {errors && <ErrorsBox errorList={errors}/>}
                             </section>
                         </TuiFormGroupField>

@@ -176,7 +176,8 @@ export default function DestinationForm({onSubmit, value: initValue}) {
         <TuiFormGroup>
             <TuiFormGroupHeader header="Data mapping"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Mapping" description="Map data from profile to destination schema.">
+                <TuiFormGroupField header="Mapping" description="Map data from profile to destination schema.
+                Use profile reference e.g profile@... to access profile data.">
                     <fieldset>
                         <legend>Data mapping</legend>
                         <JsonEditor value={data?.mapping}

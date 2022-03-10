@@ -2,7 +2,6 @@ import React from 'react';
 import './RuleRow.css';
 import {VscSymbolEvent} from "react-icons/vsc";
 import {IoGitNetworkSharp} from "react-icons/io5";
-import {FaUncharted} from "react-icons/fa";
 
 const RuleRow = ({data, flow}) => {
 
