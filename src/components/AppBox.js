@@ -30,6 +30,7 @@ import Logs from "./pages/Logs";
 import Users from "./pages/Users";
 import Destinations from "./pages/Destinations";
 import EventTags from "./pages/EventTags";
+import UserLogs from "./pages/UserLogs";
 
 
 const AppBox = () => {
@@ -130,6 +131,7 @@ const AppBox = () => {
                           "Running instances": <Instances/>,
                           "Scheduled tasks": <Tasks/>,
                           "Logs": <Logs/>,
+                          "User logs": <UserLogs />,
                       }}
             />
 

@@ -9,6 +9,7 @@ import "./AutoLoadLogList.css";
 const AutoLoadLogList = ({
                              label,
                              onLoadRequest,
+                             renderRowFunc
                          }) => {
 
     const [page, setPage] = useState(0)
@@ -55,7 +56,6 @@ const AutoLoadLogList = ({
                         setHasMode(response.data.result.length !== 0);
                         setTotal(response.data.total);
                         setRows((page === 0 || fresh === true) ? [...response.data.result] : [...rows, ...response.data.result]);
-
                     }
                 }
             }
@@ -81,17 +81,7 @@ const AutoLoadLogList = ({
 
     const renderRows = (rows) => {
         if (Array.isArray(rows)) {
-            return rows.map((row, index) => {
-                return (
-                    <tr key={index} className="LogListRow">
-                        <td>{row.date}</td>
-                        <td>{row.level}</td>
-                        <td>{row.message}</td>
-                        <td>{row.file}</td>
-                        <td>{row.line}</td>
-                    </tr>
-                );
-            });
+            return rows.map(renderRowFunc);
         }
     };
 
