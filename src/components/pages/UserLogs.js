@@ -7,12 +7,13 @@ import {
     TuiFormGroupHeader
 } from "../elements/tui/TuiForm";
 import AutoLoadLogList from "../elements/lists/AutoLoadLogList";
+import FilterAddForm from "../elements/forms/inputs/FilterAddForm";
 
 
 export default function UserLogs() {
 
     const mounted = React.useRef(false);
-    const [filter, setFilter] = React.useState("");
+    const [query, setQuery] = React.useState("");
 
     const renderRowFunc = (row, index) => {
         return (
@@ -31,6 +32,11 @@ export default function UserLogs() {
 
     return (
         <div>
+            <FilterAddForm 
+                style={{margin: 20}}
+                textFieldLabel="Type here to filter user logs by query string"
+                onFilter={filter => setQuery(filter)}
+            />
             <TuiForm style={{margin: 20, width: "calc(100% - 40px)", height: "calc(100% - 40px)"}}>
                 <TuiFormGroup fitHeight={true}>
                     <TuiFormGroupHeader header="Tracardi user logs" description="List of users' log-in actions."/>
@@ -41,9 +47,13 @@ export default function UserLogs() {
                                     label="USER LOGS"
                                     onLoadRequest={{
                                         url: "/user-logs",
-                                        method: "GET"
+                                        method: "GET",
+                                        data: {
+                                            where: query
+                                        }
                                     }}
                                     renderRowFunc={renderRowFunc}
+                                    requestParams={query !== "" ? {query} : {}}
                                 />
                             </div>
                         </TuiFormGroupField>
