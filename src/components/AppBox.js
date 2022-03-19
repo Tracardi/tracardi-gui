@@ -13,7 +13,6 @@ import urlPrefix from "../misc/UrlPrefix";
 import ActionPlugins from "./pages/ActionPlugins";
 import Segments from "./pages/Segments";
 import FlowReader from "./flow/FlowReader";
-import '@szhsin/react-menu/dist/index.css';
 import Instances from "./pages/Instances";
 import Settings from "./pages/Settings";
 import Tasks from "./pages/Tasks";
@@ -30,7 +29,7 @@ import Logs from "./pages/Logs";
 import Users from "./pages/Users";
 import Destinations from "./pages/Destinations";
 import EventTags from "./pages/EventTags";
-
+import PrivateTab from "./authentication/PrivateTab";
 
 const AppBox = () => {
 
@@ -47,9 +46,9 @@ const AppBox = () => {
 
         <Route exact path={urlPrefix("/dashboard")}>
             <PageTabs title="Dashboard"
-                      tabs={{
-                          "Events": <Dashboard/>
-                      }}
+                      tabs={[
+                          new PrivateTab(["admin"], <Dashboard/>, "/dashboard/events", "Events")
+                      ]}
             />
 
         </Route>
@@ -64,20 +63,21 @@ const AppBox = () => {
 
         <PrivateRoute path={urlPrefix("/traffic")} roles={["admin"]}>
             <PageTabs title="Traffic"
-                      tabs={{
-                          "Sources": <EventSources/>,
-                          "Resources": <Resources/>,
-                          "Destinations": <Destinations />
-                      }}
+                      tabs={[
+                          new PrivateTab(["admin"], <EventSources/>, "/traffic/sources", "Sources"),
+                          new PrivateTab(["admin"], <Resources/>, "/traffic/resources", "Resources"),
+                          new PrivateTab(["admin"], <Destinations/>, "/traffic/destinations", "Destinations"),
+                      ]}
             />
         </PrivateRoute>
 
         {/* Validation */}
         <PrivateRoute path={urlPrefix("/validation")} roles={["admin"]}>
             <PageTabs title="Data validation"
-                      tabs={{
-                          "Event validation schemas": <EventValidation/>,
-                      }}
+                      tabs={[
+                          new PrivateTab(["admin"],
+                              <EventValidation/>, "/validation/schema", "Event validation schemas"),
+                      ]}
             />
         </PrivateRoute>
 
@@ -85,11 +85,11 @@ const AppBox = () => {
 
         <PrivateRoute path={urlPrefix("/data")} roles={["admin"]}>
             <PageTabs title="Data"
-                      tabs={{
-                          "Events": <EventsAnalytics/>,
-                          "Profiles": <ProfilesAnalytics/>,
-                          "Sessions": <SessionsAnalytics/>
-                      }}
+                      tabs={[
+                          new PrivateTab(["admin"], <EventsAnalytics/>, "/data/events", "Events"),
+                          new PrivateTab(["admin"], <ProfilesAnalytics/>, "/data/profiles", "Profiles"),
+                          new PrivateTab(["admin"], <SessionsAnalytics/>, "/data/sessions", "Sessions"),
+                      ]}
             />
 
         </PrivateRoute>
@@ -99,19 +99,19 @@ const AppBox = () => {
 
         <PrivateRoute path={urlPrefix("/processing")} roles={["admin"]}>
             <PageTabs title="Processing"
-                      tabs={{
-                          "Workflows": <Flows/>,
-                          "Routing Rules": <Rules/>,
-                          "Segments": <Segments/>
-                      }}
+                      tabs={[
+                          new PrivateTab(["admin"], <Flows/>, "/processing/workflows", "Workflows"),
+                          new PrivateTab(["admin"], <Rules/>, "/processing/routing", "Routing Rules"),
+                          new PrivateTab(["admin"], <Segments/>, "/processing/segments", "Segments"),
+                      ]}
             />
         </PrivateRoute>
 
         <PrivateRoute path={urlPrefix("/consents")} roles={["admin"]}>
             <PageTabs title="Consents"
-                      tabs={{
-                          "Consent types": <Consents/>
-                      }}
+                      tabs={[
+                          new PrivateTab(["admin"], <Consents/>, "/consents/type", "Consent types")
+                      ]}
             />
         </PrivateRoute>
 
@@ -126,11 +126,11 @@ const AppBox = () => {
 
         <PrivateRoute path={urlPrefix("/monitoring")} roles={["admin"]}>
             <PageTabs title="Monitoring"
-                      tabs={{
-                          "Running instances": <Instances/>,
-                          "Scheduled tasks": <Tasks/>,
-                          "Logs": <Logs/>,
-                      }}
+                      tabs={[
+                          new PrivateTab(["admin"], <Instances/>, "/monitoring/instances", "Running instances"),
+                          new PrivateTab(["admin"], <Tasks/>, "/monitoring/schedule", "Scheduled tasks"),
+                          new PrivateTab(["admin"], <Logs/>, "/monitoring/log", "Logs")
+                      ]}
             />
 
         </PrivateRoute>
@@ -145,12 +145,12 @@ const AppBox = () => {
 
         <PrivateRoute path={urlPrefix("/settings")} roles={["admin"]}>
             <PageTabs title="Settings"
-                      tabs={{
-                          "Workflow actions": <ActionPlugins/>,
-                          "System settings": <Settings/>,
-                          "Users": <Users />,
-                          "Event tags": <EventTags />
-                      }}
+                      tabs={[
+                              new PrivateTab(["admin"], <ActionPlugins/>, "/settings/plugins", "Workflow actions"),
+                              new PrivateTab(["admin"], <Settings/>, "/settings/system", "System settings"),
+                              new PrivateTab(["admin"], <Users/>, "/settings/users", "Users"),
+                              new PrivateTab(["admin"], <EventTags/>, "/settings/event-tags", "Event tags"),
+                          ]}
             />
 
         </PrivateRoute>
