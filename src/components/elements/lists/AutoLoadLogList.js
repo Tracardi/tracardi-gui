@@ -9,6 +9,8 @@ import "./AutoLoadLogList.css";
 const AutoLoadLogList = ({
                              label,
                              onLoadRequest,
+                             renderRowFunc,
+                             requestParams = {}
                          }) => {
 
     const [page, setPage] = useState(0)
@@ -33,11 +35,11 @@ const AutoLoadLogList = ({
         let endpoint;
 
         if (onLoadRequest?.data?.where !== lastQuery) {  // query changed, start search form beginning
-            endpoint = {...onLoadRequest, url: `${onLoadRequest.url}/page/0`};
+            endpoint = {...onLoadRequest, url: `${onLoadRequest.url}/page/0?` + Object.keys(requestParams).map(key => `${key}=${requestParams[key]}`).join("&")};
             setLastQuery(endpoint?.data?.where);
             setPage(0);
         } else {
-            endpoint = {...onLoadRequest, url: `${onLoadRequest.url}/page/${page}`};
+            endpoint = {...onLoadRequest, url: `${onLoadRequest.url}/page/${page}?` + Object.keys(requestParams).map(key => `${key}=${requestParams[key]}`).join("&")};
         }
 
         request(
@@ -55,7 +57,6 @@ const AutoLoadLogList = ({
                         setHasMode(response.data.result.length !== 0);
                         setTotal(response.data.total);
                         setRows((page === 0 || fresh === true) ? [...response.data.result] : [...rows, ...response.data.result]);
-
                     }
                 }
             }
@@ -81,17 +82,7 @@ const AutoLoadLogList = ({
 
     const renderRows = (rows) => {
         if (Array.isArray(rows)) {
-            return rows.map((row, index) => {
-                return (
-                    <tr key={index} className="LogListRow">
-                        <td>{row.date}</td>
-                        <td>{row.level}</td>
-                        <td>{row.message}</td>
-                        <td>{row.file}</td>
-                        <td>{row.line}</td>
-                    </tr>
-                );
-            });
+            return rows.map(renderRowFunc);
         }
     };
 
