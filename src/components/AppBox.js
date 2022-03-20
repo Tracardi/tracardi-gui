@@ -48,7 +48,7 @@ const AppBox = () => {
         <Route exact path={urlPrefix("/dashboard")}>
             <PageTabs title="Dashboard"
                       tabs={[
-                          new PrivateTab(["admin"], <Dashboard/>, "/dashboard/events", "Events")
+                          new PrivateTab(["admin", "marketer"], <Dashboard/>, "/dashboard/events", "Events")
                       ]}
             />
 
@@ -84,12 +84,12 @@ const AppBox = () => {
 
         {/*Data*/}
 
-        <PrivateRoute path={urlPrefix("/data")} roles={["admin"]}>
+        <PrivateRoute path={urlPrefix("/data")} roles={["admin", "marketer", "developer"]}>
             <PageTabs title="Data"
                       tabs={[
-                          new PrivateTab(["admin"], <EventsAnalytics/>, "/data/events", "Events"),
-                          new PrivateTab(["admin"], <ProfilesAnalytics/>, "/data/profiles", "Profiles"),
-                          new PrivateTab(["admin"], <SessionsAnalytics/>, "/data/sessions", "Sessions"),
+                          new PrivateTab(["admin", "marketer", "developer"], <EventsAnalytics/>, "/data/events", "Events"),
+                          new PrivateTab(["admin", "marketer", "developer"], <ProfilesAnalytics/>, "/data/profiles", "Profiles"),
+                          new PrivateTab(["admin", "marketer", "developer"], <SessionsAnalytics/>, "/data/sessions", "Sessions"),
                       ]}
             />
 
@@ -140,9 +140,9 @@ const AppBox = () => {
 
         {/*Testing*/}
 
-        <Route exact path={urlPrefix("/testing")}>
+        <PrivateRoute exact path={urlPrefix("/testing")} roles={["admin", "developer"]}>
             <TestEditor/>
-        </Route>
+        </PrivateRoute>
 
         {/*Settings*/}
 

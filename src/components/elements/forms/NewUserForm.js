@@ -1,6 +1,5 @@
 import React from "react";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
-import {v4 as uuid4} from "uuid";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {Checkbox, FormControlLabel, Switch, TextField} from "@mui/material";
@@ -37,7 +36,6 @@ export default function NewUserForm({ onSubmit}) {
                     url: "/user",
                     method: "POST",
                     data: {
-                        id: uuid4(),
                         password: password,
                         roles: rolesToSend,
                         disabled: !enabled,

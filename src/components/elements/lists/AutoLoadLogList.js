@@ -110,7 +110,9 @@ const AutoLoadLogList = ({
                 scrollableTarget="MainWindowScroll"
             >
                 <table className="LogListTable">
+                    <tbody>
                     {renderRows(rows)}
+                    </tbody>
                 </table>
             </InfiniteScroll>
         </div>
