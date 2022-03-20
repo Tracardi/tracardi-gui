@@ -35,7 +35,7 @@ export default function DebugBox({call, onTabSelect}) {
     return <div className="DebugBox">
         {call?.error && <ErrorBox>{call.error}</ErrorBox>}
         {!call?.error && <Tabs
-            tabs={["Input", "Output", "Debug data"]}
+            tabs={["Input", "Output", "State"]}
             onTabSelect={onTabSelect}
             className="DebugTabs"
         >

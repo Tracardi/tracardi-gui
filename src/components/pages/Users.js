@@ -98,7 +98,7 @@ export default function Users() {
         if (loading) {
             return <div style={{height: 300}}><CenteredCircularProgress/></div>
         }
-        console.log(users)
+
         if (isEmptyObjectOrNull(users) || (Array.isArray(users) && users.length === 0)) {
             return <NoData header="There is no data here.">
                 <p>Please click create button in the upper right corner.</p>
