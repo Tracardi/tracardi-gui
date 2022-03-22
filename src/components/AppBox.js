@@ -38,7 +38,7 @@ const AppBox = () => {
 
         {/*Redirects*/}
 
-        <PrivateRoute exact path={urlPrefix("")} roles={["admin"]}>
+        <PrivateRoute exact path={urlPrefix("")} roles={["admin", "developer", "marketer"]}>
             <Redirect to={urlPrefix("/data")}/>
         </PrivateRoute>
 
@@ -62,21 +62,21 @@ const AppBox = () => {
 
         {/*Traffic*/}
 
-        <PrivateRoute path={urlPrefix("/traffic")} roles={["admin"]}>
+        <PrivateRoute path={urlPrefix("/traffic")} roles={["admin", "developer"]}>
             <PageTabs title="Traffic"
                       tabs={[
-                          new PrivateTab(["admin"], <EventSources/>, "/traffic/sources", "Sources"),
-                          new PrivateTab(["admin"], <Resources/>, "/traffic/resources", "Resources"),
-                          new PrivateTab(["admin"], <Destinations/>, "/traffic/destinations", "Destinations"),
+                          new PrivateTab(["admin", "developer"], <EventSources/>, "/traffic/sources", "Sources"),
+                          new PrivateTab(["admin", "developer"], <Resources/>, "/traffic/resources", "Resources"),
+                          new PrivateTab(["admin", "developer"], <Destinations/>, "/traffic/destinations", "Destinations"),
                       ]}
             />
         </PrivateRoute>
 
         {/* Validation */}
-        <PrivateRoute path={urlPrefix("/validation")} roles={["admin"]}>
+        <PrivateRoute path={urlPrefix("/validation")} roles={["admin", "developer"]}>
             <PageTabs title="Data validation"
                       tabs={[
-                          new PrivateTab(["admin"],
+                          new PrivateTab(["admin", "developer"],
                               <EventValidation/>, "/validation/schema", "Event validation schemas"),
                       ]}
             />
@@ -98,28 +98,28 @@ const AppBox = () => {
         {/*Processing*/}
 
 
-        <PrivateRoute path={urlPrefix("/processing")} roles={["admin"]}>
+        <PrivateRoute path={urlPrefix("/processing")} roles={["admin", "developer", "marketer"]}>
             <PageTabs title="Processing"
                       tabs={[
-                          new PrivateTab(["admin"], <Flows/>, "/processing/workflows", "Workflows"),
-                          new PrivateTab(["admin"], <Rules/>, "/processing/routing", "Routing Rules"),
-                          new PrivateTab(["admin"], <Segments/>, "/processing/segments", "Segments"),
+                          new PrivateTab(["admin", "developer"], <Flows/>, "/processing/workflows", "Workflows"),
+                          new PrivateTab(["admin", "developer", "marketer"], <Rules/>, "/processing/routing", "Routing Rules"),
+                          new PrivateTab(["admin", "developer", "marketer"], <Segments/>, "/processing/segments", "Segments"),
                       ]}
             />
         </PrivateRoute>
 
-        <PrivateRoute path={urlPrefix("/consents")} roles={["admin"]}>
+        <PrivateRoute path={urlPrefix("/consents")} roles={["admin", "developer", "marketer"]}>
             <PageTabs title="Consents"
                       tabs={[
-                          new PrivateTab(["admin"], <Consents/>, "/consents/type", "Consent types")
+                          new PrivateTab(["admin", "developer", "marketer"], <Consents/>, "/consents/type", "Consent types")
                       ]}
             />
         </PrivateRoute>
 
-        <PrivateRoute exact path={urlPrefix("/setup/flow/edit/:id")} roles={["admin"]}>
+        <PrivateRoute exact path={urlPrefix("/flow/edit/:id")} roles={["admin", "developer"]}>
             <FlowEditor/>
         </PrivateRoute>
-        <PrivateRoute exact path={urlPrefix("/setup/flow/:id")} roles={["admin"]}>
+        <PrivateRoute exact path={urlPrefix("/flow/preview/:id")} roles={["admin", "developer", "marketer"]}>
             <FlowReader/>
         </PrivateRoute>
 
@@ -146,13 +146,13 @@ const AppBox = () => {
 
         {/*Settings*/}
 
-        <PrivateRoute path={urlPrefix("/settings")} roles={["admin"]}>
+        <PrivateRoute path={urlPrefix("/settings")} roles={["admin", "developer", "marketer"]}>
             <PageTabs title="Settings"
                       tabs={[
-                              new PrivateTab(["admin"], <ActionPlugins/>, "/settings/plugins", "Workflow actions"),
-                              new PrivateTab(["admin"], <Settings/>, "/settings/system", "System settings"),
+                              new PrivateTab(["admin", "developer"], <ActionPlugins/>, "/settings/plugins", "Workflow actions"),
+                              new PrivateTab(["admin", "developer"], <Settings/>, "/settings/system", "System settings"),
                               new PrivateTab(["admin"], <Users/>, "/settings/users", "Users"),
-                              new PrivateTab(["admin"], <EventTags/>, "/settings/event-tags", "Event tags"),
+                              new PrivateTab(["admin", "developer", "marketer"], <EventTags/>, "/settings/event-tags", "Event tags"),
                           ]}
             />
 

@@ -112,7 +112,7 @@ export default function ConsentForm({
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Name" description="Type consent name. Be as descriptive as possible.">
                     <TextField variant="outlined"
-                               label="Consent type"
+                               label="Consent type title"
                                value={consentType}
                                error={(typeof consentTypeErrorMessage !== "undefined" && consentTypeErrorMessage !== '' && consentTypeErrorMessage !== null)}
                                helperText={consentTypeErrorMessage}
@@ -125,7 +125,7 @@ export default function ConsentForm({
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Description" description="Consent type description. Be as descriptive as possible.">
                     <TextField variant="outlined"
-                               label="Consent type"
+                               label="Consent description"
                                multiline
                                rows={5}
                                value={consentDescription}

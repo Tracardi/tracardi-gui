@@ -165,16 +165,23 @@ export default function EventTags() {
     const [filter, setFilter] = React.useState("");
 
     React.useEffect(() => {
+        let isSubscribed = true;
         setLoading(true);
         asyncRemote({
             url: `/event/tag/get${filter ? `?query=${filter}` : ""}`,
             method: "GET"
         })
-            .catch(error => setError(error))
-            .then(response => {
-                setTags(response.data);
-                setLoading(false);
+            .catch(error => {
+                if (error && isSubscribed) setError(error)
             })
+            .then(response => {
+                if (response && isSubscribed) {
+                    setTags(response.data);
+                }
+            }).finally(() => {
+                if (isSubscribed) setLoading(false);
+            })
+        return () => isSubscribed = false
     }, [refresh, filter])
 
 

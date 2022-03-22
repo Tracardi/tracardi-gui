@@ -241,6 +241,7 @@ export function FlowEditorPane(
                 if (e?.response?.status === 404) {
                     showAlert({message: "Workflow does not exist.", type: "error", hideAfter: 4000});
                 } else {
+                    e = getError(e)
                     if (e.length > 0) showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
                 }
             }

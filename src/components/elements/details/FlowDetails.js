@@ -58,11 +58,11 @@ export default function FlowDetails({id, onDeleteComplete}) {
     }
 
     const onGoToEditFlow = (id) => {
-        history.push(urlPrefix("/setup/flow/edit/") + id);
+        history.push(urlPrefix("/flow/edit/") + id);
     }
 
     const onGoToDeployedFlow = (id) => {
-        history.push(urlPrefix("/setup/flow/") + id);
+        history.push(urlPrefix("/flow/preview/") + id);
     }
 
     const onDelete = () => {

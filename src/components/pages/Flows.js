@@ -24,7 +24,7 @@ export default function Flows() {
     const confirm = useConfirm();
 
     const handleFlowEdit = (id) => {
-        history.push(urlPrefix("/setup/flow/edit/" + id))
+        history.push(urlPrefix("/flow/edit/" + id))
     }
 
     const mounted = useRef(false);
