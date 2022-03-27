@@ -31,6 +31,7 @@ import Destinations from "./pages/Destinations";
 import EventTags from "./pages/EventTags";
 import UserLogs from "./pages/UserLogs";
 import PrivateTab from "./authentication/PrivateTab";
+import UserSelfInspect from "./pages/UserSelfInspect";
 
 const AppBox = () => {
 
@@ -156,6 +157,12 @@ const AppBox = () => {
                           ]}
             />
 
+        </PrivateRoute>
+
+        {/*Current user account info*/}
+
+        <PrivateRoute exact path={urlPrefix("/my-account")} roles={["admin", "developer", "marketer"]}>
+            <UserSelfInspect />
         </PrivateRoute>
 
         {/*Other*/}

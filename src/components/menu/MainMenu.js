@@ -5,7 +5,7 @@ import {useHistory} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import version from '../../misc/version';
 import {BiChevronLeftCircle, BiChevronRightCircle} from "react-icons/bi";
-import {AiOutlinePoweroff} from "react-icons/ai";
+import {BsPersonCircle} from "react-icons/bs";
 import {VscPulse} from "react-icons/vsc";
 import {IoGitNetworkSharp} from "react-icons/io5";
 import {GoSettings} from "react-icons/go";
@@ -56,11 +56,11 @@ export default function MainMenu() {
             </div>
         </div>
         <div>
-            <MenuRow icon={<AiOutlinePoweroff size={20}/>}
-                label="Logout"
+            <MenuRow icon={<BsPersonCircle size={20}/>}
+                label="My account"
                 collapsed={collapsed}
                 style={{marginBottom: 20}}
-                onClick={go("/logout")}
+                onClick={go("/my-account")}
                 />
 
             <MenuRow icon={collapsed ? <BiChevronRightCircle size={20}/> : <BiChevronLeftCircle size={20}/>}
