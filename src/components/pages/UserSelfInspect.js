@@ -5,7 +5,7 @@ import { CircularProgress, TextField } from "@mui/material";
 import { asyncRemote } from "../../remote_api/entrypoint";
 import { getError } from "../../remote_api/entrypoint";
 import ErrorsBox from "../errors/ErrorsBox";
-import { BsPersonCircle, BsKey } from "react-icons/bs";
+import { BsPersonCircle } from "react-icons/bs";
 import { FiEdit3 } from "react-icons/fi";
 import { Box } from "@mui/material";
 import { AiOutlinePoweroff } from "react-icons/ai";
@@ -14,7 +14,6 @@ import {useHistory} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import PasswordInput from "../elements/forms/inputs/PasswordInput";
-import ErrorLine from "../errors/ErrorLine";
 
 
 function UserSelfEditForm ({ user, closeForm, forceRefresh }) {
