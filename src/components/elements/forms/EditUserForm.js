@@ -33,7 +33,7 @@ export default function EditUserForm({ user, onSubmit}) {
                 if (developer) rolesToSend.push("developer");
 
                 await asyncRemote({
-                    url: `/users/${user.id}/edit`,
+                    url: `/user/${user.id}`,
                     method: "POST",
                     data: {
                         password: password || user.password,
@@ -50,7 +50,10 @@ export default function EditUserForm({ user, onSubmit}) {
 
             }
             catch (error) {
-                if (mounted.current) setErrorMessage(getError(error));
+                if (mounted.current) {
+                    setError(true);
+                    setErrorMessage(getError(error));
+                }
             }
             if (mounted.current) setLoading(false);
         }

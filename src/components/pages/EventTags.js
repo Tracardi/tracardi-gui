@@ -55,7 +55,7 @@ function EditTagsForm({tagsObj, forceRefresh, closeForm}) {
             if (mounted.current) setError(null);
             if (mounted.current) setLoading(true);
             await asyncRemote({
-                url: "/event/tag/replace",
+                url: "/event-tag/replace",
                 method: "POST",
                 data: {...tagsObj, tags: tagsToSend}
             });
@@ -110,7 +110,7 @@ function NewTagsForm({closeForm, forceRefresh}) {
             if (mounted.current) setErrorMessage("");
             if (objToSend.type) {
                 await asyncRemote({
-                    url: "/event/tag/add",
+                    url: "/event-tag",
                     method: "POST",
                     data: {...objToSend, type: objToSend.type.id}
                 });
@@ -168,7 +168,7 @@ export default function EventTags() {
         let isSubscribed = true;
         setLoading(true);
         asyncRemote({
-            url: `/event/tag/get${filter ? `?query=${filter}` : ""}`,
+            url: `/event-tag${filter ? `?query=${filter}` : ""}`,
             method: "GET"
         })
             .catch(error => {
@@ -194,7 +194,7 @@ export default function EventTags() {
                     try {
                         setLoading(true);
                         await asyncRemote({
-                            url: `/event/tag/delete/${tagsObj.id}`,
+                            url: `/event-tag/${tagsObj.id}`,
                             method: "DELETE"
                         });
                         setRefresh(refresh + 1);
