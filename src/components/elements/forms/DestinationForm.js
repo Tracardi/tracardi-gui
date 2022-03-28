@@ -14,9 +14,7 @@ import TuiColumnsFlex from "../tui/TuiColumnsFlex";
 
 export default function DestinationForm({onSubmit, value: initValue}) {
 
-    console.log(initValue)
-
-    if(initValue) {
+    if (initValue) {
         initValue = {
             ...initValue,
             mapping: JSON.stringify(initValue?.mapping, null, " "),
@@ -38,6 +36,7 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                 form: null
             },
             mapping: "{}",
+            condition: "",
             resource: null
         }
     }
@@ -63,8 +62,8 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                 method: "POST",
                 data: {
                     id: data.id,
-                    name:data?.name,
-                    description:data?.description,
+                    name: data?.name,
+                    description: data?.description,
                     enabled: data?.enabled,
                     tags: data?.tags,
                     destination: {
@@ -73,28 +72,32 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                         form: data?.destination?.form
                     },
                     mapping: JSON.parse(data.mapping),
-                    resource: data.resource
+                    condition: data?.condition,
+                    resource: data?.resource
                 }
             })
 
             setError(null)
 
-            if(onSubmit && mounted.current === true) {
+            if (onSubmit && mounted.current === true) {
                 onSubmit(response.data)
             }
 
         } catch (e) {
-            if(e && mounted.current === true) {
+            if (e && mounted.current === true) {
                 setError(getError(e))
             }
         } finally {
-            if(mounted.current === true) {setProcessing(false);}
+            if (mounted.current === true) {
+                setProcessing(false);
+            }
         }
 
     }
 
     const handleDestinationChange = (value, params) => {
-        const d = {...data,
+        const d = {
+            ...data,
             destination: {
                 package: params?.destination?.package,
                 init: JSON.stringify(params?.destination?.init, null, " "),
@@ -126,12 +129,11 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                                     onChange={(ev) => setData({...data, enabled: ev.target.checked})}
                                 />
                                 <span>
-                        This destination is {data?.enabled===true ? "enabled" : "disabled"}
+                        This destination is {data?.enabled === true ? "enabled" : "disabled"}
                     </span>
                             </div>
                         </TuiTopHeaderWrapper>
                     </TuiColumnsFlex>
-
 
 
                 </TuiFormGroupField>
@@ -173,6 +175,26 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
+
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Prerequisites"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Destination prerequisites" description="Type a condition that has to be met
+                before the data is sent to the destination. E.g. Some destinations may require not empty e-mail field.
+                Leave the prerequisites blank if the destination does not have any pre-condition to be checked.">
+                    <TextField
+                        label="Pre-condition"
+                        value={data?.condition}
+                        onChange={(e) => setData({...data, condition: e.target.value})}
+                        multiline
+                        rows={3}
+                        variant="outlined"
+                        fullWidth
+                    />
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+
         <TuiFormGroup>
             <TuiFormGroupHeader header="Data mapping"/>
             <TuiFormGroupContent>
@@ -181,7 +203,7 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                     <fieldset>
                         <legend>Data mapping</legend>
                         <JsonEditor value={data?.mapping}
-                                    onChange={(value) =>setData({...data, mapping: value})}/>
+                                    onChange={(value) => setData({...data, mapping: value})}/>
                     </fieldset>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
@@ -194,7 +216,10 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                     <fieldset>
                         <legend>Settings</legend>
                         <JsonEditor value={data?.destination?.init}
-                                    onChange={(value) =>setData({...data, destination: {...data.destination, init: value}})}/>
+                                    onChange={(value) => setData({
+                                        ...data,
+                                        destination: {...data.destination, init: value}
+                                    })}/>
                     </fieldset>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
