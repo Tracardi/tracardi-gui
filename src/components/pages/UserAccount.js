@@ -17,7 +17,6 @@ import EditAccountForm from "../elements/forms/EditAccountForm";
 
 export default function UserAccount () {
 
-    const mounted = React.useRef(false);
     const [user, setUser] = React.useState(null);
     const [error, setError] = React.useState(null);
     const [edit, setEdit] = React.useState(false);
@@ -30,21 +29,21 @@ export default function UserAccount () {
 
     React.useEffect(() => {
 
-        mounted.current = true;
-        if (mounted.current) setError(null);
+        let isSubscribed = true;
+        if (isSubscribed) setError(null);
 
         asyncRemote({
             url: "/user-account",
             method: "GET"
         })
         .then(response => {
-            if (mounted.current) setUser(response.data);
+            if (isSubscribed) setUser(response.data);
         })
         .catch(e => { 
-            if (mounted.current) setError(getError(e));
+            if (isSubscribed) setError(getError(e));
         })
 
-        return () => mounted.current = false;
+        return () => isSubscribed = false;
     }, [refresh])
 
     if (isEmptyObjectOrNull(user) && error === null) {
