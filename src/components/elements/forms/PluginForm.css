@@ -1,0 +1,18 @@
+.plugin-info-field {
+    overflow: auto;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.field-name {
+    font-size: 16px;
+    font-weight: 600;
+    min-width: 190px;
+    max-width: 190px;
+}
