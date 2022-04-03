@@ -111,12 +111,15 @@ export default function DestinationForm({onSubmit, value: initValue}) {
     return <TuiForm style={{margin: 20}}>
 
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Destination"/>
+            <TuiFormGroupHeader header="Destination" description="Destinations is a list of services where Tracardi will
+            send profile data. Destinations will be triggered only when the profile changes. Depending on the
+            configuration the whole process may be postponed and triggered when the stream of events associated with
+            a set of profile changes ends."/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Destination" description="Select destination system.">
                     <TuiColumnsFlex width={300}>
                         <TuiTopHeaderWrapper header="Destination"
-                                             description="Select destination system.">
+                                             description="Select destination resource.">
                             <DestinationInput
                                 value={data?.resource?.id || ""}
                                 onChange={handleDestinationChange}/>

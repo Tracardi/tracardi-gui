@@ -1,7 +1,12 @@
 import {BiGitRepoForked} from "react-icons/bi";
 import React from "react";
 import {FiDatabase, FiMapPin, FiAlertTriangle} from "react-icons/fi";
-import {BsDiamond, BsPerson, BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill, BsHddNetwork} from "react-icons/bs";
+import {
+    BsDiamond,
+    BsPerson,
+    BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
+    BsHddNetwork, BsQuestionDiamond
+} from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {MdTimelapse} from "react-icons/md";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -18,7 +23,14 @@ import {
     BiArrowToRight
 } from "react-icons/bi";
 import {RiIncreaseDecreaseLine, RiScissorsCutFill} from "react-icons/ri";
-import {IoCloudOutline, IoPush, IoLanguageOutline, IoTextOutline, IoCalendarOutline, IoGitNetworkSharp} from "react-icons/io5";
+import {
+    IoCloudOutline,
+    IoPush,
+    IoLanguageOutline,
+    IoTextOutline,
+    IoCalendarOutline,
+    IoGitNetworkSharp
+} from "react-icons/io5";
 import {
     VscSymbolEvent,
     VscRegex,
@@ -51,9 +63,9 @@ import {
 } from "react-icons/vsc";
 import {MdLibraryAdd, MdTimer} from "react-icons/md";
 import {GoBrowser} from "react-icons/go";
-import { ReactComponent as MauticLogo } from "../../svg/mautic.svg";
-import { ReactComponent as Amplitude } from "../../svg/amplitude-icon.svg";
-import { ReactComponent as Mixpanel } from "../../svg/mixpanel.svg";
+import {ReactComponent as MauticLogo} from "../../svg/mautic.svg";
+import {ReactComponent as Amplitude} from "../../svg/amplitude-icon.svg";
+import {ReactComponent as Mixpanel} from "../../svg/mixpanel.svg";
 import {
     SiRabbitmq,
     SiMongodb,
@@ -184,17 +196,18 @@ export const icons = {
     'path': (size) => <GiPathDistance size={size}/>,
     'airtable': (size) => <SiAirtable size={size}/>,
     'mautic': (size) => <MauticLogo style={{width: size, height: size}}/>,
-    'ai': (size) => <FaRobot size={size} />,
+    'ai': (size) => <FaRobot size={size}/>,
     'amplitude': (size) => <Amplitude style={{width: size, height: size}}/>,
     'mixpanel': (size) => <Mixpanel style={{width: size, height: size}}/>,
-    'array': (size) => <VscSymbolArray size={size} />,
+    'array': (size) => <VscSymbolArray size={size}/>,
     'resource': (size) => <BsHddNetwork size={size}/>,
     'flow': (size) => <IoGitNetworkSharp size={size}/>,
-    'route': (size) => <FaUncharted size={size}/>
+    'route': (size) => <FaUncharted size={size}/>,
+    'exists': (size) => <BsQuestionDiamond size={size}/>
 }
 
 
-export default function FlowNodeIcons({icon, size = 20, defaultIcon="plugin"}) {
+export default function FlowNodeIcons({icon, size = 20, defaultIcon = "plugin"}) {
 
     const renderIcon = () => {
         if (icon in icons) {
