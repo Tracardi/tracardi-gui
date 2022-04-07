@@ -2,10 +2,9 @@ import {ObjectInspector} from "react-inspector";
 import React, {useEffect, useState} from "react";
 import "../../flow/InfoTable.css";
 import Switch from "@mui/material/Switch";
-import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import {BsXSquare, BsCheckCircle} from "react-icons/bs";
 import PropTypes from 'prop-types';
-import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import Tabs, {TabCase} from "../../elements/tabs/Tabs";
@@ -17,7 +16,6 @@ import { TextField } from "@mui/material";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import MdManual from "../../flow/actions/MdManual";
 import Properties from "../details/DetailProperties";
-import JsonEditor from "../editors/JsonEditor";
 
 export default function PluginForm({id}) {
 
@@ -105,11 +103,12 @@ export default function PluginForm({id}) {
                                 justifyContent: "space-around", 
                                 backgroundColor: "white", 
                                 borderBottom: "solid 1px grey", 
-                                margin: 20,
+                                margin: 10,
                                 marginTop: 0,
                                 marginBottom: 0,
                                 position: "sticky",
-                                top: 0
+                                top: 0,
+                                zIndex: 2
                             }}
                         >
                             <TabCase id={0} key="Overview">
@@ -357,7 +356,7 @@ export default function PluginForm({id}) {
                                                                         {key}
                                                                     </div>
                                                                     <div style={{overflowWrap: "anywhere"}}>
-                                                                        {`- ${plugin.plugin.metadata.documentation.inputs[key]?.desc || "No input description provided"}`}
+                                                                        {plugin.plugin.metadata.documentation.inputs[key]?.desc || "No input description provided"}
                                                                     </div>
                                                                 </div>
                                                             })
@@ -375,7 +374,7 @@ export default function PluginForm({id}) {
                                                                         {key}
                                                                     </div>
                                                                     <div style={{overflowWrap: "anywhere"}}>
-                                                                        {`- ${plugin.plugin.metadata.documentation.outputs[key]?.desc || "No output description provided"}`}
+                                                                        {plugin.plugin.metadata.documentation.outputs[key]?.desc || "No output description provided"}
                                                                     </div>
                                                                 </div>
                                                             })
