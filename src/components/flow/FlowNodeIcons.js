@@ -77,7 +77,8 @@ import {
     SiElasticsearch,
     SiInfluxdb,
     SiZapier,
-    SiAirtable
+    SiAirtable,
+    SiMatomo
 } from "react-icons/si";
 import {GrMysql} from "react-icons/gr";
 import {
@@ -203,7 +204,8 @@ export const icons = {
     'resource': (size) => <BsHddNetwork size={size}/>,
     'flow': (size) => <IoGitNetworkSharp size={size}/>,
     'route': (size) => <FaUncharted size={size}/>,
-    'exists': (size) => <BsQuestionDiamond size={size}/>
+    'exists': (size) => <BsQuestionDiamond size={size}/>,
+    'matomo': (size) => <SiMatomo soie={size} />
 }
 
 
