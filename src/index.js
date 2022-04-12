@@ -25,7 +25,7 @@ Sentry.init({
 });
 
 const guiInstance = new storageValue('tracardi-gui-instance').read(null)
-console.log(guiInstance)
+
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>

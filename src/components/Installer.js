@@ -7,6 +7,29 @@ import CenteredCircularProgress from "./elements/progress/CenteredCircularProgre
 import {BsCloudUpload} from "react-icons/bs";
 import PasswordInput from "./elements/forms/inputs/PasswordInput";
 import Input from "./elements/forms/inputs/Input";
+import NoData from "./elements/misc/NoData";
+
+
+const ConnectionError = ({message}) => {
+    return <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100%"}}>
+        <div style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: 30,
+            width: "80%",
+            backgroundColor: "red",
+            color: "white",
+            borderRadius: 10
+        }}>
+            <NoData header="Connection error" iconColor="white">
+                Could not connect to API. Please check if the backend API is working.
+                <p>{message}</p>
+            </NoData>
+        </div>
+    </div>
+}
+
 
 const InstallerMessage = ({requireAdmin}) => {
 
@@ -37,7 +60,15 @@ const InstallerMessage = ({requireAdmin}) => {
     }
 
     return <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100%"}}>
-        <div style={{display: "flex", flexDirection: "column", alignItems: "center", padding: 50, width: "80%", backgroundColor: "white", borderRadius: 10}}>
+        <div style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: 50,
+            width: "80%",
+            backgroundColor: "white",
+            borderRadius: 10
+        }}>
             <BsCloudUpload size={50} style={{color: "#666"}}/>
             <h1 style={{fontWeight: 300}}>Installation required</h1>
             <p>Some parts of the system are missing. Please click install to install required components</p>
@@ -58,8 +89,8 @@ const InstallerMessage = ({requireAdmin}) => {
 const Installer = () => {
 
     const [installed, setInstalled] = useState(null);
-    const [progress, setProgress] = useState(false);
     const [requiredAdmin, setRequireAdmin] = useState(false);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         let isSubscribed = true
@@ -74,7 +105,7 @@ const Installer = () => {
             }
         }).catch((e) => {
             if (isSubscribed) {
-                alert(e.toString())
+                setError(e.toString())
             }
         })
 
@@ -83,11 +114,13 @@ const Installer = () => {
 
 
     if (installed === true) {
-        return <InstallerMessage requireAdmin={requiredAdmin}/>
+        return "installed"
     } else if (installed === false) {
-        return <Button label="Install" progress={progress}/>
+        return <InstallerMessage requireAdmin={requiredAdmin}/>
     }
-
+    if (error !== false) {
+        return <ConnectionError message={error}/>
+    }
     return <CenteredCircularProgress/>
 }
 

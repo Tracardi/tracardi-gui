@@ -1,13 +1,13 @@
 import {BsEyeSlash} from "react-icons/bs";
 import React from "react";
 
-export default function NoData({icon, header, children}) {
+export default function NoData({icon, header, children, iconColor="#666"}) {
 
     const Icon = () => {
         if(icon) {
             return icon
         }
-        return <BsEyeSlash size={50} style={{color: "#666"}}/>
+        return <BsEyeSlash size={50} style={{color: iconColor}}/>
     }
 
     return <div style={{display: "flex", flexDirection: "column", alignItems: "center", padding: 20}}>
