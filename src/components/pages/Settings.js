@@ -5,7 +5,6 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "..
 import ErrorsBox from "../errors/ErrorsBox";
 import {asyncRemote, getError} from "../../remote_api/entrypoint";
 import Button from "../elements/forms/Button";
-import { MoneyOutlined } from "@mui/icons-material";
 
 
 function TestingButtons() {
@@ -69,7 +68,7 @@ function TestingButtons() {
         <>
             <div style={{display: "flex", flexDirection: "row", gap: 10, alignItems: "center"}}>
                 <Button 
-                    label="Test Redis" 
+                    label="Test Redis Server Connection"
                     style={{display: "flex", justifyContent: "center", minWidth: "20%", height: "50px"}} 
                     confirmed={!redisError} 
                     error={redisError}
@@ -78,13 +77,13 @@ function TestingButtons() {
                 />
                 <div style={{overflowWrap: "anywhere"}}>
                     {
-                        redisError || "Redis seems to work correctly. Please click the button on the left to check it."
+                        redisError || "Redis is connected. Click the button to recheck the connection."
                     }
                 </div>
             </div>
             <div style={{marginTop: 30, display: "flex", flexDirection: "row", gap: 10, alignItems: "center"}}>
                 <Button 
-                    label="Test Elasticsearch" 
+                    label="Test Elasticsearch Connection"
                     style={{display: "flex", justifyContent: "center", minWidth: "20%", height: "50px"}} 
                     confirmed={!esError} 
                     error={esError}
@@ -93,7 +92,7 @@ function TestingButtons() {
                 />
                 <div style={{overflowWrap: "anywhere"}}>
                     {
-                        esError || "Elasticsearch seems to work correctly. Please click the button on the left to check it."
+                        esError || "Elasticsearch is connected. Click the button to recheck connection."
                     }
                 </div>
             </div>
@@ -139,7 +138,7 @@ export default function Settings() {
             <TuiFormGroup style={{margin: 20}}>
                 <TuiFormGroupHeader 
                     header="Elasticsearch and Redis test" 
-                    description="Use these buttons to check if Elasticsearch and Redis are working correctly, and receive some error info if they don't."
+                    description="Use buttons bellow to check the required connections to database and redis cache."
                 />
                 <TuiFormGroupContent>
                     <TestingButtons />
@@ -147,7 +146,7 @@ export default function Settings() {
             </TuiFormGroup>
             <TuiFormGroup style={{margin: 20}}>
                 <TuiFormGroupHeader header="Settings"
-                                    description="Use environment variables to set these settings."
+                                    description="Use environment variables to set the settings."
                 />
                 <TuiFormGroupContent>
                     {!error && setting.map((row, index) => {
