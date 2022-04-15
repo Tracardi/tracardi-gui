@@ -11,8 +11,8 @@ import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import {ConfirmProvider} from "material-ui-confirm";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
-import storageValue from "./misc/localStorageDriver";
 import Installer from "./components/Installer";
+import ApiUrlSelector from "./components/ApiUrlSelector";
 
 Sentry.init({
     dsn: "https://2721a09bf1144c10930117609a67f4d5@o1093519.ingest.sentry.io/6112822",
@@ -24,8 +24,6 @@ Sentry.init({
     tracesSampleRate: 1.0,
 });
 
-const guiInstance = new storageValue('tracardi-gui-instance').read(null)
-
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
@@ -33,8 +31,11 @@ ReactDOM.render(
                 <ThemeProvider theme={mainTheme}>
                     <CssBaseline/>
                     <ConfirmProvider>
-                        {guiInstance !== null && <App/>}
-                        {guiInstance === null && <Installer/>}
+                        <ApiUrlSelector>
+                            <Installer>
+                                <App/>
+                            </Installer>
+                        </ApiUrlSelector>
                     </ConfirmProvider>
                 </ThemeProvider>
             </StyledEngineProvider>

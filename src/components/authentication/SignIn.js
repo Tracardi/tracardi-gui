@@ -15,12 +15,11 @@ import {signInTheme} from "../../themes";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import {connect} from "react-redux";
 import urlPrefix from "../../misc/UrlPrefix";
-import Autocomplete from '@mui/material/Autocomplete';
 import version from '../../misc/version';
-import storageValue from "../../misc/localStorageDriver";
-import {asyncRemote} from "../../remote_api/entrypoint";
+import {asyncRemote, getApiUrl, resetApiUrlConfig} from "../../remote_api/entrypoint";
 import Button from "../elements/forms/Button";
 import PasswordInput from "../elements/forms/inputs/PasswordInput";
+import ReadOnlyInput from "../elements/forms/ReadOnlyInput";
 
 function Copyright() {
     return (
@@ -88,13 +87,10 @@ const SignInForm = ({showAlert}) => {
         });
     }, [ver])
 
-    const nodeRef = useRef(null);
-
     const classes = useStyles();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [endpoint, setEndpoint] = useState(new storageValue('tracardi-api-url').read([]));
     const [progress, setProgress] = useState(false);
 
     const {state} = useLocation();
@@ -119,23 +115,10 @@ const SignInForm = ({showAlert}) => {
         setPassword(evt.target.value);
     }
 
-    const handleEndpoint = (value) => {
-        setEndpoint(value);
-        new storageValue('tracardi-api-url').save(value, "");
+    const handleEndpointReset = () => {
+        resetApiUrlConfig();
+        window.location.reload()
     }
-
-    const handleSubmitEndpoint = () => {
-        let historicalEndpoints = new storageValue('tracardi-api-urls').read([]);
-        if (historicalEndpoints === null) {
-            historicalEndpoints = [];
-        }
-        if (!historicalEndpoints.includes(endpoint)) {
-            if (endpoint !== null) {
-                historicalEndpoints.push(endpoint);
-                new storageValue('tracardi-api-urls').save(historicalEndpoints, []);
-            }
-        }
-    };
 
     const handleSubmit = event => {
         const api = loginUser(email, password);
@@ -144,7 +127,6 @@ const SignInForm = ({showAlert}) => {
             setToken(response.data['access_token']);
             setRoles(response.data['roles'])
             setRedirectToReferrer(true);
-            handleSubmitEndpoint();
         }).catch(e => {
                 let message = e.message;
                 if (typeof e.response == "undefined") {
@@ -191,6 +173,11 @@ const SignInForm = ({showAlert}) => {
                             }}>{errorMessage}</p>
                         ) : null}
 
+                        <ReadOnlyInput label="Tracardi API"
+                                       value={getApiUrl()}
+                                       hint="You will authorize yourself in the above Tracardi server."
+                                       onReset={handleEndpointReset}/>
+
                         <form onSubmitCapture={handleSubmit} className={classes.form} noValidate>
                             <TextField
                                 variant="outlined"
@@ -212,32 +199,6 @@ const SignInForm = ({showAlert}) => {
                                 onChange={handlePassChange}
                                 required={true}
                             />
-                            <div
-                                ref={nodeRef}
-                                style={{
-                                    width: '100%',
-                                }}
-                            >
-                                <Autocomplete
-                                    options={
-                                        new storageValue('tracardi-api-urls').read() || []
-                                    }
-                                    value={endpoint}
-                                    onChange={(e, v) => handleEndpoint(v)}
-                                    freeSolo
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            onChange={({target}) => handleEndpoint(target.value)}
-                                            label='API Endpoint URL'
-                                            margin='normal'
-                                            size="small"
-                                            variant='outlined'
-                                            placeholder="http://localhost:8686"
-                                        />
-                                    )}
-                                />
-                            </div>
                             <Button
                                 style={{justifyContent: "center", marginTop: 20}}
                                 label="Sign In"

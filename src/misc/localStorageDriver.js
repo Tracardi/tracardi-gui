@@ -21,4 +21,8 @@ export default class storageValue {
             localStorage.setItem(this.key, defaultValue)
         }
     }
+
+    remove() {
+        localStorage.removeItem(this.key)
+    }
 }

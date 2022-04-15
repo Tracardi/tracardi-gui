@@ -2,9 +2,20 @@ import axios from 'axios'
 import {getToken, logout} from "../components/authentication/login";
 import storageValue from "../misc/localStorageDriver";
 
-export const apiUrl = () => {
-    const api_url = new storageValue('tracardi-api-url').read(window._env_.API_URL)
-    return api_url ? api_url : window._env_.API_URL;
+export const apiUrlStorage = () => {
+    return new storageValue('tracardi-api-url')
+}
+
+export const hasApiUrlConfig = () => {
+    return apiUrlStorage().read() !== null
+}
+
+export const resetApiUrlConfig = () => {
+    return apiUrlStorage().remove()
+}
+
+export const getApiUrl = () => {
+    return apiUrlStorage().read()
 }
 
 const authToken = () => {
@@ -12,28 +23,18 @@ const authToken = () => {
     return 'Bearer ' + (token == null ? 'None' : token)
 }
 
-export const api = (headers) => {
-    headers = {
-        ...headers,
-        'Authorization': authToken()
-    }
-
-    return axios.create({
-        baseURL: apiUrl(),
-        headers
-    })
-}
-
 export const asyncRemote = async (config) => {
+
     if(!config?.baseURL) {
+        const apiUrl = getApiUrl();
         config = {
             ...config,
-            baseURL: apiUrl()
+            baseURL: apiUrl
         }
     }
 
     config.headers = {
-        ...config.headers,
+        ...config?.headers,
         'Authorization': authToken()
     }
 
