@@ -25,6 +25,14 @@ export default function UserLogs() {
         );
     }
 
+    const external = (url, newWindow=false) => {
+        if(newWindow===true) {
+            return () => window.open(url, '_blank', 'location=yes,scrollbars=yes,status=yes')
+        } else {
+            return () => window.location.href = url;
+        }
+    }
+
     React.useEffect(() => {
         mounted.current = true;
         return () => mounted.current = false;
@@ -33,10 +41,11 @@ export default function UserLogs() {
     return (
         <div>
             <FilterAddForm 
-                style={{margin: 20}}
+                style={{margin: 20, marginBottom: 0}}
                 textFieldLabel="Type here to filter user logs by query string"
                 onFilter={filter => setQuery(filter)}
             />
+            <div style={{fontSize: 11, marginLeft: 21}}>Do not know how to filter. Click <a style={{textDecoration: "underline", cursor: "pointer"}} onClick={external("http://docs.tracardi.com/running/filtering/", true)}>here</a> for information.</div>
             <TuiForm style={{margin: 20, width: "calc(100% - 40px)", height: "calc(100% - 40px)"}}>
                 <TuiFormGroup fitHeight={true}>
                     <TuiFormGroupHeader header="Tracardi user logs" description="List of users' log-in actions."/>
