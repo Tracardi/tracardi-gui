@@ -3,6 +3,8 @@ import Tabs, {TabCase} from "../../elements/tabs/Tabs";
 import "./PageTabs.css";
 import NeedHelpButton from "../../elements/misc/NeedHelpButton";
 import PrivateTab from "../../authentication/PrivateTab";
+import {getApiUrl, resetApiUrlConfig} from "../../../remote_api/entrypoint";
+import ReadOnlyInput from "../../elements/forms/ReadOnlyInput";
 
 export default function PageTabs({title, tabs = {}}) {
 
@@ -11,10 +13,21 @@ export default function PageTabs({title, tabs = {}}) {
     const [tab, setTab] = useState(0);
     let i = -1;
 
+    const handleEndpointReset = () => {
+        resetApiUrlConfig();
+        window.location.reload()
+    }
+
     return <div className="PageTabs" style={{height: "initial"}}>
         <div style={{display: "flex", justifyContent: "space-between"}}>
             <h1 className="Title">{title}</h1>
-            <NeedHelpButton/>
+            <span className="Info">
+                <ReadOnlyInput label="Tracardi API"
+                               value={getApiUrl()}
+                               onReset={handleEndpointReset}/>
+                               <NeedHelpButton/>
+            </span>
+
         </div>
 
         <Tabs

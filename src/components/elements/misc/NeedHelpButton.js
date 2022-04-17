@@ -23,7 +23,7 @@ export default function NeedHelpButton() {
                 <div>
                     <Button label="Need help?"
                             icon={<IoShareSocial size={20}/>}
-                            style={{padding: "4px 14px"}} {...bindTrigger(popupState)}></Button>
+                            style={{padding: "6px 14px", marginBottom: 9, marginLeft: 5}} {...bindTrigger(popupState)}></Button>
                     <Popover
                         {...bindPopover(popupState)}
                         anchorOrigin={{

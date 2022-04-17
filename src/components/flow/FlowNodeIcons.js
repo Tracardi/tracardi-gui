@@ -5,7 +5,7 @@ import {
     BsDiamond,
     BsPerson,
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
-    BsHddNetwork, BsQuestionDiamond
+    BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {MdTimelapse} from "react-icons/md";
@@ -205,7 +205,8 @@ export const icons = {
     'flow': (size) => <IoGitNetworkSharp size={size}/>,
     'route': (size) => <FaUncharted size={size}/>,
     'exists': (size) => <BsQuestionDiamond size={size}/>,
-    'matomo': (size) => <SiMatomo soie={size} />
+    'matomo': (size) => <SiMatomo size={size} />,
+    'previous': (size) => <BsArrowBarLeft size={size}/>
 }
 
 

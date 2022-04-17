@@ -1,9 +1,45 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import PluginForm from "../elements/forms/PluginForm";
 import CardBrowser from "../elements/lists/CardBrowser";
 import FlowNodeIcons from "../flow/FlowNodeIcons";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
+import Button from "../elements/forms/Button";
+import {asyncRemote} from "../../remote_api/entrypoint";
+import {IoRefreshCircle} from "react-icons/io5";
+
+function ReinstallButton() {
+
+    const [progress, setProgress] = useState(false);
+    const [error, setError] = useState(null);
+
+    const handlePluginsReinstall = async () => {
+        try {
+            setError(null);
+            setProgress(true);
+            const response = await asyncRemote({
+                url: "/install/plugins"
+            })
+
+            if(response.status === 200) {
+                setError(false)
+            }
+        } catch (e) {
+            setError(true)
+        } finally {
+            setProgress(false)
+        }
+    }
+
+    return <Button label="Reinstall plugins"
+                   icon={<IoRefreshCircle size={20}/>}
+                   onClick={handlePluginsReinstall}
+                   progress={progress}
+                   error={error}
+                   confirmed={error === null ? null : !error}
+    />
+}
+
 
 export default function ActionPlugins() {
 
@@ -51,7 +87,11 @@ export default function ActionPlugins() {
         })
     }
 
-    return <CardBrowser
+
+
+    return <div>
+        <div style={{display: "flex", justifyContent: "flex-end", margin: "0 15px"}}><ReinstallButton/></div>
+        <CardBrowser
         label="Action plugins"
         urlFunc={urlFunc}
         cardFunc={pluginsCards}
@@ -60,5 +100,5 @@ export default function ActionPlugins() {
         drawerDetailsTitle="Edit Plugin Action"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
-    />
+    /></div>
 }
