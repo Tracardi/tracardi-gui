@@ -5,6 +5,7 @@ import NeedHelpButton from "../../elements/misc/NeedHelpButton";
 import PrivateTab from "../../authentication/PrivateTab";
 import {getApiUrl, resetApiUrlConfig} from "../../../remote_api/entrypoint";
 import ReadOnlyInput from "../../elements/forms/ReadOnlyInput";
+import {logout} from "../../authentication/login";
 
 export default function PageTabs({title, tabs = {}}) {
 
@@ -15,6 +16,7 @@ export default function PageTabs({title, tabs = {}}) {
 
     const handleEndpointReset = () => {
         resetApiUrlConfig();
+        logout()
         window.location.reload()
     }
 

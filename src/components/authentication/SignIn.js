@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import makeStyles from '@mui/styles/makeStyles';
 import Container from '@mui/material/Container';
-import {setRoles, setToken} from "./login";
+import {logout, setRoles, setToken} from "./login";
 import {loginUser} from "../../remote_api/user";
 import {signInTheme} from "../../themes";
 import {showAlert} from "../../redux/reducers/alertSlice";
@@ -117,6 +117,7 @@ const SignInForm = ({showAlert}) => {
 
     const handleEndpointReset = () => {
         resetApiUrlConfig();
+        logout();
         window.location.reload()
     }
 

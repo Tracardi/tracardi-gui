@@ -7,6 +7,7 @@ import PasswordInput from "./elements/forms/inputs/PasswordInput";
 import Input from "./elements/forms/inputs/Input";
 import ErrorBox from "./errors/ErrorBox";
 import ReadOnlyInput from "./elements/forms/ReadOnlyInput";
+import {logout} from "./authentication/login";
 
 
 const InstallerError = ({error, errorMessage, hasAdminAccount}) => {
@@ -36,6 +37,7 @@ const InstallerMessage = ({requireAdmin, onInstalled, errorMessage}) => {
 
     const handleEndpointReset = () => {
         resetApiUrlConfig();
+        logout();
         window.location.reload()
     }
 

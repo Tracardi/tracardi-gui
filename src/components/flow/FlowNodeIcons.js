@@ -59,7 +59,8 @@ import {
     VscBracketError,
     VscRunErrors,
     VscExclude,
-    VscSymbolArray
+    VscSymbolArray,
+    VscLaw
 } from "react-icons/vsc";
 import {MdLibraryAdd, MdTimer} from "react-icons/md";
 import {GoBrowser} from "react-icons/go";
@@ -206,7 +207,8 @@ export const icons = {
     'route': (size) => <FaUncharted size={size}/>,
     'exists': (size) => <BsQuestionDiamond size={size}/>,
     'matomo': (size) => <SiMatomo size={size} />,
-    'previous': (size) => <BsArrowBarLeft size={size}/>
+    'previous': (size) => <BsArrowBarLeft size={size}/>,
+    'consent': (size) => <VscLaw size={size} />
 }
 
 
