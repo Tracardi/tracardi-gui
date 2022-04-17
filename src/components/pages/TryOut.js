@@ -14,7 +14,6 @@ import PasswordInput from "../elements/forms/inputs/PasswordInput";
 import EvalInput from "../elements/forms/inputs/EvalInput";
 import {Button} from "@mui/material";
 import DotAccessor from "../elements/forms/inputs/DotAccessor";
-import ConsentTypeList from "../elements/lists/ConsentTypeList";
 
 export default function TryOut() {
     const [v,setV] = React.useState("`profile@`");
@@ -62,7 +61,6 @@ export default function TryOut() {
       {/*<TuiPieChart/>*/}
       {/*<ScheduledForm  />*/}
       {/*<NewUser/>*/}
-      <ConsentTypeList/>
       <IconSelector value="alert" onChange={(ic) => console.log(ic)} />
       {/*<KeyValueForm value={{ kw: "value" }} onChange={(v) => console.log(v)} />*/}
       {/*<TimeInput />*/}
