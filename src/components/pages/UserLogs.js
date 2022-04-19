@@ -6,7 +6,7 @@ import {
     TuiFormGroupField,
     TuiFormGroupHeader
 } from "../elements/tui/TuiForm";
-import AutoLoadLogList from "../elements/lists/AutoLoadLogList";
+import AutoLoadList from "../elements/lists/AutoLoadList";
 import FilterAddForm from "../elements/forms/inputs/FilterAddForm";
 
 
@@ -52,7 +52,7 @@ export default function UserLogs() {
                     <TuiFormGroupContent>
                         <TuiFormGroupField>
                             <div style={{overflow: "hidden", height: "inherit"}}>
-                                <AutoLoadLogList 
+                                <AutoLoadList
                                     label="USER LOGS"
                                     onLoadRequest={{
                                         url: "/user-logs",

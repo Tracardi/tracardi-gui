@@ -4,9 +4,9 @@ import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CircularProgress from "@mui/material/CircularProgress";
-import "./AutoLoadLogList.css";
+import "./AutoLoadList.css";
 
-const AutoLoadLogList = ({
+const AutoLoadList = ({
                              label,
                              onLoadRequest,
                              renderRowFunc,
@@ -119,4 +119,4 @@ const AutoLoadLogList = ({
     );
 };
 
-export default AutoLoadLogList;
+export default AutoLoadList;

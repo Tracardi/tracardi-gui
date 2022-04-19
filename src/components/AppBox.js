@@ -25,13 +25,13 @@ import PageTabs from "./pages/groups/PageTabs";
 import Consents from "./pages/Consents";
 import Dashboard from "./pages/Dashboard";
 import EventValidation from "./pages/EventValidation";
-import Logs from "./pages/Logs";
 import Users from "./pages/Users";
 import Destinations from "./pages/Destinations";
 import EventTags from "./pages/EventTags";
 import UserLogs from "./pages/UserLogs";
 import PrivateTab from "./authentication/PrivateTab";
 import UserAccount from "./pages/UserAccount";
+import LogsAnalytics from "./pages/LogsAnalytics";
 
 const AppBox = () => {
 
@@ -132,8 +132,8 @@ const AppBox = () => {
                       tabs={[
                           new PrivateTab(["admin"], <Instances/>, "/monitoring/instances", "Running instances"),
                           new PrivateTab(["admin"], <Tasks/>, "/monitoring/schedule", "Scheduled tasks"),
-                          new PrivateTab(["admin"], <Logs/>, "/monitoring/log", "Logs"),
-                            new PrivateTab(["admin"], <UserLogs/>, "/monitoring/user-log", "User logs")
+                          new PrivateTab(["admin"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
+                          new PrivateTab(["admin"], <UserLogs/>, "/monitoring/user-log", "User logs")
                       ]}
             />
 
