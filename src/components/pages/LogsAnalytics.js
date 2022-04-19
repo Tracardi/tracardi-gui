@@ -14,7 +14,7 @@ export default function LogsAnalytics({displayChart=true}) {
 
     const onLoadHistogramRequest = (query) => {
         return {
-            url: '/log/select/histogram',
+            url: '/log/select/histogram?group_by=level',
             method: "post",
             data: query
         }
@@ -25,11 +25,12 @@ export default function LogsAnalytics({displayChart=true}) {
         enableFiltering={true}
         type="log"
         timeFieldLabel = "date"
-        filterFields={['date']}
+        filterFields={['date', 'id', 'line']}
         timeField={(row) => [row.date]}
         onLoadHistogramRequest={onLoadHistogramRequest}
         onLoadDataRequest={onLoadDataRequest}
         displayChart={displayChart}
+        barChartColors={{error: "#d81b60", warning: "#ef6c00"}}
     />
 
 }

@@ -9,7 +9,7 @@ import NoDataError from "../../errors/NoDataError";
 
 // todo onLoadRequest is a misleading name - it is an object with information on endpoint to call
 // todo this needs to be refactored.
-export default function BarChartElement({onLoadRequest: endpoint, columns, refreshInterval}) {
+export default function BarChartElement({onLoadRequest: endpoint, refreshInterval, barChartColors}) {
 
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
@@ -67,7 +67,7 @@ export default function BarChartElement({onLoadRequest: endpoint, columns, refre
                 <div className="ChartToolTip">
                     <p>{`Start time : ${label}`}</p>
                     <p>{`Time span : ${payload[0].payload.interval}`}</p>
-                    <p>{`Value : ${payload[0].value}`}</p>
+                    <p>{`Value : ${payload.map((item) => item.value)}`}</p>
                 </div>
             );
         }
@@ -82,8 +82,13 @@ export default function BarChartElement({onLoadRequest: endpoint, columns, refre
                 <BarChart data={ready.data.result} margin={{top: 15, right: 20, bottom: 5, left: 0}}>
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip isAnimationActive={false} content={<CustomTooltip/>}/>
-                    {columns.map((column, index)=> {
-                        return <Bar key={index} stackId={column.stackId ? column.stackId : "stack"} dataKey={column.label} fill={column.color ? column.color : "#ffa000"}/>
+                    {ready?.data?.buckets?.map((column, index)=> {
+                        return <Bar key={index}
+                                    stackId="stack"
+                                    dataKey={column}
+                                    fill={barChartColors[column] ? barChartColors[column] : "#1976d2"}
+
+                        />
                     })}
 
                     <XAxis dataKey="date" style={{fontSize:"80%"}}/>

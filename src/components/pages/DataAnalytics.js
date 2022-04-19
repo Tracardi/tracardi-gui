@@ -17,7 +17,8 @@ export default function DataAnalytics({
                                           displayDetails,
                                           detailsDrawerWidth,
                                           filterFields,
-                                          displayChart = true
+                                          displayChart = true,
+                                          barChartColors = {}
                                       }) {
 
     const getQuery = (type, label) => {
@@ -154,9 +155,9 @@ export default function DataAnalytics({
                 >
                   <BarChartElement
                         onLoadRequest={onLoadHistogramRequest(query)}
-                        columns={[{label: "count", color: "#039be5", stackId: "count"}]}
                         refreshInterval={refresh}
-                    />
+                        barChartColors = {barChartColors}
+                  />
                 </DataBrowsingList>
             </div>
         </div>

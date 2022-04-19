@@ -19,7 +19,7 @@ export default function EventsAnalytics({displayChart=true}) {
 
     const onLoadHistogramRequest = (query) => {
         return {
-            url: '/event/select/histogram',
+            url: '/event/select/histogram?group_by=metadata.status',
             method: "post",
             data: query,
             limit: 30,
@@ -55,6 +55,7 @@ export default function EventsAnalytics({displayChart=true}) {
         detailsDrawerWidth={1000}
         displayDetails={displayDetails}
         displayChart={displayChart}
+        barChartColors={{processed: "#43a047", error: "#d81b60"}}
     />
 
 }
