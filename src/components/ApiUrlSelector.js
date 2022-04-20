@@ -15,42 +15,50 @@ const ApiUrlSelector = ({children}) => {
     const [apiLocation, setApiLocation] = useState(apiUrlStorage().read());
 
     useEffect(() => {
-        setProgress(true);
-        setFailed(false);
         let isSubscribed = true
-        asyncRemote({
-            url: "/healthcheck",
-            baseURL: apiLocation
-        }).then(
-            (response) => {
-                if (response && isSubscribed) {
 
-                    apiUrlStorage().save(apiLocation)
+        console.log(apiLocation)
 
-                    let historicalEndpoints = new storageValue('tracardi-api-urls').read([]);
-                    if (historicalEndpoints === null) {
-                        historicalEndpoints = [];
-                    }
-                    if (!historicalEndpoints.includes(apiLocation)) {
-                        if (apiLocation !== null) {
-                            historicalEndpoints.push(apiLocation);
-                            new storageValue('tracardi-api-urls').save(historicalEndpoints, []);
+        if( apiLocation === null) {
+            setIsEndpointValid(false)
+        } else {
+            setProgress(true);
+            setFailed(false);
+
+            asyncRemote({
+                url: "/healthcheck",
+                baseURL: apiLocation
+            }).then(
+                (response) => {
+                    if (response && isSubscribed) {
+
+                        apiUrlStorage().save(apiLocation)
+
+                        let historicalEndpoints = new storageValue('tracardi-api-urls').read([]);
+                        if (historicalEndpoints === null) {
+                            historicalEndpoints = [];
                         }
+                        if (!historicalEndpoints.includes(apiLocation)) {
+                            if (apiLocation !== null) {
+                                historicalEndpoints.push(apiLocation);
+                                new storageValue('tracardi-api-urls').save(historicalEndpoints, []);
+                            }
+                        }
+                        setIsEndpointValid(true)
+                    } else {
+                        setIsEndpointValid(false)
                     }
-                    setIsEndpointValid(true)
-                } else {
+                }
+            ).catch((e) => {
+                if(isSubscribed) {
+                    setFailed(true)
                     setIsEndpointValid(false)
                 }
-            }
-        ).catch((e) => {
-            if(isSubscribed) {
-                setFailed(true)
-                setIsEndpointValid(false)
-            }
 
-        }).finally(() => {
-            if(isSubscribed) setProgress(false)
-        })
+            }).finally(() => {
+                if(isSubscribed) setProgress(false)
+            })
+        }
 
         return () => isSubscribed = false
     }, [apiLocation]);
