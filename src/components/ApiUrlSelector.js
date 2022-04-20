@@ -17,8 +17,6 @@ const ApiUrlSelector = ({children}) => {
     useEffect(() => {
         let isSubscribed = true
 
-        console.log(apiLocation)
-
         if( apiLocation === null) {
             setIsEndpointValid(false)
         } else {
