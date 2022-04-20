@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useState} from "react";
 import {asyncRemote, covertErrorIntoObject, getError} from "../../../remote_api/entrypoint";
 import TextField from "@mui/material/TextField";
 import Button from "./Button";
@@ -22,27 +22,6 @@ export default function TracardiProSignUpForm({onSubmit, onCancel}) {
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false)
     const [fieldErrors, setFieldErrors] = useState({})
-    const [hosts, setHosts] = useState([]);
-
-    const mounted = useRef(false);
-
-    useEffect(() => {
-        mounted.current = true;
-        asyncRemote({
-            url: "/tpro/available_hosts"
-        }).then((response) => {
-            if (response.data?.hosts) {
-                setHosts(response.data.hosts);
-            }
-        }).catch((e) => {
-
-        }).finally(() => {
-
-        })
-        return () => {
-            mounted.current = false;
-        };
-    }, []);
 
     const handleRegisterTracardiPro = async () => {
         try {
@@ -55,22 +34,18 @@ export default function TracardiProSignUpForm({onSubmit, onCancel}) {
                 data: data
             })
 
-            if (response.status === 200 && mounted.current) {
+            if (response.status === 200) {
                 if (onSubmit) {
                     onSubmit(response.data)
                 }
             }
 
         } catch (e) {
-            if (mounted.current) {
-                const errors = getError(e);
-                setFieldErrors(covertErrorIntoObject(errors));
-                setError(errors);
-            }
+            const errors = getError(e);
+            setFieldErrors(covertErrorIntoObject(errors));
+            setError(errors);
         } finally {
-            if (mounted.current) {
-                setLoading(false);
-            }
+            setLoading(false);
         }
     }
 
@@ -140,25 +115,6 @@ export default function TracardiProSignUpForm({onSubmit, onCancel}) {
             {error && <ErrorsBox errorList={error} style={{borderRadius: 0}}/>}
             <TuiFormGroupContent>
                 <TuiFormGroupContent>
-                    <TuiFormGroupField header="Service Host" description="Please any of the available service Hosts.">
-                        <TextField
-                            label="Tracardi Pro Server Host"
-                            value={data.host}
-                            onChange={(ev) => {
-                                setData({...data, host: ev.target.value})
-                            }}
-                            size="small"
-                            variant="outlined"
-                            required={true}
-                            error={"host" in fieldErrors}
-                            helperText={"host" in fieldErrors && fieldErrors['host']}
-                            select
-                            fullWidth
-                            style={{marginTop: 10}}
-                        >
-                            {hosts.map((host, index) => <MenuItem value={host} key={index}>{host}</MenuItem>)}
-                        </TextField>
-                    </TuiFormGroupField>
                     <TuiFormGroupField>
                         <TuiColumnsFlex width={200} style={{marginTop: 20}}>
                             <TuiTopHeaderWrapper header="E-mail"

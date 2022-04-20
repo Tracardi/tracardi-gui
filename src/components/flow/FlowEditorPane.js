@@ -35,6 +35,7 @@ import ErrorsBox from "../errors/ErrorsBox";
 import {useHistory} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 
+
 function NodeDetailsHandler({node, onLabelSet, onConfig, onRuntimeConfig, pro}) {
 
     const [loading, setLoading] = useState(false);
@@ -50,16 +51,25 @@ function NodeDetailsHandler({node, onLabelSet, onConfig, onRuntimeConfig, pro}) 
         let isSubscribed = true;
 
         if(pro === true) {
-            setLoading(true)
+            setLoading(true);
+            setError(null);
             asyncRemote({
-                url: "/tpro/validate"
+                url: "/tpro/plugin/" + node?.data?.spec?.module
             }).then(response=> {
                 if(isSubscribed) {
-                    setAvailable(response?.data)
+                    // Add spec data from TPRO
+                    if(response?.data?.init) node.data.spec.init = response.data.init
+                    if(response?.data?.form) node.data.spec.form = response.data.form
+                    setAvailable(true)
                     setError(null)
                 }
             }).catch(e=>{
-                setError(getError(e))
+                if(e?.response?.status === 403) {
+                    // Access Denied - probably not signed in
+                    setAvailable(false)
+                } else {
+                    setError(getError(e))
+                }
             }).finally(() => {
                 if(isSubscribed)  setLoading(false)
             })
@@ -72,7 +82,7 @@ function NodeDetailsHandler({node, onLabelSet, onConfig, onRuntimeConfig, pro}) 
             isSubscribed = false;
         }
 
-    }, [pro])
+    }, [pro, node])
 
     if(error !== null) {
         return <ErrorsBox errorList={error}/>
