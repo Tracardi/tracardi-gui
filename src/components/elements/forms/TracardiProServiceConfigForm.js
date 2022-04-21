@@ -6,6 +6,7 @@ import {v4 as uuid4} from "uuid";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import TextField from "@mui/material/TextField";
 import TuiTags from "../tui/TuiTags";
+import {isEmptyObject} from "../../../misc/typeChecking";
 
 function DescriptionForm({data: initData, onChange}) {
 
@@ -61,7 +62,7 @@ function DescriptionForm({data: initData, onChange}) {
 }
 
 export default function TracardiProServiceConfigForm({service, onSubmit}) {
-    console.log(service)
+
     const data = useRef({
         name: "",
         description: "",
@@ -76,13 +77,13 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
     }
 
     const handleSubmit = async () => {
-
         try {
-            const payload = {
+            let payload = {
                 id: uuid4(),
                 type: service?.metadata?.type,
                 name: data.current.name,
                 description: data.current.description,
+                icon: service?.metadata?.icon,
                 tags: data.current.tags,
                 groups: [],
                 credentials: {
@@ -90,6 +91,11 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
                     test: init.current
                 }
             }
+
+            if(service?.destination && !isEmptyObject(service?.destination)) {
+                payload.destination = service.destination
+            }
+
             const response = await asyncRemote({
                 url: '/tpro/resource',
                 method: "POST",

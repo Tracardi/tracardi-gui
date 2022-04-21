@@ -19,7 +19,6 @@ const ServiceCard = ({service, onClick}) => {
                     {service?.metadata?.description}
                 </div>
                 <div style={{lineHeight: 2}}>
-                    <Chip size="small" label={service?.metadata?.prefix} style={{marginRight: 5}}></Chip>
                     {service?.metadata?.tags.map((tag, key) => <Chip size="small" key={key} label={tag} style={{marginRight: 5}}/>)}
                 </div>
                 <div style={{display: "flex", justifyContent: "flex-end", marginTop: 20}}>
