@@ -130,9 +130,9 @@ const AppBox = () => {
             <PageTabs title="Monitoring"
 
                       tabs={[
+                          new PrivateTab(["admin"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
                           new PrivateTab(["admin"], <Instances/>, "/monitoring/instances", "Running instances"),
                           new PrivateTab(["admin"], <Tasks/>, "/monitoring/schedule", "Scheduled tasks"),
-                          new PrivateTab(["admin"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
                           new PrivateTab(["admin"], <UserLogs/>, "/monitoring/user-log", "User logs")
                       ]}
             />

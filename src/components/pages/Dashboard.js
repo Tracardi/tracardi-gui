@@ -77,9 +77,11 @@ export default function Dashboard() {
             <header>Running instances</header>
             <header>Profiles no.</header>
             <header>Sessions no.</header>
+            <header>Events no.</header>
             <header>Events per month</header>
             <header>Profiles per month</header>
             <header>Interests by type</header>
+            <header>Agv process time</header>
         </div>
         <div>
             <ProfileEventHeatMap/>
