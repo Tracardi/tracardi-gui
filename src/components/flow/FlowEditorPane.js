@@ -50,29 +50,33 @@ function NodeDetailsHandler({node, onLabelSet, onConfig, onRuntimeConfig, pro}) 
     useEffect(() => {
         let isSubscribed = true;
 
-        if(pro === true) {
+        // If node is pro and does not have data ini init or form
+        if (pro === true && (node.data.spec.init === null || node.data.spec.form === null)) {
+
             setLoading(true);
             setError(null);
+
             asyncRemote({
                 url: "/tpro/plugin/" + node?.data?.spec?.module
-            }).then(response=> {
-                if(isSubscribed) {
+            }).then(response => {
+                if (isSubscribed) {
                     // Add spec data from TPRO
-                    if(response?.data?.init) node.data.spec.init = response.data.init
-                    if(response?.data?.form) node.data.spec.form = response.data.form
+                    if (response?.data?.init && node.data.spec.init === null) node.data.spec.init = response.data.init
+                    if (response?.data?.form && node.data.spec.form === null) node.data.spec.form = response.data.form
                     setAvailable(true)
                     setError(null)
                 }
-            }).catch(e=>{
-                if(e?.response?.status === 403) {
+            }).catch(e => {
+                if (e?.response?.status === 403) {
                     // Access Denied - probably not signed in
                     setAvailable(false)
                 } else {
                     setError(getError(e))
                 }
             }).finally(() => {
-                if(isSubscribed)  setLoading(false)
+                if (isSubscribed) setLoading(false)
             })
+
         } else {
             setAvailable(true);
             setError(null);
@@ -84,15 +88,15 @@ function NodeDetailsHandler({node, onLabelSet, onConfig, onRuntimeConfig, pro}) 
 
     }, [pro, node])
 
-    if(error !== null) {
+    if (error !== null) {
         return <ErrorsBox errorList={error}/>
     }
 
     if (loading || available === null) {
-        return <CenteredCircularProgress/>
+        return <CenteredCircularProgress label="Connecting Tracardi PRO"/>
     }
 
-    if(available === true) {
+    if (available === true) {
         return <MemoNodeDetails
             onLabelSet={onLabelSet}
             node={node}
@@ -102,7 +106,8 @@ function NodeDetailsHandler({node, onLabelSet, onConfig, onRuntimeConfig, pro}) 
     }
 
     return <NoData header="Available only as Tracardi Pro service">
-        <p style={{textAlign: "center"}}>Please join Tracardi Pro for free and premium connectors and services. It is a free lifetime membership.</p>
+        <p style={{textAlign: "center"}}>Please join Tracardi Pro for free and premium connectors and services. It is a
+            free lifetime membership.</p>
         <Button label="Sure" onClick={go("/pro")}/>
     </NoData>
 
@@ -246,7 +251,7 @@ export function FlowEditorPane(
             if (response && isSubscribed === true) {
                 updateFlow(response?.data);
             }
-        }).catch((e)  => {
+        }).catch((e) => {
             if (e && isSubscribed === true) {
                 if (e?.response?.status === 404) {
                     showAlert({message: "Workflow does not exist.", type: "error", hideAfter: 4000});
@@ -256,7 +261,7 @@ export function FlowEditorPane(
                 }
             }
         }).finally(() => {
-            if(isSubscribed === true) setFlowLoading(false)
+            if (isSubscribed === true) setFlowLoading(false)
         })
 
         return () => {
@@ -351,7 +356,7 @@ export function FlowEditorPane(
 
     const getElementsWithRunOnce = (elements) => {
         return elements.reduce((results, element) => {
-            if(element?.data?.spec?.run_once?.enabled === true) {
+            if (element?.data?.spec?.run_once?.enabled === true) {
                 results.push(element.id)
             }
             return results
@@ -360,7 +365,8 @@ export function FlowEditorPane(
 
     const onElementsRemove = (elementsToRemove) => {
 
-        if(Array.isArray(elementsToRemove)) {
+        if (Array.isArray(elementsToRemove)) {
+            // todo add endpoint call that removes the data
             console.log(getElementsWithRunOnce(elementsToRemove))
         }
 
