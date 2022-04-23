@@ -49,7 +49,8 @@ export default function Dashboard() {
             url: "events/by_source"
         }).then((resposne) => {
             if(resposne) {
-                setEventsBySource(resposne.data)
+                setEventsBySource(resposne.data);
+                console.log(resposne.data);
             }
         }).catch(() => {
 

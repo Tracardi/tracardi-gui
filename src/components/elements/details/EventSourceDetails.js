@@ -13,7 +13,15 @@ import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import EventSourceForm from "../forms/EventSourceForm";
 import TextField from "@mui/material/TextField";
-import {asyncRemote} from "../../../remote_api/entrypoint";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import Tabs, {TabCase} from "../../elements/tabs/Tabs";
+import TuiPieChart from "../charts/PieChart";
+import BarChartElement from "../charts/BarChart";
+import { isEmptyObject, isString } from "../../../misc/typeChecking";
+import ErrorsBox from "../../errors/ErrorsBox";
+import { SelectInput } from "../forms/JsonFormComponents";
+import NoData from "../misc/NoData";
+
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -25,6 +33,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
     const [loading, setLoading] = React.useState(false);
     const [editData, setEditData] = React.useState(null);
     const [refresh, setRefresh] = React.useState(0);
+    const [tab, setTab] = React.useState(0);
 
     useEffect(() => {
         setLoading(true);
@@ -85,7 +94,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
     }
 
     const Details = () => <>
-        <TuiForm>
+        <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Event Source"/>
                 <TuiFormGroupContent header={"Data"}>
@@ -130,7 +139,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
         </TuiForm>
 
 
-        {data.type === "javascript" && <TuiForm>
+        {data.type === "javascript" && <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Integration"
                                     description="Please paste this code into your web page. This code should appear on every page."/>
@@ -152,9 +161,154 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
 
     </>
 
-    return <div className="Box10" style={{height: "100%"}}>
+    const EventSourceAnalytics = () => {
+    
+        const [timeRange, setTimeRange] = React.useState("w");
+        const [groupedByType, setGroupedByType] = React.useState(null);
+        const [groupedByTag, setGroupedByTag] = React.useState(null);
+        const [refresh, setRefresh] = React.useState(getRefreshRate());
+        const [error, setError] = React.useState(null);
+        const mounted = React.useRef(false);
+
+        React.useEffect(() => {
+            mounted.current = true;
+            if (mounted.current === true) setError(null);
+
+            asyncRemote({
+                url: `/event/for-source/${id}/by-type/${timeRange}`
+            })
+            .then(response => {if (mounted.current === true) setGroupedByType(response.data)})
+            .catch(error => {if (mounted.current === true) setError(getError(error))})
+
+            asyncRemote({
+                url: `/event/for-source/${id}/by-tag/${timeRange}`
+            })
+            .then(response => {if (mounted.current === true) setGroupedByTag(response.data)})
+            .catch(error => {if (mounted.current === true) setError(getError(error))})
+            
+            return () => mounted.current = false;
+        }, [timeRange])
+
+        function getRefreshRate() {
+            let rate = localStorage.getItem("eventRefreshRate");
+            if(isString(rate)) {
+                const value = parseInt(rate)
+                if(!isNaN(value)) {
+                    rate = value
+                }
+            }
+            return rate ? rate : 0;
+        }
+    
+        return <>
+            <TuiForm style={{margin: 20, height: "100%"}}>
+                <TuiFormGroup>
+                    <TuiFormGroupHeader header="Event source analytics" description="Here you can check some information on traffic in selected event source." />
+                    <TuiFormGroupContent>
+                        {error !== null ? 
+                        <ErrorsBox errorList={error} />
+                        :
+                        <>
+                            <div>
+                                <header>Please select time range for quick traffic check</header>
+                                <div style={{margin: 15}}>
+                                    <SelectInput
+                                        value={timeRange}
+                                        onChange={setTimeRange} 
+                                        items = {{
+                                            d: "Last day",
+                                            w: "Last week",
+                                            M: "Last month",
+                                            y: "Last year"
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <div style={{height: "300px", overflow: "hidden"}}>
+                                <header style={{display: "flex", justifyContent: "center"}}>Events grouped by type for selected source</header>
+                                {groupedByType !== null ? 
+                                    Array.isArray(groupedByType) && groupedByType.length > 0 ?
+                                        <TuiPieChart data={groupedByType} fill="#444"/> 
+                                        :
+                                        <div style={{marginTop: 50}}><NoData header="No events found for selected source"/></div>
+                                    : 
+                                    <CenteredCircularProgress />
+                                }
+                            </div>
+                            <div style={{height: "300px", overflow: "hidden"}}>
+                                <header style={{display: "flex", justifyContent: "center"}}>Events grouped by tag for selected source</header>
+                                {groupedByTag !== null ? 
+                                    Array.isArray(groupedByTag) && groupedByTag.length > 0 ?
+                                        <TuiPieChart data={groupedByTag} fill="#444"/> 
+                                        :
+                                        <div style={{marginTop: 50}}><NoData header="No events found for selected source"/></div>
+                                    : 
+                                    <CenteredCircularProgress />
+                                }
+                            </div>
+                            <div style={{height: "300px", overflow: "hidden"}}>
+                                <header style={{display: "flex", justifyContent: "center"}}>Events by time for selected source</header>
+                                <BarChartElement
+                                    refresh={refresh}
+                                    onLoadRequest={{
+                                        url: '/event/select/histogram?group_by=metadata.status',
+                                        method: "post",
+                                        data: {
+                                            minDate: {
+                                                delta: {
+                                                    type: "minus",
+                                                    value: -1,
+                                                    entity: {w: "week", y: "year", d: "day", M: "month"}[timeRange]
+                                                }
+                                            },
+                                            where: "source.id:" + id
+                                        },
+                                        limit: 30,
+                                        page: 0
+                                    }}
+                                    barChartColors={{processed: "#43a047", error: "#d81b60"}}
+                                />
+                            </div>
+                        </>
+                        }
+                    </TuiFormGroupContent>
+                </TuiFormGroup>
+            </TuiForm>
+        </>;
+    };
+
+    return <> 
         {loading && <CenteredCircularProgress/>}
-        {data && <Details/>}
+        {data && 
+            <Tabs
+                className="PluginTabs"
+                tabs={["Details", "Analytics"]}
+                defaultTab={tab}
+                onTabSelect={setTab}
+                tabStyle={{flex: "initial"}}
+                tabContentStyle={{overflow: "initial"}}
+                tabsStyle={{
+                    display: "flex", 
+                    flexDirection: "row", 
+                    justifyContent: "space-around", 
+                    backgroundColor: "white", 
+                    borderBottom: "solid 1px grey", 
+                    margin: 10,
+                    marginTop: 0,
+                    marginBottom: 0,
+                    position: "sticky",
+                    top: 0,
+                    zIndex: 2
+                }}
+            >
+            <TabCase id={0} key="Details">
+                <Details />
+            </TabCase>
+            <TabCase id={1} key="Analytics">
+                <EventSourceAnalytics />
+            </TabCase>
+        </Tabs>
+        }
 
         <FormDrawer
             width={800}
@@ -162,17 +316,17 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             onClose={() => {
                 setEditData(null)
             }}
-            open={editData !== null}>
-
+            open={editData !== null}
+        >
             <EventSourceForm value={editData}
                              style={{margin: 20}}
                              onClose={() => {
                                  setEditData(null);
                                  setRefresh(refresh + 1)
-                             }}/>
-
+                             }}
+            />
         </FormDrawer>
-    </div>
+    </>
 
 }
 

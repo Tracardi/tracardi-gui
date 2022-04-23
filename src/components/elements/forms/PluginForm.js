@@ -25,7 +25,7 @@ export default function PluginForm({id}) {
     const [nameEdit, setNameEdit] = useState(false);
     const [newName, setNewName] = useState("");
     const [loading, setLoading] = useState(false);
-    const [tab, setTab] = useState(2);
+    const [tab, setTab] = useState(0);
 
     useEffect(() => {
             let isSubscribed = true;
