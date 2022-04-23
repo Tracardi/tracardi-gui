@@ -218,7 +218,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                         display: "flex",
                         justifyContent: "flex-end",
                         alignItems: "center",
-                        margin: "0px 10px 40px",
+                        margin: "0px 0px 40px",
                         borderBottom: "solid 1px #ccc",
                         padding: 10
                     }}>

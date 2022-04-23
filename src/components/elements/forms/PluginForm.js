@@ -95,15 +95,11 @@ export default function PluginForm({id}) {
                             tabs={["Overview", "Config", "Docs", "Raw"]}
                             defaultTab={tab}
                             onTabSelect={setTab}
-                            tabStyle={{flex: "initial"}}
                             tabContentStyle={{overflow: "initial"}}
                             tabsStyle={{
                                 display: "flex", 
-                                flexDirection: "row", 
-                                justifyContent: "space-around", 
-                                backgroundColor: "white", 
-                                borderBottom: "solid 1px grey", 
-                                margin: 10,
+                                flexDirection: "row",
+                                backgroundColor: "white",
                                 marginTop: 0,
                                 marginBottom: 0,
                                 position: "sticky",
