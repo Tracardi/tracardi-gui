@@ -17,9 +17,9 @@ import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import Tabs, {TabCase} from "../../elements/tabs/Tabs";
 import TuiPieChart from "../charts/PieChart";
 import BarChartElement from "../charts/BarChart";
-import { isEmptyObject, isString } from "../../../misc/typeChecking";
+import {isString} from "../../../misc/typeChecking";
 import ErrorsBox from "../../errors/ErrorsBox";
-import { SelectInput } from "../forms/JsonFormComponents";
+import {SelectInput} from "../forms/JsonFormComponents";
 import NoData from "../misc/NoData";
 
 
@@ -90,7 +90,8 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                 console.error(e);
             }
 
-        }).catch(() => {})
+        }).catch(() => {
+        })
     }
 
     const Details = () => <>
@@ -162,7 +163,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
     </>
 
     const EventSourceAnalytics = () => {
-    
+
         const [timeRange, setTimeRange] = React.useState("w");
         const [groupedByType, setGroupedByType] = React.useState(null);
         const [groupedByTag, setGroupedByTag] = React.useState(null);
@@ -177,135 +178,142 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             asyncRemote({
                 url: `/event/for-source/${id}/by-type/${timeRange}`
             })
-            .then(response => {if (mounted.current === true) setGroupedByType(response.data)})
-            .catch(error => {if (mounted.current === true) setError(getError(error))})
+                .then(response => {
+                    if (mounted.current === true) setGroupedByType(response.data)
+                })
+                .catch(error => {
+                    if (mounted.current === true) setError(getError(error))
+                })
 
             asyncRemote({
                 url: `/event/for-source/${id}/by-tag/${timeRange}`
             })
-            .then(response => {if (mounted.current === true) setGroupedByTag(response.data)})
-            .catch(error => {if (mounted.current === true) setError(getError(error))})
-            
+                .then(response => {
+                    if (mounted.current === true) setGroupedByTag(response.data)
+                })
+                .catch(error => {
+                    if (mounted.current === true) setError(getError(error))
+                })
+
             return () => mounted.current = false;
         }, [timeRange])
 
         function getRefreshRate() {
             let rate = localStorage.getItem("eventRefreshRate");
-            if(isString(rate)) {
+            if (isString(rate)) {
                 const value = parseInt(rate)
-                if(!isNaN(value)) {
+                if (!isNaN(value)) {
                     rate = value
                 }
             }
             return rate ? rate : 0;
         }
-    
+
         return <>
-            <TuiForm style={{margin: 20, height: "100%"}}>
-                <TuiFormGroup>
-                    <TuiFormGroupHeader header="Event source analytics" description="Here you can check some information on traffic in selected event source." />
-                    <TuiFormGroupContent>
-                        {error !== null ? 
-                        <ErrorsBox errorList={error} />
-                        :
-                        <>
-                            <div>
-                                <header>Please select time range for quick traffic check</header>
-                                <div style={{margin: 15}}>
-                                    <SelectInput
-                                        value={timeRange}
-                                        onChange={setTimeRange} 
-                                        items = {{
-                                            d: "Last day",
-                                            w: "Last week",
-                                            M: "Last month",
-                                            y: "Last year"
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                            <div style={{height: "300px", overflow: "hidden"}}>
-                                <header style={{display: "flex", justifyContent: "center"}}>Events grouped by type for selected source</header>
-                                {groupedByType !== null ? 
-                                    Array.isArray(groupedByType) && groupedByType.length > 0 ?
-                                        <TuiPieChart data={groupedByType} fill="#444"/> 
-                                        :
-                                        <div style={{marginTop: 50}}><NoData header="No events found for selected source"/></div>
-                                    : 
-                                    <CenteredCircularProgress />
-                                }
-                            </div>
-                            <div style={{height: "300px", overflow: "hidden"}}>
-                                <header style={{display: "flex", justifyContent: "center"}}>Events grouped by tag for selected source</header>
-                                {groupedByTag !== null ? 
-                                    Array.isArray(groupedByTag) && groupedByTag.length > 0 ?
-                                        <TuiPieChart data={groupedByTag} fill="#444"/> 
-                                        :
-                                        <div style={{marginTop: 50}}><NoData header="No events found for selected source"/></div>
-                                    : 
-                                    <CenteredCircularProgress />
-                                }
-                            </div>
-                            <div style={{height: "300px", overflow: "hidden"}}>
-                                <header style={{display: "flex", justifyContent: "center"}}>Events by time for selected source</header>
-                                <BarChartElement
-                                    refresh={refresh}
-                                    onLoadRequest={{
-                                        url: '/event/select/histogram?group_by=metadata.status',
-                                        method: "post",
-                                        data: {
-                                            minDate: {
-                                                delta: {
-                                                    type: "minus",
-                                                    value: -1,
-                                                    entity: {w: "week", y: "year", d: "day", M: "month"}[timeRange]
-                                                }
-                                            },
-                                            where: "source.id:" + id
-                                        },
-                                        limit: 30,
-                                        page: 0
-                                    }}
-                                    barChartColors={{processed: "#43a047", error: "#d81b60"}}
-                                />
-                            </div>
-                        </>
-                        }
-                    </TuiFormGroupContent>
-                </TuiFormGroup>
-            </TuiForm>
+            {error !== null ?
+                <ErrorsBox errorList={error}/>
+                :
+                <>
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                        margin: "0px 10px 40px",
+                        borderBottom: "solid 1px #ccc",
+                        padding: 10
+                    }}>
+                        <header style={{marginRight: 10}}>Please select time range</header>
+                        <SelectInput
+                            value={timeRange}
+                            onChange={setTimeRange}
+                            items={{
+                                d: "Last day",
+                                w: "Last week",
+                                M: "Last month",
+                                y: "Last year"
+                            }}
+                        />
+                    </div>
+                    <div style={{display: "flex"}}>
+                        <div style={{width: "50%", height: "300px", overflow: "hidden"}}>
+                            <header style={{display: "flex", justifyContent: "center"}}>Events by type
+                            </header>
+                            {groupedByType !== null ?
+                                Array.isArray(groupedByType) && groupedByType.length > 0 ?
+                                    <TuiPieChart data={groupedByType} fill="#1976d2"/>
+                                    :
+                                    <div style={{marginTop: 50}}><NoData
+                                        header="No data"/></div>
+                                :
+                                <CenteredCircularProgress/>
+                            }
+                        </div>
+                        <div style={{width: "50%", height: "300px", overflow: "hidden"}}>
+                            <header style={{display: "flex", justifyContent: "center"}}>Events by tags
+                            </header>
+                            {groupedByTag !== null ?
+                                Array.isArray(groupedByTag) && groupedByTag.length > 0 ?
+                                    <TuiPieChart data={groupedByTag} fill="#1976d2"/>
+                                    :
+                                    <div style={{marginTop: 50}}><NoData
+                                        header="No data"/></div>
+                                :
+                                <CenteredCircularProgress/>
+                            }
+                        </div>
+                    </div>
+                    <div style={{height: "220px"}}>
+                        <header style={{display: "flex", justifyContent: "center"}}>Events time-line</header>
+                        <BarChartElement
+                            refresh={refresh}
+                            onLoadRequest={{
+                                url: '/event/select/histogram?group_by=metadata.status',
+                                method: "post",
+                                data: {
+                                    minDate: {
+                                        delta: {
+                                            type: "minus",
+                                            value: -1,
+                                            entity: {w: "week", y: "year", d: "day", M: "month"}[timeRange]
+                                        }
+                                    },
+                                    where: "source.id:" + id
+                                },
+                                limit: 30,
+                                page: 0
+                            }}
+                            barChartColors={{processed: "#43a047", error: "#d81b60"}}
+                        />
+                    </div>
+                </>
+            }
+
         </>;
     };
 
-    return <> 
+    return <>
         {loading && <CenteredCircularProgress/>}
-        {data && 
-            <Tabs
-                className="PluginTabs"
-                tabs={["Details", "Analytics"]}
-                defaultTab={tab}
-                onTabSelect={setTab}
-                tabStyle={{flex: "initial"}}
-                tabContentStyle={{overflow: "initial"}}
-                tabsStyle={{
-                    display: "flex", 
-                    flexDirection: "row", 
-                    justifyContent: "space-around", 
-                    backgroundColor: "white", 
-                    borderBottom: "solid 1px grey", 
-                    margin: 10,
-                    marginTop: 0,
-                    marginBottom: 0,
-                    position: "sticky",
-                    top: 0,
-                    zIndex: 2
-                }}
-            >
+        {data &&
+        <Tabs
+            tabs={["Details", "Analytics"]}
+            defaultTab={tab}
+            onTabSelect={setTab}
+            tabContentStyle={{overflow: "initial"}}
+            tabsStyle={{
+                display: "flex",
+                backgroundColor: "white",
+                marginTop: 0,
+                marginBottom: 0,
+                position: "sticky",
+                top: 0,
+                zIndex: 2
+            }}
+        >
             <TabCase id={0} key="Details">
-                <Details />
+                <Details/>
             </TabCase>
             <TabCase id={1} key="Analytics">
-                <EventSourceAnalytics />
+                <EventSourceAnalytics/>
             </TabCase>
         </Tabs>
         }

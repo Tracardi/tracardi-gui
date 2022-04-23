@@ -38,7 +38,7 @@ export default function EventSources() {
         buttomLabel="New event source"
         buttonIcon={<BsBoxArrowInRight size={20} style={{marginRight: 10}}/>}
         drawerDetailsTitle="Event source details"
-        drawerDetailsWidth={800}
+        drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
         drawerAddTitle="New event source"
         drawerAddWidth={800}
