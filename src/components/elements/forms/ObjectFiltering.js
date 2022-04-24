@@ -95,9 +95,9 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
         </div>
         <div className="Action">
             <Button label="Filter"
-                    style={{padding: "7px 14px", margin:"0 0 0 5px"}}
+                    style={{margin:"0 0 0 5px"}}
                     onClick={onReady}
-                    icon={<AiOutlineFilter size={20} style={{marginRight: 5}}/>}/>
+                    icon={<AiOutlineFilter size={20} style={{marginRight: 5, height: 27}}/>}/>
         </div>
     </section>
 }

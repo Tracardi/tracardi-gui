@@ -35,7 +35,7 @@ export default function Destinations() {
         urlFunc={urlFunc}
         cardFunc={destinations}
         buttomLabel="New destination"
-        buttonIcon={<BsBoxArrowRight size={20} style={{marginRight: 10}}/>}
+        buttonIcon={<BsBoxArrowRight size={20}/>}
         drawerDetailsTitle="Destination details"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}

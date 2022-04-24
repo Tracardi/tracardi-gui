@@ -14,6 +14,7 @@ import {
     SelectInput, BoolInput, ReadOnlyTags, EventTypes, EventType
 } from "./JsonFormComponents";
 import ErrorsBox from "../../errors/ErrorsBox";
+import {AiOutlineCheckCircle} from "react-icons/ai";
 
 const getComponentByType = ({value, errorMessage, componentType, fieldId, onChange}) => {
 
@@ -214,6 +215,7 @@ const JsonForm = React.memo(({schema, values = {}, errorMessages = {}, serverSid
                     error={hasErrors}
                     progress={processing}
                     label="Save"
+                    icon={<AiOutlineCheckCircle size={20}/>}
                     style={{justifyContent: "center"}}
             />
         </TuiForm>

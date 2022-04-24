@@ -99,7 +99,7 @@ export default function UserAccount () {
                             </div>
                             <div style={{display: "flex", alignSelf: "flex-end", flexDirection: "row"}}>
                                 <Button label="Edit account" onClick={() => setEdit(true)} icon={<FiEdit3 size={20}/>}/>
-                                <Button icon={<AiOutlinePoweroff size={20} />} label="Logout" onClick={go("/logout")}/>                            
+                                <Button icon={<AiOutlinePoweroff size={20}/>} label="Logout" onClick={go("/logout")}/>
                             </div>
                         </div>
                     </TuiFormGroupField>

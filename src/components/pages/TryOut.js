@@ -13,6 +13,7 @@ import PasswordInput from "../elements/forms/inputs/PasswordInput";
 import EvalInput from "../elements/forms/inputs/EvalInput";
 import {Button} from "@mui/material";
 import DotAccessor from "../elements/forms/inputs/DotAccessor";
+import SchedulerJobForm from "../elements/forms/SchedulerJobForm";
 
 export default function TryOut() {
     const [v,setV] = React.useState("`profile@`");
@@ -32,6 +33,7 @@ export default function TryOut() {
     // ];
 
   return (<div style={{padding: 10}}>
+          <SchedulerJobForm/>
           <DotAccessor label="E-mail" value={v} onChange={(e)=>{console.log("READY", e);setV(e)}}/>
           <Button onClick={()=>setV("test")}>xxx</Button>
       {/*<TuiSelectEventType value={v} onSetValue={(v) => {console.log("value", v); setV(v)}} solo={true}/>*/}

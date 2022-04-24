@@ -27,7 +27,7 @@ export default function DisabledInput({value, label, onChange}) {
                 variant="outlined"
                 fullWidth
             />
-            <Button label={disabled ? "Unlock": "Lock"} onClick={()=>setDisabled(!disabled)} style={{padding: "6px 10px"}}
+            <Button label={disabled ? "Unlock": "Lock"} onClick={()=>setDisabled(!disabled)} style={{width: 120}}
             icon={disabled ? <VscUnlock size={20}/> : <VscLock size={20}/>}
             />
         </div>

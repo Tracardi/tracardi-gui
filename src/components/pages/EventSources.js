@@ -36,7 +36,7 @@ export default function EventSources() {
         urlFunc={urlFunc}
         cardFunc={sources}
         buttomLabel="New event source"
-        buttonIcon={<BsBoxArrowInRight size={20} style={{marginRight: 10}}/>}
+        buttonIcon={<BsBoxArrowInRight size={20}/>}
         drawerDetailsTitle="Event source details"
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}

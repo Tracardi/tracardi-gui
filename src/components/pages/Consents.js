@@ -39,7 +39,7 @@ export default function  Consents() {
         urlFunc={urlFunc}
         cardFunc={flows}
         buttomLabel="New consent type"
-        buttonIcon={<VscLaw size={20} style={{marginRight: 10}}/>}
+        buttonIcon={<VscLaw size={20}/>}
         drawerDetailsTitle="Consent type details"
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
