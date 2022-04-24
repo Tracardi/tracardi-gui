@@ -15,7 +15,6 @@ import Segments from "./pages/Segments";
 import FlowReader from "./flow/FlowReader";
 import Instances from "./pages/Instances";
 import Settings from "./pages/Settings";
-import Tasks from "./pages/Tasks";
 import TryOut from "./pages/TryOut";
 import TestEditor from "./pages/TestEditor";
 import NewUser from "./pages/NewUser";
@@ -132,7 +131,6 @@ const AppBox = () => {
                       tabs={[
                           new PrivateTab(["admin"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
                           new PrivateTab(["admin"], <Instances/>, "/monitoring/instances", "Running instances"),
-                          new PrivateTab(["admin"], <Tasks/>, "/monitoring/schedule", "Scheduled tasks"),
                           new PrivateTab(["admin"], <UserLogs/>, "/monitoring/user-log", "User logs")
                       ]}
             />
