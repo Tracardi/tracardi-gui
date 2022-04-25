@@ -219,7 +219,7 @@ export default function EventTags() {
                 }}
                 textFieldLabel="Type here to filter tags by event type"
                 buttonLabel="New tags"
-                buttonIcon={<IoIosAddCircleOutline size={23} style={{marginRight: "10px", marginLeft: "20px"}}/>}
+                buttonIcon={<IoIosAddCircleOutline size={23}/>}
                 onAdd={() => setNewTagsFormOpened(true)}
                 onFilter={filter => setFilter(filter)}
             />

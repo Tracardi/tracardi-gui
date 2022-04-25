@@ -44,9 +44,7 @@ export default function PageTabs({title, tabs = {}}) {
             {filteredTabs.map((tab, key) => {
                 i = i + 1;
                 return <TabCase id={i} key={key}>
-                    <div style={{paddingTop: 10, backgroundColor: "white"}}>
                         {tab.component}
-                    </div>
                 </TabCase>
             })}
         </Tabs>

@@ -2,10 +2,6 @@
     display: flex;
     flex-direction: column;
 }
-.DataAnalytics  > .Filtering {
-    height: 55px;
-}
-
 .DataAnalytics  > .Data {
     margin: 0 4px;
     display: flex;

@@ -38,7 +38,7 @@ export default function EventValidation() {
         urlFunc={urlFunc}
         cardFunc={flows}
         buttomLabel="New validation"
-        buttonIcon={<BsFolderCheck size={20} style={{marginRight: 10}}/>}
+        buttonIcon={<BsFolderCheck size={20}/>}
         drawerDetailsTitle="Validation schema details"
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}

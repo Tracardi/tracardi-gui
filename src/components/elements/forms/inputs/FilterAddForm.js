@@ -11,6 +11,7 @@ export default function FilterAddForm({textFieldLabel, buttonLabel, buttonIcon, 
             {buttonLabel && <Button label={buttonLabel}
                                     onClick={onAdd}
                                     icon={buttonIcon}
+                                    style={{height: 39}}
             />}
         </div>
     </div>

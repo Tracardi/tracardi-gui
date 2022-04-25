@@ -146,41 +146,34 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
         <div>
             <Button label="Restore production"
                     icon={<BiReset size={20}/>}
-                    style={{padding: "4px", fontSize: 14, justifyContent: "center"}}
                     onClick={() => restoreProduction(flowId)}
                     progress={productionRestoreProgress}
             />
             <Button label="Restore draft"
                     icon={<BiReset size={20}/>}
-                    style={{padding: "4px", fontSize: 14, justifyContent: "center"}}
                     onClick={() => restoreDraft(flowId)}
                     progress={draftRestoreProgress}
             />
             <Button label="Save"
                     icon={<TiTickOutline size={20}/>}
-                    style={{padding: "4px 8px", fontSize: 14, justifyContent: "center"}}
                     onClick={handleSave}
                     progress={draftSaveProgress}
             />
             <Button label="Deploy"
                     icon={<BsToggleOn size={20}/>}
-                    style={{padding: "4px 8px", fontSize: 14, justifyContent: "center"}}
                     onClick={handleDeploy}
                     progress={deployProgress}
             />
             <Button label="Test"
                     icon={<BsClipboardCheck size={20}/>}
-                    style={{padding: "4px 8px", fontSize: 14, justifyContent: "center"}}
                     onClick={() => setTestConsoleOpened(true)}
             />
             <Button label="Data"
                     icon={<BsFolder size={20}/>}
-                    style={{padding: "4px", width: 100, fontSize: 14, justifyContent: "center"}}
                     onClick={() => setEventsOpened(true)}
             />
             <Button label="Rules"
                     icon={<FaUncharted size={20}/>}
-                    style={{padding: "4px", width: 100, fontSize: 14, justifyContent: "center"}}
                     onClick={() => setRulesOpened(true)}
             />
         </div>

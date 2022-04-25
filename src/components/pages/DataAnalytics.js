@@ -129,7 +129,6 @@ export default function DataAnalytics({
 
     return (
         <div className="DataAnalytics">
-            <div className="Filtering">
                 <ObjectFiltering
                     type={type}
                     initDate={query}
@@ -137,7 +136,6 @@ export default function DataAnalytics({
                     onFilterClick={onFilter}
                     onRefreshChange={handleRefreshChange}
                 />
-            </div>
             <div className="Data">
                 <DataBrowsingList
                     label={label}

@@ -53,7 +53,7 @@ export default function Rules() {
         cardFunc={ruleCards}
         rowFunc={ruleRows}
         buttomLabel="New routing rule"
-        buttonIcon={<FaUncharted size={20} style={{marginRight: 10}}/>}
+        buttonIcon={<FaUncharted size={20}/>}
         drawerDetailsTitle="Rule details"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
