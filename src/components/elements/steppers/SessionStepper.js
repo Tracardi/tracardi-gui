@@ -8,7 +8,7 @@ import {FiMoreHorizontal} from "react-icons/fi";
 import ErrorsBox from "../../errors/ErrorsBox";
 import NoData from "../misc/NoData";
 
-export default function SessionStepper ({ sessionId, onEventSelect = null }) {
+export default function SessionStepper ({ session, onEventSelect = null }) {
     
     const [eventsData, setEventsData] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
@@ -18,11 +18,11 @@ export default function SessionStepper ({ sessionId, onEventSelect = null }) {
 
     React.useEffect(() => {
         let subscribed = true;
-        if (sessionId !== null) {
+        if (session !== null) {
             if (subscribed) setLoading(true);
             if (subscribed) setError(null);
             asyncRemote({
-                url: "/events/session/" + sessionId + "?limit=" + limit
+                url: "/events/session/" + session.id + "?limit=" + limit
             })
             .then(response => {if (subscribed) setEventsData(response.data.result); if (subscribed) setHasMore(response.data.more_to_load)})
             .catch(e => {if (subscribed) setError(getError(e))})
@@ -36,7 +36,7 @@ export default function SessionStepper ({ sessionId, onEventSelect = null }) {
     }
 
     return <div className="SessionStepper">
-        <header className="Header">{sessionId && "Events for session " + sessionId}</header>
+        <header className="Header">{session && `Events for session from ${session.insert.substring(0, 10)} with duration of ${Math.floor(session.duration / 60)} minutes`}</header>
         {Array.isArray(eventsData) && eventsData.length > 0 && <Stepper 
             orientation="vertical" 
             connector={<div className="StepConnector"/>}
@@ -61,7 +61,7 @@ export default function SessionStepper ({ sessionId, onEventSelect = null }) {
         }
         {loading && Array.isArray(eventsData) && eventsData.length === 0 && <CenteredCircularProgress style={{marginTop: 10}}/>}
         {error && <ErrorsBox errorList={error} style={{alignSelf: "flex-start"}}/>}
-        {sessionId === null && <div style={{height: "577px", display: "flex", alignItems: "center"}}><NoData header="No data found for defined session offset" fontSize="16px"/></div>}
+        {session === null && <div style={{height: "577px", display: "flex", alignItems: "center"}}><NoData header="No data found for defined session offset" fontSize="16px"/></div>}
         {hasMore && <Button 
             label={"LOAD MORE"} 
             icon={<FiMoreHorizontal />} 
