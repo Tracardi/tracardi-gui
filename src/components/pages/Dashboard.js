@@ -12,6 +12,7 @@ import InstancesCounter from "../elements/metrics/InstancesCounter";
 import MetricTimeLine from "../elements/metrics/MetricTimeLine";
 import SessionLineChart from "../elements/charts/SessionLineChart";
 import AvgEventTime from "../elements/metrics/AvgEventTimeCounter";
+import ProfileTimeLine from "../elements/charts/ProfilesTimeLine";
 
 export default function Dashboard() {
 
@@ -59,7 +60,6 @@ export default function Dashboard() {
         }).then((resposne) => {
             if (resposne) {
                 setEventsBySource(resposne.data);
-                console.log(resposne.data);
             }
         }).catch(() => {
 
@@ -71,7 +71,7 @@ export default function Dashboard() {
     const PieChart = ({loading, data, header, fill = "#1976d2"}) => {
         return <div>
             {header && <header style={{display: "flex", justifyContent: "center"}}>{header}</header>}
-            <div style={{width: 350, height: 230}}>
+            <div style={{width: 450, height: 300}}>
                 {!loading && <TuiPieChart data={data} fill={fill}/>}
                 {loading && <CenteredCircularProgress/>}
             </div>
@@ -100,18 +100,19 @@ export default function Dashboard() {
                 <SessionLineChart/>
             </MetricTimeLine>
         </div>
-
-
+        <MetricTimeLine fitContent={false}>
+        <div style={{width: "100%", height: 250, padding: 30}}>
+                <div>Profile time-line</div>
+                <ProfileTimeLine/>
+        </div>
+        </MetricTimeLine>
 
         <div style={{display: "flex", flexDirection: "row"}}>
 
-            <PieChart header="Events by type" loading={loadingByType} data={eventsByType}/>
-            <PieChart header="Events by tag" loading={loadingByTag} data={eventsByTag}/>
-            <PieChart header="Events by source" loading={loadingBySource} data={eventsBySource}/>
+            <MetricTimeLine><PieChart header="Events by type" loading={loadingByType} data={eventsByType}/></MetricTimeLine>
+            <MetricTimeLine><PieChart header="Events by tag" loading={loadingByTag} data={eventsByTag}/></MetricTimeLine>
+            <MetricTimeLine><PieChart header="Events by source" loading={loadingBySource} data={eventsBySource}/></MetricTimeLine>
 
-        </div>
-        <div>
-            <ProfileEventHeatMap/>
         </div>
         <header>Events per month</header>
         <header>Profiles per month</header>

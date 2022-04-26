@@ -1,20 +1,18 @@
-import {Area, AreaChart, Line, LineChart, ResponsiveContainer} from "recharts";
 import React, {useEffect, useState} from "react";
 import {asyncRemote} from "../../../remote_api/entrypoint";
+import {Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 
-export default function ProfileLineChart() {
+export default function ProfileTimeLine() {
 
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(null)
-    const [error, setError] = useState(false);
 
     useEffect(() => {
         setLoading(true);
         let isSubscribed = true;
-        setError(false);
         asyncRemote({
-            url: '/profile/select/histogram',
+            url: '/event/select/histogram',
             method: "post",
             data: {
                 "minDate": {
@@ -31,7 +29,7 @@ export default function ProfileLineChart() {
                 if (isSubscribed) setData(resposne?.data?.result)
             }
         }).catch(() => {
-            setError(true)
+
         }).finally(() => {
             if (isSubscribed) setLoading(false)
         })
@@ -39,18 +37,22 @@ export default function ProfileLineChart() {
         return () => isSubscribed = false;
     }, [])
 
-    if(error) {
-        return ""
-    }
-
     if (loading) {
-        return <div style={{width: 150, height: 110}}><CenteredCircularProgress/></div>
+        return <div><CenteredCircularProgress/></div>
     }
 
-    return <div style={{margin: 15}}>
-        <AreaChart width={150} height={80} data={data}>
-            <Area type="monotone" dataKey="count" stroke="#1976d2" fill="#e1f5fe" fillOpacity={0.3} strokeWidth={2}
-                  dot={false}/>
-        </AreaChart>
-    </div>
+    return <ResponsiveContainer>
+        <BarChart data={data}>
+            <CartesianGrid strokeDasharray="2 1" vertical={false}/>
+            <Tooltip isAnimationActive={false}/>
+            <Bar
+                dataKey="count"
+                fill="#1976d2"
+
+            />
+            <XAxis dataKey="date" style={{fontSize: "80%"}}/>
+            <YAxis style={{fontSize: "90%"}}/>
+
+        </BarChart>
+    </ResponsiveContainer>
 }

@@ -63,15 +63,15 @@ export default class TuiPieChart extends PureComponent {
     render() {
         return (
             <ResponsiveContainer width="100%" height="100%">
-                <PieChart width={400} height={400}>
+                <PieChart width={300} height={300}>
                     <Pie
                         activeIndex={this.state.activeIndex}
                         activeShape={renderActiveShape}
                         data={this.props.data}
                         cx="50%"
                         cy="50%"
-                        innerRadius={60}
-                        outerRadius={80}
+                        innerRadius={65}
+                        outerRadius={85}
                         fill={this.props.fill}
                         dataKey="value"
                         onMouseEnter={this.onPieEnter}

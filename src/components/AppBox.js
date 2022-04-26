@@ -46,13 +46,7 @@ const AppBox = () => {
         {/*Dashboard*/}
 
         <Route exact path={urlPrefix("/dashboard")}>
-            <PageTabs title="Dashboard"
-                      tabs={[
-                          new PrivateTab(["admin", "marketer"], <Dashboard/>, "/dashboard/general", "General"),
-                          new PrivateTab(["admin", "marketer"], <div/>, "/dashboard/event", "Events"),
-                      ]}
-            />
-
+            <Dashboard/>
         </Route>
 
         {/*Pro*/}

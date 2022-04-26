@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Counter({label, value, subValue, subValueSuffix = "",width=150}) {
+export default function Counter({label, value, subValue, subValueSuffix = "",width=120}) {
     console.log(label, typeof(value), value, abbreviateNumber(value))
     function round(num, places) {
         return +(Math.round(num + "e+" + places) + "e-" + places);
@@ -26,12 +26,12 @@ export default function Counter({label, value, subValue, subValueSuffix = "",wid
         return round(newValue, 3);
     }
 
-    return <div style={{width: width, padding: 20, margin: "0px 5px", fontFamily: "Lato"}}>
+    return <div style={{width: width, padding: 15, margin: "0px 5px", fontFamily: "Lato"}}>
         <div style={{fontWeight: 400}}>{label}</div>
         <div style={{
             display: "flex",
             justifyContent: "center",
-            fontSize: "270%",
+            fontSize: "200%",
             color: "#1976d2",
             fontWeight: 800
         }}>{abbreviateNumber(value)}</div>

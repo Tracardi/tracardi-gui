@@ -7,10 +7,12 @@ export default function SessionLineChart() {
 
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(null)
+    const [error, setError] = useState(false);
 
     useEffect(() => {
         setLoading(true);
         let isSubscribed = true;
+        setError(false);
         asyncRemote({
             url: '/session/select/histogram',
             method: "post",
@@ -29,7 +31,7 @@ export default function SessionLineChart() {
                 if (isSubscribed) setData(resposne?.data?.result)
             }
         }).catch(() => {
-
+            setError(true);
         }).finally(() => {
             if (isSubscribed) setLoading(false)
         })
@@ -37,12 +39,16 @@ export default function SessionLineChart() {
         return () => isSubscribed = false;
     }, [])
 
+    if(error) {
+        return ""
+    }
+
     if (loading) {
-        return <div style={{width: 150, height: 130}}><CenteredCircularProgress/></div>
+        return <div style={{width: 150, height: 110}}><CenteredCircularProgress/></div>
     }
 
     return <div style={{margin: 15}}>
-        <AreaChart width={150} height={100} data={data}>
+        <AreaChart width={150} height={80} data={data}>
             <Area type="monotone" dataKey="count" stroke="#1976d2" fill="#e1f5fe" fillOpacity={0.3} strokeWidth={2}
                   dot={false}/>
         </AreaChart>
