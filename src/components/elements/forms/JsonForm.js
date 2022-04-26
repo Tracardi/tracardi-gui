@@ -11,7 +11,7 @@ import {
     KeyValueInput,
     ListOfDotPaths,
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
-    SelectInput, BoolInput, ReadOnlyTags, EventTypes, EventType
+    SelectInput, BoolInput, ReadOnlyTags, EventTypes, EventType, ConsentTypes
 } from "./JsonFormComponents";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {AiOutlineCheckCircle} from "react-icons/ai";
@@ -33,6 +33,10 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
             return (props) => <EventTypes value={value}
                                           onChange={(value) => handleOnChange(value, fieldId)}
                                           {...props}/>
+
+        case "consentTypes":
+            return (props) => <ConsentTypes value={value} onChange={value => handleOnChange(value, fieldId)} {...props}/>
+
         case "eventType":
             return (props) => <EventType value={value}
                                           onChange={(value) => handleOnChange(value, fieldId)}
