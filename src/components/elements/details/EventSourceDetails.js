@@ -13,7 +13,15 @@ import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import EventSourceForm from "../forms/EventSourceForm";
 import TextField from "@mui/material/TextField";
-import {asyncRemote} from "../../../remote_api/entrypoint";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import Tabs, {TabCase} from "../../elements/tabs/Tabs";
+import TuiPieChart from "../charts/PieChart";
+import BarChartElement from "../charts/BarChart";
+import {isString} from "../../../misc/typeChecking";
+import ErrorsBox from "../../errors/ErrorsBox";
+import {SelectInput} from "../forms/JsonFormComponents";
+import NoData from "../misc/NoData";
+
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -25,6 +33,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
     const [loading, setLoading] = React.useState(false);
     const [editData, setEditData] = React.useState(null);
     const [refresh, setRefresh] = React.useState(0);
+    const [tab, setTab] = React.useState(0);
 
     useEffect(() => {
         setLoading(true);
@@ -81,11 +90,12 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                 console.error(e);
             }
 
-        }).catch(() => {})
+        }).catch(() => {
+        })
     }
 
     const Details = () => <>
-        <TuiForm>
+        <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Event Source"/>
                 <TuiFormGroupContent header={"Data"}>
@@ -130,7 +140,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
         </TuiForm>
 
 
-        {data.type === "javascript" && <TuiForm>
+        {data.type === "javascript" && <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Integration"
                                     description="Please paste this code into your web page. This code should appear on every page."/>
@@ -152,9 +162,161 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
 
     </>
 
-    return <div className="Box10" style={{height: "100%"}}>
+    const EventSourceAnalytics = () => {
+
+        const [timeRange, setTimeRange] = React.useState("w");
+        const [groupedByType, setGroupedByType] = React.useState(null);
+        const [groupedByTag, setGroupedByTag] = React.useState(null);
+        const [refresh, setRefresh] = React.useState(getRefreshRate());
+        const [error, setError] = React.useState(null);
+        const mounted = React.useRef(false);
+
+        React.useEffect(() => {
+            mounted.current = true;
+            if (mounted.current === true) setError(null);
+
+            asyncRemote({
+                url: `/event/for-source/${id}/by-type/${timeRange}`
+            })
+                .then(response => {
+                    if (mounted.current === true) setGroupedByType(response.data)
+                })
+                .catch(error => {
+                    if (mounted.current === true) setError(getError(error))
+                })
+
+            asyncRemote({
+                url: `/event/for-source/${id}/by-tag/${timeRange}`
+            })
+                .then(response => {
+                    if (mounted.current === true) setGroupedByTag(response.data)
+                })
+                .catch(error => {
+                    if (mounted.current === true) setError(getError(error))
+                })
+
+            return () => mounted.current = false;
+        }, [timeRange])
+
+        function getRefreshRate() {
+            let rate = localStorage.getItem("eventRefreshRate");
+            if (isString(rate)) {
+                const value = parseInt(rate)
+                if (!isNaN(value)) {
+                    rate = value
+                }
+            }
+            return rate ? rate : 0;
+        }
+
+        return <>
+            {error !== null ?
+                <ErrorsBox errorList={error}/>
+                :
+                <>
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                        margin: "0px 0px 40px",
+                        borderBottom: "solid 1px #ccc",
+                        padding: 10
+                    }}>
+                        <header style={{marginRight: 10}}>Please select time range</header>
+                        <SelectInput
+                            value={timeRange}
+                            onChange={setTimeRange}
+                            items={{
+                                d: "Last day",
+                                w: "Last week",
+                                M: "Last month",
+                                y: "Last year"
+                            }}
+                        />
+                    </div>
+                    <div style={{display: "flex"}}>
+                        <div style={{width: "50%", height: "300px", overflow: "hidden"}}>
+                            <header style={{display: "flex", justifyContent: "center"}}>Events by type
+                            </header>
+                            {groupedByType !== null ?
+                                Array.isArray(groupedByType) && groupedByType.length > 0 ?
+                                    <TuiPieChart data={groupedByType} fill="#1976d2"/>
+                                    :
+                                    <div style={{marginTop: 50}}><NoData
+                                        header="No data"/></div>
+                                :
+                                <CenteredCircularProgress/>
+                            }
+                        </div>
+                        <div style={{width: "50%", height: "300px", overflow: "hidden"}}>
+                            <header style={{display: "flex", justifyContent: "center"}}>Events by tags
+                            </header>
+                            {groupedByTag !== null ?
+                                Array.isArray(groupedByTag) && groupedByTag.length > 0 ?
+                                    <TuiPieChart data={groupedByTag} fill="#1976d2"/>
+                                    :
+                                    <div style={{marginTop: 50}}><NoData
+                                        header="No data"/></div>
+                                :
+                                <CenteredCircularProgress/>
+                            }
+                        </div>
+                    </div>
+                    <div style={{height: "220px"}}>
+                        <header style={{display: "flex", justifyContent: "center"}}>Events time-line</header>
+                        <BarChartElement
+                            refresh={refresh}
+                            onLoadRequest={{
+                                url: '/event/select/histogram?group_by=metadata.status',
+                                method: "post",
+                                data: {
+                                    minDate: {
+                                        delta: {
+                                            type: "minus",
+                                            value: -1,
+                                            entity: {w: "week", y: "year", d: "day", M: "month"}[timeRange]
+                                        }
+                                    },
+                                    where: "source.id:" + id
+                                },
+                                limit: 30,
+                                page: 0
+                            }}
+                            barChartColors={{processed: "#43a047", error: "#d81b60"}}
+                        />
+                    </div>
+                </>
+            }
+
+        </>;
+    };
+
+    return <>
         {loading && <CenteredCircularProgress/>}
-        {data && <Details/>}
+        {data &&
+        <Tabs
+            tabs={["Details", "Analytics"]}
+            defaultTab={tab}
+            onTabSelect={setTab}
+            tabContentStyle={{overflow: "initial"}}
+            tabsStyle={{
+                display: "flex",
+                backgroundColor: "white",
+                marginTop: 0,
+                marginBottom: 0,
+                position: "sticky",
+                top: 0,
+                zIndex: 2
+            }}
+        >
+            <TabCase id={0} key="Details">
+                <Details/>
+            </TabCase>
+            <TabCase id={1} key="Analytics">
+                <EventSourceAnalytics/>
+            </TabCase>
+        </Tabs>
+        }
 
         <FormDrawer
             width={800}
@@ -162,17 +324,17 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             onClose={() => {
                 setEditData(null)
             }}
-            open={editData !== null}>
-
+            open={editData !== null}
+        >
             <EventSourceForm value={editData}
                              style={{margin: 20}}
                              onClose={() => {
                                  setEditData(null);
                                  setRefresh(refresh + 1)
-                             }}/>
-
+                             }}
+            />
         </FormDrawer>
-    </div>
+    </>
 
 }
 

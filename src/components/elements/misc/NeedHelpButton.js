@@ -39,45 +39,55 @@ export default function NeedHelpButton() {
                         <div className="NeedHelpButton">
                             <div>
                                 Mention us on Twitter @twitter. We will respond as quickly as possible.
-                                <Button label="Twitter"
-                                        onClick={external("https://twitter.com/tracardi", true)}
-                                        icon={<IoLogoTwitter size={20}/>}
-                                        style={{justifyContent: "center", marginTop: 10}}
-                                ></Button>
+                                <div style={{display: "flex", justifyContent: "center", marginTop: 10}}>
+                                    <Button label="Twitter"
+                                            onClick={external("https://twitter.com/tracardi", true)}
+                                            icon={<IoLogoTwitter size={20}/>}
+                                    ></Button>
+                                </div>
+
                             </div>
 
                             <div>
                                 Don't want to bother us? View the documentation page.
-                                <Button label="Documentation"
-                                        onClick={external("http://docs.tracardi.com", true)}
-                                        icon={<IoDocumentTextOutline size={20}/>}
-                                        style={{justifyContent: "center", marginTop: 10}}
-                                ></Button>
+                                <div style={{display: "flex", justifyContent: "center", marginTop: 10}}>
+                                    <Button label="Documentation"
+                                            onClick={external("http://docs.tracardi.com", true)}
+                                            icon={<IoDocumentTextOutline size={20}/>}
+                                    ></Button>
+                                </div>
                             </div>
 
                             <div>
                                 You don't like reading? Visit our video tutorials on YouTube.
-                                <Button label="YouTube tutorials"
-                                        icon={<IoLogoYoutube size={20}/>}
-                                        onClick={external("https://www.youtube.com/channel/UC0atjYqW43MdqNiSJBvN__Q", true)}
-                                        style={{justifyContent: "center", marginTop: 10}}
-                                ></Button>
+                                <div style={{display: "flex", justifyContent: "center", marginTop: 10}}>
+                                    <Button label="YouTube tutorials"
+                                            icon={<IoLogoYoutube size={20}/>}
+                                            onClick={external("https://www.youtube.com/channel/UC0atjYqW43MdqNiSJBvN__Q", true)}
+                                    ></Button>
+                                </div>
+
                             </div>
 
-                            <div>
+                            <div >
                                 Need help from the community? Join our public Slack channel! We are happy to help.
-                                <Button label="Join slack channel"
-                                        icon={<AiOutlineSlack size={20}/>}
-                                        onClick={external("https://join.slack.com/t/tracardi/shared_invite/zt-10y7w0o9y-PmCBnK9qywchmd1~KIER2Q", true)}
-                                        style={{justifyContent: "center", marginTop: 10}}></Button>
+                                <div style={{display: "flex", justifyContent: "center", marginTop: 10}}>
+                                    <Button label="Join slack channel"
+                                            icon={<AiOutlineSlack size={20}/>}
+                                            onClick={external("https://join.slack.com/t/tracardi/shared_invite/zt-10y7w0o9y-PmCBnK9qywchmd1~KIER2Q", true)}
+                                            ></Button>
+                                </div>
+
                             </div>
 
                             <div>
                                 You would like to report an issue. Visit us on github.
+                                <div style={{display: "flex", justifyContent: "center", marginTop: 10}}>
                                 <Button label="Visit github"
                                         icon={<BsGithub size={20}/>}
                                         onClick={external("https://github.com/tracardi/tracardi", true)}
-                                        style={{justifyContent: "center", marginTop: 10}}></Button>
+                                        ></Button>
+                                </div>
                             </div>
                         </div>
 

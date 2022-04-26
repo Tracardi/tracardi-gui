@@ -55,7 +55,7 @@ export default function Resources() {
         cardFunc={sourceCards}
         rowFunc={sourceRows}
         buttomLabel="New resource"
-        buttonIcon={<AiOutlineCloudServer size={20} style={{marginRight: 10}}/>}
+        buttonIcon={<AiOutlineCloudServer size={20}/>}
         drawerDetailsTitle="Resource details"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}

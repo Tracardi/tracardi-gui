@@ -25,7 +25,7 @@ export default function PluginForm({id}) {
     const [nameEdit, setNameEdit] = useState(false);
     const [newName, setNewName] = useState("");
     const [loading, setLoading] = useState(false);
-    const [tab, setTab] = useState(2);
+    const [tab, setTab] = useState(0);
 
     useEffect(() => {
             let isSubscribed = true;
@@ -95,15 +95,11 @@ export default function PluginForm({id}) {
                             tabs={["Overview", "Config", "Docs", "Raw"]}
                             defaultTab={tab}
                             onTabSelect={setTab}
-                            tabStyle={{flex: "initial"}}
                             tabContentStyle={{overflow: "initial"}}
                             tabsStyle={{
                                 display: "flex", 
-                                flexDirection: "row", 
-                                justifyContent: "space-around", 
-                                backgroundColor: "white", 
-                                borderBottom: "solid 1px grey", 
-                                margin: 10,
+                                flexDirection: "row",
+                                backgroundColor: "white",
                                 marginTop: 0,
                                 marginBottom: 0,
                                 position: "sticky",
