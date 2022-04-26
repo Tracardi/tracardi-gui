@@ -55,7 +55,6 @@ export default function EventsAnalytics({displayChart=true}) {
         detailsDrawerWidth={1000}
         displayDetails={displayDetails}
         displayChart={displayChart}
-        barChartColors={{processed: "#43a047", error: "#d81b60"}}
+        barChartColors={{processed: "#00C49F", error: "#d81b60", collected: '#0088FE'}}
     />
-
 }

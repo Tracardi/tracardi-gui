@@ -167,7 +167,6 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
         const [timeRange, setTimeRange] = React.useState("w");
         const [groupedByType, setGroupedByType] = React.useState(null);
         const [groupedByTag, setGroupedByTag] = React.useState(null);
-        const [refresh, setRefresh] = React.useState(getRefreshRate());
         const [error, setError] = React.useState(null);
         const mounted = React.useRef(false);
 
@@ -265,7 +264,6 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                     <div style={{height: "220px"}}>
                         <header style={{display: "flex", justifyContent: "center"}}>Events time-line</header>
                         <BarChartElement
-                            refresh={refresh}
                             onLoadRequest={{
                                 url: '/event/select/histogram?group_by=metadata.status',
                                 method: "post",
@@ -282,7 +280,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                                 limit: 30,
                                 page: 0
                             }}
-                            barChartColors={{processed: "#43a047", error: "#d81b60"}}
+                            barChartColors={{processed: "#00C49F", error: "#d81b60", collected: '#0088FE'}}
                         />
                     </div>
                 </>
