@@ -122,7 +122,7 @@ const Installer = ({children}) => {
 
     useEffect(() => {
             let isSubscribed = true;
-            setWait(true)
+            if (isSubscribed) setWait(true);
             asyncRemote({
                 url: "/install",
             }).then((response) => {
@@ -131,10 +131,10 @@ const Installer = ({children}) => {
                     const hasAllIndices = Array.isArray(result?.missing) && result?.missing.length === 0
                     const hasAdmin = result?.admins?.total !== 0
 
-                    setHasAdminAccount(hasAdmin)
+                    setHasAdminAccount(hasAdmin);
                     setInstalled(hasAllIndices && hasAdmin);
                 } else {
-                    setInstalled(false)
+                    if (isSubscribed) setInstalled(false);
                 }
             }).catch((e) => {
                 if (isSubscribed) setError(e.toString());

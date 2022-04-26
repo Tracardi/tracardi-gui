@@ -9,7 +9,7 @@ import {BsPersonCircle} from "react-icons/bs";
 import {VscPulse} from "react-icons/vsc";
 import {IoGitNetworkSharp} from "react-icons/io5";
 import {GoSettings} from "react-icons/go";
-import {VscLaw} from "react-icons/vsc";
+import {VscLaw, VscDashboard} from "react-icons/vsc";
 import {BsFolderCheck, BsClipboardCheck, BsStar} from "react-icons/bs";
 import {commercial} from "../../config";
 import {RiArrowLeftRightFill} from "react-icons/ri";
@@ -41,6 +41,7 @@ export default function MainMenu() {
         <div>
             <Branding collapsed={collapsed}/>
             <div>
+                <MenuRow icon={<VscDashboard size={20}/>} label="Dashboard" collapsed={collapsed} onClick={go("/dashboard")}/>
                 {commercial && <MenuRow icon={<BsStar size={20}/>} label="Tracardi Pro" collapsed={collapsed} onClick={go("/pro")}/>}
                 <MenuRow icon={<RiArrowLeftRightFill size={20}/>} label="Traffic" collapsed={collapsed} onClick={go("/traffic")}/>
                 <MenuRow icon={<VscLaw size={20}/>} label="Consents" collapsed={collapsed} onClick={go("/consents")}/>

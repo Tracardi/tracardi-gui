@@ -3,7 +3,6 @@ import ListOfDottedInputs from "../elements/forms/ListOfDottedInputs";
 import TimeInput from "../elements/forms/inputs/TimeInput";
 import KeyValueForm from "../elements/forms/KeyValueForm";
 import IconSelector from "../elements/IconSelector";
-import ScheduledForm from "../elements/forms/ScheduledForm";
 import NewUser from "./NewUser";
 import TuiPieChart from "../elements/charts/PieChart";
 import Table from "../elements/table/Table";
@@ -15,6 +14,9 @@ import EvalInput from "../elements/forms/inputs/EvalInput";
 import {Button} from "@mui/material";
 import DotAccessor from "../elements/forms/inputs/DotAccessor";
 import TuiSelectMultiConsentType from "../elements/tui/TuiSelectMultiConsentType";
+import SessionStepper from "../elements/steppers/SessionStepper";
+import SessionSlider from "../elements/sliders/SessionSlider";
+import SchedulerJobForm from "../elements/forms/SchedulerJobForm";
 
 export default function TryOut() {
     const [v,setV] = React.useState("`profile@`");
@@ -34,6 +36,7 @@ export default function TryOut() {
     // ];
 
   return (<div style={{padding: 10}}>
+          <SchedulerJobForm/>
           <DotAccessor label="E-mail" value={v} onChange={(e)=>{console.log("READY", e);setV(e)}}/>
           <Button onClick={()=>setV("test")}>xxx</Button>
       {/*<TuiSelectEventType value={v} onSetValue={(v) => {console.log("value", v); setV(v)}} solo={true}/>*/}
@@ -60,7 +63,6 @@ export default function TryOut() {
         {/*</Table>*/}
         {/*<DottedPathInput value={"event@id"} onChange={(v)=>console.log(v)} defaultPathValue={'xxx'} defaultSourceValue={"profile"}/>*/}
       {/*<TuiPieChart/>*/}
-      {/*<ScheduledForm  />*/}
       {/*<NewUser/>*/}
       <IconSelector value="alert" onChange={(ic) => console.log(ic)} />
       {/*<KeyValueForm value={{ kw: "value" }} onChange={(v) => console.log(v)} />*/}
@@ -68,6 +70,8 @@ export default function TryOut() {
       {/*<DottedPathInput value={"ala.kk"} onChange={(v) => console.log(v)} forceMode={2} width={300} />*/}
       <ListOfDottedInputs onChange={(x) => console.log(x)} />
       <TuiSelectMultiConsentType onChange={x => console.log(x)}/>
+      <SessionSlider profileId="8ccc3d47-05cd-4f9d-8670-6575f1b9c7a4"/>
+
     </div></div>
   );
 }

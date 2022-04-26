@@ -37,7 +37,7 @@ export default function Segments() {
         urlFunc={urlFunc}
         cardFunc={segments}
         buttomLabel="New segment"
-        buttonIcon={<VscOrganization size={20} style={{marginRight: 10}}/>}
+        buttonIcon={<VscOrganization size={20}/>}
         drawerDetailsTitle="Source details"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}

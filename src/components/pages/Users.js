@@ -127,7 +127,7 @@ export default function Users() {
             <FilterAddForm
                 style={{margin: 20, marginTop: 0}}
                 buttonLabel="New user"
-                buttonIcon={<AiOutlineUserAdd size={20} style={{marginRight: 10, marginLeft: 36}}/>}
+                buttonIcon={<AiOutlineUserAdd size={20}/>}
                 onFilter={filter => setFilter(filter)}
                 onAdd={() => setNewUserFormOpened(true)}
                 textFieldLabel="Type here to filter by user's full name"
