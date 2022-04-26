@@ -55,6 +55,9 @@
     background-color: rgba(0, 109, 179, 5%);
     border-radius: 10px;
 }
+.MuiStep-root:hover > * {
+    cursor: pointer;
+}
 .MuiStepLabel-label {
     font-weight: 400;
 }
