@@ -1,7 +1,7 @@
 import {BsEyeSlash} from "react-icons/bs";
 import React from "react";
 
-export default function NoData({icon, header, children, iconColor="#666"}) {
+export default function NoData({icon, header, children, iconColor="#666", fontSize="2em"}) {
 
     const Icon = () => {
         if(icon) {
@@ -12,7 +12,7 @@ export default function NoData({icon, header, children, iconColor="#666"}) {
 
     return <div style={{display: "flex", flexDirection: "column", alignItems: "center", padding: 20}}>
         <Icon/>
-        <h1 style={{fontWeight: 300}}>{header}</h1>
+        <h1 style={{fontWeight: 300, fontSize}}>{header}</h1>
         {children}
     </div>
 }

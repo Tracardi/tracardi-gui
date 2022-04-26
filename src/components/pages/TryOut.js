@@ -13,6 +13,8 @@ import PasswordInput from "../elements/forms/inputs/PasswordInput";
 import EvalInput from "../elements/forms/inputs/EvalInput";
 import {Button} from "@mui/material";
 import DotAccessor from "../elements/forms/inputs/DotAccessor";
+import SessionStepper from "../elements/steppers/SessionStepper";
+import SessionSlider from "../elements/sliders/SessionSlider";
 import SchedulerJobForm from "../elements/forms/SchedulerJobForm";
 
 export default function TryOut() {
@@ -66,6 +68,7 @@ export default function TryOut() {
       {/*<TimeInput />*/}
       {/*<DottedPathInput value={"ala.kk"} onChange={(v) => console.log(v)} forceMode={2} width={300} />*/}
       <ListOfDottedInputs onChange={(x) => console.log(x)} />
+      <SessionSlider profileId="8ccc3d47-05cd-4f9d-8670-6575f1b9c7a4"/>
     </div></div>
   );
 }
