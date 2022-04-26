@@ -39,7 +39,7 @@ const AppBox = () => {
         {/*Redirects*/}
 
         <PrivateRoute exact path={urlPrefix("")} roles={["admin", "developer", "marketer"]}>
-            <Redirect to={urlPrefix("/data")}/>
+            <Redirect to={urlPrefix("/dashboard")}/>
         </PrivateRoute>
 
 

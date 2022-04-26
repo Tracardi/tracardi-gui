@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import TuiPieChart from "../elements/charts/PieChart";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
-import ProfileEventHeatMap from "../elements/details/ProfileEventHeatMap";
 import ProfileCounter from "../elements/metrics/ProfileCounter";
 import SessionCounter from "../elements/metrics/SessionCounter";
 import EventCounter from "../elements/metrics/EventCounter";
@@ -12,7 +11,7 @@ import InstancesCounter from "../elements/metrics/InstancesCounter";
 import MetricTimeLine from "../elements/metrics/MetricTimeLine";
 import SessionLineChart from "../elements/charts/SessionLineChart";
 import AvgEventTime from "../elements/metrics/AvgEventTimeCounter";
-import ProfileTimeLine from "../elements/charts/ProfilesTimeLine";
+import EventTimeLine from "../elements/charts/EventsTimeLine";
 
 export default function Dashboard() {
 
@@ -68,10 +67,11 @@ export default function Dashboard() {
         })
     }, [])
 
-    const PieChart = ({loading, data, header, fill = "#1976d2"}) => {
-        return <div>
+    const PieChart = ({loading, data, header, subHeader=null, fill = "#1976d2"}) => {
+        return <div style={{paddingTop: 20}}>
             {header && <header style={{display: "flex", justifyContent: "center"}}>{header}</header>}
-            <div style={{width: 450, height: 300}}>
+            {subHeader && <header style={{display: "flex", justifyContent: "center", fontSize: "70%"}}>{subHeader}</header>}
+            <div style={{width: 280, height: 200}}>
                 {!loading && <TuiPieChart data={data} fill={fill}/>}
                 {loading && <CenteredCircularProgress/>}
             </div>
@@ -79,7 +79,8 @@ export default function Dashboard() {
 
     }
 
-    return <div style={{display: "flex", flexDirection: "column", padding: 20, backgroundColor: "#e1f5fe"}}>
+    return <div
+        style={{display: "flex", flexDirection: "column", padding: 20, height: "100%"}}>
         <div style={{display: "flex", flexWrap: "wrap"}}>
             <MetricTimeLine>
                 <InstancesCounter/>
@@ -101,25 +102,23 @@ export default function Dashboard() {
             </MetricTimeLine>
         </div>
         <MetricTimeLine fitContent={false}>
-        <div style={{width: "100%", height: 250, padding: 30}}>
-                <div>Profile time-line</div>
-                <ProfileTimeLine/>
-        </div>
+            <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
+                <div style={{width: "100%", height: 270, padding: 10}}>
+                    <EventTimeLine/>
+                </div>
+            </div>
+
         </MetricTimeLine>
 
         <div style={{display: "flex", flexDirection: "row"}}>
 
-            <MetricTimeLine><PieChart header="Events by type" loading={loadingByType} data={eventsByType}/></MetricTimeLine>
-            <MetricTimeLine><PieChart header="Events by tag" loading={loadingByTag} data={eventsByTag}/></MetricTimeLine>
-            <MetricTimeLine><PieChart header="Events by source" loading={loadingBySource} data={eventsBySource}/></MetricTimeLine>
+            <MetricTimeLine><PieChart header="No of events" subHeader="by type" loading={loadingByType}
+                                      data={eventsByType}/></MetricTimeLine>
+            <MetricTimeLine><PieChart header="No of events" subHeader="by type" loading={loadingByTag}
+                                      data={eventsByTag}/></MetricTimeLine>
+            <MetricTimeLine><PieChart header="No of events" subHeader="by source" loading={loadingBySource}
+                                      data={eventsBySource}/></MetricTimeLine>
 
         </div>
-        <header>Events per month</header>
-        <header>Profiles per month</header>
-        <header>Interests by type</header>
-        <header>Agv process time</header>
-
     </div>
-
-
 }
