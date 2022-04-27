@@ -6,6 +6,7 @@
 Tracardi is intended for anyone who carries out any type of customer interaction, be it through sales or service delivery.
 Tracardi collects data from customer journeys and assigns it to a profile that is maintained throughout the period of interaction with the customer.
 
+You can support the project on [Open Collective](https://www.opencollective.com/tracardi-cdp)
 
 TRACARDI is an API-first solution, low-code / no-code platform aimed at any business that 
 wants to start using user data for automated customer engagement. If you own a brand new e-commerce platform or 
