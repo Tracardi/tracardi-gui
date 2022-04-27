@@ -1,82 +1,78 @@
 .SessionStepper {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     width: 400px;
     margin: 10px;
     height: 642px;
 }
-.Header {
+.SessionStepper > .Header {
     padding: 10px;
     padding-top: 0px;
     text-align: left;
     width: 100%;
     border-bottom: 1px solid lightgrey;
-    font-weight: 500;
     color: #444;
     align-self: flex-start;
 }
-.MuiStep-root {
+.SessionStepper .MuiStep-root {
     display: flex;
     flex-direction: row;
 }
-.MuiStep-root > * {
+.SessionStepper .MuiStep-root > * {
     padding-bottom: 0;
     padding-top: 0;
 }
-.MuiStep-root:first-of-type {
+.SessionStepper .MuiStep-root:first-of-type {
     margin-top: 10px;
 }
-.MuiStep-root:last-of-type {
+.SessionStepper .MuiStep-root:last-of-type {
     margin-bottom: 10px;
 }
-.StepConnector {
-    background-color: rgba(0, 109, 179, 40%);
+.SessionStepper .StepConnector {
+    background-color: rgba(0, 109, 179, .4);
     min-height: 20px;
     width: 2px;
     border-radius: 1px;
     margin-left: 83px;
 }
-.StepIcon {
+.SessionStepper .StepIcon {
     height: 10px;
     width: 10px;
     border-radius: 50%;
     margin-right: 10px;
 }
-.MuiStep-root:hover > .MuiStepLabel-root > .MuiStepLabel-iconContainer > .StepIcon {
+.SessionStepper .MuiStep-root:hover > .MuiStepLabel-root > .MuiStepLabel-iconContainer > .StepIcon {
     width: 12px;
     height: 12px;
     margin-right: 8px;
     transform: translate(-1px, 0);
 }
-.MuiStep-root:hover {
+.SessionStepper .MuiStep-root:hover {
     cursor: pointer;
-    background-color: rgba(0, 109, 179, 5%);
+    background-color: rgba(0, 109, 179, .05);
     border-radius: 10px;
 }
-.MuiStep-root:hover > * {
+.SessionStepper .MuiStep-root:hover > * {
     cursor: pointer;
 }
-.MuiStepLabel-label {
+.SessionStepper .MuiStepLabel-label {
     font-weight: 400;
 }
-.MuiStepLabel-root {
+.SessionStepper .MuiStepLabel-root {
     max-width: 200px;
 }
-.MuiStepContent-root {
+.SessionStepper .MuiStepContent-root {
     border: none;
 }
-.MuiStepper-root {
+.SessionStepper .MuiStepper-root {
     height: 100%;
     overflow: auto;
     width: 100%;
-    border-bottom: 1px solid lightgrey;
 }
-.EventId {
+.SessionStepper .EventId {
     font-weight: 400;
     color: #777;
 }
-.MuiStepper-root::-webkit-scrollbar-track {
+.SessionStepper .MuiStepper-root::-webkit-scrollbar-track {
     margin: 10px;
 }

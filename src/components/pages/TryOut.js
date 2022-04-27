@@ -14,7 +14,6 @@ import EvalInput from "../elements/forms/inputs/EvalInput";
 import {Button} from "@mui/material";
 import DotAccessor from "../elements/forms/inputs/DotAccessor";
 import TuiSelectMultiConsentType from "../elements/tui/TuiSelectMultiConsentType";
-import SessionStepper from "../elements/steppers/SessionStepper";
 import SessionSlider from "../elements/sliders/SessionSlider";
 import SchedulerJobForm from "../elements/forms/SchedulerJobForm";
 
@@ -70,7 +69,7 @@ export default function TryOut() {
       {/*<DottedPathInput value={"ala.kk"} onChange={(v) => console.log(v)} forceMode={2} width={300} />*/}
       <ListOfDottedInputs onChange={(x) => console.log(x)} />
       <TuiSelectMultiConsentType onChange={x => console.log(x)}/>
-      <SessionSlider profileId="8ccc3d47-05cd-4f9d-8670-6575f1b9c7a4"/>
+      <SessionSlider profileId="b48def4c-4430-4df6-bf0a-edbc52b1dd9c"/>
 
     </div></div>
   );
