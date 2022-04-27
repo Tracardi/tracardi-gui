@@ -89,7 +89,7 @@ const AutoMultiComplete = ({showAlert, placeholder, error, url, initValue, onSet
             }}
             options={options}
             loading={loading}
-            value={initValue}
+            value={initValue === null ? [] : initValue}
             disabled={disabled}
             onChange={(event, value) => {
                 handleValueSet(value);
