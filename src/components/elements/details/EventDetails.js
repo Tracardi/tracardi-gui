@@ -1,17 +1,14 @@
-import React, {useEffect, useState} from "react";
-import theme from "../../../themes/inspector_light_theme";
+import React from "react";
 import {ObjectInspector} from "react-inspector";
 import "../lists/cards/SourceCard.css";
 import "./RuleDetails.css";
-import Properties from "./DetailProperties";
 import "./Details.css";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import PropTypes from "prop-types";
 import EventProfilingDetails from "./EventProfilingDetails";
 import EventLogDetails from "./EventLogDetails";
 import ProfileLogDetails from "./ProfileLogDetails";
-import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import {isEmptyObject, isEmptyObjectOrNull} from "../../../misc/typeChecking";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import ErrorsBox from "../../errors/ErrorsBox";
@@ -21,7 +18,6 @@ import { object2dot } from "../../../misc/dottedObject";
 
 export default function EventDetails({data}) {
 
-    console.log(data);
     const [tab, setTab] = React.useState(0);
 
     const tabs = ["Event", "Session", "Context", "Raw", "Flow debug", "Flow logs"];
@@ -132,6 +128,7 @@ export default function EventDetails({data}) {
                                 <EventInfoField name="Tags"
                                     content={Array.isArray(data.event.tags.values) && data.event.tags.values.join(", ")}
                                 />
+                                <EventInfoField name="Processed by rules" content={Array.isArray(data.event.metadata.processed_by.rules) && data.event.metadata.processed_by.rules.join(", ")}/>
                             </TuiFormGroupContent>
                         </TuiFormGroup>
                     </TuiForm>
