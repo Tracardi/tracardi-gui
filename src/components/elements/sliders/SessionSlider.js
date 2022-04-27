@@ -4,6 +4,7 @@ import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import { asyncRemote, getError } from "../../../remote_api/entrypoint";
 import "./SessionSlider.css";
 import { Slider } from "@mui/material";
+import ErrorsBox from "../../errors/ErrorsBox";
 
 export default function SessionSlider ({ profileId }) {
 
@@ -39,8 +40,9 @@ export default function SessionSlider ({ profileId }) {
                     onChangeCommitted={(_, value) => setOffset(value)}
                 />
             </div>
+            {error !== null && <ErrorsBox errorList={error} style={{marginTop: 20}}/>}
             {loading && <CenteredCircularProgress />}
-            {!loading && <SessionStepper session={session} onEventSelect={eventId => console.log(eventId)}/>}
+            {!loading && !error && <SessionStepper session={session} onEventSelect={eventId => console.log(eventId)}/>}
         </div>
     );
 }
