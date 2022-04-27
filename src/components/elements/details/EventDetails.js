@@ -15,139 +15,207 @@ import {isEmptyObject, isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import ErrorsBox from "../../errors/ErrorsBox";
+import {BsXSquare, BsCheckCircle} from "react-icons/bs";
+import SessionStepper from "../steppers/SessionStepper";
+import { object2dot } from "../../../misc/dottedObject";
 
 export default function EventDetails({data}) {
 
+    console.log(data);
+    const [tab, setTab] = React.useState(0);
 
-    const ProfileRawData = ({profileId}) => {
+    const tabs = ["Event", "Session", "Context", "Raw", "Flow debug", "Flow logs"];
+    if (!data.event.metadata.profile_less) {
+        tabs.push("Profile logs");
+        tabs.push("Profile");
+    };
 
-        const [errors, setErrors] = useState(null)
-        const [loading, setLoading] = useState(false)
-        const [profileData, setProfileData] = useState({})
+    const ProfileInfo = () => {
 
-        useEffect(() => {
-            let isSubscribed = true
-            setLoading(true);
+        const [profile, setProfile] = React.useState(null);
+        const [loading, setLoading] = React.useState(false);
+        const [error, setError] = React.useState(null);
+
+        React.useEffect(() => {
+            let isSubscribed = true;
+            if (isSubscribed) setError(null);
+            if (isSubscribed) setLoading(true);
             asyncRemote({
-                url: `/profile/${profileId}`
-            }).then((response)=>{
-                if(response && isSubscribed===true) {
-                    setErrors(null);
-                    setProfileData(response?.data);
-                }
-            }).catch((e) => {
-                if(isSubscribed === true) setErrors(getError(e))
-            }).finally(() => {
-                if(isSubscribed === true) setLoading(false)
+                url: "/profile/" + data.event.profile.id
             })
-            return () => isSubscribed = false
-        }, [profileId])
+            .then(response => setProfile(response.data))
+            .catch(e => setError(getError(e)))
+            .finally(() => setLoading(false))
+            return () => isSubscribed = false;
+        }, [])
+
 
         return <>
-            {errors && <ErrorsBox errorList={errors}/>}
-            {loading && <CenteredCircularProgress/>}
-            {errors === null && profileData && <ObjectInspector data={profileData} theme={theme} expandLevel={3}/>}
-            </>
+        {loading ? <CenteredCircularProgress /> : <div style={{margin: 10}}><ObjectInspector data={profile} expandLevel={5}/></div>}
+        {error && <ErrorsBox errorList={error} />}
+        </>;
+    };
+
+    const ContextInfo = () => {
+        const context = object2dot(data.event.context);
+        return <>{Object.keys(context).map(key => <EventInfoField key={key} name={key} content={context[key]} />)}</>;
+    };
+
+    const EventProperties = () => {
+        const eventProperties = object2dot(data.event.properties);
+        return <>{Object.keys(eventProperties).map(key => <EventInfoField key={key} name={key} content={eventProperties[key]} />)}</>;
+    };
+
+    const EventInfoField = ({name, content}) => {
+        return (
+            <div
+                style={{
+                    overflow: "auto",
+                    paddingTop: "15px",
+                    paddingBottom: "10px",
+                    borderBottom: "1px solid #ccc",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "flex-start",
+                    fontSize: "16px",
+                    fontWeight: 400
+                }}
+            >
+                <div style={{
+                    fontSize: "16px",
+                    fontWeight: 600,
+                    maxWidth: "330px",
+                    minWidth: "330px",
+                    }}
+                >
+                    {name}
+                </div>
+                <div>{typeof content === "object" ? content : content.toString()}</div>
+            </div>
+        );
     }
 
-    return <div style={{height: "inherit"}}>
-        <div className="RightTabScroller">
-            <Tabs tabs={["Event", "Context", "Raw", "Flow debug", "Flow logs", "Tracker logs", "Profile"]}>
+    return <>
+        <Tabs
+            sx={{margin: 20}}
+            className="EventTabs"
+            tabs={tabs}
+            defaultTab={tab}
+            onTabSelect={setTab}
+            tabContentStyle={{overflow: "auto"}}
+            tabsStyle={{
+                margin: 20,
+                display: "flex", 
+                flexDirection: "row",
+                backgroundColor: "white",
+                marginTop: 0,
+                marginBottom: 0,
+                position: "sticky",
+                top: 0,
+                zIndex: 2
+            }}
+        >
                 <TabCase id={0}>
-                    <TuiForm style={{padding: 20}}>
+                    <TuiForm style={{margin: 20}}> 
                         <TuiFormGroup>
-                            <TuiFormGroupHeader header="Event Metadata and Properties"/>
+                            <TuiFormGroupHeader header="Event" description="Basic event information"/>
                             <TuiFormGroupContent>
-                                {!isEmptyObject(data.event?.metadata) && <TuiFormGroupField header="Metadata">
-                                    <Properties properties={data.event?.metadata}/>
-                                </TuiFormGroupField>}
-                                {!isEmptyObject(data.event?.properties) && <TuiFormGroupField header="Properties">
-                                    <Properties properties={data.event?.properties}/>
-                                </TuiFormGroupField>}
+                                <EventInfoField name="Type" content={data.event.type}/>
+                                <EventInfoField name="Event source" content={data.event.source.id} />
+                                <EventInfoField name="Status" content={data.event.metadata.status} />
+                                <EventInfoField name="Debug" content={data.event.metadata.debug ? <BsCheckCircle size={24} color="#00c853"/> : <BsXSquare size={24} color="#d81b60"/>} />
+                                <EventInfoField name="Profile less" content={data.event.metadata.profile_less ? <BsCheckCircle size={24} color="#00c853"/> : <BsXSquare size={24} color="#d81b60"/>} />
+                                <EventInfoField 
+                                    name="Insert" 
+                                    content={typeof data.event.metadata.time.insert === "string" && `${data.event.metadata.time.insert.substring(0, 10)} ${data.event.metadata.time.insert.substring(11, 19)}`} 
+                                />
+                                <EventInfoField name="Tags"
+                                    content={Array.isArray(data.event.tags.values) && data.event.tags.values.join(", ")}
+                                />
                             </TuiFormGroupContent>
                         </TuiFormGroup>
+                    </TuiForm>
+                    <TuiForm style={{margin: 20}}> 
                         <TuiFormGroup>
-                            <TuiFormGroupHeader header="Event source" description="Displays the resource the event data was collected from."/>
+                            <TuiFormGroupHeader header="Event properties" description="Here you can check properties of selected event."/>
                             <TuiFormGroupContent>
-                                {!isEmptyObject(data.event?.source) && <TuiFormGroupField header="Source">
-                                    <Properties properties={data.event?.source}/>
-                                </TuiFormGroupField>}
+                                <EventProperties />
                             </TuiFormGroupContent>
                         </TuiFormGroup>
                     </TuiForm>
                 </TabCase>
                 <TabCase id={1}>
-                    <TuiForm style={{padding: 20}}>
+                    <TuiForm style={{margin: 20}}>
                         <TuiFormGroup>
-                            <TuiFormGroupHeader header="Event context"/>
+                            <TuiFormGroupHeader header="Session" description="Here you can inspect session that selected event belongs to." />
                             <TuiFormGroupContent>
-                                {!isEmptyObjectOrNull(data?.event?.profile) && <TuiFormGroupField header="Profile">
-                                    <Properties properties={data?.event?.profile}/>
-                                </TuiFormGroupField>}
-                                {!isEmptyObjectOrNull(data?.event?.session?.context?.page) && <TuiFormGroupField header="Page">
-                                    <Properties properties={data?.event?.session?.context?.page}/>
-                                </TuiFormGroupField>}
-                                {!isEmptyObjectOrNull(data?.event?.session?.context?.browser) && <TuiFormGroupField header="Browser">
-                                    <Properties properties={data?.event?.session?.context?.browser}/>
-                                </TuiFormGroupField>}
-                                {!isEmptyObjectOrNull(data?.event?.session?.context?.screen) && <TuiFormGroupField header="Screen">
-                                    <Properties properties={data?.event?.session?.context?.screen}/>
-                                </TuiFormGroupField>}
-                                {!isEmptyObjectOrNull(data?.event?.session?.context?.storage) && <TuiFormGroupField header="Storage">
-                                    <Properties properties={data?.event?.session?.context?.storage}/>
-                                </TuiFormGroupField>}
+                                <SessionStepper session={{...data.event.session, insert: data.event.session.start}}/>
                             </TuiFormGroupContent>
                         </TuiFormGroup>
-                        {!isEmptyObjectOrNull(data?.event?.aux) && <TuiFormGroup>
-                            <TuiFormGroupHeader header="Event auxiliary data"/>
-                            <TuiFormGroupContent>
-                                <TuiFormGroupField header="Auxiliary data">
-                                    <Properties properties={data?.event?.aux}/>
-                                </TuiFormGroupField>
-                            </TuiFormGroupContent>
-                        </TuiFormGroup>}
                     </TuiForm>
                 </TabCase>
                 <TabCase id={2}>
-                    <TuiForm style={{padding: 20}}>
+                    <TuiForm style={{margin: 20}}>
                         <TuiFormGroup>
-                            <TuiFormGroupHeader header="Event raw data"/>
+                            <TuiFormGroupHeader header="Event context" description="Here you can check context of selected event." />
                             <TuiFormGroupContent>
-                                <ObjectInspector data={data} theme={theme} expandLevel={3}/>
+                                <ContextInfo />
                             </TuiFormGroupContent>
                         </TuiFormGroup>
                     </TuiForm>
                 </TabCase>
                 <TabCase id={3}>
-                    <div style={{padding:20, height: 'inherit'}}>
-                        <EventProfilingDetails eventId={data?.event?.id}/>
-                    </div>
+                    <TuiForm style={{margin: 20}}>
+                        <TuiFormGroup>
+                            <TuiFormGroupHeader header="Raw event" description="Here you can check raw event object." />
+                            <TuiFormGroupContent>
+                                <div style={{margin: 10}}>
+                                    <ObjectInspector data={data.event} expandLevel={5} />
+                                </div>
+                            </TuiFormGroupContent>
+                        </TuiFormGroup>
+                    </TuiForm>
                 </TabCase>
                 <TabCase id={4}>
-                    <div style={{padding:20, height: 'inherit'}}>
-                        <EventLogDetails eventId={data?.event?.id}/>
-                    </div>
+                    <TuiForm style={{margin: 20, height: "inherit"}}>
+                        <TuiFormGroup style={{height: "inherit"}}>
+                            <TuiFormGroupHeader header="Flow profiling" description="Here you can check worfklow process info for selected event."/>
+                            <TuiFormGroupContent style={{height: "100%"}}>
+                                <EventProfilingDetails eventId={data.event.id}/>
+                            </TuiFormGroupContent>
+                        </TuiFormGroup>
+                    </TuiForm>
                 </TabCase>
                 <TabCase id={5}>
-                    <div style={{padding:20, height: 'inherit'}}>
-                        <ProfileLogDetails profileId={data?.event?.profile?.id}
-                                           sessionProfileId={data?.event?.session?.profile?.id}/>
-                    </div>
+                    <TuiForm style={{margin: 20, height: "inherit"}}>
+                        <TuiFormGroup style={{height: "inherit"}}>
+                            <TuiFormGroupHeader header="Logs" description="Here you can check node executing logs for selected event."/>
+                            <TuiFormGroupContent style={{height: "100%"}}>
+                                <EventLogDetails eventId={data.event.id}/>
+                            </TuiFormGroupContent>
+                        </TuiFormGroup>
+                    </TuiForm>
                 </TabCase>
                 <TabCase id={6}>
-                    <TuiForm style={{padding: 20}}>
-                            <TuiFormGroup>
-                                <TuiFormGroupHeader header="Profile raw data" description="This is current profile state. Not the state when the event was collected."/>
-                                <TuiFormGroupContent>
-                                    <ProfileRawData profileId={data?.event?.profile?.id}/>
-                                </TuiFormGroupContent>
-                            </TuiFormGroup>
-                        </TuiForm>
+                    <TuiForm style={{margin: 20, height: "inherit"}}>
+                        <TuiFormGroup style={{height: "inherit"}}>
+                            <TuiFormGroupHeader header="Profile logs" description="Here you can inspect profile logs for selected event."/>
+                            <TuiFormGroupContent style={{height: "100%"}}>
+                                <ProfileLogDetails profileId={data.event.profile.id}/>
+                            </TuiFormGroupContent>
+                        </TuiFormGroup>
+                    </TuiForm>
                 </TabCase>
-            </Tabs>
-
-        </div>
-    </div>;
+                <TabCase id={7}>
+                    <TuiForm style={{margin: 20}}>
+                        <TuiFormGroup>
+                            <TuiFormGroupHeader header="Profile" description="Here you can inspect profile that triggered this event."/>
+                            <ProfileInfo />
+                        </TuiFormGroup>
+                    </TuiForm>
+                </TabCase>
+        </Tabs>
+    </>
 
 }
 
