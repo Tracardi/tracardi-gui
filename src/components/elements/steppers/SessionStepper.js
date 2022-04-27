@@ -61,7 +61,7 @@ export default function SessionStepper ({ session, onEventSelect = null }) {
         }
         {loading && Array.isArray(eventsData) && eventsData.length === 0 && <CenteredCircularProgress style={{marginTop: 10}}/>}
         {error && <ErrorsBox errorList={error} style={{alignSelf: "flex-start"}}/>}
-        {session === null && <div style={{height: "577px", display: "flex", alignItems: "center"}}><NoData header="No data found for defined session offset" fontSize="16px"/></div>}
+        {session === null && <div style={{height: "577px", display: "flex", alignItems: "center", justifyContent: "center"}}><NoData header="No data found for defined session offset" fontSize="16px"/></div>}
         {hasMore && <Button 
             label={"LOAD MORE"} 
             icon={<FiMoreHorizontal />} 
