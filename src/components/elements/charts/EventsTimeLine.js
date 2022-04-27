@@ -3,7 +3,8 @@ import {asyncRemote} from "../../../remote_api/entrypoint";
 import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
-import {BsCalendarDay, BsCalendarMonth} from "react-icons/bs";
+import {BsCalendarDay, BsCalendarMonth, BsCalendar3} from "react-icons/bs";
+import IconButton from "../misc/IconButton";
 
 export default function EventTimeLine() {
 
@@ -78,12 +79,10 @@ export default function EventTimeLine() {
         <div style={{padding: "10px 10px 0 10px", display: "flex", justifyContent: "space-between"}}>
             <header>Event type time-line</header>
             <div>
-                <span style={{color: "gray", margin: 2, cursor: "pointer"}} onClick={()=>setPeriod("day")}>
-                <BsCalendarDay size={24} />
-            </span>
-                <span style={{margin: 2, cursor: "pointer"}} onClick={()=>setPeriod("month")}>
-                <BsCalendarMonth size={24}/>
-            </span>
+                <IconButton label="Last day" onClick={() => setPeriod("day")} selected={period==="day"}><BsCalendarDay size={24}/></IconButton>
+                <IconButton label="Last Month" onClick={() => setPeriod("month")} selected={period==="month"}><BsCalendarMonth
+                    size={24}/></IconButton>
+                <IconButton label="Last year" onClick={() => setPeriod("year")} selected={period==="year"}><BsCalendar3 size={24}/></IconButton>
             </div>
         </div>
         <ResponsiveContainer height={200}>
@@ -95,7 +94,7 @@ export default function EventTimeLine() {
                                  type="monotone"
                                  stackId="stack"
                                  dataKey={column}
-                                 strokeWidth={1}
+                                 strokeWidth={0}
                                  stroke={getColor(index)}
                                  fillOpacity={.6}
                                  fill={getColor(index)}
