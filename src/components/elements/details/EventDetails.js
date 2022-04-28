@@ -4,7 +4,7 @@ import "../lists/cards/SourceCard.css";
 import "./RuleDetails.css";
 import "./Details.css";
 import Tabs, {TabCase} from "../tabs/Tabs";
-import PropTypes from "prop-types";
+import PropTypes, { string } from "prop-types";
 import EventProfilingDetails from "./EventProfilingDetails";
 import EventLogDetails from "./EventLogDetails";
 import ProfileLogDetails from "./ProfileLogDetails";
@@ -13,23 +13,103 @@ import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {BsXSquare, BsCheckCircle} from "react-icons/bs";
-import SessionStepper from "../steppers/SessionStepper";
 import { object2dot } from "../../../misc/dottedObject";
 
 export default function EventDetails({data}) {
 
     const [tab, setTab] = React.useState(0);
 
-    const tabs = ["Event", "Session", "Context", "Raw", "Flow debug", "Flow logs"];
+    const tabs = ["Event", "Context", "Raw", "Flow debug", "Flow logs"];
     if (!data.event.metadata.profile_less) {
         tabs.push("Profile logs");
         tabs.push("Profile");
+        tabs.push("Raw profile");
     };
+
+    const ProfileDetails = () => {
+
+        const [profile, setProfile] = React.useState(null);
+        const [loading, setLoading] = React.useState(true);
+        const [error, setError] = React.useState(null);
+        const [pii, setPii] = React.useState(null);
+        const [privateTraits, setPrivateTraits] = React.useState(null);
+        const [publicTraits, setPublicTraits] = React.useState(null);
+
+        React.useEffect(() => {
+            let isSubscribed = true;
+            if (isSubscribed) setError(null);
+            if (isSubscribed) setLoading(true);
+            asyncRemote({
+                url: "/profile/" + data.event.profile.id
+            })
+            .then(response => {if (isSubscribed) {
+                setProfile(response.data); 
+                setPii(object2dot(response.data.pii)); 
+                setPrivateTraits(object2dot(response.data.traits.private));
+                setPublicTraits(object2dot(response.data.traits.public));
+            }})
+            .catch(e => {if (isSubscribed) setError(getError(e))})
+            .finally(() => {if (isSubscribed) setLoading(false)})
+            return () => isSubscribed = false;
+        }, [])
+
+        return <>
+            <TuiForm style={{margin: 20}}>
+                <TuiFormGroup>
+                    <TuiFormGroupHeader header="Profile info" description="Here you can check some basic profile info for this event." />
+                    <TuiFormGroupContent>
+                        {loading ? 
+                        <CenteredCircularProgress />
+                        :
+                        <>
+                            <EventInfoField name="Visits" content={profile.stats.visits} />
+                            <EventInfoField name="Views" content={profile.stats.views} />
+                            <EventInfoField name="Consents" content={Object.keys(profile.consents).join(", ")} />
+                            <EventInfoField name="Active" content={profile.active ? <BsCheckCircle size={24} color="#00c853"/> : <BsXSquare size={24} color="#d81b60"/>} />
+                            {Object.keys(pii).map(key => <EventInfoField key={key} name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")} content={pii[key]} />)}
+                        </>
+                        }
+                        {error && <ErrorsBox errorList={error} />}
+                    </TuiFormGroupContent>
+                </TuiFormGroup>
+            </TuiForm>
+            <TuiForm style={{margin: 20}}>
+                <TuiFormGroup>
+                    <TuiFormGroupHeader header="Private traits" description="Here you can check private traits of profile for selected event." />
+                    <TuiFormGroupContent>
+                        {loading ? 
+                        <CenteredCircularProgress />
+                        :
+                        <>
+                            {Object.keys(privateTraits).map(key => <EventInfoField key={key} name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")} content={privateTraits[key]} />)}
+                        </>
+                        }
+                        {error && <ErrorsBox errorList={error} />}
+                    </TuiFormGroupContent>
+                </TuiFormGroup>
+            </TuiForm>
+            <TuiForm style={{margin: 20}}>
+                <TuiFormGroup>
+                    <TuiFormGroupHeader header="Public traits" description="Here you can check public traits of profile for selected event." />
+                    <TuiFormGroupContent>
+                        {loading ? 
+                        <CenteredCircularProgress />
+                        :
+                        <>
+                            {Object.keys(publicTraits).map(key => <EventInfoField key={key} name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")} content={publicTraits[key]} />)}
+                        </>
+                        }
+                        {error && <ErrorsBox errorList={error} />}
+                    </TuiFormGroupContent>
+                </TuiFormGroup>
+            </TuiForm>
+        </>
+    }
 
     const ProfileInfo = () => {
 
         const [profile, setProfile] = React.useState(null);
-        const [loading, setLoading] = React.useState(false);
+        const [loading, setLoading] = React.useState(true);
         const [error, setError] = React.useState(null);
 
         React.useEffect(() => {
@@ -86,7 +166,7 @@ export default function EventDetails({data}) {
                 >
                     {name}
                 </div>
-                <div>{typeof content === "object" ? content : content.toString()}</div>
+                <div>{typeof content === "object" && content !== null ? Object.keys(content).length === 0 ? null : content : content === null ? null : content.toString()}</div>
             </div>
         );
     }
@@ -121,6 +201,7 @@ export default function EventDetails({data}) {
                                 <EventInfoField name="Status" content={data.event.metadata.status} />
                                 <EventInfoField name="Debug" content={data.event.metadata.debug ? <BsCheckCircle size={24} color="#00c853"/> : <BsXSquare size={24} color="#d81b60"/>} />
                                 <EventInfoField name="Profile less" content={data.event.metadata.profile_less ? <BsCheckCircle size={24} color="#00c853"/> : <BsXSquare size={24} color="#d81b60"/>} />
+                                <EventInfoField name="Updated" content={data.event.update ? <BsCheckCircle size={24} color="#00c853"/> : <BsXSquare size={24} color="#d81b60"/>} />
                                 <EventInfoField 
                                     name="Insert" 
                                     content={typeof data.event.metadata.time.insert === "string" && `${data.event.metadata.time.insert.substring(0, 10)} ${data.event.metadata.time.insert.substring(11, 19)}`} 
@@ -144,16 +225,6 @@ export default function EventDetails({data}) {
                 <TabCase id={1}>
                     <TuiForm style={{margin: 20}}>
                         <TuiFormGroup>
-                            <TuiFormGroupHeader header="Session" description="Here you can inspect session that selected event belongs to." />
-                            <TuiFormGroupContent>
-                                <SessionStepper session={{...data.event.session, insert: data.event.session.start}}/>
-                            </TuiFormGroupContent>
-                        </TuiFormGroup>
-                    </TuiForm>
-                </TabCase>
-                <TabCase id={2}>
-                    <TuiForm style={{margin: 20}}>
-                        <TuiFormGroup>
                             <TuiFormGroupHeader header="Event context" description="Here you can check context of selected event." />
                             <TuiFormGroupContent>
                                 <ContextInfo />
@@ -161,7 +232,7 @@ export default function EventDetails({data}) {
                         </TuiFormGroup>
                     </TuiForm>
                 </TabCase>
-                <TabCase id={3}>
+                <TabCase id={2}>
                     <TuiForm style={{margin: 20}}>
                         <TuiFormGroup>
                             <TuiFormGroupHeader header="Raw event" description="Here you can check raw event object." />
@@ -173,7 +244,7 @@ export default function EventDetails({data}) {
                         </TuiFormGroup>
                     </TuiForm>
                 </TabCase>
-                <TabCase id={4}>
+                <TabCase id={3}>
                     <TuiForm style={{margin: 20, height: "inherit"}}>
                         <TuiFormGroup style={{height: "inherit"}}>
                             <TuiFormGroupHeader header="Flow profiling" description="Here you can check worfklow process info for selected event."/>
@@ -183,7 +254,7 @@ export default function EventDetails({data}) {
                         </TuiFormGroup>
                     </TuiForm>
                 </TabCase>
-                <TabCase id={5}>
+                <TabCase id={4}>
                     <TuiForm style={{margin: 20, height: "inherit"}}>
                         <TuiFormGroup style={{height: "inherit"}}>
                             <TuiFormGroupHeader header="Logs" description="Here you can check node executing logs for selected event."/>
@@ -193,7 +264,7 @@ export default function EventDetails({data}) {
                         </TuiFormGroup>
                     </TuiForm>
                 </TabCase>
-                <TabCase id={6}>
+                <TabCase id={5}>
                     <TuiForm style={{margin: 20, height: "inherit"}}>
                         <TuiFormGroup style={{height: "inherit"}}>
                             <TuiFormGroupHeader header="Profile logs" description="Here you can inspect profile logs for selected event."/>
@@ -202,6 +273,9 @@ export default function EventDetails({data}) {
                             </TuiFormGroupContent>
                         </TuiFormGroup>
                     </TuiForm>
+                </TabCase>
+                <TabCase id={6}>
+                    <ProfileDetails />
                 </TabCase>
                 <TabCase id={7}>
                     <TuiForm style={{margin: 20}}>
