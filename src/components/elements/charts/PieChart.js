@@ -61,9 +61,6 @@ export default class TuiPieChart extends PureComponent {
         });
     };
 
-    colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
-
     render() {
         return (
             <ResponsiveContainer width="100%" height="100%">
@@ -82,7 +79,7 @@ export default class TuiPieChart extends PureComponent {
                         onMouseEnter={this.onPieEnter}
                     >
                         {this.props.data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={this.colors[index % this.colors.length]} />
+                            <Cell key={`cell-${index}`} fill={(!this.props?.colors) ? "#0088FE" : this.props.colors[index % this.props.colors.length]} />
                         ))}
                     </Pie>
                 </PieChart>
