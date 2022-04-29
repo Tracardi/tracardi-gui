@@ -18,6 +18,7 @@ import SessionStepper from "../elements/steppers/SessionStepper";
 import SessionSlider from "../elements/sliders/SessionSlider";
 import SchedulerJobForm from "../elements/forms/SchedulerJobForm";
 import CompactEventDetails from "../elements/details/CompactEventDetails";
+import ProfileSessionsDetails from "../elements/details/ProfileSessionsDetails";
 
 export default function TryOut() {
     const [v,setV] = React.useState("`profile@`");
@@ -71,10 +72,7 @@ export default function TryOut() {
       {/*<DottedPathInput value={"ala.kk"} onChange={(v) => console.log(v)} forceMode={2} width={300} />*/}
       <ListOfDottedInputs onChange={(x) => console.log(x)} />
       <TuiSelectMultiConsentType onChange={x => console.log(x)}/>
-      <div style={{display: "flex", flexDirection: "row"}}>
-        <SessionSlider profileId="8ccc3d47-05cd-4f9d-8670-6575f1b9c7a4"/>
-        <CompactEventDetails eventId="e49b762b-74c4-4129-beea-fc6bce8f498c" />
-      </div>
+      <ProfileSessionsDetails profileId="8ccc3d47-05cd-4f9d-8670-6575f1b9c7a4"/>
     </div></div>
   );
 }
