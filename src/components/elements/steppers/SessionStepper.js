@@ -24,7 +24,11 @@ export default function SessionStepper ({ session, onEventSelect = null }) {
             asyncRemote({
                 url: "/events/session/" + session.id + "?limit=" + limit
             })
-            .then(response => {if (subscribed) setEventsData(response.data.result); if (subscribed) setHasMore(response.data.more_to_load)})
+            .then(response => {
+                if (subscribed) setEventsData(response.data.result); 
+                if (subscribed) setHasMore(response.data.more_to_load); 
+                if (onEventSelect !== null && subscribed && limit === 20) onEventSelect(response.data.result[0]["id"]);
+            })
             .catch(e => {if (subscribed) setError(getError(e))})
             .finally(() => {if (subscribed) setLoading(false)})
         }
