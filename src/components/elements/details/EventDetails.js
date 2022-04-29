@@ -146,7 +146,8 @@ export default function EventDetails({data}) {
         return (
             <div
                 style={{
-                    overflow: "auto",
+                    overflowWrap: "anywhere",
+                    overflow: "none",
                     paddingTop: "15px",
                     paddingBottom: "10px",
                     borderBottom: "1px solid #ccc",
