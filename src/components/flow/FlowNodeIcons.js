@@ -79,7 +79,8 @@ import {
     SiZapier,
     SiAirtable,
     SiMatomo,
-    SiRedis
+    SiRedis,
+    SiCivicrm
 } from "react-icons/si";
 import {GrMysql} from "react-icons/gr";
 import {
@@ -209,7 +210,8 @@ export const icons = {
     'previous': (size) => <BsArrowBarLeft size={size}/>,
     'consent': (size) => <VscLaw size={size} />,
     'hash': (size) => <BsHash size={size}/>,
-    "redis": (size) => <SiRedis size={size}/>
+    "redis": (size) => <SiRedis size={size}/>,
+    "civicrm": (size) => <SiCivicrm size={size}/>
 }
 
 
