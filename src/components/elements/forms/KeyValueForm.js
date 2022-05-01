@@ -4,8 +4,10 @@ import { VscTrash } from "react-icons/vsc";
 import "./KeyValueForm.css";
 import DotAccessor from "./inputs/DotAccessor";
 import Button from "./Button";
+import {Autocomplete} from "@mui/material";
+import { TextField } from "@mui/material";
 
-const KeyValueForm = ({ value, onChange, defaultKeySource, defaultValueSource, lockKeySource}) => {
+const KeyValueForm = ({ value, onChange, defaultKeySource, defaultValueSource, lockKeySource, availableValues = []}) => {
 
   const [localValue, setLocalValue] = useState(value || {});
 
@@ -39,7 +41,21 @@ const KeyValueForm = ({ value, onChange, defaultKeySource, defaultValueSource, l
     <div className="KeyValueForm">
       <div className="KeyValueInput">
         <div>Key:</div>
-        <DotAccessor label="Key" value={key.current} onChange={handleKeyChange} defaultSourceValue={defaultKeySource} lockSource={lockKeySource}/>
+        {availableValues?.length === 0? 
+          <DotAccessor label="Key" value={key.current} onChange={handleKeyChange} defaultSourceValue={defaultKeySource} lockSource={lockKeySource}/>
+          :
+          <Autocomplete
+            multiple={false}
+            freeSolo
+            disablePortal
+            options={availableValues}
+            size="small"
+            sx={{width: 332, marginTop: "10px"}}
+            renderInput={(params) => <TextField {...params} label="Key" />}
+            onChange={(_, value) => handleKeyChange(value?.value ? value.value : value)}
+            onInputChange={e => e.target.value !== 0 ? handleKeyChange(e.target.value): () => {}}
+          />
+        }
         <div style={{marginTop: 10}}>Value:</div>
         <DotAccessor label="Value" value={val.current} onChange={handleValueChange} defaultSourceValue={defaultValueSource}/>
 

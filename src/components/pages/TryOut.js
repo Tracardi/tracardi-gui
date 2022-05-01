@@ -65,7 +65,7 @@ export default function TryOut() {
       {/*<TuiPieChart/>*/}
       {/*<NewUser/>*/}
       <IconSelector value="alert" onChange={(ic) => console.log(ic)} />
-      {/*<KeyValueForm value={{ kw: "value" }} onChange={(v) => console.log(v)} />*/}
+      {<KeyValueForm value={{ kw: "value" }} onChange={(v) => console.log(v)} availableValues={[{"label": "Hello", "value": "hello"}, {"label": "Hello2", "value": "hello2"}]} /> }
       {/*<TimeInput />*/}
       {/*<DottedPathInput value={"ala.kk"} onChange={(v) => console.log(v)} forceMode={2} width={300} />*/}
       <ListOfDottedInputs onChange={(x) => console.log(x)} />
