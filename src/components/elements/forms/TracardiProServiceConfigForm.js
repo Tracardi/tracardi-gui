@@ -72,8 +72,8 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
 
     const [errorMessages, setErrorMessages] = useState(null)
 
-    const handleChange = (value) => {
-        init.current = MutableMergeRecursive(init.current, value)
+    const handleChange = (value, deleted = {}) => {
+        init.current = MutableMergeRecursive(init.current, value, deleted)
     }
 
     const handleSubmit = async () => {
