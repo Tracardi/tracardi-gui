@@ -322,7 +322,6 @@ export function NodeInitForm({pluginId, init, formSchema, onSubmit}) {
 
     const handleFormChange = (value, deleted = {}) => {
         const merged = MutableMergeRecursive(data, value, deleted);
-        console.log(merged.dimensions);
         setData(merged);
     }
 
