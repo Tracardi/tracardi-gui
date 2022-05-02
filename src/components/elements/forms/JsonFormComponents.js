@@ -238,9 +238,9 @@ export function DotPathAndTextInput({value, props, errorMessage, onChange}) {
 
 export function KeyValueInput({value, props, onChange}) {
 
-    const handleChange = (value) => {
+    const handleChange = (value, deleted) => {
         if (onChange) {
-            onChange(value);
+            onChange(value, deleted);
         }
     }
 

@@ -320,8 +320,9 @@ export function NodeInitForm({pluginId, init, formSchema, onSubmit}) {
         form.validate(pluginId, data).then(handleValidationData)
     }
 
-    const handleFormChange = (value) => {
-        setData(MutableMergeRecursive(data, value))
+    const handleFormChange = (value, deleted = {}) => {
+        const merged = MutableMergeRecursive(data, value, deleted);
+        setData(merged);
     }
 
     return <JsonForm

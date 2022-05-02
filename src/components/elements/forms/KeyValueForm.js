@@ -28,6 +28,9 @@ const KeyValueForm = ({ value, onChange, defaultKeySource, defaultValueSource, l
     const newCopy = localValue;
     delete newCopy[item];
     setLocalValue({ ...newCopy });
+    if (onChange) {
+      onChange({...newCopy}, {[item]: null});
+    }
   };
 
   const handleKeyChange = (value) => {

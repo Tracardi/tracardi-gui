@@ -18,10 +18,10 @@ import {AiOutlineCheckCircle} from "react-icons/ai";
 
 const getComponentByType = ({value, errorMessage, componentType, fieldId, onChange}) => {
 
-    const handleOnChange = (value, fieldId) => {
+    const handleOnChange = (value, fieldId, deleted = {}) => {
         if (onChange) {
             // Converts flat structure to nested object
-            onChange(dot2object({[fieldId]: value}))
+            onChange(dot2object({[fieldId]: value}), Object.keys(deleted).length > 0 ? dot2object({[fieldId]: deleted}) : {})
         }
     }
 
@@ -59,7 +59,7 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
         case "keyValueList":
             return (props) => <KeyValueInput value={value}
                                              errorMessage={errorMessage}
-                                             onChange={(value) => handleOnChange(value, fieldId)}
+                                             onChange={(value, deleted) => handleOnChange(value, fieldId, deleted)}
                                              props={props}/>
         case "copyTraitsInput":
             return (props) => <CopyTraitsInput value={value}
