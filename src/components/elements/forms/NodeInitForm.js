@@ -285,7 +285,7 @@ export const NodeInitForm = ({pluginId, init, formSchema, onSubmit}) => {
         // Reset to default values
         if(saveOK !== false) setSaveOk(false);
         if(!isEmptyObject(formErrorMessages)) setFormErrorMessages({})
-    }, [init])
+    }, [init, formErrorMessages, saveOK])
 
     const handleValidationData = (result) => {
         if (result?.status === true) {
