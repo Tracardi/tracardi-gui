@@ -12,9 +12,9 @@ export function TuiSelectEventSource({value = null, disabled = false, errorMessa
 
     return <div>
         <AutoComplete disabled={disabled}
-                      solo={false}
+                      onlyValueWithOptions={true}
                       placeholder="Event source"
-                      url="/event-sources/entity"
+                      endpoint={{url:"/event-sources/entity"}}
                       initValue={value}
                       error={errorMessage}
                       onSetValue={handleValueSet}

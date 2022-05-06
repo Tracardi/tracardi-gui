@@ -19,7 +19,7 @@ import DotAccessor from "./inputs/DotAccessor";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import TuiSelectMultiConsentType from "../tui/TuiSelectMultiConsentType";
 
-export function TextInput({value, label, errorMessage, onChange}) {
+export const TextInput = React.memo(({value, label, errorMessage, onChange}) => {
 
     const [text, setText] = useState(value || "")
 
@@ -40,7 +40,7 @@ export function TextInput({value, label, errorMessage, onChange}) {
                       error={!isEmptyStringOrNull(errorMessage)}
                       fullWidth
     />
-}
+})
 
 export function BoolInput({value, label, errorMessage, onChange}) {
 
@@ -143,7 +143,7 @@ export function ContentInput({value, label, errorMessage, onChange, rows = 4}) {
 }
 
 
-export function SelectInput({value, label, errorMessage, items = [], errors, onChange}) {
+export function SelectInput({value, values, label, errorMessage, items = [], errors, onChange}) {
 
     const [selectedItem, setSelectedItem] = useState(value || "");
 
@@ -236,7 +236,7 @@ export function DotPathAndTextInput({value, props, errorMessage, onChange}) {
     />
 }
 
-export function KeyValueInput({value, props, onChange}) {
+export function KeyValueInput({value, values, props, onChange}) {
 
     const handleChange = (value, deleted) => {
         if (onChange) {
@@ -245,6 +245,7 @@ export function KeyValueInput({value, props, onChange}) {
     }
 
     return <KeyValueForm value={value}
+                         values={values}
                          onChange={handleChange}
                          {...props}
     />

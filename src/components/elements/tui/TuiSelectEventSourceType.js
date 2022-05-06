@@ -3,11 +3,11 @@ import AutoComplete from "../forms/AutoComplete";
 
 export default function TuiSelectEventSourceType({value, onSetValue, errorMessage=""}) {
     return <AutoComplete
-        solo={false}
+        onlyValueWithOptions={true}
         disabled={false}
         error={errorMessage}
         placeholder="Event source type"
-        url="/event-sources/type/name"
+        endpoint={{url:"/event-sources/type/name"}}
         initValue={value}
         onSetValue={onSetValue}
     />

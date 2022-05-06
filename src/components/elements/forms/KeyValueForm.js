@@ -4,21 +4,20 @@ import { VscTrash } from "react-icons/vsc";
 import "./KeyValueForm.css";
 import DotAccessor from "./inputs/DotAccessor";
 import Button from "./Button";
-import {Autocomplete} from "@mui/material";
-import { TextField } from "@mui/material";
+import AutoComplete from "./AutoComplete";
 
-const KeyValueForm = ({ value, onChange, defaultKeySource, defaultValueSource, lockKeySource, availableValues = []}) => {
+const KeyValueForm = ({ value, onChange, values, endpoint, defaultKeySource, defaultValueSource, lockKeySource, availableValues = []}) => {
 
   const [localValue, setLocalValue] = useState(value || {});
 
-  const key = useRef("")
+  const key = useRef("");
   const val = useRef("");
 
   const handleAdd = () => {
-    if (key.current.length > 0 && val.current.length > 0) {
+    if (val.current !== "" && key.current !== "") {
       const newValue = { ...localValue, [key.current]: val.current }
       setLocalValue(newValue);
-      if (onChange) {
+      if (onChange instanceof Function) {
         onChange(newValue);
       }
     }
@@ -28,7 +27,7 @@ const KeyValueForm = ({ value, onChange, defaultKeySource, defaultValueSource, l
     const newCopy = localValue;
     delete newCopy[item];
     setLocalValue({ ...newCopy });
-    if (onChange) {
+    if (onChange instanceof Function) {
       onChange({...newCopy}, {[item]: null});
     }
   };
@@ -40,25 +39,28 @@ const KeyValueForm = ({ value, onChange, defaultKeySource, defaultValueSource, l
     val.current = value;
   }
 
+  function switchInputs() {
+    if (availableValues?.length === 0 ) {
+      return <DotAccessor label="Key" value={key.current} onChange={handleKeyChange} defaultSourceValue={defaultKeySource} lockSource={lockKeySource}/>
+    } else {
+      return <AutoComplete
+            onlyValueWithOptions={true}
+            endpoint={endpoint && {
+              ...endpoint,
+              data: {config: values, production: false}
+            }}
+            defaultValueSet={availableValues}
+            onChange={(value) => handleKeyChange(value.id)}
+            onSetValue={(value) => handleKeyChange(value.id)}
+          />
+    }
+  }
+
   return (
     <div className="KeyValueForm">
       <div className="KeyValueInput">
         <div>Key:</div>
-        {availableValues?.length === 0? 
-          <DotAccessor label="Key" value={key.current} onChange={handleKeyChange} defaultSourceValue={defaultKeySource} lockSource={lockKeySource}/>
-          :
-          <Autocomplete
-            multiple={false}
-            freeSolo
-            disablePortal
-            options={availableValues}
-            size="small"
-            sx={{width: 332, marginTop: "10px"}}
-            renderInput={(params) => <TextField {...params} label="Key" />}
-            onChange={(_, value) => handleKeyChange(value?.value ? value.value : value)}
-            onInputChange={e => e.target.value !== 0 ? handleKeyChange(e.target.value): () => {}}
-          />
-        }
+        {switchInputs()}
         <div style={{marginTop: 10}}>Value:</div>
         <DotAccessor label="Value" value={val.current} onChange={handleValueChange} defaultSourceValue={defaultValueSource}/>
 

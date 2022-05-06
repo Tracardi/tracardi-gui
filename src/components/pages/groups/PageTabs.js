@@ -6,6 +6,7 @@ import PrivateTab from "../../authentication/PrivateTab";
 import {getApiUrl, resetApiUrlConfig} from "../../../remote_api/entrypoint";
 import ReadOnlyInput from "../../elements/forms/ReadOnlyInput";
 import {logout} from "../../authentication/login";
+import SponsorButton from "../../elements/misc/SponsorButton";
 
 export default function PageTabs({title, tabs = {}}) {
 
@@ -24,6 +25,7 @@ export default function PageTabs({title, tabs = {}}) {
         <div style={{display: "flex", justifyContent: "space-between"}}>
             <h1 className="Title">{title}</h1>
             <span className="Info">
+                <SponsorButton/>
                 <ReadOnlyInput label="Tracardi API"
                                value={getApiUrl()}
                                onReset={handleEndpointReset}/>

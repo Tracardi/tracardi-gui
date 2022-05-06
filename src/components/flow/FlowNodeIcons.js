@@ -67,6 +67,7 @@ import {GoBrowser} from "react-icons/go";
 import {ReactComponent as MauticLogo} from "../../svg/mautic.svg";
 import {ReactComponent as Amplitude} from "../../svg/amplitude-icon.svg";
 import {ReactComponent as Mixpanel} from "../../svg/mixpanel.svg";
+import {ReactComponent as ActiveCampaign} from "../../svg/active-campaign.svg";
 import {
     SiRabbitmq,
     SiMongodb,
@@ -211,7 +212,8 @@ export const icons = {
     'consent': (size) => <VscLaw size={size} />,
     'hash': (size) => <BsHash size={size}/>,
     "redis": (size) => <SiRedis size={size}/>,
-    "civicrm": (size) => <SiCivicrm size={size}/>
+    "civicrm": (size) => <SiCivicrm size={size}/>,
+    "active-campaign": (size) => <ActiveCampaign size={size}/>
 }
 
 
