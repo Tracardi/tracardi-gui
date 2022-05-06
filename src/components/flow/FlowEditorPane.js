@@ -35,9 +35,44 @@ import ErrorsBox from "../errors/ErrorsBox";
 import {useHistory} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 
+const ModifiedTag = () => {
+    return <span style={{
+        color: "white",
+        fontSize: 12,
+        fontWeight: 500,
+        padding: "3px 9px",
+        borderRadius: 15,
+        marginLeft: 5,
+        backgroundColor: "orange"
+    }}>not saved</span>
+}
 
-function NodeDetailsHandler({node, onLabelSet, onConfig, onRuntimeConfig, pro}) {
+const DraftTag = () => {
+    return <span style={{
+        color: "white",
+        fontSize: 12,
+        fontWeight: 500,
+        padding: "3px 9px",
+        borderRadius: 15,
+        marginLeft: 5,
+        backgroundColor: "#ef6c00"
+    }}>This is a draft</span>
+}
 
+const StatusTag = ({modified, deployed}) => {
+    return <div style={{
+        position: "absolute",
+        top: 5,
+        right: 5,
+        display: "flex",
+    }}>
+        {modified && <ModifiedTag/>}
+        {!deployed && <DraftTag/>}
+    </div>
+}
+
+
+const NodeDetailsHandler = React.memo(({node, onLabelSet, onConfig, onRuntimeConfig, pro}) => {
     const [loading, setLoading] = useState(false);
     const [available, setAvailable] = useState(null);
     const [error, setError] = useState(null);
@@ -111,7 +146,7 @@ function NodeDetailsHandler({node, onLabelSet, onConfig, onRuntimeConfig, pro}) 
         <Button label="Sure" onClick={go("/pro")}/>
     </NoData>
 
-}
+})
 
 export function FlowEditorPane(
     {
@@ -503,41 +538,8 @@ export function FlowEditorPane(
         handleUpdate()
     }
 
-    const ModifiedTag = () => {
-        return <span style={{
-            color: "white",
-            fontSize: 12,
-            fontWeight: 500,
-            padding: "3px 9px",
-            borderRadius: 15,
-            marginLeft: 5,
-            backgroundColor: "orange"
-        }}>not saved</span>
-    }
 
-    const DraftTag = () => {
-        return <span style={{
-            color: "white",
-            fontSize: 12,
-            fontWeight: 500,
-            padding: "3px 9px",
-            borderRadius: 15,
-            marginLeft: 5,
-            backgroundColor: "#ef6c00"
-        }}>This is a draft</span>
-    }
 
-    const StatusTag = () => {
-        return <div style={{
-            position: "absolute",
-            top: 5,
-            right: 5,
-            display: "flex",
-        }}>
-            {modified && <ModifiedTag/>}
-            {!deployed && <DraftTag/>}
-        </div>
-    }
 
     return <>
         <FlowEditorTitle
@@ -611,7 +613,7 @@ export function FlowEditorPane(
                                           alignItems: "center"
                                       }}/>
 
-                            <StatusTag/>
+                            <StatusTag modified={modified} deployed={deployed}/>
 
                             <Background color="#444" gap={16}/>
                         </ReactFlow>}

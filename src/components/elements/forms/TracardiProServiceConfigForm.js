@@ -1,7 +1,6 @@
 import JsonForm from "./JsonForm";
 import React, {useRef, useState} from "react";
 import {asyncRemote} from "../../../remote_api/entrypoint";
-import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
 import {v4 as uuid4} from "uuid";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import TextField from "@mui/material/TextField";
@@ -72,8 +71,8 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
 
     const [errorMessages, setErrorMessages] = useState(null)
 
-    const handleChange = (value, deleted = {}) => {
-        init.current = MutableMergeRecursive(init.current, value, deleted)
+    const handleChange = (values) => {
+        init.current = values
     }
 
     const handleSubmit = async () => {

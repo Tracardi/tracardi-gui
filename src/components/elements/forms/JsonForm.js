@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import Button from "./Button";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
 import AlertBox from "../../errors/AlertBox";
@@ -15,8 +15,9 @@ import {
 } from "./JsonFormComponents";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {AiOutlineCheckCircle} from "react-icons/ai";
+import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
 
-const getComponentByType = ({value, errorMessage, componentType, fieldId, onChange}) => {
+const getComponentByType = ({value, values, errorMessage, componentType, fieldId, onChange}) => {
 
     const handleOnChange = (value, fieldId, deleted = {}) => {
         if (onChange) {
@@ -58,6 +59,7 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
                                             props={props}/>
         case "keyValueList":
             return (props) => <KeyValueInput value={value}
+                                             values={values}
                                              errorMessage={errorMessage}
                                              onChange={(value, deleted) => handleOnChange(value, fieldId, deleted)}
                                              props={props}/>
@@ -77,7 +79,7 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
         case "text":
             return (props) => <TextInput value={value}
                                          errorMessage={errorMessage}
-                                         onChange={(value) => handleOnChange(value, fieldId)}
+                                         onChange={useCallback((value) => handleOnChange(value, fieldId),[])}
                                          {...props}/>
 
         case "json":
@@ -99,6 +101,7 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
                                              {...props}/>
         case 'select':
             return (props) => <SelectInput value={value}
+                                           values={values}
                                            onChange={(value) => handleOnChange(value, fieldId)}
                                            errorMessage={errorMessage}
                                            {...props}/>
@@ -118,90 +121,102 @@ const getComponentByType = ({value, errorMessage, componentType, fieldId, onChan
     }
 }
 
-const JsonForm = React.memo(({schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
+const Fields = React.memo(({fields, values, onChange, errorMessages, keyValueMapOfComponentValues}) => {
+    const readValue = (fieldId) => {
+        if (fieldId in keyValueMapOfComponentValues) {
+            return keyValueMapOfComponentValues[fieldId]
+        } else if (fieldId in values) {
+            // This is a hack for ResourceSelect and other components that take objects
+            return values[fieldId]
+        }
+
+        return null
+    }
+
+    const readErrorMessage = (fieldId) => {
+
+        if (errorMessages && fieldId in errorMessages) {
+            return errorMessages[fieldId]
+        }
+
+        return null
+    }
+
+    const FieldsInGroup = ({fields}) => fields.map((fieldObject, key) => {
+        const fieldId = fieldObject.id;
+        const componentType = fieldObject.component?.type;
+        const props = fieldObject.component?.props;
+        if (typeof componentType != "undefined") {
+
+            const component = getComponentByType({
+                value: readValue(fieldId),
+                values: values,
+                errorMessage: readErrorMessage(fieldId),
+                componentType: componentType,
+                fieldId: fieldId,
+                onChange: onChange
+            });
+
+            return <TuiFormGroupField key={fieldId + key}
+                                      header={fieldObject.name}
+                                      description={fieldObject.description}>
+                {component(props)}&nbsp;
+            </TuiFormGroupField>
+        } else {
+            return ""
+        }
+    })
+
+    return <TuiFormGroupContent>
+        <FieldsInGroup fields={fields}/>
+    </TuiFormGroupContent>
+})
+
+const Groups = React.memo(({groups, values, onChange, errorMessages, keyValueMapOfComponentValues}) => {
+    return groups.map((groupObject, idx) => {
+        return <TuiFormGroup key={idx}>
+            {(groupObject.name || groupObject.description) && <TuiFormGroupHeader
+                header={groupObject.name}
+                description={groupObject.description}
+            />}
+            {groupObject.fields && <Fields
+                fields={groupObject.fields}
+                onChange={onChange}
+                errorMessages={errorMessages}
+                values={values}
+                keyValueMapOfComponentValues={keyValueMapOfComponentValues}
+            />}
+        </TuiFormGroup>
+    })
+})
+
+const Title = ({title}) => {
+    if (typeof title != 'undefined') {
+        return <h1>{title}</h1>
+    }
+    return ""
+}
+
+const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
     const keyValueMapOfComponentValues = object2dot(values)
     const hasErrors = errorMessages && Object.keys(errorMessages).length
+    const [data, setData] = useState(values);
 
-    const Title = ({title}) => {
-        if (typeof title != 'undefined') {
-            return <h1>{title}</h1>
-        }
-        return ""
-    }
-
-    const Fields = ({fields, onChange}) => {
-
-        const readValue = (fieldId) => {
-            if (fieldId in keyValueMapOfComponentValues) {
-                return keyValueMapOfComponentValues[fieldId]
-            } else if (fieldId in values) {
-                // This is a hack for ResourceSelect and other components that take objects
-                return values[fieldId]
-            }
-
-            return null
-        }
-
-        const readErrorMessage = (fieldId) => {
-
-            if (errorMessages && fieldId in errorMessages) {
-                return errorMessages[fieldId]
-            }
-
-            return null
-        }
-
-        const FieldsInGroup = ({fields}) => fields.map((fieldObject, key) => {
-            const fieldId = fieldObject.id;
-            const componentType = fieldObject.component?.type;
-            const props = fieldObject.component?.props;
-            if (typeof componentType != "undefined") {
-
-                const component = getComponentByType({
-                    value: readValue(fieldId),
-                    errorMessage: readErrorMessage(fieldId),
-                    componentType: componentType,
-                    fieldId: fieldId,
-                    onChange: onChange
-                });
-
-                return <TuiFormGroupField key={fieldId + key}
-                                          header={fieldObject.name}
-                                          description={fieldObject.description}>
-                    {component(props)}&nbsp;
-                </TuiFormGroupField>
-            } else {
-                return ""
-            }
-        })
-
-        return <TuiFormGroupContent>
-            <FieldsInGroup fields={fields}/>
-        </TuiFormGroupContent>
-    }
-
-    const Groups = ({groups, onChange}) => {
-
-        return groups.map((groupObject, idx) => {
-            return <TuiFormGroup key={idx}>
-                {(groupObject.name || groupObject.description) && <TuiFormGroupHeader
-                    header={groupObject.name}
-                    description={groupObject.description}
-                />}
-                {groupObject.fields && <Fields
-                    fields={groupObject.fields}
-                    onChange={onChange}
-                />}
-            </TuiFormGroup>
-        })
-
-    }
-
-    const MemoGroups = React.memo(Groups);
+    useEffect(() => {
+        setData(values)
+    }, [values])
 
     const handleSubmit = () => {
-        if (onSubmit) {
-            onSubmit()
+        if (onSubmit instanceof Function) {
+            onSubmit(data)
+        }
+    }
+
+    const handleOnChange = (changed, deleted) => {
+        const merged = MutableMergeRecursive(values, changed, deleted)
+        setData(merged) // this does not make form to rerender (the same object)
+        if(onChange) {
+            onChange(merged)
         }
     }
 
@@ -209,12 +224,17 @@ const JsonForm = React.memo(({schema, values = {}, errorMessages = {}, serverSid
         return <TuiForm>
             {schema.title && <Title title={schema.title}/>}
 
-            {schema.groups && <MemoGroups
+            {schema.groups && <Groups
                 groups={schema.groups}
-                onChange={onChange}
+                onChange={handleOnChange}
+                values={data}
+                errorMessages={errorMessages}
+                keyValueMapOfComponentValues={keyValueMapOfComponentValues}
             />}
+
             {serverSideError && <ErrorsBox errorList={serverSideError}/>}
-            <Button onClick={() => handleSubmit(schema)}
+
+            <Button onClick={() => handleSubmit()}
                     confirmed={confirmed}
                     error={hasErrors}
                     progress={processing}
@@ -227,6 +247,6 @@ const JsonForm = React.memo(({schema, values = {}, errorMessages = {}, serverSid
 
     return ""
 
-})
+}
 
 export default JsonForm;

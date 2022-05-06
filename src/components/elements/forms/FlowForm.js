@@ -87,7 +87,7 @@ function FlowForm({
 
         } catch (e) {
             if (e && mounted.current) {
-                showAlert({message: e[0].msg, type: "error", hideAfter: 5000});
+                showAlert({message: e.toString(), type: "error", hideAfter: 5000});
             }
         } finally {
             if (mounted.current) {
