@@ -7,10 +7,10 @@ import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {convertResponseToAutoCompleteOptions} from "../../../misc/converters";
-import {isString} from "../../../misc/typeChecking";
+import {isObject, isString} from "../../../misc/typeChecking";
 
 const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet = [], initValue, onSetValue, onChange, onlyValueWithOptions = false, solo = true, disabled, fullWidth = false, renderOption}) => {
-
+    console.log("endpoint", endpoint)
     const getValue = (initValue) => {
         if (!initValue) {
             initValue = {id: "", name: ""}
@@ -21,7 +21,7 @@ const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet 
     }
 
     const [open, setOpen] = React.useState(false);
-    const [options, setOptions] = React.useState([]);
+    const [options, setOptions] = React.useState(defaultValueSet);
     const [progress, setProgress] = React.useState(false);
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
     const [selectedValue, setSelectedValue] = React.useState(getValue(initValue));
@@ -36,39 +36,54 @@ const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet 
     }, [])
 
     const handleLoading = async () => {
+        console.log("load")
+
         if (mounted.current) {
-            setProgress(true);
-            try {
-                setOpen(true);
-                const response = await asyncRemote(endpoint)
-                if (response && mounted.current) {
-                    let options = convertResponseToAutoCompleteOptions(response)
+            if (isObject(endpoint)) {
+                setProgress(true);
+                try {
+                    setOpen(true);
+                    const response = await asyncRemote(endpoint)
+                    if (response && mounted.current) {
+                        let options = convertResponseToAutoCompleteOptions(response)
 
-                    if (Array.isArray(defaultValueSet) && defaultValueSet.length > 0) {
-                        options = defaultValueSet.concat(options)
+                        if (Array.isArray(defaultValueSet) && defaultValueSet.length > 0) {
+                            options = defaultValueSet.concat(options)
+                        }
+
+                        if (typeof options !== "undefined" && options !== null) {
+                            setOptions(options);
+                        } else {
+                            setOptions([])
+                        }
                     }
 
-                    if (typeof options !== "undefined" && options !== null) {
-                        setOptions(options);
-                    } else {
-                        setOptions([])
+                } catch (e) {
+                    if (mounted.current && e) {
+                        const errors = getError(e)
+                        showAlert({message: errors[0].msg, type: "error", hideAfter: 4000});
+                    }
+                } finally {
+                    if (mounted.current) {
+                        setProgress(false);
                     }
                 }
-
-            } catch (e) {
-                if (mounted.current && e) {
-                    const errors = getError(e)
-                    showAlert({message: errors[0].msg, type: "error", hideAfter: 4000});
-                }
-            } finally {
-                if (mounted.current) {
-                    setProgress(false);
+            } else {
+                if (mounted.current && Array.isArray(defaultValueSet) && defaultValueSet.length > 0) {
+                    console.log(defaultValueSet, Array.isArray(defaultValueSet) && defaultValueSet.length > 0)
+                    setOptions(defaultValueSet);
+                    setOpen(true);
                 }
             }
         }
     }
 
     const handleValueSet = (value) => {
+
+        if(!value) {
+            value = {id: "", name: ""}
+        }
+
         if (typeof value === "string") {
             value = {id: value, name: value}
         }
@@ -82,6 +97,11 @@ const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet 
 
     const handleChange = (value) => {
         if(onlyValueWithOptions === false) {
+
+            if(!value) {
+                value = {id: "", name: ""}
+            }
+
             if (typeof value === "string") {
                 value = {id: value, name: value}
             }
@@ -151,7 +171,7 @@ const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet 
 AutoComplete.propTypes = {
     placeholder: PropTypes.string,
     error: PropTypes.string,
-    url: PropTypes.string.isRequired,
+    endpoint: PropTypes.object,
     onSetValue: PropTypes.func,
     onChange: PropTypes.func,
     onlyValueWithOptions: PropTypes.bool,

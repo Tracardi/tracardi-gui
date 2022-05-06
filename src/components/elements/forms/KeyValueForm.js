@@ -44,14 +44,14 @@ const KeyValueForm = ({ value, onChange, values, endpoint, defaultKeySource, def
       return <DotAccessor label="Key" value={key.current} onChange={handleKeyChange} defaultSourceValue={defaultKeySource} lockSource={lockKeySource}/>
     } else {
       return <AutoComplete
-          onlyValueWithOptions={true}
-          endpoint={{
-            ...endpoint,
-            data: {config: values, production: false}
-          }}
-          defaultValueSet={availableValues}
-          onChange={(value) => handleKeyChange(value.id)}
-          onSetValue={(value) => handleKeyChange(value.id)}
+            onlyValueWithOptions={true}
+            endpoint={endpoint && {
+              ...endpoint,
+              data: {config: values, production: false}
+            }}
+            defaultValueSet={availableValues}
+            onChange={(value) => handleKeyChange(value.id)}
+            onSetValue={(value) => handleKeyChange(value.id)}
           />
     }
   }
