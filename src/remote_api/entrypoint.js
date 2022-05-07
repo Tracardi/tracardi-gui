@@ -1,6 +1,8 @@
 import axios from 'axios'
 import {getToken, logout} from "../components/authentication/login";
 import storageValue from "../misc/localStorageDriver";
+import {isObject} from "../misc/typeChecking";
+import {objectMap} from "../misc/mappers";
 
 export const apiUrlStorage = () => {
     return new storageValue('tracardi-api-url')
@@ -55,6 +57,11 @@ export const getError = (e) => {
             return e.response?.data?.detail;
         } else if (e.response?.data?.detail && typeof e.response?.data?.detail === 'string') {
             return [{msg:e.response.data.detail, type: "Exception", response: e.response}];
+        } else if (e.response?.data && isObject(e.response?.data)) {
+            const message = objectMap(e.response?.data, (k, v) => {
+                return `${k}: ${v}`
+            })
+            return [{msg:message, type: "Exception", response: e.response}];
         } else {
             return [{msg:e.message, type: "Exception", response: e.response}];
         }

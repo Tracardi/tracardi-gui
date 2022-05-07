@@ -47,7 +47,7 @@ const KeyValueForm = ({ value, onChange, values, endpoint, defaultKeySource, def
             onlyValueWithOptions={true}
             endpoint={endpoint && {
               ...endpoint,
-              data: {config: values, production: false}
+              data: values
             }}
             defaultValueSet={availableValues}
             onChange={(value) => handleKeyChange(value.id)}

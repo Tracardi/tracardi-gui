@@ -11,7 +11,7 @@ import {
     KeyValueInput,
     ListOfDotPaths,
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
-    SelectInput, BoolInput, ReadOnlyTags, EventTypes, EventType, ConsentTypes
+    SelectInput, BoolInput, ReadOnlyTags, EventTypes, EventType, ConsentTypes, AutoCompleteInput
 } from "./JsonFormComponents";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {AiOutlineCheckCircle} from "react-icons/ai";
@@ -20,54 +20,79 @@ import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
 const getComponentByType = ({value, values, errorMessage, componentType, fieldId, onChange}) => {
 
     const handleOnChange = (value, fieldId, deleted = {}) => {
-        if (onChange) {
+        if (onChange instanceof Function) {
             // Converts flat structure to nested object
             onChange(dot2object({[fieldId]: value}), Object.keys(deleted).length > 0 ? dot2object({[fieldId]: deleted}) : {})
         }
     }
 
     switch (componentType) {
+
+        case "autocomplete":
+            return (props) => <AutoCompleteInput
+                value={value}
+                values={values}
+                error={errorMessage}
+                onSetValue={(value) => handleOnChange(value, fieldId)}
+                {...props}/>
+
         case "readOnlyTags":
-            return () => <ReadOnlyTags value={value}/>
+            return () => <ReadOnlyTags
+                value={value}/>
 
         case "eventTypes":
-            return (props) => <EventTypes value={value}
-                                          onChange={(value) => handleOnChange(value, fieldId)}
-                                          {...props}/>
+            return (props) => <EventTypes
+                value={value}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                {...props}/>
 
         case "consentTypes":
-            return (props) => <ConsentTypes value={value} onChange={value => handleOnChange(value, fieldId)} {...props}/>
+            return (props) => <ConsentTypes
+                value={value}
+                onChange={value => handleOnChange(value, fieldId)}
+                {...props}/>
 
         case "eventType":
-            return (props) => <EventType value={value}
-                                          onChange={(value) => handleOnChange(value, fieldId)}
-                                          {...props}/>
+            return (props) => <EventType
+                value={value}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                {...props}/>
+
         case "resource":
-            return (props) => <ResourceSelect value={value}
-                                              errorMessage={errorMessage}
-                                              onChange={(value) => handleOnChange(value, fieldId)}
-                                              {...props}/>
+            return (props) => <ResourceSelect
+                value={value}
+                errorMessage={errorMessage}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                {...props}/>
+
         case "dotPath":
-            return (props) => <DotPathAndTextInput value={value}
-                                                   errorMessage={errorMessage}
-                                                   onChange={(value) => handleOnChange(value, fieldId)}
-                                                   props={props}/>
+            return (props) => <DotPathAndTextInput
+                value={value}
+                errorMessage={errorMessage}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                props={props}/>
+
         case "forceDotPath":
-            return (props) => <DotPathInput value={value}
-                                            errorMessage={errorMessage}
-                                            onChange={(value) => handleOnChange(value, fieldId)}
-                                            props={props}/>
+            return (props) => <DotPathInput
+                value={value}
+                errorMessage={errorMessage}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                props={props}/>
+
         case "keyValueList":
-            return (props) => <KeyValueInput value={value}
-                                             values={values}
-                                             errorMessage={errorMessage}
-                                             onChange={(value, deleted) => handleOnChange(value, fieldId, deleted)}
-                                             props={props}/>
+            return (props) => <KeyValueInput
+                value={value}
+                values={values}
+                errorMessage={errorMessage}
+                onChange={(value, deleted) => handleOnChange(value, fieldId, deleted)}
+                props={props}/>
+
         case "copyTraitsInput":
-            return (props) => <CopyTraitsInput value={value}
-                                               errorMessage={errorMessage}
-                                               onChange={(value) => handleOnChange(value, fieldId)}
-                                               props={props}/>
+            return (props) => <CopyTraitsInput
+                value={value}
+                errorMessage={errorMessage}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                props={props}/>
 
         case "listOfDotPaths":
             return (props) => <ListOfDotPaths
@@ -77,51 +102,62 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
                 props={props}/>
 
         case "text":
-            return (props) => <TextInput value={value}
-                                         errorMessage={errorMessage}
-                                         onChange={useCallback((value) => handleOnChange(value, fieldId),[])}
-                                         {...props}/>
+            return (props) => <TextInput
+                value={value}
+                errorMessage={errorMessage}
+                onChange={useCallback((value) => handleOnChange(value, fieldId), [])}
+                {...props}/>
 
         case "json":
-            return (props) => <JsonInput value={value}
-                                         errorMessage={errorMessage}
-                                         onChange={(value) => handleOnChange(value, fieldId)}
-                                         {...props}/>
+            return (props) => <JsonInput
+                value={value}
+                errorMessage={errorMessage}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                {...props}/>
 
 
         case "sql":
-            return (props) => <SqlInput value={value}
-                                        errorMessage={errorMessage}
-                                        onChange={(value) => handleOnChange(value, fieldId)}
-                                        {...props}/>
+            return (props) => <SqlInput
+                value={value}
+                errorMessage={errorMessage}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                {...props}/>
+
         case "textarea":
-            return (props) => <TextAreaInput value={value}
-                                             onChange={(value) => handleOnChange(value, fieldId)}
-                                             errorMessage={errorMessage}
-                                             {...props}/>
+            return (props) => <TextAreaInput
+                value={value}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                errorMessage={errorMessage}
+                {...props}/>
+
         case 'select':
-            return (props) => <SelectInput value={value}
-                                           values={values}
-                                           onChange={(value) => handleOnChange(value, fieldId)}
-                                           errorMessage={errorMessage}
-                                           {...props}/>
+            return (props) => <SelectInput
+                value={value}
+                values={values}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                errorMessage={errorMessage}
+                {...props}/>
 
         case 'bool':
-            return (props) => <BoolInput value={value}
-                                         onChange={(value) => handleOnChange(value, fieldId)}
-                                         errorMessage={errorMessage}
-                                         {...props}/>
+            return (props) => <BoolInput
+                value={value}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                errorMessage={errorMessage}
+                {...props}/>
+
         case "contentInput":
-            return (props) => <ContentInput value={value}
-                                            onChange={(value) => handleOnChange(value, fieldId)}
-                                            errorMessage={errorMessage}
-                                            {...props}/>
+            return (props) => <ContentInput
+                value={value}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                errorMessage={errorMessage}
+                {...props}/>
+
         default:
             return () => <AlertBox>Missing form type {componentType}.</AlertBox>
     }
 }
 
-const Fields = React.memo(({fields, values, onChange, errorMessages, keyValueMapOfComponentValues}) => {
+const Fields = ({fields, values, onChange, errorMessages, keyValueMapOfComponentValues}) => {
     const readValue = (fieldId) => {
         if (fieldId in keyValueMapOfComponentValues) {
             return keyValueMapOfComponentValues[fieldId]
@@ -170,9 +206,9 @@ const Fields = React.memo(({fields, values, onChange, errorMessages, keyValueMap
     return <TuiFormGroupContent>
         <FieldsInGroup fields={fields}/>
     </TuiFormGroupContent>
-})
+}
 
-const Groups = React.memo(({groups, values, onChange, errorMessages, keyValueMapOfComponentValues}) => {
+const Groups = ({groups, values, onChange, errorMessages, keyValueMapOfComponentValues}) => {
     return groups.map((groupObject, idx) => {
         return <TuiFormGroup key={idx}>
             {(groupObject.name || groupObject.description) && <TuiFormGroupHeader
@@ -188,7 +224,7 @@ const Groups = React.memo(({groups, values, onChange, errorMessages, keyValueMap
             />}
         </TuiFormGroup>
     })
-})
+}
 
 const Title = ({title}) => {
     if (typeof title != 'undefined') {
@@ -212,10 +248,10 @@ const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onS
         }
     }
 
-    const handleOnChange = (changed, deleted) => {
+    const handleChange = (changed, deleted) => {
         const merged = MutableMergeRecursive(values, changed, deleted)
         setData(merged) // this does not make form to rerender (the same object)
-        if(onChange) {
+        if (onChange instanceof Function) {
             onChange(merged)
         }
     }
@@ -226,7 +262,7 @@ const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onS
 
             {schema.groups && <Groups
                 groups={schema.groups}
-                onChange={handleOnChange}
+                onChange={handleChange}
                 values={data}
                 errorMessages={errorMessages}
                 keyValueMapOfComponentValues={keyValueMapOfComponentValues}

@@ -9,8 +9,8 @@ import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {convertResponseToAutoCompleteOptions} from "../../../misc/converters";
 import {isObject, isString} from "../../../misc/typeChecking";
 
-const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet = [], initValue, onSetValue, onChange, onlyValueWithOptions = false, solo = true, disabled, fullWidth = false, renderOption}) => {
-    console.log("endpoint", endpoint)
+const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet, initValue, onSetValue, onChange, onlyValueWithOptions = false, solo = true, disabled, fullWidth = false, renderOption}) => {
+
     const getValue = (initValue) => {
         if (!initValue) {
             initValue = {id: "", name: ""}
@@ -21,7 +21,7 @@ const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet 
     }
 
     const [open, setOpen] = React.useState(false);
-    const [options, setOptions] = React.useState(defaultValueSet);
+    const [options, setOptions] = React.useState(defaultValueSet || []);
     const [progress, setProgress] = React.useState(false);
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
     const [selectedValue, setSelectedValue] = React.useState(getValue(initValue));
@@ -36,8 +36,6 @@ const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet 
     }, [])
 
     const handleLoading = async () => {
-        console.log("load")
-
         if (mounted.current) {
             if (isObject(endpoint)) {
                 setProgress(true);
@@ -70,7 +68,6 @@ const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet 
                 }
             } else {
                 if (mounted.current && Array.isArray(defaultValueSet) && defaultValueSet.length > 0) {
-                    console.log(defaultValueSet, Array.isArray(defaultValueSet) && defaultValueSet.length > 0)
                     setOptions(defaultValueSet);
                     setOpen(true);
                 }
@@ -172,6 +169,7 @@ AutoComplete.propTypes = {
     placeholder: PropTypes.string,
     error: PropTypes.string,
     endpoint: PropTypes.object,
+    defaultValueSet: PropTypes.array,
     onSetValue: PropTypes.func,
     onChange: PropTypes.func,
     onlyValueWithOptions: PropTypes.bool,
