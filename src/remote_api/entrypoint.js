@@ -59,7 +59,7 @@ export const getError = (e) => {
             return [{msg:e.response.data.detail, type: "Exception", response: e.response}];
         } else if (e.response?.data && isObject(e.response?.data)) {
             const message = objectMap(e.response?.data, (k, v) => {
-                return `${k}: ${v}`
+                return `${k}: ${v} `
             })
             return [{msg:message, type: "Exception", response: e.response}];
         } else {
