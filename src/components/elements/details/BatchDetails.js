@@ -22,7 +22,6 @@ export default function BatchDetails ({ onClose, id }) {
     const [refresh, setRefresh] = React.useState(0);
     const [runSuccessul, setRunSuccessful] = React.useState(false);
     const [runDebugSuccessul, setRunDebugSuccessful] = React.useState(false);
-    const [taskId, setTaskId] = React.useState(null);
     const mounted = React.useRef(false);
 
     React.useEffect(() => {
@@ -65,7 +64,6 @@ export default function BatchDetails ({ onClose, id }) {
                 } else {
                     if (mounted.current) setRunSuccessful(true);
                 }
-                if (mounted.current) setTaskId(response.data);
             }
         })
         .catch(e => {
@@ -100,7 +98,6 @@ export default function BatchDetails ({ onClose, id }) {
                                     disabled={!batch.enabled}
                                     confirmed={runSuccessul}
                                 />
-                                {runSuccessul && taskId && <ProgressBar taskId={taskId} setTaskIdNull={() => setTaskId(null)}/>}
                             </div>
                         </TuiFormGroupField>
                         <TuiFormGroupField header="Debug batch" description="After clicking this button, batch will fetch data from selected resource using test credentials, and 
@@ -113,7 +110,6 @@ export default function BatchDetails ({ onClose, id }) {
                                     disabled={!batch.enabled} confirm
                                     confirmed={runDebugSuccessul}
                                 />
-                                {runDebugSuccessul && taskId && <ProgressBar taskId={taskId} setTaskIdNull={() => setTaskId(null)}/>}
                             </div>
                         </TuiFormGroupField>
                     </TuiFormGroupContent>
