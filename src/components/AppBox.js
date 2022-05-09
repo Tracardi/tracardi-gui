@@ -31,6 +31,7 @@ import UserLogs from "./pages/UserLogs";
 import PrivateTab from "./authentication/PrivateTab";
 import UserAccount from "./pages/UserAccount";
 import LogsAnalytics from "./pages/LogsAnalytics";
+import Batches from "./pages/Batches";
 
 const AppBox = () => {
 
@@ -63,6 +64,7 @@ const AppBox = () => {
                           new PrivateTab(["admin", "developer"], <EventSources/>, "/traffic/sources", "Sources"),
                           new PrivateTab(["admin", "developer"], <Resources/>, "/traffic/resources", "Resources"),
                           new PrivateTab(["admin", "developer"], <Destinations/>, "/traffic/destinations", "Destinations"),
+                          new PrivateTab(["admin", "developer"], <Batches/>, "/traffic/batches", "Batches"),
                       ]}
             />
         </PrivateRoute>
