@@ -18,6 +18,7 @@ import TuiMultiSelectEventType from "../tui/TuiSelectMultiEventType";
 import DotAccessor from "./inputs/DotAccessor";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import TuiSelectMultiConsentType from "../tui/TuiSelectMultiConsentType";
+import AutoComplete from "./AutoComplete";
 
 export const TextInput = React.memo(({value, label, errorMessage, onChange}) => {
 
@@ -215,10 +216,10 @@ export function DotPathInput({value, props, errorMessage, onChange = null}) {
     }
 
     return <DotAccessor value={value}
-                            forceMode={1}
-                            onChange={handleChange}
-                            errorMessage={errorMessage}
-                            {...props}/>
+                        forceMode={1}
+                        onChange={handleChange}
+                        errorMessage={errorMessage}
+                        {...props}/>
 }
 
 export function DotPathAndTextInput({value, props, errorMessage, onChange}) {
@@ -230,9 +231,9 @@ export function DotPathAndTextInput({value, props, errorMessage, onChange}) {
     }
 
     return <DotAccessor value={value}
-                            onChange={handleChange}
-                            errorMessage={errorMessage}
-                            {...props}
+                        onChange={handleChange}
+                        errorMessage={errorMessage}
+                        {...props}
     />
 }
 
@@ -328,10 +329,12 @@ export function SqlInput({value, onChange = null}) {
     </>
 }
 
-export function ResourceSelect({value, errorMessage, onChange = null, tag = null, pro=false}) {
+export function ResourceSelect({value, errorMessage, onChange = null, tag = null, pro = false}) {
 
     const handleChange = (value) => {
-        onChange(value);
+        if(onChange instanceof Function) {
+            onChange(value);
+        }
     };
 
     return <TuiSelectResource value={value}
@@ -342,13 +345,41 @@ export function ResourceSelect({value, errorMessage, onChange = null, tag = null
     />
 }
 
+export function AutoCompleteInput({value, values, label, endpoint, error, defaultValueSet, onChange, onSetValue}) {
+
+    const handleChange = (value) => {
+        if (onChange instanceof Function) {
+            onChange(value);
+        }
+    };
+
+    const handleSetValue = (value) => {
+        if (handleSetValue instanceof Function) {
+            onSetValue(value);
+        }
+    };
+
+    return <AutoComplete
+        onlyValueWithOptions={true}
+        placeholder={label}
+        initValue={value ? value : null}
+        defaultValueSet={defaultValueSet}
+        error={error}
+        endpoint={endpoint && {
+            ...endpoint,
+            data: values
+        }}
+        onChange={handleChange}
+        onSetValue={handleSetValue}/>
+}
+
 export function EventTypes({value: initValue, onChange = null}) {
 
     const [value, setValue] = useState(initValue);
 
     const handleChange = (value) => {
         setValue(value);
-        if(onChange) {
+        if (onChange instanceof Function) {
             onChange(value);
         }
     };
@@ -362,7 +393,7 @@ export function EventType({value: initValue, onChange = null}) {
 
     const handleChange = (value) => {
         setValue(value);
-        if(onChange) {
+        if (onChange instanceof Function) {
             onChange(value);
         }
     };
@@ -376,7 +407,7 @@ export function ConsentTypes({value: initValue, onChange = null}) {
 
     const handleChange = (value) => {
         setValue(value);
-        if(onChange) {
+        if (onChange instanceof Function) {
             onChange(value);
         }
     };
