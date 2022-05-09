@@ -23,6 +23,7 @@ const EventSourceForm = ({value, style, onClose}) => {
             description: "",
             enabled: false,
             transitional: false,
+            returns_profile: false,
             tags: [],
             groups: []
         }
@@ -30,6 +31,7 @@ const EventSourceForm = ({value, style, onClose}) => {
 
     const [enabledSource, setEnabledSource] = useState(value?.enabled);
     const [transitional, setTransitional] = useState(value?.transitional);
+    const [returnsProfile, setReturnsProfile] = useState(value?.returns_profile || false);
     const [type, setType] = useState(null);  // It is set in useEffects after the types are loaded
     const [name, setName] = useState(value?.name);
     const [id, setId] = useState(value?.id);
@@ -101,7 +103,8 @@ const EventSourceForm = ({value, style, onClose}) => {
                     enabled: enabledSource,
                     transitional: transitional,
                     tags: tags,
-                    groups:  groups
+                    groups:  groups,
+                    returns_profile: returnsProfile
                 }
             })
 
@@ -165,6 +168,20 @@ const EventSourceForm = ({value, style, onClose}) => {
                         />
                         <span>
                         This event source is enabled
+                    </span>
+                    </div>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Does this event source need to return profile data?"
+                                   description="You can enable profile data returning for this event source. Leaving this function disabled will make Tracardi 
+                                    NOT return profile data to the client sending events.">
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <Switch
+                            checked={returnsProfile}
+                            onChange={(ev) => setReturnsProfile(ev.target.checked)}
+                            name="returnsProfile"
+                        />
+                        <span>
+                        This event source should return profile data
                     </span>
                     </div>
                 </TuiFormGroupField>
