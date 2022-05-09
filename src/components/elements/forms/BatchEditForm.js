@@ -1,21 +1,19 @@
-import { TextField, Autocomplete } from "@mui/material";
 import React from "react";
 import { asyncRemote, getError } from "../../../remote_api/entrypoint";
-import { TuiForm, TuiFormGroupContent, TuiFormGroupField, TuiFormGroup, TuiFormGroupHeader } from "../tui/TuiForm";
-import BoolInput from "./BoolInput";
-import JsonForm from "./JsonForm";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
-import { uuid4 } from "@sentry/utils";
+import { TextField, Autocomplete, responsiveFontSizes } from "@mui/material";
+import { TuiForm, TuiFormGroup, TuiFormGroupHeader, TuiFormGroupContent, TuiFormGroupField } from "../tui/TuiForm";
+import BoolInput from "./BoolInput";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import JsonForm from "./JsonForm";
 import ErrorsBox from "../../errors/ErrorsBox";
 
+export default function BatchEditForm ({ onSubmit, batch }) {
 
-export default function BatchForm ({ onSubmit }) {
-
-    const [module, setModule] = React.useState(null);
-    const name = React.useRef(null);
-    const desc = React.useRef(null);
-    const enabled = React.useRef(true);
+    const [module, setModule] = React.useState({});
+    const name = React.useRef(batch.name);
+    const desc = React.useRef(batch.desc);
+    const enabled = React.useRef(batch.enabled);
     const [options, setOptions] = React.useState([]);
     const [error, setError] = React.useState(null);
     const mounted = React.useRef(false)
@@ -26,15 +24,16 @@ export default function BatchForm ({ onSubmit }) {
         .then(response => {
             if (mounted.current) {
                 setOptions(Object.keys(response.data).map(key => {return {label: response.data[key].name, value: response.data[key].module}}))
+                setModule(Object.keys(response.data).map(key => {return {label: response.data[key].name, value: response.data[key].module}}).filter(el => el.value === batch.module)[0])
             }
         })
         .catch(e => {if (mounted.current) setError(getError(e))})
         return () => mounted.current = false;
-    }, [])
+    }, [batch])
 
     const BatchConfigForm = () => {
 
-        const config = React.useRef({});
+        const config = React.useRef(batch.config);
         const mounted = React.useRef(false);
         const [form, setForm] = React.useState(null);
         const [loadingForm, setLoadingForm] = React.useState(false);
@@ -44,19 +43,16 @@ export default function BatchForm ({ onSubmit }) {
 
         React.useEffect(() => {
             mounted.current = true;
-            if (module) {
+            if (module?.value) {
                 if (mounted.current) {
                     setLoadingForm(true);
                     setFormError(null);
                     setServerError(null);
                     setForm(null);
                 }
-                asyncRemote({url: "/batch/form/" + module})
+                asyncRemote({url: "/batch/form/" + module.value})
                 .then(response => {
-                    if (mounted.current) {
-                        setForm(response.data.form);
-                        config.current = response.data.init;
-                    }
+                    if (mounted.current) setForm(response.data.form);
                 })
                 .catch(e => { 
                     if (mounted.current) setServerError(getError(e));
@@ -83,20 +79,20 @@ export default function BatchForm ({ onSubmit }) {
                 url: "/batch",
                 method: "POST",
                 data: { 
-                    id: uuid4(),
+                    id: batch.id,
                     name: name.current,
                     description: desc.current,
                     enabled: enabled.current,
-                    module: module,
+                    module: module.value,
                     config: config.current
                 }
             })
             .then(onSubmit)
             .catch(e => {if (mounted.current) {
                 if (e.response.status === 422) {
-                    if (mounted.current) setFormError(e.response.data);
+                    setFormError(e.response.data);
                 } else {
-                    if (mounted.current) setServerError(getError(e));
+                    setServerError(getError(e));
                 }
             }})
             .finally(() => {if (mounted.current) setSendingForm(false)})
@@ -122,13 +118,14 @@ export default function BatchForm ({ onSubmit }) {
         </>
     }
 
-    return <>
+    return <>{batch && <>
         <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="New batch" description="Here you can create a new batch resource." />
                 <TuiFormGroupContent>
                     <TuiFormGroupField header="Name" description="Please enter the name of your batch.">
                         <TextField 
+                            defaultValue={name.current}
                             sx={{width: 300}}
                             size="small"
                             variant="outlined"
@@ -138,6 +135,7 @@ export default function BatchForm ({ onSubmit }) {
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Description" description="Please enter the optional description for this batch.">
                         <TextField 
+                            defaultValue={desc.current}
                             fullWidth
                             size="small"
                             multiline={true}
@@ -150,20 +148,21 @@ export default function BatchForm ({ onSubmit }) {
                     <TuiFormGroupField header="Enabled" description="You can disable this batch if you want.">
                         <BoolInput 
                             label="Enabled"
-                            value={true}
+                            value={enabled.current}
                             onChange={() => enabled.current = !enabled.current}
                         />
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Type" description="Please select the type of your batch resource.">
                         <Autocomplete 
+                            value={module}
                             freeSolo={false}
                             multiple={false}
                             fullWidth={false}
                             style={{width: 300}}
                             options={options}
-                            getOptionLabel={option => option?.label || null}
-                            isOptionEqualToValue={(option, value) => option === null || option.label === value.label}
-                            onChange={(_, value) => {setModule(value?.value || null);}}
+                            getOptionLabel={option => option?.label || ""}
+                            isOptionEqualToValue={(option, value) => !value || option.value === value.value}
+                            onChange={(_, value) => {setModule(value);}}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -181,5 +180,5 @@ export default function BatchForm ({ onSubmit }) {
         <div style={{margin: 20}}>
             <BatchConfigForm />
         </div>
-    </>;
+    </>}</>;
 }

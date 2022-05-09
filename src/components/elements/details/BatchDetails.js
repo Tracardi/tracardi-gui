@@ -8,6 +8,8 @@ import BoolInput from "../forms/BoolInput";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
 import JsonForm from "../forms/JsonForm";
 import Button from "../forms/Button";
+import BatchEditForm from "../forms/BatchEditForm";
+import ProgressBar from "../progress/ProgressBar";
 
 export default function BatchDetails ({ onClose, id }) {
 
@@ -17,6 +19,10 @@ export default function BatchDetails ({ onClose, id }) {
     const [deleteProgress, setDeleteProgress] = React.useState(false);
     const [runProgress, setRunProgress] = React.useState(false);
     const [debugRunProgress, setDebugRunProgress] = React.useState(false);
+    const [refresh, setRefresh] = React.useState(0);
+    const [runSuccessul, setRunSuccessful] = React.useState(false);
+    const [runDebugSuccessul, setRunDebugSuccessful] = React.useState(false);
+    const [taskId, setTaskId] = React.useState(null);
     const mounted = React.useRef(false);
 
     React.useEffect(() => {
@@ -30,8 +36,10 @@ export default function BatchDetails ({ onClose, id }) {
     }, [id])
 
     const handleDelete = () => {
-        if (mounted.current) setError(null);
-        if (mounted.current) setDeleteProgress(true);
+        if (mounted.current) {
+            setError(null);
+            setDeleteProgress(true);
+        }
         asyncRemote({url: "/batch/" + id, method: "DELETE"})
         .then(onClose)
         .catch(e => {if (mounted.current) setError(getError(e)); })
@@ -39,23 +47,35 @@ export default function BatchDetails ({ onClose, id }) {
     }
 
     const handleRun = (debug) => {
-        if (mounted.current) setError(null);
         if (mounted.current) {
+            setError(null);
             if (debug) {
-                setRunProgress(true);
-            } else {
                 setDebugRunProgress(true);
+                setRunDebugSuccessful(false);
+            } else {
+                setRunProgress(true);
+                setRunSuccessful(false);
             }
         };
         asyncRemote({url: "/batch/run/" + id + "?debug=" + debug, method: "POST"})
+        .then(response => {
+            if (response.status === 200) {
+                if (debug) {
+                    if (mounted.current) setRunDebugSuccessful(true);
+                } else {
+                    if (mounted.current) setRunSuccessful(true);
+                }
+                if (mounted.current) setTaskId(response.data);
+            }
+        })
         .catch(e => {
             if (mounted.current) setError(getError(e))
         })
         .finally(() => {if (mounted.current) {
             if (debug) {
-                setRunProgress(false);
+                if (mounted.current) setDebugRunProgress(false);
             } else {
-                setDebugRunProgress(false);
+                if (mounted.current) setRunProgress(false);
             }
         }})
     }
@@ -72,16 +92,34 @@ export default function BatchDetails ({ onClose, id }) {
                         </TuiFormGroupField>
                         <TuiFormGroupField header="Run batch" description="After clicking this button, batch will fetch data from selected resource and insert them to Tracardi
                                 as events with fetched data as event properties.">
-                            <Button label={batch.enabled ? "RUN" : "Batch disabled"} onClick={() => handleRun(false)} progress={runProgress} disabled={!batch.enabled}/>
+                            <div style={{display: "flex", flexDirection: "row", gap: "20px", alignItems: "center"}}>
+                                <Button 
+                                    label={batch.enabled ? "RUN" : "Batch disabled"} 
+                                    onClick={() => handleRun(false)} 
+                                    progress={runProgress} 
+                                    disabled={!batch.enabled}
+                                    confirmed={runSuccessul}
+                                />
+                                {runSuccessul && taskId && <ProgressBar taskId={taskId} setTaskIdNull={() => setTaskId(null)}/>}
+                            </div>
                         </TuiFormGroupField>
                         <TuiFormGroupField header="Debug batch" description="After clicking this button, batch will fetch data from selected resource using test credentials, and 
                                 insert them to Tracardi as events with fetched data as event properties.">
-                            <Button label={batch.enabled ? "RUN DEBUG" : "Batch disabled"} onClick={() => handleRun(true)} progress={debugRunProgress} disabled={!batch.enabled}/>
+                            <div style={{display: "flex", flexDirection: "row", gap: "20px", alignItems: "center"}}>
+                                <Button 
+                                    label={batch.enabled ? "RUN DEBUG" : "Batch disabled"} 
+                                    onClick={() => handleRun(true)} 
+                                    progress={debugRunProgress} 
+                                    disabled={!batch.enabled} confirm
+                                    confirmed={runDebugSuccessul}
+                                />
+                                {runDebugSuccessul && taskId && <ProgressBar taskId={taskId} setTaskIdNull={() => setTaskId(null)}/>}
+                            </div>
                         </TuiFormGroupField>
                     </TuiFormGroupContent>
                 </TuiFormGroup>
-            </TuiForm>
-        }
-        {error && <ErrorsBox errorList={error}/>}
+            </TuiForm>}
+        {error && <ErrorsBox errorList={error} style={{margin: 20}}/>}
+        {batch && <BatchEditForm batch={batch} onSubmit={onClose}/> }
     </>
 }
