@@ -6,7 +6,7 @@ import ImportDetails from "../elements/details/ImportDetails";
 import ImportForm from "../elements/forms/ImportForm";
 
 
-export default function Imports () {
+export default function ImportSources () {
 
     const urlFunc = useCallback((query) => ('/imports' + ((query) ? "?query=" + query : "")), []);
     const addFunc = useCallback((close) => <ImportForm onSubmit={close}/>, []);
@@ -32,7 +32,8 @@ export default function Imports () {
     }
 
     return <CardBrowser
-        label="Imports"
+        label="Import sources"
+        description="List of configured import sources."
         urlFunc={urlFunc}
         cardFunc={destinations}
         buttomLabel="New import"

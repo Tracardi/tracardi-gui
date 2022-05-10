@@ -101,11 +101,17 @@ export default function ImportEditForm({onSubmit, importConfig}) {
                     name: name.current,
                     description: desc.current,
                     enabled: enabled.current,
+                    transitional: transitional.current,
+                    event_type: eventType.current,
                     module: module.value,
                     config: config.current
                 }
             })
-                .then(onSubmit)
+                .then((response) => {
+                    if(onSubmit instanceof Function) {
+                        onSubmit(response)
+                    }
+                })
                 .catch(e => {
                     if (mounted.current) {
                         if (e.response.status === 422) {
