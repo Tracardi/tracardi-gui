@@ -27,7 +27,7 @@ export default function BarChartElement({onLoadRequest: endpoint, refreshInterva
             endpoint,
             (value)=> {if(isSubscribed===true && allowLoadingSpinner) setLoading(value);},
             (value) => {if(isSubscribed===true) setError(value);},
-            (value) => {if(isSubscribed===true) setReady(value); setAllowLoadingSpinner(false);}
+            (value) => {if(isSubscribed===true) {setReady(value); setAllowLoadingSpinner(false);}}
         );
         return () => isSubscribed = false
     }, [endpoint])

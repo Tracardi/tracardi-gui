@@ -25,7 +25,7 @@ const BrowserRow = ({id, data, onClick}) => {
              }}>
 
             <div style={{display: "flex", alignItems: "center", width: "auto"}}>
-                <span style={{color: "#555"}}><FlowNodeIcons icon={data?.icon} size={20}/></span>
+                <span style={{color: "#555", display: "flex"}}><FlowNodeIcons icon={data?.icon} size={22}/></span>
                 <div style={{display: "flex", alignItems: "baseline", marginLeft: 10}}>
                     <div style={{fontSize: 16, marginRight: 5, fontWeight: 500, width: 200}}>{data.name}</div>
                     <div style={{fontSize: 13}}>{data.description}</div>

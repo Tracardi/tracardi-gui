@@ -5,7 +5,8 @@ import {
     BsDiamond,
     BsPerson,
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
-    BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash
+    BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
+    BsBoxArrowInRight
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {MdTimelapse} from "react-icons/md";
@@ -213,7 +214,8 @@ export const icons = {
     'hash': (size) => <BsHash size={size}/>,
     "redis": (size) => <SiRedis size={size}/>,
     "civicrm": (size) => <SiCivicrm size={size}/>,
-    "active-campaign": (size) => <ActiveCampaign size={size}/>
+    "active-campaign": (size) => <ActiveCampaign size={size}/>,
+    "source": (size) => <BsBoxArrowInRight size={size}/>
 }
 
 

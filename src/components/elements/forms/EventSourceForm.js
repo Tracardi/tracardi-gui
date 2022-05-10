@@ -12,6 +12,7 @@ import Button from "./Button";
 import PropTypes from "prop-types";
 import ErrorsBox from "../../errors/ErrorsBox";
 import Chip from "@mui/material/Chip";
+import NotImplemented from "../misc/NotImplemented";
 
 const EventSourceForm = ({value, style, onClose}) => {
 
@@ -21,8 +22,9 @@ const EventSourceForm = ({value, style, onClose}) => {
             name: "",
             type: null,
             description: "",
-            enabled: false,
+            enabled: true,
             transitional: false,
+            permanent_profile_id: false,
             returns_profile: false,
             tags: [],
             groups: []
@@ -31,6 +33,7 @@ const EventSourceForm = ({value, style, onClose}) => {
 
     const [enabledSource, setEnabledSource] = useState(value?.enabled);
     const [transitional, setTransitional] = useState(value?.transitional);
+    const [permanent, setPermanent] = useState(value?.permanent_profile_id);
     const [returnsProfile, setReturnsProfile] = useState(value?.returns_profile || false);
     const [type, setType] = useState(null);  // It is set in useEffects after the types are loaded
     const [name, setName] = useState(value?.name);
@@ -103,8 +106,9 @@ const EventSourceForm = ({value, style, onClose}) => {
                     enabled: enabledSource,
                     transitional: transitional,
                     tags: tags,
-                    groups:  groups,
-                    returns_profile: returnsProfile
+                    groups: groups,
+                    returns_profile: returnsProfile,
+                    permanent_profile_id: permanent
                 }
             })
 
@@ -158,6 +162,11 @@ const EventSourceForm = ({value, style, onClose}) => {
                                               errorMessage={errorTypeMessage}/>
 
                 </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Event source advanced configuration" />
+            <TuiFormGroupContent>
                 <TuiFormGroupField header="Event source access"
                                    description="Disabled event sources will not be accessible.">
                     <div style={{display: "flex", alignItems: "center"}}>
@@ -171,9 +180,12 @@ const EventSourceForm = ({value, style, onClose}) => {
                     </span>
                     </div>
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Does this event source need to return profile data?"
-                                   description="You can enable profile data returning for this event source. Leaving this function disabled will make Tracardi 
-                                    NOT return profile data to the client sending events.">
+                <TuiFormGroupField header="Return profile data in response to client"
+                                   description="For security reasons, the system returns only the profile id when
+                                   collecting data (events). In justified cases, it is possible to provide the browser
+                                   with all data collected in the profile. When turned on, set event
+                                   options to 'profile: true' to include profile data in response. Read 'event tracking'
+                                   chapter in manual for details and use this option with caution. ">
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Switch
                             checked={returnsProfile}
@@ -181,15 +193,16 @@ const EventSourceForm = ({value, style, onClose}) => {
                             name="returnsProfile"
                         />
                         <span>
-                        This event source should return profile data
+                        Return profile data with response
                     </span>
                     </div>
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Are events from this source transitional?"
+                <TuiFormGroupField header="Make events from this source always transitional"
                                    description="Transitional events are only processed but not saved in database. If you set
-                                   source to collect only transitional event then no event will be stored in Tracardi. By default
-                                   events are saved in Tracardi storage.  Control over event is passed to the client. That
-                                   means the event may become transitional if it is sent with options set to saveEvents: false.">
+                                   source to collect only transitional events then no event will be stored in the system.
+                                   By default control over the event configuration is passed to the client. That
+                                   means the event may become transitional if it is sent with options set to 'saveEvents: false'.
+                                   Read 'event tracking' chapter in manual for details.">
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Switch
                             checked={transitional}
@@ -199,6 +212,21 @@ const EventSourceForm = ({value, style, onClose}) => {
                         <span>
                         Event from this source are transitional (ephemeral)
                     </span>
+                    </div>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Make profile id permanent"
+                                   description="Profile id may change due to being merged with other profile. If you want
+                                   profile it to stay always the same enable this option. For security reasons when you
+                                   allow permanent profile ids it is advisable to disallow profile data in response to
+                                   collected event. See manual for explanation.">
+                    <NotImplemented>This feature is not implemented yet</NotImplemented>
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <Switch
+                            checked={permanent}
+                            onChange={(ev) => setPermanent(ev.target.checked)}
+                            name="permanent"
+                        />
+                        <span>Make profile id permanent</span>
                     </div>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
@@ -236,12 +264,14 @@ const EventSourceForm = ({value, style, onClose}) => {
                     />
                 </TuiFormGroupField>
 
-                <TuiFormGroupField header="Grouping" description="Sources can be grouped with tags that are typed here.">
+                <TuiFormGroupField header="Grouping"
+                                   description="Sources can be grouped with tags that are typed here.">
                     <TuiTagger tags={groups} onChange={setGroups}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Tags" description="Set tags. Sources will be grouped by tags that lets you
                 find sources quickly.">
-                    {Array.isArray(tags) && tags.map((tag, index) => <Chip label={tag} key={index} style={{marginLeft: 5}}/>)}
+                    {Array.isArray(tags) && tags.map((tag, index) => <Chip label={tag} key={index}
+                                                                           style={{marginLeft: 5}}/>)}
                 </TuiFormGroupField>
 
             </TuiFormGroupContent>
