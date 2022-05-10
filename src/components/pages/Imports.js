@@ -1,16 +1,16 @@
 import React, {useCallback} from "react";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
-import {AiOutlineDownload} from "react-icons/ai";
-import BatchDetails from "../elements/details/BatchDetails";
-import BatchForm from "../elements/forms/BatchForm";
+import {BsFileEarmarkArrowUp} from "react-icons/bs";
+import ImportDetails from "../elements/details/ImportDetails";
+import ImportForm from "../elements/forms/ImportForm";
 
 
-export default function Batches () {
+export default function Imports () {
 
-    const urlFunc = useCallback((query) => ('/batches' + ((query) ? "?query=" + query : "")), []);
-    const addFunc = useCallback((close) => <BatchForm onSubmit={close}/>, []);
-    const detailsFunc = useCallback((id, close) => <BatchDetails id={id} onClose={close}/>, []);
+    const urlFunc = useCallback((query) => ('/imports' + ((query) ? "?query=" + query : "")), []);
+    const addFunc = useCallback((close) => <ImportForm onSubmit={close}/>, []);
+    const detailsFunc = useCallback((id, close) => <ImportDetails id={id} onClose={close}/>, []);
 
     const destinations = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
@@ -20,7 +20,7 @@ export default function Batches () {
                     {plugs.map((row, subIndex) => {
                         return <SquareCard key={index + "-" + subIndex}
                                            id={row?.id}
-                                           icon={<AiOutlineDownload size={45}/>}
+                                           icon={<BsFileEarmarkArrowUp size={45}/>}
                                            status={row?.enabled}
                                            name={row?.name}
                                            description={row?.description}
@@ -32,15 +32,15 @@ export default function Batches () {
     }
 
     return <CardBrowser
-        label="Data batches"
+        label="Imports"
         urlFunc={urlFunc}
         cardFunc={destinations}
-        buttomLabel="New batch"
-        buttonIcon={<AiOutlineDownload size={20}/>}
-        drawerDetailsTitle="Batch details"
+        buttomLabel="New import"
+        buttonIcon={<BsFileEarmarkArrowUp size={20}/>}
+        drawerDetailsTitle="Import details"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
-        drawerAddTitle="New batch"
+        drawerAddTitle="New import"
         drawerAddWidth={800}
         addFunc={addFunc}
         className="Pad10"

@@ -2,14 +2,16 @@ import React, {useEffect, useRef} from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
-import {connect} from "react-redux";
-import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {convertResponseToAutoCompleteOptions} from "../../../misc/converters";
 import {isObject, isString} from "../../../misc/typeChecking";
 
-const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet, initValue, onSetValue, onChange, onlyValueWithOptions = false, solo = true, disabled, fullWidth = false, renderOption}) => {
+const AutoComplete = ({
+                          placeholder, error: errorMessage = null, endpoint, defaultValueSet, initValue, onSetValue,
+                          onChange, onlyValueWithOptions = false, disabled, fullWidth = false,
+                          renderOption
+                      }) => {
 
     const getValue = (initValue) => {
         if (!initValue) {
@@ -20,6 +22,7 @@ const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet,
         return initValue
     }
 
+    const [error, setError] = React.useState(errorMessage);
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState(defaultValueSet || []);
     const [progress, setProgress] = React.useState(false);
@@ -54,12 +57,14 @@ const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet,
                         } else {
                             setOptions([])
                         }
+
+                        setError(null)
                     }
 
                 } catch (e) {
                     if (mounted.current && e) {
                         const errors = getError(e)
-                        showAlert({message: errors[0].msg, type: "error", hideAfter: 4000});
+                        setError(errors[0].msg)
                     }
                 } finally {
                     if (mounted.current) {
@@ -77,7 +82,7 @@ const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet,
 
     const handleValueSet = (value) => {
 
-        if(!value) {
+        if (!value) {
             value = {id: "", name: ""}
         }
 
@@ -93,9 +98,9 @@ const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet,
     }
 
     const handleChange = (value) => {
-        if(onlyValueWithOptions === false) {
+        if (onlyValueWithOptions === false) {
 
-            if(!value) {
+            if (!value) {
                 value = {id: "", name: ""}
             }
 
@@ -110,7 +115,6 @@ const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet,
             }
         }
     }
-
     return (
         <Autocomplete
             freeSolo={!onlyValueWithOptions}
@@ -154,7 +158,8 @@ const AutoComplete = ({showAlert, placeholder, error, endpoint, defaultValueSet,
                             <>
                                 {progress ?
                                     <CircularProgress color="inherit" size={20}
-                                                      style={{marginRight: solo ? 25 : 0}}/> : null}
+                                                      style={{marginRight: onlyValueWithOptions ? 0 : 25}}
+                                    /> : null}
                                 {params.InputProps.endAdornment}
                             </>
                         ),
@@ -177,12 +182,4 @@ AutoComplete.propTypes = {
     fullWidth: PropTypes.bool,
 }
 
-const mapProps = (state) => {
-    return {
-        notification: state.notificationReducer,
-    }
-};
-export default connect(
-    mapProps,
-    {showAlert}
-)(AutoComplete)
+export default AutoComplete;
