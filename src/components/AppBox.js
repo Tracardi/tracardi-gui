@@ -31,6 +31,8 @@ import UserLogs from "./pages/UserLogs";
 import PrivateTab from "./authentication/PrivateTab";
 import UserAccount from "./pages/UserAccount";
 import LogsAnalytics from "./pages/LogsAnalytics";
+import ImportSources from "./pages/ImportSources";
+import ImportTasks from "./pages/ImportTasks";
 
 const AppBox = () => {
 
@@ -63,6 +65,17 @@ const AppBox = () => {
                           new PrivateTab(["admin", "developer"], <EventSources/>, "/traffic/sources", "Sources"),
                           new PrivateTab(["admin", "developer"], <Resources/>, "/traffic/resources", "Resources"),
                           new PrivateTab(["admin", "developer"], <Destinations/>, "/traffic/destinations", "Destinations"),
+                      ]}
+            />
+        </PrivateRoute>
+
+        {/*Import*/}
+
+        <PrivateRoute path={urlPrefix("/import")} roles={["admin", "developer"]}>
+            <PageTabs title="Import and Export"
+                      tabs={[
+                          new PrivateTab(["admin", "developer"], <ImportSources/>, "/import/sources", "Import sources"),
+                          new PrivateTab(["admin", "developer"], <ImportTasks/>, "/import/tasks", "Running imports"),
                       ]}
             />
         </PrivateRoute>
