@@ -28,13 +28,13 @@ export default function ImportProgress({taskId, refreshInterval = 5}) {
                                 }
                             })
                             .catch(e => {
-                                setError(getError(e))
+                                if (timer) setError(getError(e))
                             })
                     }, refreshInterval * 1000);
                 }
             })
             .catch(e => {
-                if (timer) setError(getError(e))
+                setError(getError(e))
             })
 
         return () => {

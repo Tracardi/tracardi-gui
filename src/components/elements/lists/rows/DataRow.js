@@ -1,7 +1,6 @@
 import React from 'react';
-import {BsTrash} from "react-icons/bs";
 
-const DataRow = ({id, onClick, children, onDelete, actions = []}) => {
+const DataRow = ({id, onClick, children, actions = []}) => {
 
     return (
         <div style={{
