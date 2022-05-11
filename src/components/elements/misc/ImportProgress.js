@@ -11,7 +11,7 @@ export default function ImportProgress({taskId, refreshInterval = 5}) {
     useEffect(() => {
         let timer;
 
-        asyncRemote({url: "/import/status/" + taskId})
+        asyncRemote({url: `/import/task/${taskId}/status/`})
             .then(response => {
                 setStatus(response.data);
                 setError(null);
@@ -19,7 +19,7 @@ export default function ImportProgress({taskId, refreshInterval = 5}) {
                     clearInterval(timer);
                 } else {
                     timer = setInterval(() => {
-                        asyncRemote({url: "/import/status/" + taskId})
+                        asyncRemote({url: `/import/task/${taskId}/status/`})
                             .then(response => {
                                 setStatus(response.data);
                                 setError(null);

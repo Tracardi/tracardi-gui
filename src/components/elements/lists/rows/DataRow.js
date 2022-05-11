@@ -1,7 +1,7 @@
 import React from 'react';
 import {BsTrash} from "react-icons/bs";
 
-const DataRow = ({id, onClick, children, onDelete}) => {
+const DataRow = ({id, onClick, children, onDelete, actions = []}) => {
 
     return (
         <div style={{
@@ -24,9 +24,10 @@ const DataRow = ({id, onClick, children, onDelete}) => {
             <div style={{display: "flex", alignItems: "center", width: "auto"}}>
                 {children}
             </div>
-            {onDelete && <div style={{display: "flex", alignItems: "center"}}>
-                <BsTrash size={20} onClick={onDelete}/>
-            </div>}
+
+            <div style={{display: "flex", alignItems: "center"}}>
+                {Array.isArray(actions) && actions.map((item, key) => <span key={key}>{item(id)}</span>)}
+            </div>
         </div>
     );
 }
