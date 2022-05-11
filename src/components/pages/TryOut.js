@@ -19,6 +19,7 @@ import SessionSlider from "../elements/sliders/SessionSlider";
 import SchedulerJobForm from "../elements/forms/SchedulerJobForm";
 import CompactEventDetails from "../elements/details/CompactEventDetails";
 import ProfileSessionsDetails from "../elements/details/ProfileSessionsDetails";
+import ImportProgress from "../elements/misc/ImportProgress";
 
 export default function TryOut() {
     const [v,setV] = React.useState("`profile@`");
@@ -44,6 +45,7 @@ export default function TryOut() {
       {/*<TuiSelectEventType value={v} onSetValue={(v) => {console.log("value", v); setV(v)}} solo={true}/>*/}
       {/*    <TuiSelectMultiEventType value={v} onSetValue={(v) => {console.log(v); setV(v)}}/>*/}
     <div style={{height: "100%", overflow: "auto"}}>
+        <ImportProgress taskId="baf6d467-df07-4d94-966a-aac6a034321s"/>
         {/*<Table data={data} disableHeader={false}>*/}
         {/*    <Column dataKey="id" label="ID" width={20}/>*/}
         {/*    <Column dataKey="title" label="Title" />*/}

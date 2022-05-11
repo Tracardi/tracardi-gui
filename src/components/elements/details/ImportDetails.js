@@ -1,11 +1,14 @@
 import React from "react";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import {TuiForm, TuiFormGroup, TuiFormGroupHeader, TuiFormGroupContent, TuiFormGroupField} from "../tui/TuiForm";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField} from "../tui/TuiForm";
 import ErrorsBox from "../../errors/ErrorsBox";
 import Button from "../forms/Button";
 import ImportEditForm from "../forms/ImportEditForm";
 import Tabs, {TabCase} from "../tabs/Tabs";
+import NamedActionButton from "../forms/inputs/NamedActionButton";
+import {BsPlayFill} from "react-icons/bs";
+import {VscDebugAlt} from "react-icons/vsc";
 
 export default function ImportDetails({onClose, id}) {
 
@@ -51,7 +54,7 @@ export default function ImportDetails({onClose, id}) {
             })
     }
 
-    const handleRun = (debug) => {
+    const handleRun = (name, debug) => {
         if (mounted.current) {
             setError(null);
             if (debug) {
@@ -63,7 +66,10 @@ export default function ImportDetails({onClose, id}) {
             }
         }
         ;
-        asyncRemote({url: "/import/run/" + id + "?debug=" + debug, method: "POST"})
+        asyncRemote({
+            url: "/import/run/" + id + "?name=" + encodeURIComponent(name) + "&debug=" + encodeURIComponent(debug),
+            method: "GET"
+        })
             .then(response => {
                 if (response.status === 200) {
                     if (debug) {
@@ -98,27 +104,27 @@ export default function ImportDetails({onClose, id}) {
                         <TuiFormGroupContent>
                             <TuiFormGroupField header="Start importing" description="After clicking this button, batch will fetch data from selected resource and insert them to Tracardi
                                 as events with fetched data as event properties.">
-                                <div style={{display: "flex", flexDirection: "row", gap: "20px", alignItems: "center"}}>
-                                    <Button
-                                        label={batch.enabled ? "RUN" : "Import is disabled"}
-                                        onClick={() => handleRun(false)}
-                                        progress={runProgress}
-                                        disabled={!batch.enabled}
-                                        confirmed={runSuccessful}
-                                    />
-                                </div>
+                                <NamedActionButton
+                                    buttonLabel={batch.enabled ? "RUN" : "Import is disabled"}
+                                    textLabel="Task name"
+                                    disabled={!batch.enabled}
+                                    confirmed={runSuccessful}
+                                    progress={runProgress}
+                                    onClick={(name) => handleRun(name, false)}
+                                    icon={<BsPlayFill size={20}/>}
+                                />
                             </TuiFormGroupField>
                             <TuiFormGroupField header="Debug import " description="After clicking this button, batch will fetch data from selected resource using test credentials, and
                                 insert them to Tracardi as events.">
-                                <div style={{display: "flex", flexDirection: "row", gap: "20px", alignItems: "center"}}>
-                                    <Button
-                                        label={batch.enabled ? "RUN DEBUG" : "Import is disabled"}
-                                        onClick={() => handleRun(true)}
-                                        progress={debugRunProgress}
-                                        disabled={!batch.enabled} confirm
-                                        confirmed={runDebugSuccessul}
-                                    />
-                                </div>
+                                <NamedActionButton
+                                    buttonLabel={batch.enabled ? "RUN DEBUG" : "Import is disabled"}
+                                    textLabel="Task name"
+                                    disabled={!batch.enabled}
+                                    confirmed={runDebugSuccessul}
+                                    progress={debugRunProgress}
+                                    onClick={(name) => handleRun(name, true)}
+                                    icon={<VscDebugAlt size={20}/>}
+                                />
                             </TuiFormGroupField>
                         </TuiFormGroupContent>
                     </TuiFormGroup>
@@ -126,7 +132,7 @@ export default function ImportDetails({onClose, id}) {
                         <TuiFormGroupContent>
                             <TuiFormGroupField header="Other actions">
                                 <div style={{display: "flex"}}>
-                                    <Button label="Edit" onClick={()=>setTab(1)}/>
+                                    <Button label="Edit" onClick={() => setTab(1)}/>
                                     <Button label="Delete" onClick={handleDelete} progress={deleteProgress}/>
                                 </div>
                             </TuiFormGroupField>

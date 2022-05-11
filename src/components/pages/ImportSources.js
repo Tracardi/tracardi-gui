@@ -12,7 +12,7 @@ export default function ImportSources () {
     const addFunc = useCallback((close) => <ImportForm onSubmit={close}/>, []);
     const detailsFunc = useCallback((id, close) => <ImportDetails id={id} onClose={close}/>, []);
 
-    const destinations = (data, onClick) => {
+    const importCard = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="CardGroup" key={index}>
                 <header>{category}</header>
@@ -35,7 +35,7 @@ export default function ImportSources () {
         label="Import sources"
         description="List of configured import sources."
         urlFunc={urlFunc}
-        cardFunc={destinations}
+        cardFunc={importCard}
         buttomLabel="New import"
         buttonIcon={<BsFileEarmarkArrowUp size={20}/>}
         drawerDetailsTitle="Import details"
