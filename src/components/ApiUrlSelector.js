@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {apiUrlStorage, asyncRemote} from "../remote_api/entrypoint";
 import storageValue from "../misc/localStorageDriver";
 import {BsHddNetwork} from "react-icons/bs";
-import EndpointInput from "./authentication/EndpointInput";
+import TuiApiUrlInput from "./elements/tui/TuiApiUrlInput";
 import Button from "./elements/forms/Button";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
 
@@ -80,8 +80,10 @@ const ApiUrlSelector = ({children}) => {
                 <h1 style={{fontWeight: 300}}>Select TRACARDI server</h1>
                 <p>Type or select TRACARDI API Url.</p>
                 <div style={{width: 400, display: "flex", alignItems: "flex-end"}}>
-                    <EndpointInput options={new storageValue('tracardi-api-urls').read() || []}
-                                   onChange={(v) => setEndpoint(v)}/>
+                    <TuiApiUrlInput
+                        value={apiUrlStorage().read([])}
+                        options={new storageValue('tracardi-api-urls').read() || []}
+                        onChange={(v) => setEndpoint(v)}/>
                     <Button label="Select"
                             onClick={()=> setApiLocation(endpoint)}
                             progress={progress}

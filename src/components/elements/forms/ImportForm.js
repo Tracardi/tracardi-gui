@@ -1,6 +1,6 @@
 import {TextField, Autocomplete} from "@mui/material";
 import React from "react";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {apiUrlStorage, asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {TuiForm, TuiFormGroupContent, TuiFormGroupField, TuiFormGroup, TuiFormGroupHeader} from "../tui/TuiForm";
 import BoolInput from "./BoolInput";
 import JsonForm from "./JsonForm";
@@ -9,6 +9,9 @@ import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {isObject} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
+import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
+import storageValue from "../../../misc/localStorageDriver";
+import TuiApiUrlInput from "../tui/TuiApiUrlInput";
 
 export default function ImportForm({onSubmit}) {
 
@@ -18,11 +21,12 @@ export default function ImportForm({onSubmit}) {
 
     const transitional = React.useRef(true);
     const eventType = React.useRef("");
-    const enabled = React.useRef(true);
     const config = React.useRef({});
     const mounted = React.useRef(false);
     const name = React.useRef("");
     const desc = React.useRef("");
+    const eventSource = React.useRef("");
+    const apiUrl = React.useRef("");
 
     const [form, setForm] = React.useState(null);
     const [loadingForm, setLoadingForm] = React.useState(false);
@@ -93,9 +97,11 @@ export default function ImportForm({onSubmit}) {
                 id: uuid4(),
                 name: name.current,
                 description: desc.current,
-                enabled: enabled.current,
+                enabled: true,
                 module: module,
                 config: config.current,
+                api_url: apiUrl.current,
+                event_source: eventSource.current,
                 event_type: eventType.current,
                 transitional: transitional.current
             }
@@ -148,6 +154,30 @@ export default function ImportForm({onSubmit}) {
                             onChange={(e => desc.current = e.target.value)}
                         />
                     </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Import destination"/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField header="Tracardi API URL"
+                                       description="Select an instance of Tracardi API you would like to send the imported data to.">
+                        <div style={{width: 500}}>
+                            <TuiApiUrlInput
+                                value={apiUrl.current}
+                                options={new storageValue('tracardi-api-urls').read() || []}
+                                onChange={(value) => apiUrl.current = value}
+                            />
+                        </div>
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="Event source" description="Select 'event source' the date will be sent
+                    through. Separate event source for import is a good practice.">
+                        <div style={{width: 500}}>
+                            <TuiSelectEventSource value={eventSource.current}
+                                                  fullWidth={true}
+                                                  onlyValueWithOptions={false}
+                                                  onSetValue={(value) => eventSource.current = value}/>
+                        </div>
+                    </TuiFormGroupField>
                     <TuiFormGroupField header="Event type" description="Type of the event that you want to be
                     triggered for every data record. Event type identifies the imported data.">
                         <TextField
@@ -169,16 +199,10 @@ export default function ImportForm({onSubmit}) {
                             onChange={() => transitional.current = !transitional.current}
                         />
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Enabled" description="Make this configuration available for the import process">
-                        <BoolInput
-                            label="Enabled"
-                            value={enabled.current}
-                            onChange={() => enabled.current = !enabled.current}
-                        />
-                    </TuiFormGroupField>
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <TuiFormGroup>
+                <TuiFormGroupHeader header="Import source"/>
                 <TuiFormGroupContent>
                     <TuiFormGroupField header="Import type" description="Please select the import type. Depending on
                     the import type system will load additional configuration form.">

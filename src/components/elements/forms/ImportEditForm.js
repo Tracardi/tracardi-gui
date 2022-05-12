@@ -1,22 +1,27 @@
 import React from "react";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {apiUrlStorage, asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {TextField, Autocomplete} from "@mui/material";
-import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField} from "../tui/TuiForm";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import BoolInput from "./BoolInput";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import JsonForm from "./JsonForm";
 import ErrorsBox from "../../errors/ErrorsBox";
 import LinearProgress from "@mui/material/LinearProgress";
 import {isObject} from "../../../misc/typeChecking";
+import TuiApiUrlInput from "../tui/TuiApiUrlInput";
+import storageValue from "../../../misc/localStorageDriver";
+import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 
 export default function ImportEditForm({onSubmit, importConfig}) {
 
     const [module, setModule] = React.useState({});
 
     const name = React.useRef(importConfig.name);
-    const desc = React.useRef(importConfig.desc);
+    const desc = React.useRef(importConfig.description);
     const transitional = React.useRef(importConfig.transitional);
     const eventType = React.useRef(importConfig.event_type);
+    const eventSource = React.useRef(importConfig.event_source);
+    const apiUrl = React.useRef(importConfig.api_url);
 
     const enabled = React.useRef(importConfig.enabled);
     const [options, setOptions] = React.useState([]);
@@ -102,6 +107,8 @@ export default function ImportEditForm({onSubmit, importConfig}) {
                     description: desc.current,
                     enabled: enabled.current,
                     transitional: transitional.current,
+                    api_url: apiUrl.current,
+                    event_source: eventSource.current,
                     event_type: eventType.current,
                     module: module.value,
                     config: config.current
@@ -176,6 +183,27 @@ export default function ImportEditForm({onSubmit, importConfig}) {
                             onChange={(e => desc.current = e.target.value)}
                         />
                     </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Import destination"/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField header="Tracardi API URL" description="Select an instance of Tracardi API you would like to send the imported data to.">
+                        <div style={{width: 500}}>
+                            <TuiApiUrlInput
+                                value={apiUrl.current}
+                                options={new storageValue('tracardi-api-urls').read() || []}
+                                onChange={(value) => apiUrl.current = value}
+                        /></div>
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="Event source" description="Select 'event source' the date will be sent
+                    through. Separate event source for import is a good practice.">
+                        <div style={{width: 500}}>
+                            <TuiSelectEventSource value={eventSource.current}
+                                                  fullWidth={true}
+                                                  onSetValue={(value) => eventSource.current = value}/>
+                        </div>
+                    </TuiFormGroupField>
                     <TuiFormGroupField header="Event type" description="Type of the event that you want to be
                     triggered for every data record. Event type identifies the imported data.">
                         <TextField
@@ -204,6 +232,11 @@ export default function ImportEditForm({onSubmit, importConfig}) {
                             onChange={() => enabled.current = !enabled.current}
                         />
                     </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Import source"/>
+                <TuiFormGroupContent>
                     <TuiFormGroupField header="Import type" description="Please select the type of import.">
                         <Autocomplete
                             value={module}
