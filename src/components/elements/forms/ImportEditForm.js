@@ -201,6 +201,7 @@ export default function ImportEditForm({onSubmit, importConfig}) {
                         <div style={{width: 500}}>
                             <TuiSelectEventSource value={eventSource.current}
                                                   fullWidth={true}
+                                                  onlyValueWithOptions={false}
                                                   onSetValue={(value) => eventSource.current = value}/>
                         </div>
                     </TuiFormGroupField>
