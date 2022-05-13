@@ -4,19 +4,20 @@ import { VscTrash } from "react-icons/vsc";
 import "./KeyValueForm.css";
 import DotAccessor from "./inputs/DotAccessor";
 import Button from "./Button";
+import AutoComplete from "./AutoComplete";
 
-const KeyValueForm = ({ value, onChange, defaultKeySource, defaultValueSource, lockKeySource}) => {
+const KeyValueForm = ({ value, onChange, values, endpoint, defaultKeySource, defaultValueSource, lockKeySource, availableValues = []}) => {
 
   const [localValue, setLocalValue] = useState(value || {});
 
-  const key = useRef("")
+  const key = useRef("");
   const val = useRef("");
 
   const handleAdd = () => {
-    if (key.current.length > 0 && val.current.length > 0) {
+    if (val.current !== "" && key.current !== "") {
       const newValue = { ...localValue, [key.current]: val.current }
       setLocalValue(newValue);
-      if (onChange) {
+      if (onChange instanceof Function) {
         onChange(newValue);
       }
     }
@@ -26,6 +27,9 @@ const KeyValueForm = ({ value, onChange, defaultKeySource, defaultValueSource, l
     const newCopy = localValue;
     delete newCopy[item];
     setLocalValue({ ...newCopy });
+    if (onChange instanceof Function) {
+      onChange({...newCopy}, {[item]: null});
+    }
   };
 
   const handleKeyChange = (value) => {
@@ -35,11 +39,28 @@ const KeyValueForm = ({ value, onChange, defaultKeySource, defaultValueSource, l
     val.current = value;
   }
 
+  function switchInputs() {
+    if (availableValues?.length === 0 ) {
+      return <DotAccessor label="Key" value={key.current} onChange={handleKeyChange} defaultSourceValue={defaultKeySource} lockSource={lockKeySource}/>
+    } else {
+      return <AutoComplete
+            onlyValueWithOptions={true}
+            endpoint={endpoint && {
+              ...endpoint,
+              data: values
+            }}
+            defaultValueSet={availableValues}
+            onChange={(value) => handleKeyChange(value.id)}
+            onSetValue={(value) => handleKeyChange(value.id)}
+          />
+    }
+  }
+
   return (
     <div className="KeyValueForm">
       <div className="KeyValueInput">
         <div>Key:</div>
-        <DotAccessor label="Key" value={key.current} onChange={handleKeyChange} defaultSourceValue={defaultKeySource} lockSource={lockKeySource}/>
+        {switchInputs()}
         <div style={{marginTop: 10}}>Value:</div>
         <DotAccessor label="Value" value={val.current} onChange={handleValueChange} defaultSourceValue={defaultValueSource}/>
 

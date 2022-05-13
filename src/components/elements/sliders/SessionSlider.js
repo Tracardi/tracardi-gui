@@ -6,7 +6,7 @@ import "./SessionSlider.css";
 import { Slider } from "@mui/material";
 import ErrorsBox from "../../errors/ErrorsBox";
 
-export default function SessionSlider ({ profileId }) {
+export default function SessionSlider ({ profileId, onEventSelect }) {
 
     const [session, setSession] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -42,7 +42,7 @@ export default function SessionSlider ({ profileId }) {
             </div>
             {error !== null && <ErrorsBox errorList={error} style={{marginTop: 20}}/>}
             {loading && <CenteredCircularProgress />}
-            {!loading && !error && <SessionStepper session={session} onEventSelect={eventId => console.log(eventId)}/>}
+            {!loading && !error && <SessionStepper session={session} onEventSelect={onEventSelect}/>}
         </div>
     );
 }

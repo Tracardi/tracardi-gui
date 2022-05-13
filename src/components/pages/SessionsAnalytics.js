@@ -1,10 +1,11 @@
 import React from "react";
 import "./DataAnalytics.css";
 import DataAnalytics from "./DataAnalytics";
+import SessionDetails from "../elements/details/SessionDetails";
 
 export default function SessionsAnalytics({displayChart=true}) {
 
-    const onLoadDataRequest = (query) => {
+    const handleLoadDataRequest = (query) => {
         return {
             url: '/session/select/range',
             method: "post",
@@ -12,13 +13,21 @@ export default function SessionsAnalytics({displayChart=true}) {
         }
     }
 
-    const onLoadHistogramRequest = (query) => {
+    const handleLoadDetails = (id) => {
+        return {
+            url: "/session/" + id, method: "get"
+        }
+    }
+
+    const handleLoadHistogramRequest = (query) => {
         return {
             url: '/session/select/histogram',
             method: "post",
             data: query
         }
     }
+
+    const displayDetails = (data) => <SessionDetails data={data}/>
 
     return <DataAnalytics
         label="List of sessions"
@@ -27,9 +36,11 @@ export default function SessionsAnalytics({displayChart=true}) {
         timeFieldLabel = "timestamp"
         filterFields={['metadata.time', 'context.storage', 'context.screen']}
         timeField={(row) => [row.metadata.time.insert]}
-        onLoadHistogramRequest={onLoadHistogramRequest}
-        onLoadDataRequest={onLoadDataRequest}
+        onLoadHistogramRequest={handleLoadHistogramRequest}
+        onLoadDataRequest={handleLoadDataRequest}
+        onLoadDetails={handleLoadDetails}
         displayChart={displayChart}
+        displayDetails={displayDetails}
     />
 
 }

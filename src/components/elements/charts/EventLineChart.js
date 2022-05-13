@@ -48,8 +48,8 @@ export default function EventLineChart() {
     }
 
     return <div style={{margin: 15}}>
-        <AreaChart width={150} height={80} data={data}>
-            <Area type="monotone" dataKey="count" stroke="#1976d2" fill="#e1f5fe" fillOpacity={0.3} strokeWidth={2}
+        <AreaChart width={150} height={80} data={data} style={{cursor: "inherit"}}>
+            <Area type="monotone" dataKey="count" stroke="#0088FE" fill="#0088FE" fillOpacity={0.3} strokeWidth={2}
                   dot={false}/>
         </AreaChart>
     </div>

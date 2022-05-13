@@ -2,30 +2,32 @@ import React, {useEffect, useRef} from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
-import {connect} from "react-redux";
-import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {convertResponseToAutoCompleteOptions} from "../../../misc/converters";
-import {isString} from "../../../misc/typeChecking";
+import {isObject, isString} from "../../../misc/typeChecking";
 
-const AutoComplete = ({showAlert, placeholder, error, url, initValue, onSetValue, onChange, solo = true, disabled, fullWidth = false, renderOption}) => {
+const AutoComplete = ({
+                          placeholder, error: errorMessage = null, endpoint, defaultValueSet, initValue, onSetValue,
+                          onChange, onlyValueWithOptions = false, disabled, fullWidth = false,
+                          renderOption
+                      }) => {
 
     const getValue = (initValue) => {
         if (!initValue) {
             initValue = {id: "", name: ""}
-        } else if(isString(initValue)) {
+        } else if (isString(initValue)) {
             initValue = {name: initValue, id: initValue}
         }
         return initValue
     }
 
-    initValue = getValue(initValue);
-
+    const [error, setError] = React.useState(errorMessage);
     const [open, setOpen] = React.useState(false);
-    const [options, setOptions] = React.useState([]);
+    const [options, setOptions] = React.useState(defaultValueSet || []);
     const [progress, setProgress] = React.useState(false);
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
+    const [selectedValue, setSelectedValue] = React.useState(getValue(initValue));
 
     const mounted = useRef(false);
 
@@ -38,56 +40,84 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onSetValue
 
     const handleLoading = async () => {
         if (mounted.current) {
-            setProgress(true);
-            try {
-                setOpen(true);
-                const response = await asyncRemote({url})
-                if (response && mounted.current) {
-                    const options = convertResponseToAutoCompleteOptions(response)
+            if (isObject(endpoint)) {
+                setProgress(true);
+                try {
+                    setOpen(true);
+                    const response = await asyncRemote(endpoint)
+                    if (response && mounted.current) {
+                        let options = convertResponseToAutoCompleteOptions(response)
 
-                    if (typeof options !== "undefined" && options !== null) {
-                        setOptions(options);
-                    } else {
-                        setOptions([])
+                        if (Array.isArray(defaultValueSet) && defaultValueSet.length > 0) {
+                            options = defaultValueSet.concat(options)
+                        }
+
+                        if (typeof options !== "undefined" && options !== null) {
+                            setOptions(options);
+                        } else {
+                            setOptions([])
+                        }
+
+                        setError(null)
+                    }
+
+                } catch (e) {
+                    if (mounted.current && e) {
+                        const errors = getError(e)
+                        setError(errors[0].msg)
+                    }
+                } finally {
+                    if (mounted.current) {
+                        setProgress(false);
                     }
                 }
-
-            } catch (e) {
-                if (mounted.current && e) {
-                    const errors = getError(e)
-                    showAlert({message: errors[0].msg, type: "error", hideAfter: 4000});
-                }
-            } finally {
-                if (mounted.current) {
-                    setProgress(false);
+            } else {
+                if (mounted.current && Array.isArray(defaultValueSet) && defaultValueSet.length > 0) {
+                    setOptions(defaultValueSet);
+                    setOpen(true);
                 }
             }
         }
     }
 
     const handleValueSet = (value) => {
+
+        if (!value) {
+            value = {id: "", name: ""}
+        }
+
         if (typeof value === "string") {
             value = {id: value, name: value}
         }
 
-        if (onSetValue) {
+        setSelectedValue(value)
+
+        if (onSetValue instanceof Function) {
             onSetValue(value);
         }
     }
 
     const handleChange = (value) => {
-        if (typeof value === "string") {
-            value = {id: value, name: value}
-        }
+        if (onlyValueWithOptions === false) {
 
-        if (onChange) {
-            onChange(value);
+            if (!value) {
+                value = {id: "", name: ""}
+            }
+
+            if (typeof value === "string") {
+                value = {id: value, name: value}
+            }
+
+            setSelectedValue(value)
+
+            if (onChange instanceof Function) {
+                onChange(value);
+            }
         }
     }
-
     return (
         <Autocomplete
-            freeSolo={solo}
+            freeSolo={!onlyValueWithOptions}
             multiple={false}
             fullWidth={fullWidth}
             style={fullWidth ? {width: "100%"} : {width: 300}}
@@ -105,7 +135,7 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onSetValue
             }}
             options={options}
             loading={loading}
-            value={initValue}
+            value={selectedValue}
             disabled={disabled}
             onChange={(event, value) => {
                 handleValueSet(value);
@@ -127,7 +157,9 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onSetValue
                         endAdornment: (
                             <>
                                 {progress ?
-                                    <CircularProgress color="inherit" size={20} style={{marginRight: solo ? 25 : 0}}/> : null}
+                                    <CircularProgress color="inherit" size={20}
+                                                      style={{marginRight: onlyValueWithOptions ? 0 : 25}}
+                                    /> : null}
                                 {params.InputProps.endAdornment}
                             </>
                         ),
@@ -141,20 +173,13 @@ const AutoComplete = ({showAlert, placeholder, error, url, initValue, onSetValue
 AutoComplete.propTypes = {
     placeholder: PropTypes.string,
     error: PropTypes.string,
-    url: PropTypes.string.isRequired,
+    endpoint: PropTypes.object,
+    defaultValueSet: PropTypes.array,
     onSetValue: PropTypes.func,
     onChange: PropTypes.func,
-    solo: PropTypes.bool,
+    onlyValueWithOptions: PropTypes.bool,
     disabled: PropTypes.bool,
     fullWidth: PropTypes.bool,
 }
 
-const mapProps = (state) => {
-    return {
-        notification: state.notificationReducer,
-    }
-};
-export default connect(
-    mapProps,
-    {showAlert}
-)(AutoComplete)
+export default AutoComplete;

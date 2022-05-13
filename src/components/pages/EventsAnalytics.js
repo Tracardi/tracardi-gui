@@ -7,7 +7,7 @@ import EventTypeTag from "../elements/misc/EventTypeTag";
 
 export default function EventsAnalytics({displayChart=true}) {
 
-    const onLoadDataRequest = (query) => {
+    const handleLoadDataRequest = (query) => {
         return {
             url: '/event/select/range',
             method: "post",
@@ -17,7 +17,7 @@ export default function EventsAnalytics({displayChart=true}) {
         }
     }
 
-    const onLoadHistogramRequest = (query) => {
+    const handleLoadHistogramRequest = (query) => {
         return {
             url: '/event/select/histogram?group_by=metadata.status',
             method: "post",
@@ -27,7 +27,7 @@ export default function EventsAnalytics({displayChart=true}) {
         }
     }
 
-    const onLoadDetails = (id) => {
+    const handleLoadDetails = (id) => {
         return {
             url: "/event/" + id, method: "get"
         }
@@ -49,10 +49,12 @@ export default function EventsAnalytics({displayChart=true}) {
             'metadata.time'
         ]}
         timeField={(row) => [row.metadata.time.insert, <EventTypeTag eventType={row.type} profile={row?.profile?.id}/>, <EventStatusTag label={row.metadata.status}/>]}
-        onLoadHistogramRequest={onLoadHistogramRequest}
-        onLoadDataRequest={onLoadDataRequest}
-        onLoadDetails={onLoadDetails}
-        detailsDrawerWidth={1050}
+
+        onLoadHistogramRequest={handleLoadHistogramRequest}
+        onLoadDataRequest={handleLoadDataRequest}
+        onLoadDetails={handleLoadDetails}
+        detailsDrawerWidth={1000}
+
         displayDetails={displayDetails}
         displayChart={displayChart}
         barChartColors={{processed: "#00C49F", error: "#d81b60", collected: '#0088FE'}}

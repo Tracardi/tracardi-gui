@@ -5,7 +5,8 @@ import {
     BsDiamond,
     BsPerson,
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
-    BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft
+    BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
+    BsBoxArrowInRight
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {MdTimelapse} from "react-icons/md";
@@ -67,10 +68,10 @@ import {GoBrowser} from "react-icons/go";
 import {ReactComponent as MauticLogo} from "../../svg/mautic.svg";
 import {ReactComponent as Amplitude} from "../../svg/amplitude-icon.svg";
 import {ReactComponent as Mixpanel} from "../../svg/mixpanel.svg";
+import {ReactComponent as ActiveCampaign} from "../../svg/active-campaign.svg";
 import {
     SiRabbitmq,
     SiMongodb,
-    SiRedis,
     SiPostgresql,
     SiTwilio,
     SiCurl,
@@ -79,7 +80,9 @@ import {
     SiInfluxdb,
     SiZapier,
     SiAirtable,
-    SiMatomo
+    SiMatomo,
+    SiRedis,
+    SiCivicrm
 } from "react-icons/si";
 import {GrMysql} from "react-icons/gr";
 import {
@@ -156,7 +159,6 @@ export const icons = {
     'facebook': (size) => <FaFacebookSquare size={size}/>,
     'twitter': (size) => <VscTwitter size={size}/>,
     'bar-chart': (size) => <BiBarChartAlt size={size}/>,
-    'redis': (size) => <SiRedis size={size}/>,
     'globe': (size) => <VscGlobe size={size}/>,
     'profiler': (size) => <IoIosTimer size={size}/>,
     'error': (size) => <VscError size={size}/>,
@@ -208,7 +210,12 @@ export const icons = {
     'exists': (size) => <BsQuestionDiamond size={size}/>,
     'matomo': (size) => <SiMatomo size={size} />,
     'previous': (size) => <BsArrowBarLeft size={size}/>,
-    'consent': (size) => <VscLaw size={size} />
+    'consent': (size) => <VscLaw size={size} />,
+    'hash': (size) => <BsHash size={size}/>,
+    "redis": (size) => <SiRedis size={size}/>,
+    "civicrm": (size) => <SiCivicrm size={size}/>,
+    "active-campaign": (size) => <ActiveCampaign size={size}/>,
+    "source": (size) => <BsBoxArrowInRight size={size}/>
 }
 
 

@@ -3,11 +3,11 @@ import AutoComplete from "../forms/AutoComplete";
 
 function TuiSelectResourceType({value, onSetValue, errorMessage=""}) {
     return <AutoComplete
-        solo={false}
+        onlyValueWithOptions={true}
         disabled={false}
         error={errorMessage}
         placeholder="Resource type"
-        url="/resources/type/name"
+        endpoint={{url:"/resources/type/name"}}
         initValue={value}
         onSetValue={onSetValue}
     />

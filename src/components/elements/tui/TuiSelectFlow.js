@@ -10,10 +10,10 @@ export default function TuiSelectFlow({value, disabled=false, errorMessage=null,
     };
 
     return <AutoComplete
-        solo={false}
+        onlyValueWithOptions={true}
         disabled={disabled}
         placeholder="Flow name"
-        url="/flows/entity"
+        endpoint={{url:"/flows/entity"}}
         error={errorMessage}
         initValue={value}
         onSetValue={handleValueSet}

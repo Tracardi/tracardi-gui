@@ -8,7 +8,7 @@ import Button from "../elements/forms/Button";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import {IoRefreshCircle} from "react-icons/io5";
 
-function ReinstallButton() {
+export function ReinstallButton() {
 
     const [progress, setProgress] = useState(false);
     const [error, setError] = useState(null);

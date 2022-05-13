@@ -12,15 +12,24 @@ import MetricTimeLine from "../elements/metrics/MetricTimeLine";
 import SessionLineChart from "../elements/charts/SessionLineChart";
 import AvgEventTime from "../elements/metrics/AvgEventTimeCounter";
 import EventTimeLine from "../elements/charts/EventsTimeLine";
+import {useHistory} from "react-router-dom";
+import urlPrefix from "../../misc/UrlPrefix";
 
 export default function Dashboard() {
 
     const [eventsByType, setEventsByType] = useState([]);
     const [eventsByTag, setEventsByTag] = useState([]);
     const [eventsBySource, setEventsBySource] = useState([]);
+    const [eventsByStatus, setEventsByStatus] = useState([]);
     const [loadingByType, setLoadingByType] = useState(false);
     const [loadingByTag, setLoadingByTag] = useState(false);
     const [loadingBySource, setLoadingBySource] = useState(false);
+    const [loadingByStatus, setLoadingByStatus] = useState(false);
+
+    const history = useHistory();
+    const go = (url) => {
+        return () => history.push(urlPrefix(url));
+    }
 
     useEffect(() => {
         setLoadingByType(true);
@@ -53,6 +62,21 @@ export default function Dashboard() {
     }, [])
 
     useEffect(() => {
+        setLoadingByStatus(true);
+        asyncRemote({
+            url: "events/by_status"
+        }).then((resposne) => {
+            if (resposne) {
+                setEventsByStatus(resposne.data)
+            }
+        }).catch(() => {
+
+        }).finally(() => {
+            setLoadingByStatus(false)
+        })
+    }, [])
+
+    useEffect(() => {
         setLoadingBySource(true);
         asyncRemote({
             url: "events/by_source"
@@ -67,12 +91,13 @@ export default function Dashboard() {
         })
     }, [])
 
-    const PieChart = ({loading, data, header, subHeader=null, fill = "#1976d2"}) => {
+    const PieChart = ({loading, data, header, subHeader = null, fill = "#1976d2", colors}) => {
         return <div style={{paddingTop: 20}}>
             {header && <header style={{display: "flex", justifyContent: "center"}}>{header}</header>}
-            {subHeader && <header style={{display: "flex", justifyContent: "center", fontSize: "70%"}}>{subHeader}</header>}
+            {subHeader &&
+            <header style={{display: "flex", justifyContent: "center", fontSize: "70%"}}>{subHeader}</header>}
             <div style={{width: 280, height: 200}}>
-                {!loading && <TuiPieChart data={data} fill={fill}/>}
+                {!loading && <TuiPieChart data={data} fill={fill} colors={colors}/>}
                 {loading && <CenteredCircularProgress/>}
             </div>
         </div>
@@ -80,7 +105,14 @@ export default function Dashboard() {
     }
 
     return <div
-        style={{display: "flex", flexDirection: "column", padding: 20, height: "100%"}}>
+        style={{display: "flex", flexDirection: "column", padding: 15, height: "100%"}}>
+        <MetricTimeLine fitContent={false}>
+            <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
+                <div style={{width: "100%", height: 270, padding: 10}}>
+                    <EventTimeLine/>
+                </div>
+            </div>
+        </MetricTimeLine>
         <div style={{display: "flex", flexWrap: "wrap"}}>
             <MetricTimeLine>
                 <InstancesCounter/>
@@ -88,7 +120,7 @@ export default function Dashboard() {
             <MetricTimeLine>
                 <AvgEventTime/>
             </MetricTimeLine>
-            <MetricTimeLine>
+            <MetricTimeLine onClick={go('/data')}>
                 <EventCounter/>
                 <EventLineChart/>
             </MetricTimeLine>
@@ -101,23 +133,19 @@ export default function Dashboard() {
                 <SessionLineChart/>
             </MetricTimeLine>
         </div>
-        <MetricTimeLine fitContent={false}>
-            <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
-                <div style={{width: "100%", height: 270, padding: 10}}>
-                    <EventTimeLine/>
-                </div>
-            </div>
-
-        </MetricTimeLine>
-
         <div style={{display: "flex", flexDirection: "row"}}>
 
             <MetricTimeLine><PieChart header="No of events" subHeader="by type" loading={loadingByType}
-                                      data={eventsByType}/></MetricTimeLine>
-            <MetricTimeLine><PieChart header="No of events" subHeader="by type" loading={loadingByTag}
-                                      data={eventsByTag}/></MetricTimeLine>
+                                      data={eventsByType}
+                                      colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/></MetricTimeLine>
+            <MetricTimeLine><PieChart header="No of event" subHeader="by status" loading={loadingByStatus}
+                                      data={eventsByStatus} colors={['#0088FE', '#00C49F', 'red']}/></MetricTimeLine>
+            <MetricTimeLine><PieChart header="No of events" subHeader="by tag" loading={loadingByTag}
+                                      data={eventsByTag}
+                                      colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/></MetricTimeLine>
             <MetricTimeLine><PieChart header="No of events" subHeader="by source" loading={loadingBySource}
-                                      data={eventsBySource}/></MetricTimeLine>
+                                      data={eventsBySource}
+                                      colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/></MetricTimeLine>
 
         </div>
     </div>

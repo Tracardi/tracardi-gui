@@ -26,6 +26,8 @@ import {save} from "./FlowEditorOps";
 import {useConfirm} from "material-ui-confirm";
 import TestEditor from "../test/TestEditor";
 import {BsClipboardCheck} from "react-icons/bs";
+import DropDownMenu from "../menu/DropDownMenu";
+import {ReinstallButton} from "../pages/ActionPlugins";
 
 export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onDraftRestore, onDeploy, onSaveDraft}) {
 
@@ -144,16 +146,13 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
             <span style={{marginLeft: 10}}>{flowMetaData?.name}</span>
         </div>
         <div>
-            <Button label="Restore production"
-                    icon={<BiReset size={20}/>}
-                    onClick={() => restoreProduction(flowId)}
-                    progress={productionRestoreProgress}
-            />
-            <Button label="Restore draft"
-                    icon={<BiReset size={20}/>}
-                    onClick={() => restoreDraft(flowId)}
-                    progress={draftRestoreProgress}
-            />
+            <ReinstallButton/>
+            <DropDownMenu label="Restore Flow" icon={<BiReset size={20}/>}
+                          progress={draftRestoreProgress || productionRestoreProgress}
+                          options = {{
+                'Restore production flow': () => restoreProduction(flowId),
+                'Restore draft flow': () => restoreDraft(flowId)
+            }}/>
             <Button label="Save"
                     icon={<TiTickOutline size={20}/>}
                     onClick={handleSave}

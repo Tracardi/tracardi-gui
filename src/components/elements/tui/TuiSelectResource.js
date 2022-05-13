@@ -27,9 +27,9 @@ function TuiSelectResource({value = null, disabled = false, errorMessage = null,
 
     return <div>
         <AutoComplete disabled={disabled}
-                      solo={false}
+                      onlyValueWithOptions={true}
                       placeholder="Resource"
-                      url={resourceUrl}
+                      endpoint={{url:resourceUrl}}
                       initValue={value}
                       error={errorMessage}
                       onSetValue={handleValueSet}

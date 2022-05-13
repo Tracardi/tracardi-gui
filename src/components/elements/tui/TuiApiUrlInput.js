@@ -1,11 +1,10 @@
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import React, {useState} from "react";
-import {apiUrlStorage} from "../../remote_api/entrypoint";
 
-export default function EndpointInput({options, onChange}) {
+export default function TuiApiUrlInput({value, options, onChange, fullWidth=true}) {
 
-    const [endpoint, setEndpoint] = useState(apiUrlStorage().read([]));
+    const [endpoint, setEndpoint] = useState(value);
 
     const handleEndpoint = (value) => {
         setEndpoint(value);
@@ -19,7 +18,7 @@ export default function EndpointInput({options, onChange}) {
         value={endpoint}
         onChange={(e, v) => handleEndpoint(v)}
         freeSolo
-        fullWidth
+        fullWidth={fullWidth}
         renderInput={(params) => (
             <TextField
                 {...params}

@@ -4,6 +4,7 @@ import CardBrowser from "../elements/lists/CardBrowser";
 import EventSourceDetails from "../elements/details/EventSourceDetails";
 import {BsBoxArrowInRight} from "react-icons/bs";
 import EventSourceForm from "../elements/forms/EventSourceForm";
+import BrowserRow from "../elements/lists/rows/BrowserRow";
 
 
 export default function EventSources() {
@@ -31,9 +32,32 @@ export default function EventSources() {
         })
     }
 
+    const sourcesRows = (data, onClick) => {
+        return Object.entries(data?.grouped).map(([category, plugs], index) => {
+            return <div className="CardGroup" style={{width: "100%"}} key={index}>
+                <header>{category}</header>
+                <div>
+                    {plugs.map((row, subIndex) => {
+                        const data = {
+                            icon: "source",
+                            enabled: row?.enabled,
+                            name: row?.name,
+                            description: row?.description
+                        }
+                        return <BrowserRow key={index + "-" + subIndex}
+                                           id={row?.id}
+                                           data={data}
+                                           onClick={() => onClick(row?.id)}/>
+                    })}
+                </div>
+            </div>
+        })
+    }
+
     return <CardBrowser
         label="Event Sources"
         urlFunc={urlFunc}
+        rowFunc={sourcesRows}
         cardFunc={sources}
         buttomLabel="New event source"
         buttonIcon={<BsBoxArrowInRight size={20}/>}
