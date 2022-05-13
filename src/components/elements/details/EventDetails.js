@@ -167,7 +167,7 @@ export default function EventDetails({data}) {
                     })
             }
             return () => isSubscribed = false;
-        }, [])
+        }, [id])
 
         if (error) {
             return <ErrorsBox errorList={error}/>
@@ -242,7 +242,7 @@ export default function EventDetails({data}) {
                     .finally(() => setLoading(false))
             }
             return () => isSubscribed = false;
-        }, [])
+        }, [id])
 
         if (error) {
             return <ErrorsBox errorList={error}/>
@@ -261,19 +261,18 @@ export default function EventDetails({data}) {
                 }
             </TuiFormGroup>
         </TuiForm>
-            ;
-    };
+    }
 
     const ContextInfo = () => {
         const context = object2dot(data?.event?.context);
-        return <>{Object.keys(context).map(key => <EventInfoField key={key} name={key} content={context[key]}/>)}</>;
-    };
+        return <>{Object.keys(context).map(key => <EventInfoField key={key} name={key} content={context[key]}/>)}</>
+    }
 
     const EventProperties = () => {
         const eventProperties = object2dot(data?.event?.properties);
         return <>{Object.keys(eventProperties).map(key => <EventInfoField key={key} name={key}
-                                                                          content={eventProperties[key]}/>)}</>;
-    };
+                                                                          content={eventProperties[key]}/>)}</>
+    }
 
     return <>
         <Tabs
