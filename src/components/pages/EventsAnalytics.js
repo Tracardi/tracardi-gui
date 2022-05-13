@@ -46,14 +46,20 @@ export default function EventsAnalytics({displayChart=true}) {
             'session.operation',
             'context.config',
             'profile.operation',
-            'metadata.time'
+            'profile.metadata',
+            'profile.pii',
+            'profile.stats',
+            'profile.traits',
+            'profile.segments',
+            'metadata',
+            'context'
         ]}
         timeField={(row) => [row.metadata.time.insert, <EventTypeTag eventType={row.type} profile={row?.profile?.id}/>, <EventStatusTag label={row.metadata.status}/>]}
 
         onLoadHistogramRequest={handleLoadHistogramRequest}
         onLoadDataRequest={handleLoadDataRequest}
         onLoadDetails={handleLoadDetails}
-        detailsDrawerWidth={1000}
+        detailsDrawerWidth={1050}
 
         displayDetails={displayDetails}
         displayChart={displayChart}
