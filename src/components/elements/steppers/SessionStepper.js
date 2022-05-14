@@ -33,7 +33,7 @@ export default function SessionStepper ({ session, onEventSelect = null }) {
             .finally(() => {if (subscribed) setLoading(false)})
         }
         return () => subscribed = false;
-    }, [limit])
+    }, [limit, onEventSelect, session])
 
     const stepIconComponent = event => {
         return <div className="StepIcon" style={{backgroundColor: {collected: "#006db3", error: "#d81b60", processed: "#43a047"}[event.status]}}/>

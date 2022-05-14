@@ -24,7 +24,7 @@ export default function SessionSlider ({ profileId, onEventSelect }) {
         .catch(e => {if (subscribed) setError(getError(e))})
         .finally(() => {if (subscribed) setLoading(false)})
         return () => subscribed = false;
-    }, [offset])
+    }, [offset, profileId])
 
     return (
         <div className="SessionSlider">

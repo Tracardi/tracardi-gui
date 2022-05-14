@@ -1,6 +1,5 @@
 import React from "react";
 import SessionSlider from "../sliders/SessionSlider";
-import CompactEventDetails from "./CompactEventDetails";
 import EventInfo from "./EventInfo";
 
 
