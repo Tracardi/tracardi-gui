@@ -33,7 +33,7 @@ export default function EventsAnalytics({displayChart=true}) {
         }
     }
 
-    const displayDetails = (data) => <EventDetails data={data}/>
+    const displayDetails = (data) => <EventDetails event={data?.event}/>
 
     return <DataAnalytics
         type="event"
