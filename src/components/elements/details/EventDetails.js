@@ -125,12 +125,12 @@ export const EventData = ({event}) => {
                 <PropertyField name="Status"
                                content={<EventStatusTag label={event?.metadata?.status}/>}/>
                 <PropertyField name="Debug" content={event?.metadata?.debug ?
-                    <BsCheckCircle size={24} color="#00c853"/> : <BsXSquare size={24} color="#d81b60"/>}/>
+                    <BsCheckCircle size={20} color="#00c853"/> : <BsXSquare size={20} color="#d81b60"/>}/>
                 <PropertyField name="Profile less" content={event?.metadata?.profile_less ?
-                    <BsCheckCircle size={24} color="#00c853"/> : <BsXSquare size={24} color="#d81b60"/>}/>
+                    <BsCheckCircle size={20} color="#00c853"/> : <BsXSquare size={20} color="#d81b60"/>}/>
                 <PropertyField name="Updated time"
-                               content={event?.update ? <BsCheckCircle size={24} color="#00c853"/> :
-                                   <BsXSquare size={24} color="#d81b60"/>}/>
+                               content={event?.update ? <BsCheckCircle size={20} color="#00c853"/> :
+                                   <BsXSquare size={20} color="#d81b60"/>}/>
                 <PropertyField name="Insert time"
                                content={typeof event?.metadata?.time?.insert === "string" && `${event.metadata.time.insert.substring(0, 10)} ${event.metadata.time.insert.substring(11, 19)}`}
                 />

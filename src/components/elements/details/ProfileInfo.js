@@ -24,8 +24,8 @@ export const ProfileData = ({profile}) => {
                 <PropertyField name="Consents"
                                content={profile?.consents && Object.keys(profile?.consents).join(", ")}/>
                 <PropertyField name="Active" content={profile?.active
-                    ? <BsCheckCircle size={24} color="#00c853"/> :
-                    <BsXSquare size={24} color="#d81b60"/>}
+                    ? <BsCheckCircle size={20} color="#00c853"/> :
+                    <BsXSquare size={20} color="#d81b60"/>}
                 />
                 {pii && Object.keys(pii).map(key => <PropertyField key={key}
                                                                    name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}

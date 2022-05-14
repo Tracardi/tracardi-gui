@@ -29,7 +29,7 @@ export default function ProfilesAnalytics({displayChart=true}) {
         }
     }
 
-    const displayDetails = (data) => <ProfileDetails data={data}/>
+    const displayDetails = (data) => <ProfileDetails profile={data}/>
 
     return <DataAnalytics
         type="profile"
@@ -42,7 +42,7 @@ export default function ProfilesAnalytics({displayChart=true}) {
         onLoadDataRequest={onLoadDataRequest}
         onLoadDetails={onLoadDetails}
         displayDetails={displayDetails}
-        detailsDrawerWidth={1200}
+        detailsDrawerWidth={1250}
         displayChart={displayChart}
     />
 

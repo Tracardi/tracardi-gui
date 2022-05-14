@@ -7,18 +7,18 @@ const PropertyField = ({name, content}) => {
             style={{
                 overflowWrap: "anywhere",
                 overflow: "none",
-                paddingTop: "15px",
-                paddingBottom: "10px",
+                paddingTop: "12px",
+                paddingBottom: "2px",
                 borderBottom: "1px solid #ccc",
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "flex-start",
-                fontSize: "16px",
+                fontSize: 15,
                 fontWeight: 400
             }}
         >
             <div style={{
-                fontSize: "16px",
+                fontSize: 16,
                 fontWeight: 600,
                 maxWidth: "330px",
                 minWidth: "330px",

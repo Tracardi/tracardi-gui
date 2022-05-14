@@ -1,5 +1,5 @@
 import React from "react";
-import { Stepper, Step, StepLabel, StepContent } from "@mui/material";
+import { Stepper, Step, StepLabel } from "@mui/material";
 import { asyncRemote, getError } from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import "./SessionStepper.css";
@@ -40,7 +40,7 @@ export default function SessionStepper ({ session, onEventSelect = null }) {
     }
 
     return <div className="SessionStepper">
-        <header className="Header">{session && `Events for session from ${session.insert.substring(0, 10)} with duration of ${Math.floor(session.duration / 60)} minutes`}</header>
+        {session && <header className="Header">Session starting ${session.insert.substring(0, 10)}, duration ${Math.floor(session.duration / 60)} minutes</header>}
         {Array.isArray(eventsData) && eventsData.length > 0 && <Stepper 
             orientation="vertical" 
             connector={<div className="StepConnector"/>}

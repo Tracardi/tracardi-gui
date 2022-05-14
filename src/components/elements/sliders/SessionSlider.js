@@ -28,7 +28,7 @@ export default function SessionSlider ({ profileId, onEventSelect }) {
 
     return (
         <div className="SessionSlider">
-            <div style={{display: 'flex', flexDirection: "row", width: "100%", justifyContent: "center", alignContent: "space-between", marginTop: 10}}>
+            <div style={{display: 'flex', flexDirection: "row", width: "100%", justifyContent: "center", alignContent: "space-between", padding: 15}}>
                 <header style={{display: "flex", alignItems: "center"}}>Session offset</header>
                 <Slider 
                     size="small"

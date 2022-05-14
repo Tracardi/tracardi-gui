@@ -8,66 +8,29 @@ import Properties from "./DetailProperties";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import PropTypes from "prop-types";
 import PiiDetails from "./PiiDetails";
-import ProfileEventHeatMap from "./ProfileEventHeatMap";
-import './ProfileDetails.css';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
+import {ProfileData} from "./ProfileInfo";
+import ProfileSessionsDetails from "./ProfileSessionsDetails";
 
-export default function ProfileDetails({data}) {
+export default function ProfileDetails({profile}) {
 
     return <div style={{height: "inherit", display: "flex", flexDirection: "column"}}>
-        <PiiDetails data={data}/>
+        <PiiDetails data={profile}/>
         <div className="RightTabScroller">
-            <Tabs tabs={["Traits", "Segments", "Events", "Raw"]} className="ProfileDetailsTabs">
+            <Tabs tabs={["Sessions & Events", "Traits & PII", "Segments", "Raw"]} tabsStyle={{backgroundColor: "#e1f5fe"}}>
                 <TabCase id={0}>
-                    <TuiForm style={{margin: 20}}>
-                        <TuiFormGroup>
-                            <TuiFormGroupHeader header="Traits"/>
-                            <TuiFormGroupContent>
-                                <TuiFormGroupField header="Private traits">
-                                    <Properties properties={data?.traits?.private}/>
-                                </TuiFormGroupField>
-                                <TuiFormGroupField header="Public traits">
-                                    <Properties properties={data?.traits?.public}/>
-                                </TuiFormGroupField>
-                            </TuiFormGroupContent>
-                        </TuiFormGroup>
-                        <TuiFormGroup>
-                            <TuiFormGroupHeader header="Personally Identifiable Information"/>
-                            <TuiFormGroupContent>
-                                <TuiFormGroupField>
-                                    <Properties properties={data?.pii}/>
-                                </TuiFormGroupField>
-                            </TuiFormGroupContent>
-                        </TuiFormGroup>
-                        <TuiFormGroup>
-                            <TuiFormGroupHeader header="Customer consents"/>
-                            <TuiFormGroupContent>
-                                <TuiFormGroupField>
-                                    <Properties properties={data?.consents}/>
-                                </TuiFormGroupField>
-                            </TuiFormGroupContent>
-                        </TuiFormGroup>
-                    </TuiForm>
+                    <ProfileSessionsDetails profileId={profile?.id}/>
                 </TabCase>
                 <TabCase id={1}>
+                    <ProfileData profile={profile}/>
+                </TabCase>
+                <TabCase id={2}>
                     <TuiForm style={{margin: 20}}>
                         <TuiFormGroup>
                             <TuiFormGroupHeader header="Segments"/>
                             <TuiFormGroupContent>
                                 <TuiFormGroupField>
-                                    <Properties properties={{segments: data.segments}}/>
-                                </TuiFormGroupField>
-                            </TuiFormGroupContent>
-                        </TuiFormGroup>
-                    </TuiForm>
-                </TabCase>
-                <TabCase id={2}>
-                    <TuiForm style={{margin: 20}}>
-                        <TuiFormGroup>
-                            <TuiFormGroupHeader header="Events heatmap"/>
-                            <TuiFormGroupContent>
-                                <TuiFormGroupField>
-                                    <ProfileEventHeatMap profileId={data.id} />
+                                    <Properties properties={{segments: profile.segments}}/>
                                 </TuiFormGroupField>
                             </TuiFormGroupContent>
                         </TuiFormGroup>
@@ -75,7 +38,7 @@ export default function ProfileDetails({data}) {
                 </TabCase>
                 <TabCase id={3}>
                     <div className="Box10">
-                        <ObjectInspector data={data} theme={theme} expandLevel={3}/>
+                        <ObjectInspector data={profile} theme={theme} expandLevel={3}/>
                     </div>
                 </TabCase>
             </Tabs>
@@ -85,5 +48,5 @@ export default function ProfileDetails({data}) {
 }
 
 ProfileDetails.propTypes = {
-    data: PropTypes.object,
+    profile: PropTypes.object,
   };
