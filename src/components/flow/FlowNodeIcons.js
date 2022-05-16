@@ -97,7 +97,7 @@ import {RiRestTimeLine} from "react-icons/ri";
 import {IoIosTimer, IoIosContact, IoIosAttach} from "react-icons/io";
 import {CgCalendarToday} from "react-icons/cg";
 import {ImInsertTemplate} from "react-icons/im";
-import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp, FaHtml5, FaRobot, FaUncharted} from "react-icons/fa";
+import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp, FaHtml5, FaRobot, FaUncharted, FaSalesforce} from "react-icons/fa";
 import {DiReact} from "react-icons/di";
 import {GiPathDistance} from "react-icons/gi";
 
@@ -215,7 +215,8 @@ export const icons = {
     "redis": (size) => <SiRedis size={size}/>,
     "civicrm": (size) => <SiCivicrm size={size}/>,
     "active-campaign": (size) => <ActiveCampaign size={size}/>,
-    "source": (size) => <BsBoxArrowInRight size={size}/>
+    "source": (size) => <BsBoxArrowInRight size={size}/>,
+    "salesforce": (size) => <FaSalesforce size={size}/>
 }
 
 

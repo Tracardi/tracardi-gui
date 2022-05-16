@@ -195,7 +195,7 @@ function ResourceForm({init, onClose, showAlert}) {
                 </TuiFormGroupField>
                     <TuiFormGroupField header="Resource type"
                                        description="Resource type defines storage or endpoint type. If any resource type
-                                       is missing check Resource/Premium Services for more resources.">
+                                       is missing check 'Resource/Premium Services' for more resources.">
                         <TuiSelectResourceTypeMemo value={type}
                                                    onSetValue={setTypeAndDefineCredentialsTemplate}
                                                    errorMessage={errorTypeMessage}/>

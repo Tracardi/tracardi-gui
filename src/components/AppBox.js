@@ -33,6 +33,7 @@ import LogsAnalytics from "./pages/LogsAnalytics";
 import ImportSources from "./pages/ImportSources";
 import ImportTasks from "./pages/ImportTasks";
 import ProRouter from "./pages/pro/ProRouter";
+import {BsStar} from "react-icons/bs";
 
 const AppBox = () => {
 
@@ -59,7 +60,7 @@ const AppBox = () => {
                           new PrivateTab(["admin", "developer"], <Resources
                               defaultLayout={"rows"}/>, "/resources", "Resources"),
                           new PrivateTab(["admin", "developer"],
-                              <ProRouter/>, "/resources/pro", "Premium Services"),
+                              <ProRouter/>, "/resources/pro", <><BsStar size={20} style={{marginRight: 5}}/>{"Premium Services"}</>),
                       ]}/>
         </PrivateRoute>
 
