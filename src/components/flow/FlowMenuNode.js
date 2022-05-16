@@ -1,8 +1,12 @@
 import React from "react";
 import FlowNodeIcons from "./FlowNodeIcons";
+import {Tooltip} from "@mui/material";
 
 export default function FlowMenuNode({onDragStart, onDoubleClick, row}) {
-    return <div className="menuNode"
+    return <Tooltip title={row.plugin?.metadata?.desc ? row.plugin?.metadata?.desc: row.plugin?.metadata?.name}
+                    placement="right"
+    >
+        <div className="menuNode"
                 onDoubleClick={onDoubleClick}
                 onDragStart={(event) =>
         onDragStart(event, row)} draggable>
@@ -15,5 +19,5 @@ export default function FlowMenuNode({onDragStart, onDoubleClick, row}) {
 
         </div>
         {row.plugin?.metadata?.pro && <span className="proTag">Pro</span>}
-    </div>
+    </div></Tooltip>
 }
