@@ -1,11 +1,11 @@
-import JsonForm from "./JsonForm";
+import JsonForm from "../JsonForm";
 import React, {useRef, useState} from "react";
-import {asyncRemote} from "../../../remote_api/entrypoint";
+import {asyncRemote} from "../../../../remote_api/entrypoint";
 import {v4 as uuid4} from "uuid";
-import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../../tui/TuiForm";
 import TextField from "@mui/material/TextField";
-import TuiTags from "../tui/TuiTags";
-import {isEmptyObject} from "../../../misc/typeChecking";
+import TuiTags from "../../tui/TuiTags";
+import {isEmptyObject} from "../../../../misc/typeChecking";
 
 function DescriptionForm({data: initData, onChange}) {
 

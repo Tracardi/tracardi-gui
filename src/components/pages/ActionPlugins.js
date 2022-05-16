@@ -89,7 +89,7 @@ export default function ActionPlugins() {
 
 
 
-    return <div>
+    return <>
         <div style={{display: "flex", justifyContent: "flex-end", margin: "0 15px"}}><ReinstallButton/></div>
         <CardBrowser
         label="Action plugins"
@@ -100,5 +100,5 @@ export default function ActionPlugins() {
         drawerDetailsTitle="Edit Plugin Action"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
-    /></div>
+    /></>
 }

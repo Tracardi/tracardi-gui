@@ -27,9 +27,16 @@ const TracardiProAvailableServicesList = ({onServiceClick}) => {
         })
     }, [])
 
+    if (error) {
+        return <ErrorsBox errorList={error} />
+    }
+
+    if(loading) {
+        return <CenteredCircularProgress label="Connecting Tracardi PRO"/>
+    }
+
     return <div className="TracardiProAvailableServicesList">
-        {loading && <CenteredCircularProgress/>}
-        {error && <ErrorsBox errorList={error} /> }
+
         {isObject(services) && objectMap(services?.services, (key, service) => {
             return <ServiceCard key={key} service={service} onClick={onServiceClick}/>
         })}

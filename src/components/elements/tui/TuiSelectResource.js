@@ -37,10 +37,10 @@ function TuiSelectResource({value = null, disabled = false, errorMessage = null,
         {!pro && <div style={{marginTop: 8, color: "#444"}}>If the list is empty (not loading) you need to add resource  <span
             onClick={handleNewResource} style={{textDecoration: "underline", cursor: "pointer"}}>click here</span>.
             Remember to select the resource tagged: <b>{tag}</b>.  For editing the source go to <span
-                onClick={go("/traffic")} style={{textDecoration: "underline", cursor: "pointer"}}>Resource page</span>
+                onClick={go("/resources")} style={{textDecoration: "underline", cursor: "pointer"}}>Resource page</span>
         </div>}
         {pro && <div style={{marginTop: 8, color: "#444"}}>If the list is empty (not loading) you need to add service in Tracardi Pro. <span
-            onClick={go("/pro")} style={{textDecoration: "underline", cursor: "pointer"}}>Click here</span>.</div>}
+            onClick={go("/resources/pro")} style={{textDecoration: "underline", cursor: "pointer"}}>Click here</span>.</div>}
     </div>
 }
 

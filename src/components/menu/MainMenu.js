@@ -42,7 +42,7 @@ export default function MainMenu() {
             <Branding collapsed={collapsed}/>
             <div>
                 <MenuRow icon={<VscDashboard size={20}/>} label="Dashboard" collapsed={collapsed} onClick={go("/dashboard")}/>
-                {commercial && <MenuRow icon={<BsStar size={20}/>} label="Tracardi Pro" collapsed={collapsed} onClick={go("/pro")}/>}
+                <MenuRow icon={<BsStar size={20}/>} label="Resources" collapsed={collapsed} onClick={go("/resources")}/>
                 <MenuRow icon={<RiArrowLeftRightFill size={20}/>} label="Traffic" collapsed={collapsed} onClick={go("/traffic")}/>
                 <MenuRow icon={<BsFileEarmarkArrowUp size={20}/>} label="Import" collapsed={collapsed} onClick={go("/import")}/>
                 <MenuRow icon={<VscLaw size={20}/>} label="Consents" collapsed={collapsed} onClick={go("/consents")}/>

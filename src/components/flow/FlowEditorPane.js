@@ -143,7 +143,7 @@ const NodeDetailsHandler = React.memo(({node, onLabelSet, onConfig, onRuntimeCon
     return <NoData header="Available only as Tracardi Pro service">
         <p style={{textAlign: "center"}}>Please join Tracardi Pro for free and premium connectors and services. It is a
             free lifetime membership.</p>
-        <Button label="Sure" onClick={go("/pro")}/>
+        <Button label="Sure" onClick={go("/resources/pro")}/>
     </NoData>
 
 })

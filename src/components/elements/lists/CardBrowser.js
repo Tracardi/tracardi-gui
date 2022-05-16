@@ -66,7 +66,7 @@ const CardBrowser = ({
             , [query, refresh, urlFunc, forceRefresh])
 
         if (loading) {
-            return <div style={{height: 300}}><CenteredCircularProgress/></div>
+            return <CenteredCircularProgress/>
         }
 
         if (!loading && isEmptyObjectOrNull(data?.grouped)) {

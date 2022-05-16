@@ -19,7 +19,6 @@ import TryOut from "./pages/TryOut";
 import TestEditor from "./pages/TestEditor";
 import NewUser from "./pages/NewUser";
 import EventSources from "./pages/EventSources";
-import TracardiPro from "./pages/TracardiPro";
 import PageTabs from "./pages/groups/PageTabs";
 import Consents from "./pages/Consents";
 import Dashboard from "./pages/Dashboard";
@@ -33,6 +32,7 @@ import UserAccount from "./pages/UserAccount";
 import LogsAnalytics from "./pages/LogsAnalytics";
 import ImportSources from "./pages/ImportSources";
 import ImportTasks from "./pages/ImportTasks";
+import ProRouter from "./pages/pro/ProRouter";
 
 const AppBox = () => {
 
@@ -53,8 +53,14 @@ const AppBox = () => {
 
         {/*Pro*/}
 
-        <PrivateRoute path={urlPrefix("/pro")} roles={["admin"]}>
-            <TracardiPro/>
+        <PrivateRoute path={urlPrefix("/resources")} roles={["admin", "developer"]}>
+            <PageTabs title="Resources"
+                      tabs={[
+                          new PrivateTab(["admin", "developer"], <Resources
+                              defaultLayout={"rows"}/>, "/resources", "Resources"),
+                          new PrivateTab(["admin", "developer"],
+                              <ProRouter/>, "/resources/pro", "Premium Services"),
+                      ]}/>
         </PrivateRoute>
 
         {/*Traffic*/}
@@ -63,7 +69,6 @@ const AppBox = () => {
             <PageTabs title="Traffic"
                       tabs={[
                           new PrivateTab(["admin", "developer"], <EventSources/>, "/traffic/sources", "Sources"),
-                          new PrivateTab(["admin", "developer"], <Resources/>, "/traffic/resources", "Resources"),
                           new PrivateTab(["admin", "developer"], <Destinations/>, "/traffic/destinations", "Destinations"),
                       ]}
             />

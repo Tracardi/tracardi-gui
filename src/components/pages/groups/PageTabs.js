@@ -21,7 +21,7 @@ export default function PageTabs({title, tabs = {}}) {
         window.location.reload()
     }
 
-    return <div className="PageTabs" style={{height: "initial"}}>
+    return <div className="PageTabs">
         <div style={{display: "flex", justifyContent: "space-between"}}>
             <h1 className="Title">{title}</h1>
             <span className="Info">
@@ -46,7 +46,7 @@ export default function PageTabs({title, tabs = {}}) {
             {filteredTabs.map((tab, key) => {
                 i = i + 1;
                 return <TabCase id={i} key={key}>
-                    <div style={{paddingTop: 10, backgroundColor: "white"}}>
+                    <div style={{paddingTop: 10, backgroundColor: "white", height: "inherit"}}>
                         {tab.component}
                     </div>
                 </TabCase>
