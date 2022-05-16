@@ -53,18 +53,6 @@
                          "debug debug";
 }
 
-/*.FlowEditor > .WorkArea .FlowEditorGridDebug {*/
-/*    height: 100%;*/
-/*    width: 100%;*/
-/*    display: grid;*/
-/*    grid-column-gap: 0;*/
-/*    grid-row-gap: 0;*/
-/*    grid-template-rows: calc(100% - 500px) 500px;*/
-/*    grid-template-columns: 1fr auto;*/
-/*    grid-template-areas: "editor properties"*/
-/*                         "debug debug";*/
-/*}*/
-
 .FlowEditor > .WorkArea {
     display: flex;
     flex-direction: row;
@@ -83,7 +71,6 @@
     padding: 10px;
     max-height: 500px;
     overflow: auto;
-    width: 600px;
     background-color: rgba(245, 245, 245, .8);
     border-radius: 5px;
     border: 1px solid #ccc;

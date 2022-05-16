@@ -18,11 +18,13 @@ const ServiceCard = ({service, onClick}) => {
                 <div style={{marginBottom: 40}}>
                     {service?.metadata?.description}
                 </div>
-                <div style={{lineHeight: 2}}>
-                    {service?.metadata?.tags.map((tag, key) => <Chip size="small" key={key} label={tag} style={{marginRight: 5}}/>)}
-                </div>
-                <div style={{display: "flex", justifyContent: "flex-end", marginTop: 20}}>
-                    <Button label="Order" onClick={() => onClick(service)} icon={<BsPlusCircle size={23} style={{marginRight: 5}}/>}/>
+                <div>
+                    <div style={{lineHeight: 2}}>
+                        {service?.metadata?.tags.map((tag, key) => <Chip size="small" key={key} label={tag} style={{marginRight: 5}}/>)}
+                    </div>
+                    <div style={{display: "flex", justifyContent: "flex-end", marginTop: 20}}>
+                        <Button label="Order" onClick={() => onClick(service)} icon={<BsPlusCircle size={23} style={{marginRight: 5}}/>}/>
+                    </div>
                 </div>
             </div>
         </div>

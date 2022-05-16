@@ -473,7 +473,7 @@ export function FlowEditorPane(
         event.stopPropagation();
         selectNode(element);
         setDisplayNodeContextMenu(true);
-        setClientX(event?.clientX - 50);
+        setClientX(event?.clientX - 150);
         setClientY(event?.clientY - 50)
     }
 
@@ -539,8 +539,6 @@ export function FlowEditorPane(
     }
 
 
-
-
     return <>
         <FlowEditorTitle
             flowId={id}
@@ -588,18 +586,13 @@ export function FlowEditorPane(
                                          debugInProgress={debugInProgress}
                             />
 
-                            {displayNodeContextMenu && currentNode?.data?.spec?.form && <div className="NodeContextForm"
-                                                                                             style={{
-                                                                                                 left: clientX,
-                                                                                                 top: clientY
-                                                                                             }}
+                            {displayNodeContextMenu && <div className="NodeContextForm"
+                                                            style={{
+                                                                left: clientX,
+                                                                top: clientY
+                                                            }}
                             >
-                                <NodeInitForm
-                                    pluginId={currentNode?.data?.spec?.id}
-                                    init={currentNode?.data?.spec?.init}
-                                    formSchema={currentNode?.data?.spec?.form}
-                                    onSubmit={handleConfigSave}
-                                />
+                                {currentNode?.data?.metadata?.desc}
                             </div>}
 
                             <WfSchema schema={schema}
