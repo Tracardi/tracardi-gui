@@ -30,7 +30,6 @@ function ResourceForm({init, onClose, showAlert}) {
                 production: {},
                 test: {}
             },
-            consent: false,
             enabled: false,
             tags: [],
             groups: [],
@@ -43,7 +42,6 @@ function ResourceForm({init, onClose, showAlert}) {
         }
     }
 
-    const [requiresConsent, _setRequiresConsent] = useState(init?.consent);
     const [enabledSource, setEnabledSource] = useState(init?.enabled);
     const [type, setType] = useState(null);  // It is set in useEffects after the types are loaded
     const [name, setName] = useState(init?.name);
@@ -87,10 +85,6 @@ function ResourceForm({init, onClose, showAlert}) {
             }
         )
     }, [])  // todo: setting init here make infinite request
-
-    const setRequiresConsent = (ev) => {
-        _setRequiresConsent(ev.target.checked)
-    }
 
     const onSubmit = (payload) => {
         setProcessing(true);
@@ -165,7 +159,6 @@ function ResourceForm({init, onClose, showAlert}) {
                 },
                 destination: destination,
                 icon: icon,
-                consent: requiresConsent,
                 enabled: enabledSource,
                 tags: tags,
                 groups: groups
@@ -240,20 +233,9 @@ function ResourceForm({init, onClose, showAlert}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Access and Consent"/>
+            <TuiFormGroupHeader header="Enabled" description="If you want to be able to use this resource, then you need to enable it before."/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Resource consent" description="Check if this resource requires user consent? E.g. web pages
-                    located in Europe require user consent to comply with GDPR. ">
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Switch
-                            checked={requiresConsent}
-                            onChange={setRequiresConsent}
-                            name="consentRequired"
-                        />
-                        <span>
-                            This resource requires user consent
-                        </span>
-                    </div>
+                <TuiFormGroupField>
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Switch
                             checked={enabledSource}
