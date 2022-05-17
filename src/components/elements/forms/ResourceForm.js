@@ -30,7 +30,6 @@ function ResourceForm({init, onClose, showAlert}) {
                 production: {},
                 test: {}
             },
-            consent: false,
             enabled: false,
             tags: [],
             groups: [],
@@ -43,7 +42,6 @@ function ResourceForm({init, onClose, showAlert}) {
         }
     }
 
-    const [requiresConsent, _setRequiresConsent] = useState(init?.consent);
     const [enabledSource, setEnabledSource] = useState(init?.enabled);
     const [type, setType] = useState(null);  // It is set in useEffects after the types are loaded
     const [name, setName] = useState(init?.name);
