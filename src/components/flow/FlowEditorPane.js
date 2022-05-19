@@ -277,6 +277,12 @@ export function FlowEditorPane(
     }, [modified, handleDraftSave])
 
     useEffect(() => {
+        if (!elements.filter(el => Object.keys(nodeTypes).includes(el?.type)).map(el => el.id).includes(currentNode?.id ? currentNode.id : currentNode)) {
+            setDisplayRightSidebar(false);
+        }
+    }, [currentNode, elements])
+
+    useEffect(() => {
         setFlowLoading(true);
         let isSubscribed = true;
 
@@ -612,7 +618,8 @@ export function FlowEditorPane(
                         </ReactFlow>}
                     </div>
 
-                    {displayRightSidebar && <SidebarRight>
+                    {displayRightSidebar && 
+                    <SidebarRight>
                         <NodeDetailsHandler
                             onLabelSet={handleLabelSet}
                             node={currentNode}
