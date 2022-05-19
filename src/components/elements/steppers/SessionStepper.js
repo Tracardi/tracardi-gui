@@ -40,7 +40,7 @@ export default function SessionStepper ({ session, onEventSelect = null }) {
     }
 
     return <div className="SessionStepper">
-        {session && <header className="Header">Session starting ${session.insert.substring(0, 10)}, duration ${Math.floor(session.duration / 60)} minutes</header>}
+        {session && <header className="Header">Session starting {session.insert.substring(0, 10)}, duration {Math.floor(session.duration / 60)} minutes</header>}
         {Array.isArray(eventsData) && eventsData.length > 0 && <Stepper 
             orientation="vertical" 
             connector={<div className="StepConnector"/>}
