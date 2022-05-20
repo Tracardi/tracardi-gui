@@ -129,10 +129,11 @@ const Installer = ({children}) => {
                 if (response && isSubscribed) {
                     const result = response.data
                     const hasAllIndices = Array.isArray(result?.missing) && result?.missing.length === 0
+                    const hasAllTemplates = Array.isArray(result?.missing_templates) && result?.missing_templates.length === 0
                     const hasAdmin = result?.admins?.total !== 0
 
                     setHasAdminAccount(hasAdmin);
-                    setInstalled(hasAllIndices && hasAdmin);
+                    setInstalled(hasAllIndices && hasAllTemplates && hasAdmin);
                 } else {
                     if (isSubscribed) setInstalled(false);
                 }
