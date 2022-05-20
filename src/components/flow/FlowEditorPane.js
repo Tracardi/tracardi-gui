@@ -468,15 +468,6 @@ export function FlowEditorPane(
         setDisplayNodeContextMenu(false);
     }
 
-    const onNodeContextMenu = (event, element) => {
-        event.preventDefault();
-        event.stopPropagation();
-        selectNode(element);
-        setDisplayNodeContextMenu(true);
-        setClientX(event?.clientX - 150);
-        setClientY(event?.clientY - 50)
-    }
-
     const onEdgeContextMenu = (event, element) => {
         event.preventDefault();
         event.stopPropagation();
@@ -564,7 +555,6 @@ export function FlowEditorPane(
                             onElementClick={onElementClick}
                             onNodeDoubleClick={onNodeDoubleClick}
                             // onSelectionChange={onSelectionChange}
-                            onNodeContextMenu={onNodeContextMenu}
                             onEdgeContextMenu={onEdgeContextMenu}
                             onPaneClick={onPaneClick}
                             nodeTypes={nodeTypes}
