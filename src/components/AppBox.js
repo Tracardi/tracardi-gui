@@ -147,7 +147,7 @@ const AppBox = () => {
                           new PrivateTab(["admin"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
                           new PrivateTab(["admin"], <Instances/>, "/monitoring/instances", "Running instances"),
                           new PrivateTab(["admin"], <UserLogs/>, "/monitoring/user-log", "User logs"),
-                          new PrivateTab(["admin"], <ElasticClusterHealthInfo/>, "/monitoring/elastic-cluster", "Elasticsearch cluster")
+                          new PrivateTab(["admin"], <ElasticClusterHealthInfo/>, "/monitoring/elastic-cluster", "Storage health")
                       ]}
             />
 
