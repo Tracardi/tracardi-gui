@@ -36,7 +36,7 @@ export default function ElasticClusterHealthInfo() {
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Elasticsearch cluster health and info" description="Here you can check information about your Elasticsearch cluster"/>
+            <TuiFormGroupHeader header="Elasticsearch cluster health" description="Information about the Elasticsearch cluster health"/>
             <TuiFormGroupContent>
                 {
                     loading ? 
