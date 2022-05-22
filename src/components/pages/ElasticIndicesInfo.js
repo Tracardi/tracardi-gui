@@ -44,7 +44,7 @@ export default function ElasticIndicesInfo() {
 
     const IndexInfoComponent = ({name, index}) => <>
         <div style={{display: "flex", flexDirection: "row", borderBottom: "1px solid lightgrey", padding: 3, fontSize: 16, justifyContent: "space-between", alignItems: "center"}}>
-            <div style={{width: 400}}>{name}</div>
+            <div style={{width: 800}}>{name} {Object.keys(index?.aliases || {}).length > 0 && "(" + Object.keys(index?.aliases || {}).join(", ") + ")"}</div>
             <div style={{width: 200}}>{index?.connected ? "Connected" : "Not connected"}</div>
             <div style={{width: 300}}>{index?.settings?.index?.creation_date ? index.settings.index.creation_date : "Timestamp not provided"}</div>
             <IconButton style={{marginRight: 20}} onClick={() => setInspected(name)}>
