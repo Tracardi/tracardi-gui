@@ -1,6 +1,6 @@
 import Button from "./elements/forms/Button";
 import React, {useEffect, useState} from "react";
-import {asyncRemote, getApiUrl, resetApiUrlConfig} from "../remote_api/entrypoint";
+import {asyncRemote, getApiUrl, getError, resetApiUrlConfig} from "../remote_api/entrypoint";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
 import {BsCloudUpload} from "react-icons/bs";
 import PasswordInput from "./elements/forms/inputs/PasswordInput";
@@ -8,6 +8,7 @@ import Input from "./elements/forms/inputs/Input";
 import ErrorBox from "./errors/ErrorBox";
 import ReadOnlyInput from "./elements/forms/ReadOnlyInput";
 import {logout} from "./authentication/login";
+import ErrorsBox from "./errors/ErrorsBox";
 
 
 const InstallerError = ({error, errorMessage, hasAdminAccount}) => {
@@ -137,7 +138,7 @@ const Installer = ({children}) => {
                     if (isSubscribed) setInstalled(false);
                 }
             }).catch((e) => {
-                if (isSubscribed) setError(e.toString());
+                if (isSubscribed) setError(getError(e));
             }).finally(() => {
                 if (isSubscribed) setWait(false)
             })
@@ -148,6 +149,10 @@ const Installer = ({children}) => {
 
     if (wait === true) {
         return <CenteredCircularProgress/>
+    }
+
+    if (error) {
+        return <ErrorsBox errorList={error}/>
     }
 
     if (installed === false) {
