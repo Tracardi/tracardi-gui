@@ -1,6 +1,6 @@
 import Button from "./elements/forms/Button";
 import React, {useEffect, useState} from "react";
-import {asyncRemote, getApiUrl, resetApiUrlConfig} from "../remote_api/entrypoint";
+import {asyncRemote, getApiUrl, getError, resetApiUrlConfig} from "../remote_api/entrypoint";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
 import {BsCloudUpload} from "react-icons/bs";
 import PasswordInput from "./elements/forms/inputs/PasswordInput";
@@ -8,6 +8,7 @@ import Input from "./elements/forms/inputs/Input";
 import ErrorBox from "./errors/ErrorBox";
 import ReadOnlyInput from "./elements/forms/ReadOnlyInput";
 import {logout} from "./authentication/login";
+import ErrorsBox from "./errors/ErrorsBox";
 
 
 const InstallerError = ({error, errorMessage, hasAdminAccount}) => {
@@ -63,11 +64,15 @@ const InstallerMessage = ({requireAdmin, onInstalled, errorMessage}) => {
                 }
             }
         } catch (e) {
-            setError(e.toString())
+            setError(getError(e))
         } finally {
             setProgress(false);
         }
 
+    }
+
+    if(error) {
+        return <ErrorsBox errorList={error}/>
     }
 
     return <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100%"}}>
@@ -126,19 +131,22 @@ const Installer = ({children}) => {
             asyncRemote({
                 url: "/install",
             }).then((response) => {
-                if (response && isSubscribed) {
-                    const result = response.data
-                    const hasAllIndices = Array.isArray(result?.missing) && result?.missing.length === 0
-                    const hasAllTemplates = Array.isArray(result?.missing_templates) && result?.missing_templates.length === 0
-                    const hasAdmin = result?.admins?.total !== 0
+                if(isSubscribed) {
+                    if (response) {
+                        const result = response.data
+                        const hasAllIndices = Array.isArray(result?.missing) && result?.missing.length === 0
+                        const hasAllTemplates = Array.isArray(result?.missing_template) && result?.missing_template.length === 0
+                        const hasAllAliases = Array.isArray(result?.missing_alias) && result?.missing_alias.length === 0
+                        const hasAdmin = result?.admins?.total !== 0
 
-                    setHasAdminAccount(hasAdmin);
-                    setInstalled(hasAllIndices && hasAllTemplates && hasAdmin);
-                } else {
-                    if (isSubscribed) setInstalled(false);
+                        setHasAdminAccount(hasAdmin);
+                        setInstalled(hasAllIndices && hasAllTemplates && hasAllAliases && hasAdmin);
+                    } else {
+                        setInstalled(false);
+                    }
                 }
             }).catch((e) => {
-                if (isSubscribed) setError(e.toString());
+                if (isSubscribed) setError(getError(e));
             }).finally(() => {
                 if (isSubscribed) setWait(false)
             })
@@ -149,6 +157,10 @@ const Installer = ({children}) => {
 
     if (wait === true) {
         return <CenteredCircularProgress/>
+    }
+
+    if(error) {
+        return <ErrorsBox errorList={error}/>
     }
 
     if (installed === false) {

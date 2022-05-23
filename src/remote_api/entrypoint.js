@@ -47,6 +47,7 @@ export const asyncRemote = async (config) => {
 
 
 export const getError = (e) => {
+
     if (e?.response) {
 
         if (e.request && e.request.status === 401) {
