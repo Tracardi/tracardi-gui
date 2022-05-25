@@ -8,6 +8,7 @@ import {
 } from "../elements/tui/TuiForm";
 import AutoLoadList from "../elements/lists/AutoLoadList";
 import FilterAddForm from "../elements/forms/inputs/FilterAddForm";
+import Tag from "../elements/misc/Tag";
 
 
 export default function UserLogs() {
@@ -20,7 +21,7 @@ export default function UserLogs() {
             <tr key={index} className="LogListRow">
                 <td>{row.timestamp}</td>
                 <td>{row.email}</td>
-                <td>{row.successful ? "Success" : "Failed"}</td>
+                <td>{row.successful ? <Tag backgroundColor="#00C49F" color="white">Success</Tag> : <Tag backgroundColor="#d81b60" color="white">Failed</Tag>}</td>
             </tr>
         );
     }

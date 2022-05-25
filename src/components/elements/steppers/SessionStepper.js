@@ -6,37 +6,63 @@ import "./SessionStepper.css";
 import Button from "../forms/Button";
 import {FiMoreHorizontal} from "react-icons/fi";
 import ErrorsBox from "../../errors/ErrorsBox";
-import NoData from "../misc/NoData";
 
-export default function SessionStepper ({ session, onEventSelect = null }) {
-    
+export default function SessionStepper({ session, onEventSelect}) {
+
     const [eventsData, setEventsData] = React.useState([]);
-    const [loading, setLoading] = React.useState(false);
+    const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
     const [limit, setLimit] = React.useState(20);
     const [hasMore, setHasMore] = React.useState(false);
+    const [selectedEvent, setSelectedEvent] = React.useState(null);
+
+    const handleEventSelect = React.useCallback((eventId) => {
+        setSelectedEvent(eventId)
+        if(onEventSelect instanceof Function) {
+            onEventSelect(eventId)
+        }
+    }, [onEventSelect])
 
     React.useEffect(() => {
         let subscribed = true;
         if (session !== null) {
-            if (subscribed) setLoading(true);
-            if (subscribed) setError(null);
+            setLoading(true);
+            setError(null);
             asyncRemote({
                 url: "/events/session/" + session.id + "?limit=" + limit
             })
             .then(response => {
-                if (subscribed) setEventsData(response.data.result); 
-                if (subscribed) setHasMore(response.data.more_to_load); 
-                if (onEventSelect !== null && subscribed && limit === 20) onEventSelect(response.data.result[0]["id"]);
+                if (subscribed) {
+                    setEventsData(response.data.result);
+                    setHasMore(response.data.more_to_load);
+                }
             })
             .catch(e => {if (subscribed) setError(getError(e))})
             .finally(() => {if (subscribed) setLoading(false)})
         }
         return () => subscribed = false;
-    }, [limit, onEventSelect, session])
+    }, [limit, session])
+
+    React.useEffect(() => {
+        if (limit === 20) {
+            if (Array.isArray(eventsData) && eventsData.length > 0) {
+                if (selectedEvent === null) {
+                    handleEventSelect(eventsData[0]["id"])
+                }
+            }
+        }
+    }, [limit, eventsData, handleEventSelect])
 
     const stepIconComponent = event => {
         return <div className="StepIcon" style={{backgroundColor: {collected: "#006db3", error: "#d81b60", processed: "#43a047"}[event.status]}}/>
+    }
+
+    if (loading && Array.isArray(eventsData) && eventsData.length === 0) {
+        return <CenteredCircularProgress/>
+    }
+
+    if(error) {
+        return <ErrorsBox errorList={error} style={{alignSelf: "flex-start"}}/>
     }
 
     return <div className="SessionStepper">
@@ -50,22 +76,19 @@ export default function SessionStepper ({ session, onEventSelect = null }) {
                 <Step 
                     completed={true}
                     key={event.id} 
-                    onClick={onEventSelect === null ? () => {} : () => onEventSelect(event.id)}
+                    onClick={() => handleEventSelect(event.id)}
                 >
                     <div style={{alignSelf: "center", paddingLeft: 8, paddingRight: 8}}>{event.insert.substring(11, 19)}</div>
                         <StepLabel
                             StepIconComponent={() => stepIconComponent(event)}
                         >
-                            {event.type}
+                            {selectedEvent === event.id ? <b>{event.type}</b> : event.type}
                         </StepLabel>
                     </Step>
                 ))
             }
         </Stepper>
         }
-        {loading && Array.isArray(eventsData) && eventsData.length === 0 && <CenteredCircularProgress style={{marginTop: 10}}/>}
-        {error && <ErrorsBox errorList={error} style={{alignSelf: "flex-start"}}/>}
-        {session === null && <div style={{height: "577px", display: "flex", alignItems: "center", justifyContent: "center"}}><NoData header="No data found for defined session offset" fontSize="16px"/></div>}
         {hasMore && <Button 
             label={"LOAD MORE"} 
             icon={<FiMoreHorizontal />} 

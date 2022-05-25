@@ -19,7 +19,6 @@ export default function ImportForm({onSubmit}) {
     const [options, setOptions] = React.useState([]);
     const [error, setError] = React.useState(null);
 
-    const transitional = React.useRef(true);
     const eventType = React.useRef("");
     const config = React.useRef({});
     const mounted = React.useRef(false);
@@ -103,7 +102,6 @@ export default function ImportForm({onSubmit}) {
                 api_url: apiUrl.current,
                 event_source: eventSource.current,
                 event_type: eventType.current,
-                transitional: transitional.current
             }
         })
             .then(onSubmit)
@@ -189,14 +187,6 @@ export default function ImportForm({onSubmit}) {
                             error={isObject(formError) && "event_type" in formError}
                             helperText={isObject(formError) && "event_type" in formError ? formError['event_type'] : null}
                             onChange={(e => eventType.current = e.target.value)}
-                        />
-                    </TuiFormGroupField>
-                    <TuiFormGroupField header="Make event transitional" description="Transitional events are only processed but not
-                    saved in the database. If you set import to collect only transitional events then no event will be stored in the system. ">
-                        <BoolInput
-                            label="Transitional event"
-                            value={transitional.current}
-                            onChange={() => transitional.current = !transitional.current}
                         />
                     </TuiFormGroupField>
                 </TuiFormGroupContent>

@@ -48,10 +48,11 @@ export default function ElasticIndicesInfo() {
         <div style={{display: "flex", flexDirection: "row", borderBottom: "1px solid lightgrey", padding: 3, fontSize: 16, justifyContent: "space-between", alignItems: "center"}}>
             <div style={{display: "flex", alignItems: "center"}}>
                 <div style={{marginRight: 10}}>{index?.settings?.index?.creation_date ? index.settings.index.creation_date : "Timestamp not provided"}</div>
-                <div style={{width: 800}}>{name} {Object.keys(index?.aliases || {}).length > 0 && "(" + Object.keys(index?.aliases || {}).join(", ") + ")"}</div>
+                <div>{name} </div>
             </div>
 
             <div style={{display: "flex", flexWrap: "nowrap", alignItems: "center"}}>
+                <div>{Object.keys(index?.aliases || {}).length > 0 && <Tag>{Object.keys(index?.aliases || {}).join(", ")}</Tag>}</div>
                 <div>{index?.connected ? <Tag backgroundColor="#00c49f" color="white">Connected</Tag> : <Tag backgroundColor="#d81b60" color="white">Not connected</Tag>}</div>
                 <IconButton style={{marginRight: 20}} onClick={() => setInspected(name)}>
                     <AiOutlineInfoCircle size={24}/>
@@ -94,7 +95,7 @@ export default function ElasticIndicesInfo() {
                                     <PropertyField key="name" content={inspected} name="Name"/>
                                     <PropertyField
                                         key="aliases"
-                                        content={Object.keys(data[inspected]?.aliases).length > 0 ? Object.keys(data[inspected]?.aliases).join(", ") : "<no-aliases>"}
+                                        content={Object.keys(data[inspected]?.aliases).length > 0 ? <Tag>{ Object.keys(data[inspected]?.aliases).join(", ")}</Tag> : "<no-aliases>"}
                                         name="Aliases"
                                     />
                                     <PropertyField key="uuid" name="UUID" content={data[inspected]?.settings?.index?.uuid || "<no-uuid>"}/>

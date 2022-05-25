@@ -5,6 +5,7 @@ import { asyncRemote, getError } from "../../remote_api/entrypoint";
 import ErrorsBox from "../errors/ErrorsBox";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {BsCheckCircle, BsXSquare} from "react-icons/bs";
+import Tag from "../elements/misc/Tag";
 
 
 export default function ElasticClusterHealthInfo() {
@@ -48,20 +49,8 @@ export default function ElasticClusterHealthInfo() {
                         <>
                             <PropertyField key="name" name="Name of the cluster" content={healthInfo?.cluster_name || "cluster name not provided"}/>
                             <PropertyField key="status" name="Status of the cluster" content={
-                                typeof healthInfo?.status === "string" ? 
-                                    <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                                        {healthInfo.status}
-                                        <div 
-                                            style={{
-                                                height: 15,
-                                                width: 15,
-                                                marginLeft: 10,
-                                                borderRadius: "50%",
-                                                border: "1px solid black",
-                                                backgroundColor: healthInfo.status
-                                            }}
-                                        />
-                                    </div>
+                                typeof healthInfo?.status === "string" ?
+                                    <Tag backgroundColor={healthInfo.status}>{healthInfo.status}</Tag>
                                 : 
                                     "cluster status not provided"}/>
                             <PropertyField key="timed_out" name="Timed out" 

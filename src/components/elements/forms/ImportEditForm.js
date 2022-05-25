@@ -18,7 +18,6 @@ export default function ImportEditForm({onSubmit, importConfig}) {
 
     const name = React.useRef(importConfig.name);
     const desc = React.useRef(importConfig.description);
-    const transitional = React.useRef(importConfig.transitional);
     const eventType = React.useRef(importConfig.event_type);
     const eventSource = React.useRef(importConfig.event_source);
     const apiUrl = React.useRef(importConfig.api_url);
@@ -106,7 +105,6 @@ export default function ImportEditForm({onSubmit, importConfig}) {
                     name: name.current,
                     description: desc.current,
                     enabled: enabled.current,
-                    transitional: transitional.current,
                     api_url: apiUrl.current,
                     event_source: eventSource.current,
                     event_type: eventType.current,
@@ -196,8 +194,8 @@ export default function ImportEditForm({onSubmit, importConfig}) {
                                 onChange={(value) => apiUrl.current = value}
                         /></div>
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Event source" description="Select 'event source' the date will be sent
-                    through. Separate event source for import is a good practice.">
+                    <TuiFormGroupField header="Event source" description="Select 'event source' the data will be sent
+                    through. Create separate event source for import is a good practice.">
                         <div style={{width: 500}}>
                             <TuiSelectEventSource value={eventSource.current}
                                                   fullWidth={true}
@@ -216,14 +214,6 @@ export default function ImportEditForm({onSubmit, importConfig}) {
                             error={isObject(formError) && "event_type" in formError}
                             helperText={isObject(formError) && "event_type" in formError ? formError['event_type'] : null}
                             onChange={(e => eventType.current = e.target.value)}
-                        />
-                    </TuiFormGroupField>
-                    <TuiFormGroupField header="Make event transitional" description="Transitional events are only processed but not
-                    saved in the database. If you set import to collect only transitional events then no event will be stored in the system. ">
-                        <BoolInput
-                            label="Transitional event"
-                            value={transitional.current}
-                            onChange={() => transitional.current = !transitional.current}
                         />
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Enabled" description="Make this configuration available for the import process">

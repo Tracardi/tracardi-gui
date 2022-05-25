@@ -47,7 +47,7 @@ export const ProfileData = ({profile}) => {
             </TuiFormGroupContent>
         </TuiFormGroup>}
 
-        {privateTraits && !isEmptyObjectOrNull(privateTraits) && <TuiFormGroup>
+        {publicTraits && !isEmptyObjectOrNull(publicTraits) && <TuiFormGroup>
             <TuiFormGroupHeader header="Public traits"
                                 description="Public traits of profile for selected event."/>
             <TuiFormGroupContent>

@@ -4,7 +4,7 @@
     justify-content: flex-start;
     align-items: flex-start;
     margin: 20px;
-    height: 700px;
+    height: inherit;
 }
 .MuiSlider-root {
     width: 250px;
