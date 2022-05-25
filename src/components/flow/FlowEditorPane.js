@@ -406,7 +406,8 @@ export function FlowEditorPane(
         }
 
         setElements((els) => removeElements(elementsToRemove, els));
-        setDisplayRightSidebar(false)
+        setDisplayRightSidebar(false);
+
         handleUpdate();
     }
 

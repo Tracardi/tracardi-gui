@@ -52,13 +52,12 @@ export default function ElasticIndicesInfo() {
             </div>
 
             <div style={{display: "flex", flexWrap: "nowrap", alignItems: "center"}}>
-                <div>{Object.keys(index?.aliases || {}).length > 0 && <Tag>{Object.keys(index?.aliases || {}).join(", ")}</Tag>}</div>
+                <div>{Object.keys(index?.aliases || {}).length > 0 && <Tag backgroundColor={index?.head ? "#00c49f": "#d81b60"} color="white">{Object.keys(index?.aliases || {}).join(", ")}</Tag>}</div>
                 <div>{index?.connected ? <Tag backgroundColor="#00c49f" color="white">Connected</Tag> : <Tag backgroundColor="#d81b60" color="white">Not connected</Tag>}</div>
                 <IconButton style={{marginRight: 20}} onClick={() => setInspected(name)}>
                     <AiOutlineInfoCircle size={24}/>
                 </IconButton>
             </div>
-
         </div>
     </>;
 
