@@ -20,7 +20,6 @@ import InfoEdge from "./edges/InfoEdge";
 import StopEdge from "./edges/StopEdge";
 import CancelEdge from "./edges/CancelEdge";
 import BoldEdge from "./edges/BoldEdge";
-import {NodeInitForm} from "../elements/forms/NodeInitForm";
 import WfSchema from "./WfSchema";
 import {MemoDebugPane} from "./DebugPane";
 import convertNodesToProfilingData from "./profilingConverter";

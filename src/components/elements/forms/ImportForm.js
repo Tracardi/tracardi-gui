@@ -1,8 +1,7 @@
 import {TextField, Autocomplete} from "@mui/material";
 import React from "react";
-import {apiUrlStorage, asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {TuiForm, TuiFormGroupContent, TuiFormGroupField, TuiFormGroup, TuiFormGroupHeader} from "../tui/TuiForm";
-import BoolInput from "./BoolInput";
 import JsonForm from "./JsonForm";
 import {uuid4} from "@sentry/utils";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";

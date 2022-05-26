@@ -1,5 +1,5 @@
 import React from "react";
-import {apiUrlStorage, asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {TextField, Autocomplete} from "@mui/material";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import BoolInput from "./BoolInput";
