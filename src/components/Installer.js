@@ -64,11 +64,15 @@ const InstallerMessage = ({requireAdmin, onInstalled, errorMessage}) => {
                 }
             }
         } catch (e) {
-            setError(e.toString())
+            setError(getError(e))
         } finally {
             setProgress(false);
         }
 
+    }
+
+    if(error) {
+        return <ErrorsBox errorList={error}/>
     }
 
     return <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100%"}}>
@@ -127,15 +131,19 @@ const Installer = ({children}) => {
             asyncRemote({
                 url: "/install",
             }).then((response) => {
-                if (response && isSubscribed) {
-                    const result = response.data
-                    const hasAllIndices = Array.isArray(result?.missing) && result?.missing.length === 0
-                    const hasAdmin = result?.admins?.total !== 0
+                if(isSubscribed) {
+                    if (response) {
+                        const result = response.data
+                        const hasAllIndices = Array.isArray(result?.missing) && result?.missing.length === 0
+                        const hasAllTemplates = Array.isArray(result?.missing_template) && result?.missing_template.length === 0
+                        const hasAllAliases = Array.isArray(result?.missing_alias) && result?.missing_alias.length === 0
+                        const hasAdmin = result?.admins?.total !== 0
 
-                    setHasAdminAccount(hasAdmin);
-                    setInstalled(hasAllIndices && hasAdmin);
-                } else {
-                    if (isSubscribed) setInstalled(false);
+                        setHasAdminAccount(hasAdmin);
+                        setInstalled(hasAllIndices && hasAllTemplates && hasAllAliases && hasAdmin);
+                    } else {
+                        setInstalled(false);
+                    }
                 }
             }).catch((e) => {
                 if (isSubscribed) setError(getError(e));
