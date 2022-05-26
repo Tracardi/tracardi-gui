@@ -1,5 +1,7 @@
 ![github_banner](https://user-images.githubusercontent.com/16271564/148845983-7c9e85c1-465f-44ed-b1e9-7112908d2e83.png)
 
+[![Stargazers repo roster for @tracardi/tracardi](https://reporoster.com/stars/tracardi/tracardi)](https://github.com/tracardi/tracardi/stargazers)
+
 # Open-source Customer Engagement and Data Platform
 
 [Tracardi](http://www.tracardi.com) is an open-source system that supports customer engagement and enhances the consumer experience.
@@ -7,6 +9,12 @@ Tracardi is intended for anyone who carries out any type of customer interaction
 Tracardi collects data from customer journeys and assigns it to a profile that is maintained throughout the period of interaction with the customer.
 
 You can support the project on [Open Collective](https://www.opencollective.com/tracardi-cdp)
+
+## Screenshots
+
+![flow-1](https://user-images.githubusercontent.com/16271564/145562599-a188de6e-639b-479a-b263-863e9133df53.png)
+
+# Introduction
 
 TRACARDI is an API-first solution, low-code / no-code platform aimed at any business that 
 wants to start using user data for automated customer engagement. If you own a brand new e-commerce platform or 
@@ -27,10 +35,7 @@ a legacy system you can integrate TRACARDI easily. Use TRACARDI for:
  * **Automation** - TRACARDI is a great framework for creating
    marketing automation apps. You can send your data to other systems easily
 
-## Screenshots
-
-![flow-1](https://user-images.githubusercontent.com/16271564/145562599-a188de6e-639b-479a-b263-863e9133df53.png)
-
+If you want to see Tracardi in action subscribe to our [Youtube channel](https://bit.ly/3pbdbPR).
 
 # Installation
 
@@ -39,22 +44,51 @@ The easiest way to run Tracardi is to run it as a docker container. If you are l
 In order to do that you must have docker installed on your local machine. 
 Please refer to docker installation manual to see how to install docker.
 
-## Dependencies
+## One line installation
 
-Tracardi need elasticsearch as its backend. Please pull and run elasticsearch single node docker before you start Tracardi. 
+Open tracardi project and run:
+
+```
+docker-compose up
+```
+
+Visit http://127.0.0.1:8787 and complete installation in Tracardi GUI. 
+
+## Run each docker container one-by-one
+
+### Dependencies
+
+Tracardi need elasticsearch and redis as its backend. 
+
+#### Elasticsearch
+
+Please pull and run elasticsearch single node docker before you start Tracardi. 
 
 You can do it with this command.
 ```
 docker run -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.13.2
 ```
 
-## Start Tracardi API
+#### Redis
+
+If you use features as destinations, import, or synchronized events then you will need a redis instance as well. 
+
+Start it with:
+
+```
+docker run -p 6379:6379 redis
+```
+
+### Run Tracardi API
 
 Now pull and run Tracardi backend.
 
 ```
-docker run -p 8686:80 -e ELASTIC_HOST=http://<your-laptop-ip>:9200 -e USER_NAME=admin -e PASSWORD=admin tracardi/tracardi-api
+docker run -p 8686:80 -e ELASTIC_HOST=http://<your-laptop-ip>:9200 -e REDIS_HOST=redis://<your-laptop-ip>:6379 tracardi/tracardi-api
 ```
+
+You can remove `-e REDIS_HOST=redis://<your-laptop-ip>:6379` if you did not start redis. Without redis some system features are 
+unavailable. 
 
 Tracardi must connect to elastic. To do that you have to set ELASTIC_HOST variable to reference your laptop's IP. 
 
@@ -67,7 +101,7 @@ Tracardi must connect to elastic. To do that you have to set ELASTIC_HOST variab
 For more trouble shooting solutions go to [http://docs.tracardi.com/trouble/](http://docs.tracardi.com/trouble/)
 
 
-## Start Tracardi GUI
+### Open Tracardi GUI
 
 Now pull and run Tracardi Graphical User Interface.
 
@@ -75,9 +109,22 @@ Now pull and run Tracardi Graphical User Interface.
 docker run -p 8787:80 -e API_URL=//127.0.0.1:8686 tracardi/tracardi-gui
 ```
 
+## Need help ?
+
+
+<p align="center">
+    Join our community
+<br/>
+<a href="https://join.slack.com/t/tracardi/shared_invite/zt-10y7w0o9y-PmCBnK9qywchmd1~KIER2Q">
+    <img src="https://user-images.githubusercontent.com/16271564/151843970-5e869807-4ccf-46ab-98f5-6a65aea790f8.png" width="120px"/> 
+</a>
+</p>
+
+
 ## Start Tracardi Documentation
 
 Now pull and run Tracardi Documentation.
+
 
 ```
 docker run -p 8585:8585 tracardi/tracardi-docs
@@ -85,7 +132,7 @@ docker run -p 8585:8585 tracardi/tracardi-docs
 
 ## Log-in
 
-Visit http://127.0.0.1:8787 and login to Tracardi GUI with default username: admin and password: admin. 
+Visit http://127.0.0.1:8787 and complete installation in Tracardi GUI. 
 
 ## System Documentation
 
@@ -127,4 +174,6 @@ You can support us on [Open Collective](https://www.opencollective.com/tracardi-
 # License
 
 Tracardi is available under MIT with Common Clause license.
+
+[![Forkers repo roster for @tracardi/tracardi](https://reporoster.com/forks/tracardi/tracardi)](https://github.com/tracardi/tracardi/network/members)
 
