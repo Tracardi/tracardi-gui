@@ -55,6 +55,6 @@ export default function EventCounter() {
     }
 
     return <div>
-        <Counter label="Events" value={value} subValue={avg} subValueSuffix="req./sec."/>
+        <Counter label="Events" value={value} subValue={avg} subValueSuffix="events/s"/>
     </div>
 }

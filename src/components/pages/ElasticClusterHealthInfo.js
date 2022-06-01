@@ -35,6 +35,19 @@ export default function ElasticClusterHealthInfo() {
         return () => isSubscribed = false;
     }, []);
 
+    const statusColor = (status) => {
+        switch (status) {
+            case "yellow":
+                return "#ffc107"
+            case "green":
+                return "#00c853"
+            case "red":
+                return "#d81b60"
+            default:
+                return "#aaa"
+        }
+    }
+
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Elasticsearch cluster health" description="Information about the Elasticsearch cluster health"/>
@@ -50,7 +63,7 @@ export default function ElasticClusterHealthInfo() {
                             <PropertyField key="name" name="Name of the cluster" content={healthInfo?.cluster_name || "cluster name not provided"}/>
                             <PropertyField key="status" name="Status of the cluster" content={
                                 typeof healthInfo?.status === "string" ?
-                                    <Tag backgroundColor={healthInfo.status}>{healthInfo.status}</Tag>
+                                    <Tag backgroundColor={statusColor(healthInfo.status)} color="white">{healthInfo.status}</Tag>
                                 : 
                                     "cluster status not provided"}/>
                             <PropertyField key="timed_out" name="Timed out" 
