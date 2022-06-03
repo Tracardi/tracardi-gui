@@ -1,3 +1,3 @@
-docker build . -t tracardi/tracardi-gui
-docker push tracardi/tracardi-gui
+docker build . -t tracardi/tracardi-gui:0.7.0
+docker push tracardi/tracardi-gui:0.7.0
 
