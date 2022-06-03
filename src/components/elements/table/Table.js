@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Table.css";
-import { Table, Column, Row } from "react-vt-table";
+import { Table} from "react-vt-table";
 import AutoSizer from "react-virtualized-auto-sizer";
 
 export default function ( { data, children, onClick, ...props}) {

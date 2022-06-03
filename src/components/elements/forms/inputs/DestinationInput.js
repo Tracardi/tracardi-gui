@@ -15,10 +15,15 @@ export default function DestinationInput({value: initValue, onChange}) {
         asyncRemote({
             url: '/destinations/entity'
         }).then((response) => {
-            setDestinations(Object.values(response.data));
-            setDestionationsDb(response.data);
+            if(isSubscribed) {
+                setDestinations(Object.values(response.data));
+                setDestionationsDb(response.data);
+            }
+
         }).catch(e => {
-            console.error(e)
+            if(isSubscribed) {
+                console.error(e)
+            }
         }).finally(() => {
 
         })

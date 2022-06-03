@@ -7,7 +7,6 @@ import {Column} from "react-vt-table";
 import {Button} from "@mui/material";
 import DotAccessor from "../elements/forms/inputs/DotAccessor";
 import TuiSelectMultiConsentType from "../elements/tui/TuiSelectMultiConsentType";
-import SchedulerJobForm from "../elements/forms/SchedulerJobForm";
 import ImportProgress from "../elements/misc/ImportProgress";
 
 export default function TryOut() {
@@ -28,7 +27,6 @@ export default function TryOut() {
     ];
 
   return (<div style={{padding: 10}}>
-          <SchedulerJobForm/>
           <DotAccessor label="E-mail" value={v} onChange={(e)=>{console.log("READY", e);setV(e)}}/>
           <Button onClick={()=>setV("test")}>xxx</Button>
     <div style={{height: "100%", overflow: "auto"}}>

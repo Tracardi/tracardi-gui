@@ -1,4 +1,4 @@
-import {Area, AreaChart, Line, LineChart, ResponsiveContainer} from "recharts";
+import {Area, AreaChart} from "recharts";
 import React, {useEffect, useState} from "react";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
