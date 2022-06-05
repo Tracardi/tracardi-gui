@@ -1,7 +1,7 @@
 import React from "react";
 import { isEmptyObjectOrNull } from "../../misc/typeChecking";
 import { TuiForm, TuiFormGroup, TuiFormGroupField, TuiFormGroupHeader, TuiFormGroupContent } from "../elements/tui/TuiForm";
-import { CircularProgress, TextField } from "@mui/material";
+import { CircularProgress, modalUnstyledClasses, TextField } from "@mui/material";
 import { asyncRemote } from "../../remote_api/entrypoint";
 import { getError } from "../../remote_api/entrypoint";
 import ErrorsBox from "../errors/ErrorsBox";
@@ -21,29 +21,49 @@ export default function UserAccount () {
     const [error, setError] = React.useState(null);
     const [edit, setEdit] = React.useState(false);
     const [refresh, setRefresh] = React.useState(0);
+    const [logoutProgress, setLogoutProgress] = React.useState(false);
+    const [logoutError, setLogoutError] = React.useState(null);
+    const mounted = React.useRef(false);
     const history = useHistory();
     
     const go = (url) => {
         return () => history.push(urlPrefix(url));
     }
 
+    async function logout() {
+        if (mounted.current) {
+            setLogoutError(null);
+            setLogoutProgress(true);
+        }
+        try {
+            await asyncRemote({method: "post", url: "/logout"});
+            go("/logout")();
+        }
+        catch (e) {
+            if (mounted.current) setLogoutError(getError(e));
+        }
+        finally {
+            if (mounted.current) setLogoutProgress(false);
+        }
+    }
+
     React.useEffect(() => {
 
-        let isSubscribed = true;
-        if (isSubscribed) setError(null);
+        mounted.current = true;
+        if (mounted.current) setError(null);
 
         asyncRemote({
             url: "/user-account",
             method: "GET"
         })
         .then(response => {
-            if (isSubscribed) setUser(response.data);
+            if (mounted.current) setUser(response.data);
         })
         .catch(e => { 
-            if (isSubscribed) setError(getError(e));
+            if (mounted.current) setError(getError(e));
         })
 
-        return () => isSubscribed = false;
+        return () => mounted.current = false;
     }, [refresh])
 
     if (isEmptyObjectOrNull(user) && error === null) {
@@ -99,7 +119,7 @@ export default function UserAccount () {
                             </div>
                             <div style={{display: "flex", alignSelf: "flex-end", flexDirection: "row"}}>
                                 <Button label="Edit account" onClick={() => setEdit(true)} icon={<FiEdit3 size={20}/>}/>
-                                <Button icon={<AiOutlinePoweroff size={20}/>} label="Logout" onClick={go("/logout")}/>
+                                <Button icon={<AiOutlinePoweroff size={20}/>} label="Logout" onClick={logout} error={logoutError !== null} progress={logoutProgress}/>
                             </div>
                         </div>
                     </TuiFormGroupField>
@@ -112,6 +132,7 @@ export default function UserAccount () {
             >
                 {edit && <EditAccountForm user={user} closeForm={() => setEdit(false)} forceRefresh={() => setRefresh(refresh + 1)}/>}
             </FormDrawer>
+            {logoutError && <ErrorsBox errorList={logoutError}/>}
         </>
     );
 }
