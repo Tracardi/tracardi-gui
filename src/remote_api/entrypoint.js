@@ -33,6 +33,7 @@ export const asyncRemote = async (config) => {
             ...config,
             baseURL: apiUrl
         }
+
     }
 
     config.headers = {
@@ -41,7 +42,6 @@ export const asyncRemote = async (config) => {
     }
 
     config.timeout = 1000 * 60
-
     return axios(config)
 }
 
