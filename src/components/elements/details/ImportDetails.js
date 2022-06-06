@@ -67,7 +67,7 @@ export default function ImportDetails({onClose, id}) {
         }
         ;
         asyncRemote({
-            url: `/import/${id}/run/` + "?name=" + encodeURIComponent(name) + "&debug=" + encodeURIComponent(debug),
+            url: `/import/${id}/run` + "?name=" + encodeURIComponent(name) + "&debug=" + encodeURIComponent(debug),
             method: "GET"
         })
             .then(response => {
