@@ -1,8 +1,9 @@
 import React from 'react';
 import FlowNodeIcons from "../../../flow/FlowNodeIcons";
 import {BsTrash} from "react-icons/bs";
+import Tag from "../../misc/Tag";
 
-const BrowserRow = ({id, data, onClick}) => {
+const BrowserRow = ({id, data, onClick, tags}) => {
 
     const statusColor = (status) => {
         return status ? "#00c853" : "#d81b60"
@@ -29,9 +30,11 @@ const BrowserRow = ({id, data, onClick}) => {
                 <div style={{display: "flex", alignItems: "baseline", marginLeft: 10}}>
                     <div style={{fontSize: 16, marginRight: 5, fontWeight: 500, width: 200}}>{data.name}</div>
                     <div style={{fontSize: 13}}>{data.description}</div>
+
                 </div>
             </div>
             <div style={{display: "flex", alignItems: "center"}}>
+                {Array.isArray(tags) && <div style={{marginRight: 5}}>{tags.map(tag => <Tag>{tag}</Tag>) }</div>}
                 <div style={{margin: "0 5px", width: 14, height: 14, borderRadius: 14, backgroundColor: statusColor(data?.enabled)}}></div>
                 <BsTrash size={20}/>
             </div>

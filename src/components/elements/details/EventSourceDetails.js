@@ -114,6 +114,27 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
 
             </TuiFormGroup>
 
+        </TuiForm>
+
+
+        {data.type === "rest" && <TuiForm style={{margin: 20}}>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Integration"
+                                    description="Please paste this code into your web page. This code should appear on every page."/>
+                <TuiFormGroupContent>
+                    <Suspense fallback={<CenteredCircularProgress/>}><TrackerScript sourceId={data.id}/></Suspense>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Javascript example"
+                                    description="This is an example of event sending. This code sends multiple events.
+                                    Please refer to Tracardi documentation on more complex configuration."/>
+                <TuiFormGroupContent>
+                    <Suspense fallback={<CenteredCircularProgress/>}><TrackerUseScript/></Suspense>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Web hook"
                                     description="For every event source there is a web hook created. Calling it will emit
@@ -136,30 +157,8 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
 
                 </TuiFormGroupContent>
             </TuiFormGroup>
-
-        </TuiForm>
-
-
-        {data.type === "javascript" && <TuiForm style={{margin: 20}}>
-            <TuiFormGroup>
-                <TuiFormGroupHeader header="Integration"
-                                    description="Please paste this code into your web page. This code should appear on every page."/>
-                <TuiFormGroupContent>
-                    <Suspense fallback={<CenteredCircularProgress/>}><TrackerScript sourceId={data.id}/></Suspense>
-                </TuiFormGroupContent>
-            </TuiFormGroup>
-
-            <TuiFormGroup>
-                <TuiFormGroupHeader header="Javascript example"
-                                    description="This is an example of event sending. This code sends multiple events.
-                                    Please refer to Tracardi documentation on more complex configuration."/>
-                <TuiFormGroupContent>
-                    <Suspense fallback={<CenteredCircularProgress/>}><TrackerUseScript/></Suspense>
-                </TuiFormGroupContent>
-            </TuiFormGroup>
         </TuiForm>
         }
-
     </>
 
     const EventSourceAnalytics = () => {

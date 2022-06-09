@@ -25,7 +25,9 @@ export default function EventSources() {
                                            status={row?.enabled}
                                            name={row?.name}
                                            description={row?.description}
-                                           onClick={() => onClick(row?.id)}/>
+                                           onClick={() => onClick(row?.id)}
+                                           tags={[row.type]}
+                        />
                     })}
                 </div>
             </div>
@@ -47,7 +49,9 @@ export default function EventSources() {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
                                            data={data}
-                                           onClick={() => onClick(row?.id)}/>
+                                           onClick={() => onClick(row?.id)}
+                                           tags={[row.type]}
+                        />
                     })}
                 </div>
             </div>

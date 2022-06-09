@@ -1,10 +1,8 @@
 import {v4 as uuid4} from "uuid";
-import React, {useEffect, useState} from "react";
-import {request} from "../../../remote_api/uql_api_endpoint";
+import React, {useState} from "react";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import DisabledInput from "./inputs/DisabledInput";
-import TuiSelectEventSourceType from "../tui/TuiSelectEventSourceType";
 import TextField from "@mui/material/TextField";
 import Switch from "@mui/material/Switch";
 import TuiTagger from "../tui/TuiTagger";
@@ -20,13 +18,13 @@ const EventSourceForm = ({value, style, onClose}) => {
         value = {
             id: uuid4(),
             name: "",
-            type: null,
+            type: 'rest',
             description: "",
             enabled: true,
             transitional: false,
             permanent_profile_id: false,
             returns_profile: false,
-            tags: [],
+            tags: ['rest', 'api'],
             groups: []
         }
     }
@@ -35,58 +33,22 @@ const EventSourceForm = ({value, style, onClose}) => {
     const [transitional, setTransitional] = useState(value?.transitional);
     const [permanent, setPermanent] = useState(value?.permanent_profile_id);
     const [returnsProfile, setReturnsProfile] = useState(value?.returns_profile || false);
-    const [type, setType] = useState(null);  // It is set in useEffects after the types are loaded
     const [name, setName] = useState(value?.name);
     const [id, setId] = useState(value?.id);
-    const [tags, setTags] = useState(value?.tags);
     const [groups, setGroups] = useState(value?.groups);
     const [description, setDescription] = useState(value?.description);
-    const [errorTypeMessage, setTypeErrorMessage] = useState('');
     const [errorNameMessage, setNameErrorMessage] = useState('');
     const [processing, setProcessing] = useState(false);
     const [errors, setError] = useState(null);
-    const [credentialTypes, setCredentialTypes] = useState({});
 
-    const getIdNameFromType = (type, types) => {
-        if (type in types) {
-            return {id: type, name: types[type]['name']}
-        }
-        return {id: type, name: type}
-    }
-
-    useEffect(() => {
-        request(
-            {url: "/event-sources/type/configuration"},
-            () => {
-            },
-            () => {
-            },
-            (response) => {
-                if (response) {
-                    setCredentialTypes(response.data.result);
-                    // Original type value is an id  e.g "aws", but "type" state is and object with id and name,
-                    // e.g {name" "AWS credentials", id: "aws"}
-                    // It must be set after the available list of event sources are loaded.
-                    setType(getIdNameFromType(value?.type, response.data.result));
-                    // setTags(getIdTagsFromType(value?.type, response.data.result));
-                }
-            }
-        )
-    }, [])  // todo: setting value here make infinite request
 
     const handleSubmit = async () => {
 
-        if (!name || name.length === 0 || !type?.name) {
+        if (!name || name.length === 0) {
             if (!name || name.length === 0) {
                 setNameErrorMessage("Source name can not be empty");
             } else {
                 setNameErrorMessage("");
-            }
-
-            if (!type?.name) {
-                setTypeErrorMessage("Source type can not be empty");
-            } else {
-                setTypeErrorMessage("");
             }
 
             return;
@@ -102,19 +64,14 @@ const EventSourceForm = ({value, style, onClose}) => {
                     id: (!id) ? uuid4() : id,
                     name: name,
                     description: description,
-                    type: type.id,  // Save only type id not the whole object.
+                    type: value.type,
                     enabled: enabledSource,
                     transitional: transitional,
-                    tags: tags,
+                    tags: value.tags,
                     groups: groups,
                     returns_profile: returnsProfile,
                     permanent_profile_id: permanent
                 }
-            })
-
-            await asyncRemote({
-                url: '/event-sources/refresh',
-                method: "GET",
             })
 
             if (response.status === 404) {
@@ -132,14 +89,6 @@ const EventSourceForm = ({value, style, onClose}) => {
 
     }
 
-    const handleTypeChange = (type) => {
-        setType(type);
-        if (type?.id in credentialTypes) {
-            const template = credentialTypes[type?.id]
-            setTags(template?.tags)
-        }
-    }
-
     return <TuiForm style={style}>
         {errors && <ErrorsBox errorList={errors}/>}
         <TuiFormGroup>
@@ -155,12 +104,45 @@ const EventSourceForm = ({value, style, onClose}) => {
                                    value={id}
                                    onChange={setId}/>
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Event source type"
-                                   description="Event source type defines storage or endpoint type. ">
-                    <TuiSelectEventSourceType value={type}
-                                              onSetValue={handleTypeChange}
-                                              errorMessage={errorTypeMessage}/>
 
+                <TuiFormGroupField header="Name" description="Event source name can be any string that
+                    identifies Event source.">
+                    <TextField
+                        label={"Event source name"}
+                        value={name}
+                        error={(typeof errorNameMessage !== "undefined" && errorNameMessage !== '' && errorNameMessage !== null)}
+                        helperText={errorNameMessage}
+                        onChange={(ev) => {
+                            setName(ev.target.value)
+                        }}
+                        size="small"
+                        variant="outlined"
+                        fullWidth
+                    />
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Description"
+                                   description="Description will help you understand what kind of event source it is.">
+                    <TextField
+                        label={"Event source description"}
+                        value={description}
+                        multiline
+                        rows={3}
+                        onChange={(ev) => {
+                            setDescription(ev.target.value)
+                        }}
+                        variant="outlined"
+                        fullWidth
+                    />
+                </TuiFormGroupField>
+
+                <TuiFormGroupField header="Grouping"
+                                   description="Sources can be grouped with tags that are typed here.">
+                    <TuiTagger tags={groups} onChange={setGroups}/>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Tags" description="Set tags. Sources will be grouped by tags that lets you
+                find sources quickly.">
+                    {Array.isArray(value.tags) && value.tags.map((tag, index) => <Chip label={tag} key={index}
+                                                                           style={{marginLeft: 5}}/>)}
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
@@ -229,51 +211,6 @@ const EventSourceForm = ({value, style, onClose}) => {
                         <span>Make profile id permanent</span>
                     </div>
                 </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Event source description"/>
-            <TuiFormGroupContent>
-                <TuiFormGroupField header="Name" description="Event source name can be any string that
-                    identifies Event source.">
-                    <TextField
-                        label={"Event source name"}
-                        value={name}
-                        error={(typeof errorNameMessage !== "undefined" && errorNameMessage !== '' && errorNameMessage !== null)}
-                        helperText={errorNameMessage}
-                        onChange={(ev) => {
-                            setName(ev.target.value)
-                        }}
-                        size="small"
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
-                                   description="Description will help you understand what kind of event source it is.">
-                    <TextField
-                        label={"Event source description"}
-                        value={description}
-                        multiline
-                        rows={3}
-                        onChange={(ev) => {
-                            setDescription(ev.target.value)
-                        }}
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-
-                <TuiFormGroupField header="Grouping"
-                                   description="Sources can be grouped with tags that are typed here.">
-                    <TuiTagger tags={groups} onChange={setGroups}/>
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Tags" description="Set tags. Sources will be grouped by tags that lets you
-                find sources quickly.">
-                    {Array.isArray(tags) && tags.map((tag, index) => <Chip label={tag} key={index}
-                                                                           style={{marginLeft: 5}}/>)}
-                </TuiFormGroupField>
-
             </TuiFormGroupContent>
         </TuiFormGroup>
         {errors && <ErrorsBox errorList={errors}/>}
