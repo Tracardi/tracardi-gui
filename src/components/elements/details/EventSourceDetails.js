@@ -21,6 +21,8 @@ import {isString} from "../../../misc/typeChecking";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {SelectInput} from "../forms/JsonFormComponents";
 import NoData from "../misc/NoData";
+import NotImplemented from "../misc/NotImplemented";
+import MarkdownElement from "../misc/MarkdownElement";
 
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
@@ -99,12 +101,15 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Event Source"/>
                 <TuiFormGroupContent header={"Data"}>
-                    <Properties properties={data}/>
+                    <Properties properties={data} exclude={['manual']}/>
+                    {data?.locked &&
+                    <NotImplemented style={{marginTop: 10}}>This event source is managed by external service. Therefore
+                        it can not be edited in the system.</NotImplemented>}
                     <Rows style={{marginTop: 20}}>
-                        <Button onClick={onEdit}
-                                icon={<VscEdit size={20}/>}
-                                label="Edit"
-                                disabled={typeof data === "undefined"}/>
+                        {data?.locked !== true && <Button onClick={onEdit}
+                                                          icon={<VscEdit size={20}/>}
+                                                          label="Edit"
+                                                          disabled={typeof data === "undefined"}/>}
                         <Button onClick={onDelete}
                                 icon={<VscTrash size={20}/>}
                                 label="Delete"
@@ -113,7 +118,6 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                 </TuiFormGroupContent>
 
             </TuiFormGroup>
-
         </TuiForm>
 
 
@@ -308,6 +312,16 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
         >
             <TabCase id={0} key="Details">
                 <Details/>
+                {data?.manual && <TuiForm style={{margin: 20}}>
+                    <TuiFormGroup> <TuiFormGroupHeader header="Manual"/>
+                        <TuiFormGroupContent>
+                            <TuiFormGroupContent header="Manual">
+                                <MarkdownElement text={data.manual}/>
+                            </TuiFormGroupContent>
+                        </TuiFormGroupContent>
+                    </TuiFormGroup>
+                </TuiForm>
+                }
             </TabCase>
             <TabCase id={1} key="Analytics">
                 <EventSourceAnalytics/>
