@@ -1,7 +1,7 @@
 import React from "react";
 import { isEmptyObjectOrNull } from "../../misc/typeChecking";
-import { TuiForm, TuiFormGroup, TuiFormGroupField, TuiFormGroupHeader, TuiFormGroupContent } from "../elements/tui/TuiForm";
-import { CircularProgress, modalUnstyledClasses, TextField } from "@mui/material";
+import { TuiForm, TuiFormGroup, TuiFormGroupField, TuiFormGroupHeader} from "../elements/tui/TuiForm";
+import { CircularProgress } from "@mui/material";
 import { asyncRemote } from "../../remote_api/entrypoint";
 import { getError } from "../../remote_api/entrypoint";
 import ErrorsBox from "../errors/ErrorsBox";
@@ -50,7 +50,7 @@ export default function UserAccount () {
     React.useEffect(() => {
 
         mounted.current = true;
-        if (mounted.current) setError(null);
+        setError(null);
 
         asyncRemote({
             url: "/user-account",
