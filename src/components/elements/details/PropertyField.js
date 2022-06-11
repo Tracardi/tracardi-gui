@@ -27,11 +27,15 @@ const PropertyField = ({name, content}) => {
                 {name}
             </div>
             <div>
-                {content && React.isValidElement(content)
-                    ? content
-                    : isObject(content) || content === "" || !content
-                        ? '<empty>'
-                        : content}
+                {
+                    typeof content !== "undefined" && React.isValidElement(content) ? 
+                        content
+                            : 
+                        isObject(content) || content === "" || (typeof content !== "boolean" && !content) ? 
+                            '<empty>'
+                                : 
+                            typeof content === "boolean" ? content.toString() : content
+                }
             </div>
         </div>
     );
