@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useRef} from "react";
 import Properties from "./DetailProperties";
 import Button from "../forms/Button";
 import Rows from "../misc/Rows";
@@ -9,9 +9,12 @@ import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote} from "../../../remote_api/entrypoint";
-import EventValidationForm from "../forms/EventValidationForm";
+import EventManagementForm from "../forms/EventManagementForm";
+import TuiTags from "../tui/TuiTags";
+import {ObjectInspector} from "react-inspector";
+import Tag from "../misc/Tag";
 
-export default function EventValidationDetails({id, onDeleteComplete, onEditComplete}) {
+export default function EventManagementDetails({id, onDeleteComplete, onEditComplete}) {
 
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -20,19 +23,23 @@ export default function EventValidationDetails({id, onDeleteComplete, onEditComp
 
     const confirm = useConfirm();
 
+    const mounted = useRef(false);
+
     useEffect(() => {
+            mounted.current = true;
             setLoading(true);
             asyncRemote({
-                url: '/event/validation-schema/' + id,
+                url: '/event-type/management/' + id,
                 method: "get"
             })
                 .then((result) => {
-                    setData(result.data);
+                    if(mounted.current) setData(result.data);
                 })
                 .catch()
                 .finally(
-                    () => setLoading(false)
+                    () => {if(mounted.current) setLoading(false)}
                 )
+            return () => mounted.current = false;
         },
         [id])
 
@@ -43,12 +50,12 @@ export default function EventValidationDetails({id, onDeleteComplete, onEditComp
     }
 
     const onDelete = () => {
-        confirm({title: "Do you want to delete this validation schema?", description: "This action can not be undone."})
+        confirm({title: "Do you want to delete this event type metadata?", description: "This action can not be undone."})
             .then(async () => {
-                    setDeleteProgress(true);
+                if(mounted.current) setDeleteProgress(true);
                     try {
                         await asyncRemote({
-                            url: '/event/validation-schema/' + id,
+                            url: '/event-type/management/' + id,
                             method: "delete"
                         })
                         if (onDeleteComplete) {
@@ -59,17 +66,16 @@ export default function EventValidationDetails({id, onDeleteComplete, onEditComp
                     }
                 }
             )
-            .catch(() => {
-            }).finally(() => {
-            setDeleteProgress(false);
-        })
+            .catch(() => {})
+            .finally(() => {if(mounted.current) setDeleteProgress(false);})
     }
 
     const Details = () => <TuiForm>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Event validation schema" description="Information on event validation schema"/>
+            <TuiFormGroupHeader header="Event type metadata" description="Information on event type"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header={data.name} description={data.description}>
+                <TuiFormGroupField header={`${data.name} (${data.event_type})`} description={data.description}>
+                    <TuiTags tags={data.tags}/>
                     <Rows style={{marginTop: 20}}>
                         <Button onClick={onEditClick}
                                 icon={<VscEdit size={20}/>}
@@ -85,11 +91,12 @@ export default function EventValidationDetails({id, onDeleteComplete, onEditComp
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Event validation schema properties"/>
+            <TuiFormGroupHeader header="Json schema validation"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Data">
-                    <Properties properties={data}/>
-                </TuiFormGroupField>
+                <ObjectInspector data={data.validation.json_schema || {}} expandLevel={3}/>
+                {data.validation && <div style={{marginTop: 10}}>
+                    <Tag backgroundColor={data.validation?.enabled ? "#00c49f" : "#d81b60"} color="white">{data.validation?.enabled ? "enabled" : "disabled"}</Tag>
+                </div>}
             </TuiFormGroupContent>
         </TuiFormGroup>
     </TuiForm>
@@ -104,7 +111,7 @@ export default function EventValidationDetails({id, onDeleteComplete, onEditComp
                 setDisplayEdit(false)
             }}
             open={displayEdit}>
-            {displayEdit && <EventValidationForm
+            {displayEdit && <EventManagementForm
                 onSaveComplete={onEditComplete}
                 {...data}
             />}
@@ -112,7 +119,7 @@ export default function EventValidationDetails({id, onDeleteComplete, onEditComp
     </div>
 }
 
-EventValidationDetails.propTypes = {
+EventManagementDetails.propTypes = {
     id: PropTypes.string,
     onDeleteComplete: PropTypes.func,
     onEditComplete: PropTypes.func

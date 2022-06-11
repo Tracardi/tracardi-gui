@@ -22,7 +22,7 @@ import EventSources from "./pages/EventSources";
 import PageTabs from "./pages/groups/PageTabs";
 import Consents from "./pages/Consents";
 import Dashboard from "./pages/Dashboard";
-import EventValidation from "./pages/EventValidation";
+import EventManagement from "./pages/EventManagement";
 import Users from "./pages/Users";
 import Destinations from "./pages/Destinations";
 import EventTags from "./pages/EventTags";
@@ -89,11 +89,11 @@ const AppBox = () => {
         </PrivateRoute>
 
         {/* Validation */}
-        <PrivateRoute path={urlPrefix("/validation")} roles={["admin", "developer"]}>
-            <PageTabs title="Data validation"
+        <PrivateRoute path={urlPrefix("/management")} roles={["admin", "developer"]}>
+            <PageTabs title="Management"
                       tabs={[
                           new PrivateTab(["admin", "developer"],
-                              <EventValidation/>, "/validation/schema", "Event validation schemas"),
+                              <EventManagement/>, "/management/event", "Event types"),
                       ]}
             />
         </PrivateRoute>

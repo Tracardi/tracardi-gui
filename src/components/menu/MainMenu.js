@@ -10,7 +10,7 @@ import {VscPulse} from "react-icons/vsc";
 import {IoGitNetworkSharp} from "react-icons/io5";
 import {GoSettings} from "react-icons/go";
 import {VscLaw, VscDashboard} from "react-icons/vsc";
-import {BsFolderCheck, BsClipboardCheck, BsStar} from "react-icons/bs";
+import {BsGear, BsClipboardCheck, BsStar} from "react-icons/bs";
 import {commercial} from "../../config";
 import {RiArrowLeftRightFill} from "react-icons/ri";
 
@@ -46,7 +46,7 @@ export default function MainMenu() {
                 <MenuRow icon={<RiArrowLeftRightFill size={20}/>} label="Traffic" collapsed={collapsed} onClick={go("/traffic")}/>
                 <MenuRow icon={<BsFileEarmarkArrowUp size={20}/>} label="Import" collapsed={collapsed} onClick={go("/import")}/>
                 <MenuRow icon={<VscLaw size={20}/>} label="Consents" collapsed={collapsed} onClick={go("/consents")}/>
-                <MenuRow icon={<BsFolderCheck size={20}/>} label="Validation" collapsed={collapsed} onClick={go("/validation")}/>
+                <MenuRow icon={<BsGear size={20}/>} label="Management" collapsed={collapsed} onClick={go("/management")}/>
                 <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")}/>
                 <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Processing" collapsed={collapsed} onClick={go("/processing")}/>
                 <MenuRow icon={<VscPulse size={20}/>} label="Monitoring" collapsed={collapsed} onClick={go("/monitoring")}/>

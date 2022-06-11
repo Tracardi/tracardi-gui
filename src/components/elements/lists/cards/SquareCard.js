@@ -4,6 +4,9 @@ import Tag from "../../misc/Tag";
 
 const SquareCard = ({id, status, name, description, onClick, icon, tags}) => {
     const statusClass = (status) => {
+        if(typeof status === 'undefined') {
+            return status
+        }
         return status ? "icon enabled" : "icon disabled"
     }
 

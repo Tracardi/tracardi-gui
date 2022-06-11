@@ -12,11 +12,10 @@ import TuiTagger from "../tui/TuiTagger";
 import JsonEditor from "../editors/JsonEditor";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 
-export default function EventValidationForm({
+export default function EventManagementForm({
                                                 id,
                                                 name: validationName,
                                                 description: validationDescription,
-                                                enabled: validationEnabled,
                                                 validation,
                                                 event_type: validationEventType,
                                                 tags: validationTags,
@@ -25,8 +24,8 @@ export default function EventValidationForm({
 
     const [name, setName] = useState(validationName || "");
     const [description, setDescription] = useState(validationDescription || "");
-    const [validationSchema, setValidationSchema] = useState((validation) ? JSON.stringify(validation, null, '  ') : null);
-    const [enabled, setEnabled] = useState(validationEnabled || false);
+    const [validationSchema, setValidationSchema] = useState((validation?.json_schema) ? JSON.stringify(validation?.json_schema, null, '  ') : null);
+    const [enabled, setEnabled] = useState(validation?.enabled || false);
     const [eventType, setEventType] = useState(validationEventType ? {
         id: validationEventType,
         name: validationEventType
@@ -49,13 +48,18 @@ export default function EventValidationForm({
     }, []);
 
     const onSave = async () => {
-
         try {
-            if (validationSchema === null) {
-                throw new Error("Validation schema can not be empty");
-            }
-            validation = JSON.parse(validationSchema)
             setValidationErrorMessage("")
+            if (enabled === true) {
+                if (validationSchema === "" || validationSchema === null) {
+                    setValidationErrorMessage("Json schema validation can not be empty. Disable validation or fill this field.")
+                    return
+                }
+                validation = JSON.parse(validationSchema)
+            } else if (!validation) {
+                validation = {}
+            }
+
         } catch (e) {
             setValidationErrorMessage(e.toString())
             return;
@@ -81,8 +85,7 @@ export default function EventValidationForm({
                 id: (id) ? id : uuid4(),
                 name: name,
                 description: description,
-                validation: validation,
-                enabled: enabled,
+                validation: {json_schema: validation, enabled: enabled},
                 event_type: eventType.id,
                 tags: tags && Array.isArray(tags) && tags.length > 0 ? tags : ["General"]
             }
@@ -90,7 +93,7 @@ export default function EventValidationForm({
             setProcessing(true);
 
             const response = await asyncRemote({
-                url: '/event/validation-schema',
+                url: '/event-type/management',
                 method: 'post',
                 data: payload
             })
@@ -118,12 +121,16 @@ export default function EventValidationForm({
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Event validation schema description"/>
             <TuiFormGroupContent>
+                <TuiFormGroupField header="Event type"
+                                   description="Type or select the type of event you want to manage.">
+                    <TuiSelectEventType value={eventType} onSetValue={setEventType}/>
+                </TuiFormGroupField>
+
                 <TuiFormGroupField header="Name"
-                                   description="Type validation schema name. Be as descriptive as possible.">
+                                   description="Type name of the event type. E.g. User page view.">
                     <TextField variant="outlined"
-                               label="Validation schema name"
+                               label="Human readable event type"
                                value={name}
                                error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null)}
                                helperText={nameErrorMessage}
@@ -135,9 +142,9 @@ export default function EventValidationForm({
                     />
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Description"
-                                   description="Validation schema description. Be as descriptive as possible.">
+                                   description="Event type description. Be as descriptive as possible. E.g. Fires when user visits a web page.">
                     <TextField variant="outlined"
-                               label="Validation schema description"
+                               label="Event type description"
                                multiline
                                rows={5}
                                value={description}
@@ -150,22 +157,17 @@ export default function EventValidationForm({
                                size="small"
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Validation tags"
-                                   description="Tag the validation schema to group it into meaningful groups.">
+                <TuiFormGroupField header="Event type tags"
+                                   description="Tag the event types to group it into meaningful groups.">
                     <TuiTagger tags={tags}  onChange={handleTagChange}/>
                 </TuiFormGroupField>
-
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Validation settings"/>
+            <TuiFormGroupHeader header="Event type validation settings"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Event type"
-                                   description="Type event-type to apply validation-schema on the event.
-                                   Validation schemas are bind to event-types. If you change the event type on
-                                   existing validation schema then new validation-schema will be created.">
-                    <TuiSelectEventType value={eventType} onSetValue={setEventType}/>
-                </TuiFormGroupField>
+
+
                 <TuiFormGroupField header="JSON-schema validation"
                                    description="Type the validation in JSON-schema. Please refer to documentation for the format of JSON-schema.">
                     <fieldset style={{borderColor: (validationErrorMessage) ? "red" : "#ccc"}}>
@@ -190,15 +192,16 @@ export default function EventValidationForm({
                         label="Enable validation schema"
                     />
                 </TuiFormGroupField>
-            </TuiFormGroupContent>
 
+            </TuiFormGroupContent>
         </TuiFormGroup>
+
         {error && <ErrorsBox errorList={error}/>}
         <Button label="Save" onClick={onSave} progress={processing} style={{justifyContent: "center"}}/>
     </TuiForm>
 }
 
-EventValidationForm.propTypes = {
+EventManagementForm.propTypes = {
     id: PropTypes.string,
     name: PropTypes.string,
     description: PropTypes.string,
