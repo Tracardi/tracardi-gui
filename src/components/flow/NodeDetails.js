@@ -15,7 +15,6 @@ import {VscRunErrors} from "react-icons/vsc";
 export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
 
     const [tab, setTab] = useState(3);
-    console.log("NodeDetails", tab)
 
     useEffect(() => {
 
