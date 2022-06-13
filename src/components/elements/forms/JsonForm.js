@@ -157,7 +157,11 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
     }
 }
 
-const Fields = ({fields, values, onChange, errorMessages, keyValueMapOfComponentValues}) => {
+const FieldsInGroup = ({fields, values, errorMessages, keyValueMapOfComponentValues, onChange}) => fields.map((fieldObject, key) => {
+    const fieldId = fieldObject.id;
+    const componentType = fieldObject.component?.type;
+    const props = fieldObject.component?.props;
+
     const readValue = (fieldId) => {
         if (fieldId in keyValueMapOfComponentValues) {
             return keyValueMapOfComponentValues[fieldId]
@@ -178,33 +182,30 @@ const Fields = ({fields, values, onChange, errorMessages, keyValueMapOfComponent
         return null
     }
 
-    const FieldsInGroup = ({fields}) => fields.map((fieldObject, key) => {
-        const fieldId = fieldObject.id;
-        const componentType = fieldObject.component?.type;
-        const props = fieldObject.component?.props;
-        if (typeof componentType != "undefined") {
+    if (typeof componentType != "undefined") {
 
-            const component = getComponentByType({
-                value: readValue(fieldId),
-                values: values,
-                errorMessage: readErrorMessage(fieldId),
-                componentType: componentType,
-                fieldId: fieldId,
-                onChange: onChange
-            });
+        const component = getComponentByType({
+            value: readValue(fieldId),
+            values: values,
+            errorMessage: readErrorMessage(fieldId),
+            componentType: componentType,
+            fieldId: fieldId,
+            onChange: onChange
+        });
 
-            return <TuiFormGroupField key={fieldId + key}
-                                      header={fieldObject.name}
-                                      description={fieldObject.description}>
-                {component(props)}&nbsp;
-            </TuiFormGroupField>
-        } else {
-            return ""
-        }
-    })
+        return <TuiFormGroupField key={fieldId + key}
+                                  header={fieldObject.name}
+                                  description={fieldObject.description}>
+            {component(props)}&nbsp;
+        </TuiFormGroupField>
+    } else {
+        return ""
+    }
+})
 
+const Fields = ({fields, values, onChange, errorMessages, keyValueMapOfComponentValues}) => {
     return <TuiFormGroupContent>
-        <FieldsInGroup fields={fields}/>
+        <FieldsInGroup {...{fields, values, onChange, errorMessages, keyValueMapOfComponentValues}}/>
     </TuiFormGroupContent>
 }
 
