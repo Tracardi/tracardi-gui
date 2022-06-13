@@ -33,7 +33,7 @@ export const TextInput = ({value, label, errorMessage, onChange}) => {
         }
     };
 
-    return <><TextField label={label}
+    return <TextField label={label}
                       value={text}
                       onChange={handleChange}
                       variant="outlined"
@@ -43,8 +43,6 @@ export const TextInput = ({value, label, errorMessage, onChange}) => {
                       FormHelperTextProps={{ style: { color: "#d81b60" }}}
                       fullWidth
     />
-    <Properties properties={{internal: text, external: value}}/>
-    </>
 }
 
 export function BoolInput({value, label, errorMessage, onChange}) {
