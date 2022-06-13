@@ -391,7 +391,7 @@ export function EventTypes({value: initValue, onChange = null}) {
     return <TuiMultiSelectEventType value={value} label="Event types" onSetValue={handleChange} fullWidth={true}/>
 }
 
-export function EventType({value: initValue, onChange = null}) {
+export function EventType({value: initValue, errorMessage, onChange = null}) {
 
     const [value, setValue] = useState(initValue);
 
@@ -402,7 +402,12 @@ export function EventType({value: initValue, onChange = null}) {
         }
     };
 
-    return <TuiSelectEventType value={value} label="Event type" onSetValue={handleChange} fullWidth={true}/>
+    return <TuiSelectEventType value={value}
+                               label="Event type"
+                               onSetValue={handleChange}
+                               fullWidth={true}
+                               errorMessage={errorMessage}
+    />
 }
 
 export function ConsentTypes({value: initValue, onChange = null}) {

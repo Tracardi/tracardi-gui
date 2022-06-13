@@ -14,7 +14,7 @@ import {
 import {objectMap} from "../../../misc/mappers";
 import {BiError} from "react-icons/bi";
 
-const ConfigEditor = ({config, manual, onConfig, errorMessages={}, confirmed = false}) => {
+const ConfigEditor = ({config, manual, onConfig, errorMessages = {}, confirmed = false}) => {
 
     const initConfig = JSON.stringify(config, null, '  ')
     const [eventPayload, setEventPayload] = useState(initConfig);
@@ -37,11 +37,13 @@ const ConfigEditor = ({config, manual, onConfig, errorMessages={}, confirmed = f
     }
 
     const ErrorMessages = ({errors}) => {
-        if (errors && Object.keys(errors).length){
+        if (errors && Object.keys(errors).length) {
             return <div>
                 {objectMap(errors, (field, error) => {
-                    return <div className="Error"><BiError size={20}
-                                                           style={{marginRight: 8}}/> {`Field ${field}: ${error}`}</div>
+                    return <div className="Error" key={field}>
+                        <BiError size={20}
+                                 style={{marginRight: 8}}/> {`Field ${field}: ${error}`}
+                    </div>
                 })}
             </div>
         }
@@ -58,7 +60,7 @@ const ConfigEditor = ({config, manual, onConfig, errorMessages={}, confirmed = f
                     <fieldset style={{marginTop: 20}}>
                         <legend>JSON Configuration</legend>
 
-                        <ErrorMessages errors={{...parseErrors, ...errorMessages}} />
+                        <ErrorMessages errors={{...parseErrors, ...errorMessages}}/>
 
                         <JsonEditor value={eventPayload}
                                     onChange={setEventPayload}
