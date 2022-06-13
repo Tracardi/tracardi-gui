@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import Button from "./Button";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
 import AlertBox from "../../errors/AlertBox";
@@ -157,55 +157,56 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
     }
 }
 
-const FieldsInGroup = ({fields, values, errorMessages, keyValueMapOfComponentValues, onChange}) => fields.map((fieldObject, key) => {
-    const fieldId = fieldObject.id;
-    const componentType = fieldObject.component?.type;
-    const props = fieldObject.component?.props;
+const Fields = ({fields, values, errorMessages, keyValueMapOfComponentValues, onChange}) => {
 
-    const readValue = (fieldId) => {
-        if (fieldId in keyValueMapOfComponentValues) {
-            return keyValueMapOfComponentValues[fieldId]
-        } else if (fieldId in values) {
-            // This is a hack for ResourceSelect and other components that take objects
-            return values[fieldId]
+    const FieldsInGroup = ({fields}) => fields.map((fieldObject, key) => {
+        const fieldId = fieldObject.id;
+        const componentType = fieldObject.component?.type;
+        const props = fieldObject.component?.props;
+
+        const readValue = (fieldId) => {
+            if (fieldId in keyValueMapOfComponentValues) {
+                return keyValueMapOfComponentValues[fieldId]
+            } else if (fieldId in values) {
+                // This is a hack for ResourceSelect and other components that take objects
+                return values[fieldId]
+            }
+
+            return null
         }
 
-        return null
-    }
+        const readErrorMessage = (fieldId) => {
 
-    const readErrorMessage = (fieldId) => {
+            if (errorMessages && fieldId in errorMessages) {
+                return errorMessages[fieldId]
+            }
 
-        if (errorMessages && fieldId in errorMessages) {
-            return errorMessages[fieldId]
+            return null
         }
 
-        return null
-    }
+        if (typeof componentType != "undefined") {
 
-    if (typeof componentType != "undefined") {
+            const component = getComponentByType({
+                value: readValue(fieldId),
+                values: values,
+                errorMessage: readErrorMessage(fieldId),
+                componentType: componentType,
+                fieldId: fieldId,
+                onChange: onChange
+            });
 
-        const component = getComponentByType({
-            value: readValue(fieldId),
-            values: values,
-            errorMessage: readErrorMessage(fieldId),
-            componentType: componentType,
-            fieldId: fieldId,
-            onChange: onChange
-        });
+            return <TuiFormGroupField key={fieldId + key}
+                                      header={fieldObject.name}
+                                      description={fieldObject.description}>
+                {component(props)}&nbsp;
+            </TuiFormGroupField>
+        } else {
+            return ""
+        }
+    })
 
-        return <TuiFormGroupField key={fieldId + key}
-                                  header={fieldObject.name}
-                                  description={fieldObject.description}>
-            {component(props)}&nbsp;
-        </TuiFormGroupField>
-    } else {
-        return ""
-    }
-})
-
-const Fields = ({fields, values, onChange, errorMessages, keyValueMapOfComponentValues}) => {
     return <TuiFormGroupContent>
-        <FieldsInGroup {...{fields, values, onChange, errorMessages, keyValueMapOfComponentValues}}/>
+        <FieldsInGroup fields={fields}/>
     </TuiFormGroupContent>
 }
 
@@ -236,17 +237,23 @@ const Title = ({title}) => {
 
 const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
 
-    const keyValueMapOfComponentValues = object2dot(values)
+    const [keyValueMapOfComponentValues, setValueMap] = useState({})
     const hasErrors = errorMessages && Object.keys(errorMessages).length
+    const [data, setData] = useState({})
+
+    useEffect(()=>{
+        setData(values);
+        setValueMap(object2dot(values))
+    }, [values])
 
     const handleSubmit = () => {
         if (onSubmit instanceof Function) {
-            onSubmit(values)
+            onSubmit(data)
         }
     }
 
     const handleChange = (changed, deleted) => {
-        const merged = MutableMergeRecursive(values, changed, deleted)
+        const merged = MutableMergeRecursive(data, changed, deleted)
         if (onChange instanceof Function) {
             onChange(merged)
         }
@@ -259,7 +266,7 @@ const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onS
             {schema.groups && <Groups
                 groups={schema.groups}
                 onChange={handleChange}
-                values={values}
+                values={data}
                 errorMessages={errorMessages}
                 keyValueMapOfComponentValues={keyValueMapOfComponentValues}
             />}

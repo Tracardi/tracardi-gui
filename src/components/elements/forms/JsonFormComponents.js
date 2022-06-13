@@ -21,7 +21,7 @@ import TuiSelectMultiConsentType from "../tui/TuiSelectMultiConsentType";
 import AutoComplete from "./AutoComplete";
 import Properties from "../details/DetailProperties";
 
-export const TextInput = React.memo(({value, label, errorMessage, onChange}) => {
+export const TextInput = ({value, label, errorMessage, onChange}) => {
 
     const [text, setText] = useState(value || "")
 
@@ -45,7 +45,7 @@ export const TextInput = React.memo(({value, label, errorMessage, onChange}) => 
     />
     <Properties properties={{internal: text, external: value}}/>
     </>
-})
+}
 
 export function BoolInput({value, label, errorMessage, onChange}) {
 
