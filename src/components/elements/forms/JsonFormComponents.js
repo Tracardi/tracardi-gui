@@ -19,6 +19,7 @@ import DotAccessor from "./inputs/DotAccessor";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import TuiSelectMultiConsentType from "../tui/TuiSelectMultiConsentType";
 import AutoComplete from "./AutoComplete";
+import Properties from "../details/DetailProperties";
 
 export const TextInput = React.memo(({value, label, errorMessage, onChange}) => {
 
@@ -32,7 +33,7 @@ export const TextInput = React.memo(({value, label, errorMessage, onChange}) => 
         }
     };
 
-    return <TextField label={label}
+    return <><TextField label={label}
                       value={text}
                       onChange={handleChange}
                       variant="outlined"
@@ -42,6 +43,8 @@ export const TextInput = React.memo(({value, label, errorMessage, onChange}) => 
                       FormHelperTextProps={{ style: { color: "#d81b60" }}}
                       fullWidth
     />
+    <Properties properties={{internal: text, external: value}}/>
+    </>
 })
 
 export function BoolInput({value, label, errorMessage, onChange}) {
