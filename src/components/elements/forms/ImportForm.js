@@ -136,6 +136,7 @@ export default function ImportForm({onSubmit}) {
                             label="Name"
                             error={isObject(formError) && "name" in formError}
                             helperText={isObject(formError) && "name" in formError ? formError['name'] : null}
+                            FormHelperTextProps={{ style: { color: "#d81b60" }}}
                             onChange={(e => name.current = e.target.value)}
                         />
                     </TuiFormGroupField>
@@ -163,6 +164,7 @@ export default function ImportForm({onSubmit}) {
                                 value={apiUrl.current}
                                 options={new storageValue('tracardi-api-urls').read() || []}
                                 onChange={(value) => apiUrl.current = value}
+                                errorMessage={isObject(formError) && "api_url" in formError ? formError['api_url'] : null}
                             />
                         </div>
                     </TuiFormGroupField>
@@ -172,7 +174,9 @@ export default function ImportForm({onSubmit}) {
                             <TuiSelectEventSource value={eventSource.current}
                                                   fullWidth={true}
                                                   onlyValueWithOptions={false}
-                                                  onSetValue={(value) => eventSource.current = value}/>
+                                                  onSetValue={(value) => eventSource.current = value}
+                                                  errorMessage={isObject(formError) && "event_source.id" in formError ? formError['event_source.id'] : null}
+                            />
                         </div>
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Event type" description="Type of the event that you want to be
@@ -185,6 +189,7 @@ export default function ImportForm({onSubmit}) {
                             label="Event type"
                             error={isObject(formError) && "event_type" in formError}
                             helperText={isObject(formError) && "event_type" in formError ? formError['event_type'] : null}
+                            FormHelperTextProps={{ style: { color: "#d81b60" }}}
                             onChange={(e => eventType.current = e.target.value)}
                         />
                     </TuiFormGroupField>

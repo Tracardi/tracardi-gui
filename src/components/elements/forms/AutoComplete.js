@@ -33,10 +33,11 @@ const AutoComplete = ({
 
     useEffect(() => {
         mounted.current = true;
+        setError(errorMessage)
         return () => {
             mounted.current = false;
         }
-    }, [])
+    }, [errorMessage])
 
     const handleLoading = async () => {
         if (mounted.current) {

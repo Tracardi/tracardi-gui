@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback} from "react";
 import Button from "./Button";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
 import AlertBox from "../../errors/AlertBox";
@@ -56,6 +56,7 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
             return (props) => <EventType
                 value={value}
                 onChange={(value) => handleOnChange(value, fieldId)}
+                errorMessage={errorMessage}
                 {...props}/>
 
         case "resource":
