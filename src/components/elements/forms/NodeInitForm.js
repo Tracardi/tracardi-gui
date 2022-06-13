@@ -340,7 +340,6 @@ export const NodeInitForm = ({nodeId, pluginId, init, formSchema, onSubmit}) => 
 }
 
 function areEqual(prevProps, nextProps) {
-    console.log(prevProps.nodeId, nextProps.nodeId)
     return prevProps.nodeId===nextProps.nodeId;
 }
 export const MemoNodeInitForm = React.memo(NodeInitForm, areEqual);
