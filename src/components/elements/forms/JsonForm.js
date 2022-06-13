@@ -158,7 +158,7 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
 }
 
 const Fields = ({fields, values, errorMessages, keyValueMapOfComponentValues, onChange}) => {
-    console.log('fields')
+
     const FieldsInGroup = ({fields}) => fields.map((fieldObject, key) => {
         const fieldId = fieldObject.id;
         const componentType = fieldObject.component?.type;
@@ -236,7 +236,7 @@ const Title = ({title}) => {
 }
 
 const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
-    console.log('form')
+
     const keyValueMapOfComponentValues = object2dot(values)
     const hasErrors = errorMessages && Object.keys(errorMessages).length
 
