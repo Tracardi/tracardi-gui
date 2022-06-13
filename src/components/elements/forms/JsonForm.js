@@ -158,7 +158,7 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
 }
 
 const Fields = ({fields, values, errorMessages, keyValueMapOfComponentValues, onChange}) => {
-
+    console.log('fields')
     const FieldsInGroup = ({fields}) => fields.map((fieldObject, key) => {
         const fieldId = fieldObject.id;
         const componentType = fieldObject.component?.type;
@@ -236,24 +236,18 @@ const Title = ({title}) => {
 }
 
 const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
-
-    const [keyValueMapOfComponentValues, setValueMap] = useState({})
+    console.log('form')
+    const keyValueMapOfComponentValues = object2dot(values)
     const hasErrors = errorMessages && Object.keys(errorMessages).length
-    const [data, setData] = useState({})
-
-    useEffect(()=>{
-        setData(values);
-        setValueMap(object2dot(values))
-    }, [values])
 
     const handleSubmit = () => {
         if (onSubmit instanceof Function) {
-            onSubmit(data)
+            onSubmit(values)
         }
     }
 
     const handleChange = (changed, deleted) => {
-        const merged = MutableMergeRecursive(data, changed, deleted)
+        const merged = MutableMergeRecursive(values, changed, deleted)
         if (onChange instanceof Function) {
             onChange(merged)
         }
@@ -266,7 +260,7 @@ const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onS
             {schema.groups && <Groups
                 groups={schema.groups}
                 onChange={handleChange}
-                values={data}
+                values={values}
                 errorMessages={errorMessages}
                 keyValueMapOfComponentValues={keyValueMapOfComponentValues}
             />}
