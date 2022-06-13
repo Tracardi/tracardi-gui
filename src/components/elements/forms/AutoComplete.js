@@ -150,6 +150,7 @@ const AutoComplete = ({
                     label={placeholder}
                     error={(typeof error !== "undefined" && error !== '' && error !== null)}
                     helperText={error}
+                    FormHelperTextProps={{ style: { color: "#d81b60" }}}
                     variant="outlined"
                     size="small"
                     InputProps={{

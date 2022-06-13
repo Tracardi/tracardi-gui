@@ -175,10 +175,17 @@ const Fields = ({fields, values, errorMessages, keyValueMapOfComponentValues, on
             return null
         }
 
-        const readErrorMessage = (fieldId) => {
+        const readErrorMessage = (componentType, fieldId) => {
 
             if (errorMessages && fieldId in errorMessages) {
                 return errorMessages[fieldId]
+            }
+
+            if (componentType === 'resource') {
+                const nestedFieldId = `${fieldId}.id`
+                if (errorMessages && nestedFieldId in errorMessages) {
+                    return errorMessages[nestedFieldId]
+                }
             }
 
             return null
@@ -189,7 +196,7 @@ const Fields = ({fields, values, errorMessages, keyValueMapOfComponentValues, on
             const component = getComponentByType({
                 value: readValue(fieldId),
                 values: values,
-                errorMessage: readErrorMessage(fieldId),
+                errorMessage: readErrorMessage(componentType, fieldId),
                 componentType: componentType,
                 fieldId: fieldId,
                 onChange: onChange
