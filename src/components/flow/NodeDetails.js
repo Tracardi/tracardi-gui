@@ -9,12 +9,13 @@ import FilterTextField from "../elements/forms/inputs/FilterTextField";
 import {VscJson} from "react-icons/vsc";
 import "../elements/forms/JsonForm"
 import {VscTools} from "react-icons/vsc";
-import {NodeInitForm, NodeInitJsonForm, NodeRuntimeConfigForm} from "../elements/forms/NodeInitForm";
+import {MemoNodeInitForm, NodeInitJsonForm, NodeRuntimeConfigForm} from "../elements/forms/NodeInitForm";
 import {VscRunErrors} from "react-icons/vsc";
 
 export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
 
     const [tab, setTab] = useState(3);
+    console.log("NodeDetails", tab)
 
     useEffect(() => {
 
@@ -89,7 +90,8 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                         onSubmit={handleInitSubmit}
                     />}
                     {tab === 3 && node?.data?.spec?.form &&
-                    <NodeInitForm
+                    <MemoNodeInitForm
+                        nodeId={node?.id}
                         pluginId={node?.data?.spec?.id}
                         init={node?.data?.spec?.init}
                         formSchema={node?.data?.spec?.form}

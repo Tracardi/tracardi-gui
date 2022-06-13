@@ -39,6 +39,7 @@ export const TextInput = React.memo(({value, label, errorMessage, onChange}) => 
                       size="small"
                       helperText={errorMessage}
                       error={!isEmptyStringOrNull(errorMessage)}
+                      FormHelperTextProps={{ style: { color: "#d81b60" }}}
                       fullWidth
     />
 })
@@ -162,6 +163,7 @@ export function SelectInput({value, values, label, errorMessage, items = [], err
                       size="small"
                       helperText={errorMessage}
                       error={errorMessage}
+                      FormHelperTextProps={{ style: { color: "#d81b60" }}}
                       value={selectedItem}
                       style={{minWidth: 150}}
                       onChange={handleChange}
@@ -190,6 +192,7 @@ export function TextAreaInput({value, label, errorMessage, onChange = null}) {
                       value={text}
                       onChange={handleChange}
                       helperText={errorMessage}
+                      FormHelperTextProps={{ style: { color: "#d81b60" }}}
                       error={!isEmptyStringOrNull(errorMessage)}
                       variant="outlined"
                       multiline

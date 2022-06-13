@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback} from "react";
 import Button from "./Button";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
 import AlertBox from "../../errors/AlertBox";
@@ -234,23 +234,18 @@ const Title = ({title}) => {
 }
 
 const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
+
     const keyValueMapOfComponentValues = object2dot(values)
     const hasErrors = errorMessages && Object.keys(errorMessages).length
-    const [data, setData] = useState(values);
-
-    useEffect(() => {
-        setData(values)
-    }, [values])
 
     const handleSubmit = () => {
         if (onSubmit instanceof Function) {
-            onSubmit(data)
+            onSubmit(values)
         }
     }
 
     const handleChange = (changed, deleted) => {
         const merged = MutableMergeRecursive(values, changed, deleted)
-        setData(merged) // this does not make form to rerender (the same object)
         if (onChange instanceof Function) {
             onChange(merged)
         }
@@ -263,7 +258,7 @@ const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onS
             {schema.groups && <Groups
                 groups={schema.groups}
                 onChange={handleChange}
-                values={data}
+                values={values}
                 errorMessages={errorMessages}
                 keyValueMapOfComponentValues={keyValueMapOfComponentValues}
             />}
