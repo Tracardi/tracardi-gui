@@ -157,31 +157,33 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
     }
 }
 
-const Fields = ({fields, values, onChange, errorMessages, keyValueMapOfComponentValues}) => {
-    const readValue = (fieldId) => {
-        if (fieldId in keyValueMapOfComponentValues) {
-            return keyValueMapOfComponentValues[fieldId]
-        } else if (fieldId in values) {
-            // This is a hack for ResourceSelect and other components that take objects
-            return values[fieldId]
-        }
-
-        return null
-    }
-
-    const readErrorMessage = (fieldId) => {
-
-        if (errorMessages && fieldId in errorMessages) {
-            return errorMessages[fieldId]
-        }
-
-        return null
-    }
+const Fields = ({fields, values, errorMessages, keyValueMapOfComponentValues, onChange}) => {
 
     const FieldsInGroup = ({fields}) => fields.map((fieldObject, key) => {
         const fieldId = fieldObject.id;
         const componentType = fieldObject.component?.type;
         const props = fieldObject.component?.props;
+
+        const readValue = (fieldId) => {
+            if (fieldId in keyValueMapOfComponentValues) {
+                return keyValueMapOfComponentValues[fieldId]
+            } else if (fieldId in values) {
+                // This is a hack for ResourceSelect and other components that take objects
+                return values[fieldId]
+            }
+
+            return null
+        }
+
+        const readErrorMessage = (fieldId) => {
+
+            if (errorMessages && fieldId in errorMessages) {
+                return errorMessages[fieldId]
+            }
+
+            return null
+        }
+
         if (typeof componentType != "undefined") {
 
             const component = getComponentByType({
@@ -234,23 +236,18 @@ const Title = ({title}) => {
 }
 
 const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
+
     const keyValueMapOfComponentValues = object2dot(values)
     const hasErrors = errorMessages && Object.keys(errorMessages).length
-    const [data, setData] = useState(values);
-
-    useEffect(() => {
-        setData(values)
-    }, [values])
 
     const handleSubmit = () => {
         if (onSubmit instanceof Function) {
-            onSubmit(data)
+            onSubmit(values)
         }
     }
 
     const handleChange = (changed, deleted) => {
         const merged = MutableMergeRecursive(values, changed, deleted)
-        setData(merged) // this does not make form to rerender (the same object)
         if (onChange instanceof Function) {
             onChange(merged)
         }
@@ -263,7 +260,7 @@ const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onS
             {schema.groups && <Groups
                 groups={schema.groups}
                 onChange={handleChange}
-                values={data}
+                values={values}
                 errorMessages={errorMessages}
                 keyValueMapOfComponentValues={keyValueMapOfComponentValues}
             />}

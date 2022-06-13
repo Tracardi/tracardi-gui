@@ -52,18 +52,18 @@ const ValueInput = ({source, value: initValue, cast: initCast, onChange}) => {
 }
 
 export default function DotAccessor({
-                                        label="Reference", value: initValue = "",
+                                        label = "Reference", value: initValue = "",
                                         defaultSourceValue,
                                         defaultPathValue,
                                         onChange,
                                         error, errorMessage,
                                         forceMode = 2,
-                                        lockSource=false
+                                        lockSource = false
                                     }) {
 
     const parseValue = useCallback((initValue) => {
         if (!initValue || initValue === "") {
-            if(forceMode === 1) {
+            if (forceMode === 1) {
                 return [defaultSourceValue ? defaultSourceValue : "payload", defaultPathValue ? defaultPathValue : "", false]
             }
             return [defaultSourceValue ? defaultSourceValue : "", defaultPathValue ? defaultPathValue : "", false]
@@ -83,7 +83,7 @@ export default function DotAccessor({
             ? (initValue !== null && re.test(initValue) ? [initValue.split('@')[0], initValue.split('@').slice(1).join('@')]
                 : ["", initValue]) : [defaultSourceValue, defaultPathValue];
 
-        if(initSourceValue === "" && forceMode === 1) {
+        if (initSourceValue === "" && forceMode === 1) {
             initSourceValue = "payload"
         }
 
@@ -122,18 +122,29 @@ export default function DotAccessor({
         handleNotationChange(dataSource, value, cast)
     }
 
+    let fieldsetStyle = {display: "flex", padding: "0px 15px 7px", width: "fit-content", margin: 0}
+    let textStyle = {}
 
-    return <fieldset style={{display: "flex", padding: "0px 15px 7px", width: "fit-content", margin: 0}}>
-        <legend>{label}</legend>
-        <SourceInput value={dataSource}
-                     onChange={handleSourceChange}
-                     lock={lockSource}
-                     lockValue={defaultSourceValue}
-        />
-        <ValueInput
-            source={dataSource}
-            value={pathValue}
-            cast={castValue}
-            onChange={handleValueChange}/>
-    </fieldset>
+    if (errorMessage) {
+        fieldsetStyle = {...fieldsetStyle, borderColor: "#d81b60"}
+        textStyle = {...textStyle, color: "#d81b60"}
+    }
+
+    return <>
+
+        <fieldset style={fieldsetStyle}>
+            <legend style={textStyle}>{label}</legend>
+            <SourceInput value={dataSource}
+                         onChange={handleSourceChange}
+                         lock={lockSource}
+                         lockValue={defaultSourceValue}
+            />
+            <ValueInput
+                source={dataSource}
+                value={pathValue}
+                cast={castValue}
+                onChange={handleValueChange}/>
+        </fieldset>
+        {errorMessage && <div style={{paddingLeft: 10, paddingTop: 5, fontSize: 12, color: "#d81b60"}}>{errorMessage}</div>}
+    </>
 }

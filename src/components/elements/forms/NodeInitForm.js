@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import FormSchema from "../../../domain/formSchema";
 import ConfigEditor from "../../flow/editors/ConfigEditor";
 import {getError} from "../../../remote_api/entrypoint";
@@ -10,6 +10,7 @@ import Switch from "@mui/material/Switch";
 import {MenuItem} from "@mui/material";
 import JsonForm from "./JsonForm";
 import {isEmptyObject} from "../../../misc/typeChecking";
+import useAfterMountEffect from "../../../effects/AfterMountEffect";
 
 export function NodeInitJsonForm({pluginId, formSchema, init, manual, onSubmit}) {
 
@@ -275,17 +276,22 @@ export function NodeRuntimeConfigForm({pluginId, value: initValue, onChange}) {
     </TuiForm>
 }
 
-export const NodeInitForm = ({pluginId, init, formSchema, onSubmit}) => {
-    const [formErrorMessages, setFormErrorMessages] = useState({});
+export const NodeInitForm = ({nodeId, pluginId, init, formSchema, onSubmit}) => {
+
+    const initFormErrors =  useRef({})
+
+    const [formErrorMessages, setFormErrorMessages] = useState(initFormErrors.current);
     const [saveOK, setSaveOk] = useState(false);
     const [serverSideError, setServerSideError] = useState(null)
 
     // tego uzywam aby zresetowac stan gdy mamy dwa takie same nody i klikamy pomiędzy nimi.
-    useEffect(() => {
-        // Reset to default values
-        if(saveOK !== false) setSaveOk(false);
-        if(!isEmptyObject(formErrorMessages)) setFormErrorMessages({})
-    }, [init, formErrorMessages, saveOK])
+    useAfterMountEffect(() => {
+        // Reset to default values if node changes
+        setSaveOk(false);
+        // ustawiam formErrorMessages z referencji bo wstawienie nowego obiektu {} powoduje zmiane stanu i rerender
+        setFormErrorMessages(initFormErrors.current);
+        setServerSideError(null);
+    }, [nodeId])
 
     const handleValidationData = (result) => {
         if (result?.status === true) {
@@ -294,8 +300,6 @@ export const NodeInitForm = ({pluginId, init, formSchema, onSubmit}) => {
                 setFormErrorMessages({})
             }
 
-            // setData(result?.data)  // result.data is validated config
-            // init = result?.data
             onSubmit(result?.data)
             setSaveOk(true);
             setServerSideError(null)
@@ -305,7 +309,7 @@ export const NodeInitForm = ({pluginId, init, formSchema, onSubmit}) => {
                 setSaveOk(false);
                 if (result?.error && result?.error?.response?.status === 422) {
                     setFormErrorMessages(result?.data);
-                    setServerSideError(null)
+                    setServerSideError(null);
                 } else {
                     setFormErrorMessages({});
                     setServerSideError(getError(result?.error))
@@ -325,7 +329,6 @@ export const NodeInitForm = ({pluginId, init, formSchema, onSubmit}) => {
     }
 
     return <JsonForm
-        pluginId={pluginId}
         values={init}
         errorMessages={formErrorMessages}
         serverSideError={serverSideError}
@@ -335,3 +338,8 @@ export const NodeInitForm = ({pluginId, init, formSchema, onSubmit}) => {
         confirmed={saveOK}
     />
 }
+
+function areEqual(prevProps, nextProps) {
+    return prevProps.nodeId===nextProps.nodeId;
+}
+export const MemoNodeInitForm = React.memo(NodeInitForm, areEqual);
