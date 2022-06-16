@@ -4,12 +4,12 @@ import Button from "./Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import {v4 as uuid4} from 'uuid';
-import TuiTaggerFlow from "../tui/TuiTaggerFlow";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from 'prop-types';
 import {asyncRemote} from "../../../remote_api/entrypoint";
+import TuiTagger from "../tui/TuiTagger";
 
 function FlowForm({
                       id,
@@ -153,7 +153,11 @@ function FlowForm({
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Flow tags"
                                    description="Tag the flow with project name to group it into meaningful groups.">
-                    <TuiTaggerFlow tags={projects} onChange={onTagChange}/>
+                    <TuiTagger 
+                        label="Flow tags"
+                        onChange={setFlowTags}
+                        tags={projects}
+                    />
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
