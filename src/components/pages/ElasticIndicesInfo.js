@@ -10,6 +10,8 @@ import PropertyField from "../elements/details/PropertyField";
 import { ObjectInspector } from "react-inspector";
 import Tag from "../elements/misc/Tag";
 import Tabs, {TabCase} from "../elements/tabs/Tabs";
+import { VscTrash } from "react-icons/vsc";
+import {useConfirm} from "material-ui-confirm";
 
 
 export default function ElasticIndicesInfo() {
@@ -18,31 +20,53 @@ export default function ElasticIndicesInfo() {
     const [error, setError] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [inspected, setInspected] = React.useState(null);
+    const [refresh, setRefresh] = React.useState(0);
+    const mounted = React.useRef(false);
+    const confirm = useConfirm();
 
     React.useEffect(() => {
-        let isSubscribed = true;
-        if (isSubscribed) {
+        mounted.current = true;
+        if (mounted.current) {
             setLoading(true);
             setError(null);
         }
         asyncRemote({url: "/test/elasticsearch/indices"})
         .then(response => {
-            if (isSubscribed) {
+            if (mounted.current) {
                 setData(response.data);
             }
         })
         .catch(e => {
-            if (isSubscribed) {
+            if (mounted.current) {
                 setError(getError(e));
             }
         })
         .finally(() => {
-            if (isSubscribed) {
+            if (mounted.current) {
                 setLoading(false);
             }
         })
-        return () => isSubscribed = false;
-    }, [])
+        return () => mounted.current = false;
+    }, [refresh])
+
+    const handleDelete = name => {
+        confirm({title: "Do you want to delete this index?", description: "This action can not be undone."})
+        .then(async () => {
+                try {
+                    const response = await asyncRemote({
+                            url: '/storage/index/' + name,
+                            method: "delete"
+                    })
+                    if (response && mounted.current) {
+                        setRefresh(Math.random())
+                    }
+                } 
+                catch (e) {
+                    console.error(e)
+                }
+            }
+        )
+    }
 
     const IndexInfoComponent = ({name, index}) => <>
         <div style={{display: "flex", flexDirection: "row", borderBottom: "1px solid lightgrey", padding: 3, fontSize: 16, justifyContent: "space-between", alignItems: "center"}}>
@@ -56,6 +80,9 @@ export default function ElasticIndicesInfo() {
                 <div>{index?.connected ? <Tag backgroundColor="#00c49f" color="white">Connected</Tag> : <Tag backgroundColor="#d81b60" color="white">Not connected</Tag>}</div>
                 <IconButton style={{marginRight: 20}} onClick={() => setInspected(name)}>
                     <AiOutlineInfoCircle size={24}/>
+                </IconButton>
+                <IconButton style={{marginRight: 20}} onClick={() => handleDelete(name)}>
+                    <VscTrash size={24}/>
                 </IconButton>
             </div>
         </div>
