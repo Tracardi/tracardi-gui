@@ -20,6 +20,7 @@ import {asyncRemote, getApiUrl, resetApiUrlConfig} from "../../remote_api/entryp
 import Button from "../elements/forms/Button";
 import PasswordInput from "../elements/forms/inputs/PasswordInput";
 import ReadOnlyInput from "../elements/forms/ReadOnlyInput";
+import { BsWindowSidebar } from 'react-icons/bs';
 
 function Copyright() {
     return (
@@ -64,6 +65,7 @@ const SignInForm = ({showAlert}) => {
     const ver = version()
     const [errorMessage, setErrorMessage] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [apiUrl, setApiUrl] = useState(getApiUrl());
 
     useEffect(() => {
         setLoading(true);
@@ -100,6 +102,11 @@ const SignInForm = ({showAlert}) => {
 
     useEffect(() => {
         mounted.current = true;
+
+        let urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("api_url")) {
+            setApiUrl(urlParams.get("api_url"));
+        }
 
         return () => {
             mounted.current = false;
@@ -174,7 +181,7 @@ const SignInForm = ({showAlert}) => {
                         ) : null}
 
                         <ReadOnlyInput label="Tracardi API"
-                                       value={getApiUrl()}
+                                       value={apiUrl}
                                        hint="You will authorize yourself in the above Tracardi server."
                                        onReset={handleEndpointReset}/>
 
