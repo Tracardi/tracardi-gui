@@ -16,11 +16,10 @@ import {showAlert} from "../../redux/reducers/alertSlice";
 import {connect} from "react-redux";
 import urlPrefix from "../../misc/UrlPrefix";
 import version from '../../misc/version';
-import {asyncRemote, getApiUrl, resetApiUrlConfig} from "../../remote_api/entrypoint";
+import {asyncRemote, getApiUrl, resetApiUrlConfig, setApiUrl as setStoredApiUrl} from "../../remote_api/entrypoint";
 import Button from "../elements/forms/Button";
 import PasswordInput from "../elements/forms/inputs/PasswordInput";
 import ReadOnlyInput from "../elements/forms/ReadOnlyInput";
-import { BsWindowSidebar } from 'react-icons/bs';
 
 function Copyright() {
     return (
@@ -132,7 +131,8 @@ const SignInForm = ({showAlert}) => {
         setProgress(true);
         api.then(response => {
             setToken(response.data['access_token']);
-            setRoles(response.data['roles'])
+            setRoles(response.data['roles']);
+            setStoredApiUrl(apiUrl);
             setRedirectToReferrer(true);
         }).catch(e => {
                 let message = e.message;
