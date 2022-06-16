@@ -168,13 +168,13 @@ export default function ImportForm({onSubmit}) {
                             />
                         </div>
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Event source" description="Select 'event source' the date will be sent
+                    <TuiFormGroupField header="Event source" description="Select 'event source' the data will be sent
                     through. Separate event source for import is a good practice.">
                         <div style={{width: 500}}>
                             <TuiSelectEventSource value={eventSource.current}
                                                   fullWidth={true}
                                                   onlyValueWithOptions={false}
-                                                  onSetValue={(value) => {console.log(value); eventSource.current = value}}
+                                                  onSetValue={(value) => eventSource.current = value}
                                                   errorMessage={isObject(formError) && "event_source.id" in formError ? formError['event_source.id'] : null}
                             />
                         </div>
