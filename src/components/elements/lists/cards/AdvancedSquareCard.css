@@ -35,7 +35,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
-    sont-size: 110%;
+    font-size: 110%;
     text-align: center;
 }
 
@@ -43,7 +43,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
-    font-size: 70%;
+    font-size: 65%;
     text-align: center;
     max-height: 60px;
 }

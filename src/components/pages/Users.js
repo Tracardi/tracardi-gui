@@ -48,7 +48,7 @@ function UserCards({users, setUserToEdit, onDelete}) {
                     id={user.email}
                     status={!user.disabled}
                     name={user.fullName}
-                    description={user?.roles && Array.isArray(user?.roles) && user?.roles.map(role => role.charAt(0).toUpperCase() + role.slice(1)).join(", ")}
+                    description={user?.roles && Array.isArray(user?.roles) && user?.roles.map(role => role.charAt(0).toUpperCase() + role.slice(1).replace("_", " ")).join(", ")}
                     onClick={() => setUserToEdit(user)}
                     onEdit={() => setUserToEdit(user)}
                     onDelete={() => handleUserDelete(user)}

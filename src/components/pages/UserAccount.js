@@ -112,7 +112,7 @@ export default function UserAccount () {
                                         {user.full_name}
                                     </p>
                                     <h3 style={{margin: 0, marginTop: 20}}>Roles</h3>
-                                    <div>{user?.roles && Array.isArray(user?.roles) && user?.roles.map(role => role.charAt(0).toUpperCase() + role.slice(1)).join(", ")}</div>
+                                    <div>{user?.roles && Array.isArray(user?.roles) && user?.roles.map(role => role.charAt(0).toUpperCase() + role.slice(1).replace("_", " ")).join(", ")}</div>
                                     <h3 style={{margin: 0, marginTop: 20}}>Email address</h3>
                                     <div>{user?.email}</div>
                                 </div>
