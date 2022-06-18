@@ -6,10 +6,15 @@ export const TuiForm = ({children, className, style}) => {
 
     let baseClassName = ["TuiForm"]
 
+    const onSubmit = e => {
+        // that's for the form not to reload after hitting Enter on the keyboard while focused on empty field.
+        e.preventDefault();
+    }
+
     if(className) {
         baseClassName.push(className)
     }
-    return <form className={baseClassName.join(" ")} style={style}>
+    return <form className={baseClassName.join(" ")} style={style} onSubmit={onSubmit}>
         {children}
     </form>
 }
