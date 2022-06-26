@@ -8,6 +8,8 @@ import {Button} from "@mui/material";
 import DotAccessor from "../elements/forms/inputs/DotAccessor";
 import TuiSelectMultiConsentType from "../elements/tui/TuiSelectMultiConsentType";
 import ImportProgress from "../elements/misc/ImportProgress";
+import { ConsentTypes } from "../elements/forms/JsonFormComponents";
+import JsonForm from "../elements/forms/JsonForm";
 
 export default function TryOut() {
     const [v,setV] = React.useState("`profile@`");
@@ -53,7 +55,27 @@ export default function TryOut() {
       <IconSelector value="alert" onChange={(ic) => console.log(ic)} />
       <TimeInput />
       <ListOfDottedInputs onChange={(x) => console.log(x)} />
-      <TuiSelectMultiConsentType onChange={x => console.log(x)}/>
+      <JsonForm
+        schema={{
+            title: null,
+            groups: [{
+                name: null, 
+                description: null,
+                fields: [{
+                    description: "Consent types",
+                    id: "consents",
+                    name: "Consent types name",
+                    required: false,
+                    validation: null,
+                    component: {
+                        type: "consentTypes",
+                        props: {label: "Consents"}
+                    }
+                }]
+            }]
+        }}
+        values={{consents: []}}
+      />
     </div></div>
   );
 }
