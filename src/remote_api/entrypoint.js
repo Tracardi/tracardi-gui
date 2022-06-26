@@ -20,6 +20,10 @@ export const getApiUrl = () => {
     return apiUrlStorage().read()
 }
 
+export const setApiUrl = apiUrl => {
+    apiUrlStorage().save(apiUrl);
+}
+
 const authToken = () => {
     let token = getToken();
     return 'Bearer ' + (token == null ? 'None' : token)
