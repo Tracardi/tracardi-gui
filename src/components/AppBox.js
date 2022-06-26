@@ -113,12 +113,11 @@ const AppBox = () => {
 
         {/*Processing*/}
 
-
         <PrivateRoute path={urlPrefix("/processing")} roles={["admin", "developer", "marketer"]}>
             <PageTabs title="Processing"
                       tabs={[
                           new PrivateTab(["admin", "developer"], <Flows/>, "/processing/workflows", "Workflows"),
-                          new PrivateTab(["admin", "developer", "marketer"], <Rules/>, "/processing/routing", "Routing Rules"),
+                          new PrivateTab(["admin", "developer"], <Rules/>, "/processing/routing", "Routing Rules"),
                           new PrivateTab(["admin", "developer", "marketer"], <Segments/>, "/processing/segments", "Segments"),
                       ]}
             />
