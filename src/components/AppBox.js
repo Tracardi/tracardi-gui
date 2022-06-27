@@ -43,7 +43,7 @@ const AppBox = () => {
 
         {/*Redirects*/}
 
-        <PrivateRoute exact path={urlPrefix("")} roles={["admin", "developer", "marketer", "data_admin"]}>
+        <PrivateRoute exact path={urlPrefix("")} roles={["admin", "developer", "marketer"]}>
             <Redirect to={urlPrefix("/dashboard")}/>
         </PrivateRoute>
 
@@ -89,10 +89,10 @@ const AppBox = () => {
         </PrivateRoute>
 
         {/* Validation */}
-        <PrivateRoute path={urlPrefix("/management")} roles={["admin", "developer", "data_admin"]}>
+        <PrivateRoute path={urlPrefix("/management")} roles={["admin", "developer"]}>
             <PageTabs title="Management"
                       tabs={[
-                          new PrivateTab(["admin", "developer", "data_admin"],
+                          new PrivateTab(["admin", "developer"],
                               <EventManagement/>, "/management/event", "Event types"),
                       ]}
             />
@@ -100,12 +100,12 @@ const AppBox = () => {
 
         {/*Data*/}
 
-        <PrivateRoute path={urlPrefix("/data")} roles={["admin", "marketer", "developer", "data_admin"]}>
+        <PrivateRoute path={urlPrefix("/data")} roles={["admin", "marketer", "developer"]}>
             <PageTabs title="Data"
                       tabs={[
-                          new PrivateTab(["admin", "marketer", "developer", "data_admin"], <EventsAnalytics/>, "/data/events", "Events"),
-                          new PrivateTab(["admin", "marketer", "developer", "data_admin"], <ProfilesAnalytics/>, "/data/profiles", "Profiles"),
-                          new PrivateTab(["admin", "marketer", "developer", "data_admin"], <SessionsAnalytics/>, "/data/sessions", "Sessions"),
+                          new PrivateTab(["admin", "marketer", "developer"], <EventsAnalytics/>, "/data/events", "Events"),
+                          new PrivateTab(["admin", "marketer", "developer"], <ProfilesAnalytics/>, "/data/profiles", "Profiles"),
+                          new PrivateTab(["admin", "marketer", "developer"], <SessionsAnalytics/>, "/data/sessions", "Sessions"),
                       ]}
             />
 
@@ -123,10 +123,10 @@ const AppBox = () => {
             />
         </PrivateRoute>
 
-        <PrivateRoute path={urlPrefix("/consents")} roles={["admin", "developer", "marketer", "data_admin"]}>
+        <PrivateRoute path={urlPrefix("/consents")} roles={["admin", "developer", "marketer"]}>
             <PageTabs title="Consents"
                       tabs={[
-                          new PrivateTab(["admin", "developer", "marketer", "data_admin"], <Consents/>, "/consents/type", "Consent types")
+                          new PrivateTab(["admin", "developer", "marketer"], <Consents/>, "/consents/type", "Consent types")
                       ]}
             />
         </PrivateRoute>
@@ -134,7 +134,7 @@ const AppBox = () => {
         <PrivateRoute exact path={urlPrefix("/flow/edit/:id")} roles={["admin", "developer"]}>
             <FlowEditor/>
         </PrivateRoute>
-        <PrivateRoute exact path={urlPrefix("/flow/preview/:id")} roles={["admin", "developer", "marketer", "data_admin"]}>
+        <PrivateRoute exact path={urlPrefix("/flow/preview/:id")} roles={["admin", "developer", "marketer"]}>
             <FlowReader/>
         </PrivateRoute>
 
@@ -162,13 +162,13 @@ const AppBox = () => {
 
         {/*Settings*/}
 
-        <PrivateRoute path={urlPrefix("/settings")} roles={["admin", "developer", "marketer", "data_admin"]}>
+        <PrivateRoute path={urlPrefix("/settings")} roles={["admin", "developer", "marketer"]}>
             <PageTabs title="Settings"
                       tabs={[
                               new PrivateTab(["admin", "developer"], <ActionPlugins/>, "/settings/plugins", "Workflow actions"),
                               new PrivateTab(["admin", "developer"], <Settings/>, "/settings/system", "System settings"),
                               new PrivateTab(["admin"], <Users/>, "/settings/users", "Users"),
-                              new PrivateTab(["admin", "developer", "marketer", "data_admin"], <EventTags/>, "/settings/event-tags", "Event tags"),
+                              new PrivateTab(["admin", "developer", "marketer"], <EventTags/>, "/settings/event-tags", "Event tags"),
                           ]}
             />
 
