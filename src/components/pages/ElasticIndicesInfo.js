@@ -12,9 +12,11 @@ import Tag from "../elements/misc/Tag";
 import Tabs, {TabCase} from "../elements/tabs/Tabs";
 import { VscTrash } from "react-icons/vsc";
 import {useConfirm} from "material-ui-confirm";
+import {connect} from "react-redux";
+import {showAlert} from "../../redux/reducers/alertSlice";
 
 
-export default function ElasticIndicesInfo() {
+function ElasticIndicesInfo({showAlert}) {
 
     const [data, setData] = React.useState({});
     const [error, setError] = React.useState(null);
@@ -60,7 +62,7 @@ export default function ElasticIndicesInfo() {
                     }
                 } 
                 catch (e) {
-                    console.error(e)
+                    showAlert({type: "error", message: e.toString(), hideAfter: 3000})
                 }
             }
         )
@@ -151,3 +153,8 @@ export default function ElasticIndicesInfo() {
         </FormDrawer>
     </>;   
 }
+
+export default connect(
+    null,
+    {showAlert}
+)(ElasticIndicesInfo)
