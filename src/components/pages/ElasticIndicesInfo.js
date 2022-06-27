@@ -26,10 +26,8 @@ export default function ElasticIndicesInfo() {
 
     React.useEffect(() => {
         mounted.current = true;
-        if (mounted.current) {
-            setLoading(true);
-            setError(null);
-        }
+        setLoading(true);
+        setError(null);
         asyncRemote({url: "/test/elasticsearch/indices"})
         .then(response => {
             if (mounted.current) {
