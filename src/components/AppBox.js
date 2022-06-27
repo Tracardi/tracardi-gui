@@ -43,14 +43,14 @@ const AppBox = () => {
 
         {/*Redirects*/}
 
-        <PrivateRoute exact path={urlPrefix("")} roles={["admin", "developer", "marketer"]}>
+        <PrivateRoute exact path={urlPrefix("")} roles={["admin", "developer", "marketer", "data_admin"]}>
             <Redirect to={urlPrefix("/dashboard")}/>
         </PrivateRoute>
 
 
         {/*Dashboard*/}
 
-        <Route exact path={urlPrefix("/dashboard")}>
+        <Route exact path={urlPrefix("/dashboard")} roles={["admin", "developer", "marketer", "data_admin"]}>
             <Dashboard/>
         </Route>
 
@@ -144,14 +144,13 @@ const AppBox = () => {
             <PageTabs title="Monitoring"
 
                       tabs={[
-                          new PrivateTab(["admin"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
+                          new PrivateTab(["admin", "data_admin"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
                           new PrivateTab(["admin", "data_admin"], <Instances/>, "/monitoring/instances", "Running instances"),
-                          new PrivateTab(["admin"], <UserLogs/>, "/monitoring/user-log", "User logs"),
-                          new PrivateTab(["admin", "data_admin"], <ElasticClusterHealthInfo/>, "/monitoring/elastic-cluster", "Elasticsearch cluster"),
-                          new PrivateTab(["admin", "data_admin"], <ElasticIndicesInfo/>, "/monitoring/elastic-indices", "Elasticsearch indices")
+                          new PrivateTab(["admin", "data_admin"], <UserLogs/>, "/monitoring/user-log", "User logs"),
+                          new PrivateTab(["data_admin"], <ElasticClusterHealthInfo/>, "/monitoring/elastic-cluster", "Elasticsearch cluster"),
+                          new PrivateTab(["data_admin"], <ElasticIndicesInfo/>, "/monitoring/elastic-indices", "Elasticsearch indices")
                       ]}
             />
-
         </PrivateRoute>
 
         {/*Testing*/}
