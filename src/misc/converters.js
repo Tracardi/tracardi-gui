@@ -22,7 +22,7 @@ export function round(num, places) {
 }
 
 export function abbreviateNumber(value) {
-    let newValue = value;
+    let newValue = typeof value === "number" ? value : 0;
     if (value >= 1000) {
         let suffixes = ["", "k", "m", "b", "t"];
         let suffixNum = Math.floor(("" + value).length / 3);

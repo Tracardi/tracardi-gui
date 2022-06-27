@@ -176,6 +176,7 @@ export default function EventTimeLine() {
                 },
                 "maxDate": {"absolute": null, "delta": null},
                 "where": "",
+                "timeZone": Intl.DateTimeFormat().resolvedOptions().timeZone,
                 "limit": 30
             }
         }).then((resposne) => {

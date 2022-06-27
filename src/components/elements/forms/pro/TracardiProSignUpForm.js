@@ -51,7 +51,7 @@ export default function TracardiProSignUpForm({onSubmit, onCancel}) {
 
     const step1 = () => <TuiForm style={{maxWidth: 500}}>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Tracardi Pro Registration" description="Sing-up to Tracardi Pro services."/>
+            <TuiFormGroupHeader header="Tracardi Pro Registration" description="Sign-up to Tracardi Pro services."/>
             {error && <ErrorsBox errorList={error} style={{borderRadius: 0}}/>}
             <TuiFormGroupContent>
                 <TuiFormGroupContent>
@@ -111,7 +111,7 @@ export default function TracardiProSignUpForm({onSubmit, onCancel}) {
 
     const step2 = () => <TuiForm style={{maxWidth: 500}}>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Tracardi Pro Registration" description="Sing-up to Tracardi Pro services."/>
+            <TuiFormGroupHeader header="Tracardi Pro Registration" description="Sign-up to Tracardi Pro services."/>
             {error && <ErrorsBox errorList={error} style={{borderRadius: 0}}/>}
             <TuiFormGroupContent>
                 <TuiFormGroupContent>

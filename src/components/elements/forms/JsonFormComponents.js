@@ -19,7 +19,6 @@ import DotAccessor from "./inputs/DotAccessor";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import TuiSelectMultiConsentType from "../tui/TuiSelectMultiConsentType";
 import AutoComplete from "./AutoComplete";
-import Properties from "../details/DetailProperties";
 
 export const TextInput = ({value, label, errorMessage, onChange}) => {
 
