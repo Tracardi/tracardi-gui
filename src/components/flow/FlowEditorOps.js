@@ -29,7 +29,6 @@ export function prepareFlowPayload(id, flowMetaData, reactFlowInstance) {
         },
         name: flowMetaData?.name,
         description: flowMetaData?.description,
-        enabled: flowMetaData?.enabled,
         flowGraph: prepareGraph(reactFlowInstance),
         projects: flowMetaData?.projects
     }

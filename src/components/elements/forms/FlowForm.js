@@ -137,20 +137,6 @@ function FlowForm({
         <TuiFormGroup>
             <TuiFormGroupHeader header="Settings"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Enable flow" description="Disabled flows will not be executed.">
-                    <FormControlLabel
-                        style={{marginLeft: 2}}
-                        control={
-                            <Checkbox
-                                checked={flowEnabled}
-                                onChange={() => setFlowEnabled(!flowEnabled)}
-                                name="enable"
-                                color="primary"
-                            />
-                        }
-                        label="Enable flow"
-                    />
-                </TuiFormGroupField>
                 <TuiFormGroupField header="Flow tags"
                                    description="Tag the flow with project name to group it into meaningful groups.">
                     <TuiTagger 
@@ -169,7 +155,6 @@ FlowForm.propTypes = {
     id: PropTypes.string,
     name: PropTypes.string,
     description: PropTypes.string,
-    enabled: PropTypes.bool,
     projects: PropTypes.array,
     onFlowSaveComplete: PropTypes.func,
     draft: PropTypes.bool,
