@@ -22,7 +22,7 @@ import Drawer from "@mui/material/Drawer";
 import {FaUncharted} from "react-icons/fa";
 import {BiReset} from "react-icons/bi";
 import {asyncRemote} from "../../remote_api/entrypoint";
-import {save} from "./FlowEditorOps";
+import {prepareFlowPayload, save} from "./FlowEditorOps";
 import {useConfirm} from "material-ui-confirm";
 import TestEditor from "../test/TestEditor";
 import {BsClipboardCheck} from "react-icons/bs";
@@ -51,7 +51,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                 reactFlowInstance,
                 (e) => {
                     // todo error
-                    console.error("Error.");
+                    console.error(e.toString());
                 },
                 () => {
                     if (onSaveDraft) {
@@ -73,6 +73,32 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
 
     const handleSave = () => {
         handleDraftSave(setDraftSaveProgress, false)
+    }
+
+    const handleRearrange = async () => {
+        try {
+            const payload = prepareFlowPayload(
+                flowId,
+                flowMetaData,
+                reactFlowInstance
+            )
+            const response = await asyncRemote({
+                url: `/flow/draft/nodes/rearrange`,
+                method: "POST",
+                data: payload
+            })
+
+            if (onDraftRestore instanceof Function) {
+                onDraftRestore(response?.data)
+            }
+
+        } catch (e) {
+            if (e) {
+                // todo error
+            }
+        } finally {
+
+        }
     }
 
     const handleDeploy = () => {
@@ -123,7 +149,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                     url: `/flow/draft/${id}/restore`
                 })
 
-                if (onDraftRestore) {
+                if (onDraftRestore instanceof Function) {
                     onDraftRestore(response?.data)
                 }
             } catch (e) {
@@ -147,6 +173,10 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
         </div>
         <div>
             <ReinstallButton/>
+            <Button label="Rearrange nodes"
+                    icon={<TiTickOutline size={20}/>}
+                    onClick={handleRearrange}
+            />
             <DropDownMenu label="Restore Flow" icon={<BiReset size={20}/>}
                           progress={draftRestoreProgress || productionRestoreProgress}
                           options = {{
