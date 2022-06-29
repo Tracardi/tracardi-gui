@@ -26,6 +26,10 @@ export default function PathTextAdornment({value, onChange, lock=false, lockValu
             value: 'flow',
             label: 'flow',
         },
+        {
+            value: 'memory',
+            label: 'memory',
+        },
     ];
 
     const [path, setPath] = useState(value !== "");
