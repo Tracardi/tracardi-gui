@@ -51,8 +51,8 @@ const FlowEditor = () => {
                               description={flowMetaData?.description}
                               projects={flowMetaData?.projects}
                               draft={true}
-                              onFlowSaveComplete={({name, description, enabled, projects}) => {
-                                  setFlowMetaData({name, description, enabled, projects});
+                              onFlowSaveComplete={({name, description, projects}) => {
+                                  setFlowMetaData({name, description, projects});
                                   setFlowFormOpened(false)
                               }}/>
                 </FormDrawer>

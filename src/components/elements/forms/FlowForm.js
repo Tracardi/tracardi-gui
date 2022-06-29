@@ -15,7 +15,6 @@ function FlowForm({
                       id,
                       name,
                       description,
-                      enabled,
                       projects,
                       onFlowSaveComplete,
                       showAlert,
@@ -25,7 +24,6 @@ function FlowForm({
 
     const [flowName, setFlowName] = useState((name) ? name : "");
     const [flowDescription, setFlowDescription] = useState((description) ? description : "");
-    const [flowEnabled, setFlowEnabled] = useState((typeof enabled === "boolean") ? enabled : true);
     const [flowTags, setFlowTags] = useState(projects);
     const [processing, setProcessing] = useState(false);
     const [nameErrorMessage, setNameErrorMessage] = useState("");
@@ -58,7 +56,6 @@ function FlowForm({
                 id: (id) ? id : uuid4(),
                 name: flowName,
                 description: flowDescription,
-                enabled: flowEnabled,
                 projects: flowTags && Array.isArray(flowTags) && flowTags.length > 0 ? flowTags : ["General"]
             }
 
