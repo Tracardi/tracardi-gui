@@ -212,7 +212,6 @@ export function FlowEditorPane(
                     },
                     name: data?.name,
                     description: data?.description,
-                    enabled: data?.enabled,
                     projects: data?.projects,
                 }
                 onFlowLoad(payload);

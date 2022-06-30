@@ -5,7 +5,10 @@ import {FiEdit3} from "react-icons/fi";
 
 const AdvancedSquareCard = ({id, status, name, description, onClick, icon, onEdit, onDelete}) => {
     const statusClass = (status) => {
-        return status ? "icon enabled" : "icon disabled"
+        if (typeof status === "undefined") {
+            return "icon";
+        }
+        return status ? "icon enabled" : "icon disabled";
     }
 
     const handleDeleteClick = (e, id) => {
