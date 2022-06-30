@@ -99,20 +99,6 @@ const SignInForm = ({showAlert}) => {
 
     const mounted = useRef(false);
 
-    useEffect(() => {
-        mounted.current = true;
-
-        let urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has("api_url")) {
-            setApiUrl(urlParams.get("api_url"));
-        }
-
-        return () => {
-            mounted.current = false;
-        }
-    }, [])
-
-
     const handleEmailChange = (evt) => {
         setEmail(evt.target.value);
     }
