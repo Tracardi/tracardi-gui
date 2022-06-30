@@ -14,6 +14,16 @@ const ApiUrlSelector = ({children}) => {
     const [isEndpointValid, setIsEndpointValid] = useState(null);
     const [apiLocation, setApiLocation] = useState(apiUrlStorage().read());
 
+    const isValidUrl = (string) => {
+        let url;
+        try {
+          url = new URL(string);
+        } catch (_) {
+          return false;  
+        }
+        return url.protocol === "http:" || url.protocol === "https:";
+      }
+
     useEffect(() => {
         let isSubscribed = true;
 
@@ -28,8 +38,8 @@ const ApiUrlSelector = ({children}) => {
     useEffect(() => {
         let isSubscribed = true
         
-        if( apiLocation === null) {
-            setIsEndpointValid(false)
+        if( apiLocation === null || !isValidUrl(apiLocation)) {
+            setIsEndpointValid(false);
         } else {
             setProgress(true);
             setFailed(false);
@@ -90,16 +100,18 @@ const ApiUrlSelector = ({children}) => {
                 <BsHddNetwork size={50} style={{color: "#666"}}/>
                 <h1 style={{fontWeight: 300}}>Select TRACARDI server</h1>
                 <p>Type or select TRACARDI API Url.</p>
-                <div style={{width: 400, display: "flex", alignItems: "flex-end"}}>
+                <div style={{width: 400, display: "flex", alignItems: "flex-end", marginBottom: !isEndpointValid && apiLocation ? 0 : 22}}>
                     <TuiApiUrlInput
                         value={apiLocation || apiUrlStorage().read([])}
                         options={new storageValue('tracardi-api-urls').read() || []}
-                        onChange={(v) => setEndpoint(v)}/>
+                        onChange={(v) => setEndpoint(v)}
+                        errorMessage={!isEndpointValid && apiLocation && "Given API URL is invalid."}
+                        />          
                     <Button label="Select"
                             onClick={()=> setApiLocation(endpoint)}
                             progress={progress}
                             error={failed}
-                            style={{height: 38, marginBottom: 9}}
+                            style={{height: 38, marginBottom: !isEndpointValid && apiLocation ? 31 : 9}}
                     />
                 </div>
             </div>
