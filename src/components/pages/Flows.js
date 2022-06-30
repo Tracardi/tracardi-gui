@@ -68,7 +68,6 @@ export default function Flows() {
                         return <AdvancedSquareCard key={index + "-" + subIndex}
                                                    id={row?.id}
                                                    icon={<IoGitNetworkSharp size={45}/>}
-                                                   status={row?.enabled}
                                                    name={row?.name}
                                                    onClick={() => onClick(row?.id)}
                                                    onEdit={handleFlowEdit}

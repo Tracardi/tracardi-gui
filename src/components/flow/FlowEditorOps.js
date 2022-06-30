@@ -29,7 +29,6 @@ export function prepareFlowPayload(id, flowMetaData, reactFlowInstance) {
         },
         name: flowMetaData?.name,
         description: flowMetaData?.description,
-        enabled: flowMetaData?.enabled,
         flowGraph: prepareGraph(reactFlowInstance),
         projects: flowMetaData?.projects
     }
@@ -67,7 +66,6 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                 id: id,
                 name: "Name is not set in debug mode",
                 description: "Description is not set in debug mode",
-                enabled: true,
                 flowGraph: prepareGraph(reactFlowInstance),
                 projects: []
             }

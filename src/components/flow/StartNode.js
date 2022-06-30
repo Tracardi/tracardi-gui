@@ -90,8 +90,8 @@ const StartNodeDynamic = ({data}) => {
     return (
         <div style={{position: "relative"}}>
             <div style={{display: "flex", alignItems: "center"}}>
-                {Array.isArray(data?.spec?.init?.events) && <div className="NodeInboundEvents">
-                    {data?.spec?.init?.events.map((eventObj, idx)  => <span className="Event" key={idx}>{eventObj.name}</span>)}
+                {Array.isArray(data?.spec?.init?.event_types) && <div className="NodeInboundEvents">
+                    {data?.spec?.init?.event_types.map((eventObj, idx)  => <span className="Event" key={idx}>{eventObj.name}</span>)}
                 </div>}
                 <div>
                     {data?.spec?.run_once?.enabled && <ThresholdIcon/>}

@@ -1,8 +1,6 @@
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useRef, useState} from "react";
 import Button from "./Button";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import {v4 as uuid4} from 'uuid';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {connect} from "react-redux";
@@ -15,7 +13,6 @@ function FlowForm({
                       id,
                       name,
                       description,
-                      enabled,
                       projects,
                       onFlowSaveComplete,
                       showAlert,
@@ -25,7 +22,6 @@ function FlowForm({
 
     const [flowName, setFlowName] = useState((name) ? name : "");
     const [flowDescription, setFlowDescription] = useState((description) ? description : "");
-    const [flowEnabled, setFlowEnabled] = useState((typeof enabled === "boolean") ? enabled : true);
     const [flowTags, setFlowTags] = useState(projects);
     const [processing, setProcessing] = useState(false);
     const [nameErrorMessage, setNameErrorMessage] = useState("");
@@ -58,7 +54,6 @@ function FlowForm({
                 id: (id) ? id : uuid4(),
                 name: flowName,
                 description: flowDescription,
-                enabled: flowEnabled,
                 projects: flowTags && Array.isArray(flowTags) && flowTags.length > 0 ? flowTags : ["General"]
             }
 
@@ -94,10 +89,6 @@ function FlowForm({
                 setProcessing(false)
             }
         }
-    }
-
-    const onTagChange = (values) => {
-        setFlowTags(values)
     }
 
     return <TuiForm style={{margin: 20}}>
@@ -137,20 +128,6 @@ function FlowForm({
         <TuiFormGroup>
             <TuiFormGroupHeader header="Settings"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Enable flow" description="Disabled flows will not be executed.">
-                    <FormControlLabel
-                        style={{marginLeft: 2}}
-                        control={
-                            <Checkbox
-                                checked={flowEnabled}
-                                onChange={() => setFlowEnabled(!flowEnabled)}
-                                name="enable"
-                                color="primary"
-                            />
-                        }
-                        label="Enable flow"
-                    />
-                </TuiFormGroupField>
                 <TuiFormGroupField header="Flow tags"
                                    description="Tag the flow with project name to group it into meaningful groups.">
                     <TuiTagger 
@@ -169,7 +146,6 @@ FlowForm.propTypes = {
     id: PropTypes.string,
     name: PropTypes.string,
     description: PropTypes.string,
-    enabled: PropTypes.bool,
     projects: PropTypes.array,
     onFlowSaveComplete: PropTypes.func,
     draft: PropTypes.bool,

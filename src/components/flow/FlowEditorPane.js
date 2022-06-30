@@ -212,7 +212,6 @@ export function FlowEditorPane(
                     },
                     name: data?.name,
                     description: data?.description,
-                    enabled: data?.enabled,
                     projects: data?.projects,
                 }
                 onFlowLoad(payload);
@@ -561,6 +560,7 @@ export function FlowEditorPane(
                             zoomOnDoubleClick={false}
                             zoomOnScroll={false}
                             panOnScroll={true}
+                            defaultPosition={[700, 100]} // set position so point (0, 0) is always visible
                             onElementsRemove={onElementsRemove}
                             onElementClick={onElementClick}
                             onNodeDoubleClick={onNodeDoubleClick}

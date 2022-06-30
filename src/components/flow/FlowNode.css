@@ -32,6 +32,7 @@
     position: relative;
 }
 .react-flow__node-flowNodeWithEvents.selected .NodePanel,
+.react-flow__node-startNode.selected .StartNode,
 .react-flow__node-flowNode.selected .NodePanel,
 .react-flow__node-flowNode.selected .NodePanelPassValue,
 .react-flow__node-flowNode.selected:hover .NodePanel{

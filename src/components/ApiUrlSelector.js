@@ -25,8 +25,19 @@ const ApiUrlSelector = ({children}) => {
       }
 
     useEffect(() => {
-        let isSubscribed = true
+        let isSubscribed = true;
 
+        let urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("api_url")) {
+            let apiUrl = urlParams.get("api_url");
+            setApiLocation(apiUrl);
+            return () => isSubscribed = false;
+        } else return () => isSubscribed = false;
+    }, [])
+
+    useEffect(() => {
+        let isSubscribed = true
+        
         if( apiLocation === null || !isValidUrl(apiLocation)) {
             setIsEndpointValid(false);
         } else {
@@ -91,7 +102,7 @@ const ApiUrlSelector = ({children}) => {
                 <p>Type or select TRACARDI API Url.</p>
                 <div style={{width: 400, display: "flex", alignItems: "flex-end", marginBottom: !isEndpointValid && apiLocation ? 0 : 22}}>
                     <TuiApiUrlInput
-                        value={apiUrlStorage().read([])}
+                        value={apiLocation || apiUrlStorage().read([])}
                         options={new storageValue('tracardi-api-urls').read() || []}
                         onChange={(v) => setEndpoint(v)}
                         errorMessage={!isEndpointValid && apiLocation && "Given API URL is invalid."}

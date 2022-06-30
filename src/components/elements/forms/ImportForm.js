@@ -168,7 +168,7 @@ export default function ImportForm({onSubmit}) {
                             />
                         </div>
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Event source" description="Select 'event source' the date will be sent
+                    <TuiFormGroupField header="Event source" description="Select 'event source' the data will be sent
                     through. Separate event source for import is a good practice.">
                         <div style={{width: 500}}>
                             <TuiSelectEventSource value={eventSource.current}

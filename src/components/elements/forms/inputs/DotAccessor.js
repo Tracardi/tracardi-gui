@@ -30,7 +30,7 @@ const ValueInput = ({source, value: initValue, cast: initCast, onChange}) => {
         onChange(value, castValue)
     }
 
-    if (source === "" || source === "payload") {
+    if (source === "" || source === "payload" || source === "memory") {
         return <EvalInput
             style={{minWidth: 270}}
             value={value}
@@ -77,7 +77,7 @@ export default function DotAccessor({
             initValue = initValue.replace(/^`+/, '').replace(/`+$/, '');
         }
 
-        const re = new RegExp("^(payload|profile|session|event|flow)@");
+        const re = new RegExp("^(payload|profile|session|event|flow|memory)@");
 
         let [initSourceValue, initPathValue] = (isString(initValue) && initValue !== "")
             ? (initValue !== null && re.test(initValue) ? [initValue.split('@')[0], initValue.split('@').slice(1).join('@')]

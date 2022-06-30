@@ -17,6 +17,8 @@ export function TuiSelectEventSource({
         }
     };
 
+    const changeProp = onlyValueWithOptions ? {onSetValue: handleValueSet} : {onChange: handleValueSet};
+
     return <div>
         <AutoComplete disabled={disabled}
                       onlyValueWithOptions={onlyValueWithOptions}
@@ -24,8 +26,8 @@ export function TuiSelectEventSource({
                       endpoint={{url: "/event-sources/entity"}}
                       initValue={value}
                       error={errorMessage}
-                      onSetValue={handleValueSet}
                       fullWidth={fullWidth}
+                      {...changeProp}
         />
     </div>
 }
