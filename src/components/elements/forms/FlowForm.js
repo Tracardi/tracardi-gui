@@ -1,8 +1,6 @@
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useRef, useState} from "react";
 import Button from "./Button";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import {v4 as uuid4} from 'uuid';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {connect} from "react-redux";
@@ -91,10 +89,6 @@ function FlowForm({
                 setProcessing(false)
             }
         }
-    }
-
-    const onTagChange = (values) => {
-        setFlowTags(values)
     }
 
     return <TuiForm style={{margin: 20}}>
