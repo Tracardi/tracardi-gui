@@ -33,6 +33,7 @@ import Button from "../elements/forms/Button";
 import ErrorsBox from "../errors/ErrorsBox";
 import {useHistory} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
+import EdgeDetails from "./EdgeDetails";
 
 const ModifiedTag = () => {
     return <span style={{
@@ -70,8 +71,8 @@ const StatusTag = ({modified, deployed}) => {
     </div>
 }
 
-
 const NodeDetailsHandler = React.memo(({node, onLabelSet, onConfig, onRuntimeConfig, pro}) => {
+
     const [loading, setLoading] = useState(false);
     const [available, setAvailable] = useState(null);
     const [error, setError] = useState(null);
@@ -147,6 +148,41 @@ const NodeDetailsHandler = React.memo(({node, onLabelSet, onConfig, onRuntimeCon
 
 })
 
+
+const DetailsHandler = ({element, onNodeRefresh, onEdgeRefresh, onNodeConfig, onNodeRuntimeConfig}) => {
+
+    if (isNode(element)) {
+        return <SidebarRight>
+            <NodeDetailsHandler
+                onLabelSet={(value) => {
+                    element.data.metadata = {...element.data.metadata, name: value}
+                    if (onNodeRefresh instanceof Function) {
+                        onNodeRefresh(element)
+                    }
+                }}
+                node={element}
+                onConfig={onNodeConfig}
+                onRuntimeConfig={onNodeRuntimeConfig}
+                pro={element?.data?.metadata?.pro}
+            />
+        </SidebarRight>
+    } else if (isEdge(element)) {
+        return <SidebarRight>
+            <EdgeDetails
+                edge={element}
+                onLabelSubmit={(value) => {
+                    element.data = {...element.data, name: value}
+                    if (onEdgeRefresh instanceof Function) {
+                        onEdgeRefresh(element)
+                    }
+                }}
+            />
+        </SidebarRight>
+    }
+
+    return ""
+}
+
 export function FlowEditorPane(
     {
         id,
@@ -186,7 +222,7 @@ export function FlowEditorPane(
         endTime: 0,
         calls: []
     });
-    const [displayRightSidebar, setDisplayRightSidebar] = useState(false);
+    const [displayElementDetails, setDisplayElementDetails] = useState(false);
     const [displayDebugPane, setDisplayDebugPane] = useState(false);
     const [displayDebugHeight, setDisplayDebugHeight] = useState({gridTemplateRows: "calc(100% - 33px) 33px"});
     const [displayNodeContextMenu, setDisplayNodeContextMenu] = useState(false);
@@ -194,6 +230,7 @@ export function FlowEditorPane(
     const [elements, setElements] = useState([]);
     const [logs, setLogs] = useState([]);
     const [refreshNodeId, setRefreshNodeId] = useState([null, null]);  // [nodeId, nodeData]
+    const [refreshEdgeId, setRefreshEdgeId] = useState([null, null]);  // [edgeId, edgeData]
     const [debugInProgress, setDebugInProgress] = useState(false);
     const [clientX, setClientX] = useState(0);
     const [clientY, setClientY] = useState(0);
@@ -349,6 +386,18 @@ export function FlowEditorPane(
 
     }, [refreshNodeId, setElements]);
 
+
+    useEffect(() => {
+        setElements((els) => els.map((el) => {
+                if (isEdge(el) && el.id === refreshEdgeId[0]) {
+                    el.data = {...refreshEdgeId[1].data}
+                }
+                return el;
+            })
+        );
+
+    }, [refreshEdgeId, setElements]);
+
     const handleUpdate = () => {
         setModified(true);
         setDeployed(false);
@@ -404,7 +453,7 @@ export function FlowEditorPane(
         }
 
         setElements((els) => removeElements(elementsToRemove, els));
-        setDisplayRightSidebar(false);
+        setDisplayElementDetails(false);
 
         handleUpdate();
     }
@@ -446,9 +495,9 @@ export function FlowEditorPane(
         event.dataTransfer.dropEffect = 'move';
     };
 
-    const onNodeDoubleClick = (event, element) => {
+    const onElementDoubleClick = (event, element) => {
         selectNode(element)
-        setDisplayRightSidebar(true);
+        setDisplayElementDetails(true);
         setDisplayNodeContextMenu(false);
     }
 
@@ -456,11 +505,10 @@ export function FlowEditorPane(
         if (onNodeClick) {
             onNodeClick(event, element);
         }
-
     }
 
     const onPaneClick = () => {
-        setDisplayRightSidebar(false);
+        setDisplayElementDetails(false);
         handleDisplayDebugPane(false);
         setDebugNode(null);
         setAnimatedEdge(null);
@@ -530,15 +578,6 @@ export function FlowEditorPane(
         }
     }
 
-    const handleLabelSet = (label) => {
-        if (elements) {
-            currentNode.data.metadata = {...currentNode.data.metadata, name: label}
-            setRefreshNodeId([currentNode.id, currentNode])
-        }
-        handleUpdate()
-    }
-
-
     return <>
         <FlowEditorTitle
             flowId={id}
@@ -563,7 +602,8 @@ export function FlowEditorPane(
                             defaultPosition={[700, 100]} // set position so point (0, 0) is always visible
                             onElementsRemove={onElementsRemove}
                             onElementClick={onElementClick}
-                            onNodeDoubleClick={onNodeDoubleClick}
+                            onNodeDoubleClick={onElementDoubleClick}
+                            onEdgeDoubleClick={onElementDoubleClick}
                             // onSelectionChange={onSelectionChange}
                             onNodeContextMenu={onNodeContextMenu}
                             onEdgeContextMenu={onEdgeContextMenu}
@@ -613,15 +653,22 @@ export function FlowEditorPane(
                         </ReactFlow>}
                     </div>
 
-                    {displayRightSidebar && <SidebarRight>
-                        <NodeDetailsHandler
-                            onLabelSet={handleLabelSet}
-                            node={currentNode}
-                            onConfig={handleConfigSave}
-                            onRuntimeConfig={handleRuntimeConfig}
-                            pro={currentNode?.data?.metadata?.pro}
-                        />
-                    </SidebarRight>}
+                    {displayElementDetails && currentNode && <DetailsHandler element={currentNode}
+                                    onEdgeRefresh={ (edge) => {
+                                        if (elements) {
+                                            setRefreshEdgeId([edge.id, edge])
+                                        }
+                                        handleUpdate()
+                                    }}
+                                    onNodeRefresh={ (node) =>  {
+                                        if(elements) {
+                                            setRefreshNodeId([node.id, node])
+                                        }
+                                        handleUpdate()
+                                    }}
+                                    onNodeConfig={handleConfigSave}
+                                    onNodeRuntimeConfig={handleRuntimeConfig}
+                    />}
 
                     {displayDebugPane && <MemoDebugPane
                         profilingData={profilingData}
