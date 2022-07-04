@@ -24,7 +24,7 @@ const EdgeDetails = React.memo(({edge, onLabelSubmit}) => {
         <div className="NodeDetailsContent">
             <div className="Title">
                     <FilterTextField label="Edge name"
-                                     initValue={edge?.data?.name}
+                                     initValue={edge?.data?.name ? edge?.data?.name : ""}
                                      onSubmit={handleSubmit}/>
 
             </div>
