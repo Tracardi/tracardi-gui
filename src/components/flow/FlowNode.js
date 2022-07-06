@@ -97,11 +97,12 @@ const FlowNodeDynamic = ({data}) => {
     return (
         <div style={{position: "relative"}}>
             {data?.spec?.run_once?.enabled && <ThresholdIcon/>}
+            <ErrorNumber data={data}/>
+            <WarningNumber data={data}/>
             <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={portStyle} append={data?.spec?.append_input_payload}/>
             <div className={nodeClass} style={nodeStyle}>
                 <ExecutionSeqNumber data={data}/>
-                <ErrorNumber data={data}/>
-                <WarningNumber data={data} style={{marginRight: 24}}/>
+
                 <div className="NodePadding">
                     <FlowNodeIcons icon={data?.metadata?.icon} size={20}/>
                     <div className="NodeLabel"

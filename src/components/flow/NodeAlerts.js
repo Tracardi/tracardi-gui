@@ -12,8 +12,8 @@ export function ExecutionSeqNumber({data, style}) {
     }
 
     if (data.debugging?.node?.executionNumber) {
-        let status = hasError(data.debugging?.node?.calls) ? " Error" : " Ok"
-        return <div className={"NodeAlert" + status} style={style}>{data.debugging.node.executionNumber}</div>
+        let status = hasError(data.debugging?.node?.calls) ? " ErrorSequence" : " Ok"
+        return <div className={"NodeSequence" + status} style={style}>{data.debugging.node.executionNumber}</div>
     } else {
         return ""
     }
@@ -22,7 +22,7 @@ export function ExecutionSeqNumber({data, style}) {
 
 export function ErrorNumber({data, style}) {
     if (data.debugging?.node?.errors) {
-        return <div className="NodeAlert Error" style={style} title={data.debugging.node.errors}><BsExclamationCircle size={13}/></div>
+        return <div className="NodeAlert Error" style={style} title={data.debugging.node.errors}><BsExclamationCircle size={20}/></div>
     } else {
         return ""
     }
@@ -30,7 +30,7 @@ export function ErrorNumber({data, style}) {
 
 export function WarningNumber({data, style}) {
     if (data.debugging?.node?.warnings) {
-        return <div className="NodeAlert Warning" style={style} title={data.debugging.node.warnings}><BsExclamationTriangle size={14}/></div>
+        return <div className="NodeAlert Warning" style={style} title={data.debugging.node.warnings}><BsExclamationTriangle size={20}/></div>
     } else {
         return ""
     }
