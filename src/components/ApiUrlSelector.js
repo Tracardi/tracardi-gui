@@ -65,15 +65,18 @@ const ApiUrlSelector = ({children}) => {
                                 new storageValue('tracardi-api-urls').save(historicalEndpoints, []);
                             }
                         }
-                        setIsEndpointReachable(true)
+                        setIsEndpointReachable(true);
+                        setIsEndpointValid(true);
                     } else {
-                        setIsEndpointReachable(false)
+                        setIsEndpointReachable(false);
+                        setIsEndpointValid(false);
                     }
                 }
             ).catch((e) => {
                 if(isSubscribed) {
-                    setFailed(true)
-                    setIsEndpointReachable(false)
+                    setFailed(true);
+                    setIsEndpointReachable(false);
+                    setIsEndpointValid(false);
                 }
 
             }).finally(() => {
