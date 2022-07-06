@@ -22,7 +22,7 @@ export function ExecutionSeqNumber({data, style}) {
 
 export function ErrorNumber({data, style}) {
     if (data.debugging?.node?.errors) {
-        return <div className="NodeAlert Error" style={style} title={data.debugging.node.errors}><BsExclamationCircle size={20}/></div>
+        return <div className="NodeAlert Error" style={style} title={data.debugging.node.errors + "error reported in error log"}><BsExclamationCircle size={20}/></div>
     } else {
         return ""
     }
@@ -30,7 +30,7 @@ export function ErrorNumber({data, style}) {
 
 export function WarningNumber({data, style}) {
     if (data.debugging?.node?.warnings) {
-        return <div className="NodeAlert Warning" style={style} title={data.debugging.node.warnings}><BsExclamationTriangle size={20}/></div>
+        return <div className="NodeAlert Warning" style={style} title={data.debugging.node.warnings + " warning reported in error log"}><BsExclamationTriangle size={20}/></div>
     } else {
         return ""
     }
