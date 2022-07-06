@@ -34,7 +34,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
         [node, tab])
 
     const handleInitSubmit = (init) => {
-        if(onConfig){
+        if (onConfig) {
             onConfig(init)
         }
     }
@@ -42,9 +42,9 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
     return (
         <div className="NodeDetails">
             <div className="NodeDetailsIcons">
-                    <IconButton label="Info" onClick={() => setTab(0)} selected={tab === 0} size="large">
-                            <BsInfoCircle size={22}/>
-                    </IconButton>
+                <IconButton label="Info" onClick={() => setTab(0)} selected={tab === 0} size="large">
+                    <BsInfoCircle size={22}/>
+                </IconButton>
                 {node?.data?.spec?.form && <IconButton
                     label="Config Editor"
                     onClick={() => setTab(3)}
@@ -67,15 +67,15 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                     <VscRunErrors size={22}/>
                 </IconButton>}
                 <IconButton label="Raw" onClick={() => setTab(4)} selected={tab === 4} size="large">
-                            <VscJson size={22}/>
-                    </IconButton>
+                    <VscJson size={22}/>
+                </IconButton>
             </div>
             <div className="NodeDetailsContent">
                 <div className="Title">
                     <FilterTextField label="Node name"
                                      initValue={node?.data?.metadata?.name}
                                      onSubmit={onLabelSet}
-                                     onChange={(event) => onLabelSet(event.target.value)}/>
+                    />
 
                 </div>
                 <div className="Pane">
@@ -110,7 +110,12 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                                 on_error_continue: node?.data?.spec?.on_error_continue || false,
                                 join_input_payload: node?.data?.spec?.join_input_payload || false,
                                 append_input_payload: node?.data?.spec?.append_input_payload || false,
-                                run_once: node?.data?.spec?.run_once || {value: "", ttl: 0, type: "value", enabled: false},
+                                run_once: node?.data?.spec?.run_once || {
+                                    value: "",
+                                    ttl: 0,
+                                    type: "value",
+                                    enabled: false
+                                },
                             }
                         }
                         onChange={onRuntimeConfig}
@@ -123,7 +128,8 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
 }
 
 function areEqual(prevProps, nextProps) {
-    return prevProps.node.id===nextProps.node.id;
+    return prevProps.node.id === nextProps.node.id;
 }
+
 export const MemoNodeDetails = React.memo(NodeDetails, areEqual);
 

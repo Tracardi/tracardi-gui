@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Handle} from 'react-flow-renderer';
 import './FlowNode.css';
 import FlowNodeIcons from "./FlowNodeIcons";
-import ExecutionNumber from "./ExecutionNumber";
+import {ErrorNumber, ExecutionSeqNumber, WarningNumber} from "./NodeAlerts";
 import {isObject} from '../../misc/typeChecking';
 import ThresholdIcon from "./ThresholdIcon";
 import {BsArrowDownShort} from "react-icons/bs";
@@ -99,7 +99,9 @@ const FlowNodeDynamic = ({data}) => {
             {data?.spec?.run_once?.enabled && <ThresholdIcon/>}
             <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={portStyle} append={data?.spec?.append_input_payload}/>
             <div className={nodeClass} style={nodeStyle}>
-                <ExecutionNumber data={data}/>
+                <ExecutionSeqNumber data={data}/>
+                <ErrorNumber data={data}/>
+                <WarningNumber data={data} style={{marginRight: 24}}/>
                 <div className="NodePadding">
                     <FlowNodeIcons icon={data?.metadata?.icon} size={20}/>
                     <div className="NodeLabel"

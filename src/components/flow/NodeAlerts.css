@@ -1,4 +1,4 @@
-DIV.ExecutionNumber {
+DIV.NodeAlert {
     border-radius: 40%;
     color: white;
     padding-right: 1px;
@@ -19,4 +19,8 @@ DIV.Ok {
 
 DIV.Error {
     background-color: #d81b60 !important;
+}
+
+DIV.Warning {
+    background-color: orange !important;
 }
