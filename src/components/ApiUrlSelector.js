@@ -13,6 +13,7 @@ const ApiUrlSelector = ({children}) => {
     const [failed, setFailed] = useState(false);
     const [isEndpointValid, setIsEndpointValid] = useState(null);
     const [apiLocation, setApiLocation] = useState(apiUrlStorage().read());
+    const [isEndpointReachable, setIsEndpointReachable] = useState(true);
 
     const isValidUrl = (string) => {
         let url;
@@ -39,6 +40,7 @@ const ApiUrlSelector = ({children}) => {
         let isSubscribed = true
         
         if( apiLocation === null || !isValidUrl(apiLocation)) {
+            setIsEndpointReachable(true); // Nothing to reach
             setIsEndpointValid(false);
         } else {
             setProgress(true);
@@ -63,15 +65,15 @@ const ApiUrlSelector = ({children}) => {
                                 new storageValue('tracardi-api-urls').save(historicalEndpoints, []);
                             }
                         }
-                        setIsEndpointValid(true)
+                        setIsEndpointReachable(true)
                     } else {
-                        setIsEndpointValid(false)
+                        setIsEndpointReachable(false)
                     }
                 }
             ).catch((e) => {
                 if(isSubscribed) {
                     setFailed(true)
-                    setIsEndpointValid(false)
+                    setIsEndpointReachable(false)
                 }
 
             }).finally(() => {
@@ -100,18 +102,18 @@ const ApiUrlSelector = ({children}) => {
                 <BsHddNetwork size={50} style={{color: "#666"}}/>
                 <h1 style={{fontWeight: 300}}>Select TRACARDI server</h1>
                 <p>Type or select TRACARDI API Url.</p>
-                <div style={{width: 400, display: "flex", alignItems: "flex-end", marginBottom: !isEndpointValid && apiLocation ? 0 : 22}}>
+                <div style={{width: 400, display: "flex", alignItems: "flex-end", marginBottom: (!isEndpointValid || !isEndpointReachable) && apiLocation ? 0 : 22}}>
                     <TuiApiUrlInput
                         value={apiLocation || apiUrlStorage().read([])}
                         options={new storageValue('tracardi-api-urls').read() || []}
                         onChange={(v) => setEndpoint(v)}
-                        errorMessage={!isEndpointValid && apiLocation && "Given API URL is invalid."}
+                        errorMessage={apiLocation && (!isEndpointReachable ? "Given API URL is not reachable" : isEndpointValid ? null : "Given API URL is invalid")}
                         />          
                     <Button label="Select"
                             onClick={()=> setApiLocation(endpoint)}
                             progress={progress}
                             error={failed}
-                            style={{height: 38, marginBottom: !isEndpointValid && apiLocation ? 31 : 9}}
+                            style={{height: 38, marginBottom: (!isEndpointValid || !isEndpointReachable) && apiLocation ? 31 : 9}}
                     />
                 </div>
             </div>
