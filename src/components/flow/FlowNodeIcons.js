@@ -2,14 +2,13 @@ import {BiGitRepoForked} from "react-icons/bi";
 import React from "react";
 import {FiDatabase, FiMapPin, FiAlertTriangle} from "react-icons/fi";
 import {
-    BsDiamond,
     BsPerson,
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
     BsBoxArrowInRight
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
-import {MdTimelapse, MdTransform} from "react-icons/md";
+import {MdTimelapse, MdTransform, MdCallSplit} from "react-icons/md";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
 import {
     BiMessageRoundedError,
@@ -106,7 +105,7 @@ export const icons = {
     "json": (size) => <VscJson size={size}/>,
     "split": (size) => <BiGitRepoForked size={size} style={{transform: "rotateX(180deg)"}}/>,
     "join": (size) => <BiGitRepoForked size={size}/>,
-    "if": (size) => <BsDiamond size={size}/>,
+    "if": (size) => <MdCallSplit size={size} style={{transform: "rotateX(180deg)"}}/>,
     'event': (size) => <VscSymbolEvent size={size}/>,
     "copy": (size) => <VscCopy size={size}/>,
     "debug": (size) => <VscDebugAlt size={size}/>,

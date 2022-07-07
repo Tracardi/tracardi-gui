@@ -34,6 +34,7 @@ import ErrorsBox from "../errors/ErrorsBox";
 import {useHistory} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import EdgeDetails from "./EdgeDetails";
+import CondNode from "./CondNode";
 
 const ModifiedTag = () => {
     return <span style={{
@@ -201,7 +202,8 @@ export function FlowEditorPane(
     const nodeTypes = {
         flowNode: FlowNode,
         flowNodeWithEvents: FlowNodeWithEvents,
-        startNode: StartNode
+        startNode: StartNode,
+        condNode: CondNode
     };
 
     const edgeTypes = {

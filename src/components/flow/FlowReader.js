@@ -8,6 +8,7 @@ import FlowNode from "./FlowNode";
 import FlowNodeWithEvents from "./FlowNodeWithEvents";
 import StartNode from "./StartNode";
 import {asyncRemote, getError} from "../../remote_api/entrypoint";
+import CondNode from "./CondNode";
 
 export function FlowReader({showAlert}) {
 
@@ -16,7 +17,8 @@ export function FlowReader({showAlert}) {
     const nodeTypes = {
         flowNode: FlowNode,
         flowNodeWithEvents: FlowNodeWithEvents,
-        startNode: StartNode
+        startNode: StartNode,
+        condNode: CondNode
     };
 
     const [elements, setElements] = useState(null);

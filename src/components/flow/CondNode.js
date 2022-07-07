@@ -7,7 +7,7 @@ import {ExecutionSeqNumber} from "./NodeAlerts";
 import FlowNodeIcons from "./FlowNodeIcons";
 
 
-const StartNodeDynamic = ({data}) => {
+const CondNodeDynamic = ({data}) => {
 
     const InputPort = ({value, doc, style}) => {
 
@@ -33,7 +33,7 @@ const StartNodeDynamic = ({data}) => {
 
     const Inputs = ({spec, documentation, style}) => {
         if (spec?.inputs) {
-            return <div className="NodePorts" style={{marginBottom: "-10px"}}>
+            return <div className="NodePorts" style={{marginBottom: "-7px"}}>
                 {
                     spec.inputs.map((value, index) => {
                         const doc = isObject(documentation) && value in documentation ? documentation[value].desc : null
@@ -71,7 +71,7 @@ const StartNodeDynamic = ({data}) => {
     const Outputs = ({spec, documentation, style}) => {
 
         if (spec?.outputs) {
-            return <div className="NodePorts" style={{marginTop: "-10px"}}>
+            return <div className="CondNodePorts" style={{marginTop: "-7px", position: "relative"}}>
                 {
                     spec.outputs.map((value, index) => {
                         const doc = isObject(documentation) && value in documentation ? documentation[value].desc : null
@@ -83,27 +83,28 @@ const StartNodeDynamic = ({data}) => {
         return "Error no spec"
     }
 
-    const nodeClass = (data?.metadata?.selected === true) ? "StartNode DebugNode" : "StartNode"
+    const nodeClass = (data?.metadata?.selected === true) ? "CondNode DebugNode" : "CondNode"
     const nodeStyle = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {borderColor: "#ccc", color: "#999"} : {}
     const portStyle = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {borderColor: "#ccc"} : {borderColor: "#1565c0", borderWidth: 2}
 
     return (
-        <div className="CondContainer">
+        <div className="CondContainer" style={{gap: 15}}>
             <div style={{display: "flex", alignItems: "center"}}>
                 {Array.isArray(data?.spec?.init?.event_types) && <div className="NodeInboundEvents">
                     {data?.spec?.init?.event_types.map((eventObj, idx)  => <span className="Event" key={idx}>{eventObj.name}</span>)}
                 </div>}
-                <div>
+                <div style={{position: "relative"}}>
                     {data?.spec?.run_once?.enabled && <ThresholdIcon/>}
                     <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={portStyle}/>
-
+                    <ExecutionSeqNumber data={data} style={{top: 21, right: -14, zIndex: 2}}/>
                     <div className={nodeClass} style={nodeStyle}>
-                        <ExecutionSeqNumber data={data} style={{top: 13, right: -9}}/>
-                        <div className="NodePadding" style={{padding: 10}}>
+
+                        <div className="NodePadding">
                             <FlowNodeIcons icon={data?.metadata?.icon} size={24}/>
                         </div>
                     </div>
                     <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={portStyle}/>
+
                 </div>
             </div>
             <div className="CondTitle">{data?.metadata?.name}</div>
@@ -111,5 +112,5 @@ const StartNodeDynamic = ({data}) => {
     );
 };
 
-const StartNode = React.memo(StartNodeDynamic);
-export default StartNode;
+const CondNode = React.memo(CondNodeDynamic);
+export default CondNode;
