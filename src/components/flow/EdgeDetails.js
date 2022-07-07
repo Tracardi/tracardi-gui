@@ -23,13 +23,13 @@ const EdgeDetails = React.memo(({edge, onLabelSubmit}) => {
         </div>
         <div className="NodeDetailsContent">
             <div className="Title">
-                    <FilterTextField label="Edge name"
+                    <FilterTextField label="Connection name"
                                      initValue={edge?.data?.name ? edge?.data?.name : ""}
                                      onSubmit={handleSubmit}/>
 
             </div>
             <div className="Pane">
-                {tab === 0 && <ConsoleView label="Edge JSON object" data={edge}/>}
+                {tab === 0 && <ConsoleView label="Connection raw data" data={edge}/>}
             </div>
         </div>
 

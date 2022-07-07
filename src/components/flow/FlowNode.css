@@ -131,7 +131,7 @@ DIV.StartNode {
     display: flex;
     flex-direction: row;
     border-style: solid;
-    border-radius: 15px;
+    border-radius: 50%;
     border-width: 2px;
     background-color: white;
     position: relative;

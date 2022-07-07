@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {Handle} from 'react-flow-renderer';
 import './FlowNode.css';
 import ThresholdIcon from "./ThresholdIcon";
-import {BsPlayCircleFill} from "react-icons/bs";
 import {isObject} from "../../misc/typeChecking";
 import {ExecutionSeqNumber} from "./NodeAlerts";
+import FlowNodeIcons from "./FlowNodeIcons";
 
 
 const StartNodeDynamic = ({data}) => {
@@ -99,8 +99,8 @@ const StartNodeDynamic = ({data}) => {
 
                     <div className={nodeClass} style={nodeStyle}>
                         <ExecutionSeqNumber data={data} style={{top: 9, right: -16}}/>
-                        <div className="NodePadding">
-                            <BsPlayCircleFill size={24} style={{margin: 10}}/>
+                        <div className="NodePadding" style={{padding: 10}}>
+                            <FlowNodeIcons icon={data?.metadata?.icon} size={24}/>
                         </div>
                     </div>
                     <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={portStyle}/>

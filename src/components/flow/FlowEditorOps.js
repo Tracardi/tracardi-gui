@@ -101,6 +101,7 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                     }
 
                     if (isEdge(element)) {
+
                         if(data?.data?.debugInfo?.edges) {
                             const edge_info = data.data?.debugInfo?.edges[element.id]
                             if (edge_info) {
@@ -112,16 +113,16 @@ export function debug(id, reactFlowInstance, onError, progress, onReady) {
                                     element.label = null
                                     element.type="stop";
                                     element.animated = false;
-                                    element.style = {...element.style, stroke: '#aaa', strokeWidth: 3}
+                                    element.style = {...element.style, stroke: '#aaa', strokeWidth: 2}
                                 } else if (edge_info.active.includes(true) && !edge_info.active.includes(false)) {
                                     element.label = null
                                     element.animated = true
-                                    element.style = {...element.style,  stroke: 'green', strokeWidth: 3};
+                                    element.style = {...element.style,  stroke: 'green', strokeWidth: 2};
                                     element.type="info";
                                 } else {
                                     element.label = null
                                     element.animated = true
-                                    element.style = {...element.style, stroke: '#aaa', strokeWidth: 3 }
+                                    element.style = {...element.style, stroke: '#aaa', strokeWidth: 2 }
                                     element.type=null;
                                 }
                             } else {

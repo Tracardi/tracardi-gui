@@ -9,7 +9,7 @@ import {
     BsBoxArrowInRight
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
-import {MdTimelapse} from "react-icons/md";
+import {MdTimelapse, MdTransform} from "react-icons/md";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
 import {
     BiMessageRoundedError,
@@ -216,7 +216,8 @@ export const icons = {
     "civicrm": (size) => <SiCivicrm size={size}/>,
     "active-campaign": (size) => <ActiveCampaign size={size}/>,
     "source": (size) => <BsBoxArrowInRight size={size}/>,
-    "salesforce": (size) => <FaSalesforce size={size}/>
+    "salesforce": (size) => <FaSalesforce size={size}/>,
+    "transform": (size) => <MdTransform size={size}/>
 }
 
 
