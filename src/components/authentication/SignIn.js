@@ -64,7 +64,7 @@ const SignInForm = ({showAlert}) => {
     const ver = version()
     const [errorMessage, setErrorMessage] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [apiUrl, setApiUrl] = useState(getApiUrl());
+    const apiUrl = getApiUrl();
 
     useEffect(() => {
         setLoading(true);
