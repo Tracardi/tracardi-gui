@@ -98,9 +98,8 @@ const CondNodeDynamic = ({data}) => {
                     <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={portStyle}/>
                     <ExecutionSeqNumber data={data} style={{top: 21, right: -14, zIndex: 2}}/>
                     <div className={nodeClass} style={nodeStyle}>
-
                         <div className="NodePadding">
-                            <FlowNodeIcons icon={data?.metadata?.icon} size={24}/>
+                            <span style={{transform: "rotate(45deg)"}}><FlowNodeIcons icon={data?.metadata?.icon} size={24}/></span>
                         </div>
                     </div>
                     <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={portStyle}/>

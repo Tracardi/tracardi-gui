@@ -181,7 +181,7 @@ DIV.CondTitle {
 }
 
 DIV.NodePadding {
-    padding: 7px;
+    padding: 5px;
     width: inherit;
     display: flex;
     align-items: center;
