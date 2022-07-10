@@ -26,14 +26,11 @@ const ApiUrlSelector = ({children}) => {
       }
 
     useEffect(() => {
-        let isSubscribed = true;
-
         let urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has("api_url")) {
             let apiUrl = urlParams.get("api_url");
             setApiLocation(apiUrl);
-            return () => isSubscribed = false;
-        } else return () => isSubscribed = false;
+        }
     }, [])
 
     useEffect(() => {

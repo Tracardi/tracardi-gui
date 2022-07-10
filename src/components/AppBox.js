@@ -94,6 +94,7 @@ const AppBox = () => {
                       tabs={[
                           new PrivateTab(["admin", "developer"],
                               <EventManagement/>, "/management/event", "Event types"),
+                          new PrivateTab(["admin", "developer", "marketer"], <EventTags/>, "/settings/event-tags", "Event tags"),
                       ]}
             />
         </PrivateRoute>
@@ -167,7 +168,6 @@ const AppBox = () => {
                               new PrivateTab(["admin", "developer"], <ActionPlugins/>, "/settings/plugins", "Workflow actions"),
                               new PrivateTab(["admin", "developer"], <Settings/>, "/settings/system", "System settings"),
                               new PrivateTab(["admin"], <Users/>, "/settings/users", "Users"),
-                              new PrivateTab(["admin", "developer", "marketer"], <EventTags/>, "/settings/event-tags", "Event tags"),
                           ]}
             />
 
