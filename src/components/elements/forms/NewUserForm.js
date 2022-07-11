@@ -21,6 +21,7 @@ export default function NewUserForm({ onSubmit}) {
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState(null);
+    const [expirationOffset, setExpirationOffset] = React.useState("");
     const mounted = React.useRef(false);
 
     const handleSave = async () => {
@@ -42,7 +43,8 @@ export default function NewUserForm({ onSubmit}) {
                         roles: rolesToSend,
                         disabled: !enabled,
                         full_name: fullName,
-                        email: email
+                        email: email,
+                        expiration_offset: expirationOffset ? expirationOffset : null
                     }
                 })
 
@@ -132,6 +134,21 @@ export default function NewUserForm({ onSubmit}) {
                 <TuiFormGroupField>
                     <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Switch size="medium" checked={enabled} onChange={() => setEnabled(!enabled)}/>} label="Activate user account"/>
                 </TuiFormGroupField>
+            </TuiFormGroup>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Set account expiration offset" description="You can provide expiration offset for this account. Setting this to +15m will cause the account to be expired after 15 minutes from now. Make sure that it's in correct format."/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField>
+                        <TextField
+                                fullWidth
+                                variant="outlined"
+                                label="Expiration offset"
+                                value={expirationOffset}
+                                onChange={event => setExpirationOffset(event.target.value)}
+                                size="small"
+                            />
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
             </TuiFormGroup>
             <Button label="Save" onClick={handleSave} progress={loading} style={{justifyContent: "center"}} error={error || errorMessage}/>
         </TuiForm>

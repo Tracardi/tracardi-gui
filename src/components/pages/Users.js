@@ -52,7 +52,7 @@ function UserCards({users, setUserToEdit, onDelete}) {
                     onClick={() => setUserToEdit(user)}
                     onEdit={() => setUserToEdit(user)}
                     onDelete={() => handleUserDelete(user)}
-                    icon={<BsPersonCircle size={40}/>}
+                    icon={<BsPersonCircle size={40} color={user.expired ? "#bbb" : "#666"}/>}
                 />
             )}
         </div>
@@ -108,7 +108,10 @@ export default function Users() {
         return <TuiForm style={{margin: 20}}>
 
             <TuiFormGroup fitHeight={true}>
-                <TuiFormGroupHeader header="Users" description="List of users registered in the system. Active user accounts have a green dash."/>
+                <TuiFormGroupHeader 
+                    header="Users" 
+                    description="List of users registered in the system. Active user accounts have a green dash. Icons of expired accounts are grayed out."
+                />
                 <TuiFormGroupContent>
                     <TuiFormGroupField>
 
