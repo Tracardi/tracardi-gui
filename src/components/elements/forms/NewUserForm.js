@@ -136,7 +136,7 @@ export default function NewUserForm({ onSubmit}) {
                 </TuiFormGroupField>
             </TuiFormGroup>
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Set account expiration offset" description="You can provide expiration offset for this account. Setting this to +15m will cause the account to be expired after 15 minutes from now. Make sure that it's in correct format."/>
+                <TuiFormGroupHeader header="Set account expiration offset" description="You can optionally provide expiration offset for this account. Setting this to +15m will cause the account to be expired after 15 minutes from now. Make sure that it's in correct format."/>
                 <TuiFormGroupContent>
                     <TuiFormGroupField>
                         <TextField
