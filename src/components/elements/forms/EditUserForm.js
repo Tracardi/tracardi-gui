@@ -20,7 +20,7 @@ export default function EditUserForm({ user, onSubmit}) {
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState(null);
-    const [expirationOffset, setExpirationOffset] = React.useState("");
+    const [expirationDate, setExpirationDate] = React.useState(user.expiration_timestamp ? new Date(user.expiration_timestamp * 1000).toISOString().slice(0, 10) : "");
     const mounted = React.useRef(false);
 
     const handleSave = async () => {
@@ -43,7 +43,7 @@ export default function EditUserForm({ user, onSubmit}) {
                         email: email,
                         roles: rolesToSend,
                         disabled: !enabled,
-                        expiration_offset: expirationOffset ? expirationOffset : null
+                        expiration_date: expirationDate ? expirationDate : null
                     }
                 })
 
@@ -140,15 +140,15 @@ export default function EditUserForm({ user, onSubmit}) {
                 </TuiFormGroupField>
             </TuiFormGroup>
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Set account expiration offset" description="You can optionally provide expiration offset for this account. Setting this to +15m will cause the account to be expired after 15 minutes from now. Make sure that it's in correct format."/>
+                <TuiFormGroupHeader header="Set account expiration date" description="You can optionally provide expiration date for this account. This date should be in format YYYY-MM-DD"/>
                 <TuiFormGroupContent>
                     <TuiFormGroupField>
                         <TextField
                                 fullWidth
                                 variant="outlined"
-                                label="Expiration offset"
-                                value={expirationOffset}
-                                onChange={event => setExpirationOffset(event.target.value)}
+                                label="Expiration date"
+                                value={expirationDate}
+                                onChange={event => setExpirationDate(event.target.value)}
                                 size="small"
                             />
                     </TuiFormGroupField>
