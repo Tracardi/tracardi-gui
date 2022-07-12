@@ -35,6 +35,7 @@ import ImportTasks from "./pages/ImportTasks";
 import ProRouter from "./pages/pro/ProRouter";
 import ElasticClusterHealthInfo from "./pages/ElasticClusterHealthInfo";
 import ElasticIndicesInfo from "./pages/ElasticIndicesInfo";
+import Migrations from "./pages/Migrations";
 import {BsStar} from "react-icons/bs";
 
 const AppBox = () => {
@@ -168,6 +169,7 @@ const AppBox = () => {
                               new PrivateTab(["admin", "developer"], <ActionPlugins/>, "/settings/plugins", "Workflow actions"),
                               new PrivateTab(["admin", "developer"], <Settings/>, "/settings/system", "System settings"),
                               new PrivateTab(["admin"], <Users/>, "/settings/users", "Users"),
+                              new PrivateTab(["admin", "developer", "data_admin"], <Migrations />,"/settings/migration", "Migration")
                           ]}
             />
 
