@@ -15,7 +15,7 @@ import NoData from "../elements/misc/NoData";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import {TextField, Checkbox, FormControlLabel} from "@mui/material";
 import Button from "../elements/forms/Button";
-import {useConfirm} from "material-ui-confirm";
+import BackgroundTasks from "./backgroundTasks";
 
 
 export default function Migrations() {
@@ -23,9 +23,10 @@ export default function Migrations() {
     const [availableMigrations, setAvailableMigrations] = React.useState(null);
     const [selectedMigration, setSelectedMigration] = React.useState(null);
     const [error, setError] = React.useState(null);
+    const [drawerWidth, setDrawerWidth] = React.useState(800);
+    const [drawerOpen, setDrawerOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const mounted = React.useRef(false);
-    const confirm = useConfirm();
 
     const MigrationForm = ({selectedMigration, onConfirm}) => {
 
@@ -64,34 +65,32 @@ export default function Migrations() {
             return () => formMounted.current = false;
         }, [selectedMigration, selectedCustomPrefix])
 
-        const handleStartMigration = () => {
+        const handleStartMigration = async () => {
             if (formMounted.current) {
                 setButtonError(null);
                 setButtonProgress(true);
             }
-            asyncRemote({
-                url: "/migration",
-                method: "POST",
-                data: {
-                    from_version: selectedMigration,
-                    from_prefix: selectedCustomPrefix ? selectedCustomPrefix : null,
-                    ids: selectedSchemas
+
+            try {
+                await asyncRemote({
+                    url: "/migration",
+                    method: "POST",
+                    data: {
+                        from_version: selectedMigration,
+                        from_prefix: selectedCustomPrefix ? selectedCustomPrefix : null,
+                        ids: selectedSchemas
+                    }
+                })
+
+                if(onConfirm instanceof Function) {
+                    onConfirm()
                 }
-            })
-                .then(response => {
-                    confirm({
-                        title: "Started migrations:",
-                        description: <>{response.data.started_migrations.map(element => <div>- {element[0]}</div>)}</>,
-                        cancellationText: null
-                    })
-                        .then(onConfirm)
-                })
-                .catch(e => {
-                    if (formMounted.current) setButtonError(getError(e));
-                })
-                .finally(() => {
-                    if (formMounted.current) setButtonProgress(false);
-                })
+
+            } catch(e) {
+                if (formMounted.current) setButtonError(getError(e));
+            } finally {
+                if (formMounted.current) setButtonProgress(false);
+            }
         }
 
         return <>
@@ -197,7 +196,7 @@ export default function Migrations() {
                                     id={migration}
                                     name={migration}
                                     description={`Migrate from ${migration}`}
-                                    onClick={() => setSelectedMigration(migration)}
+                                    onClick={() => {setSelectedMigration(migration); setDrawerOpen(true); setDrawerWidth(800)}}
                                     icon={<HiArrowNarrowRight size={60} color="#666"/>}
                                 />)
                             }
@@ -209,11 +208,23 @@ export default function Migrations() {
             </TuiFormGroup>
         </TuiForm>
         <FormDrawer
-            width={800}
-            open={!!selectedMigration}
-            onClose={() => setSelectedMigration(null)}
+            width={drawerWidth}
+            open={drawerOpen}
+            onClose={() => setDrawerOpen(false)}
         >
-            <MigrationForm selectedMigration={selectedMigration} onConfirm={() => setSelectedMigration(null)}/>
+            {selectedMigration && <MigrationForm selectedMigration={selectedMigration} onConfirm={() => {
+                setSelectedMigration(null);
+                setDrawerWidth(1600)
+            }}/>}
+            {!selectedMigration && <div style={{height: "100%"}}>
+                <div style={{padding:20, backgroundColor: "#d81b60", color: "white", marginBottom: 10 }}>
+                    <h1 style={{fontWeight: 300}}>The upgrade and data migration process has started.<br/>Below there are the background migration task that are currently running.</h1>
+                    <p>If you close this window all tasks will be still running until completion. The information on upgrade status can be found in Monitoring/Background Tasks</p>
+                </div>
+
+                <BackgroundTasks type="upgrade"/>
+
+            </div>}
         </FormDrawer>
     </>;
 }
