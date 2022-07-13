@@ -36,7 +36,7 @@ import ElasticClusterHealthInfo from "./pages/ElasticClusterHealthInfo";
 import ElasticIndicesInfo from "./pages/ElasticIndicesInfo";
 import Migrations from "./pages/Migrations";
 import {BsStar} from "react-icons/bs";
-import BackgroundTasks from "./pages/backgroundTasks";
+import BackgroundTasks from "./pages/BackgroundTasks";
 
 const AppBox = () => {
 

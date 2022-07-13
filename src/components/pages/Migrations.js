@@ -15,7 +15,7 @@ import NoData from "../elements/misc/NoData";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import {TextField, Checkbox, FormControlLabel} from "@mui/material";
 import Button from "../elements/forms/Button";
-import BackgroundTasks from "./backgroundTasks";
+import BackgroundTasks from "./BackgroundTasks";
 
 
 export default function Migrations() {
