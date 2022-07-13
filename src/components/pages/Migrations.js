@@ -218,8 +218,13 @@ export default function Migrations() {
             }}/>}
             {!selectedMigration && <div style={{height: "100%"}}>
                 <div style={{padding:20, backgroundColor: "#d81b60", color: "white", marginBottom: 10 }}>
-                    <h1 style={{fontWeight: 300}}>The upgrade and data migration process has started.<br/>Below there are the background migration task that are currently running.</h1>
-                    <p>If you close this window all tasks will be still running until completion. The information on upgrade status can be found in Monitoring/Background Tasks</p>
+                    <h1 style={{fontWeight: 300}}>The upgrade and data migration process has started.
+                        <br/>
+                        Below there are the background migration task that are currently running.
+                    </h1>
+                    <p>If you close this window all tasks will be still running until completion. The information on upgrade status can be found in Monitoring/Background Tasks.
+                        Please click refresh button if you can't see started tasks - delay may occur depending on
+                        Redis and Tracardi Worker setup.</p>
                 </div>
 
                 <BackgroundTasks type="upgrade"/>
