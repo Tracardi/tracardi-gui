@@ -138,6 +138,13 @@ const SignInForm = ({showAlert}) => {
         event.preventDefault();
     };
 
+
+    React.useEffect(() => {
+        mounted.current = true;
+        return () => mounted.current = false;
+    }, [])
+
+
     if (redirectToReferrer) {
         return <Redirect to={from}/>;
     }
