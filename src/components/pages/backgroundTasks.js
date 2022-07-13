@@ -3,7 +3,6 @@ import CardBrowser from "../elements/lists/CardBrowser";
 import DataRow from "../elements/lists/rows/DataRow";
 import ImportProgress from "../elements/misc/ImportProgress";
 import IconText from "../elements/misc/IconText";
-import {VscSymbolEvent} from "react-icons/vsc";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import {IoCloseCircle, IoPlayCircleOutline, IoRefreshCircle, IoCloseCircleOutline} from "react-icons/io5";
 import Button from "../elements/forms/Button";
@@ -31,10 +30,10 @@ function DeleteButton({id}) {
 
 }
 
-export default function ImportTasks() {
+export default function BackgroundTasks() {
 
     const [refresh, setRefresh] = useState(0);
-    const urlFunc = useCallback((query) => ('/tasks/type/import' + ((query) ? "?query=" + query : "")), []);
+    const urlFunc = useCallback((query) => ('/tasks' + ((query) ? "?query=" + query : "")), []);
 
     const RefreshButton = () => {
 
@@ -71,11 +70,7 @@ export default function ImportTasks() {
                                     <span style={{fontWeight: 500, fontSize: 16}}>{row.name}</span>
                                     <span style={{display: "flex", fontSize: 13, marginRight: 5}}>
                                         <IconText color="#aaa"
-                                                  style={{marginLeft: 15}}>{row?.params?.import_type || "n/a"}</IconText>
-                                        <IconText color="#1976d2"
-                                                  icon={<VscSymbolEvent size={20} style={{color: "white"}}/>}
-                                                  style={{marginLeft: 5}}
-                                        >{row?.params?.event_type || "n/a"}</IconText>
+                                                  style={{marginLeft: 15}}>{row.type || "n/a"}</IconText>
                                     </span>
                                 </div>
                             </div>
@@ -89,9 +84,9 @@ export default function ImportTasks() {
     return <>
         <div style={{display: "flex", justifyContent: "flex-end", margin: "0 15px"}}><RefreshButton/></div>
         <CardBrowser
-            label="Import tasks"
+            label="Background tasks"
             defaultLayout="rows"
-            description="List of running and completed import tasks."
+            description="List of running and completed background tasks."
             urlFunc={urlFunc}
             rowFunc={rows}
             className="Pad10"

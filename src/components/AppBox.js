@@ -37,6 +37,7 @@ import ElasticClusterHealthInfo from "./pages/ElasticClusterHealthInfo";
 import ElasticIndicesInfo from "./pages/ElasticIndicesInfo";
 import Migrations from "./pages/Migrations";
 import {BsStar} from "react-icons/bs";
+import BackgroundTasks from "./pages/backgroundTasks";
 
 const AppBox = () => {
 
@@ -148,6 +149,7 @@ const AppBox = () => {
                       tabs={[
                           new PrivateTab(["admin", "data_admin"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
                           new PrivateTab(["admin", "data_admin"], <Instances/>, "/monitoring/instances", "Running instances"),
+                          new PrivateTab(["admin", "developer"], <BackgroundTasks/>, "/monitoring/background/tasks", "Background tasks"),
                           new PrivateTab(["admin", "data_admin"], <UserLogs/>, "/monitoring/user-log", "User logs"),
                           new PrivateTab(["data_admin"], <ElasticClusterHealthInfo/>, "/monitoring/elastic-cluster", "Elasticsearch cluster"),
                           new PrivateTab(["data_admin"], <ElasticIndicesInfo/>, "/monitoring/elastic-indices", "Elasticsearch indices")
