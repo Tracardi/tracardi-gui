@@ -2,7 +2,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import React, {useEffect, useState} from "react";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 
-export default function ImportProgress({taskId, refreshInterval = 5}) {
+export default function BackgroundTaskProgress({taskId, refreshInterval = 5}) {
 
     const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);

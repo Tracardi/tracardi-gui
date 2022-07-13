@@ -31,7 +31,6 @@ import PrivateTab from "./authentication/PrivateTab";
 import UserAccount from "./pages/UserAccount";
 import LogsAnalytics from "./pages/LogsAnalytics";
 import ImportSources from "./pages/ImportSources";
-import ImportTasks from "./pages/ImportTasks";
 import ProRouter from "./pages/pro/ProRouter";
 import ElasticClusterHealthInfo from "./pages/ElasticClusterHealthInfo";
 import ElasticIndicesInfo from "./pages/ElasticIndicesInfo";
@@ -85,7 +84,7 @@ const AppBox = () => {
             <PageTabs title="Import and Export"
                       tabs={[
                           new PrivateTab(["admin", "developer"], <ImportSources/>, "/import/sources", "Import sources"),
-                          new PrivateTab(["admin", "developer"], <ImportTasks/>, "/import/tasks", "Running imports"),
+                          new PrivateTab(["admin", "developer"], <BackgroundTasks type="import"/>, "/import/tasks", "Running imports"),
                       ]}
             />
         </PrivateRoute>

@@ -7,7 +7,7 @@ import {Column} from "react-vt-table";
 import {Button} from "@mui/material";
 import DotAccessor from "../elements/forms/inputs/DotAccessor";
 import TuiSelectMultiConsentType from "../elements/tui/TuiSelectMultiConsentType";
-import ImportProgress from "../elements/misc/ImportProgress";
+import BackgroundTaskProgress from "../elements/misc/BackgroundTaskProgress";
 import { ConsentTypes } from "../elements/forms/JsonFormComponents";
 import JsonForm from "../elements/forms/JsonForm";
 
@@ -32,7 +32,7 @@ export default function TryOut() {
           <DotAccessor label="E-mail" value={v} onChange={(e)=>{console.log("READY", e);setV(e)}}/>
           <Button onClick={()=>setV("test")}>xxx</Button>
     <div style={{height: "100%", overflow: "auto"}}>
-        <ImportProgress taskId="baf6d467-df07-4d94-966a-aac6a034321s"/>
+        <BackgroundTaskProgress taskId="baf6d467-df07-4d94-966a-aac6a034321s"/>
         <Table data={data} disableHeader={false}>
             <Column dataKey="id" label="ID" width={20}/>
             <Column dataKey="title" label="Title" />

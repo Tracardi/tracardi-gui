@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from "react";
 import CardBrowser from "../elements/lists/CardBrowser";
 import DataRow from "../elements/lists/rows/DataRow";
-import ImportProgress from "../elements/misc/ImportProgress";
+import BackgroundTaskProgress from "../elements/misc/BackgroundTaskProgress";
 import IconText from "../elements/misc/IconText";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import {IoCloseCircle, IoPlayCircleOutline, IoRefreshCircle, IoCloseCircleOutline} from "react-icons/io5";
@@ -30,10 +30,15 @@ function DeleteButton({id}) {
 
 }
 
-export default function BackgroundTasks() {
+export default function BackgroundTasks({type=null}) {
 
     const [refresh, setRefresh] = useState(0);
-    const urlFunc = useCallback((query) => ('/tasks' + ((query) ? "?query=" + query : "")), []);
+    const urlFunc = useCallback((query) => {
+        if(type) {
+            return '/tasks/type/' + type + ((query) ? "?query=" + query : "")
+        }
+        return '/tasks' + ((query) ? "?query=" + query : "")
+    }, []);
 
     const RefreshButton = () => {
 
@@ -53,10 +58,11 @@ export default function BackgroundTasks() {
                     {plugs.map((row, subIndex) => {
                         return <DataRow key={index + "-" + subIndex}
                                         id={row?.task_id}
-                            // onClick={() => onClick(row?.id)}
+                                        // Uncomment for task info drawer
+                                        // onClick={() => onClick(row?.id)}
                                         actions={[
                                             (id) => <div style={{width: 200, margin: "2px 10px"}}>
-                                                <ImportProgress taskId={id}/>
+                                                <BackgroundTaskProgress taskId={id}/>
                                             </div>,
                                             (id) => <DeleteButton id={id}/>
                                         ]}
