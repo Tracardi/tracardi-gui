@@ -17,7 +17,7 @@ export function TuiSelectEventSource({
         }
     };
 
-    const changeProp = onlyValueWithOptions ? {onSetValue: handleValueSet} : {onChange: handleValueSet};
+    const changeProp = onlyValueWithOptions ? {onSetValue: handleValueSet} : {onChange: handleValueSet, onSetValue: handleValueSet};
 
     return <div>
         <AutoComplete disabled={disabled}

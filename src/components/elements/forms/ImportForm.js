@@ -174,7 +174,7 @@ export default function ImportForm({onSubmit}) {
                             <TuiSelectEventSource value={eventSource.current}
                                                   fullWidth={true}
                                                   onlyValueWithOptions={false}
-                                                  onSetValue={(value) => eventSource.current = value}
+                                                  onSetValue={(value) => {eventSource.current = value; console.log(eventSource.current);}}
                                                   errorMessage={isObject(formError) && "event_source.id" in formError ? formError['event_source.id'] : null}
                             />
                         </div>
