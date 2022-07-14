@@ -47,12 +47,21 @@ export default function BackgroundTaskProgress({taskId, refreshInterval = 5}) {
         return <>Connection lost<LinearProgress color={"secondary"}/></>
     }
 
+    const normalizeProgress = () => {
+        let current = status?.progress?.current ? status.progress.current : 0;
+        let total = status?.progress?.total ? status.progress.total : 100;
+        return Math.floor(current * 1.0 / total * 100);
+    }
+
     if (status?.progress?.current) {
+
+        const progress = normalizeProgress();
+
         return <>
             {status?.status}
             <LinearProgress
             variant="determinate"
-            value={status?.progress?.current || 0}
+            value={progress}
         /></>
     }
 
