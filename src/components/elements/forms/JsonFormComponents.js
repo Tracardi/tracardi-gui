@@ -390,7 +390,7 @@ export function EventTypes({value: initValue, onChange = null}) {
     return <TuiMultiSelectEventType value={value} label="Event types" onSetValue={handleChange} fullWidth={true}/>
 }
 
-export function EventType({value: initValue, errorMessage, onChange = null}) {
+export function EventType({value: initValue, errorMessage, onChange = null, props}) {
 
     const [value, setValue] = useState(initValue);
 
@@ -406,6 +406,7 @@ export function EventType({value: initValue, errorMessage, onChange = null}) {
                                onSetValue={handleChange}
                                fullWidth={true}
                                errorMessage={errorMessage}
+                               {...props}
     />
 }
 
