@@ -7,6 +7,7 @@ import {getApiUrl, resetApiUrlConfig} from "../../../remote_api/entrypoint";
 import ReadOnlyInput from "../../elements/forms/ReadOnlyInput";
 import {logout} from "../../authentication/login";
 import SponsorButton from "../../elements/misc/SponsorButton";
+import {track} from "../../../remote_api/track";
 
 export default function PageTabs({title, tabs = {}}) {
 
@@ -26,10 +27,13 @@ export default function PageTabs({title, tabs = {}}) {
             <h1 className="Title">{title}</h1>
             <span className="Info">
                 <SponsorButton/>
-                <ReadOnlyInput label="Tracardi API"
-                               value={getApiUrl()}
-                               onReset={handleEndpointReset}/>
-                               <NeedHelpButton/>
+                <ReadOnlyInput
+                    label="Tracardi API"
+                    value={getApiUrl()}
+                    onReset={handleEndpointReset}/>
+                <span onMouseEnter={()=> {
+                    track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-need-help', {}).then(() => {})
+                }}><NeedHelpButton/></span>
             </span>
 
         </div>

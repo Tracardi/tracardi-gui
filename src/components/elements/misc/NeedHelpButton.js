@@ -23,7 +23,7 @@ export default function NeedHelpButton() {
                 <div>
                     <Button label="Need help?"
                             icon={<IoShareSocial size={20}/>}
-                            style={{padding: "6px 14px", marginBottom: 9, marginLeft: 5}} {...bindTrigger(popupState)}></Button>
+                            style={{padding: "6px 14px", marginBottom: 9, marginLeft: 5}} {...bindTrigger(popupState)} />
                     <Popover
                         {...bindPopover(popupState)}
                         anchorOrigin={{
@@ -43,7 +43,7 @@ export default function NeedHelpButton() {
                                     <Button label="Twitter"
                                             onClick={external("https://twitter.com/tracardi", true)}
                                             icon={<IoLogoTwitter size={20}/>}
-                                    ></Button>
+                                    />
                                 </div>
 
                             </div>
@@ -54,7 +54,7 @@ export default function NeedHelpButton() {
                                     <Button label="Documentation"
                                             onClick={external("http://docs.tracardi.com", true)}
                                             icon={<IoDocumentTextOutline size={20}/>}
-                                    ></Button>
+                                    />
                                 </div>
                             </div>
 
@@ -64,7 +64,7 @@ export default function NeedHelpButton() {
                                     <Button label="YouTube tutorials"
                                             icon={<IoLogoYoutube size={20}/>}
                                             onClick={external("https://www.youtube.com/channel/UC0atjYqW43MdqNiSJBvN__Q", true)}
-                                    ></Button>
+                                    />
                                 </div>
 
                             </div>
@@ -75,7 +75,7 @@ export default function NeedHelpButton() {
                                     <Button label="Join slack channel"
                                             icon={<AiOutlineSlack size={20}/>}
                                             onClick={external("https://join.slack.com/t/tracardi/shared_invite/zt-10y7w0o9y-PmCBnK9qywchmd1~KIER2Q", true)}
-                                            ></Button>
+                                            />
                                 </div>
 
                             </div>
@@ -86,7 +86,7 @@ export default function NeedHelpButton() {
                                 <Button label="Visit github"
                                         icon={<BsGithub size={20}/>}
                                         onClick={external("https://github.com/tracardi/tracardi", true)}
-                                        ></Button>
+                                        />
                                 </div>
                             </div>
                         </div>
