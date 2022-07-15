@@ -162,7 +162,7 @@ export default function ImportForm({onSubmit}) {
                         <div style={{width: 500}}>
                             <TuiApiUrlInput
                                 value={apiUrl.current}
-                                options={new storageValue('tracardi-api-urls').read() || []}
+                                options={new storageValue('tracardi-api-urls').read([])}
                                 onChange={(value) => apiUrl.current = value}
                                 errorMessage={isObject(formError) && "api_url" in formError ? formError['api_url'] : null}
                             />

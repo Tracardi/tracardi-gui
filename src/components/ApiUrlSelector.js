@@ -53,9 +53,6 @@ const ApiUrlSelector = ({children}) => {
                         apiUrlStorage().save(apiLocation)
 
                         let historicalEndpoints = new storageValue('tracardi-api-urls').read([]);
-                        if (historicalEndpoints === null) {
-                            historicalEndpoints = [];
-                        }
                         if (!historicalEndpoints.includes(apiLocation)) {
                             if (apiLocation !== null) {
                                 historicalEndpoints.push(apiLocation);
@@ -104,8 +101,8 @@ const ApiUrlSelector = ({children}) => {
                 <p>Type or select TRACARDI API Url.</p>
                 <div style={{width: 400, display: "flex", alignItems: "flex-end", marginBottom: (!isEndpointValid || !isEndpointReachable) && apiLocation ? 0 : 22}}>
                     <TuiApiUrlInput
-                        value={apiLocation || apiUrlStorage().read([])}
-                        options={new storageValue('tracardi-api-urls').read() || []}
+                        value={apiLocation || apiUrlStorage().read() || ""}
+                        options={new storageValue('tracardi-api-urls').read([])}
                         onChange={(v) => setEndpoint(v)}
                         errorMessage={apiLocation && (!isEndpointReachable ? "Given API URL is not reachable" : isEndpointValid ? null : "Given API URL is invalid")}
                         />          

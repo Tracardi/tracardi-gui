@@ -190,7 +190,7 @@ export default function ImportEditForm({onSubmit, importConfig}) {
                         <div style={{width: 500}}>
                             <TuiApiUrlInput
                                 value={apiUrl.current}
-                                options={new storageValue('tracardi-api-urls').read() || []}
+                                options={new storageValue('tracardi-api-urls').read([])}
                                 onChange={(value) => apiUrl.current = value}
                         /></div>
                     </TuiFormGroupField>

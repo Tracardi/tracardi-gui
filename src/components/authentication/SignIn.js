@@ -20,6 +20,7 @@ import {asyncRemote, getApiUrl, resetApiUrlConfig, setApiUrl as setStoredApiUrl}
 import Button from "../elements/forms/Button";
 import PasswordInput from "../elements/forms/inputs/PasswordInput";
 import ReadOnlyInput from "../elements/forms/ReadOnlyInput";
+import {track} from "../../remote_api/track";
 
 function Copyright() {
     return (
@@ -112,7 +113,12 @@ const SignInForm = ({showAlert}) => {
         window.location.reload()
     }
 
-    const handleSubmit = event => {
+    const handleSubmit = async (event) => {
+
+        track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-login', {
+            email, apiUrl
+        }).then(() => {})
+
         const api = loginUser(email, password);
         setProgress(true);
         api.then(response => {
