@@ -6,13 +6,13 @@ import ErrorLine from "../../errors/ErrorLine";
 import DotAccessor from "./inputs/DotAccessor";
 
 
-const ListOfDottedInputs = ({onChange, label = "Value", value, errorMessage}) => {
+const ListOfDottedInputs = ({onChange, label = "Value", value, errorMessage, allowDuplicates=false}) => {
 
     const [inputValue, setInputValue] = useState('')
     const [listOfValues, setListOfValues] = useState(value || [])
 
     const handleAdd = () => {
-        if(!listOfValues.includes(inputValue)) {
+        if(allowDuplicates || !listOfValues.includes(inputValue)) {
             const newValues = [...listOfValues, inputValue]
             setListOfValues(newValues)
             if(onChange) {
@@ -21,10 +21,8 @@ const ListOfDottedInputs = ({onChange, label = "Value", value, errorMessage}) =>
         }
     }
 
-    const handleDelete = (value) => {
-        const values = listOfValues.filter((element) => {
-            return element !== value;
-        });
+    const handleDelete = (index) => {
+        const values = listOfValues.filter((_, idx) => idx !== index);
         setListOfValues(values);
         if(onChange) {
             onChange(values);
@@ -40,7 +38,7 @@ const ListOfDottedInputs = ({onChange, label = "Value", value, errorMessage}) =>
         <fieldset style={errorMessage ? {borderColor: "red"} : {}}>
             <legend style={errorMessage ? {color: "red"} : {}}>List of values</legend>
             <div className="Values">
-                {listOfValues.map((value, idx) => <DottedValue key={idx} onDelete={handleDelete}>{value}</DottedValue>)}
+                {listOfValues.map((value, idx) => <DottedValue key={idx} onDelete={(_) => handleDelete(idx)}>{value}</DottedValue>)}
             </div>
         </fieldset>
         {errorMessage &&<ErrorLine style={{marginLeft: 10}}>{errorMessage}</ErrorLine>}
