@@ -3,7 +3,7 @@ import FlowNodeIcons from "../../../flow/FlowNodeIcons";
 import {BsTrash} from "react-icons/bs";
 import Tag from "../../misc/Tag";
 
-const BrowserRow = ({id, data, onClick, tags}) => {
+const BrowserRow = ({id, data, onClick, onDelete, tags}) => {
 
     const statusColor = (status) => {
         return status ? "#00c853" : "#d81b60"
@@ -36,7 +36,7 @@ const BrowserRow = ({id, data, onClick, tags}) => {
             <div style={{display: "flex", alignItems: "center"}}>
                 {Array.isArray(tags) && <div style={{marginRight: 5}}>{tags.map(tag => <Tag>{tag}</Tag>) }</div>}
                 {typeof data?.enabled !== "undefined" && <div style={{margin: "0 5px", width: 14, height: 14, borderRadius: 14, backgroundColor: statusColor(data?.enabled)}}></div>}
-                <BsTrash size={20}/>
+                {onDelete instanceof Function && <BsTrash size={20} onClick={onDelete}/>}
             </div>
 
         </div>
