@@ -13,12 +13,17 @@ import {VscLaw, VscDashboard} from "react-icons/vsc";
 import {BsGear, BsClipboardCheck, BsStar} from "react-icons/bs";
 import { getRoles } from "../authentication/login";
 import {RiArrowLeftRightFill} from "react-icons/ri";
+import {useConfirm} from "material-ui-confirm";
+import {asyncRemote, getError} from "../../remote_api/entrypoint";
+import {connect} from "react-redux";
+import {showAlert} from "../../redux/reducers/alertSlice";
 
-export default function MainMenu() {
+function MainMenu({showAlert}) {
 
     const [collapsed, setCollapsed] = useState(false);
-
+    const confirm = useConfirm()
     const history = useHistory();
+
     const go = (url) => {
         return () => history.push(urlPrefix(url));
     }
@@ -45,11 +50,34 @@ export default function MainMenu() {
         )
     }
 
+    const handleVersionWindow = async () => {
+        try {
+
+            const response = await asyncRemote({
+                url: '/info/version/details',
+                method: "get"
+            })
+
+            const message = <>
+                {`Frontend Version: ${version()}`}<br/>
+                {`Backend Version: ${response?.data?.version}.${response?.data?.name}`}<br/>
+                {`Previous Backend Version: ${response?.data?.prev_version?.version}.${response?.data?.prev_version?.name}`}<br/>
+                {`Backend Upgrades: ${(Array.isArray(response?.data?.upgrades) && response?.data?.upgrades.length>0) ? response?.data?.upgrades.join() : "None"}`}
+                </>
+
+            confirm({title: "TRACARDI Version Information", description: message}).then(() => {}).catch(() => {})
+
+        } catch(e) {
+            const errors = getError(e)
+            showAlert({message: errors[0].msg, type: "error", hideAfter: 4000});
+        }
+    }
+
     const Branding = ({collapsed=false}) => {
         if(collapsed === true) {
             return <div className="Branding"><div className="T">T</div></div>
         }
-        return <div className="Branding">
+        return <div className="Branding" onClick={handleVersionWindow}>
                 <div className="Tracardi">TRACARDI</div>
                 <div className="Version">v. {version()}</div>
             </div>
@@ -91,3 +119,13 @@ export default function MainMenu() {
 
     </div>
 }
+
+const mapProps = (state) => {
+    return {
+        notification: state.notificationReducer,
+    }
+};
+export default connect(
+    mapProps,
+    {showAlert}
+)(MainMenu);
