@@ -39,6 +39,7 @@ export default function Migrations() {
         const [selectedCustomPrefix, setSelectedCustomPrefix] = React.useState("");
         const [buttonProgress, setButtonProgress] = React.useState(false);
         const [buttonError, setButtonError] = React.useState(null);
+        const [warn, setWarn] = React.useState(false);
 
         React.useEffect(() => {
             formMounted.current = true;
@@ -49,9 +50,12 @@ export default function Migrations() {
                 method: "GET"
             })
                 .then(response => {
-                    if (formMounted.current) setSchemas(response.data);
+                    if (formMounted.current) {
+                        setSchemas(response.data.schemas);
+                        setWarn(response.data.warn);
+                    }
                     let newSchemas = [];
-                    for (let schema of response.data) {
+                    for (let schema of response.data.schemas) {
                         newSchemas.push(schema.id);
                     }
                     if (formMounted.current) setSelectedSchemas(newSchemas);
@@ -94,6 +98,17 @@ export default function Migrations() {
         }
 
         return <>
+            {warn && 
+                <div style={{margin: 20, padding: 20, paddingTop: 3, backgroundColor: "#d81b60", color: "white", marginBottom: 10 }}>
+                    <h1 style={{fontWeight: 300}}>Warning
+                        <br/>
+                        Migration from version {selectedMigration} has already been done.
+                    </h1>
+                    <p>Migrating data twice from the same version may lead to data corruption and loss of results you've recently gotten by processing it. 
+                        We recommend running migration from one version only once.
+                    </p>
+                </div>
+            }
             <TuiForm style={{margin: 20}}>
                 <TuiFormGroup>
                     <TuiFormGroupHeader header={`Configure migration from version ${selectedMigration}`}/>
