@@ -145,7 +145,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                                 profile less event. For full fledged events call regular /track endpoint."/>
                 <TuiFormGroupContent>
                     <h3>Web hook URL</h3>
-                    <p>Event properties should be send inthe body of request and <b>event-type</b> inside URL should be
+                    <p>Event properties should be send in the body of request and <b>event-type</b> inside URL should be
                         replaced with the event type you would like to emit. Please refer to the documentation to see
                         what are profile less events as calling this web hook will emit one of them.
                     </p>
@@ -199,17 +199,6 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
 
             return () => mounted.current = false;
         }, [timeRange])
-
-        function getRefreshRate() {
-            let rate = localStorage.getItem("eventRefreshRate");
-            if (isString(rate)) {
-                const value = parseInt(rate)
-                if (!isNaN(value)) {
-                    rate = value
-                }
-            }
-            return rate ? rate : 0;
-        }
 
         return <>
             {error !== null ?
