@@ -100,12 +100,12 @@ export default function Migrations() {
         return <>
             {warn && 
                 <div style={{margin: 20, padding: 20, paddingTop: 3, backgroundColor: "#d81b60", color: "white", marginBottom: 10 }}>
-                    <h1 style={{fontWeight: 300}}>Warning
+                    <h1 style={{fontWeight: 300}}>Warning !!!
                         <br/>
-                        Migration from version {selectedMigration} has already been done.
+                        Migration from version {selectedMigration} has already been completed.
                     </h1>
-                    <p>Migrating data twice from the same version may lead to data corruption and loss of results you've recently gotten by processing it. 
-                        We recommend running migration from one version only once.
+                    <p>Migrating data twice may lead to data corruption and loss of results you've recently collected.
+                        We recommend running migration only once.
                     </p>
                 </div>
             }
