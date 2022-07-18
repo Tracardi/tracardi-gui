@@ -98,8 +98,8 @@ const AutoComplete = ({
         }
     }
 
-    const handleChange = (value) => {
-        if (onlyValueWithOptions === false) {
+    const handleChange = (value, reason) => {
+        if (onlyValueWithOptions === false && reason === "input") {
 
             if (!value) {
                 value = {id: "", name: ""}
@@ -142,7 +142,7 @@ const AutoComplete = ({
                 handleValueSet(value);
             }}
             onInputChange={(ev, value, reason) => {
-                handleChange(value)
+                handleChange(value, reason)
             }}
             renderOption={renderOption}
             renderInput={(params) => (
