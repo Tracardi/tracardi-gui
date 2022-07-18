@@ -44,14 +44,14 @@ const AppBox = () => {
 
         {/*Redirects*/}
 
-        <PrivateRoute exact path={urlPrefix("")} roles={["admin", "developer", "marketer", "data_admin"]}>
+        <PrivateRoute exact path={urlPrefix("")} roles={["admin", "developer", "marketer", "maintainer"]}>
             <Redirect to={urlPrefix("/dashboard")}/>
         </PrivateRoute>
 
 
         {/*Dashboard*/}
 
-        <Route exact path={urlPrefix("/dashboard")} roles={["admin", "developer", "marketer", "data_admin"]}>
+        <Route exact path={urlPrefix("/dashboard")} roles={["admin", "developer", "marketer", "maintainer"]}>
             <Dashboard/>
         </Route>
 
@@ -142,16 +142,16 @@ const AppBox = () => {
 
         {/*Monitoring*/}
 
-        <PrivateRoute path={urlPrefix("/monitoring")} roles={["admin", "data_admin"]}>
+        <PrivateRoute path={urlPrefix("/monitoring")} roles={["admin", "maintainer"]}>
             <PageTabs title="Monitoring"
 
                       tabs={[
-                          new PrivateTab(["admin", "data_admin"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
-                          new PrivateTab(["admin", "data_admin"], <Instances/>, "/monitoring/instances", "Running instances"),
+                          new PrivateTab(["admin", "maintainer"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
+                          new PrivateTab(["admin", "maintainer"], <Instances/>, "/monitoring/instances", "Running instances"),
                           new PrivateTab(["admin", "developer"], <BackgroundTasks/>, "/monitoring/background/tasks", "Background tasks"),
-                          new PrivateTab(["admin", "data_admin"], <UserLogs/>, "/monitoring/user-log", "User logs"),
-                          new PrivateTab(["data_admin"], <ElasticClusterHealthInfo/>, "/monitoring/elastic-cluster", "Elasticsearch cluster"),
-                          new PrivateTab(["data_admin"], <ElasticIndicesInfo/>, "/monitoring/elastic-indices", "Elasticsearch indices")
+                          new PrivateTab(["admin", "maintainer"], <UserLogs/>, "/monitoring/user-log", "User logs"),
+                          new PrivateTab(["maintainer"], <ElasticClusterHealthInfo/>, "/monitoring/elastic-cluster", "Elasticsearch cluster"),
+                          new PrivateTab(["maintainer"], <ElasticIndicesInfo/>, "/monitoring/elastic-indices", "Elasticsearch indices")
                       ]}
             />
         </PrivateRoute>
@@ -170,7 +170,7 @@ const AppBox = () => {
                               new PrivateTab(["admin", "developer"], <ActionPlugins/>, "/settings/plugins", "Workflow actions"),
                               new PrivateTab(["admin", "developer"], <Settings/>, "/settings/system", "System settings"),
                               new PrivateTab(["admin"], <Users/>, "/settings/users", "Users"),
-                              new PrivateTab(["admin", "developer", "data_admin"], <Migrations />,"/settings/migration", "Migration")
+                              new PrivateTab(["admin", "developer", "maintainer"], <Migrations />,"/settings/migration", "Migration")
                           ]}
             />
 
@@ -178,7 +178,7 @@ const AppBox = () => {
 
         {/*Current user account info*/}
 
-        <PrivateRoute exact path={urlPrefix("/my-account")} roles={["admin", "developer", "marketer", "data_admin"]}>
+        <PrivateRoute exact path={urlPrefix("/my-account")} roles={["admin", "developer", "marketer", "maintainer"]}>
             <UserAccount />
         </PrivateRoute>
 

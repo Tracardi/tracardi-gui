@@ -34,7 +34,7 @@ export default function NewUserForm({ onSubmit}) {
                 if (admin) rolesToSend.push("admin");
                 if (marketer) rolesToSend.push("marketer");
                 if (developer) rolesToSend.push("developer");
-                if (dataAdmin) rolesToSend.push("data_admin");
+                if (dataAdmin) rolesToSend.push("maintainer");
                 await asyncRemote({
                     url: "/user",
                     method: "POST",
@@ -123,10 +123,10 @@ export default function NewUserForm({ onSubmit}) {
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Roles in the system"/>
                 <TuiFormGroupField>
-                    <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Checkbox size="medium" checked={admin} onChange={() => setAdmin(!admin)}/>} label="Admin"/>
-                    <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Checkbox size="medium" checked={marketer} onChange={()=> setMarketer(!marketer)}/>} label="Marketer"/>
-                    <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Checkbox size="medium" checked={developer} onChange={() => setDeveloper(!developer)}/>} label="Developer"/>
-                    <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Checkbox size="medium" checked={dataAdmin} onChange={() => setDataAdmin(!dataAdmin)}/>} label="Data Admin"/>
+                    <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={admin} onChange={() => setAdmin(!admin)}/>} label="Admin"/>
+                    <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={marketer} onChange={()=> setMarketer(!marketer)}/>} label="Marketer"/>
+                    <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={developer} onChange={() => setDeveloper(!developer)}/>} label="Developer"/>
+                    <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={dataAdmin} onChange={() => setDataAdmin(!dataAdmin)}/>} label="Maintainer"/>
                 </TuiFormGroupField>
             </TuiFormGroup>
             <TuiFormGroup>

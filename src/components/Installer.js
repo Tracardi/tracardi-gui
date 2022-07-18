@@ -82,18 +82,13 @@ const InstallerMessage = ({requireAdmin, onInstalled, errorMessage}) => {
             alignItems: "center",
             padding: 50,
             width: "70%",
+            maxWidth: 660,
             backgroundColor: "white",
             borderRadius: 10
         }}>
             <BsCloudUpload size={50} style={{color: "#666"}}/>
             <h1 style={{fontWeight: 300}}>Installation required</h1>
-            <p>Some parts of the system are missing. Please click install to install required components</p>
-
-
-            <h2 style={{fontWeight: 300}}>
-                {requireAdmin && "Please set-up missing system administrator account"}
-                {!requireAdmin && "Please complete installation"}
-            </h2>
+            <p style={{textAlign: "center", color: "gray"}}>Some parts of the system are missing. Please click install to install required components</p>
 
             <table>
                 <tbody>
@@ -105,10 +100,19 @@ const InstallerMessage = ({requireAdmin, onInstalled, errorMessage}) => {
                         />
                     </td>
                 </tr>
-                {requireAdmin && <tr>
-                    <td><Input label="E-mail" initValue="" onChange={(ev) => setEmail(ev.target.value)}/></td>
+                {requireAdmin && <>
+                <tr>
+                    <td colSpan={2} style={{textAlign: "center"}}>
+                        <h2 style={{fontWeight: 300}}>
+                            {requireAdmin && "Please set-up missing system administrator account"}
+                            {!requireAdmin && "Please complete installation"}
+                        </h2>
+                        <span style={{color: "gray"}}>Please use valid e-mail to open an Admin account.<br/>
+                        Otherwise account may not have access to all system features.</span><br/><br/></td>
+                </tr><tr>
+                    <td><Input label="Valid e-mail" initValue="" onChange={(ev) => setEmail(ev.target.value)}/></td>
                     <td><PasswordInput value={password} onChange={(ev) => setPassword(ev.target.value)}/></td>
-                </tr>}
+                </tr></>}
                 </tbody>
             </table>
 

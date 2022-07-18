@@ -37,7 +37,7 @@ const App = ({alert, resource, close}) => {
                     <Route exact path={urlPrefix("/logout")}>
                         <Logout/>
                     </Route>
-                    <PrivateRoute path={urlPrefix("/")} roles={["admin", "marketer", "developer", "data_admin"]}>
+                    <PrivateRoute path={urlPrefix("/")} roles={["admin", "marketer", "developer", "maintainer"]}>
                         <AppBox/>
                     </PrivateRoute>
                 </Switch>

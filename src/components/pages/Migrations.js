@@ -114,9 +114,9 @@ export default function Migrations() {
                     <TuiFormGroupHeader header={`Configure migration from version ${selectedMigration}`}/>
                     <TuiFormGroupContent>
                         <TuiFormGroupField header="Custom version prefix"
-                                           description="If your previous Tracardi version had custom prefix set while
-                                           setup, please provide it here and confirm it by clicking the button.
-                                           Otherwise leave it blank.">
+                                           description="If your previous Tracardi version had custom prefix, please
+                                           provide it here and click CONFIRM button.
+                                           For standard automatic prefix leave it blank.">
                             <div style={{display: "flex", flexDirection: "row"}}>
                                 <TextField
                                     placeholder="Custom prefix"
@@ -155,7 +155,7 @@ export default function Migrations() {
                         )
                         }
                         {Array.isArray(schemas) && schemas.length === 0 &&
-                        <NoData header="No indices were found for given prefix."/>}
+                        <NoData header="No previous version found.">Type custom version prefix is you are certain that there is previous version installed.</NoData>}
                         {formError && <ErrorsBox errorList={formError}/>}
                         {buttonError && <ErrorsBox errorList={buttonError}/>}
                         {formLoading && !schemas && <div style={{height: "auto"}}><CenteredCircularProgress/></div>}

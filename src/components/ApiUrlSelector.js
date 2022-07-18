@@ -93,6 +93,7 @@ const ApiUrlSelector = ({children}) => {
                 alignItems: "center",
                 padding: 50,
                 width: "50%",
+                maxWidth: 660,
                 backgroundColor: "white",
                 borderRadius: 10
             }}>

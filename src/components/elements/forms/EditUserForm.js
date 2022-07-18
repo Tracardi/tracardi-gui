@@ -15,7 +15,7 @@ export default function EditUserForm({ user, onSubmit}) {
     const [admin, setAdmin] = React.useState(user.roles.includes("admin"));
     const [marketer, setMarketer] = React.useState(user.roles.includes("marketer"));
     const [developer, setDeveloper] = React.useState(user.roles.includes("developer"));
-    const [dataAdmin, setDataAdmin] = React.useState(user.roles.includes("data_admin"))
+    const [dataAdmin, setDataAdmin] = React.useState(user.roles.includes("maintainer"))
     const [enabled, setEnabled] = React.useState(!user.disabled);
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
@@ -33,7 +33,7 @@ export default function EditUserForm({ user, onSubmit}) {
                 if (admin) rolesToSend.push("admin");
                 if (marketer) rolesToSend.push("marketer");
                 if (developer) rolesToSend.push("developer");
-                if (dataAdmin) rolesToSend.push("data_admin");
+                if (dataAdmin) rolesToSend.push("maintainer");
                 await asyncRemote({
                     url: `/user/${user.id}`,
                     method: "POST",
@@ -127,10 +127,10 @@ export default function EditUserForm({ user, onSubmit}) {
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Roles in the system"/>
                 <TuiFormGroupField>
-                    <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Checkbox size="medium" checked={admin} onChange={() => setAdmin(!admin)}/>} label="Admin"/>
-                    <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Checkbox size="medium" checked={marketer} onChange={()=> setMarketer(!marketer)}/>} label="Marketer"/>
-                    <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Checkbox size="medium" checked={developer} onChange={() => setDeveloper(!developer)}/>} label="Developer"/>
-                    <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Checkbox size="medium" checked={dataAdmin} onChange={() => setDataAdmin(!dataAdmin)}/>} label="Data admin"/>
+                    <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={admin} onChange={() => setAdmin(!admin)}/>} label="Admin"/>
+                    <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={marketer} onChange={()=> setMarketer(!marketer)}/>} label="Marketer"/>
+                    <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={developer} onChange={() => setDeveloper(!developer)}/>} label="Developer"/>
+                    <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={dataAdmin} onChange={() => setDataAdmin(!dataAdmin)}/>} label="Maintainer"/>
                 </TuiFormGroupField>
             </TuiFormGroup>
             <TuiFormGroup>
