@@ -13,7 +13,7 @@ function DeleteButton({id}) {
 
     const handleDelete = async (taskId) => {
         try {
-            const response = await asyncRemote({
+            await asyncRemote({
                 url: `/import/task/${taskId}`,
                 method: "delete"
             })
@@ -38,7 +38,7 @@ export default function BackgroundTasks({type=null}) {
             return '/tasks/type/' + type + ((query) ? "?query=" + query : "")
         }
         return '/tasks' + ((query) ? "?query=" + query : "")
-    }, []);
+    }, [type]);
 
     const RefreshButton = () => {
 

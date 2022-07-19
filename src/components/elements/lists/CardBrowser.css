@@ -4,7 +4,6 @@
     display: grid;
     grid-template-rows: 55px calc(100% - 55px);
     width: inherit;
-    height: inherit;
 }
 .CardBrowser > H3 {
     display: flex;

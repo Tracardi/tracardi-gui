@@ -134,7 +134,7 @@ export default function Settings() {
     return <>
         {loading &&  <div style={{height: 300}}><CenteredCircularProgress/></div>}
         {!loading && 
-        <TuiForm style={{height: "inherit", overflowY: "auto"}}>
+        <TuiForm style={{height: "inherit"}}>
             <TuiFormGroup style={{margin: 20}}>
                 <TuiFormGroupHeader 
                     header="Elasticsearch and Redis test" 
