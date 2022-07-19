@@ -7,6 +7,7 @@ import BrowserRow from "../elements/lists/rows/BrowserRow";
 import Button from "../elements/forms/Button";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import {IoRefreshCircle} from "react-icons/io5";
+import {useConfirm} from "material-ui-confirm";
 
 export function ReinstallButton() {
 
@@ -45,6 +46,12 @@ export default function ActionPlugins() {
 
     const urlFunc= useCallback((query) => ('/flow/action/plugins' + ((query) ? "?query=" + query : "")),[]);
     const detailsFunc=  useCallback((id) => <PluginForm id={id}/>, []);
+    const [refresh, setRefresh] = React.useState(0);
+    const confirm = useConfirm();
+
+    const forceRefresh = () => {
+        setRefresh(Math.random());
+    }
 
     const pluginsCards = (data, onClick) => {
         return Object.entries(data?.grouped).map(([category, plugs], index) => {
@@ -66,6 +73,19 @@ export default function ActionPlugins() {
     }
 
     const pluginsRows = (data, onClick) => {
+
+        const onDelete = (id) => {
+            confirm({title: "Are you sure you want to delete this plugin?", description: "This action can be undone by reinstalling plugins."})
+            .then(() => {
+                asyncRemote({
+                    url: `/flow/action/plugin/${id}`,
+                    method: "DELETE"
+                })
+                .then(() => forceRefresh())
+            })
+            .catch(_ => {}) 
+        }
+
         return Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="CardGroup" style={{width: "100%"}} key={index}>
                 <header>{category}</header>
@@ -80,7 +100,8 @@ export default function ActionPlugins() {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
                                            data={data}
-                                           onClick={() => onClick(row?.id)}/>
+                                           onClick={() => onClick(row?.id)}
+                                           onDelete={onDelete}/>
                     })}
                 </div>
             </div>
@@ -100,5 +121,6 @@ export default function ActionPlugins() {
         drawerDetailsTitle="Edit Plugin Action"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
+        refresh={refresh}
     /></>
 }
