@@ -1,5 +1,4 @@
 .CardBrowser {
-    overflow: auto;
     height: inherit;
     align-items: flex-start;
     display: grid;

@@ -87,7 +87,7 @@ export default function BackgroundTasks({type=null}) {
         })
     }
 
-    return <div style={{display: "grid", gridTemplateRows: "40px calc(100% - 40px)", height: "inherit"}}>
+    return <div style={{display: "grid", gridTemplateRows: "40px calc(100% - 40px)"}}>
         <div style={{display: "flex", justifyContent: "flex-end", margin: "0 15px"}}><RefreshButton/></div>
         <CardBrowser
             label="Background tasks"

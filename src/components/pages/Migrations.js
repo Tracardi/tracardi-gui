@@ -99,10 +99,8 @@ export default function Migrations() {
 
         return <>
             {warn && 
-                <div style={{margin: 20, padding: 20, paddingTop: 3, backgroundColor: "#d81b60", color: "white", marginBottom: 10 }}>
-                    <h1 style={{fontWeight: 300}}>Warning !!!
-                        <br/>
-                        Migration from version {selectedMigration} has already been completed.
+                <div style={{padding: 20, paddingTop: 3, backgroundColor: "#d81b60", color: "white", marginBottom: 10 }}>
+                    <h1 style={{fontWeight: 300}}>Warning !!! Migration from version {selectedMigration} has already been completed.
                     </h1>
                     <p>Migrating data twice may lead to data corruption and loss of results you've recently collected.
                         We recommend running migration only once.
@@ -231,8 +229,8 @@ export default function Migrations() {
                 setSelectedMigration(null);
                 setDrawerWidth(1600)
             }}/>}
-            {!selectedMigration && <div style={{height: "100%"}}>
-                <div style={{padding:20, backgroundColor: "#d81b60", color: "white", marginBottom: 10 }}>
+            {!selectedMigration && <>
+                <div style={{padding:20, backgroundColor: "rgb(0, 200, 83)", color: "white", marginBottom: 10 }}>
                     <h1 style={{fontWeight: 300}}>The upgrade and data migration process has started.
                         <br/>
                         Below there are the background migration task that are currently running.
@@ -244,7 +242,7 @@ export default function Migrations() {
 
                 <BackgroundTasks type="upgrade"/>
 
-            </div>}
+            </>}
         </FormDrawer>
     </>;
 }
