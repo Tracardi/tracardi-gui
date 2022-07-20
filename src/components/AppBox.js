@@ -149,9 +149,7 @@ const AppBox = () => {
                           new PrivateTab(["admin", "maintainer"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
                           new PrivateTab(["admin", "maintainer"], <Instances/>, "/monitoring/instances", "Running instances"),
                           new PrivateTab(["admin", "developer"], <BackgroundTasks/>, "/monitoring/background/tasks", "Background tasks"),
-                          new PrivateTab(["admin", "maintainer"], <UserLogs/>, "/monitoring/user-log", "User logs"),
-                          new PrivateTab(["maintainer"], <ElasticClusterHealthInfo/>, "/monitoring/elastic-cluster", "Elasticsearch cluster"),
-                          new PrivateTab(["maintainer"], <ElasticIndicesInfo/>, "/monitoring/elastic-indices", "Elasticsearch indices")
+                          new PrivateTab(["admin", "maintainer"], <UserLogs/>, "/monitoring/user-log", "User logs")
                       ]}
             />
         </PrivateRoute>
@@ -170,8 +168,20 @@ const AppBox = () => {
                               new PrivateTab(["admin", "developer"], <ActionPlugins/>, "/settings/plugins", "Workflow actions"),
                               new PrivateTab(["admin", "developer"], <Settings/>, "/settings/system", "System settings"),
                               new PrivateTab(["admin"], <Users/>, "/settings/users", "Users"),
-                              new PrivateTab(["admin", "developer", "maintainer"], <Migrations />,"/settings/migration", "Migration")
                           ]}
+            />
+
+        </PrivateRoute>
+
+        {/*Settings*/}
+
+        <PrivateRoute path={urlPrefix("/maintenance")} roles={["maintainer"]}>
+            <PageTabs title="Maintenance"
+                      tabs={[
+                          new PrivateTab(["maintainer"], <ElasticClusterHealthInfo/>, "/maintenance/elastic-cluster", "Cluster"),
+                          new PrivateTab(["maintainer"], <ElasticIndicesInfo/>, "/maintenance/elastic-indices", "Indices"),
+                          new PrivateTab(["maintainer"], <Migrations />,"/maintenance/migration", "Migration")
+                      ]}
             />
 
         </PrivateRoute>

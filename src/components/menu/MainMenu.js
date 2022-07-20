@@ -6,7 +6,7 @@ import urlPrefix from "../../misc/UrlPrefix";
 import version from '../../misc/version';
 import {BiChevronLeftCircle, BiChevronRightCircle} from "react-icons/bi";
 import {BsPersonCircle, BsFileEarmarkArrowUp} from "react-icons/bs";
-import {VscPulse} from "react-icons/vsc";
+import {VscPulse, VscTools} from "react-icons/vsc";
 import {IoGitNetworkSharp} from "react-icons/io5";
 import {GoSettings} from "react-icons/go";
 import {VscLaw, VscDashboard} from "react-icons/vsc";
@@ -95,9 +95,10 @@ function MainMenu({showAlert}) {
                 <MenuRow icon={<BsGear size={20}/>} label="Management" collapsed={collapsed} onClick={go("/management")} roles={["admin", "developer"]}/>
                 <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")} roles={["admin", "developer", "marketer"]}/>
                 <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Processing" collapsed={collapsed} onClick={go("/processing")} roles={["admin", "developer", "marketer"]}/>
-                <MenuRow icon={<VscPulse size={20}/>} label="Monitoring" collapsed={collapsed} onClick={go("/monitoring")} roles={["admin", "maintainer"]}/>
                 <MenuRow icon={<BsClipboardCheck size={20}/>} label="Test" collapsed={collapsed} onClick={go("/testing")} roles={["admin", "developer"]}/>
+                <MenuRow icon={<VscPulse size={20}/>} label="Monitoring" collapsed={collapsed} onClick={go("/monitoring")} roles={["admin", "developer"]}/>
                 <MenuRow icon={<GoSettings size={20}/>} label="Settings" collapsed={collapsed} onClick={go("/settings")} roles={["admin", "developer", "marketer"]}/>
+                <MenuRow icon={<VscTools size={20}/>} label="Maintenance" collapsed={collapsed} onClick={go("/maintenance")} roles={["maintainer"]}/>
             </div>
         </div>
         <div>
