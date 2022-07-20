@@ -54,7 +54,11 @@ const AutoLoadList = ({
             (response) => {
                 if (response) {
                     if (mounted.current === true) {
-                        setHasMode(response.data.result.length !== 0);
+                        if (response.data.result.length === response.data.total) { // case of the first page being the only one, prevents from infinite loading
+                            setHasMode(false);
+                        } else {
+                            setHasMode(response.data.result.length !== 0);
+                        }
                         setTotal(response.data.total);
                         setRows((page === 0 || fresh === true) ? [...response.data.result] : [...rows, ...response.data.result]);
                     }
@@ -105,8 +109,14 @@ const AutoLoadList = ({
                 inverse={false}
                 hasMore={hasMore}
                 style={{overflow: "hidden"}}
-                loader={<div style={{display: "flex", alignItems: "center", justifyContent: "center", padding: 4}}>
-                    <CircularProgress size={20}/></div>}
+                loader={
+                    hasMore ? 
+                    <div style={{display: "flex", alignItems: "center", justifyContent: "center", padding: 4}}>
+                        <CircularProgress size={20}/>
+                    </div>
+                    :
+                    null
+                }
                 scrollableTarget="MainWindowScroll"
             >
                 <table className="LogListTable">
