@@ -6,9 +6,7 @@ import Table from "../elements/table/Table";
 import {Column} from "react-vt-table";
 import {Button} from "@mui/material";
 import DotAccessor from "../elements/forms/inputs/DotAccessor";
-import TuiSelectMultiConsentType from "../elements/tui/TuiSelectMultiConsentType";
 import BackgroundTaskProgress from "../elements/misc/BackgroundTaskProgress";
-import { ConsentTypes } from "../elements/forms/JsonFormComponents";
 import JsonForm from "../elements/forms/JsonForm";
 
 export default function TryOut() {

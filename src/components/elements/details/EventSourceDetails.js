@@ -17,7 +17,6 @@ import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import Tabs, {TabCase} from "../../elements/tabs/Tabs";
 import TuiPieChart from "../charts/PieChart";
 import BarChartElement from "../charts/BarChart";
-import {isString} from "../../../misc/typeChecking";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {SelectInput} from "../forms/JsonFormComponents";
 import NoData from "../misc/NoData";

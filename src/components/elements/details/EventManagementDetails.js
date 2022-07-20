@@ -1,5 +1,4 @@
 import React, {useEffect, useRef} from "react";
-import Properties from "./DetailProperties";
 import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";

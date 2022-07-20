@@ -21,6 +21,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import ProfileRawData from "./ProfileRawData";
 import PropertyField from "./PropertyField";
 import ProfileInfo from "./ProfileInfo";
+import NoData from "../misc/NoData";
 
 const SessionContextInfo = ({sessionId}) => {
 
@@ -46,7 +47,12 @@ const SessionContextInfo = ({sessionId}) => {
                         }
                     })
                     .catch(e => {
-                        if (isSubscribed) setError(getError(e))
+                        let code = 500
+                        if (e?.response) {
+                            code = e.response.status
+                        }
+
+                        if (isSubscribed) setError({code: code, errors: getError(e)})
                     })
                     .finally(() => {
                         if (isSubscribed) setLoading(false)
@@ -67,7 +73,10 @@ const SessionContextInfo = ({sessionId}) => {
     }
 
     if (error) {
-        return <ErrorsBox errorList={error}/>
+        if(error.code === 404) {
+            return <NoData header="Missing session">This event has no session. Can not retrieve context data.</NoData>
+        }
+        return <ErrorsBox errorList={error.errors}/>
     }
 
     return <>
