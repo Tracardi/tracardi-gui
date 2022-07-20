@@ -165,22 +165,22 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/settings")} roles={["admin", "developer", "marketer"]}>
             <PageTabs title="Settings"
                       tabs={[
-                              new PrivateTab(["admin", "developer"], <ActionPlugins/>, "/settings/plugins", "Workflow actions"),
                               new PrivateTab(["admin", "developer"], <Settings/>, "/settings/system", "System settings"),
-                              new PrivateTab(["admin"], <Users/>, "/settings/users", "Users"),
                           ]}
             />
 
         </PrivateRoute>
 
-        {/*Settings*/}
+        {/*Maintenance*/}
 
         <PrivateRoute path={urlPrefix("/maintenance")} roles={["maintainer"]}>
             <PageTabs title="Maintenance"
                       tabs={[
                           new PrivateTab(["maintainer"], <ElasticClusterHealthInfo/>, "/maintenance/elastic-cluster", "Cluster"),
                           new PrivateTab(["maintainer"], <ElasticIndicesInfo/>, "/maintenance/elastic-indices", "Indices"),
-                          new PrivateTab(["maintainer"], <Migrations />,"/maintenance/migration", "Migration")
+                          new PrivateTab(["maintainer"], <Migrations />,"/maintenance/migration", "Migration"),
+                          new PrivateTab(["admin"], <Users/>, "/maintenance/users", "Users"),
+                          new PrivateTab(["admin", "developer"], <ActionPlugins/>, "/settings/plugins", "Action plug-ins"),
                       ]}
             />
 

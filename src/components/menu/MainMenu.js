@@ -34,16 +34,16 @@ function MainMenu({showAlert}) {
             let setB = new Set(b);
             return [...new Set(a)].filter(x => setB.has(x));
         }
-    
+
         const isAllowed = () => {
             if(intersect(getRoles(), roles).length > 0) {
                 return true
             }
             return false
         }
-    
+
         return (
-            isAllowed() || alwaysDisplay ? 
+            isAllowed() || alwaysDisplay ?
             <div className="MenuRow" onClick={onClick} style={style}><span className="Icon">{icon}</span>{!collapsed && <span className="Label">{label}</span>}</div>
             :
             null
@@ -96,20 +96,33 @@ function MainMenu({showAlert}) {
                 <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")} roles={["admin", "developer", "marketer"]}/>
                 <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Processing" collapsed={collapsed} onClick={go("/processing")} roles={["admin", "developer", "marketer"]}/>
                 <MenuRow icon={<BsClipboardCheck size={20}/>} label="Test" collapsed={collapsed} onClick={go("/testing")} roles={["admin", "developer"]}/>
-                <MenuRow icon={<VscPulse size={20}/>} label="Monitoring" collapsed={collapsed} onClick={go("/monitoring")} roles={["admin", "developer"]}/>
-                <MenuRow icon={<GoSettings size={20}/>} label="Settings" collapsed={collapsed} onClick={go("/settings")} roles={["admin", "developer", "marketer"]}/>
-                <MenuRow icon={<VscTools size={20}/>} label="Maintenance" collapsed={collapsed} onClick={go("/maintenance")} roles={["maintainer"]}/>
+
+
             </div>
         </div>
         <div>
             <MenuRow icon={<BsPersonCircle size={20}/>}
                 label="My account"
                 collapsed={collapsed}
-                style={{marginBottom: 20}}
                 onClick={go("/my-account")}
                 alwaysDisplay={true}
                 />
-
+            <MenuRow icon={<VscPulse size={20}/>}
+                     label="Monitoring"
+                     collapsed={collapsed}
+                     onClick={go("/monitoring")}
+                     roles={["admin", "developer"]}/>
+            <MenuRow icon={<VscTools size={20}/>}
+                     label="Maintenance"
+                     collapsed={collapsed}
+                     onClick={go("/maintenance")}
+                     roles={["admin", "maintainer"]}/>
+            <MenuRow icon={<GoSettings size={20}/>}
+                     label="Settings"
+                     collapsed={collapsed}
+                     onClick={go("/settings")}
+                     roles={["admin", "developer", "marketer"]}
+                     style={{marginBottom: 20}}/>
             <MenuRow icon={collapsed ? <BiChevronRightCircle size={20}/> : <BiChevronLeftCircle size={20}/>}
                      collapsed={collapsed}
                      label="Collapse"
