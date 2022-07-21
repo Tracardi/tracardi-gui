@@ -61,9 +61,9 @@ function MainMenu({showAlert}) {
             const message = <>
                 {`Frontend Version: ${version()}`}<br/>
                 {`Backend Version: ${response?.data?.version}.${response?.data?.name}`}<br/>
-                {`Previous Backend Version: ${response?.data?.prev_version?.version}.${response?.data?.prev_version?.name}`}<br/>
-                {`Backend Upgrades: ${(Array.isArray(response?.data?.upgrades) && response?.data?.upgrades.length>0) ? response?.data?.upgrades.join() : "None"}`}
-                </>
+                {`Backend Upgrades: ${(Array.isArray(response?.data?.upgrades) && response?.data?.upgrades.length>0) ? response?.data?.upgrades.join() : "None"}`}<br />
+                {response?.data?.prev_version && `Previous Backend Version: ${response?.data?.prev_version?.version}.${response?.data?.prev_version?.name}`}<br/>
+            </>
 
             confirm({title: "TRACARDI Version Information", description: message}).then(() => {}).catch(() => {})
 
