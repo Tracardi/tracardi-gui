@@ -162,7 +162,7 @@ const AppBox = () => {
 
         {/*Settings*/}
 
-        <PrivateRoute path={urlPrefix("/settings")} roles={["admin", "developer", "marketer"]}>
+        <PrivateRoute path={urlPrefix("/settings")} roles={["admin", "developer"]}>
             <PageTabs title="Settings"
                       tabs={[
                               new PrivateTab(["admin", "developer"], <Settings/>, "/settings/system", "System settings"),

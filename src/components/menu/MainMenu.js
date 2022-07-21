@@ -111,7 +111,7 @@ function MainMenu({showAlert}) {
                      label="Monitoring"
                      collapsed={collapsed}
                      onClick={go("/monitoring")}
-                     roles={["admin", "developer"]}/>
+                     roles={["admin"]}/>
             <MenuRow icon={<VscTools size={20}/>}
                      label="Maintenance"
                      collapsed={collapsed}
@@ -121,7 +121,7 @@ function MainMenu({showAlert}) {
                      label="Settings"
                      collapsed={collapsed}
                      onClick={go("/settings")}
-                     roles={["admin", "developer", "marketer"]}
+                     roles={["admin", "developer"]}
                      style={{marginBottom: 20}}/>
             <MenuRow icon={collapsed ? <BiChevronRightCircle size={20}/> : <BiChevronLeftCircle size={20}/>}
                      collapsed={collapsed}
