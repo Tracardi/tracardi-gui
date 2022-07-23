@@ -173,7 +173,7 @@ const AppBox = () => {
 
         {/*Maintenance*/}
 
-        <PrivateRoute path={urlPrefix("/maintenance")} roles={["maintainer"]}>
+        <PrivateRoute path={urlPrefix("/maintenance")} roles={["maintainer", "admin", "developer"]}>
             <PageTabs title="Maintenance"
                       tabs={[
                           new PrivateTab(["maintainer"], <ElasticClusterHealthInfo/>, "/maintenance/elastic-cluster", "Cluster"),
