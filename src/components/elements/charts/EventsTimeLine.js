@@ -207,8 +207,8 @@ export default function EventTimeLine() {
 
     const dataSourceConfig = getDataSource(dataSource, grouping)
 
-    return <>
-        <div style={{padding: "0 10px 8px", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+    return <div style={{display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%"}}>
+        <div style={{padding: "0 10px 8px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap"}}>
             <div style={{display: "flex", alignItems: "center"}}>
                 <DropDownMenu label={dataSource}
                               selected={true}
@@ -229,7 +229,7 @@ export default function EventTimeLine() {
                               }}/>
                 {dataSourceConfig.groupings}
             </div>
-            <div>
+            <div style={{display: "flex", alignItems: "center"}}>
                 <Button label="Last day" onClick={() => setPeriod("day")}
                             selected={period === "day"} icon={<BsCalendarDay size={20}/>}/>
                 <Button label="Last month" onClick={() => setPeriod("month")}
@@ -258,5 +258,5 @@ export default function EventTimeLine() {
             </AreaChart>
         </ResponsiveContainer>
         {progress && <LinearProgress/>}
-    </>
+    </div>
 }

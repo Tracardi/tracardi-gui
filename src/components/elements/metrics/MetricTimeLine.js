@@ -7,7 +7,7 @@ export default function MetricTimeLine({children, onClick, fitContent = true}) {
         borderRadius: 5,
         margin: 8,
         width: fitContent ? "fit-content" : "auto",
-        cursor: (!onClick) ? "initial" : "pointer"
+        cursor: (!onClick) ? "initial" : "pointer",
     }}
                 onClick={() => {onClick && onClick()}}>
         {children}
