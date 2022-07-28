@@ -3,7 +3,7 @@ import React from "react";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {TuiForm, TuiFormGroupContent, TuiFormGroupField, TuiFormGroup, TuiFormGroupHeader} from "../tui/TuiForm";
 import JsonForm from "./JsonForm";
-import {uuid4} from "@sentry/utils";
+import {v4 as uuid4} from 'uuid';
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {isObject} from "../../../misc/typeChecking";
