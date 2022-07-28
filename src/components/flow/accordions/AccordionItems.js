@@ -27,7 +27,7 @@ export default function AccordionItems({items=[]}) {
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
-    console.log(items);
+
     return (
         <div className={classes.root}>
             {Array.isArray(items) && items.length>0 && items.map((item, idx)=>{

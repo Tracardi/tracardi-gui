@@ -63,7 +63,6 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
     };
 
     const handleDoubleClick = (row) => {
-        console.log(row?.plugin?.spec?.manual)
         setManual(row?.plugin?.spec?.manual);
     }
 

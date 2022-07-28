@@ -38,7 +38,6 @@ export default function PluginForm({id}) {
                         setEnabled(response?.data?.settings?.enabled);
                         setHidden(response?.data?.settings?.hidden);
                         setPlugin(response.data);
-                        console.log(response.data.plugin.spec);
                     }
                 }).catch(e => {
                     console.error(e)
