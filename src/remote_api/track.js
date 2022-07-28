@@ -10,7 +10,6 @@ const getLocation = async () => {
     } catch (e) {
         return {}
     }
-
 }
 
 

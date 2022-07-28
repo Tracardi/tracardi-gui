@@ -46,7 +46,7 @@ export default function UserLogs() {
                 textFieldLabel="Type here to filter user logs by query string"
                 onFilter={filter => setQuery(filter)}
             />
-            <div style={{fontSize: 11, marginLeft: 21}}>Do not know how to filter. Click <a style={{textDecoration: "underline", cursor: "pointer"}} onClick={external("http://docs.tracardi.com/running/filtering/", true)}>here</a> for information.</div>
+            <div style={{fontSize: 11, marginLeft: 21}}>Do not know how to filter. Click <span style={{textDecoration: "underline", cursor: "pointer"}} onClick={external("http://docs.tracardi.com/running/filtering/", true)}>here</span> for information.</div>
             <TuiForm style={{margin: 20, width: "calc(100% - 40px)", height: "calc(100% - 40px)"}}>
                 <TuiFormGroup fitHeight={true}>
                     <TuiFormGroupHeader header="Tracardi user logs" description="List of users' log-in actions."/>

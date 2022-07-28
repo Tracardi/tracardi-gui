@@ -84,7 +84,9 @@ function ResourceForm({init, onClose, showAlert}) {
                 }
             }
         )
-    }, [])  // todo: setting init here make infinite request
+    },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [])  // setting init here make infinite request
 
     const onSubmit = (payload) => {
         setProcessing(true);

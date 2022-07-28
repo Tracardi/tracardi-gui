@@ -85,6 +85,7 @@ export const getError = (e) => {
 export const covertErrorIntoObject = (errors) => {
     let obj = {}
     if(Array.isArray(errors)) {
+        // eslint-disable-next-line array-callback-return
         errors.map((error) => {
             if(error?.loc) {
                 const path = error.loc.slice(1)

@@ -88,7 +88,7 @@ export default function DotAccessor({
         }
 
         return [initSourceValue, initPathValue, initCastValue]
-    }, []);
+    }, [defaultSourceValue, defaultPathValue, forceMode]);
 
     const [initSourceValue, initPathValue, initCastValue] = parseValue(initValue);
 

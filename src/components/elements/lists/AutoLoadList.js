@@ -65,7 +65,9 @@ const AutoLoadList = ({
                 }
             }
         );
-    }, [page, onLoadRequest]);
+    },
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+        [page, onLoadRequest, requestParams]);
 
 
     useEffect(() => {

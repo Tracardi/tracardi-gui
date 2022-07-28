@@ -85,7 +85,7 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
                        variant="outlined"
                        fullWidth
             />
-            <div style={{fontSize: 11}}>Do not know how to filter. Click <a style={{textDecoration: "underline", cursor: "pointer"}} onClick={external("http://docs.tracardi.com/running/filtering/", true)}>here</a> for information.</div>
+            <div style={{fontSize: 11}}>Do not know how to filter. Click <span style={{textDecoration: "underline", cursor: "pointer"}} onClick={external("http://docs.tracardi.com/running/filtering/", true)}>here</span> for information.</div>
         </div>
         <div className="Date">
             <DataTimePicker type="FromDate" datetime={fromDate} onDatetimeSelect={onSetDateFrom}/>

@@ -157,15 +157,14 @@ export default function EventTimeLine() {
         }
     }
 
-
     useEffect(() => {
         let isSubscribed = true;
-        if (loading !== null) setProgress(true)
-        if (loading === null) setLoading(true);
+        if (loading === null) {
+            setLoading(true)
+        } else setProgress(true);
         setError(false);
         const dataSourceConfig = getDataSource(dataSource, grouping)
         asyncRemote({
-            // url: '/session/select/histogram?group_by=context.browser.local.browser.name.keyword',
             url: dataSourceConfig.source,
             method: "post",
             data: {
@@ -193,7 +192,9 @@ export default function EventTimeLine() {
         })
 
         return () => isSubscribed = false;
-    }, [period, grouping, dataSource])
+    },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [period, grouping, dataSource])
 
     if (loading) {
         return <CenteredCircularProgress/>

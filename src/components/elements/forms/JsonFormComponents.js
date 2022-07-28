@@ -287,6 +287,7 @@ export function JsonInput({value, onChange = null}) {
     const [errorMsg, setErrorMsg] = useState(error);
 
     const handleChange = (value) => {
+        // eslint-disable-next-line no-unused-vars
         const [formattedValue, error] = getFormattedValue(value)
         setJson(value);
         setErrorMsg(error)

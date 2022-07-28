@@ -30,7 +30,9 @@ export default function BarChartElement({onLoadRequest: endpoint, refreshInterva
             (value) => {if(isSubscribed===true) {setReady(value); setAllowLoadingSpinner(false);}}
         );
         return () => isSubscribed = false
-    }, [endpoint])
+    },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [endpoint])
 
     useEffect(() => {
         let timer;
