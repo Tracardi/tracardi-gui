@@ -8,7 +8,6 @@ import {
     BsBoxArrowInRight
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
-import {MdTimelapse, MdTransform, MdCallSplit} from "react-icons/md";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
 import {
     BiMessageRoundedError,
@@ -62,7 +61,7 @@ import {
     VscSymbolArray,
     VscLaw
 } from "react-icons/vsc";
-import {MdLibraryAdd, MdTimer} from "react-icons/md";
+import {MdLibraryAdd, MdTimer, MdPassword, MdTimelapse, MdTransform, MdCallSplit} from "react-icons/md";
 import {GoBrowser} from "react-icons/go";
 import {ReactComponent as MauticLogo} from "../../svg/mautic.svg";
 import {ReactComponent as Amplitude} from "../../svg/amplitude-icon.svg";
@@ -216,7 +215,8 @@ export const icons = {
     "active-campaign": (size) => <ActiveCampaign size={size}/>,
     "source": (size) => <BsBoxArrowInRight size={size}/>,
     "salesforce": (size) => <FaSalesforce size={size}/>,
-    "transform": (size) => <MdTransform size={size}/>
+    "transform": (size) => <MdTransform size={size}/>,
+    "password": (size) => <MdPassword size={size} />
 }
 
 
