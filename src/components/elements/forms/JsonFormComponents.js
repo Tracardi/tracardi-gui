@@ -348,7 +348,7 @@ export function ResourceSelect({value, errorMessage, onChange = null, tag = null
     />
 }
 
-export function AutoCompleteInput({value, values, label, endpoint, error, defaultValueSet, onChange, onSetValue}) {
+export function AutoCompleteInput({value, values, label, endpoint, error, defaultValueSet, onChange, onSetValue, onlyValueWithOptions=true}) {
 
     const handleChange = (value) => {
         if (onChange instanceof Function) {
@@ -363,7 +363,7 @@ export function AutoCompleteInput({value, values, label, endpoint, error, defaul
     };
 
     return <AutoComplete
-        onlyValueWithOptions={true}
+        onlyValueWithOptions={onlyValueWithOptions}
         placeholder={label}
         initValue={value ? value : null}
         defaultValueSet={defaultValueSet}

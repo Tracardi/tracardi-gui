@@ -34,6 +34,7 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
                 values={values}
                 error={errorMessage}
                 onSetValue={(value) => handleOnChange(value, fieldId)}
+                onChange={value => handleOnChange(value, fieldId)}
                 {...props}/>
 
         case "readOnlyTags":
