@@ -166,15 +166,30 @@ const Fields = ({fields, values, errorMessages, keyValueMapOfComponentValues, on
         const componentType = fieldObject.component?.type;
         const props = fieldObject.component?.props;
 
+        const searchRecursivelyInValues = (path, object=values) => {
+            if (Array.isArray(path) && path.length > 1) {
+                const key = path.shift();
+                if (key in object) {
+                    return searchRecursivelyInValues(path, object[key]);
+                } else return null;
+                
+            } else if (Array.isArray(path) && path.length === 1) {
+                const key = path.shift();
+                if (key in object) {
+                    return object[key];
+                } else return null;
+
+            } else return null;
+        }
+
         const readValue = (fieldId) => {
             if (fieldId in keyValueMapOfComponentValues) {
+                // This handles simple fields like nums, strings
                 return keyValueMapOfComponentValues[fieldId]
-            } else if (fieldId in values) {
-                // This is a hack for ResourceSelect and other components that take objects
-                return values[fieldId]
+            } else {
+                // This handles fields that are subtrees of config object
+                return searchRecursivelyInValues(fieldId.split("."));
             }
-
-            return null
         }
 
         const readErrorMessage = (componentType, fieldId) => {
