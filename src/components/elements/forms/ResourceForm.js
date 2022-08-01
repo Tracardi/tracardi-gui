@@ -14,6 +14,7 @@ import DisabledInput from "./inputs/DisabledInput";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import TuiTagger from "../tui/TuiTagger";
 import TuiTags from "../tui/TuiTags";
+import MdManual from "../../flow/actions/MdManual";
 
 
 function ResourceForm({init, onClose, showAlert}) {
@@ -58,12 +59,19 @@ function ResourceForm({init, onClose, showAlert}) {
     const [processing, setProcessing] = useState(false);
     const [credentialTypes, setCredentialTypes] = useState({});
     const [selectedTab, setSelectedTab] = useState(0);
+    const [docPath, setDocPath] = useState(null);
 
     const getIdNameFromType = (type, types) => {
         if (type in types) {
-            return {id: type, name: types[type]['name']}
+            return {id: type, name: types[type].name}
         }
         return {id: type, name: type}
+    }
+
+    const getDocPathFromType = (type, types) => {
+        if (type in types) {
+            return types[type]?.manual || null;
+        } else return null;
     }
 
     useEffect(() => {
@@ -81,6 +89,7 @@ function ResourceForm({init, onClose, showAlert}) {
                     // e.g {name" "AWS credentials", id: "aws"}
                     // It must be set after the available list of resources are loaded.
                     setType(getIdNameFromType(init?.type, response.data.result));
+                    setDocPath(getDocPathFromType(init?.type, response.data.result));
                 }
             }
         )
@@ -121,12 +130,13 @@ function ResourceForm({init, onClose, showAlert}) {
     const setTypeAndDefineCredentialsTemplate = (type) => {
         setType(type)
         if (type?.id in credentialTypes) {
-            const template = credentialTypes[type?.id]
-            setProductionConfig(JSON.stringify(template?.config, null, '  '))
-            setTestConfig(JSON.stringify(template?.config, null, '  '))
-            setTags(template?.tags)
-            setDestination(template?.destination)
-            setIcon(template?.icon)
+            const template = credentialTypes[type?.id];
+            setProductionConfig(JSON.stringify(template?.config, null, '  '));
+            setTestConfig(JSON.stringify(template?.config, null, '  '));
+            setTags(template?.tags);
+            setDestination(template?.destination);
+            setIcon(template?.icon);
+            setDocPath(template?.manual);
         }
     }
 
@@ -254,8 +264,7 @@ function ResourceForm({init, onClose, showAlert}) {
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Credentials or Access tokens" description="This json data will be an
                 encrypted part of resource. Please pass here all the credentials or access configuration information,
-                such as hostname, port, username and password, etc. This part can be empty or left as it is if resource does not
-                require authorization.">
+                such as hostname, port, username and password, etc.">
                 </TuiFormGroupField>
                 <Tabs
                     tabs={["Test", "Production"]}
@@ -282,8 +291,16 @@ function ResourceForm({init, onClose, showAlert}) {
         <Button label="Save"
                 onClick={handleSubmit}
                 progress={processing}
-                style={{justifyContent: "center"}}
+                style={{justifyContent: "center", width: "100%"}}
         />
+        {docPath && 
+            <TuiFormGroup style={{marginTop: 20}}>
+                <TuiFormGroupHeader header="Resource configuration help"/>
+                <TuiFormGroupContent>
+                    <MdManual mdFile={docPath} basePath="/manual/en/docs/resources/" />
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        }
     </TuiForm>
 }
 
