@@ -1,6 +1,6 @@
 import {BiGitRepoForked} from "react-icons/bi";
 import React from "react";
-import {FiDatabase, FiMapPin, FiAlertTriangle} from "react-icons/fi";
+import {FiDatabase, FiMapPin, FiAlertTriangle, FiRss} from "react-icons/fi";
 import {
     BsPerson,
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
@@ -216,7 +216,8 @@ export const icons = {
     "source": (size) => <BsBoxArrowInRight size={size}/>,
     "salesforce": (size) => <FaSalesforce size={size}/>,
     "transform": (size) => <MdTransform size={size}/>,
-    "password": (size) => <MdPassword size={size} />
+    "password": (size) => <MdPassword size={size} />,
+    "mqtt": (size) => <FiRss size={size}/>
 }
 
 
