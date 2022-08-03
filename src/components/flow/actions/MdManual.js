@@ -26,6 +26,7 @@ const MdManual = ({mdFile, basePath='/manual/en/docs/flow/actions/'}) => {
             })
         }
         return () => { isMounted = false };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mdFile])
 
     return <section className="MdManual"><MarkdownElement text={page} /></section>

@@ -17,7 +17,6 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
     const [filterActions, setFilterActions] = useState("*not-hidden");
     const [plugins, setPlugins] = useState(null);
     const [pluginsLoading, setPluginsLoading] = useState(false);
-    const [refresh, setRefresh] = useState(Math.random)
     const [manual, setManual] = useState(null);
 
     useEffect(() => {
@@ -25,7 +24,7 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
 
         setPluginsLoading(true);
         asyncRemote({
-                url: "/flow/action/plugins?rnd=" + refresh + "&query=" + filterActions
+                url: "/flow/action/plugins?rnd=" + Math.random + "&query=" + filterActions
             }
         ).then(
             (response) => {
@@ -49,17 +48,12 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
             }
         )
         return () => isSubscribed = false
-    }, [showAlert, refresh, filterActions])
+    }, [showAlert, filterActions])
 
     const onDragStart = (event, row) => {
         const data = row.plugin;
         event.dataTransfer.setData('application/json', JSON.stringify(data));
         event.dataTransfer.effectAllowed = 'move';
-    };
-
-    const onRegister = () => {
-        setPlugins(null);
-        setRefresh(Math.random);
     };
 
     const handleDoubleClick = (row) => {
@@ -83,7 +77,6 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
         <div className="SidebarSection">
             <div className="TaskFilter">
                 <FlowEditorIcons onDebug={onDebug}
-                                 onRegister={onRegister}
                                  debugInProgress={debugInProgress}/>
                 <FilterTextField label="Action filter" variant="standard" onSubmit={setFilterActions}/>
             </div>
