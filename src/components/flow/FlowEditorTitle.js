@@ -28,6 +28,7 @@ import TestEditor from "../test/TestEditor";
 import {BsClipboardCheck} from "react-icons/bs";
 import DropDownMenu from "../menu/DropDownMenu";
 import {ReinstallButton} from "../pages/ActionPlugins";
+import EntityAnalytics from "../pages/EntityAnalytics";
 
 export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onDraftRestore, onDeploy, onSaveDraft}) {
 
@@ -225,7 +226,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                 setEventsOpened(false)
             }}
             open={eventsOpened}>
-            {eventsOpened && <Tabs tabs={["Events", "Profiles", "Sessions"]}>
+            {eventsOpened && <Tabs tabs={["Events", "Profiles", "Sessions", "Entities"]}>
                 <TabCase id={0}>
                     <EventsAnalytics displayChart={false}/>
                 </TabCase>
@@ -234,6 +235,9 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                 </TabCase>
                 <TabCase id={2}>
                     <SessionsAnalytics displayChart={false}/>
+                </TabCase>
+                <TabCase id={3}>
+                    <EntityAnalytics displayChart={false}/>
                 </TabCase>
             </Tabs>
             }
