@@ -37,6 +37,7 @@ import ElasticIndicesInfo from "./pages/ElasticIndicesInfo";
 import Migrations from "./pages/Migrations";
 import {BsStar} from "react-icons/bs";
 import BackgroundTasks from "./pages/BackgroundTasks";
+import EntityAnalytics from "./pages/EntityAnalytics";
 
 const AppBox = () => {
 
@@ -108,6 +109,7 @@ const AppBox = () => {
                           new PrivateTab(["admin", "marketer", "developer"], <EventsAnalytics/>, "/data/events", "Events"),
                           new PrivateTab(["admin", "marketer", "developer"], <ProfilesAnalytics/>, "/data/profiles", "Profiles"),
                           new PrivateTab(["admin", "marketer", "developer"], <SessionsAnalytics/>, "/data/sessions", "Sessions"),
+                          new PrivateTab(["admin", "marketer", "developer"], <EntityAnalytics/>, "/data/entities", "Entities")
                       ]}
             />
 
