@@ -98,6 +98,7 @@ import {ImInsertTemplate} from "react-icons/im";
 import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp, FaHtml5, FaRobot, FaUncharted, FaSalesforce} from "react-icons/fa";
 import {DiReact} from "react-icons/di";
 import {GiPathDistance} from "react-icons/gi";
+import {HiOutlineDocumentReport} from "react-icons/hi";
 
 export const icons = {
     "store": (size) => <FiDatabase size={size}/>,
@@ -218,7 +219,8 @@ export const icons = {
     "transform": (size) => <MdTransform size={size}/>,
     "password": (size) => <MdPassword size={size} />,
     "mqtt": (size) => <FiRss size={size}/>,
-    "entity": (size) => <BsFillRecordFill size={size}/>
+    "entity": (size) => <BsFillRecordFill size={size}/>,
+    "report": (size) => <HiOutlineDocumentReport size={size}/>,
 }
 
 

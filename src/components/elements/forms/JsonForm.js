@@ -11,7 +11,8 @@ import {
     KeyValueInput,
     ListOfDotPaths,
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
-    SelectInput, BoolInput, ReadOnlyTags, EventTypes, EventType, ConsentTypes, AutoCompleteInput
+    SelectInput, BoolInput, ReadOnlyTags, EventTypes, EventType, ConsentTypes, AutoCompleteInput,
+    ReportConfig
 } from "./JsonFormComponents";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {AiOutlineCheckCircle} from "react-icons/ai";
@@ -153,6 +154,14 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
                 onChange={(value) => handleOnChange(value, fieldId)}
                 errorMessage={errorMessage}
                 {...props}/>
+
+        case "reportConfig":
+            return (props) => <ReportConfig
+                value={value}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                errorMessage={errorMessage}
+                {...props}
+            />
 
         default:
             return () => <AlertBox>Missing form type {componentType}.</AlertBox>
