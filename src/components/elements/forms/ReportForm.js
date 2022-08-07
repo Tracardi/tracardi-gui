@@ -14,7 +14,6 @@ import { JsonInput } from "./JsonFormComponents";
 
 export default function ReportForm({reportId, onComplete}) {
     
-    const [id, setId] = React.useState(reportId);
     const [name, setName] = React.useState("");
     const [description, setDescription] = React.useState("");
     const [index, setIndex] = React.useState({id: "profile", name: "Profile"});
@@ -32,11 +31,11 @@ export default function ReportForm({reportId, onComplete}) {
 
     React.useEffect(() => {
         mounted.current = true;
-        if (id) {
+        if (reportId) {
             setLoading(true);
             setError(null);
             asyncRemote({
-                url: `/report/${id}`,
+                url: `/report/${reportId}`,
                 method: "GET"
             })
             .catch(() => onComplete())
@@ -54,7 +53,7 @@ export default function ReportForm({reportId, onComplete}) {
             })
         }
         return () => mounted.current = false;
-    }, [id])
+    }, [reportId])
 
     const handleTest = () => {
         if (mounted.current) {
@@ -95,7 +94,7 @@ export default function ReportForm({reportId, onComplete}) {
                 url: "/report",
                 method: "POST",
                 data: {
-                    id: uuid(),
+                    id: (reportId) ? reportId : uuid(),
                     name,
                     description,
                     index: index.id,

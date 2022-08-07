@@ -19,7 +19,8 @@ import {
     BiCloudRain,
     BiTime,
     BiParagraph,
-    BiArrowToRight
+    BiArrowToRight,
+    BiMessageSquareCheck
 } from "react-icons/bi";
 import {RiIncreaseDecreaseLine, RiScissorsCutFill} from "react-icons/ri";
 import {
@@ -220,6 +221,7 @@ export const icons = {
     "mqtt": (size) => <FiRss size={size}/>,
     "entity": (size) => <BsFillRecordFill size={size}/>,
     "report": (size) => <BsFillBarChartFill size={size}/>,
+    "message": (size) => <BiMessageSquareCheck size={size}/>,
 }
 
 
