@@ -31,7 +31,7 @@ function ResourceForm({init, onClose, showAlert}) {
                 production: {},
                 test: {}
             },
-            enabled: false,
+            enabled: true,
             tags: [],
             groups: [],
             destination: {
