@@ -1,17 +1,12 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {IoGitNetworkSharp} from "react-icons/io5";
-import FlowForm from "../elements/forms/FlowForm";
-import FlowDetails from "../elements/details/FlowDetails";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
 import AdvancedSquareCard from "../elements/lists/cards/AdvancedSquareCard";
-import {useHistory} from "react-router-dom";
-import urlPrefix from "../../misc/UrlPrefix";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import ReportForm from "../elements/forms/ReportForm";
-import {HiOutlineDocumentReport} from "react-icons/hi";
+import {BsBarChartFill} from "react-icons/bs";
 
 
 export default function Reports() {
@@ -61,7 +56,7 @@ export default function Reports() {
                     {plugs.map((row, subIndex) => {
                         return <AdvancedSquareCard key={index + "-" + subIndex}
                                                    id={row?.id}
-                                                   icon={<HiOutlineDocumentReport size={45}/>}
+                                                   icon={<BsBarChartFill size={45}/>}
                                                    name={row?.name}
                                                    onClick={() => onClick(row?.id)}
                                                    onEdit={_ => {}}
@@ -97,7 +92,7 @@ export default function Reports() {
         cardFunc={reportCards}
         rowFunc={reportRows}
         buttomLabel="New report"
-        buttonIcon={<HiOutlineDocumentReport size={20}/>}
+        buttonIcon={<BsBarChartFill size={20}/>}
         drawerDetailsTitle="Report details"
         drawerDetailsWidth={600}
         detailsFunc={detailsFunc}
@@ -105,5 +100,6 @@ export default function Reports() {
         drawerAddWidth={600}
         addFunc={addFunc}
         refresh={refresh}
+        defaultLayout={"rows"}
     />
 }

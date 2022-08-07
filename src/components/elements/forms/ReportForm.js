@@ -122,9 +122,9 @@ export default function ReportForm({reportId, onComplete}) {
         :
         <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Report configuration" description="Here you can add template for custom report, that you can use later."/>
+                <TuiFormGroupHeader header="Report configuration" description="Add template for custom report, that you can use later in workflow or internal reporting."/>
                 <TuiFormGroupContent>
-                    <TuiFormGroupField header="Name" description="Provide the name of your report.">
+                    <TuiFormGroupField header="Name" description="Type the name of your report.">
                         <TextField
                             value={name}
                             onChange={e => setName(e.target.value)}
@@ -133,7 +133,7 @@ export default function ReportForm({reportId, onComplete}) {
                             label="Name"
                         />
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Description" description="Provide a short description for your report.">
+                    <TuiFormGroupField header="Description" description="Type a short description for your report. (Optional)">
                         <TextField
                             value={description}
                             onChange={e => setDescription(e.target.value)}
@@ -144,13 +144,25 @@ export default function ReportForm({reportId, onComplete}) {
                             rows={3}
                         />
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Index" description="Decide which index will be queried by your report.">
+                    <TuiFormGroupField header="Index" description="Select which index will be queried.">
                         <AutoComplete
                             placeholder="Index"
                             initValue={index}
                             defaultValueSet={[{id: "profile", name: "Profile"}, {id: "event", name: "Event"}, {id: "session", name: "Session"}, {id: "entity", name: "Entity"}]}
                             onSetValue={value => setIndex(value)}
                             onlyValueWithOptions={true}
+                        />
+                    </TuiFormGroupField>
+                    <TuiFormGroupField
+                        header="Query" 
+                        description='It will be executed on selected index, every time when you run the report. You can use parameter placeholders for exampel: {"profile.id": "{{profile_id}}"}.
+                        Placeholders defined between {{ }} will be replaced by the parameters passed during report execution time! e.g. {"profile_id": "<some-id>"}.
+                        Please note that the whole string has to be a parameter, e.g. something like "{{profile_id}}-some-other-data" will not work.'
+                    >
+                        <JsonInput
+                            label="Query"
+                            value={query}
+                            onChange={value => setQuery(value)}
                         />
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Tags" description="You can add tags to your reports to group them in meaningful way.">
@@ -160,18 +172,11 @@ export default function ReportForm({reportId, onComplete}) {
                             onChange={value => setTags(value)}
                         />
                     </TuiFormGroupField>
-                    <TuiFormGroupField 
-                        header="Query" 
-                        description='Here is your query. It will be executed on selected index, every time when you run the report. You can use parameters like: {"profile.id": "{{profile_id}}"}.
-                        This works like dot template, but you define the names of your parameters yourself! Then you can pass them as config in form of {"profile_id": "<some-id>"} to get results.
-                        Please note that the whole string has to be parameter, e.g. something like "{{profile_id}}-some-other-data" will not work.'
-                    >
-                        <JsonInput
-                            label="Query"
-                            value={query}
-                            onChange={value => setQuery(value)}
-                        />
-                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Report testing" description="Use this form to test defined report."/>
+                <TuiFormGroupContent>
                     <TuiFormGroupField 
                         header="Test your query!" 
                         description='Here you can provide some example parameters and see how your query works!'
@@ -194,7 +199,7 @@ export default function ReportForm({reportId, onComplete}) {
                         :
                         <TuiFormGroupField 
                             header="Test results" 
-                            description='Here you can see what your report returns:'
+                            description='Inspect report returns:'
                         >
                             {testError ? 
                                 <ErrorsBox errorList={testError}/>

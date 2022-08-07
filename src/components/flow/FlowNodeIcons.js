@@ -5,7 +5,7 @@ import {
     BsPerson,
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
-    BsBoxArrowInRight, BsFillRecordFill
+    BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -98,7 +98,6 @@ import {ImInsertTemplate} from "react-icons/im";
 import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp, FaHtml5, FaRobot, FaUncharted, FaSalesforce} from "react-icons/fa";
 import {DiReact} from "react-icons/di";
 import {GiPathDistance} from "react-icons/gi";
-import {HiOutlineDocumentReport} from "react-icons/hi";
 
 export const icons = {
     "store": (size) => <FiDatabase size={size}/>,
@@ -220,7 +219,7 @@ export const icons = {
     "password": (size) => <MdPassword size={size} />,
     "mqtt": (size) => <FiRss size={size}/>,
     "entity": (size) => <BsFillRecordFill size={size}/>,
-    "report": (size) => <HiOutlineDocumentReport size={size}/>,
+    "report": (size) => <BsFillBarChartFill size={size}/>,
 }
 
 
