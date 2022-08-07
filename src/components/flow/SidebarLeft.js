@@ -24,7 +24,7 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
 
         setPluginsLoading(true);
         asyncRemote({
-                url: "/flow/action/plugins?rnd=" + Math.random + "&query=" + filterActions
+                url: "/flow/action/plugins?rnd=" + Math.random() + "&query=" + filterActions
             }
         ).then(
             (response) => {

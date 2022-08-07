@@ -19,6 +19,7 @@ import DotAccessor from "./inputs/DotAccessor";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import TuiSelectMultiConsentType from "../tui/TuiSelectMultiConsentType";
 import AutoComplete from "./AutoComplete";
+import ReportConfigInput from "./inputs/ReportConfigInput";
 
 export const TextInput = ({value, label, errorMessage, onChange}) => {
 
@@ -283,7 +284,7 @@ export function JsonInput({value, onChange = null}) {
         }
     }
 
-    const [formatedValue, error] = getFormattedValue(value)
+    const [formatedValue, error] = getFormattedValue(value);
     const [json, setJson] = useState(formatedValue);
     const [errorMsg, setErrorMsg] = useState(error);
 
@@ -296,6 +297,10 @@ export function JsonInput({value, onChange = null}) {
             onChange(value);
         }
     }
+
+    React.useEffect(() => {
+        handleChange(value);
+    }, [value])
 
     return <>
         <fieldset style={{marginTop: 10}}>
@@ -428,4 +433,17 @@ export function ConsentTypes({value: initValue, onChange = null}) {
 
 export function ReadOnlyTags({value}) {
     return Array.isArray(value) && value.map((tag, index) => <Chip label={tag} key={index} style={{marginLeft: 5}}/>)
+}
+
+export function ReportConfig({value: initValue, onChange, errorMessage, endpoint = null}) {
+    
+    const [value, setValue] = useState(initValue);
+    const handleChange = value => {
+        setValue(value);
+        if (onChange instanceof Function) {
+            onChange(value);
+        }
+    };
+
+    return <ReportConfigInput value={value} onChange={handleChange} errorMessage={errorMessage} endpoint={endpoint}/>
 }

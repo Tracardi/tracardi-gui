@@ -26,7 +26,7 @@ export default function Button({label, onClick, className, style, icon, disabled
                       startIcon={progress ? <CircularProgress size={20} color={"secondary"}/> : icon}
                       style={{margin: 1, ...style}}
                       className={className}
-    >
+    >   
         {label}
     </MuiButton>
 
