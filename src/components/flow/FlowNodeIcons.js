@@ -5,7 +5,7 @@ import {
     BsPerson,
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
-    BsBoxArrowInRight, BsFillRecordFill
+    BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -218,7 +218,8 @@ export const icons = {
     "transform": (size) => <MdTransform size={size}/>,
     "password": (size) => <MdPassword size={size} />,
     "mqtt": (size) => <FiRss size={size}/>,
-    "entity": (size) => <BsFillRecordFill size={size}/>
+    "entity": (size) => <BsFillRecordFill size={size}/>,
+    "report": (size) => <BsFillBarChartFill size={size}/>,
 }
 
 
