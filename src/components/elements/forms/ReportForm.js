@@ -7,16 +7,15 @@ import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import { TuiForm, TuiFormGroupHeader, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField } from "../tui/TuiForm";
 import TuiTagger from "../tui/TuiTagger";
-import AutoComplete from "./AutoComplete";
 import Button from "./Button";
-import { JsonInput } from "./JsonFormComponents";
+import {JsonInput, SelectInput} from "./JsonFormComponents";
 
 
 export default function ReportForm({reportId, onComplete}) {
-    
+
     const [name, setName] = React.useState("");
     const [description, setDescription] = React.useState("");
-    const [index, setIndex] = React.useState({id: "profile", name: "Profile"});
+    const [index, setIndex] = React.useState("profile");
     const [query, setQuery] = React.useState("{}");
     const [tags, setTags] = React.useState(["General"]);
     const [error, setError] = React.useState(null);
@@ -43,7 +42,7 @@ export default function ReportForm({reportId, onComplete}) {
                 if (mounted.current) {
                     setName(response.data.name);
                     setDescription(response.data.description);
-                    setIndex({id: response.data.index, name: response.data.index.charAt(0).toUpperCase() + response.data.index.slice(1)});
+                    setIndex(response.data.index);
                     setQuery(JSON.stringify(response.data.query, null, "  "));
                     setTags(response.data.tags);
                 }
@@ -68,7 +67,7 @@ export default function ReportForm({reportId, onComplete}) {
                     id: uuid(),
                     name,
                     description,
-                    index: index.id,
+                    index: index,
                     query: JSON.parse(query),
                     tags: [],
                 },
@@ -85,7 +84,7 @@ export default function ReportForm({reportId, onComplete}) {
     }
 
     const handleSave = () => {
-        if (name && query && index?.id) {
+        if (name && query && index) {
             if (mounted.current) {
                 setError(null);
                 setSaveLoading(true);
@@ -97,7 +96,7 @@ export default function ReportForm({reportId, onComplete}) {
                     id: (reportId) ? reportId : uuid(),
                     name,
                     description,
-                    index: index.id,
+                    index: index,
                     query: JSON.parse(query),
                     tags: Array.isArray(tags) && tags.length > 0 ? tags : ["General"],
                 }
@@ -116,7 +115,7 @@ export default function ReportForm({reportId, onComplete}) {
     }
 
     return <>{
-        loading ? 
+        loading ?
         <CenteredCircularProgress />
         :
         <TuiForm style={{margin: 20}}>
@@ -144,17 +143,21 @@ export default function ReportForm({reportId, onComplete}) {
                         />
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Index" description="Select which index will be queried.">
-                        <AutoComplete
-                            placeholder="Index"
-                            initValue={index}
-                            defaultValueSet={[{id: "profile", name: "Profile"}, {id: "event", name: "Event"}, {id: "session", name: "Session"}, {id: "entity", name: "Entity"}]}
-                            onSetValue={value => setIndex(value)}
-                            onlyValueWithOptions={true}
+                        <SelectInput
+                            label="Index"
+                                items={{
+                                profile: "Profile",
+                                event: "Event",
+                                session: "Session",
+                                entity: "Entity"
+                            }}
+                            value={index}
+                            onChange={setIndex}
                         />
                     </TuiFormGroupField>
                     <TuiFormGroupField
-                        header="Query" 
-                        description='It will be executed on selected index, every time when you run the report. You can use parameter placeholders for exampel: {"profile.id": "{{profile_id}}"}.
+                        header="Query"
+                        description='It will be executed on selected index, every time when you run the report. You can use parameter placeholders for example: {"profile.id": "{{profile_id}}"}.
                         Placeholders defined between {{ }} will be replaced by the parameters passed during report execution time! e.g. {"profile_id": "<some-id>"}.
                         Please note that the whole string has to be a parameter, e.g. something like "{{profile_id}}-some-other-data" will not work.'
                     >
@@ -176,8 +179,8 @@ export default function ReportForm({reportId, onComplete}) {
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Report testing" description="Use this form to test defined report."/>
                 <TuiFormGroupContent>
-                    <TuiFormGroupField 
-                        header="Test your query!" 
+                    <TuiFormGroupField
+                        header="Test your query!"
                         description='Here you can provide some example parameters and see how your query works!'
                     >
                         <JsonInput
@@ -193,16 +196,16 @@ export default function ReportForm({reportId, onComplete}) {
                         disabled={testLoading}
                     />
                     {
-                        testLoading ? 
+                        testLoading ?
                         <div style={{height: 300}}><CenteredCircularProgress/></div>
                         :
-                        <TuiFormGroupField 
-                            header="Test results" 
+                        <TuiFormGroupField
+                            header="Test results"
                             description='Inspect report returns:'
                         >
-                            {testError ? 
+                            {testError ?
                                 <ErrorsBox errorList={testError}/>
-                                 : 
+                                 :
                                 <div style={{borderRadius: 6, border: "1px solid #ccc", padding: 10, marginBottom: 20}}><ObjectInspector data={testResult} expandLevel={3}/></div>
                             }
                         </TuiFormGroupField>
@@ -216,7 +219,7 @@ export default function ReportForm({reportId, onComplete}) {
                 error={!!error}
                 success={success}
                 progress={saveLoading}
-            /> 
+            />
         </TuiForm>
     }</>
 }
