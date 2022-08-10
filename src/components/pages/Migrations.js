@@ -213,9 +213,9 @@ export default function Migrations() {
                                     icon={<HiArrowNarrowRight size={60} color="#666"/>}
                                 />)
                             }
-                            {Array.isArray(availableMigrations) && availableMigrations.length === 0 &&
-                            <NoData header="No migrations were found for current Tracardi version."/>}
                         </div>
+                        {Array.isArray(availableMigrations) && availableMigrations.length === 0 &&
+                        <NoData header="No migrations were found for current Tracardi version."/>}
                     </TuiFormGroupField>
                 </TuiFormGroupContent>
             </TuiFormGroup>

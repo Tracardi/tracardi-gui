@@ -153,7 +153,7 @@ export const EventData = ({event}) => {
     </TuiForm>
 }
 
-export default function EventDetails({event}) {
+export default function EventDetails({event, metadata}) {
 
     const [tab, setTab] = React.useState(0);
 
@@ -194,7 +194,7 @@ export default function EventDetails({event}) {
                         <TuiFormGroupHeader header="Raw event"/>
                         <TuiFormGroupContent>
                             <div style={{margin: 10}}>
-                                <ObjectInspector data={event} expandLevel={5}/>
+                                <ObjectInspector data={{event:event, _metadata: metadata}} expandLevel={5}/>
                             </div>
                         </TuiFormGroupContent>
                     </TuiFormGroup>
