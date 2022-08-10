@@ -66,9 +66,9 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                     size="large">
                     <VscRunErrors size={22}/>
                 </IconButton>}
-                <IconButton label="Raw" onClick={() => setTab(4)} selected={tab === 4} size="large">
+                {(process.env.NODE_ENV && process.env.NODE_ENV === 'development') && <IconButton label="Raw" onClick={() => setTab(4)} selected={tab === 4} size="large">
                     <VscJson size={22}/>
-                </IconButton>
+                </IconButton>}
             </div>
             <div className="NodeDetailsContent">
                 <div className="Title">
@@ -97,7 +97,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                         onSubmit={handleInitSubmit}
                     />}
 
-                    {tab === 4 && <ConsoleView label="Action raw data" data={node}/>}
+                    {tab === 4 && (process.env.NODE_ENV && process.env.NODE_ENV === 'development') && <ConsoleView label="Action raw data" data={node}/>}
 
                     {tab === 6 && node?.data?.spec && <NodeRuntimeConfigForm
                         pluginId={node?.data?.spec?.id}
