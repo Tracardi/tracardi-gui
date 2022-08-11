@@ -68,8 +68,10 @@ export default function SessionSlider({profileId, onEventSelect}) {
             }}>
                 <NoData header="No data found for defined session offset" fontSize="16px"/>
             </div>}
-            {!loading && session !== null && <SessionStepper session={session}
-                            onEventSelect={onEventSelect}
+            {!loading && session !== null && <SessionStepper
+                profileId={profileId}
+                session={session}
+                onEventSelect={onEventSelect}
             />}
         </div>
     );

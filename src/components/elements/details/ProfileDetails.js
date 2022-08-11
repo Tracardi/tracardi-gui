@@ -30,7 +30,7 @@ export default function ProfileDetails({profile}) {
                             <TuiFormGroupHeader header="Segments"/>
                             <TuiFormGroupContent>
                                 <TuiFormGroupField>
-                                    <Properties properties={{segments: profile.segments}}/>
+                                    <Properties properties={{segments: profile?.segments}}/>
                                 </TuiFormGroupField>
                             </TuiFormGroupContent>
                         </TuiFormGroup>
