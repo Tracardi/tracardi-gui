@@ -68,6 +68,7 @@ import {ReactComponent as MauticLogo} from "../../svg/mautic.svg";
 import {ReactComponent as Amplitude} from "../../svg/amplitude-icon.svg";
 import {ReactComponent as Mixpanel} from "../../svg/mixpanel.svg";
 import {ReactComponent as ActiveCampaign} from "../../svg/active-campaign.svg";
+import {ReactComponent as Stripe} from "../../svg/stripe.svg";
 import {
     SiRabbitmq,
     SiMongodb,
@@ -222,6 +223,7 @@ export const icons = {
     "entity": (size) => <BsFillRecordFill size={size}/>,
     "report": (size) => <BsFillBarChartFill size={size}/>,
     "message": (size) => <BiMessageSquareCheck size={size}/>,
+    "stripe": (size) => <Stripe size={size}/>,
 }
 
 
