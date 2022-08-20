@@ -110,7 +110,7 @@ const SignInForm = ({showAlert}) => {
     const handleEndpointReset = () => {
         resetApiUrlConfig();
         logout();
-        window.location.reload()
+        window.location.replace("/login");
     }
 
     const handleSubmit = async (event) => {

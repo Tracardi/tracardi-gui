@@ -100,18 +100,18 @@ const ApiUrlSelector = ({children}) => {
                 <BsHddNetwork size={50} style={{color: "#666"}}/>
                 <h1 style={{fontWeight: 300}}>Select TRACARDI server</h1>
                 <p>Type or select TRACARDI API Url.</p>
-                <div style={{width: 400, display: "flex", alignItems: "flex-end", marginBottom: (!isEndpointValid || !isEndpointReachable) && apiLocation ? 0 : 22}}>
+                <div style={{width: 400, display: "flex", alignItems: "flex-end", marginBottom: (!isEndpointValid || !isEndpointReachable) && apiLocation && !progress ? 0 : 22}}>
                     <TuiApiUrlInput
                         value={apiLocation || apiUrlStorage().read() || ""}
                         options={new storageValue('tracardi-api-urls').read([])}
                         onChange={(v) => setEndpoint(v)}
-                        errorMessage={apiLocation && (!isEndpointReachable ? "Given API URL is not reachable" : isEndpointValid ? null : "Given API URL is invalid")}
+                        errorMessage={progress ? null : apiLocation && (!isEndpointReachable ? "Given API URL is not reachable" : isEndpointValid ? null : "Given API URL is invalid")}
                         />          
                     <Button label="Select"
                             onClick={()=> setApiLocation(endpoint)}
                             progress={progress}
                             error={failed}
-                            style={{height: 38, marginBottom: (!isEndpointValid || !isEndpointReachable) && apiLocation ? 31 : 9}}
+                            style={{height: 38, marginBottom: (!isEndpointValid || !isEndpointReachable) && apiLocation && !progress ? 31 : 9}}
                     />
                 </div>
             </div>
