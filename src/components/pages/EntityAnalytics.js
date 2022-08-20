@@ -1,6 +1,7 @@
 import React from "react";
 import "./DataAnalytics.css";
 import DataAnalytics from "./DataAnalytics";
+import { makeUtcStringTzAware } from "../../misc/converters";
 
 export default function EntityAnalytics({displayChart=true}) {
 
@@ -35,7 +36,7 @@ export default function EntityAnalytics({displayChart=true}) {
         label="List of Entities"
         enableFiltering={true}
         timeFieldLabel = "last update"
-        timeField={(row) => [row.timestamp]}
+        timeField={(row) => [makeUtcStringTzAware(row.timestamp)]}
         filterFields={['timestamp']}
         onLoadHistogramRequest={onLoadHistogramRequest}
         onLoadDataRequest={onLoadDataRequest}

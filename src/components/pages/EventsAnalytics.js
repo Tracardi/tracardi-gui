@@ -4,6 +4,7 @@ import EventDetails from "../elements/details/EventDetails";
 import DataAnalytics from "./DataAnalytics";
 import EventStatusTag from "../elements/misc/EventStatusTag";
 import EventTypeTag from "../elements/misc/EventTypeTag";
+import { makeUtcStringTzAware } from "../../misc/converters";
 
 export default function EventsAnalytics({displayChart=true}) {
 
@@ -54,7 +55,7 @@ export default function EventsAnalytics({displayChart=true}) {
             'metadata',
             'context'
         ]}
-        timeField={(row) => [row.metadata.time.insert, <EventTypeTag eventType={row.type} profile={row?.profile?.id}/>, <EventStatusTag label={row.metadata.status}/>]}
+        timeField={(row) => [makeUtcStringTzAware(row.metadata.time.insert), <EventTypeTag eventType={row.type} profile={row?.profile?.id}/>, <EventStatusTag label={row.metadata.status}/>]}
 
         onLoadHistogramRequest={handleLoadHistogramRequest}
         onLoadDataRequest={handleLoadDataRequest}

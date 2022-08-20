@@ -2,6 +2,7 @@ import React from "react";
 import "./DataAnalytics.css";
 import DataAnalytics from "./DataAnalytics";
 import SessionDetails from "../elements/details/SessionDetails";
+import { makeUtcStringTzAware } from "../../misc/converters";
 
 export default function SessionsAnalytics({displayChart=true}) {
 
@@ -35,7 +36,7 @@ export default function SessionsAnalytics({displayChart=true}) {
         type="session"
         timeFieldLabel = "timestamp"
         filterFields={['metadata.time', 'context.storage', 'context.screen']}
-        timeField={(row) => [row.metadata.time.insert]}
+        timeField={(row) => [makeUtcStringTzAware(row.metadata.time.insert)]}
         onLoadHistogramRequest={handleLoadHistogramRequest}
         onLoadDataRequest={handleLoadDataRequest}
         onLoadDetails={handleLoadDetails}

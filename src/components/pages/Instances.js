@@ -7,6 +7,7 @@ import {
     TuiFormGroupField,
     TuiFormGroupHeader
 } from "../elements/tui/TuiForm";
+import { makeUtcStringTzAware } from "../../misc/converters";
 
 const Instances = () => {
 
@@ -24,7 +25,7 @@ const Instances = () => {
                         <AutoLoadObjectList
                             onLoadRequest={onLoadRequest}
                             label="INSTANCES"
-                            timeField={(row) => [row.timestamp]}
+                            timeField={(row) => [makeUtcStringTzAware(row.timestamp)]}
                             timeFieldLabel="Timestamp"
                         />
                     </div>
