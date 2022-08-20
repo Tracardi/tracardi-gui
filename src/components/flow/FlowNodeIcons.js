@@ -5,7 +5,7 @@ import {
     BsPerson,
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
-    BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill
+    BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -224,6 +224,7 @@ export const icons = {
     "report": (size) => <BsFillBarChartFill size={size}/>,
     "message": (size) => <BiMessageSquareCheck size={size}/>,
     "stripe": (size) => <Stripe size={size}/>,
+    "card": (size) => <BsCreditCard size={size}/>,
 }
 
 
