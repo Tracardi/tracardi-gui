@@ -178,13 +178,13 @@ const Fields = ({fields, values, errorMessages, keyValueMapOfComponentValues, on
         const searchRecursivelyInValues = (path, object=values) => {
             if (Array.isArray(path) && path.length > 1) {
                 const key = path.shift();
-                if (key in object) {
+                if (object && key in object) {
                     return searchRecursivelyInValues(path, object[key]);
                 } else return null;
                 
             } else if (Array.isArray(path) && path.length === 1) {
                 const key = path.shift();
-                if (key in object) {
+                if (object && key in object) {
                     return object[key];
                 } else return null;
 

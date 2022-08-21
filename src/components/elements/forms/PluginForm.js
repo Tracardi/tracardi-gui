@@ -157,7 +157,7 @@ export default function PluginForm({id}) {
                                                 <div>{plugin?.plugin?.metadata?.brand || "Brand not provided"}</div>
                                             </div>
                                             <div className="plugin-info-field">
-                                                <div class="field-name">Version</div>
+                                                <div className="field-name">Version</div>
                                                 <div>{plugin?.plugin?.spec?.version || "Version not provided"}</div>
                                             </div>
                                             <div className="plugin-info-field">

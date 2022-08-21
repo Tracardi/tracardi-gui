@@ -11,19 +11,23 @@ import "../elements/forms/JsonForm"
 import {VscTools} from "react-icons/vsc";
 import {MemoNodeInitForm, NodeInitJsonForm, NodeRuntimeConfigForm} from "../elements/forms/NodeInitForm";
 import {VscRunErrors} from "react-icons/vsc";
+import RemoteNodeForm from "./RemoteNodeForm";
+import {BsTerminal} from "react-icons/bs";
 
 export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
 
-    const [tab, setTab] = useState(3);
+    const [tab, setTab] = useState(node?.data?.metadata?.remote === true ? 1 :3);
 
     useEffect(() => {
 
-            if (tab === 1 && !node?.data?.spec?.manual) {
+            if (tab === 1 && !node?.data?.metadata?.remote) {
                 setTab(0)
             }
 
-            if (tab === 3 && !node?.data?.spec?.form) {
-                setTab(2)
+            if (tab === 3) {
+                if(!node?.data?.spec?.form) {
+                    setTab(2)
+                }
             }
 
             if (tab === 2 && !node?.data?.spec?.init) {
@@ -45,15 +49,22 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                 <IconButton label="Info" onClick={() => setTab(0)} selected={tab === 0} size="large">
                     <BsInfoCircle size={22}/>
                 </IconButton>
+                {node?.data?.metadata?.remote === true && <IconButton
+                    label="Remote Configuration Editor"
+                    onClick={() => setTab(1)}
+                    selected={tab === 1}
+                    size="large">
+                    <BsTerminal size={22}/>
+                </IconButton>}
                 {node?.data?.spec?.form && <IconButton
-                    label="Config Editor"
+                    label="Configuration Editor"
                     onClick={() => setTab(3)}
                     selected={tab === 3}
                     size="large">
                     <GoSettings size={22}/>
                 </IconButton>}
                 {node?.data?.spec?.init && <IconButton
-                    label="Json Config"
+                    label="Advanced JSON Configuration"
                     onClick={() => setTab(2)}
                     selected={tab === 2}
                     size="large">
@@ -80,6 +91,16 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                 </div>
                 <div className="Pane">
                     {tab === 0 && <NodeInfo node={node} onLabelSet={onLabelSet}/>}
+                    {tab === 1 && <RemoteNodeForm
+                        microservice={node?.data?.spec?.microservice }
+                        onConnect={(data) => {
+                            node.data.spec.init = data?.plugin?.init;
+                            node.data.spec.form = data?.plugin?.form;
+                            node.data.spec.microservice = data?.microservice;
+
+                            setTab(3)
+                        }}
+                    />}
                     {tab === 2 && node?.data?.spec?.init &&
                     <NodeInitJsonForm
                         pluginId={node?.data?.spec?.id}
