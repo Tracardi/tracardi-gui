@@ -17,13 +17,20 @@ import {
 import ErrorsBox from "../../errors/ErrorsBox";
 import {AiOutlineCheckCircle} from "react-icons/ai";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
+import MicroserviceForm from "./MicroserviceForm";
 
 const getComponentByType = ({value, values, errorMessage, componentType, fieldId, onChange}) => {
 
     const handleOnChange = (value, fieldId, deleted = {}) => {
         if (onChange instanceof Function) {
             // Converts flat structure to nested object
-            onChange(dot2object({[fieldId]: value}), Object.keys(deleted).length > 0 ? dot2object({[fieldId]: deleted}) : {})
+            onChange(
+                (fieldId !== '*')
+                    ? dot2object({[fieldId]: value})
+                    : dot2object(value)
+                , Object.keys(deleted).length > 0
+                    ? dot2object({[fieldId]: deleted})
+                    : {})
         }
     }
 
@@ -163,6 +170,14 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
                 {...props}
             />
 
+        case "microserviceConfig":
+            return (props) => <MicroserviceForm
+                value={value}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                errorMessage={errorMessage}
+                {...props}
+            />
+
         default:
             return () => <AlertBox>Missing form type {componentType}.</AlertBox>
     }
@@ -192,7 +207,9 @@ const Fields = ({fields, values, errorMessages, keyValueMapOfComponentValues, on
         }
 
         const readValue = (fieldId) => {
-            if (fieldId in keyValueMapOfComponentValues) {
+            if(fieldId === '*') {
+                return dot2object(keyValueMapOfComponentValues)
+            } else if (fieldId in keyValueMapOfComponentValues) {
                 // This handles simple fields like nums, strings
                 return keyValueMapOfComponentValues[fieldId]
             } else {

@@ -102,6 +102,7 @@ const ApiUrlSelector = ({children}) => {
                 <p>Type or select TRACARDI API Url.</p>
                 <div style={{width: 400, display: "flex", alignItems: "flex-end", marginBottom: (!isEndpointValid || !isEndpointReachable) && apiLocation ? 0 : 22}}>
                     <TuiApiUrlInput
+                        label="API Endpoint URL"
                         value={apiLocation || apiUrlStorage().read() || ""}
                         options={new storageValue('tracardi-api-urls').read([])}
                         onChange={(v) => setEndpoint(v)}

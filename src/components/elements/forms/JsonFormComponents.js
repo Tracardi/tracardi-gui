@@ -347,7 +347,7 @@ export function ResourceSelect({value, errorMessage, onChange = null, tag = null
         }
     };
 
-    return <TuiSelectResource value={value}
+    return <TuiSelectResource initValue={value}
                               errorMessage={errorMessage}
                               onSetValue={handleChange}
                               tag={tag}

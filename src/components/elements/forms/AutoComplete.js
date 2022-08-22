@@ -8,7 +8,7 @@ import {convertResponseToAutoCompleteOptions} from "../../../misc/converters";
 import {isObject, isString} from "../../../misc/typeChecking";
 
 const AutoComplete = ({
-                          placeholder, error: errorMessage = null, endpoint, defaultValueSet, initValue, onSetValue,
+                          placeholder, error: errorMessage = null, endpoint, defaultValueSet, initValue, value = null, onSetValue,
                           onChange, onlyValueWithOptions = false, disabled, fullWidth = false,
                           renderOption
                       }) => {
@@ -34,10 +34,13 @@ const AutoComplete = ({
     useEffect(() => {
         mounted.current = true;
         setError(errorMessage)
+        if (value) {
+            setSelectedValue(value)
+        }
         return () => {
             mounted.current = false;
         }
-    }, [errorMessage])
+    }, [errorMessage, value])
 
     const handleLoading = async () => {
         if (mounted.current) {
@@ -116,6 +119,7 @@ const AutoComplete = ({
             }
         }
     }
+
     return (
         <Autocomplete
             freeSolo={!onlyValueWithOptions}
@@ -151,7 +155,7 @@ const AutoComplete = ({
                     label={placeholder}
                     error={(typeof error !== "undefined" && error !== '' && error !== null)}
                     helperText={error}
-                    FormHelperTextProps={{ style: { color: "#d81b60" }}}
+                    FormHelperTextProps={{style: {color: "#d81b60"}}}
                     variant="outlined"
                     size="small"
                     InputProps={{

@@ -5,8 +5,8 @@ import {connect} from "react-redux";
 import {useHistory} from "react-router-dom";
 import urlPrefix from "../../../misc/UrlPrefix";
 
-function TuiSelectResource({value = null, disabled = false, errorMessage = null,
-                               onSetValue = null, tag = null, open, pro=false}) {
+function TuiSelectResource({initValue = null, value = null, disabled = false, errorMessage = null,
+                               onSetValue = null, tag = null, open, pro=false, placeholder="Resource"}) {
 
     const handleValueSet = (value) => {
         if (onSetValue) {
@@ -28,9 +28,10 @@ function TuiSelectResource({value = null, disabled = false, errorMessage = null,
     return <div>
         <AutoComplete disabled={disabled}
                       onlyValueWithOptions={true}
-                      placeholder="Resource"
+                      placeholder={placeholder}
                       endpoint={{url:resourceUrl}}
-                      initValue={value}
+                      initValue={initValue}
+                      value={value}
                       error={errorMessage}
                       onSetValue={handleValueSet}
         />

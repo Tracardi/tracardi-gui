@@ -189,6 +189,7 @@ export default function ImportEditForm({onSubmit, importConfig}) {
                     <TuiFormGroupField header="Tracardi API URL" description="Select an instance of Tracardi API you would like to send the imported data to.">
                         <div style={{width: 500}}>
                             <TuiApiUrlInput
+                                label="Tracardi API URL"
                                 value={apiUrl.current}
                                 options={new storageValue('tracardi-api-urls').read([])}
                                 onChange={(value) => apiUrl.current = value}

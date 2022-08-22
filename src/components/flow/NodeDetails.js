@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import './NodeDetails.css';
-import {BsInfoCircle} from "react-icons/bs";
+import {BsCloud, BsInfoCircle} from "react-icons/bs";
 import IconButton from "../elements/misc/IconButton";
 import {GoSettings} from "react-icons/go";
 import ConsoleView from "../elements/misc/ConsoleView";
@@ -11,8 +11,7 @@ import "../elements/forms/JsonForm"
 import {VscTools} from "react-icons/vsc";
 import {MemoNodeInitForm, NodeInitJsonForm, NodeRuntimeConfigForm} from "../elements/forms/NodeInitForm";
 import {VscRunErrors} from "react-icons/vsc";
-import RemoteNodeForm from "./RemoteNodeForm";
-import {BsTerminal} from "react-icons/bs";
+import NodeMicroserviceInfo from "./NodeMicroserviceInfo";
 
 export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
 
@@ -54,7 +53,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                     onClick={() => setTab(1)}
                     selected={tab === 1}
                     size="large">
-                    <BsTerminal size={22}/>
+                    <BsCloud size={22}/>
                 </IconButton>}
                 {node?.data?.spec?.form && <IconButton
                     label="Configuration Editor"
@@ -91,14 +90,25 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                 </div>
                 <div className="Pane">
                     {tab === 0 && <NodeInfo node={node} onLabelSet={onLabelSet}/>}
-                    {tab === 1 && <RemoteNodeForm
+                    {tab === 1 && <NodeMicroserviceInfo
+                        nodeId={node?.id}
                         microservice={node?.data?.spec?.microservice }
-                        onConnect={(data) => {
-                            node.data.spec.init = data?.plugin?.init;
-                            node.data.spec.form = data?.plugin?.form;
-                            node.data.spec.microservice = data?.microservice;
-
-                            setTab(3)
+                        onServiceSelect={(data) => {
+                            node.data.spec.microservice = {
+                                ...node.data.spec.microservice,
+                                resource: data
+                            };
+                        }}
+                        onPluginSelect={ (data) => {
+                            node.data.spec.microservice = {
+                                ...node.data.spec.microservice,
+                                plugin: data?.plugin
+                            };
+                            node.data.spec = {
+                                ...node.data.spec,
+                                init: data?.config?.init,
+                                form: data?.config?.form
+                            }
                         }}
                     />}
                     {tab === 2 && node?.data?.spec?.init &&
