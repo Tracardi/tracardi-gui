@@ -72,7 +72,7 @@ const StatusTag = ({modified, deployed}) => {
     </div>
 }
 
-const NodeDetailsHandler = React.memo(({node, onLabelSet, onConfig, onRuntimeConfig, pro}) => {
+const NodeDetailsHandler = React.memo(({node, onLabelSet, onConfig, onRuntimeConfig, onMicroserviceChange, pro}) => {
 
     const [loading, setLoading] = useState(false);
     const [available, setAvailable] = useState(null);
@@ -138,6 +138,7 @@ const NodeDetailsHandler = React.memo(({node, onLabelSet, onConfig, onRuntimeCon
             node={node}
             onConfig={onConfig}
             onRuntimeConfig={onRuntimeConfig}
+            onMicroserviceChange={onMicroserviceChange}
         />
     }
 
@@ -150,7 +151,7 @@ const NodeDetailsHandler = React.memo(({node, onLabelSet, onConfig, onRuntimeCon
 })
 
 
-const DetailsHandler = ({element, onNodeRefresh, onEdgeRefresh, onNodeConfig, onNodeRuntimeConfig}) => {
+const DetailsHandler = ({element, onNodeRefresh, onEdgeRefresh, onNodeConfig, onNodeRuntimeConfig, onMicroserviceChange}) => {
 
     if (isNode(element)) {
         return <SidebarRight>
@@ -164,6 +165,7 @@ const DetailsHandler = ({element, onNodeRefresh, onEdgeRefresh, onNodeConfig, on
                 node={element}
                 onConfig={onNodeConfig}
                 onRuntimeConfig={onNodeRuntimeConfig}
+                onMicroserviceChange={onMicroserviceChange}
                 pro={element?.data?.metadata?.pro}
             />
         </SidebarRight>
@@ -569,6 +571,11 @@ export function FlowEditorPane(
 
     }
 
+    const handleMicroserviceChange = () => {
+        console.log("update")
+        handleUpdate();
+    }
+
     const onConnectionDetails = (nodeId, edgeId) => {
         setDebugNode(nodeId)
         setAnimatedEdge(edgeId);
@@ -656,20 +663,21 @@ export function FlowEditorPane(
                     </div>
 
                     {displayElementDetails && currentNode && <DetailsHandler element={currentNode}
-                                    onEdgeRefresh={ (edge) => {
-                                        if (elements) {
-                                            setRefreshEdgeId([edge.id, edge])
-                                        }
-                                        handleUpdate()
-                                    }}
-                                    onNodeRefresh={ (node) =>  {
-                                        if(elements) {
-                                            setRefreshNodeId([node.id, node])
-                                        }
-                                        handleUpdate()
-                                    }}
-                                    onNodeConfig={handleConfigSave}
-                                    onNodeRuntimeConfig={handleRuntimeConfig}
+                                                                             onEdgeRefresh={(edge) => {
+                                                                                 if (elements) {
+                                                                                     setRefreshEdgeId([edge.id, edge])
+                                                                                 }
+                                                                                 handleUpdate()
+                                                                             }}
+                                                                             onNodeRefresh={(node) => {
+                                                                                 if (elements) {
+                                                                                     setRefreshNodeId([node.id, node])
+                                                                                 }
+                                                                                 handleUpdate()
+                                                                             }}
+                                                                             onNodeConfig={handleConfigSave}
+                                                                             onNodeRuntimeConfig={handleRuntimeConfig}
+                                                                             onMicroserviceChange={handleMicroserviceChange}
                     />}
 
                     {displayDebugPane && <MemoDebugPane

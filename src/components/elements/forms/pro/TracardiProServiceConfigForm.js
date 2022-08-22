@@ -62,6 +62,8 @@ function DescriptionForm({data: initData, onChange}) {
 
 export default function TracardiProServiceConfigForm({service, onSubmit}) {
 
+    console.log("service-data", service)
+
     const data = useRef({
         name: "",
         description: "",
@@ -77,7 +79,7 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
 
     const handleSubmit = async () => {
         try {
-            let payload = {
+            let resource = {
                 id: uuid4(),
                 type: service?.metadata?.type,
                 name: data.current.name,
@@ -92,13 +94,16 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
             }
 
             if(service?.destination && !isEmptyObject(service?.destination)) {
-                payload.destination = service.destination
+                resource.destination = service.destination
             }
 
             const response = await asyncRemote({
                 url: '/tpro/resource',
                 method: "POST",
-                data: payload
+                data: {
+                    resource:resource,
+                    options: {}
+                }
             })
 
             if (onSubmit instanceof Function) {

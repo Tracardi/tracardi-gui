@@ -13,7 +13,7 @@ import {MemoNodeInitForm, NodeInitJsonForm, NodeRuntimeConfigForm} from "../elem
 import {VscRunErrors} from "react-icons/vsc";
 import NodeMicroserviceInfo from "./NodeMicroserviceInfo";
 
-export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
+export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicroserviceChange}) {
 
     const [tab, setTab] = useState(node?.data?.metadata?.remote === true ? 1 :3);
 
@@ -49,7 +49,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                     <BsInfoCircle size={22}/>
                 </IconButton>
                 {node?.data?.metadata?.remote === true && <IconButton
-                    label="Remote Configuration Editor"
+                    label="Microservice Configuration Editor"
                     onClick={() => setTab(1)}
                     selected={tab === 1}
                     size="large">
@@ -108,6 +108,9 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet}) {
                                 ...node.data.spec,
                                 init: data?.config?.init,
                                 form: data?.config?.form
+                            }
+                            if(onMicroserviceChange instanceof Function) {
+                                onMicroserviceChange()
                             }
                         }}
                     />}

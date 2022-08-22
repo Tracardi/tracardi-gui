@@ -13,12 +13,11 @@ import useAfterMountEffect from "../../effects/AfterMountEffect";
 
 export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSelect, onPluginSelect}) {
 
-    console.log("render NodeMicroserviceInfo", nodeId, microservice)
-
     const [actionsEndpoint, setActionsEndpoint] = useState(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [data, setData] = useState(microservice)
+    const [serviceId, setServiceId] = useState("")
 
     const mounted = useRef(true);
 
@@ -26,13 +25,7 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
     useAfterMountEffect(() => {
         // Reset to default values if node changes
         setData(microservice)
-        setActionsEndpoint({url: "http://localhost:8686/actions"})
     }, [nodeId, microservice])
-
-    // console.log("microservice", microservice)
-    // console.log("data", data)
-
-    const disabled = false
 
     const handleResourceSelect = async (resource) => {
 
@@ -51,9 +44,14 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
             // Get current API for fetching action plugins from test credentials
 
             const microserviceUrl = response.data?.credentials?.test?.url
-            const selectedService = response.data?.credentials?.test?.service
+            const selectedServiceId = response.data?.credentials?.test?.service.id
+            setServiceId(selectedServiceId)
 
-            setActionsEndpoint({url: `${microserviceUrl}/actions?service=${selectedService}`})
+            setActionsEndpoint({
+                baseURL: microserviceUrl,
+                url: `/actions?service_id=${selectedServiceId}`
+            })
+
             if (onServiceSelect instanceof Function) {
                 onServiceSelect({
                     ...resource,
@@ -85,7 +83,8 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
             setError(null)
             setLoading(true)
             const response = await asyncRemote({
-                url: "http://localhost:8686/plugin"
+                baseURL: actionsEndpoint.baseURL,
+                url: `/plugin/form?service_id=${serviceId}&action_id=${value.id}`
             })
             if (onPluginSelect instanceof Function) {
                 onPluginSelect({
@@ -118,7 +117,6 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Action plugin" description="Select action plugin.">
                     <AutoComplete
-                        disabled={disabled}
                         endpoint={actionsEndpoint}
                         onlyValueWithOptions={false}
                         value={data?.plugin}
