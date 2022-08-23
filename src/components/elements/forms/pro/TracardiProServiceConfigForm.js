@@ -102,7 +102,7 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
                 method: "POST",
                 data: {
                     resource:resource,
-                    options: {}
+                    metadata: service.metadata
                 }
             })
 
