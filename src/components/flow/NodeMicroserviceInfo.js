@@ -10,6 +10,7 @@ import TuiSelectResource from "../elements/tui/TuiSelectResource";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import AutoComplete from "../elements/forms/AutoComplete";
 import useAfterMountEffect from "../../effects/AfterMountEffect";
+import Properties from "../elements/details/DetailProperties";
 
 export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSelect, onPluginSelect}) {
 
@@ -26,6 +27,10 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
         // Reset to default values if node changes
         setData(microservice)
     }, [nodeId, microservice])
+
+    const hasResourceSetUp = () => {
+        return true
+    }
 
     const handleResourceSelect = async (resource) => {
 
@@ -107,14 +112,20 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
         <TuiFormGroup>
             <TuiFormGroupHeader header="Microservice" description="Define microservice location."/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Server" description="Select microservice server resource.">
+                { !hasResourceSetUp && <TuiFormGroupField header="Server" description="Select microservice server resource.">
                     <TuiSelectResource
                         placeholder="Microservice"
                         tag="microservice"
                         value={data?.resource}
                         onSetValue={handleResourceSelect}
                     />
-                </TuiFormGroupField>
+                </TuiFormGroupField>}
+                { hasResourceSetUp && <TuiFormGroupField header="Microservice details">
+                    <Properties properties={data?.resource?.current} />
+                </TuiFormGroupField>}
+                { hasResourceSetUp && <TuiFormGroupField header="Microservice resource">
+                    <Properties properties={data?.name} />
+                </TuiFormGroupField>}
                 <TuiFormGroupField header="Action plugin" description="Select action plugin.">
                     <AutoComplete
                         endpoint={actionsEndpoint}
