@@ -571,11 +571,6 @@ export function FlowEditorPane(
 
     }
 
-    const handleMicroserviceChange = () => {
-        console.log("update")
-        handleUpdate();
-    }
-
     const onConnectionDetails = (nodeId, edgeId) => {
         setDebugNode(nodeId)
         setAnimatedEdge(edgeId);
@@ -677,7 +672,7 @@ export function FlowEditorPane(
                                                                              }}
                                                                              onNodeConfig={handleConfigSave}
                                                                              onNodeRuntimeConfig={handleRuntimeConfig}
-                                                                             onMicroserviceChange={handleMicroserviceChange}
+                                                                             onMicroserviceChange={handleUpdate}
                     />}
 
                     {displayDebugPane && <MemoDebugPane

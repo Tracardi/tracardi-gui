@@ -18,6 +18,7 @@ import ErrorsBox from "../../errors/ErrorsBox";
 import {AiOutlineCheckCircle} from "react-icons/ai";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
 import MicroserviceForm from "./MicroserviceForm";
+import {isObject} from "../../../misc/typeChecking";
 
 const getComponentByType = ({value, values, errorMessage, componentType, fieldId, onChange}) => {
 
@@ -193,13 +194,13 @@ const Fields = ({fields, values, errorMessages, keyValueMapOfComponentValues, on
         const searchRecursivelyInValues = (path, object=values) => {
             if (Array.isArray(path) && path.length > 1) {
                 const key = path.shift();
-                if (object && key in object) {
+                if (isObject(object) && key in object) {
                     return searchRecursivelyInValues(path, object[key]);
                 } else return null;
                 
             } else if (Array.isArray(path) && path.length === 1) {
                 const key = path.shift();
-                if (object && key in object) {
+                if (isObject(object) && key in object) {
                     return object[key];
                 } else return null;
 

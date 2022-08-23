@@ -118,6 +118,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                     <NodeInitJsonForm
                         pluginId={node?.data?.spec?.id}
                         formSchema={node?.data?.spec?.form}
+                        microservice={node?.data.spec?.microservice}
                         init={node?.data?.spec?.init}
                         manual={node?.data?.spec?.manual}
                         onSubmit={handleInitSubmit}
@@ -126,6 +127,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                     <MemoNodeInitForm
                         nodeId={node?.id}
                         pluginId={node?.data?.spec?.id}
+                        microservice={node?.data.spec?.microservice}
                         init={node?.data?.spec?.init}
                         formSchema={node?.data?.spec?.form}
                         onSubmit={handleInitSubmit}

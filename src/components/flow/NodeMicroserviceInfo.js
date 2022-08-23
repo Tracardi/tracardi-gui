@@ -22,29 +22,12 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
 
     const mounted = useRef(true);
 
-    // tego uzywam aby zresetowac stan gdy mamy dwa takie same nody i klikamy pomiędzy nimi.
-    useAfterMountEffect(() => {
-        // Reset to default values if node changes
-        setData(microservice)
-    }, [nodeId, microservice])
-
-    const hasResourceSetUp = () => {
-        return true
-    }
-
-    const handleResourceSelect = async (resource) => {
-
-        setData({
-            ...data,
-            resource: resource
-        })
-
-        try {
-            setError(null)
-            setLoading(true)
-            const response = await asyncRemote({
-                url: `/resource/${resource.id}`
-            })
+    const fetchResource = (resourceId, onResponse) => {
+        setError(null)
+        setLoading(true)
+        asyncRemote({
+            url: `/resource/${resourceId}`
+        }).then((response) => {
 
             // Get current API for fetching action plugins from test credentials
 
@@ -57,22 +40,49 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
                 url: `/actions?service_id=${selectedServiceId}`
             })
 
+            if (onResponse instanceof Function) {
+                onResponse(response)
+            }
+        }).catch((e) => {
+            if (mounted.current) {
+                setError(e.toString())
+            }
+        }).finally(() => {
+            if (mounted.current) {
+                setLoading(false)
+            }
+        })
+    }
+
+    // tego uzywam aby zresetowac stan gdy mamy dwa takie same nody i klikamy pomiędzy nimi.
+    useEffect(() => {
+        // Reset to default values if node changes
+        setData(microservice)
+        if(microservice.resource.id) {
+            fetchResource(microservice.resource.id)
+        }
+    }, [nodeId, microservice])
+
+
+    const hasResourceSetUp = () => {
+        return microservice.resource.id !== ""
+    }
+
+    const handleResourceSelect = async (resource) => {
+
+        setData({
+            ...data,
+            resource: resource
+        })
+
+        fetchResource(resource.id, (response) => {
             if (onServiceSelect instanceof Function) {
                 onServiceSelect({
                     ...resource,
                     current: response.data?.credentials?.test
                 })
             }
-
-        } catch (e) {
-            if (mounted.current) {
-                setError(e.toString())
-            }
-        } finally {
-            if (mounted.current) {
-                setLoading(false)
-            }
-        }
+        })
 
 
     }
@@ -110,9 +120,9 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
 
     return <TuiForm>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Microservice" description="Define microservice location."/>
+            <TuiFormGroupHeader header="Microservice"/>
             <TuiFormGroupContent>
-                { !hasResourceSetUp && <TuiFormGroupField header="Server" description="Select microservice server resource.">
+                { !hasResourceSetUp() && <TuiFormGroupField header="Server" description="Select microservice server resource.">
                     <TuiSelectResource
                         placeholder="Microservice"
                         tag="microservice"
@@ -120,11 +130,11 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
                         onSetValue={handleResourceSelect}
                     />
                 </TuiFormGroupField>}
-                { hasResourceSetUp && <TuiFormGroupField header="Microservice details">
+                { hasResourceSetUp() && <TuiFormGroupField header="Microservice details">
                     <Properties properties={data?.resource?.current} />
                 </TuiFormGroupField>}
-                { hasResourceSetUp && <TuiFormGroupField header="Microservice resource">
-                    <Properties properties={data?.name} />
+                { hasResourceSetUp() && <TuiFormGroupField header="Microservice resource">
+                    <Properties properties={data?.resource} exclude={'current'}/>
                 </TuiFormGroupField>}
                 <TuiFormGroupField header="Action plugin" description="Select action plugin.">
                     <AutoComplete
