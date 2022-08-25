@@ -62,8 +62,6 @@ function DescriptionForm({data: initData, onChange}) {
 
 export default function TracardiProServiceConfigForm({service, onSubmit}) {
 
-    console.log("service-data", service)
-
     const data = useRef({
         name: "",
         description: "",

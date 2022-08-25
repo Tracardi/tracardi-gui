@@ -4,46 +4,62 @@ import PasswordInput from "./inputs/PasswordInput";
 import {TextInput} from "./JsonFormComponents";
 
 export default function MicroserviceForm({value, onChange, errorMessage}) {
-
+    console.log(value)
     const [data, setData] = useState(value || {
-        url: "http://localhost:8686",
-        token: "",
+        credentials: {
+            url: "http://localhost:8686",
+            token: ""
+        },
         service: {
             name: "",
             id: ""
         }
     })
 
-    const handleChange = (key, value) => {
-        const state = {
-            ...data,
-            [key]: value
-        }
+    const handleChange = (state) => {
 
         setData(state)
 
         if (onChange instanceof Function) {
+            // Change it to proper object
             onChange(state)
         }
     }
 
     const handleUrlChange = (value) => {
-        console.log(value)
-        handleChange("url", value)
+        const state = {
+            ...data,
+            credentials: {
+                ...data.credentials,
+                url: value
+            }
+        }
+        handleChange(state)
     }
 
     const handleTokenChange = (value) => {
-        handleChange("token", value)
+        const state = {
+            ...data,
+            credentials: {
+                ...data.credentials,
+                token: value
+            }
+        }
+        handleChange(state)
     }
 
     const handleServiceSelect = async (value) => {
-        handleChange("service", value)
+        const state = {
+            ...data,
+            service: value
+        }
+        handleChange(state)
     }
 
     return <div>
         <p>Type microservice URL</p>
         <TextInput
-            value={data.url}
+            value={data?.credentials?.url}
             label="Tracardi Microservice URL"
             errorMessage={null}
             onChange={handleUrlChange}/>
@@ -51,13 +67,13 @@ export default function MicroserviceForm({value, onChange, errorMessage}) {
         <PasswordInput
             label="Token"
             fullWidth
-            value={data.token}
-            onChange={(e)=>handleTokenChange(e.target.value)}
+            value={data?.credentials?.token}
+            onChange={(e) => handleTokenChange(e.target.value)}
         />
         <p>Select service type</p>
         <AutoComplete
             endpoint={{
-                baseURL: data.url,
+                baseURL: data?.credentials?.url,
                 url: '/services'
             }}
             onlyValueWithOptions={true}

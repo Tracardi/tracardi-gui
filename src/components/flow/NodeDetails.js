@@ -92,11 +92,11 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                     {tab === 0 && <NodeInfo node={node} onLabelSet={onLabelSet}/>}
                     {tab === 1 && <NodeMicroserviceInfo
                         nodeId={node?.id}
-                        microservice={node?.data?.spec?.microservice }
+                        microservice={node?.data?.spec?.microservice}
                         onServiceSelect={(data) => {
                             node.data.spec.microservice = {
                                 ...node.data.spec.microservice,
-                                resource: data
+                                server: data
                             };
                         }}
                         onPluginSelect={ (data) => {

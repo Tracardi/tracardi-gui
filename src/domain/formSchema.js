@@ -11,11 +11,11 @@ export default class FormSchema {
         const _serverValidation = async (pluginId, microservice, values) => {
             try {
 
-                const serviceId = (microservice?.resource?.current?.service?.id)
-                    ? microservice.resource.current.service.id
+                const serviceId = (microservice?.service?.id)
+                    ? microservice.service.id
                     : ""
 
-                const actionId = (microservice?.plugin.id)
+                const actionId = (microservice?.plugin?.id)
                     ? microservice.plugin.id
                     : ""
 
