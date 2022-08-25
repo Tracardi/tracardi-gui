@@ -9,7 +9,6 @@ import {
 import TuiSelectResource from "../elements/tui/TuiSelectResource";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import AutoComplete from "../elements/forms/AutoComplete";
-import useAfterMountEffect from "../../effects/AfterMountEffect";
 import Properties from "../elements/details/DetailProperties";
 
 export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSelect, onPluginSelect}) {
