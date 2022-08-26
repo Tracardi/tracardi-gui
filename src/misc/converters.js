@@ -40,3 +40,8 @@ export function abbreviateNumber(value) {
     }
     return round(newValue, 3);
 }
+
+export function makeUtcStringTzAware(utcString) {
+    let date = new Date(utcString + "Z");
+    return date.toLocaleString();
+}

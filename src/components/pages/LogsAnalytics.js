@@ -1,6 +1,7 @@
 import React from "react";
 import "./DataAnalytics.css";
 import DataAnalytics from "./DataAnalytics";
+import { makeUtcStringTzAware } from "../../misc/converters";
 
 export default function LogsAnalytics({displayChart=true}) {
 
@@ -26,7 +27,7 @@ export default function LogsAnalytics({displayChart=true}) {
         type="log"
         timeFieldLabel = "date"
         filterFields={['date', 'id', 'line']}
-        timeField={(row) => [row.date]}
+        timeField={(row) => [makeUtcStringTzAware(row.date)]}
         onLoadHistogramRequest={onLoadHistogramRequest}
         onLoadDataRequest={onLoadDataRequest}
         displayChart={displayChart}
