@@ -2,9 +2,11 @@ import React, {useState} from "react";
 import AutoComplete from "./AutoComplete";
 import PasswordInput from "./inputs/PasswordInput";
 import {TextInput} from "./JsonFormComponents";
+import {asyncRemote} from "../../../remote_api/entrypoint";
+import JsonForm from "./JsonForm";
 
 export default function MicroserviceForm({value, onChange, errorMessage}) {
-    console.log(value)
+
     const [data, setData] = useState(value || {
         credentials: {
             url: "http://localhost:8686",
@@ -15,6 +17,8 @@ export default function MicroserviceForm({value, onChange, errorMessage}) {
             id: ""
         }
     })
+
+    const [form, setForm] = useState(null)
 
     const handleChange = (state) => {
 
@@ -53,8 +57,29 @@ export default function MicroserviceForm({value, onChange, errorMessage}) {
             ...data,
             service: value
         }
+
+        try {
+            const response = await asyncRemote({
+                baseURL: state.credentials.url,
+                url: `/service/resource?service_id=${state.service.id}`
+            })
+            console.log(response.data)
+            setForm(response.data)
+        } catch (e) {
+
+        }
+
         handleChange(state)
     }
+
+    const handleFormChange = (value) => {
+        console.log(value)
+    }
+
+    const handleFormSave = (value) => {
+        console.log(value)
+    }
+
 
     return <div>
         <p>Type microservice URL</p>
@@ -80,5 +105,14 @@ export default function MicroserviceForm({value, onChange, errorMessage}) {
             initValue={null}
             onSetValue={handleServiceSelect}
         />
+        {form && <JsonForm
+            values={form.init}
+            schema={form.form}
+            onChange={handleFormChange}
+            onSubmit={handleFormSave}
+            // processing={sendingForm}
+            // errorMessages={formError}
+            // serverSideError={serverError}
+        />}
     </div>
 }
