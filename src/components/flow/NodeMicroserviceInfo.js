@@ -29,11 +29,13 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
         }).then((response) => {
 
             // Get current API for fetching action plugins from test credentials
-            const creds = response.data?.credentials?.test
-            const microserviceUrl = creds?.credentials?.url
-            const selectedServiceId = creds?.service.id
-            setServiceId(selectedServiceId)
 
+            const creds = response?.data?.credentials?.test
+
+            const microserviceUrl = creds?.credentials?.url
+            const selectedServiceId = microservice?.service.id
+
+            setServiceId(selectedServiceId)
             setActionsEndpoint({
                 baseURL: microserviceUrl,
                 url: `/actions?service_id=${selectedServiceId}`
@@ -64,7 +66,7 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
 
 
     const hasServerSetUp = () => {
-        return microservice?.server?.resource?.id && microservice.server.resource.id !== ""
+        return microservice?.server?.resource?.id && microservice.server.resourceid !== ""
     }
 
     const hasServiceSetUp = () => {
@@ -72,7 +74,7 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
     }
 
     const hasResourceSetUp = () => {
-        return microservice?.plugin?.resource?.id && microservice.plugin.resource.id !== ""
+        return microservice?.plugin?.resource
     }
 
     const handleResourceSelect = async (resource) => {
@@ -148,7 +150,7 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
                     <Properties properties={data?.service}/>
                 </TuiFormGroupField>}
                 {hasResourceSetUp() && <TuiFormGroupField header="Service external resource">
-                    <Properties properties={data?.resource}/>
+                    <Properties properties={data?.plugin.resource}/>
                 </TuiFormGroupField>}
                 <TuiFormGroupField header="Action plugin" description="Select action plugin.">
                     <AutoComplete

@@ -17,7 +17,6 @@ import {
 import ErrorsBox from "../../errors/ErrorsBox";
 import {AiOutlineCheckCircle} from "react-icons/ai";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
-import MicroserviceForm from "./MicroserviceForm";
 import {isObject} from "../../../misc/typeChecking";
 
 const getComponentByType = ({value, values, errorMessage, componentType, fieldId, onChange}) => {
@@ -171,14 +170,6 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
                 {...props}
             />
 
-        case "microserviceConfig":
-            return (props) => <MicroserviceForm
-                value={value}
-                onChange={(value) => handleOnChange(value, fieldId)}
-                errorMessage={errorMessage}
-                {...props}
-            />
-
         default:
             return () => <AlertBox>Missing form type {componentType}.</AlertBox>
     }
@@ -318,14 +309,14 @@ const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onS
 
             {serverSideError && <ErrorsBox errorList={serverSideError}/>}
 
-            <Button onClick={() => handleSubmit()}
+            {onSubmit && <Button onClick={() => handleSubmit()}
                     confirmed={confirmed}
                     error={hasErrors}
                     progress={processing}
                     label="Save"
                     icon={<AiOutlineCheckCircle size={20}/>}
                     style={{justifyContent: "center"}}
-            />
+            />}
         </TuiForm>
     }
 

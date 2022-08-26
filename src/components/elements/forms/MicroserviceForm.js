@@ -5,8 +5,9 @@ import {TextInput} from "./JsonFormComponents";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import JsonForm from "./JsonForm";
 
-export default function MicroserviceForm({value, onChange, errorMessage}) {
+export default function MicroserviceForm({value, onServiceChange, onServiceClear}) {
 
+    const [errorMessage, setErrorMessage] = useState(null)
     const [data, setData] = useState(value || {
         credentials: {
             url: "http://localhost:8686",
@@ -18,38 +19,42 @@ export default function MicroserviceForm({value, onChange, errorMessage}) {
         }
     })
 
-    const [form, setForm] = useState(null)
-
-    const handleChange = (state) => {
-
-        setData(state)
-
-        if (onChange instanceof Function) {
-            // Change it to proper object
-            onChange(state)
-        }
-    }
-
     const handleUrlChange = (value) => {
         const state = {
             ...data,
+            service: {
+                name: "",
+                id: ""
+            },
             credentials: {
                 ...data.credentials,
                 url: value
             }
         }
-        handleChange(state)
+        setData(state)
+
+        if (onServiceClear instanceof Function) {
+            onServiceClear(state)
+        }
     }
 
     const handleTokenChange = (value) => {
         const state = {
             ...data,
+            service: {
+                name: "",
+                id: ""
+            },
             credentials: {
                 ...data.credentials,
                 token: value
             }
         }
-        handleChange(state)
+        setData(state)
+
+        if (onServiceClear instanceof Function) {
+            onServiceClear(state)
+        }
     }
 
     const handleServiceSelect = async (value) => {
@@ -59,34 +64,34 @@ export default function MicroserviceForm({value, onChange, errorMessage}) {
         }
 
         try {
-            const response = await asyncRemote({
-                baseURL: state.credentials.url,
-                url: `/service/resource?service_id=${state.service.id}`
-            })
-            console.log(response.data)
-            setForm(response.data)
+            if(value?.id) {
+                const response = await asyncRemote({
+                    baseURL: state.credentials.url,
+                    url: `/service/resource?service_id=${value.id}`
+                })
+
+                setData(state)
+
+                if (onServiceChange instanceof Function) {
+                    onServiceChange(state, response?.data)
+                }
+            } else {
+                if (onServiceClear instanceof Function) {
+                    onServiceClear(state)
+                }
+            }
+
         } catch (e) {
-
+            setErrorMessage(e.toString())
         }
-
-        handleChange(state)
     }
-
-    const handleFormChange = (value) => {
-        console.log(value)
-    }
-
-    const handleFormSave = (value) => {
-        console.log(value)
-    }
-
 
     return <div>
         <p>Type microservice URL</p>
         <TextInput
             value={data?.credentials?.url}
             label="Tracardi Microservice URL"
-            errorMessage={null}
+            errorMessage={errorMessage}
             onChange={handleUrlChange}/>
         <p>Type microservice secret token</p>
         <PasswordInput
@@ -101,18 +106,11 @@ export default function MicroserviceForm({value, onChange, errorMessage}) {
                 baseURL: data?.credentials?.url,
                 url: '/services'
             }}
+            value={data?.service}
             onlyValueWithOptions={true}
             initValue={null}
             onSetValue={handleServiceSelect}
         />
-        {form && <JsonForm
-            values={form.init}
-            schema={form.form}
-            onChange={handleFormChange}
-            onSubmit={handleFormSave}
-            // processing={sendingForm}
-            // errorMessages={formError}
-            // serverSideError={serverError}
-        />}
+
     </div>
 }

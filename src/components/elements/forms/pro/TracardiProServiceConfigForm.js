@@ -6,6 +6,48 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import TextField from "@mui/material/TextField";
 import TuiTags from "../../tui/TuiTags";
 import {isEmptyObject} from "../../../../misc/typeChecking";
+import MicroserviceForm from "../MicroserviceForm";
+
+function MicroserviceAndResourceForm({onSubmit}) {
+
+    const [service, setService] = useState(null)
+    const [resourceConfig, setResourceConfig] = useState(null)
+
+    const handleSubmit = (resource) => {
+        if (onSubmit instanceof Function) {
+            onSubmit(service, resource)
+        }
+    }
+
+    return <>
+        <TuiForm>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Microservice Server Configuration"/>
+                <TuiFormGroupContent>
+                    <MicroserviceForm
+                        onServiceChange={(serviceData, serviceResource) => {
+                            setResourceConfig(serviceResource)
+                            setService(serviceData)
+                        }}
+                        onServiceClear={(serviceData) => {
+                            setService(serviceData)
+                            setResourceConfig(null)
+                        }}
+                    />
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>
+        {resourceConfig && <JsonForm
+            values={resourceConfig.init}
+            schema={resourceConfig.form}
+            // onChange={handleResourceChange}
+            onSubmit={handleSubmit}
+            // processing={sendingForm}
+            // errorMessages={formError}
+            // serverSideError={serverError}
+        />}
+    </>
+}
 
 function DescriptionForm({data: initData, onChange}) {
 
@@ -75,31 +117,66 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
         init.current = values
     }
 
-    const handleSubmit = async () => {
+    const getResourceObject = (credentials) => {
+        let resourcePayload =  {
+            id: uuid4(),
+            type: service?.metadata?.type,
+            name: data.current.name,
+            description: data.current.description,
+            icon: service?.metadata?.icon,
+            tags: data.current.tags,
+            groups: [],
+            credentials: {
+                production: credentials,
+                test: credentials
+            }
+        }
+
+        if (service?.destination && !isEmptyObject(service?.destination)) {
+            resourcePayload.destination = service.destination
+        }
+
+        return resourcePayload
+    }
+
+    const handleSubmitOfMicroservice = async (microservice, resource) => {
         try {
-            let resource = {
-                id: uuid4(),
-                type: service?.metadata?.type,
-                name: data.current.name,
-                description: data.current.description,
-                icon: service?.metadata?.icon,
-                tags: data.current.tags,
-                groups: [],
-                credentials: {
-                    production: init.current,
-                    test: init.current
+            const resourcePayload = getResourceObject(microservice.credentials)
+
+            const response = await asyncRemote({
+                url: '/tpro/microservice',
+                method: "POST",
+                data: {
+                    resource: resourcePayload,
+                    microservice: {
+                        service: microservice.service,
+                        credentials: resource
+                    }
                 }
+            })
+
+            if (onSubmit instanceof Function) {
+                onSubmit(response.data);
             }
 
-            if(service?.destination && !isEmptyObject(service?.destination)) {
-                resource.destination = service.destination
+        } catch (e) {
+            if (e?.response?.status === 422) {
+                setErrorMessages(e.response.data)
             }
+            // todo global error - when url not available
+            // setError(getError(e))
+        }
+    }
+
+    const handleSubmitOfLocalResource = async (value) => {
+        try {
+            const resource = getResourceObject(value)
 
             const response = await asyncRemote({
                 url: '/tpro/resource',
                 method: "POST",
                 data: {
-                    resource:resource,
+                    resource: resource,
                     metadata: service.metadata
                 }
             })
@@ -115,16 +192,27 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
             // todo global error - when url not available
             // setError(getError(e))
         }
+    }
 
+    const isMicroservice = (service) => {
+        return Array.isArray(service?.metadata?.tags) && service?.metadata?.tags?.includes('microservice')
+    }
 
+    const isLocalService = (service) => {
+        return service?.form
     }
 
     return <div>
         <DescriptionForm data={data.current} onChange={(value) => data.current = value}/>
-        <JsonForm schema={service?.form}
-                  values={service?.init}
-                  errorMessages={errorMessages}
-                  onChange={handleChange}
-                  onSubmit={handleSubmit}/>
+        {isMicroservice(service) && <MicroserviceAndResourceForm
+            onSubmit={handleSubmitOfMicroservice}
+        />}
+        {isLocalService(service) && <JsonForm
+            schema={service?.form}
+            values={service?.init}
+            errorMessages={errorMessages}
+            onChange={handleChange}
+            onSubmit={handleSubmitOfLocalResource}/>
+        }
     </div>
 }
