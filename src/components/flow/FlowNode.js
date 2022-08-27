@@ -5,7 +5,7 @@ import FlowNodeIcons from "./FlowNodeIcons";
 import {ErrorNumber, ExecutionSeqNumber, WarningNumber} from "./NodeAlerts";
 import {isObject} from '../../misc/typeChecking';
 import ThresholdIcon from "./ThresholdIcon";
-import {BsArrowDownShort} from "react-icons/bs";
+import {BsArrowDownShort, BsCloud} from "react-icons/bs";
 
 
 const FlowNodeDynamic = ({data}) => {
@@ -33,7 +33,7 @@ const FlowNodeDynamic = ({data}) => {
                     setShowDesc(true)
                 }}
             >
-                {append === true && <BsArrowDownShort size={20} style={{color: "#1565c0"}}/>}
+                {append === true && <BsArrowDownShort size={20} style={{color: "#1565c0"}} className="nodrag target connectable"/>}
             </Handle>
         </div>
     }
@@ -59,7 +59,7 @@ const FlowNodeDynamic = ({data}) => {
                         setShowDesc(true)
                     }}
                 >
-                    {append === true && <BsArrowDownShort size={20} style={{color: "#1565c0"}}/>}
+                    {append === true && <BsArrowDownShort size={20} style={{color: "#1565c0"}} className="nodrag source connectable"/>}
                 </Handle>
                 {showHint && <span className="OutputPortHint PortHint">{value}</span>}
                 {showDesc && doc && <span className="OutputPortDesc PortHint">{doc}</span>}
@@ -129,6 +129,7 @@ const FlowNodeDynamic = ({data}) => {
                     </div>
                 </div>
                 {data?.metadata?.pro ? <div className="NodePro" style={backgroundStyle}>Pro</div> : ""}
+                {data?.metadata?.remote ? <div className="NodePro" style={backgroundStyle}><BsCloud size={20} /></div> : ""}
             </div>
             <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={portStyle}
                      append={data?.spec?.append_input_payload}/>

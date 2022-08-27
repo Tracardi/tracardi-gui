@@ -1,6 +1,6 @@
 .react-flow__handle {
-    width: 17px !important;
-    height: 17px !important;
+    width: 17px;
+    height: 17px;
     background-color: white !important;
     border-radius: 100% !important;
     position: unset !important;

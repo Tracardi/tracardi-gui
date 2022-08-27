@@ -10,6 +10,22 @@ import TuiSelectResource from "../elements/tui/TuiSelectResource";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import AutoComplete from "../elements/forms/AutoComplete";
 import Properties from "../elements/details/DetailProperties";
+import {ReactComponent as Connected} from "../../svg/connected.svg";
+
+function ConnectionStatus({microservice}) {
+
+    return <>
+        <div style={{display: "flex", justifyContent: "center"}}>
+            <Connected/>
+        </div>
+        <TuiFormGroupField header="Connection details">
+            <Properties properties={{
+                microservice: {url: microservice?.server.credentials?.production.url,
+                name: microservice?.service?.name}
+            }}/>
+        </TuiFormGroupField>
+    </>
+}
 
 export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSelect, onPluginSelect}) {
 
@@ -66,14 +82,6 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
 
     const hasServerSetUp = () => {
         return microservice?.server?.resource?.id && microservice.server.resourceid !== ""
-    }
-
-    const hasServiceSetUp = () => {
-        return microservice?.service?.id && microservice.service.id !== ""
-    }
-
-    const hasResourceSetUp = () => {
-        return microservice?.plugin?.resource
     }
 
     const handleResourceSelect = async (resource) => {
@@ -142,16 +150,8 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
                         onSetValue={handleResourceSelect}
                     />
                 </TuiFormGroupField>}
-                {hasServerSetUp() && <TuiFormGroupField header="Microservice server">
-                    <Properties properties={data?.server.credentials}/>
-                </TuiFormGroupField>}
-                {hasServiceSetUp() && <TuiFormGroupField header="Service type details">
-                    <Properties properties={data?.service}/>
-                </TuiFormGroupField>}
-                {hasResourceSetUp() && <TuiFormGroupField header="Service external resource">
-                    <Properties properties={data?.plugin.resource}/>
-                </TuiFormGroupField>}
-                <TuiFormGroupField header="Action plugin" description="Select action plugin.">
+                {hasServerSetUp() && <ConnectionStatus microservice={data}/>}
+                <TuiFormGroupField header="Action" description="Select action this microservice must perform.">
                     <AutoComplete
                         endpoint={actionsEndpoint}
                         onlyValueWithOptions={false}

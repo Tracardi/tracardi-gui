@@ -1,6 +1,7 @@
 import React from "react";
 import FlowNodeIcons from "./FlowNodeIcons";
 import {Tooltip} from "@mui/material";
+import {BsCloud} from "react-icons/bs";
 
 export default function FlowMenuNode({onDragStart, onDoubleClick, row}) {
     return <Tooltip title={row.plugin?.metadata?.desc ? row.plugin?.metadata?.desc: row.plugin?.metadata?.name}
@@ -18,6 +19,7 @@ export default function FlowMenuNode({onDragStart, onDoubleClick, row}) {
             </div>
 
         </div>
+            {row.plugin?.metadata?.remote && <BsCloud size={20}/>}
         {row.plugin?.metadata?.pro && <span className="proTag">Pro</span>}
     </div></Tooltip>
 }
