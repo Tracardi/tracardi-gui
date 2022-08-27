@@ -3,10 +3,11 @@ import AutoComplete from "./AutoComplete";
 import PasswordInput from "./inputs/PasswordInput";
 import {TextInput} from "./JsonFormComponents";
 import {asyncRemote} from "../../../remote_api/entrypoint";
-import JsonForm from "./JsonForm";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 
 export default function MicroserviceForm({value, onServiceChange, onServiceClear}) {
 
+    const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState(null)
     const [data, setData] = useState(value || {
         credentials: {
@@ -65,15 +66,22 @@ export default function MicroserviceForm({value, onServiceChange, onServiceClear
 
         try {
             if(value?.id) {
-                const response = await asyncRemote({
-                    baseURL: state.credentials.url,
-                    url: `/service/resource?service_id=${value.id}`
-                })
+                try {
+                    setLoading(true)
+                    const response = await asyncRemote({
+                        baseURL: state.credentials.url,
+                        url: `/service/resource?service_id=${value.id}`
+                    })
 
-                setData(state)
+                    setData(state)
 
-                if (onServiceChange instanceof Function) {
-                    onServiceChange(state, response?.data)
+                    if (onServiceChange instanceof Function) {
+                        onServiceChange(state, response?.data)
+                    }
+                } catch(e) {
+
+                } finally {
+                    setLoading(false)
                 }
             } else {
                 if (onServiceClear instanceof Function) {
@@ -101,6 +109,7 @@ export default function MicroserviceForm({value, onServiceChange, onServiceClear
             onChange={(e) => handleTokenChange(e.target.value)}
         />
         <p>Select service type</p>
+
         <AutoComplete
             endpoint={{
                 baseURL: data?.credentials?.url,
@@ -111,6 +120,8 @@ export default function MicroserviceForm({value, onServiceChange, onServiceClear
             initValue={null}
             onSetValue={handleServiceSelect}
         />
+
+        {loading && <div style={{marginTop: 40}}><CenteredCircularProgress label="Loading service configuration form"/></div>}
 
     </div>
 }
