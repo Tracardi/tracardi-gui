@@ -31,8 +31,7 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
             // Get current API for fetching action plugins from test credentials
 
             const creds = response?.data?.credentials?.test
-
-            const microserviceUrl = creds?.credentials?.url
+            const microserviceUrl = creds?.url
             const selectedServiceId = microservice?.service.id
 
             setServiceId(selectedServiceId)

@@ -22,7 +22,10 @@ export default class FormSchema {
                 const response = await asyncRemote({
                     url: `/plugin/${pluginId}/config/validate?service_id=${serviceId}&action_id=${actionId}`,
                     method: "POST",
-                    data: values
+                    data: {
+                        config: values,
+                        credentials: microservice?.plugin?.resource ? microservice.plugin.resource : null
+                    }
                 })
 
                 return {
