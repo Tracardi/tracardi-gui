@@ -33,7 +33,7 @@ const FlowNodeDynamic = ({data}) => {
                     setShowDesc(true)
                 }}
             >
-                {append === true && <BsArrowDownShort size={20} style={{color: "#1565c0"}} className="nodrag target connectable"/>}
+                {append === true && <BsArrowDownShort size={20} style={{color: "#1565c0", pointerEvents: "none"}} className="nodrag target connectable"/>}
             </Handle>
         </div>
     }
@@ -59,7 +59,7 @@ const FlowNodeDynamic = ({data}) => {
                         setShowDesc(true)
                     }}
                 >
-                    {append === true && <BsArrowDownShort size={20} style={{color: "#1565c0"}} className="nodrag source connectable"/>}
+                    {append === true && <BsArrowDownShort size={20} style={{color: "#1565c0", pointerEvents: "none"}} className="nodrag source connectable"/>}
                 </Handle>
                 {showHint && <span className="OutputPortHint PortHint">{value}</span>}
                 {showDesc && doc && <span className="OutputPortDesc PortHint">{doc}</span>}
