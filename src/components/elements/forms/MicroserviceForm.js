@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import AutoComplete from "./AutoComplete";
-import PasswordInput from "./inputs/PasswordInput";
 import {TextInput} from "./JsonFormComponents";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
@@ -14,7 +13,7 @@ export default function MicroserviceForm({value, onServiceChange, onServiceClear
     const [errorMessage, setErrorMessage] = useState(null)
     const [data, setData] = useState(value || {
         credentials: {
-            url: "http://localhost:8686",
+            url: "http://localhost:20000",
             token: ""
         },
         service: {

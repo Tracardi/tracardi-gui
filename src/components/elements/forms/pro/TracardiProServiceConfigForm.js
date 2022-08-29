@@ -1,7 +1,6 @@
 import JsonForm from "../JsonForm";
 import React, {useRef, useState} from "react";
 import {asyncRemote} from "../../../../remote_api/entrypoint";
-import {v4 as uuid4} from "uuid";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../../tui/TuiForm";
 import TextField from "@mui/material/TextField";
 import TuiTags from "../../tui/TuiTags";
@@ -133,6 +132,12 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
             : null
     }
 
+    const getPluginObject = () => {
+        return (service?.plugin && !isEmptyObject(service?.plugin))
+            ? service.plugin
+            : null
+    }
+
     const handleSubmitOfMicroservice = async (microservice, resource) => {
         try {
 
@@ -142,6 +147,7 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
                 data: {
                     service: getServiceObject(microservice.credentials),
                     destination: getDestinationObject(),
+                    plugin: getPluginObject(),
                     microservice: {
                         service: microservice.service,
                         credentials: resource
@@ -170,6 +176,7 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
                 data: {
                     service: getServiceObject(value),
                     destination: getDestinationObject(),
+                    plugin: getPluginObject(),
                 }
             })
 
