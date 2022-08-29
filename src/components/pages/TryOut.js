@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import ListOfDottedInputs from "../elements/forms/ListOfDottedInputs";
 import TimeInput from "../elements/forms/inputs/TimeInput";
 import IconSelector from "../elements/IconSelector";
@@ -6,11 +6,25 @@ import {Button} from "@mui/material";
 import DotAccessor from "../elements/forms/inputs/DotAccessor";
 import BackgroundTaskProgress from "../elements/misc/BackgroundTaskProgress";
 import JsonForm from "../elements/forms/JsonForm";
+import TokenInput from "../elements/forms/inputs/TokenInput";
 
 export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
-
+    const [value, setValue] = React.useState("test");
+    const [token, setToken] = useState(null)
     return (<div style={{padding: 10}}>
+            <TokenInput apiKey={value}
+                        getTokenUrl={(apiKey) => {
+                            return {
+                                baseURL: "http://localhost:20000",
+                                url: "/api-key/" + apiKey
+                            }
+                        }}
+                        token={token}
+                        onTokenChange={(v) => {
+                            console.log(v);
+                            setToken(v)
+                        }}/>
             <DotAccessor label="E-mail" value={v} onChange={(e) => {
                 console.log("READY", e);
                 setV(e)
