@@ -8,7 +8,7 @@ import NodeInfo from "./NodeInfo";
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
 import {VscJson} from "react-icons/vsc";
 import "../elements/forms/JsonForm"
-import {VscTools} from "react-icons/vsc";
+import {VscDebugConsole} from "react-icons/vsc";
 import {MemoNodeInitForm, NodeInitJsonForm, NodeRuntimeConfigForm} from "../elements/forms/NodeInitForm";
 import {VscRunErrors} from "react-icons/vsc";
 import NodeMicroserviceForm from "./NodeMicroserviceForm";
@@ -56,7 +56,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                     onClick={() => setTab(2)}
                     selected={tab === 2}
                     size="large">
-                    <VscTools size={22}/>
+                    <VscJson size={22}/>
                 </IconButton>}
                 {node?.data?.metadata && <IconButton
                     label="Advanced Runtime Editor"
@@ -66,7 +66,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                     <VscRunErrors size={22}/>
                 </IconButton>}
                 {(process.env.NODE_ENV && process.env.NODE_ENV === 'development') && <IconButton label="Raw" onClick={() => setTab(4)} selected={tab === 4} size="large">
-                    <VscJson size={22}/>
+                    <VscDebugConsole size={22}/>
                 </IconButton>}
             </div>
             <div className="NodeDetailsContent">

@@ -117,37 +117,31 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
         init.current = values
     }
 
-    const getResourceObject = (credentials) => {
-        let resourcePayload =  {
-            id: uuid4(),
-            type: service?.metadata?.type,
-            name: data.current.name,
-            description: data.current.description,
-            icon: service?.metadata?.icon,
-            tags: data.current.tags,
-            groups: [],
-            credentials: {
-                production: credentials,
-                test: credentials
+    const getServiceObject = (value) => {
+        return {
+            metadata: service.metadata,
+            form: {
+                metadata: data.current,
+                data: value
             }
         }
+    }
 
-        if (service?.destination && !isEmptyObject(service?.destination)) {
-            resourcePayload.destination = service.destination
-        }
-
-        return resourcePayload
+    const getDestinationObject = () => {
+        return (service?.destination && !isEmptyObject(service?.destination))
+            ? service.destination
+            : null
     }
 
     const handleSubmitOfMicroservice = async (microservice, resource) => {
         try {
-            const resourcePayload = getResourceObject(microservice.credentials)
 
             const response = await asyncRemote({
-                url: '/tpro/microservice',
+                url: '/tpro/install/microservice',
                 method: "POST",
                 data: {
-                    resource: resourcePayload,
+                    service: getServiceObject(microservice.credentials),
+                    destination: getDestinationObject(),
                     microservice: {
                         service: microservice.service,
                         credentials: resource
@@ -170,14 +164,12 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
 
     const handleSubmitOfLocalResource = async (value) => {
         try {
-            const resource = getResourceObject(value)
-
             const response = await asyncRemote({
-                url: '/tpro/resource',
+                url: '/tpro/install',
                 method: "POST",
                 data: {
-                    resource: resource,
-                    metadata: service.metadata
+                    service: getServiceObject(value),
+                    destination: getDestinationObject(),
                 }
             })
 
@@ -195,11 +187,11 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
     }
 
     const isMicroservice = (service) => {
-        return Array.isArray(service?.metadata?.tags) && service?.metadata?.tags?.includes('microservice')
+        return Array.isArray(service?.metadata?.submit) && service?.metadata?.submit?.includes('microservice')
     }
 
-    const isLocalService = (service) => {
-        return service?.form
+    const isResource = (service) => {
+        return Array.isArray(service?.metadata?.submit) && service?.metadata?.submit?.includes('resource')
     }
 
     return <div>
@@ -207,7 +199,7 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
         {isMicroservice(service) && <MicroserviceAndResourceForm
             onSubmit={handleSubmitOfMicroservice}
         />}
-        {isLocalService(service) && <JsonForm
+        {isResource(service) && <JsonForm
             schema={service?.form}
             values={service?.init}
             errorMessages={errorMessages}
