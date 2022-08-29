@@ -24,12 +24,12 @@ export const setApiUrl = apiUrl => {
     apiUrlStorage().save(apiUrl);
 }
 
-const authToken = () => {
-    let token = getToken();
+const authToken = (token=null) => {
+    token = token || getToken();
     return 'Bearer ' + (token == null ? 'None' : token)
 }
 
-export const asyncRemote = async (config) => {
+export const asyncRemote = async (config, token=null) => {
 
     if(!config?.baseURL) {
         const apiUrl = getApiUrl();
@@ -42,7 +42,7 @@ export const asyncRemote = async (config) => {
 
     config.headers = {
         ...config?.headers,
-        'Authorization': authToken()
+        'Authorization': token === null ? authToken() : authToken(token)
     }
 
     config.timeout = 1000 * 60

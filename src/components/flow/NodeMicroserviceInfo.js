@@ -15,16 +15,24 @@ import {ReactComponent as Connected} from "../../svg/connected.svg";
 function ConnectionStatus({microservice}) {
 
     return <>
-        <div style={{display: "flex", justifyContent: "center"}}>
-            <Connected/>
-        </div>
-        <TuiFormGroupField header="Connection details">
-            <Properties properties={{
-                microservice: {url: microservice?.server.credentials?.production.url,
-                name: microservice?.service?.name}
-            }}/>
-        </TuiFormGroupField>
-    </>
+    <div style={{display: "flex", justifyContent: "center"}}>
+        <Connected/>
+    </div>
+    <TuiFormGroupField header="Connection details">
+        <Properties properties={{
+            microservice: {
+                production: {
+                    url: microservice?.server.credentials?.production.url
+                },
+                test: {
+                    url: microservice?.server.credentials?.test.url
+                }
+            },
+            name: microservice?.service?.name
+        }
+        }/>
+    </TuiFormGroupField>
+</>
 }
 
 export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSelect, onPluginSelect}) {
@@ -116,6 +124,7 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
         try {
             setError(null)
             setLoading(true)
+            // todo auth
             const response = await asyncRemote({
                 baseURL: actionsEndpoint.baseURL,
                 url: `/plugin/form?service_id=${serviceId}&action_id=${value.id}`
@@ -152,6 +161,7 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
                 </TuiFormGroupField>}
                 {hasServerSetUp() && <ConnectionStatus microservice={data}/>}
                 <TuiFormGroupField header="Action" description="Select action this microservice must perform.">
+                    // todo auth
                     <AutoComplete
                         endpoint={actionsEndpoint}
                         onlyValueWithOptions={false}

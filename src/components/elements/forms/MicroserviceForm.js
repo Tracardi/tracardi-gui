@@ -2,12 +2,14 @@ import React, {useState} from "react";
 import AutoComplete from "./AutoComplete";
 import PasswordInput from "./inputs/PasswordInput";
 import {TextInput} from "./JsonFormComponents";
-import {asyncRemote} from "../../../remote_api/entrypoint";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import ErrorsBox from "../../errors/ErrorsBox";
 
 export default function MicroserviceForm({value, onServiceChange, onServiceClear}) {
 
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
     const [errorMessage, setErrorMessage] = useState(null)
     const [data, setData] = useState(value || {
         credentials: {
@@ -68,10 +70,12 @@ export default function MicroserviceForm({value, onServiceChange, onServiceClear
             if(value?.id) {
                 try {
                     setLoading(true)
+                    setError(null)
                     const response = await asyncRemote({
-                        baseURL: state.credentials.url,
+                        baseURL: state?.credentials?.url,
                         url: `/service/resource?service_id=${value.id}`
-                    })
+                    },
+                        state?.credentials?.token)
 
                     setData(state)
 
@@ -79,7 +83,7 @@ export default function MicroserviceForm({value, onServiceChange, onServiceClear
                         onServiceChange(state, response?.data)
                     }
                 } catch(e) {
-
+                    setError(getError(e))
                 } finally {
                     setLoading(false)
                 }
@@ -115,6 +119,7 @@ export default function MicroserviceForm({value, onServiceChange, onServiceClear
                 baseURL: data?.credentials?.url,
                 url: '/services'
             }}
+            token={data?.credentials?.token}
             value={data?.service}
             onlyValueWithOptions={true}
             initValue={null}
@@ -122,6 +127,6 @@ export default function MicroserviceForm({value, onServiceChange, onServiceClear
         />
 
         {loading && <div style={{marginTop: 40}}><CenteredCircularProgress label="Loading service configuration form"/></div>}
-
+        {error && <div style={{marginTop: 40}}><ErrorsBox errorList={error}/></div> }
     </div>
 }

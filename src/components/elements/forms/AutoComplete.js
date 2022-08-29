@@ -8,7 +8,7 @@ import {convertResponseToAutoCompleteOptions} from "../../../misc/converters";
 import {isObject, isString} from "../../../misc/typeChecking";
 
 const AutoComplete = ({
-                          placeholder, error: errorMessage = null, endpoint, defaultValueSet, initValue, value = null, onSetValue,
+                          placeholder, error: errorMessage = null, endpoint, token=null, defaultValueSet, initValue, value = null, onSetValue,
                           onChange, onlyValueWithOptions = false, disabled, fullWidth = false,
                           renderOption
                       }) => {
@@ -47,8 +47,8 @@ const AutoComplete = ({
             if (isObject(endpoint)) {
                 setProgress(true);
                 try {
-                    setOpen(true);
-                    const response = await asyncRemote(endpoint)
+                    setOpen(true)
+                    const response = await asyncRemote(endpoint, token)
                     if (response && mounted.current) {
                         let options = convertResponseToAutoCompleteOptions(response)
 
