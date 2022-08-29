@@ -22,11 +22,11 @@ export default function TokenInput({label = "Api Key", apiKey = "", token = "", 
     const [apiKeyValue, setApiKeyValue] = useState(apiKey)
     const [tokenValue, setTokenValue] = useState(token)
     const [inputLabel, setInputLabel] =  useState(label)
-    const [errorMessage, setErrorMesssage] =  useState(error)
+    const [errorMessage, setErrorMessage] =  useState(error)
 
     const handleGetToken = async () => {
         try {
-            setErrorMesssage(null)
+            setErrorMessage(null)
             setLoading(true)
             const response = await asyncRemote(getTokenUrl(apiKeyValue))
             if(response.data) {
@@ -42,7 +42,11 @@ export default function TokenInput({label = "Api Key", apiKey = "", token = "", 
 
         } catch (e) {
             const err = getError(e)
-            setErrorMesssage(err[0].msg)
+            setErrorMessage(err[0].msg)
+            // Reset token
+            if (onTokenChange) {
+                onTokenChange("")
+            }
             return ""
         } finally {
             setLoading(false)
@@ -55,7 +59,7 @@ export default function TokenInput({label = "Api Key", apiKey = "", token = "", 
         } else {
             setApiKeyValue(apiKeyValue)
             setInputLabel("Api Key")
-            setErrorMesssage(null)
+            setErrorMessage(null)
             setDisabled(state)
         }
 
@@ -84,6 +88,7 @@ export default function TokenInput({label = "Api Key", apiKey = "", token = "", 
             setShowPassword(false)
         } else {
             setShowPassword(true)
+            setTokenValue("")
         }
 
     }
@@ -105,7 +110,7 @@ export default function TokenInput({label = "Api Key", apiKey = "", token = "", 
                     loading
                     ? <CircularProgress color="inherit" size={20}/>
                     : disabled
-                        ? <VscLock size={20} onClick={async ()=>await handleDisable(false)}/>
+                        ? <VscLock size={20} onClick={async ()=>await handleDisable(false)} style={{color: "green"}}/>
                         : <VscUnlock size={20} onClick={async ()=>await handleDisable(true)} style={{color: errorMessage === null ? "inherit": "#d81b60"}}/>
                 }
 

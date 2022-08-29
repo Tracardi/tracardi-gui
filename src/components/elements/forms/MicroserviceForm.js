@@ -5,6 +5,7 @@ import {TextInput} from "./JsonFormComponents";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import ErrorsBox from "../../errors/ErrorsBox";
+import TokenInput from "./inputs/TokenInput";
 
 export default function MicroserviceForm({value, onServiceChange, onServiceClear}) {
 
@@ -105,12 +106,17 @@ export default function MicroserviceForm({value, onServiceChange, onServiceClear
             label="Tracardi Microservice URL"
             errorMessage={errorMessage}
             onChange={handleUrlChange}/>
-        <p>Type microservice secret token</p>
-        <PasswordInput
-            label="Token"
-            fullWidth
-            value={data?.credentials?.token}
-            onChange={(e) => handleTokenChange(e.target.value)}
+        <p>Type microservice API KEY and generate secret token</p>
+        <TokenInput
+            label="Api Key"
+            token={data?.credentials?.token}
+            getTokenUrl={(apiKey) => {
+                return {
+                    baseURL: data?.credentials?.url,
+                    url: "/api-key/" + apiKey
+                }
+            }}
+            onTokenChange={(token) => handleTokenChange(token)}
         />
         <p>Select service type</p>
 

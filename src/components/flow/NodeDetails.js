@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import './NodeDetails.css';
-import {BsCloud, BsInfoCircle} from "react-icons/bs";
+import {BsInfoCircle} from "react-icons/bs";
 import IconButton from "../elements/misc/IconButton";
 import {GoSettings} from "react-icons/go";
 import ConsoleView from "../elements/misc/ConsoleView";
@@ -11,20 +11,16 @@ import "../elements/forms/JsonForm"
 import {VscTools} from "react-icons/vsc";
 import {MemoNodeInitForm, NodeInitJsonForm, NodeRuntimeConfigForm} from "../elements/forms/NodeInitForm";
 import {VscRunErrors} from "react-icons/vsc";
-import NodeMicroserviceInfo from "./NodeMicroserviceInfo";
+import NodeMicroserviceForm from "./NodeMicroserviceForm";
 
 export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicroserviceChange}) {
 
-    const [tab, setTab] = useState(node?.data?.metadata?.remote === true ? 1 :3);
+    const [tab, setTab] = useState(3);
 
     useEffect(() => {
 
-            if (tab === 1 && !node?.data?.metadata?.remote) {
-                setTab(0)
-            }
-
             if (tab === 3) {
-                if(!node?.data?.spec?.form) {
+                if(node.data.metadata.remote === false && !node?.data?.spec?.form) {
                     setTab(2)
                 }
             }
@@ -48,14 +44,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                 <IconButton label="Info" onClick={() => setTab(0)} selected={tab === 0} size="large">
                     <BsInfoCircle size={22}/>
                 </IconButton>
-                {node?.data?.metadata?.remote === true && <IconButton
-                    label="Microservice Configuration Editor"
-                    onClick={() => setTab(1)}
-                    selected={tab === 1}
-                    size="large">
-                    <BsCloud size={22}/>
-                </IconButton>}
-                {node?.data?.spec?.form && <IconButton
+                {(node?.data?.spec?.form || node?.data?.metadata?.remote === true) && <IconButton
                     label="Configuration Editor"
                     onClick={() => setTab(3)}
                     selected={tab === 3}
@@ -90,30 +79,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                 </div>
                 <div className="Pane">
                     {tab === 0 && <NodeInfo node={node} onLabelSet={onLabelSet}/>}
-                    {tab === 1 && <NodeMicroserviceInfo
-                        nodeId={node?.id}
-                        microservice={node?.data?.spec?.microservice}
-                        onServiceSelect={(data) => {
-                            node.data.spec.microservice = {
-                                ...node.data.spec.microservice,
-                                server: data
-                            };
-                        }}
-                        onPluginSelect={ (data) => {
-                            node.data.spec.microservice = {
-                                ...node.data.spec.microservice,
-                                plugin: data?.plugin
-                            };
-                            node.data.spec = {
-                                ...node.data.spec,
-                                init: data?.config?.init,
-                                form: data?.config?.form
-                            }
-                            if(onMicroserviceChange instanceof Function) {
-                                onMicroserviceChange()
-                            }
-                        }}
-                    />}
+
                     {tab === 2 && node?.data?.spec?.init &&
                     <NodeInitJsonForm
                         pluginId={node?.data?.spec?.id}
@@ -123,7 +89,8 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                         manual={node?.data?.spec?.manual}
                         onSubmit={handleInitSubmit}
                     />}
-                    {tab === 3 && node?.data?.spec?.form &&
+
+                    {tab === 3 && node?.data?.spec?.form && node?.data?.metadata?.remote === false &&
                     <MemoNodeInitForm
                         nodeId={node?.id}
                         pluginId={node?.data?.spec?.id}
@@ -132,6 +99,12 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                         formSchema={node?.data?.spec?.form}
                         onSubmit={handleInitSubmit}
                     />}
+
+                    {tab === 3 && node?.data?.metadata?.remote === true &&
+                    <NodeMicroserviceForm
+                        node={node}
+                        onMicroserviceChange={onMicroserviceChange}
+                        onSubmit={handleInitSubmit} />}
 
                     {tab === 4 && (process.env.NODE_ENV && process.env.NODE_ENV === 'development') && <ConsoleView label="Action raw data" data={node}/>}
 
