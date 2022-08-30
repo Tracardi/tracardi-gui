@@ -65,7 +65,7 @@ const AppBox = () => {
                           new PrivateTab(["admin", "developer"], <Resources
                               defaultLayout={"rows"}/>, "/resources", "Resources"),
                           new PrivateTab(["admin", "developer"],
-                              <ProRouter/>, "/resources/pro", <><BsStar size={20} style={{marginRight: 5}}/>{"Premium Services"}</>),
+                              <ProRouter/>, "/resources/pro", <><BsStar size={20} style={{marginRight: 5}}/>{"Extensions"}</>),
                       ]}/>
         </PrivateRoute>
 
