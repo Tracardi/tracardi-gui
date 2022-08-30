@@ -132,9 +132,9 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
             : null
     }
 
-    const getPluginObject = () => {
-        return (service?.plugin && !isEmptyObject(service?.plugin))
-            ? service.plugin
+    const getPluginObjects = () => {
+        return (service?.plugins && Array.isArray(service?.plugins))
+            ? service.plugins
             : null
     }
 
@@ -147,7 +147,7 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
                 data: {
                     service: getServiceObject(microservice.credentials),
                     destination: getDestinationObject(),
-                    plugin: getPluginObject(),
+                    plugins: getPluginObjects(),
                     microservice: {
                         service: microservice.service,
                         credentials: resource
@@ -176,7 +176,7 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
                 data: {
                     service: getServiceObject(value),
                     destination: getDestinationObject(),
-                    plugin: getPluginObject(),
+                    plugins: getPluginObjects(),
                 }
             })
 
