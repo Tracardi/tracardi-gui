@@ -68,7 +68,7 @@ const AutoComplete = ({
                 } catch (e) {
                     if (mounted.current && e) {
                         const errors = getError(e)
-                        setError(errors[0].msg)
+                        setError(errors[0]?.msg)
                     }
                 } finally {
                     if (mounted.current) {

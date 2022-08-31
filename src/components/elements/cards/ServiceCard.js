@@ -20,7 +20,8 @@ const ServiceCard = ({service, onClick}) => {
                 </div>
                 <div>
                     <div style={{lineHeight: 2}}>
-                        {service?.metadata?.tags.map((tag, key) => <Chip size="small" key={key} label={tag} style={{marginRight: 5}}/>)}
+                        <div style={{borderBottom: "1px solid gray", textTransform: "uppercase", color: "gray", fontSize: 12}}>Installs</div>
+                        {service?.metadata?.submit.map((tag, key) => <Chip size="small" key={key} label={tag} style={{marginRight: 5}}/>)}
                     </div>
                     <div style={{display: "flex", justifyContent: "flex-end", marginTop: 20}}>
                         <Button label="Install" onClick={() => onClick(service)} icon={<BsPlusCircle size={20} style={{marginRight: 5}}/>}/>
