@@ -7,7 +7,7 @@ import ServiceCard from "../cards/ServiceCard";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import ErrorsBox from "../../errors/ErrorsBox";
 
-const TracardiProAvailableServicesList = ({onServiceClick}) => {
+const TracardiProAvailableServicesList = ({query="", category="", onServiceClick}) => {
 
     const [services, setServices] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ const TracardiProAvailableServicesList = ({onServiceClick}) => {
     useEffect(() => {
         setLoading(true);
         asyncRemote({
-            url: '/tpro/available_services',
+            url: `/tpro/available_services?query=${query}&category=${category}`,
             method: "GET",
         }).then((response) => {
             setServices(response.data)
@@ -25,7 +25,7 @@ const TracardiProAvailableServicesList = ({onServiceClick}) => {
         }).finally(() => {
             setLoading(false);
         })
-    }, [])
+    }, [query, category])
 
     if (error) {
         return <ErrorsBox errorList={error} />

@@ -3,8 +3,12 @@ import FormDrawer from "../../elements/drawers/FormDrawer";
 import TracardiProServiceConfigForm from "../../elements/forms/pro/TracardiProServiceConfigForm";
 import React, {useState} from "react";
 import NoData from "../../elements/misc/NoData";
-import {BsCloudCheckFill} from "react-icons/bs";
+import {BsCloudCheckFill, BsSearch} from "react-icons/bs";
 import Button from "../../elements/forms/Button";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import {useDebounce} from "use-debounce";
+import './ProServiceList.css';
 
 function ServiceCreatedConfirmation({onConfirmed}) {
     return <NoData
@@ -42,14 +46,67 @@ function ServiceForm({selectedService, onCreated}) {
 export default function ProServiceList() {
 
     const [selectedService, setSelectedService] = useState(null);
-
+    const [query, setQuery] = useState("");
+    const [category, setCategory] = useState("");
+    const [debouncedSearchTerm] = useDebounce(query, 500);
 
     const handleServiceAddClick = (service) => {
         setSelectedService(service)
     }
 
+    const handleChange = (value) => {
+        setQuery(value)
+    }
+
     return <>
-        <TracardiProAvailableServicesList onServiceClick={handleServiceAddClick}/>
+        <TextField label="Search"
+                   onChange={(e) => handleChange(e.target.value)}
+                   variant="outlined"
+                   fullWidth
+                   size="small"
+                   value={query}
+                   style={{marginBottom: 10}}
+                   InputProps={{
+                       startAdornment: <InputAdornment position="start">
+                        <BsSearch size={20}/>
+                       </InputAdornment>
+                   }}
+        />
+
+        <div style={{display: "flex", width: "100%"}}>
+            <div style={{flex: "0 220px"}}>
+                <h1 style={{fontWeight: "normal", textTransform: "uppercase", fontSize: 13, width: "90%", borderBottom: "1px solid gray"}}>Categories</h1>
+                <ul className="Categories">
+                    <li onClick={()=>{setQuery(""); setCategory('')}}>All categories</li>
+                    <li onClick={()=>{setQuery(""); setCategory('database')}}>Databases</li>
+                    <li onClick={()=>{setQuery(""); setCategory('service')}}>Services</li>
+                    <li onClick={()=>{setQuery(""); setCategory('queue')}}>Queues</li>
+                    <li onClick={()=>{setQuery(""); setCategory('messaging')}}>Messaging</li>
+                    <li onClick={()=>{setQuery(""); setCategory('emailing')}}>E-mailing</li>
+                    <li onClick={()=>{setQuery(""); setCategory('crm')}}>CRMs</li>
+                    <li onClick={()=>{setQuery(""); setCategory('marketing automation')}}>Marketing Automation</li>
+                    <li onClick={()=>{setQuery(""); setCategory('ml')}}>Machine Learning</li>
+                    <li onClick={()=>{setQuery(""); setCategory('analytics')}}>Analytics</li>
+                </ul>
+                <h1 style={{fontWeight: "normal", textTransform: "uppercase", fontSize: 13, width: "90%", borderBottom: "1px solid gray"}}>Types</h1>
+                <ul className="Categories">
+                    <li onClick={()=>{setQuery(""); setCategory('plugin')}}>Plugins</li>
+                    <li onClick={()=>{setQuery(""); setCategory('resource')}}>Resources</li>
+                    <li onClick={()=>{setQuery(""); setCategory('microservice')}}>Microservices</li>
+                    <li onClick={()=>{setQuery(""); setCategory('bridge')}}>Bridges</li>
+                    <li onClick={()=>{setQuery(""); setCategory('destination')}}>Destinations</li>
+                </ul>
+            </div>
+            <div style={{flex: "1"}}>
+                <TracardiProAvailableServicesList
+                    query={debouncedSearchTerm}
+                    category={category}
+                    onServiceClick={handleServiceAddClick}
+                />
+            </div>
+        </div>
+
+
         <FormDrawer
             width={550}
             label="Configure"

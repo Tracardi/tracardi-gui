@@ -3,7 +3,6 @@ import './SidebarLeft.css';
 import FlowMenuNode from "./FlowMenuNode";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
-import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
 import {FlowEditorIcons} from "./FlowEditorButtons";
 import {asyncRemote} from "../../remote_api/entrypoint";
@@ -11,10 +10,13 @@ import ResponsiveDialog from "../elements/dialog/ResponsiveDialog";
 import Button from "../elements/forms/Button";
 import {BsXCircle} from "react-icons/bs";
 import MdManual from "./actions/MdManual";
+import {useDebounce} from "use-debounce";
+import HorizontalCircularProgress from "../elements/progress/HorizontalCircularProgress";
 
 function SidebarLeft({showAlert, onDebug, debugInProgress}) {
 
     const [filterActions, setFilterActions] = useState("*not-hidden");
+    const [debouncedFiltering] = useDebounce(filterActions, 500)
     const [plugins, setPlugins] = useState(null);
     const [pluginsLoading, setPluginsLoading] = useState(false);
     const [manual, setManual] = useState(null);
@@ -24,7 +26,7 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
 
         setPluginsLoading(true);
         asyncRemote({
-                url: "/flow/action/plugins?rnd=" + Math.random() + "&query=" + filterActions
+                url: "/flow/action/plugins?rnd=" + Math.random() + "&query=" + debouncedFiltering
             }
         ).then(
             (response) => {
@@ -48,7 +50,7 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
             }
         )
         return () => isSubscribed = false
-    }, [showAlert, filterActions])
+    }, [showAlert, debouncedFiltering])
 
     const onDragStart = (event, row) => {
         const data = row.plugin;
@@ -78,11 +80,14 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
             <div className="TaskFilter">
                 <FlowEditorIcons onDebug={onDebug}
                                  debugInProgress={debugInProgress}/>
-                <FilterTextField label="Action filter" variant="standard" onSubmit={setFilterActions}/>
+                <FilterTextField label="Action filter"
+                                 variant="standard"
+                                 onSubmit={setFilterActions}
+                                 onChange={(e) => setFilterActions(e.target.value)}/>
             </div>
             <div className="TaskNodes">
                 <div>
-                    {pluginsLoading && <CenteredCircularProgress/>}
+                    {pluginsLoading && <div style={{display: "flex", justifyContent: "center", marginTop: 8}}><HorizontalCircularProgress label="Searching..."/></div>}
                     {
                         plugins?.total > 0 && Object.entries(plugins?.grouped).map(([category, plugs], index) => {
                             return <div key={index}>

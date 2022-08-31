@@ -5,6 +5,7 @@
     border: solid 1px #ccc;
     border-radius: 10px;
     margin: 5px;
+    height: 360px;
 }
 .ServiceCard > .Title {
     padding: 15px;
@@ -28,4 +29,14 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+}
+
+.ServiceCard > .Desc > .Text {
+    overflow-y: auto;
+    height: 160px;
+}
+
+.ServiceCard > .Desc > .Install {
+    overflow-y: auto;
+    height: 105px;
 }
