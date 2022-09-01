@@ -11,7 +11,6 @@ import {useDebounce} from "use-debounce";
 import './ProServiceList.css';
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
-import CenteredCircularProgress from "../../elements/progress/CenteredCircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 
 function ServiceCreatedConfirmation({onConfirmed}) {
@@ -61,6 +60,7 @@ export default function ProServiceList() {
 
     useEffect(() => {
         setLoading(true);
+        setError(null);
         asyncRemote({
             url: `/tpro/available_services?query=${debouncedSearchTerm}&category=${category}`,
             method: "GET",
