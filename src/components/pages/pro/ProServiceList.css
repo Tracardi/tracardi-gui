@@ -1,0 +1,18 @@
+.Categories {
+    margin: 0px;
+    padding: 4px;
+    list-style-position: inside;
+    width: 95%;
+}
+
+.Categories LI {
+    padding: 1px;
+    cursor: pointer;
+    border-bottom: 1px solid white;
+    color: #555;
+}
+
+.Categories LI:hover {
+    border-bottom: 1px dotted #aaa;
+    color: #000;
+}

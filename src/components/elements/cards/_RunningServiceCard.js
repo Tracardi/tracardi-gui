@@ -8,7 +8,7 @@ import {asyncRemote} from "../../../remote_api/entrypoint";
 import {BsStopCircle} from "react-icons/bs";
 import {useConfirm} from "material-ui-confirm";
 
-const RunningServiceCard = ({service, onEditClick, onDelete}) => {
+const _RunningServiceCard = ({service, onEditClick, onDelete}) => {
 
     const [stopProgress, setStopProgress] = useState(false);
     const confirm = useConfirm();
@@ -46,7 +46,6 @@ const RunningServiceCard = ({service, onEditClick, onDelete}) => {
                     {service?.description}
                 </div>
                 <div style={{lineHeight: 2}}>
-                    <Chip size="small" label={service.prefix} style={{marginRight: 5}}></Chip>
                     {service.tags.map((tag, key) => <Chip size="small" key={key} label={tag} style={{marginRight: 5}}/>)}
                 </div>
                 <div style={{display: "flex", justifyContent: "flex-end"}}>
@@ -67,4 +66,4 @@ const RunningServiceCard = ({service, onEditClick, onDelete}) => {
     );
 }
 
-export default RunningServiceCard;
+export default _RunningServiceCard;

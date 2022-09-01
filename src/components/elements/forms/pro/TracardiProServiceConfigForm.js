@@ -48,7 +48,7 @@ function MicroserviceAndResourceForm({onSubmit}) {
     </>
 }
 
-function DescriptionForm({data: initData, onChange}) {
+function DescriptionForm({data: initData, onChange, errorMessage = null}) {
 
     const [data, setData] = useState(initData || {
         name: "",
@@ -77,6 +77,7 @@ function DescriptionForm({data: initData, onChange}) {
                         value={data?.name}
                         onChange={(ev) => handleChange("name", ev.target.value)}
                         variant="outlined"
+                        error={errorMessage !== null}
                     />
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Service description" description="Type service name.">
@@ -132,9 +133,9 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
             : null
     }
 
-    const getPluginObject = () => {
-        return (service?.plugin && !isEmptyObject(service?.plugin))
-            ? service.plugin
+    const getPluginObjects = () => {
+        return (service?.plugins && Array.isArray(service?.plugins))
+            ? service.plugins
             : null
     }
 
@@ -147,7 +148,7 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
                 data: {
                     service: getServiceObject(microservice.credentials),
                     destination: getDestinationObject(),
-                    plugin: getPluginObject(),
+                    plugins: getPluginObjects(),
                     microservice: {
                         service: microservice.service,
                         credentials: resource
@@ -176,7 +177,7 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
                 data: {
                     service: getServiceObject(value),
                     destination: getDestinationObject(),
-                    plugin: getPluginObject(),
+                    plugins: getPluginObjects(),
                 }
             })
 
@@ -202,7 +203,11 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
     }
 
     return <div>
-        <DescriptionForm data={data.current} onChange={(value) => data.current = value}/>
+        <DescriptionForm
+            data={data.current}
+            onChange={(value) => data.current = value}
+            errorMessage={errorMessages}
+        />
         {isMicroservice(service) && <MicroserviceAndResourceForm
             onSubmit={handleSubmitOfMicroservice}
         />}

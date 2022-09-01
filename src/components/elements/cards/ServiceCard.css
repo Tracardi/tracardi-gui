@@ -5,9 +5,11 @@
     border: solid 1px #ccc;
     border-radius: 10px;
     margin: 5px;
+    height: 360px;
 }
+
 .ServiceCard > .Title {
-    padding: 15px;
+    padding: 10px 15px;
     font-size: 140%;
     font-weight: 600;
     display: flex;
@@ -16,16 +18,22 @@
     background-color: #f5f5f5;
     color: #444;
     border-radius: 10px 10px 0 0 ;
-    justify-content: space-between;
 }
-.ServiceCard > .Title > SPAN {
-    display: flex;
-    align-items: center;
-}
+
 .ServiceCard > .Desc {
     padding: 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+}
+
+.ServiceCard > .Desc > .Text {
+    overflow-y: auto;
+    height: 160px;
+}
+
+.ServiceCard > .Desc > .Install {
+    overflow-y: auto;
+    height: 105px;
 }
