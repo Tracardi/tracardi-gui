@@ -12,6 +12,8 @@ import './ProServiceList.css';
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import LinearProgress from "@mui/material/LinearProgress";
+import MdManual from "../../flow/actions/MdManual";
+
 
 function ServiceCreatedConfirmation({onConfirmed}) {
     return <NoData
@@ -27,7 +29,7 @@ function ServiceCreatedConfirmation({onConfirmed}) {
     </NoData>
 }
 
-function ServiceForm({selectedService, onCreated}) {
+function ServiceForm({selectedService, onCreated, width = "100%"}) {
 
     const [ready, setReady] = useState(false);
 
@@ -37,7 +39,7 @@ function ServiceForm({selectedService, onCreated}) {
         }
     }
 
-    return <div style={{padding: 20}}>
+    return <div style={{padding: 20, width: width}}>
         {ready
             ? <ServiceCreatedConfirmation onConfirmed={handleSubmit}/>
             : <TracardiProServiceConfigForm
@@ -54,6 +56,7 @@ export default function ProServiceList() {
     const [listOfServices, setListOfServices] = useState(null);
     const [query, setQuery] = useState("");
     const [category, setCategory] = useState("");
+    const [width, setWidth] = useState(550);
     const [debouncedSearchTerm] = useDebounce(query, 500);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -73,8 +76,13 @@ export default function ProServiceList() {
         })
     }, [debouncedSearchTerm, category])
 
-    const handleServiceAddClick = (service) => {
+    const handleServiceAddClick = async (service) => {
         setSelectedService(service)
+        if(service?.metadata?.documentation) {
+            setWidth(1000)
+        } else {
+            setWidth(550)
+        }
     }
 
     const handleChange = (value) => {
@@ -210,15 +218,32 @@ export default function ProServiceList() {
 
 
         <FormDrawer
-            width={550}
+            width={width}
             label="Configure"
             onClose={() => setSelectedService(null)}
             open={selectedService !== null}>
+            {selectedService?.metadata?.documentation
+                ? <div style={{display: "flex", minHeight: "100%"}}>
+                    <div style={{width: 450, backgroundColor: "aliceblue", borderRight: "solid 1px #ddd",}}>
+                        <div style={{padding: 20, position: "sticky", top: 0}} ><MdManual
+                            mdFile={selectedService?.metadata?.documentation?.file}
+                            basePath={selectedService?.metadata?.documentation?.path}
+                        /></div>
+                    </div>
+                    <div style={{width: 550,
+                        boxShadow: "0 -1px 11px rgba(0, 0, 0, 0.5)  "
+                    }}>
+                        <ServiceForm
+                            selectedService={selectedService}
+                            onCreated={() => setSelectedService(null)}
+                        />
+                    </div>
 
-            <ServiceForm
-                selectedService={selectedService}
-                onCreated={() => setSelectedService(null)}
-            />
 
+                </div>
+                : <ServiceForm
+                    selectedService={selectedService}
+                    onCreated={() => setSelectedService(null)}
+                />}
         </FormDrawer></>
 }
