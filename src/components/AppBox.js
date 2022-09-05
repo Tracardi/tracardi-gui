@@ -69,13 +69,24 @@ const AppBox = () => {
                       ]}/>
         </PrivateRoute>
 
-        {/*Traffic*/}
+        {/*Inbound Traffic*/}
 
-        <PrivateRoute path={urlPrefix("/traffic")} roles={["admin", "developer"]}>
-            <PageTabs title="Traffic"
+        <PrivateRoute path={urlPrefix("/inbound")} roles={["admin", "developer", "marketer"]}>
+            <PageTabs title="Inbound Traffic and Event Management"
                       tabs={[
-                          new PrivateTab(["admin", "developer"], <EventSources/>, "/traffic/sources", "Sources"),
-                          new PrivateTab(["admin", "developer"], <Destinations/>, "/traffic/destinations", "Destinations"),
+                          new PrivateTab(["admin", "developer"], <EventSources/>, "/inbound/sources", "Sources"),
+                          new PrivateTab(["admin", "developer"],
+                              <EventManagement/>, "/inbound/event/management", "Event validation and reshaping"),
+                          new PrivateTab(["admin", "developer", "marketer"], <EventTags/>, "/inbound/event/tags", "Event tagging"),
+                      ]}
+            />
+        </PrivateRoute>
+
+        {/*Outbound Traffic*/}
+        <PrivateRoute path={urlPrefix("/outbound")} roles={["admin", "developer"]}>
+            <PageTabs title="Outbound Traffic"
+                      tabs={[
+                          new PrivateTab(["admin", "developer"], <Destinations/>, "/outbound/destinations", "Destinations"),
                       ]}
             />
         </PrivateRoute>
@@ -87,17 +98,6 @@ const AppBox = () => {
                       tabs={[
                           new PrivateTab(["admin", "developer"], <ImportSources/>, "/import/sources", "Import sources"),
                           new PrivateTab(["admin", "developer"], <BackgroundTasks type="import"/>, "/import/tasks", "Running imports"),
-                      ]}
-            />
-        </PrivateRoute>
-
-        {/* Validation */}
-        <PrivateRoute path={urlPrefix("/management")} roles={["admin", "developer"]}>
-            <PageTabs title="Management"
-                      tabs={[
-                          new PrivateTab(["admin", "developer"],
-                              <EventManagement/>, "/management/event", "Event types"),
-                          new PrivateTab(["admin", "developer", "marketer"], <EventTags/>, "/settings/event-tags", "Event tags"),
                       ]}
             />
         </PrivateRoute>

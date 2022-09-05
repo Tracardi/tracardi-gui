@@ -10,9 +10,8 @@ import {VscPulse, VscTools} from "react-icons/vsc";
 import {IoGitNetworkSharp} from "react-icons/io5";
 import {GoSettings} from "react-icons/go";
 import {VscLaw, VscDashboard} from "react-icons/vsc";
-import {BsGear, BsClipboardCheck, BsStar} from "react-icons/bs";
+import {BsClipboardCheck, BsStar, BsBoxArrowInLeft, BsBoxArrowInRight} from "react-icons/bs";
 import { getRoles } from "../authentication/login";
-import {RiArrowLeftRightFill} from "react-icons/ri";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote, getError} from "../../remote_api/entrypoint";
 import {connect} from "react-redux";
@@ -89,10 +88,10 @@ function MainMenu({showAlert}) {
             <div>
                 <MenuRow icon={<VscDashboard size={20}/>} label="Dashboard" collapsed={collapsed} onClick={go("/dashboard")} roles={["admin", "developer", "marketer", "maintainer"]}/>
                 <MenuRow icon={<BsStar size={20}/>} label="Resources" collapsed={collapsed} onClick={go("/resources")} roles={["admin", "developer"]}/>
-                <MenuRow icon={<RiArrowLeftRightFill size={20}/>} label="Traffic" collapsed={collapsed} onClick={go("/traffic")} roles={["admin", "developer"]}/>
+                <MenuRow icon={<BsBoxArrowInRight size={20}/>} label="Inbound Traffic" collapsed={collapsed} onClick={go("/inbound")} roles={["admin", "developer"]}/>
+                <MenuRow icon={<BsBoxArrowInLeft size={20}/>} label="Outbound Traffic" collapsed={collapsed} onClick={go("/outbound")} roles={["admin", "developer"]}/>
                 <MenuRow icon={<BsFileEarmarkArrowUp size={20}/>} label="Import" collapsed={collapsed} onClick={go("/import")} roles={["admin", "developer"]}/>
                 <MenuRow icon={<VscLaw size={20}/>} label="Consents" collapsed={collapsed} onClick={go("/consents")} roles={["admin", "developer", "marketer"]}/>
-                <MenuRow icon={<BsGear size={20}/>} label="Management" collapsed={collapsed} onClick={go("/management")} roles={["admin", "developer"]}/>
                 <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")} roles={["admin", "developer", "marketer"]}/>
                 <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Processing" collapsed={collapsed} onClick={go("/processing")} roles={["admin", "developer", "marketer"]}/>
                 <MenuRow icon={<BsBarChartFill size={20}/>} label="Reporting" collapsed={collapsed} onClick={go("/reporting")} roles={["admin", "developer", "marketer"]}/>
