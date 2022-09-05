@@ -19,12 +19,15 @@ export default function EventManagementForm({
                                                 validation,
                                                 event_type: validationEventType,
                                                 tags: validationTags,
+                                                reshaping,
                                                 onSaveComplete
                                             }) {
 
     const [name, setName] = useState(validationName || "");
     const [description, setDescription] = useState(validationDescription || "");
-    const [validationSchema, setValidationSchema] = useState((validation?.json_schema) ? JSON.stringify(validation?.json_schema, null, '  ') : null);
+    const [validationSchema, setValidationSchema] = useState((validation?.json_schema) ? JSON.stringify(validation.json_schema, null, '  ') : null);
+    const [reshapeTemplate, setReshapeTemplate] = useState((reshaping?.template) ? JSON.stringify(reshaping.template, null, '  ') : null)
+    const [reshapeCondition, setReshapeCondition] = useState((reshaping?.condition) ? reshaping.condition : "")
     const [enabled, setEnabled] = useState(validation?.enabled || false);
     const [eventType, setEventType] = useState(validationEventType ? {
         id: validationEventType,
@@ -37,6 +40,8 @@ export default function EventManagementForm({
     const [descErrorMessage, setDescErrorMessage] = useState("");
     const [validationErrorMessage, setValidationErrorMessage] = useState("");
     const [error, setError] = useState(false);
+    const [reshapeConditionErrorMessage, setReshapeConditionErrorMessage] = useState("");
+    const [reshapeTemplateError, setReshapeTemplateError] = useState("");
 
     const mounted = useRef(false);
 
@@ -79,6 +84,27 @@ export default function EventManagementForm({
             return;
         }
 
+        if (reshapeCondition) {
+            try {
+                await asyncRemote({
+                    url: "/tql/validate",
+                    method: "POST",
+                    data: reshapeCondition
+                })
+            } catch (e) {
+                setReshapeConditionErrorMessage("Given condition is invalid.");
+                return;
+            }
+        }
+
+        let template = {};
+        try {
+            template = JSON.parse(reshapeTemplate);
+        } catch (e) {
+            setReshapeTemplateError(e.toString());
+            return;
+        }
+
         try {
 
             const payload = {
@@ -87,7 +113,8 @@ export default function EventManagementForm({
                 description: description,
                 validation: {json_schema: validation, enabled: enabled},
                 event_type: eventType.id,
-                tags: tags && Array.isArray(tags) && tags.length > 0 ? tags : ["General"]
+                tags: tags && Array.isArray(tags) && tags.length > 0 ? tags : ["General"],
+                reshaping: {template: template, condition: reshapeCondition}
             }
 
             setProcessing(true);
@@ -195,6 +222,37 @@ export default function EventManagementForm({
 
             </TuiFormGroupContent>
         </TuiFormGroup>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Event type reshaping settings"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Reshape condition"
+                                   description="Please type the condition that will make the reshaping happen if evaluated to true value. You can reference profile, session and event itself. 
+                                   You can leave it empty for the reshaping to be always performed.">
+                    <TextField variant="outlined"
+                               label="Condition"
+                               value={reshapeCondition}
+                               error={(typeof reshapeConditionErrorMessage !== "undefined" && reshapeConditionErrorMessage !== '' && reshapeConditionErrorMessage !== null)}
+                               helperText={reshapeConditionErrorMessage}
+                               onChange={(ev) => {
+                                   setReshapeCondition(ev.target.value);
+                               }}
+                               fullWidth
+                               size="small"
+                    />
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Reshape template"
+                                   description="Type your reshape template here. This will replace event properties after replacing all present paths with appropriate values 
+                                   (or null, if they do not exist). You can reference profile and session as well. Reshaping is performed after JSON-schema validation. Leave this field empty to 
+                                   not perform any reshaping.">
+                    <fieldset style={{borderColor: (reshapeTemplateError) ? "red" : "#ccc"}}>
+                        <legend style={{color: (reshapeTemplateError) ? "red" : "#aaa"}}>Reshape template
+                        </legend>
+                        <JsonEditor value={reshapeTemplate} onChange={setReshapeTemplate}/>
+                        {reshapeTemplateError && <div style={{color: "red"}}>{reshapeTemplateError}</div>}
+                    </fieldset>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
 
         {error && <ErrorsBox errorList={error}/>}
         <Button label="Save" onClick={onSave} progress={processing} style={{justifyContent: "center"}}/>
@@ -207,5 +265,6 @@ EventManagementForm.propTypes = {
     description: PropTypes.string,
     enabled: PropTypes.bool,
     tags: PropTypes.array,
+    reshaping: PropTypes.object,
     onSaveComplete: PropTypes.func
 }

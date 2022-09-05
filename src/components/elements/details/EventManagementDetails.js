@@ -98,6 +98,17 @@ export default function EventManagementDetails({id, onDeleteComplete, onEditComp
                 </div>}
             </TuiFormGroupContent>
         </TuiFormGroup>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Event reshaping settings"/>
+            <TuiFormGroupContent>
+            <TuiFormGroupField header="Reshape when condition is met">
+                    {data.reshaping.condition || "No condition provided"}
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Reshape template">
+                    <ObjectInspector data={data.reshaping.template || {}} expandLevel={3}/>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
     </TuiForm>
 
     return <div className="Box10" style={{height: "100%"}}>
