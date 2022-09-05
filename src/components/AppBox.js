@@ -123,7 +123,7 @@ const AppBox = () => {
                       tabs={[
                           new PrivateTab(["admin", "developer"], <Flows/>, "/processing/workflows", "Workflows"),
                           new PrivateTab(["admin", "developer"], <Rules/>, "/processing/routing", "Routing Rules"),
-                          new PrivateTab(["admin", "developer", "marketer"], <Segments/>, "/processing/segments", "Segments"),
+                          new PrivateTab(["admin", "developer", "marketer"], <Segments/>, "/processing/segments", "Segmentation"),
                       ]}
             />
         </PrivateRoute>
