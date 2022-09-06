@@ -1,7 +1,5 @@
-import {JsonForm} from "./JsonForm";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import FormSchema from "../../../domain/formSchema";
-import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
 import ConfigEditor from "../../flow/editors/ConfigEditor";
 import {getError} from "../../../remote_api/entrypoint";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
@@ -10,8 +8,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import NotImplemented from "../misc/NotImplemented";
 import Switch from "@mui/material/Switch";
 import {MenuItem} from "@mui/material";
+import JsonForm from "./JsonForm";
+import {isEmptyObject} from "../../../misc/typeChecking";
+import useAfterMountEffect from "../../../effects/AfterMountEffect";
 
-export function NodeInitJsonForm({pluginId, formSchema, init, manual, onSubmit}) {
+export function NodeInitJsonForm({pluginId, formSchema, microservice, init, manual, onSubmit}) {
 
     const [data, setData] = useState(init)
     const [formErrorMessages, setFormErrorMessages] = useState({});
@@ -45,7 +46,7 @@ export function NodeInitJsonForm({pluginId, formSchema, init, manual, onSubmit})
 
     const handleSubmit = (config) => {
         const form = new FormSchema(formSchema)
-        form.validate(pluginId, config).then(handleValidationData)
+        form.validate(pluginId, microservice, config).then(handleValidationData)
     }
 
     return <ConfigEditor
@@ -204,7 +205,8 @@ export function NodeRuntimeConfigForm({pluginId, value: initValue, onChange}) {
                             />
                         </div>
 
-                        <p>How many seconds the trigger value should be consider unchanged. Sometimes it may be suitable to
+                        <p>How many seconds the trigger value should be consider unchanged. Sometimes it may be suitable
+                            to
                             refresh after certain amount of time. This way value will not become stale. Change of value
                             triggers the execution of the action.
                         </p>
@@ -274,28 +276,30 @@ export function NodeRuntimeConfigForm({pluginId, value: initValue, onChange}) {
     </TuiForm>
 }
 
-export function NodeInitForm({pluginId, init, formSchema, onSubmit}) {
+export const NodeInitForm = ({nodeId, pluginId, microservice, init, formSchema, onSubmit}) => {
 
-    const [data, setData] = useState({...init})
-    const [formErrorMessages, setFormErrorMessages] = useState({});
+    const initFormErrors =  useRef({})
+
+    const [formErrorMessages, setFormErrorMessages] = useState(initFormErrors.current);
     const [saveOK, setSaveOk] = useState(false);
     const [serverSideError, setServerSideError] = useState(null)
 
-    useEffect(() => {
-        // Reset to default values
-        setData({...init});
+    // tego uzywam aby zresetowac stan gdy mamy dwa takie same nody i klikamy pomiędzy nimi.
+    useAfterMountEffect(() => {
+        // Reset to default values if node changes
         setSaveOk(false);
-        setFormErrorMessages({})
-    }, [init])
+        // ustawiam formErrorMessages z referencji bo wstawienie nowego obiektu {} powoduje zmiane stanu i rerender
+        setFormErrorMessages(initFormErrors.current);
+        setServerSideError(null);
+    }, [nodeId])
 
     const handleValidationData = (result) => {
         if (result?.status === true) {
 
-            if (formErrorMessages !== {}) {
+            if (!isEmptyObject(formErrorMessages)) {
                 setFormErrorMessages({})
             }
 
-            setData(result?.data)  // result.data is validated config
             onSubmit(result?.data)
             setSaveOk(true);
             setServerSideError(null)
@@ -305,7 +309,7 @@ export function NodeInitForm({pluginId, init, formSchema, onSubmit}) {
                 setSaveOk(false);
                 if (result?.error && result?.error?.response?.status === 422) {
                     setFormErrorMessages(result?.data);
-                    setServerSideError(null)
+                    setServerSideError(null);
                 } else {
                     setFormErrorMessages({});
                     setServerSideError(getError(result?.error))
@@ -314,18 +318,18 @@ export function NodeInitForm({pluginId, init, formSchema, onSubmit}) {
         }
     }
 
-    const handleFormSubmit = () => {
+    const handleFormSubmit = (values) => {
         const form = new FormSchema(formSchema)
-        form.validate(pluginId, data).then(handleValidationData)
+        form.validate(pluginId, microservice, values).then(handleValidationData)
     }
 
-    const handleFormChange = (value) => {
-        setData(MutableMergeRecursive(data, value))
+    const handleFormChange = (values) => {
+        // This does not rerender component
+        init = values
     }
 
     return <JsonForm
-        pluginId={pluginId}
-        values={data}
+        values={init}
         errorMessages={formErrorMessages}
         serverSideError={serverSideError}
         schema={formSchema}
@@ -334,3 +338,8 @@ export function NodeInitForm({pluginId, init, formSchema, onSubmit}) {
         confirmed={saveOK}
     />
 }
+
+function areEqual(prevProps, nextProps) {
+    return prevProps.nodeId===nextProps.nodeId;
+}
+export const MemoNodeInitForm = React.memo(NodeInitForm, areEqual);

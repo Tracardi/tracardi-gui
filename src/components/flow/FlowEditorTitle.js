@@ -22,10 +22,13 @@ import Drawer from "@mui/material/Drawer";
 import {FaUncharted} from "react-icons/fa";
 import {BiReset} from "react-icons/bi";
 import {asyncRemote} from "../../remote_api/entrypoint";
-import {save} from "./FlowEditorOps";
+import {prepareFlowPayload, save} from "./FlowEditorOps";
 import {useConfirm} from "material-ui-confirm";
 import TestEditor from "../test/TestEditor";
 import {BsClipboardCheck} from "react-icons/bs";
+import DropDownMenu from "../menu/DropDownMenu";
+import {ReinstallButton} from "../pages/ActionPlugins";
+import EntityAnalytics from "../pages/EntityAnalytics";
 
 export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onDraftRestore, onDeploy, onSaveDraft}) {
 
@@ -49,7 +52,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                 reactFlowInstance,
                 (e) => {
                     // todo error
-                    console.error("Error.");
+                    console.error(e.toString());
                 },
                 () => {
                     if (onSaveDraft) {
@@ -71,6 +74,32 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
 
     const handleSave = () => {
         handleDraftSave(setDraftSaveProgress, false)
+    }
+
+    const handleRearrange = async () => {
+        try {
+            const payload = prepareFlowPayload(
+                flowId,
+                flowMetaData,
+                reactFlowInstance
+            )
+            const response = await asyncRemote({
+                url: `/flow/draft/nodes/rearrange`,
+                method: "POST",
+                data: payload
+            })
+
+            if (onDraftRestore instanceof Function) {
+                onDraftRestore(response?.data)
+            }
+
+        } catch (e) {
+            if (e) {
+                // todo error
+            }
+        } finally {
+
+        }
     }
 
     const handleDeploy = () => {
@@ -121,7 +150,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                     url: `/flow/draft/${id}/restore`
                 })
 
-                if (onDraftRestore) {
+                if (onDraftRestore instanceof Function) {
                     onDraftRestore(response?.data)
                 }
             } catch (e) {
@@ -144,43 +173,37 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
             <span style={{marginLeft: 10}}>{flowMetaData?.name}</span>
         </div>
         <div>
-            <Button label="Restore production"
-                    icon={<BiReset size={20}/>}
-                    style={{padding: "4px", fontSize: 14, justifyContent: "center"}}
-                    onClick={() => restoreProduction(flowId)}
-                    progress={productionRestoreProgress}
+            <ReinstallButton/>
+            <Button label="Rearrange nodes"
+                    icon={<TiTickOutline size={20}/>}
+                    onClick={handleRearrange}
             />
-            <Button label="Restore draft"
-                    icon={<BiReset size={20}/>}
-                    style={{padding: "4px", fontSize: 14, justifyContent: "center"}}
-                    onClick={() => restoreDraft(flowId)}
-                    progress={draftRestoreProgress}
-            />
+            <DropDownMenu label="Restore Flow" icon={<BiReset size={20}/>}
+                          progress={draftRestoreProgress || productionRestoreProgress}
+                          options = {{
+                'Restore production flow': () => restoreProduction(flowId),
+                'Restore draft flow': () => restoreDraft(flowId)
+            }}/>
             <Button label="Save"
                     icon={<TiTickOutline size={20}/>}
-                    style={{padding: "4px 8px", fontSize: 14, justifyContent: "center"}}
                     onClick={handleSave}
                     progress={draftSaveProgress}
             />
             <Button label="Deploy"
                     icon={<BsToggleOn size={20}/>}
-                    style={{padding: "4px 8px", fontSize: 14, justifyContent: "center"}}
                     onClick={handleDeploy}
                     progress={deployProgress}
             />
             <Button label="Test"
                     icon={<BsClipboardCheck size={20}/>}
-                    style={{padding: "4px 8px", fontSize: 14, justifyContent: "center"}}
                     onClick={() => setTestConsoleOpened(true)}
             />
             <Button label="Data"
                     icon={<BsFolder size={20}/>}
-                    style={{padding: "4px", width: 100, fontSize: 14, justifyContent: "center"}}
                     onClick={() => setEventsOpened(true)}
             />
             <Button label="Rules"
                     icon={<FaUncharted size={20}/>}
-                    style={{padding: "4px", width: 100, fontSize: 14, justifyContent: "center"}}
                     onClick={() => setRulesOpened(true)}
             />
         </div>
@@ -203,7 +226,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                 setEventsOpened(false)
             }}
             open={eventsOpened}>
-            {eventsOpened && <Tabs tabs={["Events", "Profiles", "Sessions"]}>
+            {eventsOpened && <Tabs tabs={["Events", "Profiles", "Sessions", "Entities"]}>
                 <TabCase id={0}>
                     <EventsAnalytics displayChart={false}/>
                 </TabCase>
@@ -212,6 +235,9 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                 </TabCase>
                 <TabCase id={2}>
                     <SessionsAnalytics displayChart={false}/>
+                </TabCase>
+                <TabCase id={3}>
+                    <EntityAnalytics displayChart={false}/>
                 </TabCase>
             </Tabs>
             }

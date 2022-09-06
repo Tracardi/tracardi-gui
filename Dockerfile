@@ -7,7 +7,7 @@ COPY src ./src
 COPY public ./public
 COPY src/config.prod.js ./src/config.js
 
-RUN yarn install --network-timeout 180000
+RUN yarn install --network-timeout 200000
 COPY . ./
 RUN yarn build
 

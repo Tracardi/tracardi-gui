@@ -6,14 +6,26 @@ export default class FormSchema {
         this.schema = schema
     }
 
-    async validate(pluginId, formValues) {
+    async validate(pluginId, microservice, formValues) {
 
-        const remoteValidation = async (pluginId, values) => {
+        const _serverValidation = async (pluginId, microservice, values) => {
             try {
+
+                const serviceId = (microservice?.service?.id)
+                    ? microservice.service.id
+                    : ""
+
+                const actionId = (microservice?.plugin?.id)
+                    ? microservice.plugin.id
+                    : ""
+
                 const response = await asyncRemote({
-                    url: `/action/${pluginId}/config/validate`,
+                    url: `/plugin/${pluginId}/config/validate?service_id=${serviceId}&action_id=${actionId}`,
                     method: "POST",
-                    data: values
+                    data: {
+                        config: values,
+                        credentials: microservice?.plugin?.resource ? microservice.plugin.resource : null
+                    }
                 })
 
                 return {
@@ -31,7 +43,7 @@ export default class FormSchema {
             }
         }
 
-        return await remoteValidation(pluginId, formValues)
+        return await _serverValidation(pluginId, microservice, formValues)
     }
 
 }

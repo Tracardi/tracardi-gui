@@ -35,7 +35,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 100%;
-    sont-size: 110%;
+    font-size: 110%;
     text-align: center;
 }
 
@@ -43,7 +43,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
-    font-size: 70%;
+    font-size: 65%;
     text-align: center;
     max-height: 60px;
 }
@@ -64,5 +64,22 @@
 .AdvancedSquareCard > .Buttons {
     display: flex;
     width: 100%;
-    flex-direction: row-reverse;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 0 0 10px 10px;
+}
+
+.AdvancedSquareCard .Buttons .Button {
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+    color: #1565c0;
+    width: 100%;
+    justify-content: center;
+    padding: 9px;
+}
+
+.AdvancedSquareCard .Buttons .Button:hover {
+    background-color: #1565c0;
+    color: white;
 }

@@ -12,9 +12,6 @@ export default function PrivateRoute({children, location, roles, ...rest}) {
     }
 
     const isAllowed = () => {
-        // console.log(getRoles());
-        // console.log(roles);
-        // console.log(intersect(getRoles(), roles));
         if(intersect(getRoles(), roles).length > 0) {
             return true
         }

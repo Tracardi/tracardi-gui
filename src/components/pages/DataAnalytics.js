@@ -17,7 +17,8 @@ export default function DataAnalytics({
                                           displayDetails,
                                           detailsDrawerWidth,
                                           filterFields,
-                                          displayChart = true
+                                          displayChart = true,
+                                          barChartColors = {}
                                       }) {
 
     const getQuery = (type, label) => {
@@ -128,7 +129,6 @@ export default function DataAnalytics({
 
     return (
         <div className="DataAnalytics">
-            <div className="Filtering">
                 <ObjectFiltering
                     type={type}
                     initDate={query}
@@ -136,7 +136,6 @@ export default function DataAnalytics({
                     onFilterClick={onFilter}
                     onRefreshChange={handleRefreshChange}
                 />
-            </div>
             <div className="Data">
                 <DataBrowsingList
                     label={label}
@@ -154,9 +153,9 @@ export default function DataAnalytics({
                 >
                   <BarChartElement
                         onLoadRequest={onLoadHistogramRequest(query)}
-                        columns={[{label: "count", color: "#039be5", stackId: "count"}]}
                         refreshInterval={refresh}
-                    />
+                        barChartColors = {barChartColors}
+                  />
                 </DataBrowsingList>
             </div>
         </div>

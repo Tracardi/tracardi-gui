@@ -3,7 +3,6 @@ import Properties from "./DetailProperties";
 import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import {IoGitNetworkSharp} from "react-icons/io5";
-import {request} from "../../../remote_api/uql_api_endpoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
 import urlPrefix from "../../../misc/UrlPrefix";
@@ -14,6 +13,7 @@ import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import FlowRules from "../../rules/FlowRules";
+import {asyncRemote} from "../../../remote_api/entrypoint";
 
 export default function FlowDetails({id, onDeleteComplete}) {
 
@@ -26,18 +26,23 @@ export default function FlowDetails({id, onDeleteComplete}) {
     const confirm = useConfirm();
 
     useEffect(() => {
+            let isSubscribed = true;
             setLoading(true);
-            request({
-                    url: '/flow/metadata/' + id,
-                    method: "get"
-                },
-                setLoading,
-                () => {
-                },
-                (result) => {
-                    setData(result.data);
-                }
-            );
+
+            asyncRemote({
+                url: '/flow/metadata/' + id,
+                method: "get"
+            }).then((response) => {
+                if(isSubscribed===true) setData(response.data);
+            }).catch((e)=> {
+                console.error(e)
+            }).finally(()=>{
+                if(isSubscribed===true) setLoading(false);
+            })
+
+            return () => {
+                isSubscribed = false
+            }
         },
         [id])
 
@@ -53,43 +58,30 @@ export default function FlowDetails({id, onDeleteComplete}) {
     }
 
     const onGoToEditFlow = (id) => {
-        history.push(urlPrefix("/setup/flow/edit/") + id);
+        history.push(urlPrefix("/flow/edit/") + id);
     }
 
     const onGoToDeployedFlow = (id) => {
-        history.push(urlPrefix("/setup/flow/") + id);
+        history.push(urlPrefix("/flow/preview/") + id);
     }
 
     const onDelete = () => {
         confirm({title: "Do you want to delete this flow?", description: "This action can not be undone."})
-            .then(() => {
-                    request({
+            .then(async () => {
+                    try {
+                        await asyncRemote({
                             url: '/flow/' + id,
                             method: "delete"
-                        },
-                        () => {},
-                        () => {},
-                        (result) => {
-                            if (result !== false) {
-                                request({
-                                        url: '/flows/refresh'
-                                    },
-                                    ()=>{},
-                                    ()=>{},
-                                    ()=>{
-                                        if (onDeleteComplete) {
-                                            onDeleteComplete(data.id)
-                                        }
-                                    }
-                                )
-                            }
-                        }
-                    );
-
-                }
+                        })
+                    } catch(e) {
+                        console.error(e.toString())
+                    }
+                    if (onDeleteComplete) {
+                        onDeleteComplete(data.id)
+                    }
+               }
             )
-            .catch(() => {
-            })
+            .catch(() => {})
     }
 
     const Details = () => <TuiForm>
@@ -97,7 +89,7 @@ export default function FlowDetails({id, onDeleteComplete}) {
             <TuiFormGroupHeader header="Workflow" description="Information on workflow"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Data">
-                    <Properties properties={data} show={["id", "name", "description", "enabled"]}/>
+                    <Properties properties={data} show={["id", "name", "description"]}/>
                     <Rows style={{marginTop: 20}}>
                         <Button onClick={onEditClick}
                                 icon={<VscEdit size={20}/>}
@@ -147,7 +139,6 @@ export default function FlowDetails({id, onDeleteComplete}) {
                 id={data.id}
                 name={data.name}
                 description={data.description}
-                enabled={data.enabled}
                 projects={data.projects}
             />}
         </FormDrawer>

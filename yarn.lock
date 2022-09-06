@@ -1832,13 +1832,6 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
-"@szhsin/react-menu@^1.10.1":
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/@szhsin/react-menu/-/react-menu-1.11.0.tgz#3b4929d5cf5bb676eac3dc962da3029080b82bc2"
-  integrity sha512-kaW/IpcokmyVwX7WGe6ijQI/xQDw5nQXUKyiioy40dm5gt45+Lo7cqGVUoy7Qj8275Q9tgN6hcazWX/DCcYUfQ==
-  dependencies:
-    prop-types "^15.7.2"
-
 "@testing-library/dom@^8.0.0", "@testing-library/dom@^8.1.0":
   version "8.11.1"
   resolved "https://registry.yarnpkg.com/@testing-library/dom/-/dom-8.11.1.tgz#03fa2684aa09ade589b460db46b4c7be9fc69753"
@@ -2421,11 +2414,6 @@
   dependencies:
     "@typescript-eslint/types" "5.9.1"
     eslint-visitor-keys "^3.0.0"
-
-"@uiw/react-heat-map@^1.4.6":
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/@uiw/react-heat-map/-/react-heat-map-1.4.8.tgz#5423b25fa0f413748a33fd514a86e75d970ee092"
-  integrity sha512-1u9JO0IzMAWJ2K58h9pzRJbDbuUZHphfddbuuj4Iiwqubhkl1Dwk5L+NFJAr6mud2eN5YSp+0MF93YoVUPmvIQ==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
@@ -3251,9 +3239,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001286, caniuse-lite@^1.0.30001297, caniuse-lite@^1.0.30001299:
-  version "1.0.30001299"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001299.tgz#d753bf6444ed401eb503cbbe17aa3e1451b5a68c"
-  integrity sha512-iujN4+x7QzqA2NCSrS5VUy+4gLmRd4xv6vbBBsmfVqTx8bLAD8097euLqQgKxSVLvxjSDcvF1T/i9ocgnUFexw==
+  version "1.0.30001370"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001370.tgz"
+  integrity sha512-3PDmaP56wz/qz7G508xzjx8C+MC2qEm4SYhSEzC9IBROo+dGXFWRuaXkWti0A9tuI00g+toiriVqxtWMgl350g==
 
 case-sensitive-paths-webpack-plugin@^2.4.0:
   version "2.4.0"
@@ -6834,11 +6822,6 @@ memfs@^3.1.2, memfs@^3.2.2:
   dependencies:
     fs-monkey "1.0.3"
 
-"memoize-one@>=3.1.1 <6", memoize-one@^5.0.0:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.2.1.tgz#8337aa3c4335581839ec01c3d594090cebe8f00e"
-  integrity sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==
-
 merge-descriptors@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/merge-descriptors/-/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
@@ -7050,7 +7033,7 @@ nwsapi@^2.2.0:
   resolved "https://registry.yarnpkg.com/nwsapi/-/nwsapi-2.2.0.tgz#204879a9e3d068ff2a55139c2c772780681a38b7"
   integrity sha512-h2AatdwYH+JHiZpv7pt/gSX1XoRGb7L/qSIeuqA6GwYoF9w1vP1cw42TO0aI2pNyshRK5893hNSl+1//vHK7hQ==
 
-object-assign@^4.1.0, object-assign@^4.1.1:
+object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
   integrity sha1-IQmtx5ZYh8/AXLvUQsrIv7s2CGM=
@@ -8100,13 +8083,6 @@ react-ace@^9.5.0:
     lodash.isequal "^4.5.0"
     prop-types "^15.7.2"
 
-react-addons-update@^15.6.3:
-  version "15.6.3"
-  resolved "https://registry.yarnpkg.com/react-addons-update/-/react-addons-update-15.6.3.tgz#c449c309154024d04087b206d0400e020547b313"
-  integrity sha512-wBkjgx5cR0XTjZEz5jl2kScChrjI9T7rWVdaM0dLiIdHSgeHycLRdHPPiTgKk7vK18Od4rXmLJv91qofBXlE0A==
-  dependencies:
-    object-assign "^4.1.0"
-
 react-app-polyfill@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-app-polyfill/-/react-app-polyfill-3.0.0.tgz#95221e0a9bd259e5ca6b177c7bb1cb6768f68fd7"
@@ -8167,14 +8143,6 @@ react-dom@17.0.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.2"
-
-react-draggable@^3.1.1:
-  version "3.3.2"
-  resolved "https://registry.yarnpkg.com/react-draggable/-/react-draggable-3.3.2.tgz#966ef1d90f2387af3c2d8bd3516f601ea42ca359"
-  integrity sha512-oaz8a6enjbPtx5qb0oDWxtDNuybOylvto1QLydsXgKmwT7e3GXC2eMVDwEMIUYJIFqVG72XpOv673UuuAq6LhA==
-  dependencies:
-    classnames "^2.2.5"
-    prop-types "^15.6.0"
 
 react-draggable@^4.4.4:
   version "4.4.4"
@@ -8239,10 +8207,10 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-picky-date-time@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/react-picky-date-time/-/react-picky-date-time-1.9.0.tgz#fbbc38dd84e6714ea91f722d1eb50f0f98cd9180"
-  integrity sha512-Ys+VpEKEOTIAldGbyIcU/5yO+ByZ+pZfiV3KwjfHXP97LcrfQa9Ouxk03tps6aqoSC5unFG5R5XDJGRYxTZPcA==
+react-picky-date-time@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/react-picky-date-time/-/react-picky-date-time-1.9.1.tgz#32fedb35325c82917fd44671a97287d993dfe373"
+  integrity sha512-No3JYR8hqaJZqJh5v7Y0Ix8z7dgZwFLfxEhSRMl5KNmYiQiSkT4UMSd5mW2hPsg70eDD2TQw5MAWWpBv3EMbXA==
 
 react-redux@^7.2.2, react-redux@^7.2.6:
   version "7.2.6"
@@ -8393,35 +8361,6 @@ react-transition-group@^4.4.2:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
-
-react-virtualized-auto-sizer@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/react-virtualized-auto-sizer/-/react-virtualized-auto-sizer-1.0.6.tgz#66c5b1c9278064c5ef1699ed40a29c11518f97ca"
-  integrity sha512-7tQ0BmZqfVF6YYEWcIGuoR3OdYe8I/ZFbNclFlGOC3pMqunkYF/oL30NCjSGl9sMEb17AnzixDz98Kqc3N76HQ==
-
-react-vt-table@^0.8.4:
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/react-vt-table/-/react-vt-table-0.8.4.tgz#ef87e024010b81656a68d8e29f59e314e7327c91"
-  integrity sha512-7KJX6Zb+JwUlKz+++u0QlZ46WjH3O0AxkEuMm2elfpge/gA3sQ/VR2FqPw7xboxMkgnt6KYqguinRIVRJ5O6pQ==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    classnames "^2.2.6"
-    memoize-one "^5.0.0"
-    react-draggable "^3.1.1"
-    react-window "^1.5.1"
-
-react-window-infinite-loader@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/react-window-infinite-loader/-/react-window-infinite-loader-1.0.7.tgz#958ef1a689d20dce122ef377583acd987760aee8"
-  integrity sha512-wg3LWkUpG21lhv+cZvNy+p0+vtclZw+9nP2vO6T9PKT50EN1cUq37Dq6FzcM38h/c2domE0gsUhb6jHXtGogAA==
-
-react-window@^1.5.1, react-window@^1.8.6:
-  version "1.8.6"
-  resolved "https://registry.yarnpkg.com/react-window/-/react-window-1.8.6.tgz#d011950ac643a994118632665aad0c6382e2a112"
-  integrity sha512-8VwEEYyjz6DCnGBsd+MgkD0KJ2/OXFULyDtorIiTz+QzwoP94tBoA7CnbtyXMm+cCeAUER5KJcPtWl9cpKbOBg==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    memoize-one ">=3.1.1 <6"
 
 react@17.0.2:
   version "17.0.2"
@@ -9700,6 +9639,11 @@ uri-js@^4.2.2:
   integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
   dependencies:
     punycode "^2.1.0"
+
+use-debounce@^8.0.4:
+  version "8.0.4"
+  resolved "https://registry.yarnpkg.com/use-debounce/-/use-debounce-8.0.4.tgz#27e93b2f010bd0b8ad06e9fc7de891d9ee5d6b8e"
+  integrity sha512-fGqsYQzl8kLHF2QpQSgIwgOgJmnh6j5L6SIzQiHdLfwp3q1egUL3btq5Bg2SJysH6A0ILLgT2IqXZKoNJr0nFw==
 
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"

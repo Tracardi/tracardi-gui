@@ -9,6 +9,7 @@ import {useHistory} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote} from "../../remote_api/entrypoint";
+import BrowserRow from "../elements/lists/rows/BrowserRow";
 
 
 export default function Flows() {
@@ -23,7 +24,7 @@ export default function Flows() {
     const confirm = useConfirm();
 
     const handleFlowEdit = (id) => {
-        history.push(urlPrefix("/setup/flow/edit/" + id))
+        history.push(urlPrefix("/flow/edit/" + id))
     }
 
     const mounted = useRef(false);
@@ -58,7 +59,7 @@ export default function Flows() {
             )
     }
 
-    const flows = (data, onClick) => {
+    const flowCards = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="CardGroup" key={index}>
                 <header>{category}</header>
@@ -67,9 +68,7 @@ export default function Flows() {
                         return <AdvancedSquareCard key={index + "-" + subIndex}
                                                    id={row?.id}
                                                    icon={<IoGitNetworkSharp size={45}/>}
-                                                   status={row?.enabled}
                                                    name={row?.name}
-                                                   description={row?.description}
                                                    onClick={() => onClick(row?.id)}
                                                    onEdit={handleFlowEdit}
                                                    onDelete={onDelete}
@@ -80,13 +79,30 @@ export default function Flows() {
         })
     }
 
+    const flowRows = (data, onClick) => {
+        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
+            return <div className="RowGroup" style={{width:"100%"}} key={index}>
+                <header>{category}</header>
+                <div>
+                    {plugs.map((row, subIndex) => {
+                        return <BrowserRow key={index + "-" + subIndex}
+                                           id={row?.id}
+                                           data={{...row, icon: "flow"}}
+                                           onClick={() => onClick(row?.id)}/>
+                    })}
+                </div>
+            </div>
+        })
+    }
+
     return <CardBrowser
         label="Workflows"
         description="List of defined workflows. You may filter this list by workflow name in the upper search box."
         urlFunc={urlFunc}
-        cardFunc={flows}
+        cardFunc={flowCards}
+        rowFunc={flowRows}
         buttomLabel="New workflow"
-        buttonIcon={<IoGitNetworkSharp size={20} style={{marginRight: 10}}/>}
+        buttonIcon={<IoGitNetworkSharp size={20}/>}
         drawerDetailsTitle="Workflow details"
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}

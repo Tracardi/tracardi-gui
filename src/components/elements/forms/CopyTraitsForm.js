@@ -1,11 +1,11 @@
 import {MenuItem} from "@mui/material";
 import React, {useEffect, useState} from "react";
 import "./CopyTraitsForm.css";
-import DottedPathInput from "./inputs/DottedPathInput";
 import {AiOutlinePlusCircle} from "react-icons/ai";
 import TextField from "@mui/material/TextField";
 import {VscTrash} from "react-icons/vsc";
 import {objectMap} from "../../../misc/mappers";
+import DotAccessor from "./inputs/DotAccessor";
 
 const CopyTraitsForm = ({
                             onChange = () => {
@@ -63,14 +63,14 @@ const CopyTraitsForm = ({
                 <div style={{margin: "5px 0 15px 0", fontSize: "140%"}}>
                     Use this form to add operations.
                 </div>
-                <DottedPathInput label="Target" value={target} onChange={setTarget}/>
+                <DotAccessor label="Target" value={target} onChange={setTarget}/>
 
                 <div
                     style={{
                         display: "flex",
                         flexDirection: "column",
                         paddingBottom: "10px",
-                        paddingTop: "10px",
+                        paddingTop: "18px",
                     }}
                 >
                     <TextField
@@ -87,7 +87,7 @@ const CopyTraitsForm = ({
                     </TextField>
                 </div>
                 <div className="Target">
-                    <DottedPathInput label="Source" value={source} onChange={setSource} defaultSourceValue={defaultSource}/>
+                    <DotAccessor label="Source" value={source} onChange={setSource} defaultSourceValue={defaultSource}/>
                     <AiOutlinePlusCircle size={25} onClick={handleAdd} className="Button AddButton"/>
                 </div>
             </div>

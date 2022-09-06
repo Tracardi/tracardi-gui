@@ -7,7 +7,6 @@ import HtmlEditor from "../editors/HtmlEditor";
 import {objectMap} from "../../../misc/mappers";
 import MenuItem from "@mui/material/MenuItem";
 import ListOfDottedInputs from "./ListOfDottedInputs";
-import DottedPathInput from "./inputs/DottedPathInput";
 import KeyValueForm from "./KeyValueForm";
 import CopyTraitsForm from "./CopyTraitsForm";
 import ErrorLine from "../../errors/ErrorLine";
@@ -15,9 +14,14 @@ import SqlEditor from "../editors/SqlEditor";
 import TuiSelectResource from "../tui/TuiSelectResource";
 import {isEmptyStringOrNull} from "../../../misc/typeChecking";
 import Chip from "@mui/material/Chip";
+import TuiMultiSelectEventType from "../tui/TuiSelectMultiEventType";
+import DotAccessor from "./inputs/DotAccessor";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
+import TuiSelectMultiConsentType from "../tui/TuiSelectMultiConsentType";
+import AutoComplete from "./AutoComplete";
+import ReportConfigInput from "./inputs/ReportConfigInput";
 
-export function TextInput({value, label, errorMessage, onChange}) {
+export const TextInput = ({value, label, errorMessage, onChange}) => {
 
     const [text, setText] = useState(value || "")
 
@@ -36,6 +40,7 @@ export function TextInput({value, label, errorMessage, onChange}) {
                       size="small"
                       helperText={errorMessage}
                       error={!isEmptyStringOrNull(errorMessage)}
+                      FormHelperTextProps={{ style: { color: "#d81b60" }}}
                       fullWidth
     />
 }
@@ -62,22 +67,13 @@ export function BoolInput({value, label, errorMessage, onChange}) {
     </div>
 }
 
-export function ContentInput({value, label, errorMessage, onChange, rows = 4}) {
+export function ContentInput({value, label, errorMessage, onChange, rows = 4, allowedTypes=["text/plain", "application/json", "text/html"]}) {
 
     const [textValue, setTextValue] = useState(value?.content || "");
-    const [tab, setTab] = useState(value?.type === "text/plain" ? 0 : 1);
+    const [tab, setTab] = useState(allowedTypes.indexOf(value?.type) > -1 ? allowedTypes.indexOf(value?.type) : 0);
 
     const getContentType = (tab) => {
-        switch (tab) {
-            case 0:
-                return "text/plain"
-            case 1:
-                return "application/json"
-            case 2:
-                return "text/html"
-            default:
-                return "application/json"
-        }
+        return allowedTypes.length > tab ? allowedTypes[tab] : "text/plain";
     }
 
     let contentType = getContentType(tab)
@@ -99,12 +95,22 @@ export function ContentInput({value, label, errorMessage, onChange, rows = 4}) {
         }
     }
 
+    const getTabs = () => {
+        let tabs = [];
+        for (let value of allowedTypes) {
+            if (value === "text/plain") tabs.push("Text");
+            if (value === "application/json") tabs.push("JSON");
+            if (value === "text/html") tabs.push("HTML");
+        }
+        return tabs;
+    }
+
     return <><Tabs
-        tabs={["Text", "JSON", "HTML"]}
+        tabs={getTabs()}
         defaultTab={tab}
         onTabSelect={handleTabChange}
     >
-        <TabCase id={0}>
+        <TabCase id={allowedTypes.indexOf("text/plain") > -1 ? allowedTypes.indexOf("text/plain") : -1}>
             <div style={{marginTop: 10}}>
                 <TextField label={label}
                            value={textValue}
@@ -117,7 +123,7 @@ export function ContentInput({value, label, errorMessage, onChange, rows = 4}) {
             </div>
 
         </TabCase>
-        <TabCase id={1}>
+        <TabCase id={allowedTypes.indexOf("application/json") > -1 ? allowedTypes.indexOf("application/json") : -2}>
             <fieldset style={{marginTop: 10}}>
                 <legend>{label}</legend>
                 <JsonEditor
@@ -126,7 +132,7 @@ export function ContentInput({value, label, errorMessage, onChange, rows = 4}) {
                 />
             </fieldset>
         </TabCase>
-        <TabCase id={2}>
+        <TabCase id={allowedTypes.indexOf("text/html") > -1 ? allowedTypes.indexOf("text/html") : -3}>
             <fieldset style={{marginTop: 10}}>
                 <legend>{label}</legend>
                 <HtmlEditor
@@ -141,7 +147,7 @@ export function ContentInput({value, label, errorMessage, onChange, rows = 4}) {
 }
 
 
-export function SelectInput({value, label, errorMessage, items = [], errors, onChange}) {
+export function SelectInput({value, values, label, errorMessage, items = [], errors, onChange}) {
 
     const [selectedItem, setSelectedItem] = useState(value || "");
 
@@ -159,6 +165,7 @@ export function SelectInput({value, label, errorMessage, items = [], errors, onC
                       size="small"
                       helperText={errorMessage}
                       error={errorMessage}
+                      FormHelperTextProps={{ style: { color: "#d81b60" }}}
                       value={selectedItem}
                       style={{minWidth: 150}}
                       onChange={handleChange}
@@ -187,6 +194,7 @@ export function TextAreaInput({value, label, errorMessage, onChange = null}) {
                       value={text}
                       onChange={handleChange}
                       helperText={errorMessage}
+                      FormHelperTextProps={{ style: { color: "#d81b60" }}}
                       error={!isEmptyStringOrNull(errorMessage)}
                       variant="outlined"
                       multiline
@@ -212,11 +220,11 @@ export function DotPathInput({value, props, errorMessage, onChange = null}) {
         }
     }
 
-    return <DottedPathInput value={value}
-                            forceMode={1}
-                            onChange={handleChange}
-                            errorMessage={errorMessage}
-                            {...props}/>
+    return <DotAccessor value={value}
+                        forceMode={1}
+                        onChange={handleChange}
+                        errorMessage={errorMessage}
+                        {...props}/>
 }
 
 export function DotPathAndTextInput({value, props, errorMessage, onChange}) {
@@ -227,22 +235,23 @@ export function DotPathAndTextInput({value, props, errorMessage, onChange}) {
         }
     }
 
-    return <DottedPathInput value={value}
-                            onChange={handleChange}
-                            errorMessage={errorMessage}
-                            {...props}
+    return <DotAccessor value={value}
+                        onChange={handleChange}
+                        errorMessage={errorMessage}
+                        {...props}
     />
 }
 
-export function KeyValueInput({value, props, onChange}) {
+export function KeyValueInput({value, values, props, onChange}) {
 
-    const handleChange = (value) => {
+    const handleChange = (value, deleted) => {
         if (onChange) {
-            onChange(value);
+            onChange(value, deleted);
         }
     }
 
     return <KeyValueForm value={value}
+                         values={values}
                          onChange={handleChange}
                          {...props}
     />
@@ -275,11 +284,12 @@ export function JsonInput({value, onChange = null}) {
         }
     }
 
-    const [formatedValue, error] = getFormattedValue(value)
+    const [formatedValue, error] = getFormattedValue(value);
     const [json, setJson] = useState(formatedValue);
     const [errorMsg, setErrorMsg] = useState(error);
 
     const handleChange = (value) => {
+        // eslint-disable-next-line no-unused-vars
         const [formattedValue, error] = getFormattedValue(value)
         setJson(value);
         setErrorMsg(error)
@@ -287,6 +297,10 @@ export function JsonInput({value, onChange = null}) {
             onChange(value);
         }
     }
+
+    React.useEffect(() => {
+        handleChange(value);
+    }, [value])
 
     return <>
         <fieldset style={{marginTop: 10}}>
@@ -325,24 +339,111 @@ export function SqlInput({value, onChange = null}) {
     </>
 }
 
-export function ResourceSelect({value, errorMessage, onChange = null, tag = null}) {
+export function ResourceSelect({value, errorMessage, onChange = null, tag = null, pro = false}) {
 
     const handleChange = (value) => {
-        onChange(value);
+        if(onChange instanceof Function) {
+            onChange(value);
+        }
     };
 
-    return <TuiSelectResource value={value} errorMessage={errorMessage} onSetValue={handleChange} tag={tag}/>
+    return <TuiSelectResource initValue={value}
+                              errorMessage={errorMessage}
+                              onSetValue={handleChange}
+                              tag={tag}
+                              pro={pro}
+    />
 }
 
-export function EventTypes({value, onChange = null}) {
+export function AutoCompleteInput({value, values, label, endpoint, error, defaultValueSet, onChange, onSetValue, onlyValueWithOptions=true}) {
 
     const handleChange = (value) => {
-        onChange(value);
+        if (onChange instanceof Function) {
+            onChange(value);
+        }
     };
 
-    return <TuiSelectEventType value={value} label="Event types" onSetValue={handleChange} multiple={true} fullWidth={true}/>
+    const handleSetValue = (value) => {
+        if (handleSetValue instanceof Function) {
+            onSetValue(value);
+        }
+    };
+
+    return <AutoComplete
+        onlyValueWithOptions={onlyValueWithOptions}
+        placeholder={label}
+        initValue={value ? value : null}
+        defaultValueSet={defaultValueSet}
+        error={error}
+        endpoint={endpoint && {
+            ...endpoint,
+            data: values
+        }}
+        onChange={handleChange}
+        onSetValue={handleSetValue}/>
+}
+
+export function EventTypes({value: initValue, onChange = null}) {
+
+    const [value, setValue] = useState(initValue);
+
+    const handleChange = (value) => {
+        setValue(value);
+        if (onChange instanceof Function) {
+            onChange(value);
+        }
+    };
+
+    return <TuiMultiSelectEventType value={value} label="Event types" onSetValue={handleChange} fullWidth={true}/>
+}
+
+export function EventType({value: initValue, errorMessage, onChange = null, props}) {
+
+    const [value, setValue] = useState(initValue);
+
+    const handleChange = (value) => {
+        setValue(value);
+        if (onChange instanceof Function) {
+            onChange(value);
+        }
+    };
+
+    return <TuiSelectEventType value={value}
+                               label="Event type"
+                               onSetValue={handleChange}
+                               fullWidth={true}
+                               errorMessage={errorMessage}
+                               {...props}
+    />
+}
+
+export function ConsentTypes({value: initValue, onChange = null}) {
+
+    const [value, setValue] = useState(initValue);
+
+    const handleChange = (value) => {
+        setValue(value);
+        if (onChange instanceof Function) {
+            onChange(value);
+        }
+    };
+
+    return <TuiSelectMultiConsentType value={value} label="Consent types" onSetValue={handleChange} fullWidth={true}/>
 }
 
 export function ReadOnlyTags({value}) {
     return Array.isArray(value) && value.map((tag, index) => <Chip label={tag} key={index} style={{marginLeft: 5}}/>)
+}
+
+export function ReportConfig({value: initValue, onChange, errorMessage, endpoint = null}) {
+    
+    const [value, setValue] = useState(initValue);
+    const handleChange = value => {
+        setValue(value);
+        if (onChange instanceof Function) {
+            onChange(value);
+        }
+    };
+
+    return <ReportConfigInput value={value} onChange={handleChange} errorMessage={errorMessage} endpoint={endpoint}/>
 }

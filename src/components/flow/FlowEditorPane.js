@@ -10,7 +10,6 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import PropTypes from 'prop-types';
 import FlowNode from "./FlowNode";
 import {v4 as uuid4} from "uuid";
-import {request} from "../../remote_api/uql_api_endpoint";
 import SidebarLeft from "./SidebarLeft";
 import SidebarRight from "./SidebarRight";
 import {debug, save} from "./FlowEditorOps";
@@ -21,7 +20,6 @@ import InfoEdge from "./edges/InfoEdge";
 import StopEdge from "./edges/StopEdge";
 import CancelEdge from "./edges/CancelEdge";
 import BoldEdge from "./edges/BoldEdge";
-import {NodeInitForm} from "../elements/forms/NodeInitForm";
 import WfSchema from "./WfSchema";
 import {MemoDebugPane} from "./DebugPane";
 import convertNodesToProfilingData from "./profilingConverter";
@@ -29,6 +27,164 @@ import {FlowEditorBottomLine} from "./FlowEditorBottomLine";
 import FlowEditorTitle from "./FlowEditorTitle";
 import FlowNodeWithEvents from "./FlowNodeWithEvents";
 import StartNode from "./StartNode";
+import {asyncRemote, getError} from "../../remote_api/entrypoint";
+import NoData from "../elements/misc/NoData";
+import Button from "../elements/forms/Button";
+import ErrorsBox from "../errors/ErrorsBox";
+import {useHistory} from "react-router-dom";
+import urlPrefix from "../../misc/UrlPrefix";
+import EdgeDetails from "./EdgeDetails";
+import CondNode from "./CondNode";
+
+const ModifiedTag = () => {
+    return <span style={{
+        color: "white",
+        fontSize: 12,
+        fontWeight: 500,
+        padding: "3px 9px",
+        borderRadius: 15,
+        marginLeft: 5,
+        backgroundColor: "orange"
+    }}>not saved</span>
+}
+
+const DraftTag = () => {
+    return <span style={{
+        color: "white",
+        fontSize: 12,
+        fontWeight: 500,
+        padding: "3px 9px",
+        borderRadius: 15,
+        marginLeft: 5,
+        backgroundColor: "#ef6c00"
+    }}>This is a draft</span>
+}
+
+const StatusTag = ({modified, deployed}) => {
+    return <div style={{
+        position: "absolute",
+        top: 5,
+        right: 5,
+        display: "flex",
+    }}>
+        {modified && <ModifiedTag/>}
+        {!deployed && <DraftTag/>}
+    </div>
+}
+
+const NodeDetailsHandler = React.memo(({node, onLabelSet, onConfig, onRuntimeConfig, onMicroserviceChange, pro}) => {
+
+    const [loading, setLoading] = useState(false);
+    const [available, setAvailable] = useState(null);
+    const [error, setError] = useState(null);
+
+    const history = useHistory();
+    const go = (url) => {
+        return () => history.push(urlPrefix(url));
+    }
+
+    useEffect(() => {
+        let isSubscribed = true;
+
+        // If node is pro and does not have data ini init or form
+        if (pro === true && (node.data.spec.init === null || node.data.spec.form === null)) {
+
+            setLoading(true);
+            setError(null);
+
+            asyncRemote({
+                url: "/tpro/plugin/" + node?.data?.spec?.module
+            }).then(response => {
+                if (isSubscribed) {
+                    // Add spec data from TPRO
+                    if (response?.data?.init && node.data.spec.init === null) node.data.spec.init = response.data.init
+                    if (response?.data?.form && node.data.spec.form === null) node.data.spec.form = response.data.form
+                    setAvailable(true)
+                    setError(null)
+                }
+            }).catch(e => {
+                if (e?.response?.status === 403) {
+                    // Access Denied - probably not signed in
+                    setAvailable(false)
+                } else {
+                    setError(getError(e))
+                }
+            }).finally(() => {
+                if (isSubscribed) setLoading(false)
+            })
+
+        } else {
+            setAvailable(true);
+            setError(null);
+        }
+
+        return () => {
+            isSubscribed = false;
+        }
+
+    }, [pro, node])
+
+    if (error !== null) {
+        return <ErrorsBox errorList={error}/>
+    }
+
+    if (loading || available === null) {
+        return <CenteredCircularProgress label="Connecting Tracardi PRO"/>
+    }
+
+    if (available === true) {
+        return <MemoNodeDetails
+            onLabelSet={onLabelSet}
+            node={node}
+            onConfig={onConfig}
+            onRuntimeConfig={onRuntimeConfig}
+            onMicroserviceChange={onMicroserviceChange}
+        />
+    }
+
+    return <NoData header="Available only as Tracardi Pro service">
+        <p style={{textAlign: "center"}}>Please join Tracardi Pro for free and premium connectors and services. It is a
+            free lifetime membership.</p>
+        <Button label="Sure" onClick={go("/resources/pro")}/>
+    </NoData>
+
+})
+
+
+const DetailsHandler = ({element, onNodeRefresh, onEdgeRefresh, onNodeConfig, onNodeRuntimeConfig, onMicroserviceChange}) => {
+
+    if (isNode(element)) {
+        return <SidebarRight>
+            <NodeDetailsHandler
+                onLabelSet={(value) => {
+                    element.data.metadata = {...element.data.metadata, name: value}
+                    if (onNodeRefresh instanceof Function) {
+                        onNodeRefresh(element)
+                    }
+                }}
+                node={element}
+                onConfig={onNodeConfig}
+                onRuntimeConfig={onNodeRuntimeConfig}
+                onMicroserviceChange={onMicroserviceChange}
+                pro={element?.data?.metadata?.pro}
+            />
+        </SidebarRight>
+    } else if (isEdge(element)) {
+        return <SidebarRight>
+            <EdgeDetails
+                edge={element}
+                onLabelSubmit={(value) => {
+                    element.data = {...element.data, name: value}
+                    if (onEdgeRefresh instanceof Function) {
+                        onEdgeRefresh(element)
+                    }
+                }}
+            />
+        </SidebarRight>
+    }
+
+    return ""
+}
 
 export function FlowEditorPane(
     {
@@ -48,7 +204,8 @@ export function FlowEditorPane(
     const nodeTypes = {
         flowNode: FlowNode,
         flowNodeWithEvents: FlowNodeWithEvents,
-        startNode: StartNode
+        startNode: StartNode,
+        condNode: CondNode
     };
 
     const edgeTypes = {
@@ -69,7 +226,7 @@ export function FlowEditorPane(
         endTime: 0,
         calls: []
     });
-    const [displayRightSidebar, setDisplayRightSidebar] = useState(false);
+    const [displayElementDetails, setDisplayElementDetails] = useState(false);
     const [displayDebugPane, setDisplayDebugPane] = useState(false);
     const [displayDebugHeight, setDisplayDebugHeight] = useState({gridTemplateRows: "calc(100% - 33px) 33px"});
     const [displayNodeContextMenu, setDisplayNodeContextMenu] = useState(false);
@@ -77,6 +234,7 @@ export function FlowEditorPane(
     const [elements, setElements] = useState([]);
     const [logs, setLogs] = useState([]);
     const [refreshNodeId, setRefreshNodeId] = useState([null, null]);  // [nodeId, nodeData]
+    const [refreshEdgeId, setRefreshEdgeId] = useState([null, null]);  // [edgeId, edgeData]
     const [debugInProgress, setDebugInProgress] = useState(false);
     const [clientX, setClientX] = useState(0);
     const [clientY, setClientY] = useState(0);
@@ -95,7 +253,6 @@ export function FlowEditorPane(
                     },
                     name: data?.name,
                     description: data?.description,
-                    enabled: data?.enabled,
                     projects: data?.projects,
                 }
                 onFlowLoad(payload);
@@ -160,26 +317,30 @@ export function FlowEditorPane(
 
     useEffect(() => {
         setFlowLoading(true);
+        let isSubscribed = true;
 
-        request({
-                url: ((draft) ? "/flow/draft/" : "/flow/production/") + id,
-            },
-            setFlowLoading,
-            (e) => {
-                if (e) {
-                    if (e?.response?.status === 404) {
-                        showAlert({message: "Workflow does not exist.", type: "error", hideAfter: 4000});
-                    } else {
-                        if (e.length > 0) showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
-                    }
+        asyncRemote({
+            url: ((draft) ? "/flow/draft/" : "/flow/production/") + id,
+        }).then((response) => {
+            if (response && isSubscribed === true) {
+                updateFlow(response?.data);
+            }
+        }).catch((e) => {
+            if (e && isSubscribed === true) {
+                if (e?.response?.status === 404) {
+                    showAlert({message: "Workflow does not exist.", type: "error", hideAfter: 4000});
+                } else {
+                    e = getError(e)
+                    if (e.length > 0) showAlert({message: e[0].msg, type: "error", hideAfter: 4000});
                 }
-            },
-            (response) => {
-                if (response) {
-                    updateFlow(response?.data);
-                }
-            })
+            }
+        }).finally(() => {
+            if (isSubscribed === true) setFlowLoading(false)
+        })
 
+        return () => {
+            isSubscribed = false
+        }
 
     }, [id, draft, showAlert, updateFlow])
 
@@ -229,6 +390,18 @@ export function FlowEditorPane(
 
     }, [refreshNodeId, setElements]);
 
+
+    useEffect(() => {
+        setElements((els) => els.map((el) => {
+                if (isEdge(el) && el.id === refreshEdgeId[0]) {
+                    el.data = {...refreshEdgeId[1].data}
+                }
+                return el;
+            })
+        );
+
+    }, [refreshEdgeId, setElements]);
+
     const handleUpdate = () => {
         setModified(true);
         setDeployed(false);
@@ -267,8 +440,25 @@ export function FlowEditorPane(
         )
     }
 
+    const getElementsWithRunOnce = (elements) => {
+        return elements.reduce((results, element) => {
+            if (element?.data?.spec?.run_once?.enabled === true) {
+                results.push(element.id)
+            }
+            return results
+        }, [])
+    }
+
     const onElementsRemove = (elementsToRemove) => {
+
+        if (Array.isArray(elementsToRemove)) {
+            // todo add endpoint call that removes the data
+            console.log(getElementsWithRunOnce(elementsToRemove))
+        }
+
         setElements((els) => removeElements(elementsToRemove, els));
+        setDisplayElementDetails(false);
+
         handleUpdate();
     }
 
@@ -309,9 +499,9 @@ export function FlowEditorPane(
         event.dataTransfer.dropEffect = 'move';
     };
 
-    const onNodeDoubleClick = (event, element) => {
+    const onElementDoubleClick = (event, element) => {
         selectNode(element)
-        setDisplayRightSidebar(true);
+        setDisplayElementDetails(true);
         setDisplayNodeContextMenu(false);
     }
 
@@ -319,11 +509,10 @@ export function FlowEditorPane(
         if (onNodeClick) {
             onNodeClick(event, element);
         }
-
     }
 
     const onPaneClick = () => {
-        setDisplayRightSidebar(false);
+        setDisplayElementDetails(false);
         handleDisplayDebugPane(false);
         setDebugNode(null);
         setAnimatedEdge(null);
@@ -336,7 +525,7 @@ export function FlowEditorPane(
         event.stopPropagation();
         selectNode(element);
         setDisplayNodeContextMenu(true);
-        setClientX(event?.clientX - 50);
+        setClientX(event?.clientX - 150);
         setClientY(event?.clientY - 50)
     }
 
@@ -393,50 +582,6 @@ export function FlowEditorPane(
         }
     }
 
-    const handleLabelSet = (label) => {
-        if (elements) {
-            currentNode.data.metadata = {...currentNode.data.metadata, name: label}
-            setRefreshNodeId([currentNode.id, currentNode])
-        }
-        handleUpdate()
-    }
-
-    const ModifiedTag = () => {
-        return <span style={{
-            color: "white",
-            fontSize: 12,
-            fontWeight: 500,
-            padding: "3px 9px",
-            borderRadius: 15,
-            marginLeft: 5,
-            backgroundColor: "orange"
-        }}>not saved</span>
-    }
-
-    const DraftTag = () => {
-        return <span style={{
-            color: "white",
-            fontSize: 12,
-            fontWeight: 500,
-            padding: "3px 9px",
-            borderRadius: 15,
-            marginLeft: 5,
-            backgroundColor: "#ef6c00"
-        }}>This is a draft</span>
-    }
-
-    const StatusTag = () => {
-        return <div style={{
-            position: "absolute",
-            top: 5,
-            right: 5,
-            display: "flex",
-        }}>
-            {modified && <ModifiedTag/>}
-            {!deployed && <DraftTag/>}
-        </div>
-    }
-
     return <>
         <FlowEditorTitle
             flowId={id}
@@ -458,9 +603,11 @@ export function FlowEditorPane(
                             zoomOnDoubleClick={false}
                             zoomOnScroll={false}
                             panOnScroll={true}
+                            defaultPosition={[700, 100]} // set position so point (0, 0) is always visible
                             onElementsRemove={onElementsRemove}
                             onElementClick={onElementClick}
-                            onNodeDoubleClick={onNodeDoubleClick}
+                            onNodeDoubleClick={onElementDoubleClick}
+                            onEdgeDoubleClick={onElementDoubleClick}
                             // onSelectionChange={onSelectionChange}
                             onNodeContextMenu={onNodeContextMenu}
                             onEdgeContextMenu={onEdgeContextMenu}
@@ -484,18 +631,13 @@ export function FlowEditorPane(
                                          debugInProgress={debugInProgress}
                             />
 
-                            {displayNodeContextMenu && currentNode?.data?.spec?.form && <div className="NodeContextForm"
-                                                                                             style={{
-                                                                                                 left: clientX,
-                                                                                                 top: clientY
-                                                                                             }}
+                            {displayNodeContextMenu && <div className="NodeContextForm"
+                                                            style={{
+                                                                left: clientX,
+                                                                top: clientY
+                                                            }}
                             >
-                                <NodeInitForm
-                                    pluginId={currentNode?.data?.spec?.id}
-                                    init={currentNode?.data?.spec?.init}
-                                    formSchema={currentNode?.data?.spec?.form}
-                                    onSubmit={handleConfigSave}
-                                />
+                                {currentNode?.data?.metadata?.desc}
                             </div>}
 
                             <WfSchema schema={schema}
@@ -509,20 +651,29 @@ export function FlowEditorPane(
                                           alignItems: "center"
                                       }}/>
 
-                            <StatusTag/>
+                            <StatusTag modified={modified} deployed={deployed}/>
 
                             <Background color="#444" gap={16}/>
                         </ReactFlow>}
                     </div>
 
-                    {displayRightSidebar && <SidebarRight>
-                        <MemoNodeDetails
-                            onLabelSet={handleLabelSet}
-                            node={currentNode}
-                            onConfig={handleConfigSave}
-                            onRuntimeConfig={handleRuntimeConfig}
-                        />
-                    </SidebarRight>}
+                    {displayElementDetails && currentNode && <DetailsHandler element={currentNode}
+                                                                             onEdgeRefresh={(edge) => {
+                                                                                 if (elements) {
+                                                                                     setRefreshEdgeId([edge.id, edge])
+                                                                                 }
+                                                                                 handleUpdate()
+                                                                             }}
+                                                                             onNodeRefresh={(node) => {
+                                                                                 if (elements) {
+                                                                                     setRefreshNodeId([node.id, node])
+                                                                                 }
+                                                                                 handleUpdate()
+                                                                             }}
+                                                                             onNodeConfig={handleConfigSave}
+                                                                             onNodeRuntimeConfig={handleRuntimeConfig}
+                                                                             onMicroserviceChange={handleUpdate}
+                    />}
 
                     {displayDebugPane && <MemoDebugPane
                         profilingData={profilingData}

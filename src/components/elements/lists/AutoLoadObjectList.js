@@ -84,7 +84,9 @@ const AutoLoadObjectList = ({
                 }
             }
         );
-    }, [page, onLoadRequest]);
+    },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [page, onLoadRequest]);
 
     useEffect(() => {
         let timer;
@@ -109,7 +111,9 @@ const AutoLoadObjectList = ({
 
     useEffect(() => {
         loadData(false, allowLoadingSpinner);
-    }, [loadData]);
+    },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [loadData]);
 
     const widthStyle =
         typeof timeFieldWidth !== "undefined"

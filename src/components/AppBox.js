@@ -13,20 +13,32 @@ import urlPrefix from "../misc/UrlPrefix";
 import ActionPlugins from "./pages/ActionPlugins";
 import Segments from "./pages/Segments";
 import FlowReader from "./flow/FlowReader";
-import '@szhsin/react-menu/dist/index.css';
 import Instances from "./pages/Instances";
 import Settings from "./pages/Settings";
-import Tasks from "./pages/Tasks";
 import TryOut from "./pages/TryOut";
 import TestEditor from "./pages/TestEditor";
 import NewUser from "./pages/NewUser";
 import EventSources from "./pages/EventSources";
-import TracardiPro from "./pages/TracardiPro";
 import PageTabs from "./pages/groups/PageTabs";
 import Consents from "./pages/Consents";
 import Dashboard from "./pages/Dashboard";
-import EventValidation from "./pages/EventValidation";
-import Logs from "./pages/Logs";
+import EventManagement from "./pages/EventManagement";
+import Users from "./pages/Users";
+import Destinations from "./pages/Destinations";
+import EventTags from "./pages/EventTags";
+import UserLogs from "./pages/UserLogs";
+import PrivateTab from "./authentication/PrivateTab";
+import UserAccount from "./pages/UserAccount";
+import LogsAnalytics from "./pages/LogsAnalytics";
+import ImportSources from "./pages/ImportSources";
+import ProRouter from "./pages/pro/ProRouter";
+import ElasticClusterHealthInfo from "./pages/ElasticClusterHealthInfo";
+import ElasticIndicesInfo from "./pages/ElasticIndicesInfo";
+import Migrations from "./pages/Migrations";
+import {BsStar} from "react-icons/bs";
+import BackgroundTasks from "./pages/BackgroundTasks";
+import EntityAnalytics from "./pages/EntityAnalytics";
+import Reports from "./pages/Reports";
 
 const AppBox = () => {
 
@@ -34,118 +46,163 @@ const AppBox = () => {
 
         {/*Redirects*/}
 
-        <PrivateRoute exact path={urlPrefix("")} roles={["admin"]}>
-            <Redirect to={urlPrefix("/data")}/>
+        <PrivateRoute exact path={urlPrefix("")} roles={["admin", "developer", "marketer", "maintainer"]}>
+            <Redirect to={urlPrefix("/dashboard")}/>
         </PrivateRoute>
 
 
         {/*Dashboard*/}
 
-        <Route exact path={urlPrefix("/dashboard")}>
-            <PageTabs title="Dashboard"
-                      tabs={{
-                          "Events": <Dashboard/>
-                      }}
-            />
-
+        <Route exact path={urlPrefix("/dashboard")} roles={["admin", "developer", "marketer", "maintainer"]}>
+            <Dashboard/>
         </Route>
 
         {/*Pro*/}
 
-        <PrivateRoute path={urlPrefix("/pro")} roles={["admin"]}>
-            <TracardiPro/>
+        <PrivateRoute path={urlPrefix("/resources")} roles={["admin", "developer"]}>
+            <PageTabs title="Resources"
+                      tabs={[
+                          new PrivateTab(["admin", "developer"], <Resources
+                              defaultLayout={"rows"}/>, "/resources", "Resources"),
+                          new PrivateTab(["admin", "developer"],
+                              <ProRouter/>, "/resources/pro", <><BsStar size={20} style={{marginRight: 5}}/>{"Extensions"}</>),
+                      ]}/>
         </PrivateRoute>
 
-        {/*Traffic*/}
+        {/*Inbound Traffic*/}
 
-        <PrivateRoute path={urlPrefix("/traffic")} roles={["admin"]}>
-            <PageTabs title="Traffic"
-                      tabs={{
-                          "Inbound sources": <EventSources/>,
-                          "Outbound resources": <Resources/>
-                      }}
+        <PrivateRoute path={urlPrefix("/inbound")} roles={["admin", "developer", "marketer"]}>
+            <PageTabs title="Inbound Traffic and Event Management"
+                      tabs={[
+                          new PrivateTab(["admin", "developer"], <EventSources/>, "/inbound/sources", "Sources"),
+                          new PrivateTab(["admin", "developer"],
+                              <EventManagement/>, "/inbound/event/management", "Event validation and reshaping"),
+                          new PrivateTab(["admin", "developer", "marketer"], <EventTags/>, "/inbound/event/tags", "Event tagging"),
+                      ]}
             />
         </PrivateRoute>
 
-        {/* Validation */}
-        <PrivateRoute path={urlPrefix("/validation")} roles={["admin"]}>
-            <PageTabs title="Data validation"
-                      tabs={{
-                          "Event validation schemas": <EventValidation/>,
-                      }}
+        {/*Outbound Traffic*/}
+        <PrivateRoute path={urlPrefix("/outbound")} roles={["admin", "developer"]}>
+            <PageTabs title="Outbound Traffic"
+                      tabs={[
+                          new PrivateTab(["admin", "developer"], <Destinations/>, "/outbound/destinations", "Destinations"),
+                      ]}
+            />
+        </PrivateRoute>
+
+        {/*Import*/}
+
+        <PrivateRoute path={urlPrefix("/import")} roles={["admin", "developer"]}>
+            <PageTabs title="Import and Export"
+                      tabs={[
+                          new PrivateTab(["admin", "developer"], <ImportSources/>, "/import/sources", "Import sources"),
+                          new PrivateTab(["admin", "developer"], <BackgroundTasks type="import"/>, "/import/tasks", "Running imports"),
+                      ]}
             />
         </PrivateRoute>
 
         {/*Data*/}
 
-        <PrivateRoute path={urlPrefix("/data")} roles={["admin"]}>
+        <PrivateRoute path={urlPrefix("/data")} roles={["admin", "marketer", "developer"]}>
             <PageTabs title="Data"
-                      tabs={{
-                          "Events": <EventsAnalytics/>,
-                          "Profiles": <ProfilesAnalytics/>,
-                          "Sessions": <SessionsAnalytics/>
-                      }}
+                      tabs={[
+                          new PrivateTab(["admin", "marketer", "developer"], <EventsAnalytics/>, "/data/events", "Events"),
+                          new PrivateTab(["admin", "marketer", "developer"], <ProfilesAnalytics/>, "/data/profiles", "Profiles"),
+                          new PrivateTab(["admin", "marketer", "developer"], <SessionsAnalytics/>, "/data/sessions", "Sessions"),
+                          new PrivateTab(["admin", "marketer", "developer"], <EntityAnalytics/>, "/data/entities", "Entities")
+                      ]}
             />
 
         </PrivateRoute>
 
         {/*Processing*/}
 
-
-        <PrivateRoute path={urlPrefix("/processing")} roles={["admin"]}>
+        <PrivateRoute path={urlPrefix("/processing")} roles={["admin", "developer", "marketer"]}>
             <PageTabs title="Processing"
-                      tabs={{
-                          "Workflows": <Flows/>,
-                          "Routing Rules": <Rules/>,
-                          "Segments": <Segments/>
-                      }}
+                      tabs={[
+                          new PrivateTab(["admin", "developer"], <Flows/>, "/processing/workflows", "Workflows"),
+                          new PrivateTab(["admin", "developer"], <Rules/>, "/processing/routing", "Routing Rules"),
+                          new PrivateTab(["admin", "developer", "marketer"], <Segments/>, "/processing/segments", "Segmentation"),
+                      ]}
             />
         </PrivateRoute>
 
-        <PrivateRoute path={urlPrefix("/consents")} roles={["admin"]}>
+        {/*Reporting*/}
+
+        <PrivateRoute path={urlPrefix("/reporting")} roles={["admin", "developer", "marketer"]}>
+            <PageTabs title="Reporting"
+                      tabs={[
+                          new PrivateTab(["admin", "developer", "marketer"], <Reports/>, "/reporting/reports", "Reports")
+                      ]}
+            />
+        </PrivateRoute>
+
+        <PrivateRoute path={urlPrefix("/consents")} roles={["admin", "developer", "marketer"]}>
             <PageTabs title="Consents"
-                      tabs={{
-                          "Consent types": <Consents/>
-                      }}
+                      tabs={[
+                          new PrivateTab(["admin", "developer", "marketer"], <Consents/>, "/consents/type", "Consent types")
+                      ]}
             />
         </PrivateRoute>
 
-        <PrivateRoute exact path={urlPrefix("/setup/flow/edit/:id")} roles={["admin"]}>
+        <PrivateRoute exact path={urlPrefix("/flow/edit/:id")} roles={["admin", "developer"]}>
             <FlowEditor/>
         </PrivateRoute>
-        <PrivateRoute exact path={urlPrefix("/setup/flow/:id")} roles={["admin"]}>
+        <PrivateRoute exact path={urlPrefix("/flow/preview/:id")} roles={["admin", "developer", "marketer"]}>
             <FlowReader/>
         </PrivateRoute>
 
         {/*Monitoring*/}
 
-        <PrivateRoute path={urlPrefix("/monitoring")} roles={["admin"]}>
+        <PrivateRoute path={urlPrefix("/monitoring")} roles={["admin", "maintainer"]}>
             <PageTabs title="Monitoring"
-                      tabs={{
-                          "Running instances": <Instances/>,
-                          "Scheduled tasks": <Tasks/>,
-                          "Logs": <Logs/>,
-                      }}
-            />
 
+                      tabs={[
+                          new PrivateTab(["admin", "maintainer"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
+                          new PrivateTab(["admin", "maintainer"], <Instances/>, "/monitoring/instances", "Running instances"),
+                          new PrivateTab(["admin", "developer"], <BackgroundTasks/>, "/monitoring/background/tasks", "Background tasks"),
+                          new PrivateTab(["admin", "maintainer"], <UserLogs/>, "/monitoring/user-log", "User logs")
+                      ]}
+            />
         </PrivateRoute>
 
         {/*Testing*/}
 
-        <Route exact path={urlPrefix("/testing")}>
+        <PrivateRoute exact path={urlPrefix("/testing")} roles={["admin", "developer"]}>
             <TestEditor/>
-        </Route>
+        </PrivateRoute>
 
         {/*Settings*/}
 
-        <PrivateRoute path={urlPrefix("/settings")} roles={["admin"]}>
+        <PrivateRoute path={urlPrefix("/settings")} roles={["admin", "developer"]}>
             <PageTabs title="Settings"
-                      tabs={{
-                          "Workflow actions": <ActionPlugins/>,
-                          "System settings": <Settings/>,
-                      }}
+                      tabs={[
+                              new PrivateTab(["admin", "developer"], <Settings/>, "/settings/system", "System settings"),
+                          ]}
             />
 
+        </PrivateRoute>
+
+        {/*Maintenance*/}
+
+        <PrivateRoute path={urlPrefix("/maintenance")} roles={["maintainer", "admin", "developer"]}>
+            <PageTabs title="Maintenance"
+                      tabs={[
+                          new PrivateTab(["maintainer"], <ElasticClusterHealthInfo/>, "/maintenance/elastic-cluster", "Cluster"),
+                          new PrivateTab(["maintainer"], <ElasticIndicesInfo/>, "/maintenance/elastic-indices", "Indices"),
+                          new PrivateTab(["maintainer"], <Migrations />,"/maintenance/migration", "Migration"),
+                          new PrivateTab(["admin"], <Users/>, "/maintenance/users", "Users"),
+                          new PrivateTab(["admin", "developer"], <ActionPlugins/>, "/settings/plugins", "Action plug-ins"),
+                      ]}
+            />
+
+        </PrivateRoute>
+
+        {/*Current user account info*/}
+
+        <PrivateRoute exact path={urlPrefix("/my-account")} roles={["admin", "developer", "marketer", "maintainer"]}>
+            <UserAccount />
         </PrivateRoute>
 
         {/*Other*/}

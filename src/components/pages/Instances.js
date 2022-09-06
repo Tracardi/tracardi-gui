@@ -7,6 +7,7 @@ import {
     TuiFormGroupField,
     TuiFormGroupHeader
 } from "../elements/tui/TuiForm";
+import { makeUtcStringTzAware } from "../../misc/converters";
 
 const Instances = () => {
 
@@ -16,15 +17,15 @@ const Instances = () => {
     }
 
     return <TuiForm style={{margin: 20, width: "calc(100% - 40px)", height: "calc(100% - 40px)"}}>
-        <TuiFormGroup fitHeight={true}>
+        <TuiFormGroup>
             <TuiFormGroupHeader header="Running instances of Tracardi" description="List of running workers of tracardi API."/>
             <TuiFormGroupContent>
                 <TuiFormGroupField>
-                    <div style={{overflow: "auto", height: "inherit"}}>
+                    <div style={{height: "inherit"}}>
                         <AutoLoadObjectList
                             onLoadRequest={onLoadRequest}
                             label="INSTANCES"
-                            timeField={(row) => [row.timestamp]}
+                            timeField={(row) => [makeUtcStringTzAware(row.timestamp)]}
                             timeFieldLabel="Timestamp"
                         />
                     </div>

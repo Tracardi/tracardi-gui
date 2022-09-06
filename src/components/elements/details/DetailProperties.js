@@ -2,8 +2,9 @@ import dot from "dot-object";
 import DetailKeyValue from "./DetailKeyValue";
 import React from "react";
 import PropTypes from "prop-types";
+import {isString} from "../../../misc/typeChecking";
 
-export default function Properties({properties, show}) {
+export default function Properties({properties, show, exclude}) {
 
     function empty(obj) {
         return obj  && Object.keys(obj).length === 0 && obj.constructor === Object
@@ -16,6 +17,8 @@ export default function Properties({properties, show}) {
             return "null";
         } else if(empty(value)) {
             return "{}"
+        } if(isString(value) && value === "") {
+            return "<empty string>";
         } else if(Array.isArray(value) &&  value.length === 0) {
             return "[]"
         } else {
@@ -26,15 +29,24 @@ export default function Properties({properties, show}) {
     const dotted = typeof properties !== "undefined" && properties!==null ? dot.dot(properties) : {};
     const keyValues = () => Object.entries(dotted).map(
         ([label, value]) => {
+
+            if(exclude) {
+                if(exclude.includes(label)) {
+                    return ""
+                } else {
+                    return <DetailKeyValue key={label} label={label} value={getValue(value)}/>
+                }
+            }
+
             if(show) {
                 if(show.includes(label)) {
                     return <DetailKeyValue key={label} label={label} value={getValue(value)}/>
                 } else {
                     return ""
                 }
-            } else {
-                return <DetailKeyValue key={label} label={label} value={getValue(value)}/>
             }
+
+            return <DetailKeyValue key={label} label={label} value={getValue(value)}/>
         }
     )
     return <>

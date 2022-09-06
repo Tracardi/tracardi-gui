@@ -1,0 +1,78 @@
+.SessionStepper {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    height: 642px;
+    width: 100%;
+}
+.SessionStepper > .Header {
+    padding: 10px;
+    text-align: left;
+    width: 100%;
+    border: 1px solid lightgrey;
+    border-radius: 7px;
+    color: #444;
+    align-self: flex-start;
+}
+.SessionStepper .MuiStep-root {
+    display: flex;
+    flex-direction: row;
+}
+.SessionStepper .MuiStep-root > * {
+    padding-bottom: 0;
+    padding-top: 0;
+}
+.SessionStepper .MuiStep-root:first-of-type {
+    margin-top: 10px;
+}
+.SessionStepper .MuiStep-root:last-of-type {
+    margin-bottom: 10px;
+}
+.SessionStepper .StepConnector {
+    background-color: rgba(0, 109, 179, .4);
+    min-height: 20px;
+    width: 2px;
+    border-radius: 1px;
+    margin-left: 83px;
+}
+.SessionStepper .StepIcon {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.SessionStepper .MuiStep-root:hover > .MuiStepLabel-root > .MuiStepLabel-iconContainer > .StepIcon {
+    width: 12px;
+    height: 12px;
+    margin-right: 8px;
+    transform: translate(-1px, 0);
+}
+.SessionStepper .MuiStep-root:hover {
+    cursor: pointer;
+    background-color: rgba(0, 109, 179, .05);
+    border-radius: 10px;
+}
+.SessionStepper .MuiStep-root:hover > * {
+    cursor: pointer;
+}
+.SessionStepper .MuiStepLabel-label {
+    font-weight: 400;
+}
+.SessionStepper .MuiStepLabel-root {
+    max-width: 200px;
+}
+.SessionStepper .MuiStepContent-root {
+    border: none;
+}
+.SessionStepper .MuiStepper-root {
+    height: 100%;
+    overflow: auto;
+    width: 100%;
+}
+.SessionStepper .EventId {
+    font-weight: 400;
+    color: #777;
+}
+.SessionStepper .MuiStepper-root::-webkit-scrollbar-track {
+    margin: 10px;
+}

@@ -14,7 +14,7 @@
 }
 
 .FullMainMenu {
-    width: 190px;
+    width: 195px;
 }
 
 .CollapsedMainMenu {
@@ -42,6 +42,11 @@
 .CollapsedMainMenu > .BottomIcons > DIV {
     cursor: pointer;
 }
+
+.MainMenu .Branding {
+    cursor: pointer;
+}
+
 .MainMenu .Branding > .T {
     display: flex;
     align-items: center;

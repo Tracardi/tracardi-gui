@@ -1,8 +1,12 @@
 import React from 'react';
 import "./SquareCard.css";
+import Tag from "../../misc/Tag";
 
-const SquareCard = ({id, status, name, description, onClick, icon}) => {
+const SquareCard = ({id, status, name, description, onClick, icon, tags}) => {
     const statusClass = (status) => {
+        if(typeof status === 'undefined') {
+            return status
+        }
         return status ? "icon enabled" : "icon disabled"
     }
 
@@ -11,6 +15,7 @@ const SquareCard = ({id, status, name, description, onClick, icon}) => {
             <div className={statusClass(status)}>{icon}</div>
             <div className="name">{name}</div>
             <div className="desc">{description}</div>
+            {tags && <div className="tags">{Array.isArray(tags) && tags.map(tag => <Tag>{tag}</Tag>) }</div>}
         </div>
     );
 }

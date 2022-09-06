@@ -1,4 +1,4 @@
-import {api} from "./entrypoint";
+import {asyncRemote} from "./entrypoint";
 
 function JsonToURLEncoded(element, key, list) {
     list = list || [];
@@ -13,13 +13,16 @@ function JsonToURLEncoded(element, key, list) {
 
 export const loginUser = (username, password) => {
 
-    const path = "/token";
     const params = {
         username: username,
         password: password
     };
 
-    return api({"Content-Type": "application/x-www-form-urlencoded"})
-        .post(path, JsonToURLEncoded(params));
+    return asyncRemote({
+        url: "/token",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        method: "post",
+        data: JsonToURLEncoded(params)
+    });
 
 };

@@ -12,6 +12,7 @@
 
 .NodeDetails > .NodeDetailsContent {
     border-left: solid 1px #cccccc;
+    width: 100%;
 }
 
 .NodeDetails > .NodeDetailsContent > .Title {

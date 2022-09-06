@@ -1,8 +1,7 @@
 .KeyValueInput {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   width: inherit;
-  align-items: center;
 }
 
 .KeyValueList {

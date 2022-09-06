@@ -11,12 +11,15 @@ import PropTypes from 'prop-types';
 import {TuiSelectResourceTypeMemo} from "../tui/TuiSelectResourceType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import DisabledInput from "./inputs/DisabledInput";
-import Chip from "@mui/material/Chip";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import TuiTagger from "../tui/TuiTagger";
+import TuiTags from "../tui/TuiTags";
+import MdManual from "../../flow/actions/MdManual";
 
 
 function ResourceForm({init, onClose, showAlert}) {
+
+    const inEditMode = !init;
 
     if (!init) {
         init = {
@@ -28,20 +31,26 @@ function ResourceForm({init, onClose, showAlert}) {
                 production: {},
                 test: {}
             },
-            consent: false,
-            enabled: false,
+            enabled: true,
             tags: [],
-            groups: []
+            groups: [],
+            destination: {
+                package: null,
+                init: {},
+                form: {}
+            },
+            icon: null
         }
     }
 
-    const [requiresConsent, _setRequiresConsent] = useState(init?.consent);
     const [enabledSource, setEnabledSource] = useState(init?.enabled);
     const [type, setType] = useState(null);  // It is set in useEffects after the types are loaded
     const [name, setName] = useState(init?.name);
     const [id, setId] = useState(init?.id);
     const [tags, setTags] = useState(init?.tags);
     const [groups, setGroups] = useState(init?.groups);
+    const [icon, setIcon] = useState(init?.icon);
+    const [destination, setDestination] = useState(init?.destination);
     const [description, setDescription] = useState(init?.description);
     const [errorTypeMessage, setTypeErrorMessage] = useState('');
     const [errorNameMessage, setNameErrorMessage] = useState('');
@@ -50,12 +59,19 @@ function ResourceForm({init, onClose, showAlert}) {
     const [processing, setProcessing] = useState(false);
     const [credentialTypes, setCredentialTypes] = useState({});
     const [selectedTab, setSelectedTab] = useState(0);
+    const [docPath, setDocPath] = useState(null);
 
     const getIdNameFromType = (type, types) => {
         if (type in types) {
-            return {id: type, name: types[type]['name']}
+            return {id: type, name: types[type].name}
         }
         return {id: type, name: type}
+    }
+
+    const getDocPathFromType = (type, types) => {
+        if (type in types) {
+            return types[type]?.manual || null;
+        } else return null;
     }
 
     useEffect(() => {
@@ -73,14 +89,13 @@ function ResourceForm({init, onClose, showAlert}) {
                     // e.g {name" "AWS credentials", id: "aws"}
                     // It must be set after the available list of resources are loaded.
                     setType(getIdNameFromType(init?.type, response.data.result));
+                    setDocPath(getDocPathFromType(init?.type, response.data.result));
                 }
             }
         )
-    }, [])  // todo: setting init here make infinite request
-
-    const setRequiresConsent = (ev) => {
-        _setRequiresConsent(ev.target.checked)
-    }
+    },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [])  // setting init here make infinite request
 
     const onSubmit = (payload) => {
         setProcessing(true);
@@ -117,10 +132,13 @@ function ResourceForm({init, onClose, showAlert}) {
     const setTypeAndDefineCredentialsTemplate = (type) => {
         setType(type)
         if (type?.id in credentialTypes) {
-            const template = credentialTypes[type?.id]
-            setProductionConfig(JSON.stringify(template?.config, null, '  '))
-            setTestConfig(JSON.stringify(template?.config, null, '  '))
-            setTags(template?.tags)
+            const template = credentialTypes[type?.id];
+            setProductionConfig(JSON.stringify(template?.config, null, '  '));
+            setTestConfig(JSON.stringify(template?.config, null, '  '));
+            setTags(template?.tags);
+            setDestination(template?.destination);
+            setIcon(template?.icon);
+            setDocPath(template?.manual);
         }
     }
 
@@ -151,7 +169,8 @@ function ResourceForm({init, onClose, showAlert}) {
                     production: (productionConfig === "") ? {} : JSON.parse(productionConfig),
                     test: (testConfig === "") ? {} : JSON.parse(testConfig)
                 },
-                consent: requiresConsent,
+                destination: destination,
+                icon: icon,
                 enabled: enabledSource,
                 tags: tags,
                 groups: groups
@@ -170,8 +189,8 @@ function ResourceForm({init, onClose, showAlert}) {
         <TuiFormGroup>
             <TuiFormGroupHeader header="Resource"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Resource id"
-                                   description="Resource id is auto-generated. In most cases you do not have to do nothing
+                {inEditMode && <><TuiFormGroupField header="Resource id"
+                                                    description="Resource id is auto-generated. In most cases you do not have to do nothing
                                    just leave it like it is. In rare cases when you would like to create a resource
                                    with user defined value, then unlock the field and type your resource id. If you change
                                    the id of existing resource new resource will be created.">
@@ -179,12 +198,13 @@ function ResourceForm({init, onClose, showAlert}) {
                                    value={id}
                                    onChange={setId}/>
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Resource type"
-                                   description="Resource type defines storage or endpoint type. ">
-                    <TuiSelectResourceTypeMemo value={type}
-                                           onSetValue={setTypeAndDefineCredentialsTemplate}
-                                           errorMessage={errorTypeMessage}/>
-                </TuiFormGroupField>
+                    <TuiFormGroupField header="Resource type"
+                                       description="Resource type defines storage or endpoint type. If any resource type
+                                       is missing check 'Resource/Premium Services' for more resources.">
+                        <TuiSelectResourceTypeMemo initValue={type}
+                                                   onSetValue={setTypeAndDefineCredentialsTemplate}
+                                                   errorMessage={errorTypeMessage}/>
+                    </TuiFormGroupField></>}
                 <TuiFormGroupField header="Name" description="Resource name can be any string that
                     identifies resource.">
                     <TextField
@@ -200,7 +220,8 @@ function ResourceForm({init, onClose, showAlert}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description" description="Description will help you understand what kind of resource it is.">
+                <TuiFormGroupField header="Description"
+                                   description="Description will help you understand what kind of resource it is.">
                     <TextField
                         label={"Resource description"}
                         value={description}
@@ -213,30 +234,20 @@ function ResourceForm({init, onClose, showAlert}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Grouping" description="Resources can be grouped with tags that are typed here.">
+                <TuiFormGroupField header="Grouping"
+                                   description="Resources can be grouped with tags that are typed here.">
                     <TuiTagger tags={groups} onChange={setGroups}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="System tags" description="System tags are auto-tagged. This is only information on
                 resource type. It is used internally by the system.">
-                    {Array.isArray(tags) && tags.map((tag, index) => <Chip label={tag} key={index} style={{marginLeft: 5}}/>)}
+                    <TuiTags tags={tags}/>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Access and Consent"/>
+            <TuiFormGroupHeader header="Enabled" description="If you want to be able to use this resource, then you need to enable it before."/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Resource consent" description="Check if this resource requires user consent? E.g. web pages
-                    located in Europe require user consent to comply with GDPR. ">
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Switch
-                            checked={requiresConsent}
-                            onChange={setRequiresConsent}
-                            name="consentRequired"
-                        />
-                        <span>
-                            This resource requires user consent
-                        </span>
-                    </div>
+                <TuiFormGroupField>
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Switch
                             checked={enabledSource}
@@ -255,8 +266,7 @@ function ResourceForm({init, onClose, showAlert}) {
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Credentials or Access tokens" description="This json data will be an
                 encrypted part of resource. Please pass here all the credentials or access configuration information,
-                such as hostname, port, username and password, etc. This part can be empty or left as it is if resource does not
-                require authorization.">
+                such as hostname, port, username and password, etc.">
                 </TuiFormGroupField>
                 <Tabs
                     tabs={["Test", "Production"]}
@@ -283,8 +293,16 @@ function ResourceForm({init, onClose, showAlert}) {
         <Button label="Save"
                 onClick={handleSubmit}
                 progress={processing}
-                style={{justifyContent: "center"}}
+                style={{justifyContent: "center", width: "100%"}}
         />
+        {docPath && 
+            <TuiFormGroup style={{marginTop: 20}}>
+                <TuiFormGroupHeader header="Resource configuration help"/>
+                <TuiFormGroupContent>
+                    <MdManual mdFile={docPath} basePath="/manual/en/docs/resources/" />
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        }
     </TuiForm>
 }
 

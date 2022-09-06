@@ -1,7 +1,6 @@
 .RightTabScroller {
     height: 100%;
     overflow-y: scroll;
-    padding: 5px 8px;
     overflow-x: hidden;
     flex: 1 1;
 }

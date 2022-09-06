@@ -16,7 +16,7 @@
 .ConfigEditor .Error {
     padding: 8px;
     background-color: #d81b60;
-    color: white;
+    color: white !important;
     display: flex;
     align-items: center;
 }

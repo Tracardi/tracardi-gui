@@ -8,7 +8,6 @@ import theme from "../../themes/inspector_light_theme";
 import {ObjectInspector} from "react-inspector";
 
 export default function DebugBox({call, onTabSelect}) {
-    console.log("call", call)
     const PortsAccordion = ({portsData}) => {
         if(Array.isArray(portsData) && portsData.length>0) {
             const accordionItems = portsData.map((item, idx) => {
@@ -35,7 +34,7 @@ export default function DebugBox({call, onTabSelect}) {
     return <div className="DebugBox">
         {call?.error && <ErrorBox>{call.error}</ErrorBox>}
         {!call?.error && <Tabs
-            tabs={["Input", "Output", "Debug data"]}
+            tabs={["Input", "Output", "State"]}
             onTabSelect={onTabSelect}
             className="DebugTabs"
         >

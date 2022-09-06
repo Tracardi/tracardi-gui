@@ -1,4 +1,3 @@
-import {red} from '@mui/material/colors';
 import { createTheme} from '@mui/material/styles';
 
 export const mainTheme = createTheme({
@@ -11,13 +10,19 @@ export const mainTheme = createTheme({
     },
     palette: {
         primary: {
-            main: '#006db3',
+            main: '#1976d2',
         },
         secondary: {
             main: '#EF6C00',
         },
         error: {
-            main: red.A400,
+            main: "#d81b60",
+        },
+        success: {
+            main: "#43a047",
+        },
+        gray: {
+            main: "#ccc",
         },
         background: {
             default: '#ccc',

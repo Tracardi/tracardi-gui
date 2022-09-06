@@ -1,19 +1,19 @@
 import React from "react";
 import AutoComplete from "../forms/AutoComplete";
 
-function TuiSelectResourceType({value, onSetValue, errorMessage=""}) {
+function TuiSelectResourceType({initValue, onSetValue, errorMessage=""}) {
     return <AutoComplete
-        solo={false}
+        onlyValueWithOptions={true}
         disabled={false}
         error={errorMessage}
         placeholder="Resource type"
-        url="/resources/type/name"
-        initValue={value}
+        endpoint={{url:"/resources/type/name"}}
+        initValue={initValue}
         onSetValue={onSetValue}
     />
 }
 
 export const TuiSelectResourceTypeMemo = React.memo(TuiSelectResourceType,
     (prev,next) => {
-        return prev.value === next.value
+        return prev.initValue === next.initValue
     })

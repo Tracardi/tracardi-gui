@@ -2,7 +2,6 @@ import TextField from "@mui/material/TextField";
 import React, {useEffect, useRef, useState} from "react";
 import Button from "./Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import {v4 as uuid4} from 'uuid';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import PropTypes from 'prop-types';
@@ -10,6 +9,7 @@ import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import TuiTagger from "../tui/TuiTagger";
 import MenuItem from "@mui/material/MenuItem";
+import Switch from "@mui/material/Switch";
 
 export default function ConsentForm({
                                         id,
@@ -27,8 +27,8 @@ export default function ConsentForm({
     const [consentType, setConsentType] = useState((name) ? name : "");
     const [consentDescription, setConsentDescription] = useState((description) ? description : "");
     const [consentEnabled, setConsentEnabled] = useState((typeof enabled === "boolean") ? enabled : true);
-    const [consentRequired, setConsentRequired] = useState((typeof revokable === "boolean") ? required : true);
-    const [consentRevokable, setConsentRevokable] = useState((typeof revokable === "boolean") ? revokable : true);
+    const [consentRequired, setConsentRequired] = useState((typeof revokable === "boolean") ? required : false);
+    const [consentRevokable, setConsentRevokable] = useState((typeof revokable === "boolean") ? revokable : false);
     const [consentDefaultValue, setConsentDefaultValue] = useState(default_value || "grant");
     const [consentTags, setConsentTags] = useState(tags);
     const [consentAutoRevoke, setConsentAutoRevoke] = useState(auto_revoke || "");
@@ -112,7 +112,7 @@ export default function ConsentForm({
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Name" description="Type consent name. Be as descriptive as possible.">
                     <TextField variant="outlined"
-                               label="Consent type"
+                               label="Consent type title"
                                value={consentType}
                                error={(typeof consentTypeErrorMessage !== "undefined" && consentTypeErrorMessage !== '' && consentTypeErrorMessage !== null)}
                                helperText={consentTypeErrorMessage}
@@ -125,7 +125,7 @@ export default function ConsentForm({
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Description" description="Consent type description. Be as descriptive as possible.">
                     <TextField variant="outlined"
-                               label="Consent type"
+                               label="Consent description"
                                multiline
                                rows={5}
                                value={consentDescription}
@@ -159,7 +159,7 @@ export default function ConsentForm({
                     <FormControlLabel
                         style={{marginLeft: 2}}
                         control={
-                            <Checkbox
+                            <Switch
                                 checked={consentEnabled}
                                 onChange={(e) => setConsentEnabled(e.target.checked)}
                                 name="enable"
@@ -174,7 +174,7 @@ export default function ConsentForm({
                     <FormControlLabel
                         style={{marginLeft: 2}}
                         control={
-                            <Checkbox
+                            <Switch
                                 checked={consentRequired}
                                 onChange={(e) => setConsentRequired(e.target.checked)}
                                 name="enable"
@@ -189,7 +189,7 @@ export default function ConsentForm({
                     <FormControlLabel
                         style={{marginLeft: 2}}
                         control={
-                            <Checkbox
+                            <Switch
                                 checked={consentRevokable}
                                 onChange={(e) => setConsentRevokable(e.target.checked)}
                                 name="enable"

@@ -1,6 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 /public/env-config.js
+/public/revision.txt
 env-config.js
 package.lock
 

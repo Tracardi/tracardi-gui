@@ -1,18 +1,18 @@
 import React, {useState} from "react";
-import DottedPathInput from "./inputs/DottedPathInput";
 import {AiOutlinePlusCircle} from "react-icons/ai";
 import './ListOfDottedInputs.css';
 import DottedValue from "./inputs/DottedValue";
 import ErrorLine from "../../errors/ErrorLine";
+import DotAccessor from "./inputs/DotAccessor";
 
 
-const ListOfDottedInputs = ({onChange, value, errorMessage, defaultMode}) => {
+const ListOfDottedInputs = ({onChange, label = "Value", value, errorMessage, allowDuplicates=false}) => {
 
     const [inputValue, setInputValue] = useState('')
     const [listOfValues, setListOfValues] = useState(value || [])
 
     const handleAdd = () => {
-        if(!listOfValues.includes(inputValue)) {
+        if(allowDuplicates || !listOfValues.includes(inputValue)) {
             const newValues = [...listOfValues, inputValue]
             setListOfValues(newValues)
             if(onChange) {
@@ -21,10 +21,8 @@ const ListOfDottedInputs = ({onChange, value, errorMessage, defaultMode}) => {
         }
     }
 
-    const handleDelete = (value) => {
-        const values = listOfValues.filter((element) => {
-            return element !== value;
-        });
+    const handleDelete = (index) => {
+        const values = listOfValues.filter((_, idx) => idx !== index);
         setListOfValues(values);
         if(onChange) {
             onChange(values);
@@ -33,14 +31,14 @@ const ListOfDottedInputs = ({onChange, value, errorMessage, defaultMode}) => {
 
     return <div className="ListOfDottedInputs">
         <div className="AddForm">
-            <DottedPathInput value={inputValue} onChange={setInputValue} width={300} defaultMode={defaultMode}/>
-            <AiOutlinePlusCircle size={25} onClick={handleAdd} style={{cursor: "pointer", marginLeft: 10}}/>
+            <DotAccessor value={inputValue} label={label} onChange={setInputValue} forceMode={1}/>
+            <AiOutlinePlusCircle size={30} onClick={handleAdd} style={{cursor: "pointer", marginLeft: 10, marginTop: 10}}/>
         </div>
 
         <fieldset style={errorMessage ? {borderColor: "red"} : {}}>
             <legend style={errorMessage ? {color: "red"} : {}}>List of values</legend>
             <div className="Values">
-                {listOfValues.map((value, idx) => <DottedValue key={idx} onDelete={handleDelete}>{value}</DottedValue>)}
+                {listOfValues.map((value, idx) => <DottedValue key={idx} onDelete={(_) => handleDelete(idx)}>{value}</DottedValue>)}
             </div>
         </fieldset>
         {errorMessage &&<ErrorLine style={{marginLeft: 10}}>{errorMessage}</ErrorLine>}

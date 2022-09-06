@@ -9,10 +9,20 @@
     font-size: 220%;
     margin: 0;
     color: #444;
+    display: flex;
+    align-items: center;
 }
+
+.PageTabs > DIV > .Info {
+    display: flex;
+    white-space: nowrap;
+    justify-content: center;
+    align-items: flex-end;
+}
+
 .PageTabs > DIV {
     background-color: #e1f5fe;
-    padding: 10px 37px;
+    padding: 2px 37px;
 }
 .PageTabs > .TabNav {
     height: inherit;

@@ -2,7 +2,6 @@ import React, {useEffect} from "react";
 import Properties from "./DetailProperties";
 import Button from "../forms/Button";
 import Rows from "../misc/Rows";
-import {request} from "../../../remote_api/uql_api_endpoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
 import FormDrawer from "../drawers/FormDrawer";
@@ -10,6 +9,7 @@ import SegmentForm from "../forms/SegmentForm";
 import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
+import {asyncRemote} from "../../../remote_api/entrypoint";
 
 export default function SegmentDetails({id, onDeleteComplete}) {
 
@@ -20,18 +20,24 @@ export default function SegmentDetails({id, onDeleteComplete}) {
     const confirm = useConfirm();
 
     useEffect(() => {
+            let isSubscribed = true;
             setLoading(true);
-            request({
-                    url: '/segment/' + id,
-                    method: "get"
-                },
-                setLoading,
-                () => {
-                },
-                (result) => {
-                    setData(result.data);
+
+            asyncRemote({
+                url: '/segment/' + id,
+                method: "get"
+            }).then(resposne => {
+                if (isSubscribed === true) setData(resposne.data);
+            }).catch((e) => {
+                console.error(e)
+            }).finally(() => {
+                    if (isSubscribed === true) setLoading(false)
                 }
-            );
+            )
+
+            return () => {
+                isSubscribed = false
+            }
         },
         [id])
 
@@ -48,32 +54,18 @@ export default function SegmentDetails({id, onDeleteComplete}) {
 
     const onDelete = () => {
         confirm({title: "Do you want to delete this segment?", description: "This action can not be undone."})
-            .then(() => {
-                    request({
+            .then(async () => {
+                    try {
+                        await asyncRemote({
                             url: '/segment/' + id,
                             method: "delete"
-                        },
-                        () => {
-                        },
-                        () => {
-                        },
-                        (result) => {
-                            if (result) {
-                                request({
-                                        url: '/segments/refresh'
-                                    },
-                                    ()=>{},
-                                    ()=>{},
-                                    ()=>{
-                                        if (onDeleteComplete) {
-                                            onDeleteComplete(data.id)
-                                        }
-                                    }
-                                )
-                            }
+                        })
+                        if (onDeleteComplete) {
+                            onDeleteComplete(id)
                         }
-                    );
-
+                    } catch (e) {
+                        console.error(e)
+                    }
                 }
             )
             .catch(() => {
@@ -124,4 +116,4 @@ export default function SegmentDetails({id, onDeleteComplete}) {
 SegmentDetails.propTypes = {
     id: PropTypes.string,
     onDeleteComplete: PropTypes.func,
-  };
+};

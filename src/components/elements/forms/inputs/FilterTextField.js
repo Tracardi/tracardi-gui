@@ -11,7 +11,7 @@ const FilterTextField = ({label, onChange, onSubmit, initValue="", variant="outl
     }, [initValue])
 
     const handleChange = (event) => {
-        if (typeof (onChange) != "undefined") {
+        if (onChange  instanceof Function) {
             onChange(event);
             event.preventDefault();
         }
@@ -26,7 +26,7 @@ const FilterTextField = ({label, onChange, onSubmit, initValue="", variant="outl
     };
 
     const handleBlur = (ev) => {
-        if (typeof (onSubmit) != "undefined") {
+        if (onSubmit instanceof Function) {
             onSubmit(ev.target.value);
             ev.preventDefault();
         }

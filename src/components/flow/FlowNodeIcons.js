@@ -1,9 +1,13 @@
 import {BiGitRepoForked} from "react-icons/bi";
 import React from "react";
-import {FiDatabase, FiMapPin, FiAlertTriangle} from "react-icons/fi";
-import {BsDiamond, BsPerson, BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill} from "react-icons/bs";
+import {FiDatabase, FiMapPin, FiAlertTriangle, FiRss} from "react-icons/fi";
+import {
+    BsPerson,
+    BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
+    BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
+    BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard
+} from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
-import {MdTimelapse} from "react-icons/md";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
 import {
     BiMessageRoundedError,
@@ -15,10 +19,18 @@ import {
     BiCloudRain,
     BiTime,
     BiParagraph,
-    BiArrowToRight
+    BiArrowToRight,
+    BiMessageSquareCheck
 } from "react-icons/bi";
 import {RiIncreaseDecreaseLine, RiScissorsCutFill} from "react-icons/ri";
-import {IoCloudOutline, IoPush, IoLanguageOutline, IoTextOutline, IoCalendarOutline} from "react-icons/io5";
+import {
+    IoCloudOutline,
+    IoPush,
+    IoLanguageOutline,
+    IoTextOutline,
+    IoCalendarOutline,
+    IoGitNetworkSharp
+} from "react-icons/io5";
 import {
     VscSymbolEvent,
     VscRegex,
@@ -46,27 +58,36 @@ import {
     VscMail,
     VscBracketError,
     VscRunErrors,
-    VscExclude
+    VscExclude,
+    VscSymbolArray,
+    VscLaw
 } from "react-icons/vsc";
-import {MdLibraryAdd, MdTimer} from "react-icons/md";
+import {MdLibraryAdd, MdTimer, MdPassword, MdTimelapse, MdTransform, MdCallSplit} from "react-icons/md";
 import {GoBrowser} from "react-icons/go";
+import {ReactComponent as MauticLogo} from "../../svg/mautic.svg";
+import {ReactComponent as Amplitude} from "../../svg/amplitude-icon.svg";
+import {ReactComponent as Mixpanel} from "../../svg/mixpanel.svg";
+import {ReactComponent as ActiveCampaign} from "../../svg/active-campaign.svg";
+import {ReactComponent as Stripe} from "../../svg/stripe.svg";
 import {
     SiRabbitmq,
     SiMongodb,
-    SiRedis,
     SiPostgresql,
     SiTwilio,
     SiCurl,
     SiGoogletranslate,
     SiElasticsearch,
     SiInfluxdb,
-    SiZapier
+    SiZapier,
+    SiAirtable,
+    SiMatomo,
+    SiRedis,
+    SiCivicrm
 } from "react-icons/si";
 import {GrMysql} from "react-icons/gr";
 import {
     AiOutlineSlack,
     AiOutlinePieChart,
-    AiOutlineCloudServer,
     AiOutlineSplitCells,
     AiOutlineCheckCircle,
     AiFillGoogleCircle
@@ -76,7 +97,7 @@ import {RiRestTimeLine} from "react-icons/ri";
 import {IoIosTimer, IoIosContact, IoIosAttach} from "react-icons/io";
 import {CgCalendarToday} from "react-icons/cg";
 import {ImInsertTemplate} from "react-icons/im";
-import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp, FaHtml5} from "react-icons/fa";
+import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp, FaHtml5, FaRobot, FaUncharted, FaSalesforce} from "react-icons/fa";
 import {DiReact} from "react-icons/di";
 import {GiPathDistance} from "react-icons/gi";
 
@@ -85,7 +106,7 @@ export const icons = {
     "json": (size) => <VscJson size={size}/>,
     "split": (size) => <BiGitRepoForked size={size} style={{transform: "rotateX(180deg)"}}/>,
     "join": (size) => <BiGitRepoForked size={size}/>,
-    "if": (size) => <BsDiamond size={size}/>,
+    "if": (size) => <MdCallSplit size={size} style={{transform: "rotateX(180deg)"}}/>,
     'event': (size) => <VscSymbolEvent size={size}/>,
     "copy": (size) => <VscCopy size={size}/>,
     "debug": (size) => <VscDebugAlt size={size}/>,
@@ -138,7 +159,6 @@ export const icons = {
     'facebook': (size) => <FaFacebookSquare size={size}/>,
     'twitter': (size) => <VscTwitter size={size}/>,
     'bar-chart': (size) => <BiBarChartAlt size={size}/>,
-    'redis': (size) => <SiRedis size={size}/>,
     'globe': (size) => <VscGlobe size={size}/>,
     'profiler': (size) => <IoIosTimer size={size}/>,
     'error': (size) => <VscError size={size}/>,
@@ -159,7 +179,6 @@ export const icons = {
     'aws': (size) => <FaAws size={size}/>,
     'pie-chart': (size) => <AiOutlinePieChart size={size}/>,
     'tower': (size) => <VscRadioTower size={size}/>,
-    'resource': (size) => <AiOutlineCloudServer size={size}/>,
     'calculator': (size) => <BsCalculator size={size}/>,
     'twilio': (size) => <SiTwilio size={size}/>,
     'mailchimp': (size) => <FaMailchimp size={size}/>,
@@ -178,19 +197,44 @@ export const icons = {
     'geo-fence': (size) => <BsFillGeoFill size={size}/>,
     'html5': (size) => <FaHtml5 size={size}/>,
     'threshold': (size) => <BiArrowToRight size={size}/>,
-    'path': (size) => <GiPathDistance size={size}/>
+    'path': (size) => <GiPathDistance size={size}/>,
+    'airtable': (size) => <SiAirtable size={size}/>,
+    'mautic': (size) => <MauticLogo style={{width: size, height: size}}/>,
+    'ai': (size) => <FaRobot size={size}/>,
+    'amplitude': (size) => <Amplitude style={{width: size, height: size}}/>,
+    'mixpanel': (size) => <Mixpanel style={{width: size, height: size}}/>,
+    'array': (size) => <VscSymbolArray size={size}/>,
+    'resource': (size) => <BsHddNetwork size={size}/>,
+    'flow': (size) => <IoGitNetworkSharp size={size}/>,
+    'route': (size) => <FaUncharted size={size}/>,
+    'exists': (size) => <BsQuestionDiamond size={size}/>,
+    'matomo': (size) => <SiMatomo size={size} />,
+    'previous': (size) => <BsArrowBarLeft size={size}/>,
+    'consent': (size) => <VscLaw size={size} />,
+    'hash': (size) => <BsHash size={size}/>,
+    "redis": (size) => <SiRedis size={size}/>,
+    "civicrm": (size) => <SiCivicrm size={size}/>,
+    "active-campaign": (size) => <ActiveCampaign size={size}/>,
+    "source": (size) => <BsBoxArrowInRight size={size}/>,
+    "salesforce": (size) => <FaSalesforce size={size}/>,
+    "transform": (size) => <MdTransform size={size}/>,
+    "password": (size) => <MdPassword size={size} />,
+    "mqtt": (size) => <FiRss size={size}/>,
+    "entity": (size) => <BsFillRecordFill size={size}/>,
+    "report": (size) => <BsFillBarChartFill size={size}/>,
+    "message": (size) => <BiMessageSquareCheck size={size}/>,
+    "stripe": (size) => <Stripe size={size}/>,
+    "card": (size) => <BsCreditCard size={size}/>,
 }
 
 
-export default function FlowNodeIcons({icon, size = 20}) {
-
-    const defaultIcon = <VscPlug size={size}/>
+export default function FlowNodeIcons({icon, size = 20, defaultIcon = "plugin"}) {
 
     const renderIcon = () => {
         if (icon in icons) {
             return icons[icon](size)
         } else {
-            return defaultIcon
+            return icons[defaultIcon](size)
         }
     }
 

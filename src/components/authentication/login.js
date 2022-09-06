@@ -4,6 +4,7 @@ export function isAuth() {
 
 export function logout() {
     localStorage.removeItem('auth-token')
+    localStorage.removeItem('auth-roles')
 }
 
 export function setToken(token) {

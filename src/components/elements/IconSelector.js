@@ -6,6 +6,7 @@ import {
     Popover,
 } from '@mui/material';
 import Button from "./forms/Button";
+import {SiSlickpic} from "react-icons/si";
 
 const IconSelector = ({value="", onChange}) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -62,6 +63,7 @@ const IconSelector = ({value="", onChange}) => {
                 }}
                 onClick={handlePopover}
                 label="Select icon"
+                icon={<SiSlickpic size={20} style={{marginRight: 3}}/>}
             />
 
             <Popover

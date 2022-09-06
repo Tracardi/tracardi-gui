@@ -2,6 +2,7 @@ import React from "react";
 import "./DataAnalytics.css";
 import DataAnalytics from "./DataAnalytics";
 import ProfileDetails from "../elements/details/ProfileDetails";
+import { makeUtcStringTzAware } from "../../misc/converters";
 
 export default function ProfilesAnalytics({displayChart=true}) {
 
@@ -29,20 +30,20 @@ export default function ProfilesAnalytics({displayChart=true}) {
         }
     }
 
-    const displayDetails = (data) => <ProfileDetails data={data}/>
+    const displayDetails = (data) => <ProfileDetails profile={data}/>
 
     return <DataAnalytics
         type="profile"
         label="List of profiles"
         enableFiltering={true}
         timeFieldLabel = "last visit"
-        timeField={(row) => [row.metadata.time.insert]}
+        timeField={(row) => [makeUtcStringTzAware(row.metadata.time.insert)]}
         filterFields={['metadata.time.insert','metadata.time.update']}
         onLoadHistogramRequest={onLoadHistogramRequest}
         onLoadDataRequest={onLoadDataRequest}
         onLoadDetails={onLoadDetails}
         displayDetails={displayDetails}
-        detailsDrawerWidth={1200}
+        detailsDrawerWidth={1250}
         displayChart={displayChart}
     />
 

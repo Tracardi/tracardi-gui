@@ -6,10 +6,10 @@ import {v4 as uuid4} from "uuid";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import PropTypes from 'prop-types';
-import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import TuiFormError from "../tui/TuiFormError";
 import {isString, isObject} from "../../../misc/typeChecking";
+import TuiSelectMultiEventType from "../tui/TuiSelectMultiEventType";
 
 export default function SegmentForm({onSubmit, init}) {
 
@@ -130,7 +130,7 @@ export default function SegmentForm({onSubmit, init}) {
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Event type" description="Bind this segment event type. You can select
                 None then segment will be checked at every event. against all events.">
-                    <TuiSelectEventType value={type} onSetValue={setType} multiple={true}/>
+                    <TuiSelectMultiEventType value={type} onSetValue={setType}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Condition" description="Segments are created after the event is processed.
                     Then Profile properties are evaluated against the condition you type below.

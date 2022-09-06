@@ -1,15 +1,15 @@
-import Typography from "@mui/material/Typography";
 import React from "react";
 import Link from "@mui/material/Link";
 import urlPrefix from "../../misc/UrlPrefix";
+import NoData from "../elements/misc/NoData";
+import {BsFillShieldLockFill} from "react-icons/bs";
 
 export default function NotAllowed() {
-    return (
-        <Typography variant="body2" color="textPrimary" align="center">
-            You do not have rights to this page.
-            <Link color="inherit" href={urlPrefix("/login")}>
+    return <div style={{display: "flex", height: "100%", alignItems: "center", justifyContent:"center"}}>
+        <NoData header="You do not have rights to this part of the system" icon={<BsFillShieldLockFill size={40}/>}>
+            <p>Please <Link color="inherit" href={urlPrefix("/login")}>
                 Log-in
-            </Link>.
-        </Typography>
-    );
+            </Link> again.</p>
+        </NoData>
+    </div>
 }

@@ -3,7 +3,7 @@
     align-items: center;
     padding: 5px;
     border-bottom: 1px solid #cecece;
-    grid-template-columns: 1fr 30px 1fr 30px 1fr 30px 1fr;
+    grid-template-columns: 1fr 30px 1fr 30px 1fr 44px;
 }
 .RuleRow > .EventBox,
 .RuleRow > .RuleBox,
@@ -18,6 +18,10 @@
     color: white;
     border-radius: 4px;
     display: flex;
+    align-items: center;
+}
+
+.RuleRow > .DeleteButtonBox {
     align-items: center;
 }
 

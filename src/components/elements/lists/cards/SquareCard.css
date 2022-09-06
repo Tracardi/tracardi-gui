@@ -41,6 +41,10 @@
     color: #444;
 }
 
+.SquareCard .tags {
+    font-size: 80%;
+}
+
 .SquareCard .icon {
     margin: 10px;
     color: #444;

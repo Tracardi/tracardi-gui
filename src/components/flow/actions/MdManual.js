@@ -1,34 +1,46 @@
 import React, {useEffect, useState} from "react";
 import MarkdownElement from "../../elements/misc/MarkdownElement";
 import "./MdManual.css";
-import {apiUrl} from "../../../remote_api/entrypoint";
+import { asyncRemote } from "../../../remote_api/entrypoint";
+import CenteredCircularProgress from "../../elements/progress/CenteredCircularProgress";
 
-const MdManual = ({mdFile}) => {
+export async function loadMdFile(fileName, basePath, baseURL=null) {
+    try {
+        const response = await asyncRemote({
+            baseURL: baseURL,
+            url: `${basePath}${fileName}.md?${Math.random()}`
+        })
+        return await response.data;
+    } catch (e) {
+        return e.toString()
+    }
+}
+
+const MdManual = ({mdFile, basePath='/manual/en/docs/flow/actions/', baseURL = null}) => {
 
     const [page,setPage] = useState('');
-
-    async function loadMdFile(fileName) {
-        try {
-            const response = await fetch(apiUrl()+'/manual/en/docs/flow/actions/'+fileName+'.md?'+ Math.random());
-            return await response.text();
-        } catch (e) {
-            return e.toString()
-        }
-    }
+    const [loading, setLoading] = useState(false);
 
     useEffect(()=> {
         let isMounted = true
         if(mdFile) {
-            loadMdFile(mdFile).then((text) => {
+            setLoading(true)
+            loadMdFile(mdFile, basePath, baseURL).then((text) => {
                 if(isMounted) {
                     setPage( text )
                 }
+            }).finally(() => {
+                setLoading(false)
             })
         }
         return () => { isMounted = false };
-    }, [mdFile])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [mdFile, basePath, baseURL])
 
-    return <section className="MdManual"><MarkdownElement text={page} /></section>
+    return <section className="MdManual">
+        {loading && <CenteredCircularProgress/>}
+        {!loading && page && <MarkdownElement text={page} />}
+    </section>
 
 }
 

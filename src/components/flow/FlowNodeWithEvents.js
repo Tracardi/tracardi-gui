@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Handle} from 'react-flow-renderer';
 import './FlowNode.css';
 import FlowNodeIcons from "./FlowNodeIcons";
-import ExecutionNumber from "./ExecutionNumber";
+import {ExecutionSeqNumber} from "./NodeAlerts";
 import {isObject} from '../../misc/typeChecking';
 import {objectMap} from "../../misc/mappers";
 
@@ -94,7 +94,7 @@ const FlowNodeWithEventsDynamic = ({data}) => {
                 <div>
                     <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={portStyle}/>
                     <div className={nodeClass} style={nodeStyle}>
-                        <ExecutionNumber data={data}/>
+                        <ExecutionSeqNumber data={data}/>
                         <div className="NodePadding">
                             <FlowNodeIcons icon={data?.metadata?.icon}/>
                             <div className="NodeLabel"

@@ -2,8 +2,9 @@
     width: 100%;
     display: flex;
     padding: 10px 40px;
-    color: #444;
+    color: black;
     width: 100%;
+    background-color: #e1f5fe;
 }
 
 .PiiBox {

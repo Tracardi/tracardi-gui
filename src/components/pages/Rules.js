@@ -4,6 +4,7 @@ import CardBrowser from "../elements/lists/CardBrowser";
 import {FaUncharted} from "react-icons/fa";
 import RuleForm from "../elements/forms/RuleForm";
 import RuleDetails from "../elements/details/RuleDetails";
+import BrowserRow from "../elements/lists/rows/BrowserRow";
 
 export default function Rules() {
 
@@ -11,7 +12,7 @@ export default function Rules() {
     const addFunc = useCallback((close) => <RuleForm onEnd={close}/>, [])
     const detailsFunc = useCallback((id, close) => <RuleDetails id={id} onDelete={close} onEdit={close}/>, []);
 
-    const segments = (data, onClick) => {
+    const ruleCards = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="CardGroup" key={index}>
                 <header>{category}</header>
@@ -30,12 +31,29 @@ export default function Rules() {
         })
     }
 
+    const ruleRows = (data, onClick) => {
+        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
+            return <div className="RowGroup" style={{width: "100%"}} key={index}>
+                <header>{category}</header>
+                <div>
+                    {plugs.map((row, subIndex) => {
+                        return <BrowserRow key={index + "-" + subIndex}
+                                           id={row?.id}
+                                           data={{...row, icon: "route"}}
+                                           onClick={() => onClick(row?.id)}/>
+                    })}
+                </div>
+            </div>
+        })
+    }
+
     return <CardBrowser
         label="Routing Rules"
         urlFunc={urlFunc}
-        cardFunc={segments}
+        cardFunc={ruleCards}
+        rowFunc={ruleRows}
         buttomLabel="New routing rule"
-        buttonIcon={<FaUncharted size={20} style={{marginRight: 10}}/>}
+        buttonIcon={<FaUncharted size={20}/>}
         drawerDetailsTitle="Rule details"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}

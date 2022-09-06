@@ -2,8 +2,9 @@ import React, {useCallback} from "react";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import EventSourceDetails from "../elements/details/EventSourceDetails";
-import {BsBoxArrowInUpRight} from "react-icons/bs";
+import {BsBoxArrowInRight} from "react-icons/bs";
 import EventSourceForm from "../elements/forms/EventSourceForm";
+import BrowserRow from "../elements/lists/rows/BrowserRow";
 
 
 export default function EventSources() {
@@ -20,11 +21,37 @@ export default function EventSources() {
                     {plugs.map((row, subIndex) => {
                         return <SquareCard key={index + "-" + subIndex}
                                            id={row?.id}
-                                           icon={<BsBoxArrowInUpRight size={45}/>}
+                                           icon={<BsBoxArrowInRight size={45}/>}
                                            status={row?.enabled}
                                            name={row?.name}
                                            description={row?.description}
-                                           onClick={() => onClick(row?.id)}/>
+                                           onClick={() => onClick(row?.id)}
+                                           tags={[row.type]}
+                        />
+                    })}
+                </div>
+            </div>
+        })
+    }
+
+    const sourcesRows = (data, onClick) => {
+        return Object.entries(data?.grouped).map(([category, plugs], index) => {
+            return <div className="CardGroup" style={{width: "100%"}} key={index}>
+                <header>{category}</header>
+                <div>
+                    {plugs.map((row, subIndex) => {
+                        const data = {
+                            icon: "source",
+                            enabled: row?.enabled,
+                            name: row?.name,
+                            description: row?.description
+                        }
+                        return <BrowserRow key={index + "-" + subIndex}
+                                           id={row?.id}
+                                           data={data}
+                                           onClick={() => onClick(row?.id)}
+                                           tags={[row.type]}
+                        />
                     })}
                 </div>
             </div>
@@ -34,11 +61,12 @@ export default function EventSources() {
     return <CardBrowser
         label="Event Sources"
         urlFunc={urlFunc}
+        rowFunc={sourcesRows}
         cardFunc={sources}
         buttomLabel="New event source"
-        buttonIcon={<BsBoxArrowInUpRight size={20} style={{marginRight: 10}}/>}
+        buttonIcon={<BsBoxArrowInRight size={20}/>}
         drawerDetailsTitle="Event source details"
-        drawerDetailsWidth={800}
+        drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
         drawerAddTitle="New event source"
         drawerAddWidth={800}

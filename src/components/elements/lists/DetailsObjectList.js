@@ -1,10 +1,11 @@
 import React, {useEffect, useRef} from "react";
-import {request} from "../../../remote_api/uql_api_endpoint";
 import "./ObjectList.css";
 import Drawer from "@mui/material/Drawer";
 import makeStyles from '@mui/styles/makeStyles';
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import AutoLoadObjectList from "./AutoLoadObjectList";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import ErrorsBox from "../../errors/ErrorsBox";
 
 function DetailsObjectList({
                                label,
@@ -20,7 +21,7 @@ function DetailsObjectList({
 
 
     const [loadingDetails, setLoadingDetails] = React.useState(false);
-    const [error, setError] = React.useState(false);
+    const [error, setError] = React.useState(null);
     const [detailsToggle, setDetailsToggle] = React.useState(false);
     const [detailsData, setDetailsData] = React.useState(null);
 
@@ -45,29 +46,32 @@ function DetailsObjectList({
         setDetailsToggle(false);
     }
 
-    const onReady = (data) => {
-        setDetailsData(data)
-    }
-
     const onDetails = async (id) => {
         if (typeof id === "undefined") {
             console.error("Undefined id in onDetails")
         } else if (onLoadDetails) {
+
             if (mounted.current) {
                 setLoadingDetails(true);
                 openDetails();
             }
-            request(onLoadDetails(id),
-                (state) => {
-                    if (mounted.current) setLoadingDetails(state)
-                },
-                (e) => {
-                    if (mounted.current) setError(e)
-                },
-                (data) => {
-                    if (mounted.current) onReady(data)
+
+            try {
+                const response = await asyncRemote(onLoadDetails(id))
+                if (mounted.current) {
+                    setDetailsData(response?.data);
+                    setError(null);
                 }
-            );
+            } catch (e) {
+                if (mounted.current) {
+                    setDetailsData(null);
+                    setError(getError(e));
+                }
+            } finally {
+                if (mounted.current) {
+                    setLoadingDetails(false);
+                }
+            }
         }
     }
 
@@ -83,7 +87,6 @@ function DetailsObjectList({
 
         <AutoLoadObjectList
             label={label}
-            errors={error}
             timeField={timeField}
             timeFieldLabel={timeFieldLabel}
             filterFields={filterFields}
@@ -97,7 +100,8 @@ function DetailsObjectList({
         <Drawer anchor="right" open={detailsToggle} onClose={closeDetails} classes={{paper: classes.drawerPaper}}>
             <div style={{width: drawerWidth, height: "inherit"}}>
                 {loadingDetails && <CenteredCircularProgress/>}
-                {detailsData && displayDetails && displayDetails(detailsData.data)}
+                {error !== null && <ErrorsBox errorList={error}/> }
+                {detailsData && displayDetails && displayDetails(detailsData)}
             </div>
         </Drawer>}
     </React.Fragment>

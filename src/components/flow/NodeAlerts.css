@@ -1,0 +1,44 @@
+DIV.NodeSequence {
+    border-radius: 30%;
+    color: white;
+    padding-right: 1px;
+    position: absolute;
+    top: -10px;
+    right: 4px;
+    font-size: 10px;
+    display: flex;
+    width: 17px;
+    height: 17px;
+    align-items: center;
+    justify-content: center;
+}
+
+DIV.NodeAlert {
+    border-radius: 50%;
+    color: white;
+    position: absolute;
+    top: 13px;
+    right: -30px;
+    display: flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+DIV.Ok {
+    background-color: #43a047 !important;
+}
+
+DIV.ErrorSequence {
+    background-color: #d81b60 !important;
+}
+
+DIV.Error {
+    color: #d81b60 !important;
+}
+
+DIV.Warning {
+    color: orange !important;
+}
