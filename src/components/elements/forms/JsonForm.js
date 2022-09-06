@@ -12,14 +12,12 @@ import {
     ListOfDotPaths,
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
     SelectInput, BoolInput, ReadOnlyTags, EventTypes, EventType, ConsentTypes, AutoCompleteInput,
-    ReportConfig
+    ReportConfig, PasswordInput
 } from "./JsonFormComponents";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {AiOutlineCheckCircle} from "react-icons/ai";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
 import {isEmptyStringOrNull, isObject} from "../../../misc/typeChecking";
-import PasswordInput from "./inputs/PasswordInput";
-import {typeImplementation} from "@testing-library/user-event/dist/type/typeImplementation";
 
 const getComponentByType = ({value, values, errorMessage, componentType, fieldId, onChange}) => {
 

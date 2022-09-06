@@ -20,6 +20,57 @@ import TuiSelectEventType from "../tui/TuiSelectEventType";
 import TuiSelectMultiConsentType from "../tui/TuiSelectMultiConsentType";
 import AutoComplete from "./AutoComplete";
 import ReportConfigInput from "./inputs/ReportConfigInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import {BsEye, BsEyeSlashFill} from "react-icons/bs";
+
+export const PasswordInput = ({label = "Password", value, onChange, fullWidth = false, error, helperText, style, required}) => {
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [text, setText] = useState(value);
+
+    const handleChange = (event) => {
+        event.preventDefault();
+        setText(event.target.value);
+        if (onChange) {
+            onChange(event.target.value)
+        }
+    };
+
+    const handleShowPassword = () => {
+        setShowPassword(!showPassword)
+    };
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
+
+    return <TextField
+        required={required}
+        fullWidth={fullWidth}
+        size="small"
+        style={style}
+        type={showPassword ? 'text' : 'password'}
+        value={text}
+        onChange={handleChange}
+        error={error}
+        helperText={helperText}
+        InputProps={{
+            endAdornment: <InputAdornment position="end">
+                <span
+                    style={{display: "flex", alignItems: "center", cursor: "pointer"}}
+                    onClick={handleShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                >
+                {showPassword ? <BsEyeSlashFill size={20}/> : <BsEye size={20}/>}
+                </span>
+            </InputAdornment>
+        }}
+        label={label}
+        variant="outlined"
+    />
+}
+
 
 export const TextInput = ({value, label, errorMessage, onChange}) => {
 
@@ -40,7 +91,7 @@ export const TextInput = ({value, label, errorMessage, onChange}) => {
                       size="small"
                       helperText={errorMessage}
                       error={!isEmptyStringOrNull(errorMessage)}
-                      FormHelperTextProps={{ style: { color: "#d81b60" }}}
+                      FormHelperTextProps={{style: {color: "#d81b60"}}}
                       fullWidth
     />
 }
@@ -67,7 +118,7 @@ export function BoolInput({value, label, errorMessage, onChange}) {
     </div>
 }
 
-export function ContentInput({value, label, errorMessage, onChange, rows = 4, allowedTypes=["text/plain", "application/json", "text/html"]}) {
+export function ContentInput({value, label, errorMessage, onChange, rows = 4, allowedTypes = ["text/plain", "application/json", "text/html"]}) {
 
     const [textValue, setTextValue] = useState(value?.content || "");
     const [tab, setTab] = useState(allowedTypes.indexOf(value?.type) > -1 ? allowedTypes.indexOf(value?.type) : 0);
@@ -165,7 +216,7 @@ export function SelectInput({value, values, label, errorMessage, items = [], err
                       size="small"
                       helperText={errorMessage}
                       error={errorMessage}
-                      FormHelperTextProps={{ style: { color: "#d81b60" }}}
+                      FormHelperTextProps={{style: {color: "#d81b60"}}}
                       value={selectedItem}
                       style={{minWidth: 150}}
                       onChange={handleChange}
@@ -194,7 +245,7 @@ export function TextAreaInput({value, label, errorMessage, onChange = null}) {
                       value={text}
                       onChange={handleChange}
                       helperText={errorMessage}
-                      FormHelperTextProps={{ style: { color: "#d81b60" }}}
+                      FormHelperTextProps={{style: {color: "#d81b60"}}}
                       error={!isEmptyStringOrNull(errorMessage)}
                       variant="outlined"
                       multiline
@@ -342,7 +393,7 @@ export function SqlInput({value, onChange = null}) {
 export function ResourceSelect({value, errorMessage, onChange = null, tag = null, pro = false}) {
 
     const handleChange = (value) => {
-        if(onChange instanceof Function) {
+        if (onChange instanceof Function) {
             onChange(value);
         }
     };
@@ -355,7 +406,7 @@ export function ResourceSelect({value, errorMessage, onChange = null, tag = null
     />
 }
 
-export function AutoCompleteInput({value, values, label, endpoint, error, defaultValueSet, onChange, onSetValue, onlyValueWithOptions=true}) {
+export function AutoCompleteInput({value, values, label, endpoint, error, defaultValueSet, onChange, onSetValue, onlyValueWithOptions = true}) {
 
     const handleChange = (value) => {
         if (onChange instanceof Function) {
@@ -436,7 +487,7 @@ export function ReadOnlyTags({value}) {
 }
 
 export function ReportConfig({value: initValue, onChange, errorMessage, endpoint = null}) {
-    
+
     const [value, setValue] = useState(initValue);
     const handleChange = value => {
         setValue(value);
