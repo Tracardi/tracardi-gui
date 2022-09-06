@@ -17,7 +17,9 @@ import {
 import ErrorsBox from "../../errors/ErrorsBox";
 import {AiOutlineCheckCircle} from "react-icons/ai";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
-import {isObject} from "../../../misc/typeChecking";
+import {isEmptyStringOrNull, isObject} from "../../../misc/typeChecking";
+import PasswordInput from "./inputs/PasswordInput";
+import {typeImplementation} from "@testing-library/user-event/dist/type/typeImplementation";
 
 const getComponentByType = ({value, values, errorMessage, componentType, fieldId, onChange}) => {
 
@@ -115,6 +117,14 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
             return (props) => <TextInput
                 value={value}
                 errorMessage={errorMessage}
+                onChange={useCallback((value) => handleOnChange(value, fieldId), [])}
+                {...props}/>
+
+        case "password":
+            return (props) => <PasswordInput
+                value={value}
+                error={!isEmptyStringOrNull(errorMessage)}
+                helperText={errorMessage}
                 onChange={useCallback((value) => handleOnChange(value, fieldId), [])}
                 {...props}/>
 

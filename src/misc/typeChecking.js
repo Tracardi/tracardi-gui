@@ -3,7 +3,7 @@ export function isString(value) {
 }
 
 export function isEmptyStringOrNull(value) {
-    return  value=== null || value === "";
+    return !value?.length;
 }
 
 export function isObject (a) {
