@@ -53,6 +53,7 @@ export default function EventManagementForm({
     }, []);
 
     const onSave = async () => {
+        let validationData = {};
         try {
             setValidationErrorMessage("")
             if (enabled === true) {
@@ -60,11 +61,8 @@ export default function EventManagementForm({
                     setValidationErrorMessage("Json schema validation can not be empty. Disable validation or fill this field.")
                     return
                 }
-                validation = JSON.parse(validationSchema)
-            } else if (!validation) {
-                validation = {}
+                validationData = JSON.parse(validationSchema);
             }
-
         } catch (e) {
             setValidationErrorMessage(e.toString())
             return;
@@ -111,7 +109,7 @@ export default function EventManagementForm({
                 id: (id) ? id : uuid4(),
                 name: name,
                 description: description,
-                validation: {json_schema: validation, enabled: enabled},
+                validation: {json_schema: validationData, enabled: enabled},
                 event_type: eventType.id,
                 tags: tags && Array.isArray(tags) && tags.length > 0 ? tags : ["General"],
                 reshaping: {template: template, condition: reshapeCondition}
