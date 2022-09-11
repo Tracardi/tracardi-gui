@@ -126,7 +126,7 @@ export function NodeRuntimeConfigForm({pluginId, value: initValue, onChange}) {
         />
     }
 
-    const Input = ({value, label, onChange}) => {
+    const Input = ({value, label, onChange, validationFunc = null}) => {
 
         const [valueToMonitor, setValueToMonitor] = useState(value);
 
@@ -134,7 +134,7 @@ export function NodeRuntimeConfigForm({pluginId, value: initValue, onChange}) {
                           label={label}
                           value={valueToMonitor}
                           onChange={(ev) => {
-                              setValueToMonitor(ev.target.value)
+                              setValueToMonitor(validationFunc ? validationFunc(ev.target.value) : ev.target.value)
                               onChange(ev.target.value)
                           }}
                           fullWidth
@@ -253,13 +253,14 @@ export function NodeRuntimeConfigForm({pluginId, value: initValue, onChange}) {
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Number of repeats on connection error"
                                    description="If there is a connection error how many times repeat the action.">
-                    <TextField variant="outlined"
-                               label="Number of repeats"
-                               value={value?.on_connection_error_repeat}
-                               onChange={(ev) => {
-                                   handleChange("on_connection_error_repeat", parseInt(ev.target.value) || 0)
-                               }}
-                               size="small"
+                    <Input  label="Number of repeats"
+                            value={value?.on_connection_error_repeat}
+                            onChange={(val) => {
+                                handleChange("on_connection_error_repeat", parseInt(val) || 0)
+                            }}
+                            validationFunc={(val) => {
+                                return parseInt(val) || 0;
+                            }}
                     />
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Continue on error"
