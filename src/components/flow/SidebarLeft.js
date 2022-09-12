@@ -89,18 +89,25 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
                 <div>
                     {pluginsLoading && <div style={{display: "flex", justifyContent: "center", marginTop: 8}}><HorizontalCircularProgress label="Searching..."/></div>}
                     {
-                        plugins?.total > 0 && Object.entries(plugins?.grouped).map(([category, plugs], index) => {
-                            return <div key={index}>
-                                <p>{category}</p>
-                                {plugs.map((row, subIndex) => {
-                                    return <FlowMenuNode key={index + "-" + subIndex}
-                                                         row={row}
-                                                         onDoubleClick={()=> handleDoubleClick(row)}
-                                                         onDragStart={onDragStart}
-                                                         draggable/>
-                                })}
+                        !pluginsLoading && <>{
+                            plugins?.total > 0 ?
+                            Object.entries(plugins?.grouped).map(([category, plugs], index) => {
+                                return <div key={index}>
+                                    <p>{category}</p>
+                                    {plugs.map((row, subIndex) => {
+                                        return <FlowMenuNode key={index + "-" + subIndex}
+                                                            row={row}
+                                                            onDoubleClick={()=> handleDoubleClick(row)}
+                                                            onDragStart={onDragStart}
+                                                            draggable/>
+                                    })}
+                                </div>
+                            })
+                            :
+                            <div className="PluginsNotFoundMessage">
+                                No plugins match your search criteria. Please check <span style={{fontWeight: 700}}>Extensions</span> tab in <a href="/resources" className="ResourcesHref">Resources</a> section.
                             </div>
-                        })
+                        }</>
                     }
                 </div>
             </div>
