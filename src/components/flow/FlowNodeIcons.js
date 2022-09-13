@@ -82,7 +82,8 @@ import {
     SiAirtable,
     SiMatomo,
     SiRedis,
-    SiCivicrm
+    SiCivicrm,
+    SiHubspot
 } from "react-icons/si";
 import {GrMysql} from "react-icons/gr";
 import {
@@ -225,6 +226,7 @@ export const icons = {
     "message": (size) => <BiMessageSquareCheck size={size}/>,
     "stripe": (size) => <Stripe size={size}/>,
     "card": (size) => <BsCreditCard size={size}/>,
+    "hubspot": (size) => <SiHubspot size={size}/>
 }
 
 
