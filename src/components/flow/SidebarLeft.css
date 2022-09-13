@@ -60,6 +60,16 @@
     height: calc(100% - 110px);
     margin-top: 4px;
 }
+
+.FlowEditor > .WorkArea .TaskNodes .PluginsNotFoundMessage {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.FlowEditor > .WorkArea .TaskNodes .PluginsNotFoundMessage .ResourcesHref {
+    color: inherit;
+}
+
 .FlowEditor > .WorkArea .TaskNodes P
 {
     font-weight: 500;
