@@ -12,7 +12,7 @@ import JsonForm from "./JsonForm";
 import {isEmptyObject} from "../../../misc/typeChecking";
 import useAfterMountEffect from "../../../effects/AfterMountEffect";
 
-export function NodeInitJsonForm({pluginId, formSchema, microservice, init, manual, onSubmit}) {
+export function NodeInitJsonForm({pluginId, formSchema, microservice, init, onSubmit}) {
 
     const [data, setData] = useState(init)
     const [formErrorMessages, setFormErrorMessages] = useState({});
@@ -51,7 +51,6 @@ export function NodeInitJsonForm({pluginId, formSchema, microservice, init, manu
 
     return <ConfigEditor
         config={data}
-        manual={manual}
         onConfig={handleSubmit}
         confirmed={saveOk}
         errorMessages={formErrorMessages}

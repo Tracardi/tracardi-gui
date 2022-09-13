@@ -1,7 +1,6 @@
 import Button from "../../elements/forms/Button";
 import React, {useEffect, useState} from "react";
 import './ConfigEditor.css';
-import MdManual from "../actions/MdManual";
 import JsonEditor from "../../elements/editors/JsonEditor";
 import "../../elements/forms/JsonForm";
 import {
@@ -14,7 +13,7 @@ import {
 import {objectMap} from "../../../misc/mappers";
 import {BiError} from "react-icons/bi";
 
-const ConfigEditor = ({config, manual, onConfig, errorMessages = {}, confirmed = false}) => {
+const ConfigEditor = ({config, onConfig, errorMessages = {}, confirmed = false}) => {
 
     const initConfig = JSON.stringify(config, null, '  ')
     const [eventPayload, setEventPayload] = useState(initConfig);
@@ -77,13 +76,6 @@ const ConfigEditor = ({config, manual, onConfig, errorMessages = {}, confirmed =
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
-
-        {manual && <TuiFormGroup>
-            <TuiFormGroupHeader header="Plug-in Documentation"/>
-            <TuiFormGroupContent>
-                <MdManual mdFile={manual}/>
-            </TuiFormGroupContent>
-        </TuiFormGroup>}
 
     </TuiForm>
 }

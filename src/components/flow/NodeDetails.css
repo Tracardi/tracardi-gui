@@ -6,16 +6,19 @@
 .NodeDetails > .NodeDetailsIcons {
     display: flex;
     flex-direction: column;
-    width: 50px;
+    justify-content: space-between;
     padding: 4px;
+    background-color: rgba(235, 235, 235, 0.85);
 }
 
 .NodeDetails > .NodeDetailsContent {
     border-left: solid 1px #cccccc;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-.NodeDetails > .NodeDetailsContent > .Title {
+.NodeDetails > .NodeDetailsContent .Title {
     display: flex;
     align-items: center;
     align-content: center;
@@ -27,9 +30,10 @@
     background-color: whitesmoke;
     height: 62px;
     border-bottom: solid 1px #ccc;
+    z-index: 2;
 }
 
-.NodeDetails > .NodeDetailsContent > .Title:hover {
+.NodeDetails > .NodeDetailsContent .Title:hover {
     -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.28);
     -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.28);
     box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.28);
@@ -51,12 +55,11 @@
     flex-direction: row;
 }
 
-.NodeDetails > .NodeDetailsContent > .Pane {
+.NodeDetails > .NodeDetailsContent .Pane {
     display: flex;
     flex-direction: column;
     width: 100%;
     margin-top: 5px;
-    height: calc(100% - 70px);
     padding: 10px;
     overflow-y: auto;
 }

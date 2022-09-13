@@ -16,7 +16,7 @@ export async function loadMdFile(fileName, basePath, baseURL=null) {
     }
 }
 
-const MdManual = ({mdFile, basePath='/manual/en/docs/flow/actions/', baseURL = null}) => {
+const MdManual = ({mdFile, basePath='/manual/en/docs/flow/actions/', baseURL = null, style=null}) => {
 
     const [page,setPage] = useState('');
     const [loading, setLoading] = useState(false);
@@ -37,7 +37,7 @@ const MdManual = ({mdFile, basePath='/manual/en/docs/flow/actions/', baseURL = n
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mdFile, basePath, baseURL])
 
-    return <section className="MdManual">
+    return <section className="MdManual" style={style}>
         {loading && <CenteredCircularProgress/>}
         {!loading && page && <MarkdownElement text={page} />}
     </section>

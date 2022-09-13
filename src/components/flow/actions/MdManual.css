@@ -21,12 +21,13 @@
 }
 
 .MdManual CODE {
-    background: whitesmoke;
+    background: #e1f5fe;
     display: inline-flex;
-    padding: 10px;
+    padding: 15px;
     margin-left: 10px;
     border-radius: 5px;
-    border: solid 2px #ccc;
+    border: solid 2px #000;
     color: black;
     font-family: "IBM Plex Mono";
+    width: 100%
 }
