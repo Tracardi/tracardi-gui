@@ -29,5 +29,6 @@
     border: solid 2px #000;
     color: black;
     font-family: "IBM Plex Mono";
-    width: 100%
+    width: 100%;
+    overflow: auto;
 }
