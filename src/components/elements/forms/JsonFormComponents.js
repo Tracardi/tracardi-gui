@@ -26,7 +26,7 @@ import {BsEye, BsEyeSlashFill} from "react-icons/bs";
 export const PasswordInput = ({label = "Password", value, onChange, fullWidth = false, error, helperText, style, required}) => {
 
     const [showPassword, setShowPassword] = useState(false);
-    const [text, setText] = useState(value);
+    const [text, setText] = useState(value || "");
 
     const handleChange = (event) => {
         event.preventDefault();
@@ -44,7 +44,7 @@ export const PasswordInput = ({label = "Password", value, onChange, fullWidth = 
         event.preventDefault();
     };
 
-
+    console.log(value)
     return <TextField
         required={required}
         fullWidth={fullWidth}
@@ -406,7 +406,7 @@ export function ResourceSelect({value, errorMessage, onChange = null, tag = null
     />
 }
 
-export function AutoCompleteInput({value, values, label, endpoint, error, defaultValueSet, onChange, onSetValue, onlyValueWithOptions = true}) {
+export function AutoCompleteInput({value, values, label, endpoint, token=null, error, defaultValueSet, onChange, onSetValue, onlyValueWithOptions = true}) {
 
     const handleChange = (value) => {
         if (onChange instanceof Function) {
@@ -430,6 +430,7 @@ export function AutoCompleteInput({value, values, label, endpoint, error, defaul
             ...endpoint,
             data: values
         }}
+        token={token}
         onChange={handleChange}
         onSetValue={handleSetValue}/>
 }

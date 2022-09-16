@@ -6,10 +6,14 @@ import ServiceCard from "../cards/ServiceCard";
 
 const TracardiProAvailableServicesList = ({services = null, onServiceClick}) => {
 
+    const handleClick = (v) => {
+        onServiceClick(v)
+    }
+
     return <div className="TracardiProAvailableServicesList">
 
         {isObject(services) && objectMap(services?.services, (key, service) => {
-            return <ServiceCard key={key} service={service} onClick={onServiceClick}/>
+            return <ServiceCard key={key} service={service} onClick={handleClick}/>
         })}
     </div>
 }
