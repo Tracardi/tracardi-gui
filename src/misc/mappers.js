@@ -1,4 +1,4 @@
-import {isObject} from "./typeChecking";
+import {isObject, isString} from "./typeChecking";
 
 export function objectMap(obj, func) {
     return Object.entries(obj).map(([k, v]) => func(k, v));
@@ -36,7 +36,7 @@ export function changeReferences(obj, spec=null) {
                 changeReferences(obj[keys], spec)
             } else {
                 let value = obj[keys]
-                if (value.startsWith('$')) {
+                if (isString(value) && value.startsWith('$')) {
                     const refValue = searchRecursivelyInValues(value.substring(1).split('.'), spec)
                     if(refValue) {
                         obj[keys] = refValue;

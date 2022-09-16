@@ -1,20 +1,48 @@
 import JsonForm from "../JsonForm";
 import React, {useRef, useState} from "react";
-import {asyncRemote} from "../../../../remote_api/entrypoint";
+import {asyncRemote, getError} from "../../../../remote_api/entrypoint";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../../tui/TuiForm";
 import TextField from "@mui/material/TextField";
 import TuiTags from "../../tui/TuiTags";
 import {isEmptyObject} from "../../../../misc/typeChecking";
 import MicroserviceForm from "../MicroserviceForm";
+import Button from "../Button";
 
 function MicroserviceAndResourceForm({onSubmit}) {
 
+    const [loading, setLoading] = useState(false)
+    const [serviceSelected, setServiceSelected] = useState(false)
     const [service, setService] = useState(null)
     const [resourceConfig, setResourceConfig] = useState(null)
+    const [error, setError] = useState(null)
+    const [formErrors, setFormErrors] = useState(null)
 
-    const handleSubmit = (resource) => {
-        if (onSubmit instanceof Function) {
-            onSubmit(service, resource)
+    const handleSubmit = async (resource) => {
+        setLoading(true)
+        setError(null)
+        setFormErrors(null)
+        try {
+            await asyncRemote({
+                baseURL:service?.credentials?.url,
+                url: '/service/resource/validate?service_id='+service?.service?.id,
+                method: "POST",
+                data: resource
+            }, service?.credentials?.token)
+
+            if (onSubmit instanceof Function) {
+                onSubmit(service, resource)
+            }
+
+        } catch (e) {
+            if (e?.response?.status === 422) {
+                setError(null)
+                setFormErrors(e.response.data)
+            } else {
+                setError(getError(e))
+                setFormErrors(null)
+            }
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -27,25 +55,28 @@ function MicroserviceAndResourceForm({onSubmit}) {
                         onServiceChange={(serviceData, serviceResource) => {
                             setResourceConfig(serviceResource)
                             setService(serviceData)
+                            setServiceSelected(true)
                         }}
                         onServiceClear={(serviceData) => {
                             setService(serviceData)
                             setResourceConfig(null)
+                            setServiceSelected(false)
                         }}
                     />
                 </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>
-        {resourceConfig && <JsonForm
+        {resourceConfig && serviceSelected && <JsonForm
             spec={resourceConfig}
             values={resourceConfig.init}
             schema={resourceConfig.form}
             // onChange={handleResourceChange}
             onSubmit={handleSubmit}
-            // processing={sendingForm}
-            // errorMessages={formError}
-            // serverSideError={serverError}
+            processing={loading}
+            errorMessages={formErrors}
+            serverSideError={error}
         />}
+        {!resourceConfig && serviceSelected && <Button label="Save" onClick={async ()=>await handleSubmit({})}/>}
     </>
 }
 

@@ -100,7 +100,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
 
                         {tab === 2 && node?.data?.spec?.init &&
                         <NodeInitJsonForm
-                            sepc={node?.data?.spec}
+                            spec={node?.data?.spec}
                             onSubmit={handleInitSubmit}
                         />}
 
