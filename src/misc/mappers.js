@@ -1,3 +1,5 @@
+import {isObject} from "./typeChecking";
+
 export function objectMap(obj, func) {
     return Object.entries(obj).map(([k, v]) => func(k, v));
 }
@@ -9,4 +11,41 @@ export function objectFilter(raw, allowed) {
             obj[key] = raw[key];
             return obj;
         }, {});
+}
+
+export function searchRecursivelyInValues (path, obj) {
+    if (Array.isArray(path) && path.length > 1) {
+        const key = path.shift();
+        if (isObject(obj) && key in obj) {
+            return searchRecursivelyInValues(path, obj[key]);
+        } else return null;
+
+    } else if (Array.isArray(path) && path.length === 1) {
+        const key = path.shift();
+        if (isObject(obj) && key in obj) {
+            return obj[key];
+        } else return null;
+
+    } else return null;
+}
+
+export function changeReferences(obj, spec=null) {
+    if (isObject(obj) && isObject(spec)) {
+        for (let keys in obj) {
+            if (isObject(obj[keys])) {
+                changeReferences(obj[keys], spec)
+            } else {
+                let value = obj[keys]
+                if (value.startsWith('$')) {
+                    const refValue = searchRecursivelyInValues(value.substring(1).split('.'), spec)
+                    if(refValue) {
+                        obj[keys] = refValue;
+                    } else {
+                        obj[keys] = `Reference error. Value not found ${value}`;
+                    }
+                }
+            }
+        }
+    }
+    return obj;
 }

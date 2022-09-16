@@ -37,6 +37,7 @@ function MicroserviceAndResourceForm({onSubmit}) {
             </TuiFormGroup>
         </TuiForm>
         {resourceConfig && <JsonForm
+            spec={resourceConfig}
             values={resourceConfig.init}
             schema={resourceConfig.form}
             // onChange={handleResourceChange}
@@ -212,6 +213,7 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
             onSubmit={handleSubmitOfMicroservice}
         />}
         {isResource(service) && <JsonForm
+            spec={service}
             schema={service?.form}
             values={service?.init}
             errorMessages={errorMessages}

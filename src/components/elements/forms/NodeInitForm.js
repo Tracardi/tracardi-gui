@@ -12,7 +12,13 @@ import JsonForm from "./JsonForm";
 import {isEmptyObject} from "../../../misc/typeChecking";
 import useAfterMountEffect from "../../../effects/AfterMountEffect";
 
-export function NodeInitJsonForm({pluginId, formSchema, microservice, init, onSubmit}) {
+export function NodeInitJsonForm({spec, onSubmit}) {
+
+    const pluginId= spec?.id
+    const microservice= spec?.microservice
+    let init= spec?.init
+    const formSchema= spec?.form
+
 
     const [data, setData] = useState(init)
     const [formErrorMessages, setFormErrorMessages] = useState({});
@@ -24,6 +30,7 @@ export function NodeInitJsonForm({pluginId, formSchema, microservice, init, onSu
         setSaveOk(false);
         setFormErrorMessages({})
     }, [init])
+
 
     const handleValidationData = (result) => {
         if (result.status === true) {
@@ -276,7 +283,12 @@ export function NodeRuntimeConfigForm({pluginId, value: initValue, onChange}) {
     </TuiForm>
 }
 
-export const NodeInitForm = ({nodeId, pluginId, microservice, init, formSchema, onSubmit}) => {
+export const NodeInitForm = ({nodeId, spec, onSubmit}) => {
+
+    const pluginId= spec?.id
+    const microservice= spec?.microservice
+    let init= spec?.init
+    const formSchema= spec?.form
 
     const initFormErrors =  useRef({})
 
@@ -329,6 +341,7 @@ export const NodeInitForm = ({nodeId, pluginId, microservice, init, formSchema, 
     }
 
     return <JsonForm
+        spec={spec}
         values={init}
         errorMessages={formErrorMessages}
         serverSideError={serverSideError}

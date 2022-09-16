@@ -100,20 +100,14 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
 
                         {tab === 2 && node?.data?.spec?.init &&
                         <NodeInitJsonForm
-                            pluginId={node?.data?.spec?.id}
-                            formSchema={node?.data?.spec?.form}
-                            microservice={node?.data.spec?.microservice}
-                            init={node?.data?.spec?.init}
+                            sepc={node?.data?.spec}
                             onSubmit={handleInitSubmit}
                         />}
 
                         {tab === 3 && node?.data?.spec?.form && node?.data?.metadata?.remote === false &&
                         <MemoNodeInitForm
                             nodeId={node?.id}
-                            pluginId={node?.data?.spec?.id}
-                            microservice={node?.data.spec?.microservice}
-                            init={node?.data?.spec?.init}
-                            formSchema={node?.data?.spec?.form}
+                            spec={node?.data?.spec}
                             onSubmit={handleInitSubmit}
                         />}
 

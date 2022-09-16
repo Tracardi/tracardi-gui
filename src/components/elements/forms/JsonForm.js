@@ -18,6 +18,7 @@ import ErrorsBox from "../../errors/ErrorsBox";
 import {AiOutlineCheckCircle} from "react-icons/ai";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
 import {isEmptyStringOrNull, isObject} from "../../../misc/typeChecking";
+import {changeReferences, searchRecursivelyInValues} from "../../../misc/mappers";
 
 const getComponentByType = ({value, values, errorMessage, componentType, fieldId, onChange}) => {
 
@@ -183,27 +184,17 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
     }
 }
 
-const Fields = ({fields, values, errorMessages, keyValueMapOfComponentValues, onChange}) => {
+const Fields = ({spec, fields, values, errorMessages, keyValueMapOfComponentValues, onChange}) => {
 
     const FieldsInGroup = ({fields}) => fields.map((fieldObject, key) => {
         const fieldId = fieldObject.id;
         const componentType = fieldObject.component?.type;
-        const props = fieldObject.component?.props;
+        let props = fieldObject.component?.props;
 
-        const searchRecursivelyInValues = (path, object=values) => {
-            if (Array.isArray(path) && path.length > 1) {
-                const key = path.shift();
-                if (isObject(object) && key in object) {
-                    return searchRecursivelyInValues(path, object[key]);
-                } else return null;
-                
-            } else if (Array.isArray(path) && path.length === 1) {
-                const key = path.shift();
-                if (isObject(object) && key in object) {
-                    return object[key];
-                } else return null;
+        // Resolve props references
 
-            } else return null;
+        if(spec!== null && isObject(spec)) {
+            props = changeReferences(props, spec)
         }
 
         const readValue = (fieldId) => {
@@ -214,7 +205,7 @@ const Fields = ({fields, values, errorMessages, keyValueMapOfComponentValues, on
                 return keyValueMapOfComponentValues[fieldId]
             } else {
                 // This handles fields that are subtrees of config object
-                return searchRecursivelyInValues(fieldId.split("."));
+                return searchRecursivelyInValues(fieldId.split("."), values);
             }
         }
 
@@ -260,7 +251,7 @@ const Fields = ({fields, values, errorMessages, keyValueMapOfComponentValues, on
     </TuiFormGroupContent>
 }
 
-const Groups = ({groups, values, onChange, errorMessages, keyValueMapOfComponentValues}) => {
+const Groups = ({spec, groups, values, onChange, errorMessages, keyValueMapOfComponentValues}) => {
     return groups.map((groupObject, idx) => {
         return <TuiFormGroup key={idx}>
             {(groupObject.name || groupObject.description) && <TuiFormGroupHeader
@@ -268,6 +259,7 @@ const Groups = ({groups, values, onChange, errorMessages, keyValueMapOfComponent
                 description={groupObject.description}
             />}
             {groupObject.fields && <Fields
+                spec={spec}
                 fields={groupObject.fields}
                 onChange={onChange}
                 errorMessages={errorMessages}
@@ -285,7 +277,7 @@ const Title = ({title}) => {
     return ""
 }
 
-const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
+const JsonForm = ({spec=null, schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
 
     const keyValueMapOfComponentValues = object2dot(values)
     const hasErrors = errorMessages && Object.keys(errorMessages).length
@@ -308,6 +300,7 @@ const JsonForm = ({schema, values = {}, errorMessages = {}, serverSideError, onS
             {schema.title && <Title title={schema.title}/>}
 
             {schema.groups && <Groups
+                spec={spec}
                 groups={schema.groups}
                 onChange={handleChange}
                 values={values}

@@ -99,10 +99,7 @@ export default function NodeMicroserviceForm({node, onMicroserviceChange, onSubm
         {loading && <div style={{display: "flex", justifyContent: "center", height: 60}}><HorizontalCircularProgress label="Loading form"/></div>}
         {!loading && node?.data?.spec?.form && <MemoNodeInitForm
             nodeId={node?.id}
-            pluginId={node?.data?.spec?.id}
-            microservice={node?.data.spec?.microservice}
-            init={node?.data?.spec?.init}
-            formSchema={node?.data?.spec?.form}
+            spec={node?.data?.spec}
             onSubmit={handleInitSubmit}
         />}
         {error && <ErrorsBox errorList={error}/> }
