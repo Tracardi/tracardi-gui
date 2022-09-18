@@ -17,3 +17,7 @@ export function isEmptyObject(obj) {
 export function isEmptyObjectOrNull(obj) {
     return !obj || obj === null || (isObject(obj) && Object.keys(obj).length === 0);
 }
+
+export function isInt(n) {
+    return !isNaN(parseInt(n)) && isFinite(n);
+}

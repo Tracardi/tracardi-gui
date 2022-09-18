@@ -7,12 +7,32 @@ import DotAccessor from "../elements/forms/inputs/DotAccessor";
 import BackgroundTaskProgress from "../elements/misc/BackgroundTaskProgress";
 import JsonForm from "../elements/forms/JsonForm";
 import TokenInput from "../elements/forms/inputs/TokenInput";
+import BoxStyling from "../elements/tui/TuiBoxStyling";
 
 export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
     const [value, setValue] = React.useState("test");
     const [token, setToken] = useState(null)
+
+
+
     return (<div style={{padding: 10}}>
+            <BoxStyling value={{
+                margin: {
+                    left: 10, top: 10, right: 10, bottom: 10
+                },
+                padding: {
+                    left: 0, top: 0, right: 2, bottom: 200
+                },
+                color: {
+                    background: "rgba(255,255,255,1)",
+                    text: "red"
+                }
+            }}/>
+            <div style={{marginBottom: 20}}>
+
+            </div>
+
             <TokenInput apiKey={value}
                         getTokenUrl={(apiKey) => {
                             return {

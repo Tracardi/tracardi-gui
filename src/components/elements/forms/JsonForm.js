@@ -19,6 +19,8 @@ import {AiOutlineCheckCircle} from "react-icons/ai";
 import MutableMergeRecursive from "../../../misc/recursiveObjectMerge";
 import {isEmptyStringOrNull, isObject} from "../../../misc/typeChecking";
 import {changeReferences, searchRecursivelyInValues} from "../../../misc/mappers";
+import TuiColorPicker from "../tui/TuiColorPicker";
+import TuiBoxStyling from "../tui/TuiBoxStyling";
 
 const getComponentByType = ({value, values, errorMessage, componentType, fieldId, onChange}) => {
 
@@ -49,6 +51,20 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
         case "readOnlyTags":
             return () => <ReadOnlyTags
                 value={value}/>
+
+        case "colorPicker":
+            return (props) => <TuiColorPicker
+                value={value}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                {...props}
+            />
+
+        case "boxStyling":
+            return (props) => <TuiBoxStyling
+                value={value}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                {...props}
+            />
 
         case "eventTypes":
             return (props) => <EventTypes
