@@ -6,6 +6,7 @@ export default function MetricTimeLine({children, onClick, fitContent = true}) {
         backgroundColor: "whitesmoke",
         borderRadius: 5,
         margin: 8,
+        padding: 10,
         width: fitContent ? "fit-content" : "auto",
         cursor: (!onClick) ? "initial" : "pointer",
     }}

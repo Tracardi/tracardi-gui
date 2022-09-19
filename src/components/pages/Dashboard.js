@@ -108,7 +108,7 @@ export default function Dashboard() {
         style={{display: "flex", flexDirection: "column", padding: 15, height: "100%"}}>
         <MetricTimeLine fitContent={false}>
             <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
-                <div style={{width: "100%", height: 290, padding: 10}}>
+                <div style={{width: "100%", height: 325, padding: 30}}>
                     <EventTimeLine/>
                 </div>
             </div>
