@@ -3,8 +3,8 @@ import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../../elements/progress/CenteredCircularProgress";
 import ProEntryPoint from "./ProEntryPoint";
-import TracardiProSignUpForm from "../../elements/forms/pro/TracardiProSignUpForm";
-import TracardiProSignInForm from "../../elements/forms/pro/TracardiProSignInForm";
+import TracardiProSignUpForm from "./form/TracardiProSignUpForm";
+import TracardiProSignInForm from "./form/TracardiProSignInForm";
 import ProServiceList from "./ProServiceList";
 import './ProRouter.css';
 

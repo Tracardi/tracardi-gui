@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import {asyncRemote, covertErrorIntoObject, getError} from "../../../../remote_api/entrypoint";
 import TextField from "@mui/material/TextField";
-import Button from "../Button";
-import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../../tui/TuiForm";
-import TuiColumnsFlex from "../../tui/TuiColumnsFlex";
-import TuiTopHeaderWrapper from "../../tui/TuiTopHeaderWrapper";
+import Button from "../../../elements/forms/Button";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../../../elements/tui/TuiForm";
+import TuiColumnsFlex from "../../../elements/tui/TuiColumnsFlex";
+import TuiTopHeaderWrapper from "../../../elements/tui/TuiTopHeaderWrapper";
 import ErrorsBox from "../../../errors/ErrorsBox";
 import {MenuItem} from "@mui/material";
 import {BsXCircle, BsArrowRightCircle, BsArrowLeftCircle} from "react-icons/bs";

@@ -1,6 +1,6 @@
 import TracardiProAvailableServicesList from "../../elements/lists/TracardiProAvailableServicesList";
 import FormDrawer from "../../elements/drawers/FormDrawer";
-import TracardiProServiceConfigForm from "../../elements/forms/pro/TracardiProServiceConfigForm";
+import TracardiProServiceConfigForm from "./form/TracardiProServiceConfigForm";
 import React, {useEffect, useState} from "react";
 import NoData from "../../elements/misc/NoData";
 import {BsCloudCheckFill, BsSearch} from "react-icons/bs";

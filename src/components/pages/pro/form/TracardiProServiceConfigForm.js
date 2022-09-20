@@ -1,12 +1,12 @@
-import JsonForm from "../JsonForm";
+import JsonForm from "../../../elements/forms/JsonForm";
 import React, {useRef, useState} from "react";
 import {asyncRemote, getError} from "../../../../remote_api/entrypoint";
-import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../../tui/TuiForm";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../../../elements/tui/TuiForm";
 import TextField from "@mui/material/TextField";
-import TuiTags from "../../tui/TuiTags";
+import TuiTags from "../../../elements/tui/TuiTags";
 import {isEmptyObject} from "../../../../misc/typeChecking";
-import MicroserviceForm from "../MicroserviceForm";
-import Button from "../Button";
+import MicroserviceForm from "../../../elements/forms/MicroserviceForm";
+import Button from "../../../elements/forms/Button";
 
 function MicroserviceAndResourceForm({onSubmit}) {
 
