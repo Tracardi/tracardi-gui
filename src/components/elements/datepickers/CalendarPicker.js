@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from "react";
-import PickyDateTime from "react-picky-date-time";
+import React, {Suspense, useEffect, useState} from "react";
 import "./CalendarPicker.css";
 import moment from 'moment'
 import PropTypes from "prop-types";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+
+const PickyDateTime = React.lazy(() => import('react-picky-date-time'))
 
 export default function CalendarPicker({onDateSelect, datetime}) {
 
-    if(datetime.absolute === null) {
+    if (datetime.absolute === null) {
         const now = moment()
         datetime.absolute = {
             year: now.format("YYYY"),
@@ -30,19 +32,19 @@ export default function CalendarPicker({onDateSelect, datetime}) {
     useEffect(() => {
         let date = {
             absolute: {
-                year:year,
-                month:month,
-                meridiem:meridiem,
-                date:day,
-                hour:hour,
-                minute:minute,
-                second:second,
+                year: year,
+                month: month,
+                meridiem: meridiem,
+                date: day,
+                hour: hour,
+                minute: minute,
+                second: second,
             },
             delta: null,
             now: null
         }
         onDateSelect(date);
-    },[year, month, day, hour, minute, second, meridiem, onDateSelect])
+    }, [year, month, day, hour, minute, second, meridiem, onDateSelect])
 
     const onResetTime = (d) => {
         setHour(d?.clockHandHour?.value);
@@ -77,30 +79,33 @@ export default function CalendarPicker({onDateSelect, datetime}) {
         setMeridiem(d.meridiem);
     }
 
-    return  <PickyDateTime
-        size="xs"
-        mode={1}
-        show={true}
-        locale="en-us"
-        onClose={() => {}}
-        defaultTime={`${hour}:${minute}:${second} ${meridiem}`} // OPTIONAL. format: "HH:MM:SS AM"
-        defaultDate={`${month}/${day}/${year}`}
-        onYearPicked={(d) => setYear(d.year)}
-        onMonthPicked={(d) => setMonth(d.month)}
-        onDatePicked={(d) => setDay(d.date)}
-        onResetDate={onResetDate}
-        onResetDefaultDate={onResetDefaultDate}
-        onSecondChange={(d) => setSecond(d.value)}
-        onMinuteChange={(d) => setMinute(d.value)}
-        onHourChange={(d) => setHour(d.value)}
-        onMeridiemChange={setMeridiem}
-        onResetTime={onResetTime}
-        onResetDefaultTime={onResetDefaultTime}
-        onClearTime={onClearTime}
-    />
+    return <Suspense fallback={<CenteredCircularProgress/>}>
+        <PickyDateTime
+            size="xs"
+            mode={1}
+            show={true}
+            locale="en-us"
+            onClose={() => {
+            }}
+            defaultTime={`${hour}:${minute}:${second} ${meridiem}`} // OPTIONAL. format: "HH:MM:SS AM"
+            defaultDate={`${month}/${day}/${year}`}
+            onYearPicked={(d) => setYear(d.year)}
+            onMonthPicked={(d) => setMonth(d.month)}
+            onDatePicked={(d) => setDay(d.date)}
+            onResetDate={onResetDate}
+            onResetDefaultDate={onResetDefaultDate}
+            onSecondChange={(d) => setSecond(d.value)}
+            onMinuteChange={(d) => setMinute(d.value)}
+            onHourChange={(d) => setHour(d.value)}
+            onMeridiemChange={setMeridiem}
+            onResetTime={onResetTime}
+            onResetDefaultTime={onResetDefaultTime}
+            onClearTime={onClearTime}
+        />
+    </Suspense>
 }
 
 CalendarPicker.propTypes = {
     datetime: PropTypes.object,
     onDateSelect: PropTypes.func,
-  };
+};

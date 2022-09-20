@@ -165,11 +165,6 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
 
     return <aside className="FlowEditorTitle">
         <div>
-            {/*<TextField select style={{width: 130, marginRight: 10}} value="draft">*/}
-            {/*    <MenuItem value="draft">Draft</MenuItem>*/}
-            {/*    <MenuItem value="production">Production</MenuItem>*/}
-            {/*    <MenuItem value="backup">Back-up</MenuItem>*/}
-            {/*</TextField>*/}
             <span style={{marginLeft: 10}}>{flowMetaData?.name}</span>
         </div>
         <div>

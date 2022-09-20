@@ -1,12 +1,12 @@
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
-import ReactFlow, {
+import {
     addEdge,
     Background,
     isEdge,
     isNode,
     removeElements, useZoomPanHelper
 } from "react-flow-renderer";
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {Suspense, useCallback, useEffect, useRef, useState} from "react";
 import PropTypes from 'prop-types';
 import FlowNode from "./FlowNode";
 import {v4 as uuid4} from "uuid";
@@ -35,6 +35,8 @@ import {useHistory} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import EdgeDetails from "./EdgeDetails";
 import CondNode from "./CondNode";
+
+const ReactFlow = React.lazy(() => import('react-flow-renderer'))
 
 const ModifiedTag = () => {
     return <span style={{
@@ -598,63 +600,65 @@ export function FlowEditorPane(
                 <div className="FlowEditorGrid" style={displayDebugHeight}>
                     <div className="FlowPane" ref={reactFlowWrapper}>
                         {flowLoading && <CenteredCircularProgress/>}
-                        {!flowLoading && elements && <ReactFlow
-                            elements={elements}
-                            zoomOnDoubleClick={false}
-                            zoomOnScroll={false}
-                            panOnScroll={true}
-                            defaultPosition={[700, 100]} // set position so point (0, 0) is always visible
-                            onElementsRemove={onElementsRemove}
-                            onElementClick={onElementClick}
-                            onNodeDoubleClick={onElementDoubleClick}
-                            onEdgeDoubleClick={onElementDoubleClick}
-                            // onSelectionChange={onSelectionChange}
-                            onNodeContextMenu={onNodeContextMenu}
-                            onEdgeContextMenu={onEdgeContextMenu}
-                            onPaneClick={onPaneClick}
-                            nodeTypes={nodeTypes}
-                            edgeTypes={edgeTypes}
-                            onConnect={onConnect}
-                            deleteKeyCode={46}
-                            zoomActivationKeyCode={32}
-                            multiSelectionKeyCode={32}
-                            onLoad={onLoad}
-                            onDrop={onDrop}
-                            onDragOver={onDragOver}
-                            snapToGrid={false}
-                            snapGrid={snapGrid}
-                            nodesDraggable={!locked}
-                            style={{background: "white"}}
-                            defaultZoom={1}
-                        >
-                            <SidebarLeft onDebug={onDebug}
-                                         debugInProgress={debugInProgress}
-                            />
-
-                            {displayNodeContextMenu && <div className="NodeContextForm"
-                                                            style={{
-                                                                left: clientX,
-                                                                top: clientY
-                                                            }}
+                        {!flowLoading && elements && <Suspense fallback={<CenteredCircularProgress/>}>
+                            <ReactFlow
+                                elements={elements}
+                                zoomOnDoubleClick={false}
+                                zoomOnScroll={false}
+                                panOnScroll={true}
+                                defaultPosition={[700, 100]} // set position so point (0, 0) is always visible
+                                onElementsRemove={onElementsRemove}
+                                onElementClick={onElementClick}
+                                onNodeDoubleClick={onElementDoubleClick}
+                                onEdgeDoubleClick={onElementDoubleClick}
+                                // onSelectionChange={onSelectionChange}
+                                onNodeContextMenu={onNodeContextMenu}
+                                onEdgeContextMenu={onEdgeContextMenu}
+                                onPaneClick={onPaneClick}
+                                nodeTypes={nodeTypes}
+                                edgeTypes={edgeTypes}
+                                onConnect={onConnect}
+                                deleteKeyCode={46}
+                                zoomActivationKeyCode={32}
+                                multiSelectionKeyCode={32}
+                                onLoad={onLoad}
+                                onDrop={onDrop}
+                                onDragOver={onDragOver}
+                                snapToGrid={false}
+                                snapGrid={snapGrid}
+                                nodesDraggable={!locked}
+                                style={{background: "white"}}
+                                defaultZoom={1}
                             >
-                                {currentNode?.data?.metadata?.desc}
-                            </div>}
+                                <SidebarLeft onDebug={onDebug}
+                                             debugInProgress={debugInProgress}
+                                />
 
-                            <WfSchema schema={schema}
-                                      style={{
-                                          position: "absolute",
-                                          color: "#555",
-                                          bottom: 5,
-                                          right: 10,
-                                          fontSize: "80%",
-                                          display: "flex",
-                                          alignItems: "center"
-                                      }}/>
+                                {displayNodeContextMenu && <div className="NodeContextForm"
+                                                                style={{
+                                                                    left: clientX,
+                                                                    top: clientY
+                                                                }}
+                                >
+                                    {currentNode?.data?.metadata?.desc}
+                                </div>}
 
-                            <StatusTag modified={modified} deployed={deployed}/>
+                                <WfSchema schema={schema}
+                                          style={{
+                                              position: "absolute",
+                                              color: "#555",
+                                              bottom: 5,
+                                              right: 10,
+                                              fontSize: "80%",
+                                              display: "flex",
+                                              alignItems: "center"
+                                          }}/>
 
-                            <Background color="#444" gap={16}/>
-                        </ReactFlow>}
+                                <StatusTag modified={modified} deployed={deployed}/>
+
+                                <Background color="#444" gap={16}/>
+                            </ReactFlow>
+                        </Suspense>}
                     </div>
 
                     {displayElementDetails && currentNode && <DetailsHandler element={currentNode}

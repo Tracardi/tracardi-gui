@@ -1,5 +1,5 @@
-import ReactFlow, {Background} from "react-flow-renderer";
-import React, {useEffect, useState} from "react";
+import {Background} from "react-flow-renderer";
+import React, {Suspense, useEffect, useState} from "react";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {useParams} from "react-router-dom";
 import {connect} from "react-redux";
@@ -9,6 +9,8 @@ import FlowNodeWithEvents from "./FlowNodeWithEvents";
 import StartNode from "./StartNode";
 import {asyncRemote, getError} from "../../remote_api/entrypoint";
 import CondNode from "./CondNode";
+
+const ReactFlow = React.lazy(() => import('react-flow-renderer'))
 
 export function FlowReader({showAlert}) {
 
@@ -45,7 +47,7 @@ export function FlowReader({showAlert}) {
                 showAlert({message: errors[0].msg, type: "error", hideAfter: 4000});
             }
         }).finally(() => {
-            if(isSubscribed === true) setFlowLoading(false)
+            if (isSubscribed === true) setFlowLoading(false)
         })
 
         return () => {
@@ -55,19 +57,21 @@ export function FlowReader({showAlert}) {
 
     return <div style={{flex: 1, height: "inherit"}}>
         {flowLoading && <CenteredCircularProgress/>}
-        {elements && <ReactFlow
-            elements={elements}
-            zoomOnDoubleClick={false}
-            zoomOnScroll={false}
-            panOnScroll={true}
-            snapToGrid={true}
-            nodeTypes={nodeTypes}
-            nodesDraggable={false}
-            style={{background: "white"}}
-            defaultZoom={1}
-        >
-            <Background color="#555" gap={16}/>
-        </ReactFlow>}
+        {elements && <Suspense fallback={<CenteredCircularProgress/>}>
+            <ReactFlow
+                elements={elements}
+                zoomOnDoubleClick={false}
+                zoomOnScroll={false}
+                panOnScroll={true}
+                snapToGrid={true}
+                nodeTypes={nodeTypes}
+                nodesDraggable={false}
+                style={{background: "white"}}
+                defaultZoom={1}
+            >
+                <Background color="#555" gap={16}/>
+            </ReactFlow>
+        </Suspense>}
     </div>
 }
 

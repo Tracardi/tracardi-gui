@@ -1,10 +1,12 @@
-import React, {useState} from "react";
+import React, {Suspense, useState} from "react";
 import TextField from "@mui/material/TextField";
 import {BsPalette} from "react-icons/bs";
 import Popover from "@mui/material/Popover";
 import Fade from "@mui/material/Fade";
-import ColorPicker from "react-best-gradient-color-picker";
 import InputAdornment from "@mui/material/InputAdornment";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+
+const ColorPicker = React.lazy(() => import('react-best-gradient-color-picker'))
 
 export default function TuiColorPicker({value=null, label="color", onChange,style}) {
 
@@ -77,7 +79,9 @@ export default function TuiColorPicker({value=null, label="color", onChange,styl
             <div style={{
                 padding: 10
             }}>
-                <ColorPicker value={color} onChange={handleSelect}/>
+                <Suspense fallback={<CenteredCircularProgress/>}>
+                    <ColorPicker value={color} onChange={handleSelect}/>
+                </Suspense>
             </div>
 
         </Popover>
