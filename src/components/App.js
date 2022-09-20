@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Suspense} from "react";
 import {
     BrowserRouter as Router,
     Switch,
@@ -6,7 +6,6 @@ import {
 } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import AppBox from "./AppBox";
 import {connect, useDispatch} from "react-redux";
 import {hideAlert} from "../redux/reducers/alertSlice";
 import Logout from "./authentication/Logout";
@@ -18,6 +17,9 @@ import AlertTitle from '@mui/material/AlertTitle';
 import FormDrawer from "./elements/drawers/FormDrawer";
 import {close} from "../redux/reducers/newResource";
 import ResourceForm from "./elements/forms/ResourceForm";
+import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
+
+const AppBox = React.lazy(() => import('./AppBox'))
 
 const App = ({alert, resource, close}) => {
 
@@ -38,7 +40,9 @@ const App = ({alert, resource, close}) => {
                         <Logout/>
                     </Route>
                     <PrivateRoute path={urlPrefix("/")} roles={["admin", "marketer", "developer", "maintainer"]}>
-                        <AppBox/>
+                        <Suspense fallback={<CenteredCircularProgress/>}>
+                            <AppBox/>
+                        </Suspense>
                     </PrivateRoute>
                 </Switch>
                 <Snackbar open={alert.show} autoHideDuration={alert.hideAfter} onClose={handleClose} anchorOrigin={{

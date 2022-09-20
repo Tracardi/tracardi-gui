@@ -1,15 +1,12 @@
-import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import AceEditor from 'react-ace';
 import "ace-builds/src-noconflict/mode-sql";
 import "ace-builds/src-noconflict/mode-text";
 import "ace-builds/src-noconflict/theme-tomorrow";
-import React, {Suspense} from "react";
-
-const AceEditor = React.lazy(() => import('react-ace'))
+import React from "react";
 
 export default function SqlEditor({onChange, value, height}) {
 
-    return <Suspense fallback={<CenteredCircularProgress/>}>
-        <AceEditor
+    return <AceEditor
             mode="sql"
             theme="tomorrow"
             fontSize={16}
@@ -24,5 +21,4 @@ export default function SqlEditor({onChange, value, height}) {
                 useWorker: false
             }}
         />
-    </Suspense>
 }
