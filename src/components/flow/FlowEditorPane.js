@@ -35,6 +35,7 @@ import {useHistory} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import EdgeDetails from "./EdgeDetails";
 import CondNode from "./CondNode";
+import cloneDeep from 'lodash/cloneDeep';
 
 const ReactFlow = React.lazy(() => import('react-flow-renderer'))
 
@@ -407,28 +408,13 @@ export function FlowEditorPane(
 
     }, [refreshEdgeId, setElements]);
 
-    useEffect(() => {
-        const element = reactFlowWrapper.current;
-        element.tabIndex = "0";
-
-        const handleCtrlVRelease = (event) => {
-            if ((event?.ctrlKey || event?.metaKey) || event?.keyCode === 86) {
-                nodePasted.current = false;
-            }
-        }
-
-        element.addEventListener("keydown", handleCopyPasteNode);
-        element.addEventListener("keyup", handleCtrlVRelease);
-        return () => {
-            element.removeEventListener("keydown", handleCopyPasteNode);
-            element.removeEventListener("keyup", handleCtrlVRelease);
-            selectedNode.current = null;
-            copiedNode.current = false;
-            selectedNode.current = null;
+    const handleCtrlVRelease = useCallback((event) => {
+        if ((event?.ctrlKey || event?.metaKey) || event?.keyCode === 86) {
+            nodePasted.current = false;
         }
     }, [])
 
-    const handleCopyPasteNode = event => {
+    const handleCopyPasteNode = useCallback(event => {
         if ((event?.ctrlKey || event?.metaKey) && Object.keys(nodeTypes).includes(selectedNode.current?.type)) {
             // Ctrl / Cmd + C
             if (event?.keyCode === 67) {
@@ -438,12 +424,11 @@ export function FlowEditorPane(
             if (event?.keyCode === 86 && !nodePasted.current && selectedNode.current) {
                 try {
                     nodePasted.current = true;
-                    const data = copiedNode.current;
+                    const data = cloneDeep(copiedNode.current);
                     const newNode = {
+                        ...data,
                         id: uuid4(),
-                        type: data.type,
-                        position: {x: data.position.x - 100, y: data.position.y},
-                        data: data.data
+                        position: {x: data.position.x - 100, y: data.position.y + 50},
                     };
                     setElements((es) => es.concat(newNode));
                     handleUpdate();
@@ -452,7 +437,24 @@ export function FlowEditorPane(
                 }
             }
         }
-    }
+    },
+        // nodeTypes never change
+        // eslint-disable-next-line
+        [])
+
+    useEffect(() => {
+        const element = reactFlowWrapper.current;
+        element.tabIndex = "0";
+        element.addEventListener("keydown", handleCopyPasteNode);
+        element.addEventListener("keyup", handleCtrlVRelease);
+        return () => {
+            element.removeEventListener("keydown", handleCopyPasteNode);
+            element.removeEventListener("keyup", handleCtrlVRelease);
+            selectedNode.current = null;
+            copiedNode.current = false;
+            selectedNode.current = null;
+        }
+    }, [handleCopyPasteNode, handleCtrlVRelease])
 
     const handleUpdate = () => {
         setModified(true);

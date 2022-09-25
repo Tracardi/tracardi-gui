@@ -41,6 +41,7 @@
     "axios": "^0.21.2",
     "dot-object": "^2.1.4",
     "history": "^4.10.1",
+    "lodash": "^4.17.21",
     "material-ui-confirm": "^3.0.3",
     "material-ui-popup-state": "^2.0.0",
     "moment": "^2.29.1",
