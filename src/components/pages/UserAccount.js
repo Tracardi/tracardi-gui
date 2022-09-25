@@ -36,7 +36,7 @@ export default function UserAccount () {
             setLogoutProgress(true);
         }
         try {
-            await asyncRemote({method: "post", url: "/logout"});
+            await asyncRemote({method: "post", url: "/user/logout"});
             go("/logout")();
         }
         catch (e) {

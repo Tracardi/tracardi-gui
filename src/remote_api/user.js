@@ -19,7 +19,7 @@ export const loginUser = (username, password) => {
     };
 
     return asyncRemote({
-        url: "/token",
+        url: "/user/token",
         headers: {"Content-Type": "application/x-www-form-urlencoded"},
         method: "post",
         data: JsonToURLEncoded(params)

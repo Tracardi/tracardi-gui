@@ -1,12 +1,16 @@
-import AceEditor from 'react-ace';
+import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-html";
 import "ace-builds/src-noconflict/mode-text";
 import "ace-builds/src-noconflict/theme-tomorrow";
-import React from "react";
+import React, {Suspense} from "react";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+
+const AceEditor = React.lazy(() => import('react-ace'))
 
 export default function HtmlEditor({onChange, value, height}) {
 
-    return <AceEditor
+    return <Suspense fallback={<CenteredCircularProgress/>}>
+        <AceEditor
             mode="html"
             theme="tomorrow"
             fontSize={16}
@@ -21,4 +25,5 @@ export default function HtmlEditor({onChange, value, height}) {
                 useWorker: false
             }}
         />
+    </Suspense>
 }
