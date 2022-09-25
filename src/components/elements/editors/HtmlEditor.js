@@ -1,3 +1,4 @@
+import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-html";
 import "ace-builds/src-noconflict/mode-text";
 import "ace-builds/src-noconflict/theme-tomorrow";

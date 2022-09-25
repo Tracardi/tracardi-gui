@@ -1,4 +1,5 @@
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-sql";
 import "ace-builds/src-noconflict/mode-text";
 import "ace-builds/src-noconflict/theme-tomorrow";
