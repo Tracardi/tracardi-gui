@@ -507,7 +507,7 @@ export function FlowEditorPane(
 
         if (Array.isArray(elementsToRemove)) {
             // todo add endpoint call that removes the data
-            console.log(getElementsWithRunOnce(elementsToRemove))
+            const elements = getElementsWithRunOnce(elementsToRemove)
         }
 
         setElements((els) => removeElements(elementsToRemove, els));
