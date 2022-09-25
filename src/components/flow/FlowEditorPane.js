@@ -240,6 +240,9 @@ export function FlowEditorPane(
     const [debugInProgress, setDebugInProgress] = useState(false);
     const [clientX, setClientX] = useState(0);
     const [clientY, setClientY] = useState(0);
+    const selectedNode = useRef({});
+    const copiedNode = useRef(null);
+    const nodePasted = useRef(false);
 
     const [modified, setModified] = useState(false);
     const [deployed, setDeployed] = useState(false);
@@ -404,6 +407,53 @@ export function FlowEditorPane(
 
     }, [refreshEdgeId, setElements]);
 
+    useEffect(() => {
+        const element = reactFlowWrapper.current;
+        element.tabIndex = "0";
+
+        const handleCtrlVRelease = (event) => {
+            if ((event?.ctrlKey || event?.metaKey) || event?.keyCode === 86) {
+                nodePasted.current = false;
+            }
+        }
+
+        element.addEventListener("keydown", handleCopyPasteNode);
+        element.addEventListener("keyup", handleCtrlVRelease);
+        return () => {
+            element.removeEventListener("keydown", handleCopyPasteNode);
+            element.removeEventListener("keyup", handleCtrlVRelease);
+            selectedNode.current = null;
+            copiedNode.current = false;
+            selectedNode.current = null;
+        }
+    }, [])
+
+    const handleCopyPasteNode = event => {
+        if ((event?.ctrlKey || event?.metaKey) && Object.keys(nodeTypes).includes(selectedNode.current?.type)) {
+            // Ctrl / Cmd + C
+            if (event?.keyCode === 67) {
+                copiedNode.current = selectedNode.current;
+            }
+            // Ctrl / Cmd + V
+            if (event?.keyCode === 86 && !nodePasted.current && selectedNode.current) {
+                try {
+                    nodePasted.current = true;
+                    const data = copiedNode.current;
+                    const newNode = {
+                        id: uuid4(),
+                        type: data.type,
+                        position: {x: data.position.x - 100, y: data.position.y},
+                        data: data.data
+                    };
+                    setElements((es) => es.concat(newNode));
+                    handleUpdate();
+                } catch (e) {
+                    alert("Cannot paste node.");
+                }
+            }
+        }
+    }
+
     const handleUpdate = () => {
         setModified(true);
         setDeployed(false);
@@ -537,6 +587,7 @@ export function FlowEditorPane(
     }
 
     const selectNode = (node) => {
+        selectedNode.current = node;
         setCurrentNode(node)
     }
 
