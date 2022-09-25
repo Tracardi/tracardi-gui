@@ -422,6 +422,9 @@ export function FlowEditorPane(
         return () => {
             element.removeEventListener("keydown", handleCopyPasteNode);
             element.removeEventListener("keyup", handleCtrlVRelease);
+            selectedNode.current = null;
+            copiedNode.current = false;
+            selectedNode.current = null;
         }
     }, [])
 
