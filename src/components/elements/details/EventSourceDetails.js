@@ -139,11 +139,11 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             </TuiFormGroup>
 
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Web hook"
-                                    description="For every event source there is a web hook created. Calling it will emit
+                <TuiFormGroupHeader header="Webhook"
+                                    description="For every event source there is a webhook created. Calling it will emit
                                 profile less event. For full fledged events call regular /track endpoint."/>
                 <TuiFormGroupContent>
-                    <h3>Web hook URL</h3>
+                    <h3>Webhook URL</h3>
                     <p>Event properties should be send in the body of request and <b>event-type</b> inside URL should be
                         replaced with the event type you would like to emit. Please refer to the documentation to see
                         what are profile less events as calling this web hook will emit one of them.
