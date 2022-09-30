@@ -42,6 +42,7 @@ export default function SessionsAnalytics({displayChart=true}) {
         onLoadDetails={handleLoadDetails}
         displayChart={displayChart}
         displayDetails={displayDetails}
+        detailsDrawerWidth={1200}
     />
 
 }

@@ -29,7 +29,7 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
             setLoading(true);
             setError(null);
             asyncRemote({
-                url: "/events/session/" + session.id + "/profile/" + profileId + "?limit=" + limit
+                url: "/events/session/" + session?.id + "/profile/" + profileId + "?limit=" + limit
             })
                 .then(response => {
                     if (subscribed) {
@@ -76,8 +76,8 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
     }
 
     return <div className="SessionStepper">
-        {session && <header className="Header">Session starting {session.insert.substring(0, 10)},
-            duration {Math.floor(session.duration / 60)} minutes</header>}
+        {session && <header className="Header">Session starting {session.metadata?.time?.insert?.substring(0, 10)},
+            duration {Math.floor(session.metadata?.time?.duration / 60)} minutes</header>}
         {Array.isArray(eventsData) && eventsData.length > 0 && <Stepper
             orientation="vertical"
             connector={<div className="StepConnector"/>}
