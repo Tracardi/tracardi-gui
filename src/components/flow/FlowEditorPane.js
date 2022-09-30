@@ -132,7 +132,7 @@ const NodeDetailsHandler = React.memo(({node, onLabelSet, onConfig, onRuntimeCon
     }
 
     if (loading || available === null) {
-        return <CenteredCircularProgress label="Connecting Tracardi PRO"/>
+        return <CenteredCircularProgress label="Connecting Tracardi PRO" minWidth={500}/>
     }
 
     if (available === true) {
