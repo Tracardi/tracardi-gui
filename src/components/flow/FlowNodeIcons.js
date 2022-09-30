@@ -226,7 +226,7 @@ export const icons = {
     "message": (size) => <BiMessageSquareCheck size={size}/>,
     "stripe": (size) => <Stripe size={size}/>,
     "card": (size) => <BsCreditCard size={size}/>,
-    "hubspot": (size) => <SiHubspot size={size}/>
+    "hubspot": (size) => <SiHubspot size={size}/>,
 }
 
 

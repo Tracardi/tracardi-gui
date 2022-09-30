@@ -1,12 +1,24 @@
 import React from "react";
-import './EventStatusTag.css';
-
 export default function EventStatusTag({label}) {
-    if(label==='error' || label==='invalid')
-        return <span className="EventStatusTag ErrorColor">{label}</span>
-    if(label==='processed')
-        return <span className="EventStatusTag OKColor">{label}</span>
-    if(label==='warning')
-        return <span className="EventStatusTag WarnColor">{label}</span>
-    return <span className="EventStatusTag InfoColor">{label}</span>
+
+    const getColor = () => {
+        if (label==='processed') {
+            return "#00c49f"
+        }
+        return "#0088fe"
+    }
+
+    return <span style={{
+        display: "inline-flex",
+        alignItems: "center",
+        fontSize: "90%",
+        padding: "2px 10px",
+        marginTop: 2,
+        borderRadius: 5,
+        backgroundColor: getColor(),
+        color: "white",
+        height: 22
+    }}>
+        {label}
+        </span>
 }

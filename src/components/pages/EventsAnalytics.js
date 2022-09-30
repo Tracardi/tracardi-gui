@@ -4,9 +4,12 @@ import EventDetails from "../elements/details/EventDetails";
 import DataAnalytics from "./DataAnalytics";
 import EventStatusTag from "../elements/misc/EventStatusTag";
 import EventTypeTag from "../elements/misc/EventTypeTag";
-import { makeUtcStringTzAware } from "../../misc/converters";
+import {makeUtcStringTzAware} from "../../misc/converters";
+import EventValidation from "../elements/misc/EventValidation";
+import EventErrors from "../elements/misc/EventErrors";
+import EventWarnings from "../elements/misc/EventWarnings";
 
-export default function EventsAnalytics({displayChart=true}) {
+export default function EventsAnalytics({displayChart = true}) {
 
     const handleLoadDataRequest = (query) => {
         return {
@@ -40,7 +43,7 @@ export default function EventsAnalytics({displayChart=true}) {
         type="event"
         label="List of events"
         enableFiltering={true}
-        timeFieldLabel = "timestamp"
+        timeFieldLabel="timestamp"
         filterFields={[
             'session.profile',
             'session.context',
@@ -55,7 +58,14 @@ export default function EventsAnalytics({displayChart=true}) {
             'metadata',
             'context'
         ]}
-        timeField={(row) => [makeUtcStringTzAware(row.metadata.time.insert), <EventTypeTag eventType={row.type} profile={row?.profile?.id}/>, <EventStatusTag label={row.metadata.status}/>]}
+        timeField={(row) => [
+            makeUtcStringTzAware(row.metadata.time.insert),
+            <EventTypeTag eventType={row.type} profile={row?.profile?.id}/>,
+            <EventStatusTag label={row.metadata.status}/>,
+            <EventValidation eventMetaData={row.metadata}/>,
+            <EventWarnings eventMetaData={row.metadata}/>,
+            <EventErrors eventMetaData={row.metadata}/>,
+        ]}
 
         onLoadHistogramRequest={handleLoadHistogramRequest}
         onLoadDataRequest={handleLoadDataRequest}
