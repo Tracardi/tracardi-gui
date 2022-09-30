@@ -1,4 +1,5 @@
 import React from "react";
+import {isString} from "../../../misc/typeChecking";
 export default function EventStatusTag({label}) {
 
     const getColor = () => {
@@ -6,6 +7,12 @@ export default function EventStatusTag({label}) {
             return "#00c49f"
         }
         return "#0088fe"
+    }
+
+    function capitalizeFirstLetter(string) {
+        if(isString(string)) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
     }
 
     return <span style={{
@@ -19,6 +26,6 @@ export default function EventStatusTag({label}) {
         color: "white",
         height: 22
     }}>
-        {label}
+        {capitalizeFirstLetter(label)}
         </span>
 }

@@ -13,7 +13,7 @@ export default function EventWarnings({eventMetaData}) {
             color: "white",
             height: 22,
             fontSize: "90%",
-        }}>Warnings</span>
+        }}>Warning</span>
     }
     return ""
 }

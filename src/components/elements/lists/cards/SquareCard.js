@@ -15,7 +15,7 @@ const SquareCard = ({id, status, name, description, onClick, icon, tags}) => {
             <div className={statusClass(status)}>{icon}</div>
             <div className="name">{name}</div>
             <div className="desc">{description}</div>
-            {tags && <div className="tags">{Array.isArray(tags) && tags.map(tag => <Tag>{tag}</Tag>) }</div>}
+            {tags && <div className="tags">{Array.isArray(tags) && tags.map((tag, key) => <Tag id={key}>{tag}</Tag>) }</div>}
         </div>
     );
 }
