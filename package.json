@@ -1,6 +1,6 @@
 {
   "name": "tracardi-gui",
-  "version": "0.7.2-dev",
+  "version": "0.7.3-dev",
   "private": true,
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
