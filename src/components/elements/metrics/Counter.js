@@ -1,8 +1,8 @@
 import React from "react";
 import {abbreviateNumber, round} from "../../../misc/converters";
-export default function Counter({label, value, subValue, subValueSuffix = "",width=120}) {
+export default function Counter({label, value, subValue, subValueSuffix = ""}) {
 
-    return <div style={{width: width, padding: 15, margin: "0px 5px", fontFamily: "Lato"}}>
+    return <div style={{width: "100%", padding: 15, margin: "0px 5px", fontFamily: "Lato"}}>
         <div style={{fontWeight: 400}}>{label}</div>
         <div style={{
             display: "flex",

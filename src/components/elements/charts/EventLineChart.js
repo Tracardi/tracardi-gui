@@ -1,4 +1,4 @@
-import {Area, AreaChart} from "recharts";
+import {Area, AreaChart, ResponsiveContainer} from "recharts";
 import React, {useEffect, useState} from "react";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
@@ -44,14 +44,17 @@ export default function EventLineChart() {
     }
 
     if (loading) {
-        return <div style={{width: 150, height: 110}}><CenteredCircularProgress/></div>
+        return <div style={{width: 100, height: 110}}><CenteredCircularProgress/></div>
     }
 
-    return <div style={{margin: 15}}>
-        <AreaChart width={150} height={80} data={data} style={{cursor: "inherit"}}>
-            <Area type="monotone" dataKey="count" stroke="#0088FE" fill="#0088FE" fillOpacity={0.3} strokeWidth={2}
-                  dot={false}/>
-        </AreaChart>
+    return <div style={{margin: 15, width: "100%"}}>
+        <ResponsiveContainer height={80}>
+            <AreaChart data={data} style={{cursor: "inherit"}}>
+                <Area type="monotone" dataKey="count" stroke="#0088FE" fill="#0088FE" fillOpacity={0.3} strokeWidth={2}
+                      dot={false}/>
+            </AreaChart>
+        </ResponsiveContainer>
+
     </div>
 
 

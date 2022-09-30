@@ -4,7 +4,7 @@ import Counter from "./Counter";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 
-export default function AvgEventTime({width=200}) {
+export default function AvgEventTime() {
 
     const [value,setValue] = useState(0);
     const [total,setTotal] = useState(0);
@@ -43,11 +43,10 @@ export default function AvgEventTime({width=200}) {
         return <CenteredCircularProgress />
     }
 
-    return <div>
+    return <div style={{display: "flex", alignItems: "center", justifyItems: "center", width: "100%", height: "100%"}}>
         <Counter label="Avg process time"
                  value={value}
                  subValue={total}
-                 subValueSuffix="records"
-                 width={width}/>
+                 subValueSuffix="records"/>
     </div>
 }

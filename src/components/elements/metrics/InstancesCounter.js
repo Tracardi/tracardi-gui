@@ -4,7 +4,7 @@ import Counter from "./Counter";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 
-export default function InstancesCounter({width=200}) {
+export default function InstancesCounter() {
 
     const [value,setValue] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -39,7 +39,7 @@ export default function InstancesCounter({width=200}) {
         return <CenteredCircularProgress />
     }
 
-    return <div>
-        <Counter label="Running instances" value={value} width={width}/>
+    return <div style={{display: "flex", placeItems: "center", width: "100%", height: "100%"}}>
+        <Counter label="Running instances" value={value}/>
     </div>
 }

@@ -44,11 +44,11 @@ export default function ProfileLineChart() {
     }
 
     if (loading) {
-        return <div style={{width: 150, height: 110}}><CenteredCircularProgress/></div>
+        return <div style={{width: 100, height: 110}}><CenteredCircularProgress/></div>
     }
 
     return <div style={{margin: 15}}>
-        <AreaChart width={150} height={80} data={data}>
+        <AreaChart width={100} height={80} data={data}>
             <Area type="monotone" dataKey="count" stroke="#0088FE" fill="#0088FE" fillOpacity={0.3} strokeWidth={2}
                   dot={false}/>
         </AreaChart>

@@ -40,6 +40,6 @@ export default function SessionCounter() {
     }
 
     return <div>
-        <Counter label="Sessions/Visits" value={value}/>
+        <Counter label="Sessions" value={value}/>
     </div>
 }
