@@ -16,7 +16,7 @@ export default function EventInfo({id}) {
         setLoading(true);
         if (id) {
             asyncRemote({
-                url: "/event/" + id
+                url: `/event/${id}`
             })
                 .then(response => {
                     if (isSubscribed && response?.data) {

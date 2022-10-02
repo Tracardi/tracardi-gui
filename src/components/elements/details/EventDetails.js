@@ -39,7 +39,7 @@ const SessionContextInfo = ({sessionId}) => {
             setLoading(true);
             if (sessionId) {
                 asyncRemote({
-                    url: "/session/" + sessionId
+                    url: `/session/${sessionId}`
                 })
                     .then(response => {
                         if (isSubscribed && response?.data) {

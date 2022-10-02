@@ -30,7 +30,7 @@ const EventProfilingDetails = ({eventId, showAlert}) => {
     useEffect(() => {
         let isSubscribed = true
         setLoading(true);
-        asyncRemote({url: "/event/debug/" + eventId})
+        asyncRemote({url: `/event/debug/${eventId}`})
             .then((response) => {
                 if (response !== null && isSubscribed) {
                     setProfilingData(response.data);

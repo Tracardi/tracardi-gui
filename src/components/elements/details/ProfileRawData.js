@@ -13,8 +13,10 @@ const ProfileRawData = ({id}) => {
 
     React.useEffect(() => {
         let isSubscribed = true;
-        if (isSubscribed) setError(null);
-        if (isSubscribed) setLoading(true);
+        if (isSubscribed) {
+            setError(null);
+            setLoading(true);
+        }
         if (id) {
             asyncRemote({
                 url: "/profile/" + id

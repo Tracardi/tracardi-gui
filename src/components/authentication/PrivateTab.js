@@ -14,10 +14,7 @@ export default class PrivateTab {
     }
 
     isAuth() {
-        if(this.intersect(getRoles(), this.roles).length > 0) {
-            return true
-        }
-        return false
+        return this.intersect(getRoles(), this.roles).length > 0
     }
 
 }

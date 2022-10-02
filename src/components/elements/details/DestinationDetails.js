@@ -62,7 +62,7 @@ function DestinationDetails({id, onDelete, onEdit}) {
             .then(async () => {
                     setDeleteProgress(true);
                     await asyncRemote({
-                        url: '/destination/' + id,
+                        url: `/destination/${id}`,
                         method: "delete"
                     })
                     if (onDelete && mounted.current === true) {
@@ -81,9 +81,12 @@ function DestinationDetails({id, onDelete, onEdit}) {
         )
     }
 
-    return <>
-        {loading && <CenteredCircularProgress/>}
-        {!loading && <TuiForm style={{margin: 20}}>
+    if(loading){
+        return <CenteredCircularProgress/>
+    }
+
+    return  (
+        <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header={data?.name}/>
                 <TuiFormGroupContent>
@@ -111,8 +114,8 @@ function DestinationDetails({id, onDelete, onEdit}) {
                     value={data}
                 />}
             </FormDrawer>
-        </TuiForm>}
-    </>
+        </TuiForm>
+    )
 
 }
 

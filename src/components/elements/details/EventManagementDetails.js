@@ -28,7 +28,7 @@ export default function EventManagementDetails({id, onDeleteComplete, onEditComp
             mounted.current = true;
             setLoading(true);
             asyncRemote({
-                url: '/event-type/management/' + id,
+                url: `/event-type/management/${id}`,
                 method: "get"
             })
                 .then((result) => {
@@ -54,7 +54,7 @@ export default function EventManagementDetails({id, onDeleteComplete, onEditComp
                 if(mounted.current) setDeleteProgress(true);
                     try {
                         await asyncRemote({
-                            url: '/event-type/management/' + id,
+                            url: `/event-type/management/${id}`,
                             method: "delete"
                         })
                         if (onDeleteComplete) {

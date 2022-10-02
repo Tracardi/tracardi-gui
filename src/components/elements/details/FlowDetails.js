@@ -30,7 +30,7 @@ export default function FlowDetails({id, onDeleteComplete}) {
             setLoading(true);
 
             asyncRemote({
-                url: '/flow/metadata/' + id,
+                url: `/flow/metadata/${id}`,
                 method: "get"
             }).then((response) => {
                 if(isSubscribed===true) setData(response.data);
@@ -70,7 +70,7 @@ export default function FlowDetails({id, onDeleteComplete}) {
             .then(async () => {
                     try {
                         await asyncRemote({
-                            url: '/flow/' + id,
+                            url: `/flow/${id}`,
                             method: "delete"
                         })
                     } catch(e) {

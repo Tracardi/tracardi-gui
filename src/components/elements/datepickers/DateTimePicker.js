@@ -17,7 +17,7 @@ export default function DataTimePicker({type, datetime, onDatetimeSelect}) {
             return 2;
         }
 
-        if(datetime?.delta?.value && datetime.delta.value != null) {
+        if(datetime?.delta?.value) {
             return 1;
         }
 
@@ -42,7 +42,7 @@ export default function DataTimePicker({type, datetime, onDatetimeSelect}) {
     const open = Boolean(anchorEl);
     const id = open ? 'datetime-popover' : undefined;
 
-    const useStyles = makeStyles((theme) => ({
+    const useStyles = makeStyles(() => ({
         root: {
             marginTop: 5,
             transform: "none",

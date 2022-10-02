@@ -32,7 +32,7 @@ export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
     useEffect(() => {
             setLoading(true);
             asyncRemote({
-                url: '/consent/type/' + id,
+                url: `/consent/type/${id}`,
                 method: "get"
             })
                 .then((result) => {
@@ -57,7 +57,7 @@ export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
                     setDeleteProgress(true);
                     try {
                         await asyncRemote({
-                            url: '/consent/type/' + id,
+                            url: `/consent/type/${id}`,
                             method: "delete"
                         })
                         if (onDeleteComplete) {

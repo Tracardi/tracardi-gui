@@ -39,7 +39,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
     useEffect(() => {
         setLoading(true);
         asyncRemote({
-            url: '/event-source/' + id,
+            url: `/event-source/${id}`,
             method: "GET"
         }).then((response) => {
             if (response) {
@@ -57,7 +57,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
     // Loads data without loading indicator
     useEffect(() => {
         asyncRemote({
-            url: '/event-source/' + id,
+            url: `/event-source/${id}`,
             method: "GET"
         }).then((response) => {
             if (response) {
@@ -81,7 +81,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
         }).then(async () => {
             try {
                 const response = await asyncRemote({
-                    url: '/event-source/' + data.id,
+                    url: `/event-source/${data.id}`,
                     method: "DELETE"
                 })
                 if (onDeleteComplete) {

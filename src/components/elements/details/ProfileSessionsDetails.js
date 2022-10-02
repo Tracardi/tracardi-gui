@@ -14,7 +14,7 @@ export default function ProfileSessionsDetails({ profileId }) {
     return <div style={{display: "flex", width:"100%", height: "inherit", padding: 5}}>
         <div style={{width: "100%", padding: 5, flexBasis: "40%", height: "inherit"}}>
             <SessionSlider profileId={profileId}
-                           onEventSelect={eventId => handleEventSet(eventId)}
+                           onEventSelect={handleEventSet}
             />
         </div>
         <div style={{width: "100%", padding: 5, flexBasis: "60%", height: "inherit"}}>

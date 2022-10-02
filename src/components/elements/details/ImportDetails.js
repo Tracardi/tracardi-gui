@@ -20,7 +20,7 @@ export default function ImportDetails({onClose, id}) {
     const [runProgress, setRunProgress] = React.useState(false);
     const [debugRunProgress, setDebugRunProgress] = React.useState(false);
     const [runSuccessful, setRunSuccessful] = React.useState(false);
-    const [runDebugSuccessul, setRunDebugSuccessful] = React.useState(false);
+    const [runDebugSuccessful, setRunDebugSuccessful] = React.useState(false);
     const mounted = React.useRef(false);
 
     React.useEffect(() => {
@@ -72,10 +72,11 @@ export default function ImportDetails({onClose, id}) {
         })
             .then(response => {
                 if (response.status === 200) {
-                    if (debug) {
-                        if (mounted.current) setRunDebugSuccessful(true);
-                    } else {
-                        if (mounted.current) setRunSuccessful(true);
+                    if (mounted.current) {
+                        if (debug) {
+                            return setRunDebugSuccessful(true);
+                        }
+                        setRunSuccessful(true);
                     }
                 }
             })
@@ -85,18 +86,22 @@ export default function ImportDetails({onClose, id}) {
             .finally(() => {
                 if (mounted.current) {
                     if (debug) {
-                        if (mounted.current) setDebugRunProgress(false);
-                    } else {
-                        if (mounted.current) setRunProgress(false);
+                        return setDebugRunProgress(false);
                     }
+                    setRunProgress(false);
                 }
             })
     }
 
+    if(loading){
+        return <CenteredCircularProgress/>
+    }
+    if(error){
+        return <ErrorsBox errorList={error} style={{margin: 20}}/>
+    }
+    if(!batch) return <></>
+
     return <>
-        {loading && <CenteredCircularProgress/>}
-        {error && <ErrorsBox errorList={error} style={{margin: 20}}/>}
-        {batch &&
         <Tabs tabs={["Actions", "Details"]} defaultTab={tab} onTabSelect={setTab}>
             <TabCase id={0}>
                 <TuiForm style={{margin: 20}}>
@@ -120,7 +125,7 @@ export default function ImportDetails({onClose, id}) {
                                     buttonLabel={batch.enabled ? "RUN DEBUG" : "Import is disabled"}
                                     textLabel="Task name"
                                     disabled={!batch.enabled}
-                                    confirmed={runDebugSuccessul}
+                                    confirmed={runDebugSuccessful}
                                     progress={debugRunProgress}
                                     onClick={(name) => handleRun(name, true)}
                                     icon={<VscDebugAlt size={20}/>}
@@ -146,6 +151,5 @@ export default function ImportDetails({onClose, id}) {
                 <ImportEditForm importConfig={batch} onSubmit={onClose}/>
             </TabCase>
         </Tabs>
-        }
     </>
 }
