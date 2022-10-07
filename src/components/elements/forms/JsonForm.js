@@ -12,7 +12,7 @@ import {
     ListOfDotPaths,
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
     SelectInput, BoolInput, ReadOnlyTags, EventTypes, EventType, ConsentTypes, AutoCompleteInput,
-    ReportConfig, PasswordInput
+    ReportConfig, PasswordInput, FontSizeInput
 } from "./JsonFormComponents";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {AiOutlineCheckCircle} from "react-icons/ai";
@@ -195,6 +195,13 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
                 {...props}
             />
 
+        case "fontSize":
+            return (props) => <FontSizeInput
+                value={value}
+                errorMessage={errorMessage}
+                onChange={useCallback((value) => handleOnChange(value, fieldId), [])}
+                {...props}/>
+
         default:
             return () => <AlertBox>Missing form type {componentType}.</AlertBox>
     }
@@ -209,12 +216,12 @@ const Fields = ({spec, fields, values, errorMessages, keyValueMapOfComponentValu
 
         // Resolve props references
 
-        if(spec!== null && isObject(spec)) {
+        if (spec !== null && isObject(spec)) {
             props = changeReferences(props, spec)
         }
 
         const readValue = (fieldId) => {
-            if(fieldId === '*') {
+            if (fieldId === '*') {
                 return dot2object(keyValueMapOfComponentValues)
             } else if (fieldId in keyValueMapOfComponentValues) {
                 // This handles simple fields like nums, strings
@@ -293,7 +300,7 @@ const Title = ({title}) => {
     return ""
 }
 
-const JsonForm = ({spec=null, schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
+const JsonForm = ({spec = null, schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
 
     const keyValueMapOfComponentValues = object2dot(values)
     const hasErrors = errorMessages && Object.keys(errorMessages).length
@@ -327,12 +334,12 @@ const JsonForm = ({spec=null, schema, values = {}, errorMessages = {}, serverSid
             {serverSideError && <ErrorsBox errorList={serverSideError}/>}
 
             {onSubmit && <Button onClick={() => handleSubmit()}
-                    confirmed={confirmed}
-                    error={hasErrors}
-                    progress={processing}
-                    label="Save"
-                    icon={<AiOutlineCheckCircle size={20}/>}
-                    style={{justifyContent: "center"}}
+                                 confirmed={confirmed}
+                                 error={hasErrors}
+                                 progress={processing}
+                                 label="Save"
+                                 icon={<AiOutlineCheckCircle size={20}/>}
+                                 style={{justifyContent: "center"}}
             />}
         </TuiForm>
     }

@@ -44,7 +44,6 @@ export const PasswordInput = ({label = "Password", value, onChange, fullWidth = 
         event.preventDefault();
     };
 
-    console.log(value)
     return <TextField
         required={required}
         fullWidth={fullWidth}
@@ -89,6 +88,35 @@ export const TextInput = ({value, label, errorMessage, onChange}) => {
                       onChange={handleChange}
                       variant="outlined"
                       size="small"
+                      helperText={errorMessage}
+                      error={!isEmptyStringOrNull(errorMessage)}
+                      FormHelperTextProps={{style: {color: "#d81b60"}}}
+                      fullWidth
+    />
+}
+
+export const FontSizeInput = ({value, label, errorMessage, onChange}) => {
+
+    const [text, setText] = useState(value || "")
+
+    const handleChange = (event) => {
+        event.preventDefault();
+        setText(event.target.value);
+        if (onChange) {
+            onChange(event.target.value);
+        }
+    };
+
+    return <TextField label={label}
+                      value={text}
+                      onChange={handleChange}
+                      variant="outlined"
+                      size="small"
+                      InputProps={{
+                          endAdornment: <InputAdornment position="end"><sup style={{color: "gray"}}>px</sup></InputAdornment>
+                      }}
+                      inputProps={{min: 0, style: {textAlign: 'right', height: 30}}}
+                      style={{width: 100, margin: 7}}
                       helperText={errorMessage}
                       error={!isEmptyStringOrNull(errorMessage)}
                       FormHelperTextProps={{style: {color: "#d81b60"}}}

@@ -92,7 +92,7 @@ export function BoxStylingInfo({
     </div>
 }
 
-function BoxPixelInput({label, value, icon, onChange}) {
+function BoxPixelInput({label, value, icon, onChange, outline=true}) {
     const [iconColor, setIconColor] = useState("rgba(0, 0, 0, 0.30)")
 
     const handleChange = (e) => {
@@ -106,19 +106,28 @@ function BoxPixelInput({label, value, icon, onChange}) {
         }
     }
 
+    const AdornmentIcon = () => {
+        if(outline) {
+            return <span style={{
+                border: "2px solid " + iconColor,
+                borderRadius: 3,
+                width: 24,
+                height: 23,
+                color: iconColor
+            }}>{icon}</span>
+        }
+
+        return icon
+
+    }
+
     return <TextField label={label}
                       variant="standard"
                       onFocusCapture={() => setIconColor("#1976d2")}
                       onBlurCapture={() => setIconColor("rgba(0, 0, 0, 0.30)")}
                       size="small"
                       InputProps={{
-                          startAdornment: icon ? <InputAdornment position="start"><span style={{
-                              border: "2px solid " + iconColor,
-                              borderRadius: 3,
-                              width: 24,
-                              height: 23,
-                              color: iconColor
-                          }}>{icon}</span></InputAdornment> : null,
+                          startAdornment: icon ? <InputAdornment position="start"><AdornmentIcon/></InputAdornment> : null,
                           endAdornment: <InputAdornment position="end"><sup
                               style={{color: iconColor}}>px</sup></InputAdornment>
                       }}
