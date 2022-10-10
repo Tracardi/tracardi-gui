@@ -138,7 +138,7 @@ TRACARDI is available under MIT with Common Clause license.
 
 ## 👇 Recent activities
 
-[![Stargazers repo roster for @tracardi/tracardi](https://reporoster.com/stars/tracardi/tracardi)](https://github.com/tracardi/tracardi/stargazers)
+[![Stargazers repo roster for @tracardi/tracardi-gui](https://reporoster.com/stars/tracardi/tracardi-gui)](https://github.com/tracardi/tracardi/stargazers)
 
-[![Forkers repo roster for @tracardi/tracardi](https://reporoster.com/forks/tracardi/tracardi)](https://github.com/tracardi/tracardi/network/members)
+[![Forkers repo roster for @tracardi/tracardi-gui](https://reporoster.com/forks/tracardi/tracardi-gui)](https://github.com/tracardi/tracardi/network/members)
 
