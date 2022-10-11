@@ -93,7 +93,7 @@ import {
     AiOutlineCheckCircle,
     AiFillGoogleCircle
 } from "react-icons/ai";
-import {FaFacebookSquare, FaDiscord} from "react-icons/fa";
+import {FaFacebookSquare, FaDiscord, FaSms} from "react-icons/fa";
 import {RiRestTimeLine} from "react-icons/ri";
 import {IoIosTimer, IoIosContact, IoIosAttach} from "react-icons/io";
 import {CgCalendarToday} from "react-icons/cg";
@@ -226,7 +226,8 @@ export const icons = {
     "message": (size) => <BiMessageSquareCheck size={size}/>,
     "stripe": (size) => <Stripe size={size}/>,
     "card": (size) => <BsCreditCard size={size}/>,
-    "hubspot": (size) => <SiHubspot size={size}/>
+    "hubspot": (size) => <SiHubspot size={size}/>,
+    "sms": (size) => <FaSms size={size}/>
 }
 
 
