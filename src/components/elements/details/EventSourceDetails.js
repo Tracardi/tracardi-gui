@@ -277,11 +277,10 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
         {data && <>
             <div style={{display: "flex", margin: 20, flexDirection: "column"}}>
 
-                    <div style={{display: "flex",justifyContent: "space-between", alignItems: 'center'}}>
+                    <div style={{display: "flex",justifyContent: "space-between", alignItems: 'center', marginBottom: 10}}>
                         <div style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>
-                            <FlowNodeIcons icon={data.icon} size={30}/>
                             <h1 className="header"
-                                style={{marginBottom: 0, marginLeft: 10}}> {data.name} ({data.type})</h1>
+                                style={{marginBottom: 0}}> {data.name} ({data.type})</h1>
                         </div>
                         <div style={{display: "flex", alignItems: "start"}}>
                             <Rows>
