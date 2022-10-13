@@ -5,6 +5,11 @@ const DaysPassed = ({ date }) => {
 };
 
 function calcDaysPassed(date) {
+  if (typeof date !== "string" || isNaN(new Date(date))) {
+    console.error(`Invalid input, ${date} should be a date string.`);
+    return "";
+  }
+
   const past = new Date(date).getTime();
   const present = new Date(Date.now()).getTime();
 
