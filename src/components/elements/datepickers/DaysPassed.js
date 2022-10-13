@@ -4,7 +4,7 @@ const DaysPassed = ({ date }) => {
   return <div>{calcDaysPassed(date)}</div>;
 };
 
-function calcDaysPassed (date) {
+function calcDaysPassed(date) {
   const past = new Date(date).getTime();
   const present = new Date(Date.now()).getTime();
 
@@ -18,9 +18,12 @@ function calcDaysPassed (date) {
 
   const daysString = `${days} ${days > 1 ? "days" : "day"}`;
 
-  const hoursString = hours >= 1 ? `${hours} ${hours > 1 ? "hours" : "hour"}` : `${minutes} ${minutes > 1 ? "minutes" : "minute"}`;
+  const hoursString =
+    hours >= 1
+      ? `${hours} ${hours > 1 ? "hours" : "hour"}`
+      : `${minutes} ${minutes > 1 ? "minutes" : "minute"}`;
 
-  return days >= 1 ? `${daysString} ${hoursString}` : '';
-};
+  return days >= 1 ? `${daysString} ${hoursString}` : `${hoursString}`;
+}
 
 export default DaysPassed;
