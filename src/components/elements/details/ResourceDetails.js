@@ -82,25 +82,33 @@ export default function ResourceDetails({id, onDeleteComplete}) {
         })
     }
     const Details = () => <>
-        <div style={{display: "flex", alignItems: "center", marginBottom: 10}}>
-            <FlowNodeIcons icon={data.icon} size={30}/>
-            <h1 className="header" style={{marginBottom: 0, marginLeft: 10}}> {data.name} ({data.type})</h1>
-        </div>
-        {data.description && <h2 className="subHeader">{data.description}</h2>}
-        <div style={{marginBottom: 10}}>
-            <TuiTags tags={data.tags}/>
-        </div>
-        <div style={{marginBottom: 30}}>
-            <Rows style={{marginTop: 20}}>
-                <Button onClick={onEdit}
-                        icon={<VscEdit size={20}/>}
-                        label="Edit"
-                        disabled={typeof data === "undefined"}/>
-                <Button onClick={onDelete}
-                        icon={<VscTrash size={20}/>}
-                        label="Delete"
-                        disabled={typeof data === "undefined"}/>
-            </Rows>
+        <div style={{display: "flex", margin: 20, flexDirection: "column"}}>
+
+            <div style={{display: "flex",justifyContent: "space-between", alignItems: 'center', marginBottom: 10}}>
+                <div style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>
+                    <FlowNodeIcons icon={data.icon} size={30}/>
+                    <h1 className="header"
+                        style={{marginBottom: 0, marginLeft: 10}}> {data.name} ({data.type})</h1>
+                </div>
+                <div style={{display: "flex", alignItems: "start"}}>
+                    <Rows>
+                        {data?.locked !== true && <Button onClick={onEdit}
+                                                          icon={<VscEdit size={20}/>}
+                                                          label="Edit"
+                                                          disabled={typeof data === "undefined"}/>}
+                        <Button onClick={onDelete}
+                                icon={<VscTrash size={20}/>}
+                                label="Delete"
+                                disabled={typeof data === "undefined"}/>
+                    </Rows>
+                </div>
+
+            </div>
+            {data.description && <h2 className="subHeader">{data.description}</h2>}
+            <div style={{marginBottom: 10}}>
+                <TuiTags tags={data.tags}/>
+            </div>
+
         </div>
 
         <TuiForm>
@@ -150,7 +158,7 @@ export default function ResourceDetails({id, onDeleteComplete}) {
         {data && <Details/>}
 
         <FormDrawer
-            width={800}
+            width={700}
             label="Edit Resource"
             onClose={() => {
                 setEditData(null)

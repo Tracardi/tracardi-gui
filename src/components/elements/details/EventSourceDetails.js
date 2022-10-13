@@ -275,7 +275,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
     return <>
         {loading && <CenteredCircularProgress/>}
         {data && <>
-            <div style={{display: "flex", margin: 20, flexDirection: "column"}}>
+            <div style={{display: "flex", margin: 40, flexDirection: "column"}}>
 
                     <div style={{display: "flex",justifyContent: "space-between", alignItems: 'center', marginBottom: 10}}>
                         <div style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>
