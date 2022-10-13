@@ -16,7 +16,6 @@ function calcDaysPassed (date) {
   hours = hours - days * 24;
   minutes = minutes - days * 24 * 60 - hours * 60;
 
-  hours = 1;
   const daysString = `${days} ${days > 1 ? "days" : "day"}`;
 
   const hoursString = hours >= 1 ? `${hours} ${hours > 1 ? "hours" : "hour"}` : `${minutes} ${minutes > 1 ? "minutes" : "minute"}`;
