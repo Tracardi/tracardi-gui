@@ -42,3 +42,19 @@ code {
 #root {
   height:100%;
 }
+
+H1.header {
+  font-size: 185%;
+  margin: 0 0 15px 0;
+  font-weight: 400;
+  color: #444;
+  text-transform: none;
+}
+
+H2.subHeader {
+  font-size: 150%;
+  margin: 0 0 15px 0;
+  font-weight: 400;
+  color: #444;
+  text-transform: none;
+}

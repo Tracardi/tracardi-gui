@@ -21,3 +21,14 @@ export function isEmptyObjectOrNull(obj) {
 export function isInt(n) {
     return !isNaN(parseInt(n)) && isFinite(n);
 }
+
+
+export function startsWith(text, listOfTexts) {
+    for(const item of listOfTexts) {
+        if(text.startsWith(item)) {
+            return true
+        }
+    }
+
+    return false
+}

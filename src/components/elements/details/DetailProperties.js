@@ -2,7 +2,7 @@ import dot from "dot-object";
 import DetailKeyValue from "./DetailKeyValue";
 import React from "react";
 import PropTypes from "prop-types";
-import {isString} from "../../../misc/typeChecking";
+import {isString, startsWith} from "../../../misc/typeChecking";
 
 export default function Properties({properties, show, exclude}) {
 
@@ -31,7 +31,7 @@ export default function Properties({properties, show, exclude}) {
         ([label, value]) => {
 
             if(exclude) {
-                if(exclude.includes(label)) {
+                if(exclude.includes(label) || startsWith(label, exclude)) {
                     return ""
                 } else {
                     return <DetailKeyValue key={label} label={label} value={getValue(value)}/>
