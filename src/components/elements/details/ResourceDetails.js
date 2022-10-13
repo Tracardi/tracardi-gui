@@ -82,7 +82,7 @@ export default function ResourceDetails({id, onDeleteComplete}) {
         })
     }
     const Details = () => <>
-        <div style={{display: "flex", margin: 20, flexDirection: "column"}}>
+        <div style={{display: "flex", margin: "5px 20px 20px 20px", flexDirection: "column"}}>
 
             <div style={{display: "flex",justifyContent: "space-between", alignItems: 'center', marginBottom: 10}}>
                 <div style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>
