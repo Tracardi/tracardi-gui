@@ -14,6 +14,8 @@ import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import CredentialsVault from "../misc/CredentialsVault";
 import {asyncRemote} from "../../../remote_api/entrypoint";
+import FlowNodeIcons from "../../flow/FlowNodeIcons";
+import TuiTags from "../tui/TuiTags";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -34,18 +36,18 @@ export default function ResourceDetails({id, onDeleteComplete}) {
                 url: '/resource/' + id,
                 method: "GET"
             }).then(response => {
-                if (response && isSubscribed === true) {
-                    setCredentials(response.data.credentials);
-                    delete response.data.credentials;
-                    setData(response.data);
-                }
-            }).catch(e => {
-                if (e && isSubscribed === true) {
-                    console.error(e)
-                }
-            }).finally(() => {
-                if(isSubscribed === true) setLoading(false)
-            })
+            if (response && isSubscribed === true) {
+                setCredentials(response.data.credentials);
+                delete response.data.credentials;
+                setData(response.data);
+            }
+        }).catch(e => {
+            if (e && isSubscribed === true) {
+                console.error(e)
+            }
+        }).finally(() => {
+            if (isSubscribed === true) setLoading(false)
+        })
 
         return () => {
             isSubscribed = false
@@ -73,36 +75,51 @@ export default function ResourceDetails({id, onDeleteComplete}) {
                 if (onDeleteComplete) {
                     onDeleteComplete(response)
                 }
-            } catch(e) {
+            } catch (e) {
                 console.error(e)
             }
         }).catch(() => {
         })
     }
-
     const Details = () => <>
-        <TuiForm>
-            <TuiFormGroup>
-                <TuiFormGroupHeader header="Resource"/>
-                <TuiFormGroupContent header={"Data"}>
-                    <Properties properties={data}/>
-                    <Rows style={{marginTop: 20}}>
-                        <Button onClick={onEdit}
-                                icon={<VscEdit size={20}/>}
-                                label="Edit"
-                                disabled={typeof data === "undefined"}/>
-                        <Button onClick={onDelete}
-                                icon={<VscTrash size={20}/>}
-                                label="Delete"
-                                disabled={typeof data === "undefined"}/>
-                    </Rows>
-                </TuiFormGroupContent>
+        <div style={{display: "flex", alignItems: "center", marginBottom: 10}}>
+            <FlowNodeIcons icon={data.icon} size={30}/>
+            <h1 className="header" style={{marginBottom: 0, marginLeft: 10}}> {data.name} ({data.type})</h1>
+        </div>
+        {data.description && <h2 className="subHeader">{data.description}</h2>}
+        <div style={{marginBottom: 10}}>
+            <TuiTags tags={data.tags}/>
+        </div>
+        <div style={{marginBottom: 30}}>
+            <Rows style={{marginTop: 20}}>
+                <Button onClick={onEdit}
+                        icon={<VscEdit size={20}/>}
+                        label="Edit"
+                        disabled={typeof data === "undefined"}/>
+                <Button onClick={onDelete}
+                        icon={<VscTrash size={20}/>}
+                        label="Delete"
+                        disabled={typeof data === "undefined"}/>
+            </Rows>
+        </div>
 
-            </TuiFormGroup>
+        <TuiForm>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Credentials"/>
                 <TuiFormGroupContent header={"Data"}>
                     <CredentialsVault production={credentials?.production} test={credentials?.test}/>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Destination"/>
+                <TuiFormGroupContent header={"Data"}>
+                    {(data?.destination && <Properties properties={(data?.destination)}/>) || "This resource does not provide destination configuration."}
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Other details"/>
+                <TuiFormGroupContent header={"Data"}>
+                    <Properties properties={data} exclude={['tags', 'destination', 'name', 'description', ]}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>
