@@ -22,6 +22,8 @@ import {SelectInput} from "../forms/JsonFormComponents";
 import NoData from "../misc/NoData";
 import NotImplemented from "../misc/NotImplemented";
 import MarkdownElement from "../misc/MarkdownElement";
+import FlowNodeIcons from "../../flow/FlowNodeIcons";
+import TuiTags from "../tui/TuiTags";
 
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
@@ -100,20 +102,10 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Event Source"/>
                 <TuiFormGroupContent header={"Data"}>
-                    <Properties properties={data} exclude={['manual']}/>
+                    <Properties properties={data} exclude={['manual', 'tags', 'name', 'description']}/>
                     {data?.locked &&
                     <NotImplemented style={{marginTop: 10}}>This event source is managed by external service. Therefore
                         it can not be edited in the system.</NotImplemented>}
-                    <Rows style={{marginTop: 20}}>
-                        {data?.locked !== true && <Button onClick={onEdit}
-                                                          icon={<VscEdit size={20}/>}
-                                                          label="Edit"
-                                                          disabled={typeof data === "undefined"}/>}
-                        <Button onClick={onDelete}
-                                icon={<VscTrash size={20}/>}
-                                label="Delete"
-                                disabled={typeof data === "undefined"}/>
-                    </Rows>
                 </TuiFormGroupContent>
 
             </TuiFormGroup>
@@ -282,7 +274,36 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
 
     return <>
         {loading && <CenteredCircularProgress/>}
-        {data &&
+        {data && <>
+            <div style={{display: "flex", margin: 20, flexDirection: "column"}}>
+
+                    <div style={{display: "flex",justifyContent: "space-between", alignItems: 'center'}}>
+                        <div style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>
+                            <FlowNodeIcons icon={data.icon} size={30}/>
+                            <h1 className="header"
+                                style={{marginBottom: 0, marginLeft: 10}}> {data.name} ({data.type})</h1>
+                        </div>
+                        <div style={{display: "flex", alignItems: "start"}}>
+                            <Rows>
+                                {data?.locked !== true && <Button onClick={onEdit}
+                                                                  icon={<VscEdit size={20}/>}
+                                                                  label="Edit"
+                                                                  disabled={typeof data === "undefined"}/>}
+                                <Button onClick={onDelete}
+                                        icon={<VscTrash size={20}/>}
+                                        label="Delete"
+                                        disabled={typeof data === "undefined"}/>
+                            </Rows>
+                        </div>
+
+                    </div>
+                    {data.description && <h2 className="subHeader">{data.description}</h2>}
+                    <div style={{marginBottom: 10}}>
+                        <TuiTags tags={data.tags}/>
+                    </div>
+
+            </div>
+
         <Tabs
             tabs={["Details", "Analytics"]}
             defaultTab={tab}
@@ -314,7 +335,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             <TabCase id={1} key="Analytics">
                 <EventSourceAnalytics/>
             </TabCase>
-        </Tabs>
+        </Tabs></>
         }
 
         <FormDrawer
