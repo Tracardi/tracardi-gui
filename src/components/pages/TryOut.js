@@ -8,6 +8,7 @@ import BackgroundTaskProgress from "../elements/misc/BackgroundTaskProgress";
 import JsonForm from "../elements/forms/JsonForm";
 import TokenInput from "../elements/forms/inputs/TokenInput";
 import BoxStyling from "../elements/tui/TuiBoxStyling";
+import TimeDifference from "../elements/datepickers/TimeDifference";
 
 export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
@@ -17,6 +18,7 @@ export default function TryOut() {
 
 
     return (<div style={{padding: 10}}>
+            <TimeDifference date={"2022-10-15T10:01:00"}/>
             <BoxStyling value={{
                 margin: {
                     left: 10, top: 10, right: 10, bottom: 10
