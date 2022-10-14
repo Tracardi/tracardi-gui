@@ -198,24 +198,24 @@ function BoxStylingForm({value, onChange}) {
     return <div style={{width: "100%", display: "flex", flexDirection: "column"}}>
         <div style={{margin: "8px 0"}}>Margins & Padding</div>
         <BoxDimensionsForm label="Margin"
-                           top={styling.margin.top}
-                           bottom={styling.margin.bottom}
-                           left={styling.margin.left}
-                           right={styling.margin.right}
+                           top={styling?.margin?.top}
+                           bottom={styling?.margin?.bottom}
+                           left={styling?.margin?.left}
+                           right={styling?.margin?.right}
                            onChange={(v) => handleChange({...styling, margin: v})}
         />
         <BoxDimensionsForm label="Padding"
-                           top={styling.padding.top}
-                           bottom={styling.padding.bottom}
-                           left={styling.padding.left}
-                           right={styling.padding.right}
+                           top={styling?.padding?.top}
+                           bottom={styling?.padding?.bottom}
+                           left={styling?.padding?.left}
+                           right={styling?.padding?.right}
                            onChange={(v) => handleChange({...styling, padding: v})}/>
         <div style={{margin: "8px 0"}}>Border settings</div>
         <fieldset>
             <legend>Border</legend>
-            <BoxPixelInput value={styling.border.radius} label="Radius"
+            <BoxPixelInput value={styling?.border?.radius} label="Radius"
                            onChange={(v) => handleChange({...styling, border: {...styling.border, radius: v}})}/>
-            <BoxPixelInput value={styling.border.size} label="Size"
+            <BoxPixelInput value={styling?.border?.size} label="Size"
                            onChange={(v) => handleChange({...styling, border: {...styling.border, size: v}})}/>
         </fieldset>
 
@@ -223,11 +223,11 @@ function BoxStylingForm({value, onChange}) {
         <div style={{margin: "8px 0"}}>Color settings</div>
         <div style={{display: "flex"}}>
             <div>
-                <TuiColorPicker label="Text color" value={styling.color.text}
+                <TuiColorPicker label="Text color" value={styling?.color?.text}
                                 style={{margin: "10px 5px"}}
                                 onChange={(v) => handleChange({...styling, color: {...styling.color, text: v}})}
                 />
-                <TuiColorPicker label="Background color" value={styling.color.background}
+                <TuiColorPicker label="Background color" value={styling?.color?.background}
                                 style={{margin: "10px 5px"}}
                                 onChange={(v) => handleChange({...styling, color: {...styling.color, background: v}})}
                 />
@@ -236,8 +236,8 @@ function BoxStylingForm({value, onChange}) {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                background: styling.color.background,
-                color: styling.color.text,
+                background: styling?.color?.background,
+                color: styling?.color?.text,
                 width: 190,
                 borderRadius: 10
             }}>Text
