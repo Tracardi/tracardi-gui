@@ -1,10 +1,41 @@
 import React from "react";
 
 const DaysPassed = ({ date }) => {
-  return <div>{calcDaysPassed(date)}</div>;
+  const daysPassed = getDaysPassed(date);
+
+  return (
+    <div>
+      {daysPassed.inPresent} {daysPassed.inFuture}
+    </div>
+  );
 };
 
-function calcDaysPassed(date) {
+function calcDaysPassed(future, now) {
+  const seconds = Math.floor((future - now) / 1000);
+  let minutes = Math.floor(seconds / 60);
+  let hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  hours = hours - days * 24;
+  minutes = minutes - days * 24 * 60 - hours * 60;
+
+  return { days, hours, minutes };
+}
+
+function buildDaysPassedString(type, data) {
+  switch (type) {
+    case "days":
+      return `${data.days} ${data.days > 1 ? "days" : "day"}`;
+    case "hours":
+      return data.hours >= 1
+        ? `${data.hours} ${data.hours > 1 ? "hours" : "hour"}`
+        : `${data.minutes} ${data.minutes > 1 ? "minutes" : "minute"}`;
+    default:
+      return "";
+  }
+}
+
+function getDaysPassed(date) {
   if (typeof date !== "string" || isNaN(new Date(date))) {
     console.error(`Invalid input, ${date} should be a date string.`);
     return "";
@@ -13,22 +44,46 @@ function calcDaysPassed(date) {
   const past = new Date(date).getTime();
   const present = new Date(Date.now()).getTime();
 
-  const seconds = Math.floor((present - past) / 1000);
-  let minutes = Math.floor(seconds / 60);
-  let hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
+  let future = new Date(present);
+  future.setDate(future.getDate() + 1);
+  future = future.getTime();
 
-  hours = hours - days * 24;
-  minutes = minutes - days * 24 * 60 - hours * 60;
+  // using present
+  const {
+    days: daysPassedInPresent,
+    hours: hoursPassedInPresent,
+    minutes: minutesPassedInPresent,
+  } = calcDaysPassed(present, past);
 
-  const daysString = `${days} ${days > 1 ? "days" : "day"}`;
+  const daysInPresent = buildDaysPassedString("days", {
+    days: daysPassedInPresent,
+  });
 
-  const hoursString =
-    hours >= 1
-      ? `${hours} ${hours > 1 ? "hours" : "hour"}`
-      : `${minutes} ${minutes > 1 ? "minutes" : "minute"}`;
+  const hoursInPresent = buildDaysPassedString("hours", {
+    hours: hoursPassedInPresent,
+    minutes: minutesPassedInPresent,
+  });
 
-  return days >= 1 ? `${daysString} ${hoursString}` : `${hoursString}`;
+  // using future
+  const {
+    days: daysPassedInFuture,
+    hours: hoursPassedInFuture,
+    minutes: minutesPassedInFuture,
+  } = calcDaysPassed(future, past);
+
+  const daysInFuture = buildDaysPassedString("days", {
+    days: daysPassedInFuture,
+  });
+
+  const hoursInFuture = buildDaysPassedString("hours", {
+    hours: hoursPassedInFuture,
+    minutes: minutesPassedInFuture,
+  });
+
+  return {
+    inPresent: `${daysInPresent} ${hoursInPresent}`,
+    inFuture: `${daysInFuture} ${hoursInFuture}`,
+  };
 }
 
 export default DaysPassed;
