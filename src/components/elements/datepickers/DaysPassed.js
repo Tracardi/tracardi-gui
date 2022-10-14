@@ -81,8 +81,14 @@ function getDaysPassed(date) {
   });
 
   return {
-    inPresent: `${daysInPresent} ${hoursInPresent}`,
-    inFuture: `${daysInFuture} ${hoursInFuture}`,
+    inPresent:
+      daysPassedInPresent >= 1
+        ? `${daysInPresent} ${hoursInPresent}`
+        : `${hoursInPresent}`,
+    inFuture:
+      daysPassedInFuture >= 1
+        ? `${daysInFuture} ${hoursInFuture}`
+        : `${hoursInFuture}`,
   };
 }
 
