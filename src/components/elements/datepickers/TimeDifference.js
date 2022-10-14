@@ -2,12 +2,28 @@ import React from "react";
 
 const TimeDifference = ({ date }) => {
   const days = getTimeDifference(date);
+
+  const getSign = () => {
+    if(days.passed === "") {
+      return "+"
+    }
+    return "-"
+  }
+
+  const render = () => {
+    const sign = getSign()
+
+    if (sign === '+') {
+      return `${sign} ${days.willHappen}`
+    }
+
+    return `${sign} ${days.passed}`
+  }
+
   return (
-    <div>
-      {`passed ${days.passed !== "" ? days.passed : "0 days"}, will happen in ${
-        days.willHappen !== "" ? days.willHappen : "0 days"
-      }`}
-    </div>
+    <span style={{backgroundColor: 'aliceblue', color: 'black', padding: "3px 6px", borderRadius: 6}}>
+      {render()}
+    </span>
   );
 };
 
