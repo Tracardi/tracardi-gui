@@ -189,18 +189,19 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                     onClick={handleDeploy}
                     progress={deployProgress}
             />
-            <Button label="Test"
+            {flowMetaData?.type === 'collect' &&<Button label="Test"
                     icon={<BsClipboardCheck size={20}/>}
                     onClick={() => setTestConsoleOpened(true)}
-            />
+            />}
             <Button label="Data"
                     icon={<BsFolder size={20}/>}
                     onClick={() => setEventsOpened(true)}
             />
+            {flowMetaData?.type === 'collect' &&
             <Button label="Rules"
                     icon={<FaUncharted size={20}/>}
                     onClick={() => setRulesOpened(true)}
-            />
+            />}
         </div>
 
         <FormDrawer
