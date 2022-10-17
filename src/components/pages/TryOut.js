@@ -18,7 +18,7 @@ export default function TryOut() {
 
 
     return (<div style={{padding: 10}}>
-            <TimeDifference date={"2022-10-15T10:01:00"}/>
+            <TimeDifference date={"2022-10-14T14:43:56.591642"}/>
             <BoxStyling value={{
                 margin: {
                     left: 10, top: 10, right: 10, bottom: 10

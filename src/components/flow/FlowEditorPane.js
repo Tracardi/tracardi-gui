@@ -260,6 +260,7 @@ export function FlowEditorPane(
                     name: data?.name,
                     description: data?.description,
                     projects: data?.projects,
+                    type: data?.type
                 }
                 onFlowLoad(payload);
             }
@@ -685,6 +686,7 @@ export function FlowEditorPane(
                             >
                                 <SidebarLeft onDebug={onDebug}
                                              debugInProgress={debugInProgress}
+                                             flowType={flowMetaData?.type}
                                 />
 
                                 {displayNodeContextMenu && <div className="NodeContextForm"

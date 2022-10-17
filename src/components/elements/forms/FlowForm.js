@@ -8,6 +8,10 @@ import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from 'prop-types';
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import TuiTagger from "../tui/TuiTagger";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 
 function FlowForm({
                       id,
@@ -17,12 +21,15 @@ function FlowForm({
                       onFlowSaveComplete,
                       showAlert,
                       draft = false,
-                      refreshMetaData = true
+                      refreshMetaData = true,
+                      type = 'collect',
+                      disableType = false
                   }) {
 
     const [flowName, setFlowName] = useState((name) ? name : "");
     const [flowDescription, setFlowDescription] = useState((description) ? description : "");
     const [flowTags, setFlowTags] = useState(projects);
+    const [flowType, setFlowType] = useState(type);
     const [processing, setProcessing] = useState(false);
     const [nameErrorMessage, setNameErrorMessage] = useState("");
 
@@ -54,7 +61,8 @@ function FlowForm({
                 id: (id) ? id : uuid4(),
                 name: flowName,
                 description: flowDescription,
-                projects: flowTags && Array.isArray(flowTags) && flowTags.length > 0 ? flowTags : ["General"]
+                projects: flowTags && Array.isArray(flowTags) && flowTags.length > 0 ? flowTags : ["General"],
+                type: flowType
             }
 
             const response = await asyncRemote({
@@ -123,6 +131,23 @@ function FlowForm({
                                size="small"
                     />
                 </TuiFormGroupField>
+                {!disableType && <TuiFormGroupField header="Type" description="Flow type. Flows can be used to collect or segment data.">
+                    <FormControl sx={{m: 1, minWidth: 120}} size="small">
+                        <InputLabel id="flow-type">Flow type</InputLabel>
+                        <Select
+                            defaultValue="collect"
+                            labelId="flow-type"
+                            variant="outlined"
+                            size="small"
+                            value={flowType}
+                            label="Flow type"
+                            onChange={(e) => setFlowType(e.target.value)}
+                        >
+                            <MenuItem value={"collect"}>Collect</MenuItem>
+                            <MenuItem value={"segment"}>Segment</MenuItem>
+                        </Select>
+                    </FormControl>
+                </TuiFormGroupField>}
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
@@ -130,7 +155,7 @@ function FlowForm({
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Flow tags"
                                    description="Tag the flow with project name to group it into meaningful groups.">
-                    <TuiTagger 
+                    <TuiTagger
                         label="Flow tags"
                         onChange={setFlowTags}
                         tags={projects}
@@ -146,6 +171,8 @@ FlowForm.propTypes = {
     id: PropTypes.string,
     name: PropTypes.string,
     description: PropTypes.string,
+    type: PropTypes.string,
+    disableType: PropTypes.bool,
     projects: PropTypes.array,
     onFlowSaveComplete: PropTypes.func,
     draft: PropTypes.bool,

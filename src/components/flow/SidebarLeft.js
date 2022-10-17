@@ -13,7 +13,7 @@ import MdManual from "./actions/MdManual";
 import {useDebounce} from "use-debounce";
 import HorizontalCircularProgress from "../elements/progress/HorizontalCircularProgress";
 
-function SidebarLeft({showAlert, onDebug, debugInProgress}) {
+function SidebarLeft({showAlert, onDebug, debugInProgress, flowType}) {
 
     const [filterActions, setFilterActions] = useState("*not-hidden");
     const [debouncedFiltering] = useDebounce(filterActions, 500)
@@ -26,7 +26,7 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
 
         setPluginsLoading(true);
         asyncRemote({
-                url: "/flow/action/plugins?rnd=" + Math.random() + "&query=" + debouncedFiltering
+                url: `/flow/action/plugins?flow_type=${flowType}&query=${debouncedFiltering}&rnd=${Math.random()}`
             }
         ).then(
             (response) => {
@@ -50,7 +50,7 @@ function SidebarLeft({showAlert, onDebug, debugInProgress}) {
             }
         )
         return () => isSubscribed = false
-    }, [showAlert, debouncedFiltering])
+    }, [showAlert, debouncedFiltering, flowType])
 
     const onDragStart = (event, row) => {
         const data = row.plugin;

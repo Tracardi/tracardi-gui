@@ -16,6 +16,7 @@ import CredentialsVault from "../misc/CredentialsVault";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import TuiTags from "../tui/TuiTags";
+import TimeDifference from "../datepickers/TimeDifference";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -102,13 +103,14 @@ export default function ResourceDetails({id, onDeleteComplete}) {
                                 disabled={typeof data === "undefined"}/>
                     </Rows>
                 </div>
-
             </div>
             {data.description && <h2 className="subHeader">{data.description}</h2>}
+            <div>
+                Created: {data.timestamp} <TimeDifference date={data.timestamp}/>
+            </div>
             <div style={{marginBottom: 10}}>
                 <TuiTags tags={data.tags}/>
             </div>
-
         </div>
 
         <TuiForm>
