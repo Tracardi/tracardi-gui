@@ -49,6 +49,9 @@ export default function Rules() {
 
     return <CardBrowser
         label="Routing Rules"
+        description="Routing rules connect incoming events with the workflows. Routing defines which workflow is to be
+        executed when an event reaches the system. It consist of a condition and a workflow name.
+        If a condition is met then the flow is triggered. "
         urlFunc={urlFunc}
         cardFunc={ruleCards}
         rowFunc={ruleRows}
