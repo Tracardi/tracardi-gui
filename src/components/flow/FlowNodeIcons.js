@@ -2,7 +2,7 @@ import {BiGitRepoForked} from "react-icons/bi";
 import React from "react";
 import {FiDatabase, FiMapPin, FiAlertTriangle, FiRss} from "react-icons/fi";
 import {
-    BsPerson,
+    BsPerson, BsChatDots,
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
     BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard
@@ -231,7 +231,8 @@ export const icons = {
     "hubspot": (size) => <SiHubspot size={size}/>,
     "sms": (size) => <FaSms size={size}/>,
     "livechat": (size) => <SiLivechat size={size}/>,
-    "zendesk": (size) => <SiZendesk size={size}/>
+    "zendesk": (size) => <SiZendesk size={size}/>,
+    "chatwoot": (size) => <BsChatDots size={size}/>
 }
 
 
