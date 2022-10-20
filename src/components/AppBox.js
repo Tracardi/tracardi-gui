@@ -37,6 +37,7 @@ import EntityAnalytics from "./pages/EntityAnalytics";
 import Reports from "./pages/Reports";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
 import {ErrorBoundary} from "@sentry/react";
+import LiveSegments from "./pages/LiveSegments";
 
 const ProRouter = React.lazy(() => import('./pages/pro/ProRouter'))
 const Dashboard = React.lazy(() => import('./pages/Dashboard'))
@@ -164,6 +165,10 @@ const AppBox = () => {
                                       <Rules/>, "/processing/routing", "Routing Rules"),
                                   new PrivateTab(["admin", "developer", "marketer"],
                                       <Segments/>, "/processing/segments", "Segmentation"),
+                                  new PrivateTab(["admin", "developer", "marketer"],
+                                      <LiveSegments/>, "/processing/live/segments", <>
+                                          <BsStar size={20}
+                                                  style={{marginRight: 5}}/>{"Live segmentation"}</>),
                               ]}
                     />
                 </Suspense>

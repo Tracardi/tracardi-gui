@@ -76,7 +76,7 @@ export default function SegmentForm({onSubmit, init}) {
 
         if (!name || name.length === 0) {
             if (!name || name.length === 0) {
-                setNameErrorMessage("Source name can not be empty");
+                setNameErrorMessage("Segment name can not be empty");
             } else {
                 setNameErrorMessage(null);
             }

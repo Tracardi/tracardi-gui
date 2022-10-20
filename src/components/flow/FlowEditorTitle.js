@@ -189,7 +189,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                     onClick={handleDeploy}
                     progress={deployProgress}
             />
-            {flowMetaData?.type === 'collect' &&<Button label="Test"
+            {flowMetaData?.type !== 'segment' &&<Button label="Test"
                     icon={<BsClipboardCheck size={20}/>}
                     onClick={() => setTestConsoleOpened(true)}
             />}
@@ -197,7 +197,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                     icon={<BsFolder size={20}/>}
                     onClick={() => setEventsOpened(true)}
             />
-            {flowMetaData?.type === 'collect' &&
+            {flowMetaData?.type !== 'segment' &&
             <Button label="Rules"
                     icon={<FaUncharted size={20}/>}
                     onClick={() => setRulesOpened(true)}
