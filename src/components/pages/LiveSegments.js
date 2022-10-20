@@ -50,7 +50,7 @@ export default function LiveSegments() {
     return <CardBrowser
         label="Live Segments"
         description="Live Segmentation is triggered periodically to keep the profile up-to-date with segmentation logic.
-        It requires the separate live segmentation server to run in background."
+        It requires the separate live segmentation server to run in the background."
         urlFunc={urlFunc}
         cardFunc={liveSegmentsCards}
         rowFunc={liveSegmentsRows}

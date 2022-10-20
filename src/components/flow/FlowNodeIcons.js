@@ -83,7 +83,9 @@ import {
     SiMatomo,
     SiRedis,
     SiCivicrm,
-    SiHubspot
+    SiHubspot,
+    SiLivechat,
+    SiZendesk
 } from "react-icons/si";
 import {GrMysql} from "react-icons/gr";
 import {
@@ -227,7 +229,9 @@ export const icons = {
     "stripe": (size) => <Stripe size={size}/>,
     "card": (size) => <BsCreditCard size={size}/>,
     "hubspot": (size) => <SiHubspot size={size}/>,
-    "sms": (size) => <FaSms size={size}/>
+    "sms": (size) => <FaSms size={size}/>,
+    "livechat": (size) => <SiLivechat size={size}/>,
+    "zendesk": (size) => <SiZendesk size={size}/>
 }
 
 
