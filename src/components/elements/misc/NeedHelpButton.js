@@ -38,7 +38,7 @@ export default function NeedHelpButton() {
                     >
                         <div className="NeedHelpButton">
                             <div>
-                                Mention us on Twitter @twitter. We will respond as quickly as possible.
+                                Mention us on Twitter @tracardi. We will respond as quickly as possible.
                                 <div style={{display: "flex", justifyContent: "center", marginTop: 10}}>
                                     <Button label="Twitter"
                                             onClick={external("https://twitter.com/tracardi", true)}
