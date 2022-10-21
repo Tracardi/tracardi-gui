@@ -26,7 +26,7 @@ const PropertyField = ({name, content}) => {
             >
                 {name}
             </div>
-            <div>
+            <div style={{display: "flex", gap: 2}}>
                 {
                     typeof content !== "undefined" && React.isValidElement(content) ? 
                         content

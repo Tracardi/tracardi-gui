@@ -2,7 +2,7 @@ import React from "react";
 
 export default function EventValidation({eventMetaData}) {
 
-    if (!eventMetaData.valid) {
+    if (!eventMetaData?.valid) {
         return <span style={{
             display: "inline-flex",
             alignItems: "center",

@@ -22,6 +22,7 @@ import ProfileRawData from "./ProfileRawData";
 import PropertyField from "./PropertyField";
 import ProfileInfo from "./ProfileInfo";
 import NoData from "../misc/NoData";
+import EventValidation from "../misc/EventValidation";
 
 const SessionContextInfo = ({sessionId}) => {
 
@@ -132,7 +133,8 @@ export const EventData = ({event}) => {
                 <PropertyField name="Type" content={event?.type}/>
                 <PropertyField name="Event source" content={event?.source?.id}/>
                 <PropertyField name="Status"
-                               content={<EventStatusTag label={event?.metadata?.status}/>}/>
+                               content={<><EventStatusTag label={event?.metadata?.status}/>
+                               <EventValidation eventMetaData={event?.metadata}/></>} />
                 <PropertyField name="Debug" content={event?.metadata?.debug ?
                     <BsCheckCircle size={20} color="#00c853"/> : <BsXSquare size={20} color="#d81b60"/>}/>
                 <PropertyField name="Profile less" content={event?.metadata?.profile_less ?
