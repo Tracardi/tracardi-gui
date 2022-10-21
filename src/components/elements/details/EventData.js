@@ -32,7 +32,7 @@ const EventData = ({event, allowedDetails=[]}) => {
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Event details"/>
-            <TuiFormGroupContent>
+            <TuiFormGroupContent style={{display: "flex", flexDirection: "column"}}>
                 <PropertyField name="Type" content={event?.type}/>
                 <PropertyField name="Insert time"
                                content={<> {insertTime(event)} <TimeDifference

@@ -34,8 +34,8 @@
     display: flex;
     flex-direction: column;
     padding-top: 6px;
-    min-width: 200px;
-    max-width: 200px;
+    min-width: 220px;
+    max-width: 220px;
     border-right: solid 1px #cecece;
     justify-content: space-between;
     align-items: flex-end;
@@ -47,5 +47,6 @@
 }
 
 .EventRow .Header > DIV.Data {
-
+    padding-right: 10px;
+    width: 100%;
 }

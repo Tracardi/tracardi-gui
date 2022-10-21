@@ -16,7 +16,8 @@ const AutoLoadObjectList = ({
                                 onLoadDetails,
                                 onDetails,
                                 onLoadRequest,
-                                refreshInterval = 0
+                                refreshInterval = 0,
+                                rowDetails = null
                             }) => {
 
     const [page, setPage] = useState(0)
@@ -148,6 +149,7 @@ const AutoLoadObjectList = ({
                         onClick={() => {
                             onDetails(row.id);
                         }}
+                        rowDetails={rowDetails}
                         displayDetailButton={typeof onLoadDetails !== "undefined"}
                     />
                 );

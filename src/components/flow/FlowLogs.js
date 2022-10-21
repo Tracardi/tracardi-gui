@@ -29,7 +29,7 @@ const FlowLogs = ({logs}) => {
             {showDetails && <div className="FlowLogDetails">
                 <fieldset style={{width: "100%", margin: 5, padding: 10}}>
                     <legend>Log details</legend>
-                    <JsonStringify data={log} unfold={true}/>
+                    <JsonStringify data={log}/>
                 </fieldset>
 
             </div>}

@@ -1,13 +1,10 @@
-import React, {useState} from "react";
+import React from "react";
 import "./ObjectRow.css";
 import JsonStringify from "../../misc/JsonStingify";
 import Button from "../../forms/Button";
 import {TiBusinessCard} from "react-icons/ti";
-import {BsArrowsExpand, BsArrowsCollapse} from "react-icons/bs";
 
-export function ObjectRow({row, timeField, onClick, filterFields, displayDetailButton, timeFieldWidth}) {
-
-    const [toggle, setToggle] = useState(false);
+export function ObjectRow({row, timeField, onClick, filterFields, displayDetailButton, timeFieldWidth, rowDetails=null}) {
 
     const widthStyle = (typeof timeFieldWidth !== "undefined")
         ? (timeFieldWidth>0)
@@ -15,21 +12,12 @@ export function ObjectRow({row, timeField, onClick, filterFields, displayDetailB
             : false
         : {}
 
-    const renderToggleIcon = () => {
-        return (toggle) ? <BsArrowsCollapse size={30}/> : <BsArrowsExpand size={30}/>;
-    }
-
-    const toggleIcon = () => {
-        setToggle(!toggle);
-    }
-
     const onDetails = () => {
         onClick(row.itemId);
     }
 
     return <div className="EventRow">
         <div className="Header">
-            <div className="Toggle" onClick={toggleIcon}><span style={{border: "solid 1px gray"}}>{renderToggleIcon()}</span></div>
             {widthStyle && <div className="Timestamp" style={widthStyle}>
                 <div style={{width:"100%"}}>
                     {timeField(row).map(
@@ -45,7 +33,10 @@ export function ObjectRow({row, timeField, onClick, filterFields, displayDetailB
 
             </div>}
             <div className="Data">
-                <JsonStringify data={row} filter={(!toggle) ? filterFields: []} unfold={toggle}/>
+                {rowDetails instanceof Function
+                    ? rowDetails(row, filterFields)
+                    : <JsonStringify data={row} filterFields={filterFields}/>
+                }
             </div>
         </div>
     </div>

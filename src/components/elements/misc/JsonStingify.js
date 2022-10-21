@@ -1,8 +1,16 @@
-import React from "react";
+import React, {useState} from "react";
 import dot from "dot-object";
 import "./JsonStringify.css";
+import {BsArrowsCollapse, BsArrowsExpand} from "react-icons/bs";
+import {setToken} from "../../authentication/login";
 
-export default function JsonStringify({data, filter, unfold}) {
+const ToggleIcon = ({toggle}) => {
+    return (toggle) ? <BsArrowsCollapse size={30}/> : <BsArrowsExpand size={30}/>;
+}
+
+export default function JsonStringify({data, filterFields=[]}) {
+
+    const [toggle, setToggle] = useState(false);
 
     function empty(obj) {
         return obj && Object.keys(obj).length === 0 && obj.constructor === Object
@@ -25,8 +33,8 @@ export default function JsonStringify({data, filter, unfold}) {
     }
 
     const row = (index, label, value) => {
-        const block = (unfold) ? "block" : "inline-block"
-        return <span className="JsonItem" key={index} style={{display:block}}>
+        const block = (toggle) ? "block" : "inline-block"
+        return <span className="JsonItem" key={index} style={{display: block}}>
                 <span className="JsonKey">{label}:</span> <span className="JsonValue">{getValue(value)}</span>,
             </span>
     }
@@ -34,9 +42,9 @@ export default function JsonStringify({data, filter, unfold}) {
 
     const highlight = (data, filter) => Object.entries(dotted(data)).map(
         ([label, value], index) => {
-            if(typeof filter !== "undefined" && Array.isArray(filter)) {
+            if (typeof filter !== "undefined" && Array.isArray(filter)) {
                 const startsWith = filter.filter((field) => label.startsWith(field));
-                if(startsWith.length === 0) {
+                if (startsWith.length === 0) {
                     return row(index, label, value);
                 }
                 return ""
@@ -46,7 +54,12 @@ export default function JsonStringify({data, filter, unfold}) {
         }
     )
 
-    return <div className="JsonStringify">
-        {highlight(data, filter)}
+    return <div style={{display: "flex", justifyContent: "space-between" , width: "100%"}}>
+        <div className="JsonStringify">
+            {highlight(data, toggle ? filterFields : [])}
+        </div>
+        <div className="Toggle" onClick={() => setToggle(!toggle)}>
+            <ToggleIcon toggle={toggle}/>
+        </div>
     </div>
 }

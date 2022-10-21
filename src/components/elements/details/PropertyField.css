@@ -1,0 +1,38 @@
+DIV.PropertyField {
+    overflow-wrap: anywhere;
+    overflow: hidden;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+DIV.PropertyField DIV.PropertyFieldName {
+    font-size: 16px;
+    font-weight: 500;
+    max-width: 330px;
+    white-space: nowrap;
+    min-width: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+DIV.PropertyField .PropertyFieldMore {
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+}
+
+DIV.PropertyField .PropertyFieldMore:hover {
+    cursor: pointer;
+    margin-left: 10px;
+    background-color: rgb(0, 136, 254);
+    color: white;
+}

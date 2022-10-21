@@ -4,9 +4,9 @@ import {object2dot} from "../../../misc/dottedObject";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
-import {BsCheckCircle, BsXSquare} from "react-icons/bs";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import PropertyField from "./PropertyField";
+import ActiveTag from "../misc/ActiveTag";
 
 export const ProfileData = ({profile}) => {
 
@@ -16,7 +16,7 @@ export const ProfileData = ({profile}) => {
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Profile info"
+            <TuiFormGroupHeader header="Profile details"
                                 description="Profile information for this event."/>
             <TuiFormGroupContent>
                 <PropertyField name="Id" content={profile?.id}/>
@@ -24,9 +24,7 @@ export const ProfileData = ({profile}) => {
                 <PropertyField name="Views" content={profile?.stats?.views}/>
                 <PropertyField name="Consents"
                                content={profile?.consents && Object.keys(profile?.consents).join(", ")}/>
-                <PropertyField name="Active" content={profile?.active
-                    ? <BsCheckCircle size={20} color="#00c853"/> :
-                    <BsXSquare size={20} color="#d81b60"/>}
+                <PropertyField name="Active" content={<ActiveTag active={profile?.active}/>}
                 />
                 {pii && Object.keys(pii).map(key => <PropertyField key={key}
                                                                    name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}

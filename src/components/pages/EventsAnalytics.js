@@ -8,6 +8,11 @@ import {makeUtcStringTzAware} from "../../misc/converters";
 import EventValidation from "../elements/misc/EventValidation";
 import EventErrors from "../elements/misc/EventErrors";
 import EventWarnings from "../elements/misc/EventWarnings";
+import PropertyField from "../elements/details/PropertyField";
+import ProfileDetails from "../elements/details/ProfileDetails";
+import JsonStringify from "../elements/misc/JsonStingify";
+import {isEmptyObject} from "../../misc/typeChecking";
+import {profileName} from "../../misc/formaters";
 
 export default function EventsAnalytics({displayChart = true}) {
 
@@ -66,12 +71,28 @@ export default function EventsAnalytics({displayChart = true}) {
             <EventWarnings eventMetaData={row.metadata}/>,
             <EventErrors eventMetaData={row.metadata}/>,
         ]}
-
+        rowDetails={(row, filterFields) => {
+            return <div style={{display: "flex"}}>
+                <div style={{flex: "1 1 0", minWidth: 500, borderRight: "solid 1px #ccc", paddingRight: 17}}>
+                    <PropertyField name="id" content={row.id} drawerSize={1000}>
+                        <EventDetails event={row} />
+                    </PropertyField>
+                    <PropertyField name="Profile" content={profileName(row.profile)} drawerSize={1200}>
+                        <ProfileDetails profile={row.profile}/>
+                    </PropertyField>
+                    <PropertyField name="Profile visits" content={row.profile?.metadata?.time?.visit?.count}/>
+                    <PropertyField name="Session id" content={row.source?.id}/>
+                    <PropertyField name="Process time" content={row.metadata?.time?.process_time}/>
+                </div>
+                <div style={{flex: "2 1 0", paddingLeft: 15}}>
+                    {!isEmptyObject(row.properties) ? <JsonStringify data={row.properties} filterFields={filterFields}/> : "No properties"}
+                </div>
+            </div>
+        }}
         onLoadHistogramRequest={handleLoadHistogramRequest}
         onLoadDataRequest={handleLoadDataRequest}
         onLoadDetails={handleLoadDetails}
         detailsDrawerWidth={1050}
-
         displayDetails={displayDetails}
         displayChart={displayChart}
         barChartColors={{processed: "#00C49F", error: "#d81b60", collected: '#0088FE'}}
