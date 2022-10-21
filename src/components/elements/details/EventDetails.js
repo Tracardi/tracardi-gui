@@ -23,6 +23,7 @@ import PropertyField from "./PropertyField";
 import ProfileInfo from "./ProfileInfo";
 import NoData from "../misc/NoData";
 import EventValidation from "../misc/EventValidation";
+import TimeDifference from "../datepickers/TimeDifference";
 
 const SessionContextInfo = ({sessionId}) => {
 
@@ -110,6 +111,10 @@ export const EventData = ({event}) => {
                                                                          content={eventProperties[key]}/>)}</>
     }
 
+    const insertTime = (event) => {
+        return typeof event?.metadata?.time?.insert === "string" && `${event.metadata.time.insert.substring(0, 10)} ${event.metadata.time.insert.substring(11, 19)}`
+    }
+
     return <TuiForm style={{margin: 20}}>
         {!isEmptyObjectOrNull(event?.properties) && <TuiFormGroup>
             <TuiFormGroupHeader header="Properties"/>
@@ -143,7 +148,7 @@ export const EventData = ({event}) => {
                                content={event?.update ? <BsCheckCircle size={20} color="#00c853"/> :
                                    <BsXSquare size={20} color="#d81b60"/>}/>
                 <PropertyField name="Insert time"
-                               content={typeof event?.metadata?.time?.insert === "string" && `${event.metadata.time.insert.substring(0, 10)} ${event.metadata.time.insert.substring(11, 19)}`}
+                               content={<> {insertTime(event)} <TimeDifference date={event?.metadata?.time?.insert}/> </>}
                 />
                 <PropertyField name="Tags"
                                content={Array.isArray(event?.tags?.values) && event.tags.values.join(", ")}
