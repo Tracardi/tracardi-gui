@@ -24,8 +24,11 @@ export default function EventStatusTag({label}) {
         borderRadius: 5,
         backgroundColor: getColor(),
         color: "white",
-        height: 22
-    }}>
+        cursor: "help",
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis",
+        overflow: "hidden"
+    }} title="Status of the event.">
         {capitalizeFirstLetter(label)}
         </span>
 }

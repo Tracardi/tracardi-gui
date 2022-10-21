@@ -57,13 +57,28 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
         }
     }, [limit, eventsData, handleEventSelect, selectedEvent])
 
+    const eventLabel= (selectedEvent, event) => {
+
+        if(selectedEvent === event.id) {
+            if (event?.metadata?.valid === false) {
+                return <b>{event.type + " (invalid)"}</b>
+            }
+            return <b>{event.type}</b>
+        } else {
+            if (event?.metadata?.valid === false) {
+                return event.type + " (invalid)"
+            }
+            return event.type
+        }
+    }
+
     const stepIconComponent = event => {
         return <div className="StepIcon" style={{
             backgroundColor: {
                 collected: "#006db3",
                 error: "#d81b60",
                 processed: "#43a047"
-            }[event.status]
+            }[event?.metadata?.status]
         }}/>
     }
 
@@ -93,11 +108,11 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
                             alignSelf: "center",
                             paddingLeft: 8,
                             paddingRight: 8
-                        }}>{event.insert.substring(11, 19)}</div>
+                        }}>{event?.metadata?.time?.insert?.substring(11, 19)}</div>
                         <StepLabel
                             StepIconComponent={() => stepIconComponent(event)}
                         >
-                            {selectedEvent === event.id ? <b>{event.type}</b> : event.type}
+                            {eventLabel(selectedEvent, event)}
                         </StepLabel>
                     </Step>
                 ))

@@ -37,11 +37,9 @@ const ProfileRawData = ({id}) => {
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Profile raw data"/>
-
             <div style={{margin: 10}}>
                 <ObjectInspector data={profile} expandLevel={5}/>
             </div>
-            }
         </TuiFormGroup>
     </TuiForm>
 }

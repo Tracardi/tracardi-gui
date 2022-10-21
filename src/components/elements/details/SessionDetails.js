@@ -24,7 +24,7 @@ export default function SessionDetails({data}) {
                             />
                         </div>
                         <div style={{width: "100%", padding: 5, flexBasis: "60%", height: "inherit"}}>
-                            {eventId && <EventInfo id={eventId}/>}
+                            {eventId && <EventInfo id={eventId} allowedDetails={['source', 'profile']}/>}
                         </div>
                     </div>
                 </TabCase>

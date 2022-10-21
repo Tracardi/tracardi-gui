@@ -19,6 +19,7 @@ export const ProfileData = ({profile}) => {
             <TuiFormGroupHeader header="Profile info"
                                 description="Profile information for this event."/>
             <TuiFormGroupContent>
+                <PropertyField name="Id" content={profile?.id}/>
                 <PropertyField name="Visits" content={profile?.stats?.visits}/>
                 <PropertyField name="Views" content={profile?.stats?.views}/>
                 <PropertyField name="Consents"

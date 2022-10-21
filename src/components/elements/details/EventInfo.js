@@ -2,9 +2,9 @@ import React, {useState} from "react";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import {EventData} from "./EventDetails";
+import EventData from "./EventData";
 
-export default function EventInfo({id}) {
+export default function EventInfo({id, allowedDetails}) {
 
     const [event,setEvent] = useState(null);
     const [error,setError] = useState(null);
@@ -41,5 +41,5 @@ export default function EventInfo({id}) {
         return <CenteredCircularProgress/>
     }
 
-    return <EventData event={event}/>
+    return <EventData event={event} allowedDetails={allowedDetails}/>
 }

@@ -11,9 +11,12 @@ export default function EventValidation({eventMetaData}) {
             borderRadius: 5,
             backgroundColor: "#d81b60",
             color: "white",
-            height: 22,
             fontSize: "90%",
-        }}>
+            cursor: "help",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+            overflow: "hidden"
+        }} title="Invalid event has incorrect data.">
         Invalid
         </span>
     }
