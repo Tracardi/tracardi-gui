@@ -74,7 +74,7 @@ export default function EventManagementDetails({id, onDeleteComplete, onEditComp
             <TuiFormGroupHeader header="Event type metadata" description="Information on event type"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header={`${data.name} (${data.event_type})`} description={data.description}>
-                    <TuiTags tags={data.tags}/>
+                    <TuiTags tags={data.tags} style={{marginLeft: 5, marginTop: 10}}/>
                     <Rows style={{marginTop: 20}}>
                         <Button onClick={onEditClick}
                                 icon={<VscEdit size={20}/>}

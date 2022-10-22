@@ -3,12 +3,11 @@ DIV.PropertyField {
     overflow: hidden;
     padding-top: 5px;
     padding-bottom: 5px;
-    border-bottom: 1px solid #ccc;
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
     font-size: 15px;
     font-weight: 400;
+    width: 100%;
 }
 
 DIV.PropertyField DIV.PropertyFieldName {

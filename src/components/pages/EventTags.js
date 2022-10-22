@@ -239,7 +239,7 @@ export default function EventTags() {
                                     (tagsObj, index) => <KeyValueDesc
                                         key={index}
                                         label={tagsObj.type}
-                                        description={<TuiTags tags={tagsObj.tags}/>}
+                                        description={<TuiTags tags={tagsObj.tags} style={{marginLeft: 5, marginTop: 10}}/>}
                                         value={
                                             <Actions
                                                 tagsObj={tagsObj}

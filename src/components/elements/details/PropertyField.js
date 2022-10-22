@@ -4,15 +4,15 @@ import {FiMoreHorizontal} from "react-icons/fi";
 import FormDrawer from "../drawers/FormDrawer";
 import "./PropertyField.css";
 
-const PropertyField = ({name, content, children, drawerSize=800}) => {
+const PropertyField = ({name, content, children, drawerSize=800, underline=true}) => {
 
     const [displayDetails, setDisplayDetails] = useState(false)
 
     return (
-        <><div className="PropertyField">
-            <div className="PropertyFieldName">
+        <><div className="PropertyField" style={{borderBottom: underline ? "1px dashed #bbb" : 0}}>
+            {name && <div className="PropertyFieldName">
                 {name}
-            </div>
+            </div>}
             <div style={{display: "flex", alignItems: "center", justifyContent:"space-between", width: "100%"}}>
                 <div style={{display: "flex", gap: 2, alignItems: "center", whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden"}}>
                     {
@@ -30,13 +30,12 @@ const PropertyField = ({name, content, children, drawerSize=800}) => {
         </div>
             <FormDrawer
                 width={drawerSize}
-                label="Edit event source"
                 onClose={() => {
                     setDisplayDetails(false)
                 }}
                 open={displayDetails}
             >
-                {children}
+                {displayDetails && children}
             </FormDrawer>
         </>
     );

@@ -240,7 +240,7 @@ function ResourceForm({init, onClose, showAlert}) {
                 </TuiFormGroupField>
                 <TuiFormGroupField header="System tags" description="System tags are auto-tagged. This is only information on
                 resource type. It is used internally by the system.">
-                    <TuiTags tags={tags}/>
+                    <TuiTags tags={tags} style={{marginLeft: 5, marginTop: 10}}/>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>

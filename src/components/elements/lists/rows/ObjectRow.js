@@ -4,17 +4,17 @@ import JsonStringify from "../../misc/JsonStingify";
 import Button from "../../forms/Button";
 import {TiBusinessCard} from "react-icons/ti";
 
-export function ObjectRow({row, timeField, onClick, filterFields, displayDetailButton, timeFieldWidth, rowDetails=null}) {
+function StandardRow({row, timeField, filterFields, displayDetailButton, timeFieldWidth, onClick}) {
+
+    const onDetails = () => {
+        onClick(row.itemId);
+    }
 
     const widthStyle = (typeof timeFieldWidth !== "undefined")
         ? (timeFieldWidth>0)
             ? {minWidth:timeFieldWidth, maxWidth:timeFieldWidth}
             : false
         : {}
-
-    const onDetails = () => {
-        onClick(row.itemId);
-    }
 
     return <div className="EventRow">
         <div className="Header">
@@ -30,16 +30,28 @@ export function ObjectRow({row, timeField, onClick, filterFields, displayDetailB
                     style={{margin: 5, padding: "5px 10px"}}
                     onClick={onDetails}
                 />}
-
             </div>}
             <div className="Data">
-                {rowDetails instanceof Function
-                    ? rowDetails(row, filterFields)
-                    : <JsonStringify data={row} filterFields={filterFields}/>
-                }
+                <JsonStringify data={row} filterFields={filterFields}/>
             </div>
         </div>
     </div>
+}
+
+export function ObjectRow({row, timeField, onClick, filterFields, displayDetailButton, timeFieldWidth, rowDetails=null}) {
+
+    if (rowDetails instanceof Function) {
+        return <div className="EventRow">{rowDetails(row, filterFields)}</div>
+    }
+
+    return <StandardRow
+        row={row}
+        timeField={timeField}
+        filterFields={filterFields}
+        displayDetailButton={displayDetailButton}
+        timeFieldWidth={timeFieldWidth}
+        onClick={onClick}
+    />
 }
 
 function rowsAreEqual(prevRow, nextRow) {

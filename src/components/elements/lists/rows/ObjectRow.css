@@ -2,8 +2,8 @@
     font-weight: 400;
     display: flex;
     flex-direction: column;
-    padding: 4px;
-    border-top: 1px solid #cecece;
+    padding: 20px;
+    border-top: 1px solid #aaa;
     animation-name: moveUpAndOpacity;
     animation-iteration-count: 1;
     animation-timing-function: ease-out;

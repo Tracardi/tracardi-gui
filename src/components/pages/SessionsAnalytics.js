@@ -3,6 +3,7 @@ import "./DataAnalytics.css";
 import DataAnalytics from "./DataAnalytics";
 import SessionDetails from "../elements/details/SessionDetails";
 import { makeUtcStringTzAware } from "../../misc/converters";
+import SessionRow from "../elements/lists/rows/SessionRow";
 
 export default function SessionsAnalytics({displayChart=true}) {
 
@@ -35,7 +36,7 @@ export default function SessionsAnalytics({displayChart=true}) {
         enableFiltering={true}
         type="session"
         timeFieldLabel = "timestamp"
-        filterFields={['metadata.time', 'context.storage', 'context.screen']}
+        filterFields={['metadata.time', 'time.tz', 'time.local']}
         timeField={(row) => [makeUtcStringTzAware(row.metadata.time.insert)]}
         onLoadHistogramRequest={handleLoadHistogramRequest}
         onLoadDataRequest={handleLoadDataRequest}
@@ -43,6 +44,7 @@ export default function SessionsAnalytics({displayChart=true}) {
         displayChart={displayChart}
         displayDetails={displayDetails}
         detailsDrawerWidth={1200}
+        rowDetails={(session, filterFields) => <SessionRow session={session} filterFields={filterFields}/>}
     />
 
 }

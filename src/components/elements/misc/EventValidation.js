@@ -1,21 +1,12 @@
 import React from "react";
+import "./HighlightedTag.css";
 
 export default function EventValidation({eventMetaData}) {
 
     if (!eventMetaData?.valid) {
-        return <span style={{
-            display: "inline-flex",
-            alignItems: "center",
-            padding: "2px 10px",
-            marginTop: 2,
-            borderRadius: 5,
+        return <span className="HighlightTag" style={{
             backgroundColor: "#d81b60",
-            color: "white",
-            fontSize: "90%",
-            cursor: "help",
-            whiteSpace: "nowrap",
-            textOverflow: "ellipsis",
-            overflow: "hidden"
+            color: "white"
         }} title="Invalid event has incorrect data.">
         Invalid
         </span>

@@ -22,7 +22,6 @@ import {SelectInput} from "../forms/JsonFormComponents";
 import NoData from "../misc/NoData";
 import NotImplemented from "../misc/NotImplemented";
 import MarkdownElement from "../misc/MarkdownElement";
-import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import TuiTags from "../tui/TuiTags";
 
 
@@ -298,7 +297,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                     </div>
                     {data.description && <h2 className="subHeader">{data.description}</h2>}
                     <div style={{marginBottom: 10}}>
-                        <TuiTags tags={data.tags}/>
+                        <TuiTags tags={data.tags} style={{marginLeft: 5, marginTop: 10}}/>
                     </div>
 
             </div>

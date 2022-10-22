@@ -127,7 +127,7 @@ function DescriptionForm({data: initData, onChange, errorMessage = null}) {
 
                 <TuiFormGroupField header="System tags"
                                    description="Tags are auto generated and are used for resource filtering.">
-                    <TuiTags tags={data?.tags}/>
+                    <TuiTags tags={data?.tags} style={{marginLeft: 5, marginTop: 10}}/>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>

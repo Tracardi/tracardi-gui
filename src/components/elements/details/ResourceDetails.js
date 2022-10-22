@@ -109,7 +109,7 @@ export default function ResourceDetails({id, onDeleteComplete}) {
                 Created: {data.timestamp} <TimeDifference date={data.timestamp}/>
             </div>
             <div style={{marginBottom: 10}}>
-                <TuiTags tags={data.tags}/>
+                <TuiTags tags={data.tags} style={{marginLeft: 5, marginTop: 10}}/>
             </div>
         </div>
 

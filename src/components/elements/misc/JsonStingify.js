@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import dot from "dot-object";
 import "./JsonStringify.css";
 import {BsArrowsCollapse, BsArrowsExpand} from "react-icons/bs";
-import {setToken} from "../../authentication/login";
 
 const ToggleIcon = ({toggle}) => {
     return (toggle) ? <BsArrowsCollapse size={30}/> : <BsArrowsExpand size={30}/>;
@@ -56,7 +55,7 @@ export default function JsonStringify({data, filterFields=[]}) {
 
     return <div style={{display: "flex", justifyContent: "space-between" , width: "100%"}}>
         <div className="JsonStringify">
-            {highlight(data, toggle ? filterFields : [])}
+            {highlight(data, toggle ? [] : filterFields)}
         </div>
         <div className="Toggle" onClick={() => setToggle(!toggle)}>
             <ToggleIcon toggle={toggle}/>

@@ -1,34 +1,26 @@
 import React from "react";
 import {isString} from "../../../misc/typeChecking";
+import "./HighlightedTag.css";
+
 export default function EventStatusTag({label}) {
 
     const getColor = () => {
-        if (label==='processed') {
+        if (label === 'processed') {
             return "#00c49f"
         }
         return "#0088fe"
     }
 
     function capitalizeFirstLetter(string) {
-        if(isString(string)) {
+        if (isString(string)) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
     }
 
-    return <span style={{
-        display: "inline-flex",
-        alignItems: "center",
-        fontSize: "90%",
-        padding: "2px 10px",
-        marginTop: 2,
-        borderRadius: 5,
-        backgroundColor: getColor(),
-        color: "white",
-        cursor: "help",
-        whiteSpace: "nowrap",
-        textOverflow: "ellipsis",
-        overflow: "hidden"
-    }} title="Status of the event.">
+    return <span
+        style={{backgroundColor: getColor(), color: "white"}}
+        className="HighlightTag"
+        title="Status of the event.">
         {capitalizeFirstLetter(label)}
         </span>
 }
