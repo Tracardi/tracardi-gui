@@ -195,7 +195,12 @@ export default function EventManagementForm({
 
                 <TuiFormGroupField header="JSON-schema validation"
                                    description="Type the validation in JSON-schema. Please refer to documentation for the format of JSON-schema.">
-                    
+                    <fieldset style={{borderColor: (validationErrorMessage) ? "red" : "#ccc"}}>
+                        <legend style={{color: (validationErrorMessage) ? "red" : "#aaa"}}>JSON-schema validation
+                        </legend>
+                        <JsonEditor value={validationSchema} onChange={setValidationSchema}/>
+                        {validationErrorMessage && <div style={{color: "red"}}>{validationErrorMessage}</div>}
+                    </fieldset>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Enable validation"
                                    description="Disabled validation schemas will not be triggered.">
