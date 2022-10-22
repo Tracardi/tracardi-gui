@@ -6,6 +6,7 @@ import Tabs, {TabCase} from "../tabs/Tabs";
 import PropTypes from "prop-types";
 import SessionStepper from "../steppers/SessionStepper";
 import EventInfo from "./EventInfo";
+import SessionCardInfo from "./SessionCardInfo";
 
 
 export default function SessionDetails({data}) {
@@ -18,6 +19,11 @@ export default function SessionDetails({data}) {
                 <TabCase id={0}>
                     <div style={{display: "flex", width: "100%", height: "inherit", padding: 5}}>
                         <div style={{width: "100%", padding: 5, flexBasis: "40%", height: "inherit"}}>
+                            <fieldset style={{margin: 10, padding: 20, width: "100%"}}>
+                                <legend>Session details</legend>
+                                <SessionCardInfo session={data}/>
+                            </fieldset>
+
                             <SessionStepper profileId={data?.profile?.id}
                                             session={data}
                                             onEventSelect={setEventId}

@@ -3,7 +3,7 @@ import "./HighlightedTag.css";
 
 export default function EventValidation({eventMetaData}) {
 
-    if (!eventMetaData?.valid) {
+    if (eventMetaData?.valid === false) {
         return <span className="HighlightTag" style={{
             backgroundColor: "#d81b60",
             color: "white"

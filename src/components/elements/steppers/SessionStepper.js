@@ -78,7 +78,7 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
                 collected: "#006db3",
                 error: "#d81b60",
                 processed: "#43a047"
-            }[event?.status]
+            }[event?.metadata?.status]
         }}/>
     }
 

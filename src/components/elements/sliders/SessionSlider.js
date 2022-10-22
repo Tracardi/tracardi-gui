@@ -6,6 +6,7 @@ import "./SessionSlider.css";
 import {Slider} from "@mui/material";
 import ErrorsBox from "../../errors/ErrorsBox";
 import NoData from "../misc/NoData";
+import SessionCardInfo from "../details/SessionCardInfo";
 
 export default function SessionSlider({profileId, onEventSelect}) {
 
@@ -58,7 +59,7 @@ export default function SessionSlider({profileId, onEventSelect}) {
                     onChangeCommitted={(_, value) => setOffset(value)}
                 />
             </div>
-            { loading && <CenteredCircularProgress/>}
+            {loading && <CenteredCircularProgress/>}
             {!loading && session === null && <div style={{
                 height: "inherit",
                 width: "100%",
@@ -68,11 +69,19 @@ export default function SessionSlider({profileId, onEventSelect}) {
             }}>
                 <NoData header="No data found for defined session offset" fontSize="16px"/>
             </div>}
-            {!loading && session !== null && <SessionStepper
-                profileId={profileId}
-                session={session}
-                onEventSelect={onEventSelect}
-            />}
+
+            {!loading && session !== null && <>
+                <fieldset style={{margin: 10, padding: 20, width: "100%"}}>
+                    <legend>Session details</legend>
+                    <SessionCardInfo session={session}/>
+                </fieldset>
+                <SessionStepper
+                    profileId={profileId}
+                    session={session}
+                    onEventSelect={onEventSelect}
+                />
+            </>
+            }
         </div>
     );
 }

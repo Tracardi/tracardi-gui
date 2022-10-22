@@ -58,3 +58,9 @@ H2.subHeader {
   color: #444;
   text-transform: none;
 }
+
+.flexLine {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
