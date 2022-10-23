@@ -24,11 +24,13 @@ const EventSourceForm = ({value, style, onClose}) => {
             transitional: false,
             permanent_profile_id: false,
             returns_profile: false,
+            requires_consent: false,
             tags: ['rest', 'api'],
             groups: []
         }
     }
 
+    const [requiresConsent, setRequiresConsent] = useState(value?.requires_consent);
     const [enabledSource, setEnabledSource] = useState(value?.enabled);
     const [transitional, setTransitional] = useState(value?.transitional);
     const [permanent, setPermanent] = useState(value?.permanent_profile_id);
@@ -70,6 +72,7 @@ const EventSourceForm = ({value, style, onClose}) => {
                     tags: value.tags,
                     groups: groups,
                     returns_profile: returnsProfile,
+                    requires_consent: requiresConsent,
                     permanent_profile_id: permanent
                 }
             })
@@ -150,7 +153,7 @@ const EventSourceForm = ({value, style, onClose}) => {
             <TuiFormGroupHeader header="Event source advanced configuration" />
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Event source access"
-                                   description="Disabled event sources will not be accessible.">
+                                   description="Disabled event sources will not be accessible. ">
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Switch
                             checked={enabledSource}
@@ -159,6 +162,20 @@ const EventSourceForm = ({value, style, onClose}) => {
                         />
                         <span>
                         This event source is enabled
+                    </span>
+                    </div>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Event source requires user consent"
+                                   description="Data collected through this source requires user consent.
+                                   System will embed the Javascript snippet to get the user consents.">
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <Switch
+                            checked={requiresConsent}
+                            onChange={(ev) => setRequiresConsent(ev.target.checked)}
+                            name="enabledSource"
+                        />
+                        <span>
+                        Data collected through this source requires user consent
                     </span>
                     </div>
                 </TuiFormGroupField>

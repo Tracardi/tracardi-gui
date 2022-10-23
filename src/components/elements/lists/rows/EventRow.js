@@ -21,12 +21,12 @@ export function EventRow({row, filterFields}) {
         <div style={{flex: "1 1 0", minWidth: 500, borderRight: "solid 1px #ccc", paddingRight: 17}}>
             <PropertyField name="id" content={<IdLabel label={row.id}/>}/>
             <PropertyField name="Created" content={<DateValue date={row.metadata?.time?.insert}/>}/>
-            <PropertyField name="Profile" content={<ProfileLabel label={profileName(row.profile)}/>} drawerSize={1200}>
+            <PropertyField name="Profile" content={<ProfileLabel label={profileName(row.profile)} profileLess={row.profile===null}/>} drawerSize={1200}>
                 <ProfileDetails profile={row.profile}/>
             </PropertyField>
             <PropertyField name="Profile visits" content={row.profile?.metadata?.time?.visit?.count}/>
             <PropertyField name="Session id" content={<IdLabel label={row.source?.id}/>}/>
-            <PropertyField name="Routed by" content={<TuiTags tags={row.metadata?.processed_by?.rules} size="small"/>}/>
+            {row.metadata?.processed_by?.rules === [] && <PropertyField name="Routed by" content={<TuiTags tags={row.metadata?.processed_by?.rules} size="small"/>}/>}
             <PropertyField name="Process time" content={row.metadata?.time?.process_time} underline={false}/>
         </div>
         <div style={{flex: "2 1 0", paddingLeft: 15}}>
