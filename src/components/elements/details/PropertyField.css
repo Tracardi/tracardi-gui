@@ -20,6 +20,7 @@ DIV.PropertyField DIV.PropertyFieldName {
     overflow: hidden;
     display: flex;
     align-items: center;
+    width: 250px;
 }
 
 DIV.PropertyField .PropertyFieldMore {

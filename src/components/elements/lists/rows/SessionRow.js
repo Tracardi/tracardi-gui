@@ -10,7 +10,7 @@ export default function SessionRow({session, filterFields}) {
         <div style={{flex: "1 1 0", minWidth: 400, borderRight: "solid 1px #ccc", paddingRight: 17}}>
             <SessionCardInfo session={session}/>
         </div>
-        <div style={{flex: "3 1 0", width: "100%", paddingLeft: 15}}>
+        <div style={{flex: "2 1 0", width: "100%", paddingLeft: 15}}>
             <div style={{paddingRight: 15, marginBottom: 10}}>
                 <PropertyField content={<span style={{fontSize: "110%", fontWeight: 500}}>{session.id}</span>}
                                drawerSize={1200} underline={false}>
