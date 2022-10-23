@@ -12,7 +12,7 @@ import {asyncRemote} from "../../remote_api/entrypoint";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 
 
-export default function Flows() {
+export default function Flows({defaultLayout="rows"}) {
 
     const [refresh, setRefresh] = useState(0);
 
@@ -87,8 +87,10 @@ export default function Flows() {
                     {plugs.map((row, subIndex) => {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
-                                           data={{...row, icon: "flow"}}
-                                           onClick={() => onClick(row?.id)}/>
+                                           data={{...row, icon: row.type==='collection' ? "flow" : "segment"}}
+                                           onClick={() => onClick(row?.id)}>
+                            {`${row.description} (${row.type})`}
+                        </BrowserRow>
                     })}
                 </div>
             </div>
@@ -97,6 +99,7 @@ export default function Flows() {
 
     return <CardBrowser
         label="Workflows"
+        defaultLayout={defaultLayout}
         description="List of defined workflows. You may filter this list by workflow name in the upper search box."
         urlFunc={urlFunc}
         cardFunc={flowCards}

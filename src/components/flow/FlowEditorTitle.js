@@ -165,7 +165,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
 
     return <aside className="FlowEditorTitle">
         <div>
-            <span style={{marginLeft: 10}}>{flowMetaData?.name}</span>
+            <span style={{marginLeft: 10}}>{flowMetaData?.name} <sup>({flowMetaData?.type})</sup></span>
         </div>
         <div>
             <ReinstallButton/>

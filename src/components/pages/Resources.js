@@ -8,7 +8,7 @@ import FlowNodeIcons from "../flow/FlowNodeIcons";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 
 
-export default function Resources({defaultLayout="cards"}) {
+export default function Resources({defaultLayout="rows"}) {
 
     const urlFunc = useCallback((query) => ('/resources/by_type' + ((query) ? "?query=" + query : "")), []);
     const addFunc = useCallback((close) => <ResourceForm onClose={close}/>, []);

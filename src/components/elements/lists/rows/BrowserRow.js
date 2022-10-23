@@ -3,7 +3,7 @@ import FlowNodeIcons from "../../../flow/FlowNodeIcons";
 import {BsTrash} from "react-icons/bs";
 import Tag from "../../misc/Tag";
 
-const BrowserRow = ({id, data, onClick, onDelete, tags}) => {
+const BrowserRow = ({id, data, onClick, onDelete, tags, children}) => {
 
     const statusColor = (status) => {
         return status ? "#00c853" : "#d81b60"
@@ -32,7 +32,7 @@ const BrowserRow = ({id, data, onClick, onDelete, tags}) => {
                     <span style={{color: "#555", display: "flex"}}><FlowNodeIcons icon={data?.icon} size={22}/></span>
                     <div style={{display: "flex", alignItems: "baseline", marginLeft: 10}}>
                         <div style={{fontSize: 16, marginRight: 5, fontWeight: 500, width: 200}}>{data.name}</div>
-                        <div style={{fontSize: 13}}>{data.description}</div>
+                        <div style={{fontSize: 13}}>{children ? children : data.description}</div>
 
                     </div>
                 </div>

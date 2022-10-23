@@ -16,6 +16,9 @@ import { TextField } from "@mui/material";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import MdManual from "../../flow/actions/MdManual";
 import Properties from "../details/DetailProperties";
+import TuiTags from "../tui/TuiTags";
+import {isNotEmptyArray} from "../../../misc/typeChecking";
+import IdLabel from "../misc/IconLabels/IdLabel";
 
 export default function PluginForm({id}) {
 
@@ -111,6 +114,10 @@ export default function PluginForm({id}) {
                                     <TuiFormGroup>
                                         <TuiFormGroupHeader header="Plugin overview" description="Here you can check some basic information on selected plugin."/>
                                         <TuiFormGroupContent>
+                                            <div className="plugin-info-field">
+                                                <div className="field-name">Plugin ID</div>
+                                                {plugin?.id ? <IdLabel label={plugin?.id}/> : "Plugin ID not provided"}
+                                            </div>
                                             <div className="plugin-info-field" style={{alignItems: "center"}}>
                                                 <div className="field-name">Name</div>
                                                 <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", width: "450px", alignItems: "center"}}>
@@ -175,35 +182,38 @@ export default function PluginForm({id}) {
                                             <div className="plugin-info-field">
                                                 <div className="field-name">Inputs</div>
                                                 <div style={{overflowWrap: "anywhere"}}>
-                                                    {(Array.isArray(plugin?.plugin?.spec?.inputs) && plugin.plugin.spec.inputs.join(", ")) || "No inputs provided"}
+                                                    {isNotEmptyArray(plugin?.plugin?.spec?.inputs) ? <TuiTags tags={plugin?.plugin?.spec?.inputs} size="small"/> : "No inputs"}
                                                 </div>
                                             </div>
                                             <div className="plugin-info-field">
                                                 <div className="field-name">Outputs</div>
-                                                <div style={{overflowWrap: "anywhere"}}>
-                                                    {(Array.isArray(plugin?.plugin?.spec?.outputs) && plugin.plugin.spec.outputs.join(", ")) || "No outputs provided"}
+                                                <div style={{overflowWrap: "anywhere", display: "flex", gap: 5}}>
+                                                    {isNotEmptyArray(plugin?.plugin?.spec?.outputs) ? <TuiTags tags={plugin?.plugin?.spec?.outputs} size="small"/> : "No outputs"}
                                                 </div>
                                             </div>
-                                            <div className="plugin-info-field">
-                                                <div className="field-name">Plugin ID</div>
-                                                <div>{plugin?.id || "Plugin ID not provided"}</div>
-                                            </div>
+
                                             <div className="plugin-info-field">
                                                 <div className="field-name">Tags</div>
                                                 <div style={{overflowWrap: "anywhere"}}>
-                                                    {(Array.isArray(plugin?.plugin?.metadata?.tags) && plugin.plugin.metadata.tags.join(", ")) || "Tags not provided"}
+                                                    {isNotEmptyArray(plugin?.plugin?.metadata?.tags) ? <TuiTags tags={plugin?.plugin?.metadata?.tags} size="small"/> : "No tags"}
+                                                </div>
+                                            </div>
+                                            <div className="plugin-info-field">
+                                                <div className="field-name">Purpose</div>
+                                                <div style={{overflowWrap: "anywhere", display: "flex", gap: 5}}>
+                                                    {isNotEmptyArray(plugin?.plugin?.metadata?.purpose) ? <TuiTags tags={plugin?.plugin?.metadata?.purpose} size="small"/> : "No purpose"}
                                                 </div>
                                             </div>
                                             <div className="plugin-info-field">
                                                 <div className="field-name">Keywords</div>
                                                 <div style={{overflowWrap: "anywhere"}}>
-                                                    {(Array.isArray(plugin?.plugin?.metadata?.keywords) && plugin.plugin.metadata.keywords.join(", ")) || "Keywords not provided"}
+                                                    {isNotEmptyArray(plugin?.plugin?.metadata?.keywords) ? <TuiTags tags={plugin?.plugin?.metadata?.keywords} size="small"/> : "No keywords"}
                                                 </div>
                                             </div>
                                             <div className="plugin-info-field">
                                                 <div className="field-name">Groups</div>
                                                 <div style={{overflowWrap: "anywhere"}}>
-                                                    {(Array.isArray(plugin?.plugin?.metadata?.groups) && plugin.plugin.metadata.groups.join(", ")) || "Groups not provided"}
+                                                    {isNotEmptyArray(plugin?.plugin?.metadata?.group) ? <TuiTags tags={plugin?.plugin?.metadata?.group} size="small"/> : "No groups"}
                                                 </div>
                                             </div>
                                             <div className="plugin-info-field">

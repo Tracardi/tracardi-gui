@@ -23,6 +23,10 @@ export function isInt(n) {
 }
 
 
+export function isNotEmptyArray(value) {
+    return Array.isArray(value) && value.length > 0
+}
+
 export function startsWith(text, listOfTexts) {
     for(const item of listOfTexts) {
         if(text.startsWith(item)) {

@@ -22,7 +22,7 @@ function FlowForm({
                       showAlert,
                       draft = false,
                       refreshMetaData = true,
-                      type = 'collect',
+                      type = 'collection',
                       disableType = false
                   }) {
 
@@ -135,7 +135,7 @@ function FlowForm({
                     <FormControl sx={{m: 1, minWidth: 120}} size="small">
                         <InputLabel id="flow-type">Flow type</InputLabel>
                         <Select
-                            defaultValue="collect"
+                            defaultValue="collection"
                             labelId="flow-type"
                             variant="outlined"
                             size="small"
@@ -143,8 +143,8 @@ function FlowForm({
                             label="Flow type"
                             onChange={(e) => setFlowType(e.target.value)}
                         >
-                            <MenuItem value={"collect"}>Collect</MenuItem>
-                            <MenuItem value={"segment"}>Segment</MenuItem>
+                            <MenuItem value={"collection"}>Collection</MenuItem>
+                            <MenuItem value={"segmentation"}>Segmentation</MenuItem>
                         </Select>
                     </FormControl>
                 </TuiFormGroupField>}
