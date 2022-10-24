@@ -6,7 +6,7 @@ import urlPrefix from "../../misc/UrlPrefix";
 import version from '../../misc/version';
 import {BiChevronLeftCircle, BiChevronRightCircle} from "react-icons/bi";
 import {BsPersonCircle, BsFileEarmarkArrowUp} from "react-icons/bs";
-import {VscPulse, VscTools} from "react-icons/vsc";
+import {VscOrganization, VscPulse, VscTools} from "react-icons/vsc";
 import {IoGitNetworkSharp} from "react-icons/io5";
 import {GoSettings} from "react-icons/go";
 import {VscLaw, VscDashboard} from "react-icons/vsc";
@@ -90,10 +90,11 @@ function MainMenu({showAlert}) {
                 <MenuRow icon={<BsStar size={20}/>} label="Resources" collapsed={collapsed} onClick={go("/resources")} roles={["admin", "developer"]}/>
                 <MenuRow icon={<BsBoxArrowInRight size={20}/>} label="Inbound Traffic" collapsed={collapsed} onClick={go("/inbound")} roles={["admin", "developer"]}/>
                 <MenuRow icon={<BsBoxArrowInLeft size={20}/>} label="Outbound Traffic" collapsed={collapsed} onClick={go("/outbound")} roles={["admin", "developer"]}/>
-                <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Processing" collapsed={collapsed} onClick={go("/processing")} roles={["admin", "developer", "marketer"]}/>
                 <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")} roles={["admin", "developer", "marketer"]}/>
-                <MenuRow icon={<VscLaw size={20}/>} label="Consents" collapsed={collapsed} onClick={go("/consents")} roles={["admin", "developer", "marketer"]}/>
+                <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Processing" collapsed={collapsed} onClick={go("/processing")} roles={["admin", "developer", "marketer"]}/>
+                <MenuRow icon={<VscOrganization size={20}/>} label="Segmentation" collapsed={collapsed} onClick={go("/segmentation")} roles={["admin", "developer", "marketer"]}/>
                 <MenuRow icon={<BsBarChartFill size={20}/>} label="Reporting" collapsed={collapsed} onClick={go("/reporting")} roles={["admin", "developer", "marketer"]}/>
+                <MenuRow icon={<VscLaw size={20}/>} label="Consents" collapsed={collapsed} onClick={go("/consents")} roles={["admin", "developer", "marketer"]}/>
                 <MenuRow icon={<BsClipboardCheck size={20}/>} label="Test" collapsed={collapsed} onClick={go("/testing")} roles={["admin", "developer"]}/>
 
 

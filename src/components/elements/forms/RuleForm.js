@@ -142,7 +142,11 @@ export default function RuleForm({onEnd, init}) {
                 <TuiFormGroupField header="Workflow"
                                    description="Select existing workflow. If there is none create it on workflow page.">
                     <div className="SearchInput">
-                        <TuiSelectFlow value={flow} errorMessage={flowErrorMessage} onSetValue={handleFlowChange}/>
+                        <TuiSelectFlow value={flow}
+                                       errorMessage={flowErrorMessage}
+                                       onSetValue={handleFlowChange}
+                                       type="collection"
+                        />
                     </div>
                 </TuiFormGroupField>
             </TuiFormGroupContent>

@@ -133,6 +133,7 @@ export default function LiveSegmentForm({onSubmit, init}) {
                     <TuiSelectFlow value={workflow}
                                    onSetValue={setWorkflow}
                                    errorMessage={workflowErrorMessage}
+                                   type="segmentation"
                     />
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Activation" description="Set if this segment is active. ">

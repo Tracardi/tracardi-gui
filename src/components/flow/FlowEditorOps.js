@@ -30,7 +30,8 @@ export function prepareFlowPayload(id, flowMetaData, reactFlowInstance) {
         name: flowMetaData?.name,
         description: flowMetaData?.description,
         flowGraph: prepareGraph(reactFlowInstance),
-        projects: flowMetaData?.projects
+        projects: flowMetaData?.projects,
+        type: flowMetaData.type
     }
 }
 
