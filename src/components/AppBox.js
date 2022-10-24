@@ -157,10 +157,10 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/processing")} roles={["admin", "developer", "marketer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <PageTabs title="Processing"
+                    <PageTabs title="Collection and Processing"
                               tabs={[
                                   new PrivateTab(["admin", "developer"],
-                                      <Flows/>, "/processing/workflows", "Workflows"),
+                                      <Flows type="collection"/>, "/processing/workflows", "Workflows"),
                                   new PrivateTab(["admin", "developer"],
                                       <Rules/>, "/processing/routing", "Routing Rules"),
                               ]}
@@ -174,8 +174,10 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/segmentation")} roles={["admin", "developer", "marketer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <PageTabs title="Processing"
+                    <PageTabs title="Segmentation"
                               tabs={[
+                                  new PrivateTab(["admin", "developer"],
+                                      <Flows type="segmentation"/>, "/processing/workflows", "Workflows"),
                                   new PrivateTab(["admin", "developer", "marketer"],
                                       <Segments/>, "/processing/segments", "Segmentation"),
                                   new PrivateTab(["admin", "developer", "marketer"],

@@ -113,14 +113,14 @@ export default function FlowDetails({id, onDeleteComplete}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
 
-        <TuiFormGroup>
+        {data.type === 'collection' && <TuiFormGroup>
             <TuiFormGroupHeader header="Rules" description="List of rules connected with the workflow."/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Active rules" description="Rules that trigger this flow">
+                <TuiFormGroupField header="Active rules" description="Rules that trigger this workflow">
                     <FlowRules flowName={data.name} id={id}/>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
-        </TuiFormGroup>
+        </TuiFormGroup>}
 
     </TuiForm>
 

@@ -12,11 +12,11 @@ import {asyncRemote} from "../../remote_api/entrypoint";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 
 
-export default function Flows({defaultLayout="rows"}) {
+export default function Flows({defaultLayout="rows", type="collection"}) {
 
     const [refresh, setRefresh] = useState(0);
 
-    const urlFunc = useCallback((query) => ('/flows/by_tag' + ((query) ? "?query=" + query : "")), []);
+    const urlFunc = useCallback((query) => (`/flows/by_tag?type=${type}` + ((query) ? "&query=" + query : "")), []);
     const addFunc = useCallback((close) => <FlowForm projects={[]} onFlowSaveComplete={close}/>, []);
     const detailsFunc = useCallback((id, close) => <FlowDetails id={id} onDeleteComplete={close}/>, [])
 

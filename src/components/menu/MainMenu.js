@@ -10,7 +10,7 @@ import {VscOrganization, VscPulse, VscTools} from "react-icons/vsc";
 import {IoGitNetworkSharp} from "react-icons/io5";
 import {GoSettings} from "react-icons/go";
 import {VscLaw, VscDashboard} from "react-icons/vsc";
-import {BsClipboardCheck, BsStar, BsBoxArrowInLeft, BsBoxArrowInRight} from "react-icons/bs";
+import {BsClipboardCheck, BsStar, BsBoxArrowRight, BsBoxArrowInRight} from "react-icons/bs";
 import { getRoles } from "../authentication/login";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote, getError} from "../../remote_api/entrypoint";
@@ -86,16 +86,19 @@ function MainMenu({showAlert}) {
         <div>
             <Branding collapsed={collapsed}/>
             <div>
-                <MenuRow icon={<VscDashboard size={20}/>} label="Dashboard" collapsed={collapsed} onClick={go("/dashboard")} roles={["admin", "developer", "marketer", "maintainer"]}/>
-                <MenuRow icon={<BsStar size={20}/>} label="Resources" collapsed={collapsed} onClick={go("/resources")} roles={["admin", "developer"]}/>
+                <MenuRow icon={<VscDashboard size={20}/>} label="Dashboard" collapsed={collapsed} onClick={go("/dashboard")} roles={["admin", "developer", "marketer", "maintainer"]} style={{marginBottom: 20}}/>
+
                 <MenuRow icon={<BsBoxArrowInRight size={20}/>} label="Inbound Traffic" collapsed={collapsed} onClick={go("/inbound")} roles={["admin", "developer"]}/>
-                <MenuRow icon={<BsBoxArrowInLeft size={20}/>} label="Outbound Traffic" collapsed={collapsed} onClick={go("/outbound")} roles={["admin", "developer"]}/>
+                <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Collection" collapsed={collapsed} onClick={go("/processing")} roles={["admin", "developer", "marketer"]}/>
                 <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")} roles={["admin", "developer", "marketer"]}/>
-                <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Processing" collapsed={collapsed} onClick={go("/processing")} roles={["admin", "developer", "marketer"]}/>
                 <MenuRow icon={<VscOrganization size={20}/>} label="Segmentation" collapsed={collapsed} onClick={go("/segmentation")} roles={["admin", "developer", "marketer"]}/>
                 <MenuRow icon={<BsBarChartFill size={20}/>} label="Reporting" collapsed={collapsed} onClick={go("/reporting")} roles={["admin", "developer", "marketer"]}/>
+                <MenuRow icon={<BsBoxArrowRight size={20}/>} label="Outbound Traffic" collapsed={collapsed} onClick={go("/outbound")} roles={["admin", "developer"]}/>
+
+                <MenuRow icon={<BsStar size={20}/>} label="Resources" collapsed={collapsed} onClick={go("/resources")} roles={["admin", "developer"]} style={{marginTop: 20}}/>
                 <MenuRow icon={<VscLaw size={20}/>} label="Consents" collapsed={collapsed} onClick={go("/consents")} roles={["admin", "developer", "marketer"]}/>
-                <MenuRow icon={<BsClipboardCheck size={20}/>} label="Test" collapsed={collapsed} onClick={go("/testing")} roles={["admin", "developer"]}/>
+
+                <MenuRow icon={<BsClipboardCheck size={20}/>} label="Test" collapsed={collapsed} onClick={go("/testing")} roles={["admin", "developer"]} style={{marginTop: 20}}/>
 
 
             </div>
