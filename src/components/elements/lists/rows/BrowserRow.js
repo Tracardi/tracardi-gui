@@ -1,17 +1,17 @@
 import React from 'react';
 import FlowNodeIcons from "../../../flow/FlowNodeIcons";
-import {BsTrash} from "react-icons/bs";
+import {BsGear, BsTrash} from "react-icons/bs";
 import Tag from "../../misc/Tag";
+import IconButton from "../../misc/IconButton";
 
-const BrowserRow = ({id, data, onClick, onDelete, tags, children}) => {
+const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, children}) => {
 
     const statusColor = (status) => {
         return status ? "#00c853" : "#d81b60"
     }
-    //{onDelete instanceof Function && <BsTrash size={20} onClick={() => onDelete(id)}/>}
 
     return (
-        <div style={{display: "flex", flexDirection: "row", width: "100%", alignItems: "center", borderBottom: "solid 1px #ccc"}}>
+        <div style={{display: "flex", flexDirection: "row", width: "100%", alignItems: "center", borderBottom: "solid 1px #ccc", padding: "0 10px"}}>
             <div 
                 style={{
                     display: "flex",
@@ -21,7 +21,7 @@ const BrowserRow = ({id, data, onClick, onDelete, tags, children}) => {
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    padding: 10
+                    padding: "10px 0"
                 }}
                 onClick={(ev) => {
                     onClick(id)
@@ -42,7 +42,8 @@ const BrowserRow = ({id, data, onClick, onDelete, tags, children}) => {
                 </div>
 
             </div>
-            {onDelete instanceof Function && <BsTrash size={20} onClick={() => onDelete(id)} style={{cursor: "pointer"}}/>}
+            {onSettingsClick instanceof Function && <IconButton label={"Settings"} onClick={() => onSettingsClick(id)}><BsGear size={20}/></IconButton>}
+            {onDelete instanceof Function && <IconButton label={"Delete"} onClick={() => onDelete(id)}><BsTrash size={20}/></IconButton>}
         </div>
     );
 }
