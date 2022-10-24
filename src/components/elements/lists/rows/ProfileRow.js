@@ -1,10 +1,11 @@
 import PropertyField from "../../details/PropertyField";
 import {profileName} from "../../../../misc/formaters";
 import ProfileDetails from "../../details/ProfileDetails";
-import {isEmptyObject} from "../../../../misc/typeChecking";
+import {isEmptyObject, isNotEmptyArray} from "../../../../misc/typeChecking";
 import JsonStringify from "../../misc/JsonStingify";
 import React from "react";
 import ProfileCardInfo from "../../details/ProfileCardInfo";
+import TuiTags from "../../tui/TuiTags";
 
 export default function ProfileRow({profile, filterFields}) {
     return <div style={{display: "flex"}}>
@@ -25,6 +26,11 @@ export default function ProfileRow({profile, filterFields}) {
             {!isEmptyObject(profile.traits?.private) && <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0}}>
                 <legend>Private traits</legend>
                 <JsonStringify data={profile.traits?.private} filterFields={filterFields}/>
+            </fieldset>}
+
+            {isNotEmptyArray(profile.segments) && <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0, marginTop: 10}}>
+                <legend>Segments</legend>
+                <div className="flexLine" style={{gap: 5}}><TuiTags tags={profile.segments} size="small"/></div>
             </fieldset>}
         </div>
     </div>

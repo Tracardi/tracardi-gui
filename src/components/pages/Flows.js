@@ -41,17 +41,11 @@ export default function Flows({defaultLayout="rows", type="collection"}) {
         confirm({title: "Do you want to delete this workflow?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        const response = await asyncRemote({
+                        await asyncRemote({
                             url: '/flow/' + id,
                             method: "delete"
                         })
-
-                        if (response && mounted.current) {
-                            await asyncRemote({
-                                url: '/flows/refresh'
-                            })
-                            setRefresh(Math.random())
-                        }
+                        setRefresh(refresh+1)
                     } catch (e) {
                         console.error(e)
                     }
@@ -88,7 +82,10 @@ export default function Flows({defaultLayout="rows", type="collection"}) {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
                                            data={{...row, icon: row.type==='collection' ? "flow" : "segment"}}
-                                           onClick={() => onClick(row?.id)}>
+                                           onClick={handleFlowEdit}
+                                           onDelete={onDelete}
+                                           onSettingsClick={onClick}
+                        >
                             {`${row.description} (${row.type})`}
                         </BrowserRow>
                     })}
