@@ -42,8 +42,16 @@ const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, childre
                 </div>
 
             </div>
-            {onSettingsClick instanceof Function && <IconButton label={"Settings"} onClick={() => onSettingsClick(id)}><BsGear size={20}/></IconButton>}
-            {onDelete instanceof Function && <IconButton label={"Delete"} onClick={() => onDelete(id)}><BsTrash size={20}/></IconButton>}
+            {onSettingsClick instanceof Function && <IconButton label={"Settings"}
+                                                                style={{color:"black"}}
+                                                                onClick={() => onSettingsClick(id)}>
+                <BsGear size={20}/>
+            </IconButton>}
+            {onDelete instanceof Function && <IconButton label={"Delete"}
+                                                         style={{color:"black"}}
+                                                         onClick={() => onDelete(id)}>
+                <BsTrash size={20}/>
+            </IconButton>}
         </div>
     );
 }
