@@ -1,5 +1,3 @@
-import React from "react";
-
 export function profileName(profile) {
     if(!profile) {
         return 'profileless'
