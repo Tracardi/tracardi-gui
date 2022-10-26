@@ -85,7 +85,8 @@ import {
     SiCivicrm,
     SiHubspot,
     SiLivechat,
-    SiZendesk
+    SiZendesk,
+    SiIntercom
 } from "react-icons/si";
 import {GrMysql} from "react-icons/gr";
 import {
@@ -232,7 +233,8 @@ export const icons = {
     "sms": (size) => <FaSms size={size}/>,
     "livechat": (size) => <SiLivechat size={size}/>,
     "zendesk": (size) => <SiZendesk size={size}/>,
-    "chatwoot": (size) => <BsChatDots size={size}/>
+    "chatwoot": (size) => <BsChatDots size={size}/>,
+    "intercom": (size) => <SiIntercom size={size}/>,
 }
 
 
