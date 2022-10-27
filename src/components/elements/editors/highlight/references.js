@@ -1,6 +1,6 @@
-import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/mode-json";
 
-export class CustomHighlightRules extends window.ace.acequire(
+export class CustomHighlightRules extends window.ace.require(
     "ace/mode/text_highlight_rules"
 ).TextHighlightRules {
     constructor() {
@@ -76,7 +76,7 @@ export class CustomHighlightRules extends window.ace.acequire(
     }
 }
 
-export default class ReferencedJsonMode extends window.ace.acequire("ace/mode/json")
+export default class ReferencedJsonMode extends window.ace.require("ace/mode/json")
     .Mode {
     constructor() {
         super();

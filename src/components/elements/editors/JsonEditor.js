@@ -34,9 +34,9 @@ export default function JsonEditor({onChange, value, height, autocomplete=true})
                         {value: 'payload@', score: 1, meta: 'Payload data reference'},
                         {value: 'event@', score: 2, meta: 'Event data reference'},
                         {value: 'session@', score: 3, meta: 'Session data reference'},
-                        {value: 'profile@', score: 2, meta: 'Profile data reference'},
-                        {value: 'flow@', score: 2, meta: 'Flow data reference'},
-                        {value: 'memory@', score: 2, meta: 'Memory data reference'},
+                        {value: 'profile@', score: 4, meta: 'Profile data reference'},
+                        {value: 'flow@', score: 5, meta: 'Flow data reference'},
+                        {value: 'memory@', score: 6, meta: 'Memory data reference'},
                     ]);
                 },
             }],
