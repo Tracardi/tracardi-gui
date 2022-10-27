@@ -9,7 +9,7 @@ export class CustomHighlightRules extends window.ace.require(
                 start: [
                     {
                         token: "reference",
-                        regex: '["](profile|memory|session|payload|event|flow)[@][a-zA-Z0-9\\._\\-]+["]'
+                        regex: '["][`]?(profile|memory|session|payload|event|flow)[@][a-zA-Z0-9\\._\\-]+[`]?["]'
                     },
                     {
                         token: "variable",
