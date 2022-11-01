@@ -44,7 +44,7 @@ export default function ProfilesAnalytics({displayChart=true}) {
         onLoadDataRequest={onLoadDataRequest}
         onLoadDetails={onLoadDetails}
         displayDetails={displayDetails}
-        detailsDrawerWidth={1250}
+        detailsDrawerWidth={1320}
         displayChart={displayChart}
         rowDetails={(profile, filterFields) => {
             return <ProfileRow profile={profile} filterFields={filterFields}/>

@@ -5,7 +5,7 @@ import {
     BsPerson, BsChatDots,
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
-    BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard
+    BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -235,6 +235,7 @@ export const icons = {
     "zendesk": (size) => <SiZendesk size={size}/>,
     "chatwoot": (size) => <BsChatDots size={size}/>,
     "intercom": (size) => <SiIntercom size={size}/>,
+    "sort": (size) => <BsSortAlphaDown size={size}/>
 }
 
 

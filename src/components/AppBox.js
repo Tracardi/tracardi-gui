@@ -177,7 +177,9 @@ const AppBox = () => {
                     <PageTabs title="Segmentation"
                               tabs={[
                                   new PrivateTab(["admin", "developer"],
-                                      <Flows type="segmentation"/>, "/processing/workflows", "Workflows"),
+                                      <Flows type="segmentation"/>, "/processing/workflows", <>
+                                          <BsStar size={20}
+                                                  style={{marginRight: 5}}/>{"Workflows"}</>),
                                   new PrivateTab(["admin", "developer", "marketer"],
                                       <Segments/>, "/processing/segments", "Post event segmentation"),
                                   new PrivateTab(["admin", "developer", "marketer"],

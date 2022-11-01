@@ -14,7 +14,7 @@ export default function ProfileRow({profile, filterFields}) {
         </div>
         <div style={{flex: "2 1 0", width: "100%", paddingLeft: 15}}>
             <div style={{paddingRight: 15, marginBottom: 10}}>
-                <PropertyField content={<span style={{fontSize: "110%", fontWeight: 500}}>{profileName(profile)}</span>} drawerSize={1200} underline={false}>
+                <PropertyField content={<span style={{fontSize: "110%", fontWeight: 500}}>{profileName(profile)}</span>} drawerSize={1320} underline={false}>
                     <ProfileDetails profile={profile}/>
                 </PropertyField>
             </div>

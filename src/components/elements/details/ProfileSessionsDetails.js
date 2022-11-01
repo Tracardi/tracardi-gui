@@ -12,12 +12,12 @@ export default function ProfileSessionsDetails({ profileId }) {
     }
 
     return <div style={{display: "flex", width:"100%", height: "inherit", padding: 5}}>
-        <div style={{width: "100%", padding: 5, flexBasis: "40%", height: "inherit"}}>
+        <div style={{width: "50%", padding: 5, height: "inherit"}}>
             <SessionSlider profileId={profileId}
                            onEventSelect={eventId => handleEventSet(eventId)}
             />
         </div>
-        <div style={{width: "100%", padding: 5, flexBasis: "60%", height: "inherit"}}>
+        <div style={{width: "50%", padding: 5, height: "inherit"}}>
             {eventId && <EventInfo id={eventId} allowedDetails={['source']}/> }
         </div>
     </div>

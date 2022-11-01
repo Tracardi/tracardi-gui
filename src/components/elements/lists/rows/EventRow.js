@@ -44,7 +44,7 @@ export function EventRow({row, filterFields}) {
                 <PropertyField name="Created" content={<DateValue date={row.metadata?.time?.insert}/>}/>
                 <PropertyField name="Profile" content={<ProfileLabel label={profileName(row.profile)}
                                                                      profileLess={row.profile === null}/>}
-                               drawerSize={1200}>
+                               drawerSize={1320}>
                     <ProfileDetails profile={row.profile}/>
                 </PropertyField>
                 <PropertyField name="Profile visits" content={row.profile?.metadata?.time?.visit?.count}/>
