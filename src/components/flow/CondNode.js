@@ -128,8 +128,7 @@ const CondNodeDynamic = ({data}) => {
 
                 </div>
             </div>
-            {data?.debugging?.node?.errors === 0 && data?.debugging?.node?.warnings === 0 &&
-            <div className="CondTitle">{data?.metadata?.name}</div>}
+            <div className="CondTitle">{data?.metadata?.name}</div>
         </div>
     );
 };

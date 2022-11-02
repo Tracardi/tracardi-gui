@@ -9,6 +9,9 @@ DIV.PropertyField {
     font-weight: 400;
     width: 100%;
 }
+DIV.PropertyField:hover {
+    background-color: #eeeef5;
+}
 
 DIV.PropertyField DIV.PropertyFieldName {
     font-size: 16px;
@@ -21,6 +24,7 @@ DIV.PropertyField DIV.PropertyFieldName {
     display: flex;
     align-items: center;
     width: 250px;
+    padding-left: 5px;
 }
 
 DIV.PropertyField .PropertyFieldMore {

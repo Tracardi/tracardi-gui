@@ -179,13 +179,13 @@ const AppBox = () => {
                                   new PrivateTab(["admin", "developer"],
                                       <Flows type="segmentation"/>, "/processing/workflows", <>
                                           <BsStar size={20}
-                                                  style={{marginRight: 5}}/>{"Workflows"}</>),
-                                  new PrivateTab(["admin", "developer", "marketer"],
-                                      <Segments/>, "/processing/segments", "Post event segmentation"),
+                                                  style={{marginRight: 5}}/>{"Segmentation workflows"}</>),
                                   new PrivateTab(["admin", "developer", "marketer"],
                                       <LiveSegments/>, "/processing/live/segments", <>
                                           <BsStar size={20}
                                                   style={{marginRight: 5}}/>{"Live segmentation"}</>),
+                                  new PrivateTab(["admin", "developer", "marketer"],
+                                      <Segments/>, "/processing/segments", "Post event segmentation"),
                               ]}
                     />
                 </Suspense>

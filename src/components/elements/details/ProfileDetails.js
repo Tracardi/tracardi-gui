@@ -17,12 +17,12 @@ export default function ProfileDetails({profile}) {
     return <div style={{height: "inherit", display: "flex", flexDirection: "column"}}>
         <PiiDetails data={profile}/>
         <div className="RightTabScroller">
-            <Tabs tabs={["Sessions & Events", "Traits & PII", "Segments", "Raw"]} tabsStyle={{backgroundColor: "#e1f5fe"}}>
+            <Tabs tabs={["Personal data & Traits", "Sessions & Events", "Segments", "Raw"]} tabsStyle={{backgroundColor: "#e1f5fe"}}>
                 <TabCase id={0}>
-                    <ProfileSessionsDetails profileId={profile?.id}/>
+                    <ProfileData profile={profile}/>
                 </TabCase>
                 <TabCase id={1}>
-                    <ProfileData profile={profile}/>
+                    <ProfileSessionsDetails profileId={profile?.id}/>
                 </TabCase>
                 <TabCase id={2}>
                     <TuiForm style={{margin: 20}}>
