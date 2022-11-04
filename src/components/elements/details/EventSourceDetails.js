@@ -23,6 +23,10 @@ import NoData from "../misc/NoData";
 import NotImplemented from "../misc/NotImplemented";
 import MarkdownElement from "../misc/MarkdownElement";
 import TuiTags from "../tui/TuiTags";
+import PropertyField from "./PropertyField";
+import IdLabel from "../misc/IconLabels/IdLabel";
+import DateValue from "../misc/DateValue";
+import ActiveTag from "../misc/ActiveTag";
 
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
@@ -101,10 +105,23 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Event Source"/>
                 <TuiFormGroupContent header={"Data"}>
-                    <Properties properties={data} exclude={['manual', 'tags', 'name', 'description']}/>
-                    {data?.locked &&
-                    <NotImplemented style={{marginTop: 10}}>This event source is managed by external service. Therefore
-                        it can not be edited in the system.</NotImplemented>}
+                    {data && <>
+                        <PropertyField name="Id" content={<IdLabel label={data.id}/>}/>
+                        <PropertyField name="Type" content={data.type}/>
+                        <PropertyField name="Created" content={<DateValue date={data.timestamp}/>}/>
+                        <PropertyField name="Active" content={<ActiveTag active={data.enabled}/>}/>
+                        <PropertyField name="Transitional" content={<ActiveTag active={data.transitional}/>}/>
+                        <PropertyField name="Returns profile" content={<ActiveTag active={data.returns_profile}/>}/>
+                        <PropertyField name="Permanent profile id"
+                                       content={<ActiveTag active={data.permanent_profile_id}/>}/>
+                        <PropertyField name="Requires consent" content={<ActiveTag active={data.requires_consent}/>}/>
+                        <PropertyField name="Groups" content={<TuiTags tags={data.groups} size="small"/>}/>
+                        <PropertyField name="Tags" content={<TuiTags tags={data.tags} size="small"/>}/>
+                        {data.locked &&
+                        <NotImplemented style={{marginTop: 10}}>This event source is managed by external service.
+                            Therefore
+                            it can not be edited in the system.</NotImplemented>}
+                    </>}
                 </TuiFormGroupContent>
 
             </TuiFormGroup>
