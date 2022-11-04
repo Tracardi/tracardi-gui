@@ -235,7 +235,7 @@ export const icons = {
     "zendesk": (size) => <SiZendesk size={size}/>,
     "chatwoot": (size) => <BsChatDots size={size}/>,
     "intercom": (size) => <SiIntercom size={size}/>,
-    "sort": (size) => <BsSortAlphaDown size={size}/>
+    "sort": (size) => <BsSortAlphaDown size={size}/>,
 }
 
 

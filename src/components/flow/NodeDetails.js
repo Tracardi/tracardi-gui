@@ -134,7 +134,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                                 <TuiFormGroupHeader header="Node console log" description="Log has only information from
                                  workflow that runs in testing mode or in production.
                                  There is no information here from your debugging."/>
-                                <TuiFormGroupContent>
+                                <TuiFormGroupContent style={{padding: 0}}>
                                     <NodeLogDetails nodeId={node?.id}/>
                                 </TuiFormGroupContent>
                             </TuiFormGroup>

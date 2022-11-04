@@ -1,19 +1,24 @@
 import TimeDifference from "../datepickers/TimeDifference";
 import React, {useState} from "react";
-import {makeUtcStringTzAware} from "../../../misc/converters";
-import {BsClock} from "react-icons/bs";
+import {formatDate, makeUtcStringTzAware} from "../../../misc/converters";
+import {BsClock, BsGlobe} from "react-icons/bs";
 
 export default function DateValue({date}) {
 
-    const [local, setLocal] = useState(false)
+    const [local, setLocal] = useState(true)
 
     const handleTimeChange = () => {
-
+        setLocal(!local)
     }
 
-    date = makeUtcStringTzAware(date)
-    return <span className="flexLine" onClick={handleTimeChange}>
-        <BsClock size={20}/>
+    if(local) {
+        date = makeUtcStringTzAware(date)
+    } else {
+        date = formatDate(date)
+    }
+
+    return <span className="flexLine" style={{cursor: "pointer"}} onClick={handleTimeChange}>
+        {local ? <BsClock size={20}/> : <BsGlobe size={20}/>}
         <span style={{margin: 5, marginRight: 10}}>{date}</span> <TimeDifference date={date}/>
         </span>
 }

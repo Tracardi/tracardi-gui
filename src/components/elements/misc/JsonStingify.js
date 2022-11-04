@@ -2,10 +2,7 @@ import React, {useState} from "react";
 import dot from "dot-object";
 import "./JsonStringify.css";
 import {BsArrowsCollapse, BsArrowsExpand} from "react-icons/bs";
-
-const ToggleIcon = ({toggle}) => {
-    return (toggle) ? <BsArrowsCollapse size={30}/> : <BsArrowsExpand size={30}/>;
-}
+import ToggleIcon from "../icons/ToggleIcon";
 
 export default function JsonStringify({data, toggle: taggleValue=false, filterFields=[]}) {
 

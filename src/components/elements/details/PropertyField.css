@@ -18,11 +18,11 @@ DIV.PropertyRow DIV.FieldName {
     font-size: 16px;
     font-weight: 500;
     max-width: 330px;
-    min-width: 150px;
+    min-width: 120px;
     display: flex;
     align-items: center;
-    width: 250px;
     padding-left: 5px;
+    width: 250px;
 }
 
 DIV.PropertyRow DIV.FieldValue {

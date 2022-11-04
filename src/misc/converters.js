@@ -45,3 +45,8 @@ export function makeUtcStringTzAware(utcString) {
     let date = new Date(utcString + "Z");
     return date.toLocaleString();
 }
+
+export function formatDate(utcString) {
+    let date = new Date(utcString);
+    return date.toLocaleString();
+}
