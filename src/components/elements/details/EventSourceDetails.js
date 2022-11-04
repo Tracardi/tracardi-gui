@@ -2,7 +2,6 @@ import React, {Suspense, useEffect} from "react";
 import "../lists/cards/SourceCard.css";
 import "./ResourceDetails.css";
 import "./Details.css";
-import Properties from "./DetailProperties";
 import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
