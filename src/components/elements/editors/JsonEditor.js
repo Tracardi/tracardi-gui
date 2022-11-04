@@ -11,7 +11,7 @@ import ReferencedJsonMode from "./highlight/references";
 
 const AceEditor = React.lazy(() => import('react-ace'))
 
-export default function JsonEditor({onChange, value, height, autocomplete=true}) {
+export default function JsonEditor({onChange, value, height, autocomplete=false}) {
 
     const aceEditor = useRef();
 

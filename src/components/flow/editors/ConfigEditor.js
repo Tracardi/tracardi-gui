@@ -63,6 +63,7 @@ const ConfigEditor = ({config, onConfig, errorMessages = {}, confirmed = false})
 
                         <JsonEditor value={eventPayload}
                                     onChange={setEventPayload}
+                                    autocomplete={false}
                         />
                     </fieldset>
 

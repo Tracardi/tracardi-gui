@@ -350,7 +350,7 @@ export function CopyTraitsInput({value, props, onChange}) {
     />
 }
 
-export function JsonInput({value, onChange = null}) {
+export function JsonInput({value, onChange = null, autocomplete=false}) {
 
     const getFormattedValue = (value) => {
         try {
@@ -387,6 +387,7 @@ export function JsonInput({value, onChange = null}) {
             <JsonEditor
                 value={json}
                 onChange={handleChange}
+                autocomplete={autocomplete}
             />
         </fieldset>
         <div style={{height: 10}}>
