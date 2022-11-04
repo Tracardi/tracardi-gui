@@ -10,6 +10,7 @@ import {BsCheckCircle, BsXSquare} from "react-icons/bs";
 import TimeDifference from "../datepickers/TimeDifference";
 import React from "react";
 import SessionContextInfo from "./SessionContextInfo";
+import TuiTags from "../tui/TuiTags";
 
 
 const EventData = ({event, allowedDetails=[]}) => {
@@ -66,8 +67,8 @@ const EventData = ({event, allowedDetails=[]}) => {
                 <PropertyField name="Tags"
                                content={Array.isArray(event?.tags?.values) && event.tags.values.join(", ")}
                 />
-                <PropertyField name="Routed by rules"
-                               content={Array.isArray(event?.metadata?.processed_by?.rules) && event.metadata.processed_by.rules.join(", ")}/>
+                {Array.isArray(event?.metadata?.processed_by?.rules) && <PropertyField name="Routed by rules"
+                               content={<TuiTags tags={event.metadata?.processed_by?.rules} size="small"/>}/>}
             </TuiFormGroupContent>
         </TuiFormGroup>
         {!isEmptyObjectOrNull(event?.properties) && <TuiFormGroup>

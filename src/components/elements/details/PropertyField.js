@@ -4,17 +4,17 @@ import {FiMoreHorizontal} from "react-icons/fi";
 import FormDrawer from "../drawers/FormDrawer";
 import "./PropertyField.css";
 
-const PropertyField = ({name, content, children, drawerSize=800, underline=true}) => {
+const PropertyField = ({name, content, children, drawerSize=800, underline=true, whiteSpace='nowrap'}) => {
 
     const [displayDetails, setDisplayDetails] = useState(false)
 
     return (
-        <><div className="PropertyField" style={{borderBottom: underline ? "1px dashed #bbb" : 0}}>
-            {name && <div className="PropertyFieldName">
-                {name}
+        <><div className="PropertyRow" style={{borderBottom: underline ? "1px dashed #bbb" : 0}}>
+            {name && <div className="FieldName">
+                <span>{name}</span>
             </div>}
-            <div style={{display: "flex", alignItems: "center", justifyContent:"space-between", width: "100%"}}>
-                <div style={{display: "flex", gap: 2, alignItems: "center", whiteSpace: "nowrap", textOverflow: "ellipsis", overflow: "hidden"}}>
+            <div className="FieldValue">
+                <div style={{display: "flex", gap: 2, alignItems: "center", whiteSpace: whiteSpace, textOverflow: "ellipsis", overflow: "hidden"}}>
                     {
                         typeof content !== "undefined" && React.isValidElement(content) ?
                             content
@@ -25,7 +25,7 @@ const PropertyField = ({name, content, children, drawerSize=800, underline=true}
                                 typeof content === "boolean" ? content.toString() : content
                     }
                 </div>
-                {children && <FiMoreHorizontal size={18} className="PropertyFieldMore" onClick={() => setDisplayDetails(true)}/>}
+                {children && <FiMoreHorizontal size={18} className="FieldMore" onClick={() => setDisplayDetails(true)}/>}
             </div>
         </div>
             <FormDrawer

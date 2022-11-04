@@ -55,6 +55,7 @@ const SessionContextInfo = ({sessionId}) => {
         const sessionContext = object2dot(session?.context);
         return Object.keys(sessionContext).map(key => <PropertyField key={key}
                                                                      name={key}
+                                                                     whiteSpace="normal"
                                                                      content={sessionContext[key]}/>)
     }
 

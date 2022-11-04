@@ -6,10 +6,10 @@ import PropTypes from "prop-types";
 
 const UqlDetails = ({data}) => {
 
-    const trigger = "event.type=\""+ data.event?.type + "\""+ ((data.source?.id) ? " AND source.id="+data.source?.id : "")
+    const trigger = "event.type=\""+ data.event?.type + "\""+ ((data?.source?.id) ? " AND source.id="+data?.source?.id : "")
 
     const Condition = () => <React.Fragment>When <WhenChips condition={trigger}/></React.Fragment>
-    const Actions = () => <React.Fragment>Trigger <ThenChips actions={[data.flow?.name]}/></React.Fragment>
+    const Actions = () => <React.Fragment>Trigger <ThenChips actions={[data?.flow?.name]}/></React.Fragment>
 
     const RenderChips = () => {
         if (typeof data !== "undefined") {
