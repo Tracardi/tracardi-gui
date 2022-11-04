@@ -60,13 +60,11 @@ const ProfileLogDetails = ({profileId, sessionProfileId, showAlert}) => {
         return <CenteredCircularProgress/>
     }
 
-    if (Array.isArray(logData)) {
-        if(logData.length > 0) {
-            return <FlowLogs logs={logData}/>
+    if (Array.isArray(logData?.result)) {
+        if(logData?.total > 0) {
+            return <FlowLogs logs={logData?.result}/>
         }
-        return <NoData header="This event has no profile logs.">
-            <p>Here is logged information on merging and segmentation errors.</p>
-        </NoData>
+        return <NoData header="This event has no profile logs."/>
     }
 
     return ""

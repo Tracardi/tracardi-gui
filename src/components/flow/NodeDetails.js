@@ -10,9 +10,11 @@ import {VscJson} from "react-icons/vsc";
 import "../elements/forms/JsonForm"
 import {VscDebugConsole} from "react-icons/vsc";
 import {MemoNodeInitForm, NodeInitJsonForm, NodeRuntimeConfigForm} from "../elements/forms/NodeInitForm";
-import {VscRunErrors} from "react-icons/vsc";
+import {VscRunErrors, VscBug} from "react-icons/vsc";
 import NodeMicroserviceForm from "./NodeMicroserviceForm";
 import MdManual from "./actions/MdManual";
+import NodeLogDetails from "../elements/details/NodeLogDetails";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
 
 export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicroserviceChange}) {
 
@@ -68,6 +70,13 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                             size="large">
                             <VscJson size={22}/>
                         </IconButton>}
+                        {node?.id && <IconButton
+                            label="Node console log"
+                            onClick={() => setTab(5)}
+                            selected={tab === 5}
+                            size="large">
+                            <VscBug size={22}/>
+                        </IconButton>}
                         {node?.data?.metadata && <IconButton
                             label="Advanced Runtime Editor"
                             onClick={() => setTab(6)}
@@ -119,6 +128,15 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
 
                         {tab === 4 && (process.env.NODE_ENV && process.env.NODE_ENV === 'development') &&
                         <ConsoleView label="Action raw data" data={node}/>}
+
+                        {tab === 5 && <TuiForm style={{height: "inherit"}}>
+                            <TuiFormGroup>
+                                <TuiFormGroupHeader header="Node console log"/>
+                                <TuiFormGroupContent>
+                                    <NodeLogDetails nodeId={node?.id}/>
+                                </TuiFormGroupContent>
+                            </TuiFormGroup>
+                        </TuiForm>}
 
                         {tab === 6 && node?.data?.spec && <NodeRuntimeConfigForm
                             pluginId={node?.data?.spec?.id}

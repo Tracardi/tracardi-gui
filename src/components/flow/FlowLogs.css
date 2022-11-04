@@ -29,6 +29,10 @@
     cursor: pointer;
 }
 
+.FlowLogRow:hover {
+    background-color: #e1f5fe;
+}
+
 .FlowLogRow .FlowLogMessage {
     display: flex;
     align-items: center;

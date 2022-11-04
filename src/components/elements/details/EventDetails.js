@@ -9,8 +9,6 @@ import EventProfilingDetails from "./EventProfilingDetails";
 import EventLogDetails from "./EventLogDetails";
 import ProfileLogDetails from "./ProfileLogDetails";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
-import ProfileRawData from "./ProfileRawData";
-import ProfileInfo from "./ProfileInfo";
 import EventData from "./EventData";
 
 export default function EventDetails({event, metadata}) {
@@ -18,11 +16,9 @@ export default function EventDetails({event, metadata}) {
     const [tab, setTab] = React.useState(0);
 
 
-    const tabs = ["Event", "Raw", "Flow debug", "Flow logs"];
+    const tabs = ["Event", "Raw", "Flow debug", "Event logs"];
     if (event?.profile?.id) {
         tabs.push("Profile logs");
-        tabs.push("Profile");
-        tabs.push("Raw profile");
     }
 
     return <>
@@ -92,12 +88,6 @@ export default function EventDetails({event, metadata}) {
                         </TuiFormGroupContent>
                     </TuiFormGroup>
                 </TuiForm>
-            </TabCase>
-            <TabCase id={5}>
-                <ProfileInfo id={event?.profile?.id}/>
-            </TabCase>
-            <TabCase id={6}>
-                <ProfileRawData id={event?.profile?.id}/>
             </TabCase>
         </Tabs>
     </>

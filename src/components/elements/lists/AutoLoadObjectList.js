@@ -6,6 +6,7 @@ import {ObjectRow} from "./rows/ObjectRow";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
+import NoData from "../misc/NoData";
 
 const AutoLoadObjectList = ({
                                 label,
@@ -165,26 +166,31 @@ const AutoLoadObjectList = ({
         return <ErrorsBox errorList={error}/>;
     }
 
-    return (
-        <div className="ObjectList">
-            {renderHeader(timeFieldLabel)}
-            <div style={{height: 5}}>{progress &&<LinearProgress />}</div>
-            <InfiniteScroll
-                dataLength={rows.length}
-                next={() => {
-                    setPage(page + 1)
-                }}
-                inverse={false}
-                hasMore={hasMore && refreshInterval===0}
-                style={{overflow: "hidden"}}
-                loader={<div style={{display: "flex", alignItems: "center", justifyContent: "center", padding: 4}}>
-                    <CircularProgress size={20}/></div>}
-                scrollableTarget="MainWindowScroll"
-            >
-                {renderRows(rows)}
-            </InfiniteScroll>
-        </div>
-    );
+    if (Array.isArray(rows) && rows.length > 0) {
+        return (
+            <div className="ObjectList">
+                {renderHeader(timeFieldLabel)}
+                <div style={{height: 5}}>{progress && <LinearProgress/>}</div>
+                <InfiniteScroll
+                    dataLength={rows.length}
+                    next={() => {
+                        setPage(page + 1)
+                    }}
+                    inverse={false}
+                    hasMore={hasMore && refreshInterval === 0}
+                    style={{overflow: "hidden"}}
+                    loader={<div style={{display: "flex", alignItems: "center", justifyContent: "center", padding: 4}}>
+                        <CircularProgress size={20}/></div>}
+                    scrollableTarget="MainWindowScroll"
+                >
+                    {renderRows(rows)}
+                </InfiniteScroll>
+            </div>)
+    } else {
+        return <NoData header="No data found">
+            <p>Please extend the time range or change the filtering.</p>
+        </NoData>
+    }
 };
 
 export default AutoLoadObjectList;

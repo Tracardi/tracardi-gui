@@ -6,7 +6,7 @@ import FlowLogs from "../../flow/FlowLogs";
 import NoData from "../misc/NoData";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 
-const EventLogDetails = ({eventId, showAlert}) => {
+const NodeLogDetails = ({nodeId, showAlert}) => {
 
     const [logData, setLogData] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ const EventLogDetails = ({eventId, showAlert}) => {
         let isSubscribed = true;
 
         asyncRemote({
-            url: "/event/logs/" + eventId,
+            url: "/node/logs/" + nodeId,
         }).then((response) => {
             if(response && isSubscribed===true) {
                 setLogData(response.data);
@@ -37,14 +37,14 @@ const EventLogDetails = ({eventId, showAlert}) => {
             isSubscribed = false
         }
 
-    }, [eventId, showAlert]);
+    }, [nodeId, showAlert]);
 
     if(loading) {
         return <CenteredCircularProgress/>
     }
 
     if (Array.isArray(logData?.result)) {
-        if(logData?.total > 0) {
+        if(logData.total > 0) {
             return <FlowLogs logs={logData?.result}/>
         }
         return <NoData header="This event has no logs."/>
@@ -60,5 +60,5 @@ const mapProps = (state) => {
 export default connect(
     mapProps,
     {showAlert}
-)(EventLogDetails)
+)(NodeLogDetails)
 
