@@ -16,8 +16,8 @@ export default function Flows({defaultLayout="rows", type="collection"}) {
 
     const [refresh, setRefresh] = useState(0);
 
-    const urlFunc = useCallback((query) => (`/flows/by_tag?type=${type}` + ((query) ? "&query=" + query : "")), []);
-    const addFunc = useCallback((close) => <FlowForm projects={[]} onFlowSaveComplete={close}/>, []);
+    const urlFunc = useCallback((query) => (`/flows/by_tag?type=${type}` + ((query) ? "&query=" + query : "")), [type]);
+    const addFunc = useCallback((close) => <FlowForm type={type} projects={[]} onFlowSaveComplete={close} />, [type])
     const detailsFunc = useCallback((id, close) => <FlowDetails id={id} onDeleteComplete={close}/>, [])
 
     const history = useHistory();
