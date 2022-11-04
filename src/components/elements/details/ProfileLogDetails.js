@@ -32,7 +32,7 @@ const ProfileLogDetails = ({profileId, sessionProfileId, showAlert}) => {
 
         if (id !== null) {
             setLoading(true);
-            asyncRemote({url: "/profile/logs/" + id})
+            asyncRemote({url: "/profile/logs/" + id + "?sort=desc"})
                 .then((response) => {
                     if (response !== null && isSubscribed) {
                         setLogData(response.data);
@@ -64,7 +64,7 @@ const ProfileLogDetails = ({profileId, sessionProfileId, showAlert}) => {
         if(logData?.total > 0) {
             return <FlowLogs logs={logData?.result}/>
         }
-        return <NoData header="This event has no profile logs."/>
+        return <NoData header="This profile has no logs."/>
     }
 
     return ""

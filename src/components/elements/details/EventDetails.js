@@ -7,7 +7,6 @@ import Tabs, {TabCase} from "../tabs/Tabs";
 import PropTypes from "prop-types";
 import EventProfilingDetails from "./EventProfilingDetails";
 import EventLogDetails from "./EventLogDetails";
-import ProfileLogDetails from "./ProfileLogDetails";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import EventData from "./EventData";
 
@@ -17,9 +16,6 @@ export default function EventDetails({event, metadata}) {
 
 
     const tabs = ["Event", "Raw", "Flow debug", "Event logs"];
-    if (event?.profile?.id) {
-        tabs.push("Profile logs");
-    }
 
     return <>
         <Tabs
@@ -74,17 +70,6 @@ export default function EventDetails({event, metadata}) {
                                             description="Workflow logs for selected event."/>
                         <TuiFormGroupContent style={{height: "100%"}}>
                             <EventLogDetails eventId={event?.id}/>
-                        </TuiFormGroupContent>
-                    </TuiFormGroup>
-                </TuiForm>
-            </TabCase>
-            <TabCase id={4}>
-                <TuiForm style={{margin: 20, height: "inherit"}}>
-                    <TuiFormGroup style={{height: "inherit"}}>
-                        <TuiFormGroupHeader header="Profile logs"
-                                            description="Profile logs for selected event."/>
-                        <TuiFormGroupContent style={{height: "100%"}}>
-                            <ProfileLogDetails profileId={event?.profile?.id}/>
                         </TuiFormGroupContent>
                     </TuiFormGroup>
                 </TuiForm>

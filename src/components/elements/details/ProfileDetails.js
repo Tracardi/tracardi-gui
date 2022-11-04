@@ -11,13 +11,14 @@ import PiiDetails from "./PiiDetails";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {ProfileData} from "./ProfileInfo";
 import ProfileSessionsDetails from "./ProfileSessionsDetails";
+import ProfileLogDetails from "./ProfileLogDetails";
 
 export default function ProfileDetails({profile}) {
 
     return <div style={{height: "inherit", display: "flex", flexDirection: "column"}}>
         <PiiDetails data={profile}/>
         <div className="RightTabScroller">
-            <Tabs tabs={["Personal data & Traits", "Sessions & Events", "Segments", "Raw"]} tabsStyle={{backgroundColor: "#e1f5fe"}}>
+            <Tabs tabs={["Personal data & Traits", "Sessions & Events", "Segments", "Logs", "Raw"]} tabsStyle={{backgroundColor: "#e1f5fe"}}>
                 <TabCase id={0}>
                     <ProfileData profile={profile}/>
                 </TabCase>
@@ -37,6 +38,11 @@ export default function ProfileDetails({profile}) {
                     </TuiForm>
                 </TabCase>
                 <TabCase id={3}>
+                    <div className="Box10">
+                        <ProfileLogDetails profileId={profile.id} />
+                    </div>
+                </TabCase>
+                <TabCase id={4}>
                     <div className="Box10">
                         <ObjectInspector data={profile} theme={theme} expandLevel={3}/>
                     </div>

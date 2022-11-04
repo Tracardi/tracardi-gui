@@ -26,31 +26,33 @@ const Row = ({log}) => {
 
     return <div className="FlowLogRow" onClick={()=>setShowDetails(!showDetails)}>
         <PropertyField name="Date" content={<><Icon type={log.type}/><DateValue date={log.metadata.timestamp}/></>}></PropertyField>
-        <PropertyField name="Origin" content={log.origin}></PropertyField>
-        <PropertyField name="Module" content={log.module}></PropertyField>
-        <PropertyField name="Class" content={log.class_name}></PropertyField>
-        {log?.flow_id && <PropertyField name="Flow" content={log.flow_id}></PropertyField>}
-        {log?.event_id && <PropertyField name="Event" content={log.event_id}></PropertyField>}
-        {log?.profile_id && <PropertyField name="Profile" content={log.profile_id}></PropertyField>}
-        <fieldset>
-            <legend>Message</legend>
-            {log.message}
-        </fieldset>
-        {showDetails && <div className="FlowLogDetails">
-            <fieldset style={{width: "100%", margin: 5, padding: 10}}>
-                <legend>Traceback</legend>
-                <JsonStringify data={{module:log.module, class: log.class_name, traceback: log.traceback}}/>
-            </fieldset>
+        {showDetails && <>
+            <PropertyField name="Origin" content={log.origin}></PropertyField>
+            <PropertyField name="Module" content={log.module}></PropertyField>
+            <PropertyField name="Class" content={log.class_name}></PropertyField>
+            {log?.flow_id && <PropertyField name="Flow" content={log.flow_id}></PropertyField>}
+            {log?.event_id && <PropertyField name="Event" content={log.event_id}></PropertyField>}
+            {log?.profile_id && <PropertyField name="Profile" content={log.profile_id}></PropertyField>}
+        </>
+        }
+        <div style={{padding: 10}}>{log.message}</div>
+        {showDetails && <>
+            <div className="FlowLogDetails">
+                <fieldset style={{width: "100%", margin: 5, padding: 10}}>
+                    <legend>Traceback</legend>
+                    <JsonStringify data={{module:log.module, class: log.class_name, traceback: log.traceback}} toggle={true}/>
+                </fieldset>
 
-        </div>}
+            </div>
+        </>}
     </div>
 }
 
-const FlowLogs = ({logs}) => {
+const FlowLogs = ({logs, overflow='auto'}) => {
 
     return <div className="FlowLog">
-        <div className="FlowLogHeader">Message</div>
-        <div className="FlowLogRows">
+        <div className="FlowLogHeader">Log Messages</div>
+        <div className="FlowLogRows" style={{overflow: overflow}}>
             {Array.isArray(logs) && logs.map((log, index)=> {
                 return <Row
                     key={index}

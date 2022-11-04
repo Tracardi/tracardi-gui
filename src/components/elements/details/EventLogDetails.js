@@ -16,7 +16,7 @@ const EventLogDetails = ({eventId, showAlert}) => {
         let isSubscribed = true;
 
         asyncRemote({
-            url: "/event/logs/" + eventId,
+            url: "/event/logs/" + eventId + "?sort=desc",
         }).then((response) => {
             if(response && isSubscribed===true) {
                 setLogData(response.data);

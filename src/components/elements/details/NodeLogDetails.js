@@ -16,7 +16,7 @@ const NodeLogDetails = ({nodeId, showAlert}) => {
         let isSubscribed = true;
 
         asyncRemote({
-            url: "/node/logs/" + nodeId,
+            url: "/node/logs/" + nodeId + '?sort=desc',
         }).then((response) => {
             if(response && isSubscribed===true) {
                 setLogData(response.data);
@@ -45,9 +45,9 @@ const NodeLogDetails = ({nodeId, showAlert}) => {
 
     if (Array.isArray(logData?.result)) {
         if(logData.total > 0) {
-            return <FlowLogs logs={logData?.result}/>
+            return <FlowLogs logs={logData?.result} overflow="hidden"/>
         }
-        return <NoData header="This event has no logs."/>
+        return <NoData header="This node has no logs."/>
     }
 
     return ""

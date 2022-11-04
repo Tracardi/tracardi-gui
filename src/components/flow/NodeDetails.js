@@ -10,7 +10,7 @@ import {VscJson} from "react-icons/vsc";
 import "../elements/forms/JsonForm"
 import {VscDebugConsole} from "react-icons/vsc";
 import {MemoNodeInitForm, NodeInitJsonForm, NodeRuntimeConfigForm} from "../elements/forms/NodeInitForm";
-import {VscRunErrors, VscBug} from "react-icons/vsc";
+import {VscRunErrors, VscGear} from "react-icons/vsc";
 import NodeMicroserviceForm from "./NodeMicroserviceForm";
 import MdManual from "./actions/MdManual";
 import NodeLogDetails from "../elements/details/NodeLogDetails";
@@ -75,14 +75,14 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                             onClick={() => setTab(5)}
                             selected={tab === 5}
                             size="large">
-                            <VscBug size={22}/>
+                            <VscRunErrors size={22}/>
                         </IconButton>}
                         {node?.data?.metadata && <IconButton
                             label="Advanced Runtime Editor"
                             onClick={() => setTab(6)}
                             selected={tab === 6}
                             size="large">
-                            <VscRunErrors size={22}/>
+                            <VscGear size={22}/>
                         </IconButton>}
                         {(process.env.NODE_ENV && process.env.NODE_ENV === 'development') &&
                         <IconButton label="Raw" onClick={() => setTab(4)} selected={tab === 4} size="large">
@@ -131,7 +131,9 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
 
                         {tab === 5 && <TuiForm style={{height: "inherit"}}>
                             <TuiFormGroup>
-                                <TuiFormGroupHeader header="Node console log"/>
+                                <TuiFormGroupHeader header="Node console log" description="Log has only information from
+                                 workflow that runs in testing mode or in production.
+                                 There is no information here from your debugging."/>
                                 <TuiFormGroupContent>
                                     <NodeLogDetails nodeId={node?.id}/>
                                 </TuiFormGroupContent>

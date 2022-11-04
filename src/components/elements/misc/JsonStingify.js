@@ -7,9 +7,9 @@ const ToggleIcon = ({toggle}) => {
     return (toggle) ? <BsArrowsCollapse size={30}/> : <BsArrowsExpand size={30}/>;
 }
 
-export default function JsonStringify({data, filterFields=[]}) {
+export default function JsonStringify({data, toggle: taggleValue=false, filterFields=[]}) {
 
-    const [toggle, setToggle] = useState(false);
+    const [toggle, setToggle] = useState(taggleValue);
 
     function empty(obj) {
         return obj && Object.keys(obj).length === 0 && obj.constructor === Object

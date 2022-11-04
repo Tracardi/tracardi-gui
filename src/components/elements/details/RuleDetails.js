@@ -12,6 +12,15 @@ import {useConfirm} from "material-ui-confirm";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import FormDrawer from "../drawers/FormDrawer";
 import RuleForm from "../forms/RuleForm";
+import Properties from "./DetailProperties";
+import PropertyField from "./PropertyField";
+import DateValue from "../misc/DateValue";
+import IdLabel from "../misc/IconLabels/IdLabel";
+import IconLabel from "../misc/IconLabels/IconLabel";
+import FlowNodeIcons from "../../flow/FlowNodeIcons";
+import TuiTags from "../tui/TuiTags";
+import ActiveTag from "../misc/ActiveTag";
+import EventSourceDetails from "./EventSourceDetails";
 
 
 function RuleDetails({id, onDelete, onEdit}) {
@@ -85,6 +94,25 @@ function RuleDetails({id, onDelete, onEdit}) {
     return <>
         {loading && <CenteredCircularProgress/>}
         {!loading && <TuiForm style={{margin: 20}}>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Routing rule properties"/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupContent>
+                        <PropertyField name="Id" content={<IdLabel label={data?.id} />}/>
+                        <PropertyField name="Name" content={data?.name}/>
+                        <PropertyField name="Description" content={data?.description}/>
+                        <PropertyField name="Created" content={<DateValue date={data?.metadata?.time?.insert} />}/>
+                        <PropertyField name="Source" content={data?.source?.name} drawerSize={750}>
+                            <EventSourceDetails id={data?.source?.id}/>
+                        </PropertyField>
+                        <PropertyField name="Event type" content={<IconLabel value={data?.event?.type} icon={<FlowNodeIcons icon="event"/>}/>}/>
+                        <PropertyField name="Flow" content={<IconLabel value={data?.flow?.name} icon={<FlowNodeIcons icon="flow"/>}/>}/>
+                        <PropertyField name="Properties" content={data?.properties}/>
+                        <PropertyField name="Tags" content={<TuiTags tags={data?.tags} size="small"/>}/>
+                        <PropertyField name="Active" content={<ActiveTag active={data?.enabled}/>}/>
+                    </TuiFormGroupContent>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
         <TuiFormGroup>
             <TuiFormGroupHeader header={data?.name}
                                 description="Please find below rule logic that will trigger the workflow."/>
