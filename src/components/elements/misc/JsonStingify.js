@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import dot from "dot-object";
 import "./JsonStringify.css";
-import {BsArrowsCollapse, BsArrowsExpand} from "react-icons/bs";
 import ToggleIcon from "../icons/ToggleIcon";
 
 export default function JsonStringify({data, toggle: taggleValue=false, filterFields=[]}) {
