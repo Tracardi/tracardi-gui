@@ -90,13 +90,17 @@ const AppBox = () => {
                     <PageTabs title="Inbound Traffic and Event Management"
                               tabs={[
                                   new PrivateTab(["admin", "developer"],
-                                      <EventSources/>, "/inbound/sources", "Sources"),
+                                      <EventSources/>, "/inbound/sources", "Event Sources"),
                                   new PrivateTab(["admin", "developer"],
-                                      <EventManagement/>, "/inbound/event/management", "Event validation and reshaping"),
+                                      <EventManagement/>, "/inbound/event/management", "Event metadata"),
                                   new PrivateTab(["admin", "developer"],
-                                      <EventValidation/>, "/inbound/event/validation", "Event validation"),
+                                      <EventReshaping/>, "/inbound/event/reshaping", <>
+                                          <BsStar size={20} style={{marginRight: 5}}/>{"Event reshaping"}
+                                      </>),
                                   new PrivateTab(["admin", "developer"],
-                                      <EventReshaping/>, "/inbound/event/reshaping", "Event reshaping"),
+                                      <EventValidation/>, "/inbound/event/validation", <>
+                                      <BsStar size={20} style={{marginRight: 5}}/>{"Event validation"}
+                                      </>),
                                   new PrivateTab(["admin", "developer", "marketer"],
                                       <EventTags/>, "/inbound/event/tags", "Event tagging"),
                               ]}
