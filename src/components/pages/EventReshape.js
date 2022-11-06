@@ -39,7 +39,7 @@ export default function EventReshape() {
                     {plugs.map((row, subIndex) => {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
-                                           data={{...row, icon: "segment"}}
+                                           data={{...row, icon: "map-properties"}}
                                            onClick={() => onClick(row?.id)}/>
                     })}
                 </div>

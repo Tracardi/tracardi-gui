@@ -141,7 +141,7 @@ export default function EventReshapingForm({onSubmit, init}) {
                         onSetValue={(event) => setEventType(event.id)}
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Triggering condition" description="Set the condition that must be met to
+                <TuiFormGroupField header="Trigger condition" description="Set the condition that must be met to
                 start reshaping">
                     <TextField
                         label={"Condition"}
