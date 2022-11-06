@@ -38,6 +38,7 @@ import Reports from "./pages/Reports";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
 import {ErrorBoundary} from "@sentry/react";
 import LiveSegments from "./pages/LiveSegments";
+import EventReshape from "./pages/EventReshape";
 
 const ProRouter = React.lazy(() => import('./pages/pro/ProRouter'))
 const Dashboard = React.lazy(() => import('./pages/Dashboard'))
@@ -91,6 +92,8 @@ const AppBox = () => {
                                       <EventSources/>, "/inbound/sources", "Sources"),
                                   new PrivateTab(["admin", "developer"],
                                       <EventManagement/>, "/inbound/event/management", "Event validation and reshaping"),
+                                  new PrivateTab(["admin", "developer"],
+                                      <EventReshape/>, "/inbound/event/management", "Event reshaping"),
                                   new PrivateTab(["admin", "developer", "marketer"],
                                       <EventTags/>, "/inbound/event/tags", "Event tagging"),
                               ]}
