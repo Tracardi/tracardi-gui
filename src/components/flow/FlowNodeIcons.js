@@ -5,7 +5,8 @@ import {
     BsPerson, BsChatDots,
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
-    BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown
+    BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown,
+    BsFolderCheck
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -236,6 +237,7 @@ export const icons = {
     "chatwoot": (size) => <BsChatDots size={size}/>,
     "intercom": (size) => <SiIntercom size={size}/>,
     "sort": (size) => <BsSortAlphaDown size={size}/>,
+    "validator": (size) => <BsFolderCheck size={size}/>
 }
 
 

@@ -12,7 +12,7 @@ export default function EventManagement() {
     const addFunc = useCallback((close) => <EventManagementForm onSaveComplete={close}/>,[]);
     const detailsFunc= useCallback((id, close) => <EventManagementDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
 
-    const flows = (data, onClick) => {
+    const cards = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="CardGroup" key={index}>
                 <header>{category}</header>
@@ -36,7 +36,7 @@ export default function EventManagement() {
         label="Event type Prerequisites and Meta-data"
         description="List of event types."
         urlFunc={urlFunc}
-        cardFunc={flows}
+        cardFunc={cards}
         buttomLabel="New event type"
         buttonIcon={<BsFolderCheck size={20}/>}
         drawerDetailsTitle="Event type details"

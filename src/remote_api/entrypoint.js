@@ -47,7 +47,7 @@ export const asyncRemote = async (config, token=null) => {
 
     config.timeout = 1000 * 60
     return axios(config).catch(e => {
-        if (e?.response?.status === 401 || e?.response?.status === 403) {
+        if (e?.response?.status === 401) {
             window.location.replace("/logout");
         } else {
             throw e;
