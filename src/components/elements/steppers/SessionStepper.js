@@ -91,7 +91,7 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
     }
 
     return <div className="SessionStepper">
-        {session && <header className="Header">Session starting {session.metadata?.time?.insert?.substring(0, 10)},
+        {session && <header className="Header">Session starting {session?.insert ? session?.insert.substring(0, 10) : 'n/a'},
             duration {Math.floor(session.metadata?.time?.duration / 60)} minutes</header>}
         {Array.isArray(eventsData) && eventsData.length > 0 && <Stepper
             orientation="vertical"
