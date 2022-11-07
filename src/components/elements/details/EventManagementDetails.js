@@ -8,7 +8,7 @@ import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote} from "../../../remote_api/entrypoint";
-import EventManagementForm from "../forms/EventManagementForm";
+import EventMetadataForm from "../forms/EventMetadataForm";
 import TuiTags from "../tui/TuiTags";
 import {ObjectInspector} from "react-inspector";
 import Tag from "../misc/Tag";
@@ -92,7 +92,7 @@ export default function EventManagementDetails({id, onDeleteComplete, onEditComp
         <TuiFormGroup>
             <TuiFormGroupHeader header="Json schema validation"/>
             <TuiFormGroupContent>
-                <ObjectInspector data={data.validation.json_schema || {}} expandLevel={3}/>
+                <ObjectInspector data={data?.validation?.json_schema || {}} expandLevel={3}/>
                 {data.validation && <div style={{marginTop: 10}}>
                     <Tag backgroundColor={data.validation?.enabled ? "#00c49f" : "#d81b60"} color="white">{data.validation?.enabled ? "enabled" : "disabled"}</Tag>
                 </div>}
@@ -102,10 +102,10 @@ export default function EventManagementDetails({id, onDeleteComplete, onEditComp
             <TuiFormGroupHeader header="Event reshaping settings"/>
             <TuiFormGroupContent>
             <TuiFormGroupField header="Reshape when condition is met">
-                    {data.reshaping.condition || "No condition provided"}
+                    {data?.reshaping?.condition || "No condition provided"}
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Reshape template">
-                    <ObjectInspector data={data.reshaping.template || {}} expandLevel={3}/>
+                    <ObjectInspector data={data?.reshaping?.template || {}} expandLevel={3}/>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
@@ -121,7 +121,7 @@ export default function EventManagementDetails({id, onDeleteComplete, onEditComp
                 setDisplayEdit(false)
             }}
             open={displayEdit}>
-            {displayEdit && <EventManagementForm
+            {displayEdit && <EventMetadataForm
                 onSaveComplete={onEditComplete}
                 {...data}
             />}

@@ -2,14 +2,14 @@ import React, {useCallback} from "react";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
 import SquareCard from "../elements/lists/cards/SquareCard";
-import EventManagementForm from "../elements/forms/EventManagementForm";
+import EventMetadataForm from "../elements/forms/EventMetadataForm";
 import {BsFolderCheck} from "react-icons/bs";
 import EventManagementDetails from "../elements/details/EventManagementDetails";
 
 export default function EventManagement() {
 
     const urlFunc= useCallback((query) => ('/event-type/management/search/by_tag'+ ((query) ? "?query=" + query : "")),[]);
-    const addFunc = useCallback((close) => <EventManagementForm onSaveComplete={close}/>,[]);
+    const addFunc = useCallback((close) => <EventMetadataForm onSaveComplete={close}/>,[]);
     const detailsFunc= useCallback((id, close) => <EventManagementDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
 
     const cards = (data, onClick) => {
