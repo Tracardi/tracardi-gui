@@ -8,6 +8,7 @@ import {AiOutlineFilter} from "react-icons/ai";
 import DataTimePicker from "../datepickers/DateTimePicker";
 import MenuItem from "@mui/material/MenuItem";
 import PropTypes from 'prop-types';
+import {external} from "../misc/linking"
 
 export default function ObjectFiltering({type, initDate, onFilterClick, initRefresh, onRefreshChange}) {
 
@@ -16,14 +17,6 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
     const [query, setQuery] = useState(initDate.where);
 
     const dispatch = useDispatch();
-
-    const external = (url, newWindow=false) => {
-        if(newWindow===true) {
-            return () => window.open(url, '_blank', 'location=yes,scrollbars=yes,status=yes')
-        } else {
-            return () => window.location.href = url;
-        }
-    }
 
     const onSetDateFrom = useCallback((date) => {
         localStorage.setItem(type + "DateFrom", JSON.stringify(date));

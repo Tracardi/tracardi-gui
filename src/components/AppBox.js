@@ -22,7 +22,6 @@ import Consents from "./pages/Consents";
 import EventManagement from "./pages/EventManagement";
 import Users from "./pages/Users";
 import Destinations from "./pages/Destinations";
-import EventTags from "./pages/EventTags";
 import UserLogs from "./pages/UserLogs";
 import PrivateTab from "./authentication/PrivateTab";
 import UserAccount from "./pages/UserAccount";
@@ -94,15 +93,13 @@ const AppBox = () => {
                                   new PrivateTab(["admin", "developer"],
                                       <EventManagement/>, "/inbound/event/management", "Event metadata"),
                                   new PrivateTab(["admin", "developer"],
-                                      <EventReshaping/>, "/inbound/event/reshaping", <>
-                                          <BsStar size={20} style={{marginRight: 5}}/>{"Event reshaping"}
-                                      </>),
-                                  new PrivateTab(["admin", "developer"],
                                       <EventValidation/>, "/inbound/event/validation", <>
                                       <BsStar size={20} style={{marginRight: 5}}/>{"Event validation"}
                                       </>),
-                                  new PrivateTab(["admin", "developer", "marketer"],
-                                      <EventTags/>, "/inbound/event/tags", "Event tagging"),
+                                  new PrivateTab(["admin", "developer"],
+                                      <EventReshaping/>, "/inbound/event/reshaping", <>
+                                          <BsStar size={20} style={{marginRight: 5}}/>{"Event reshaping"}
+                                      </>),
                               ]}
                     />
                 </Suspense>

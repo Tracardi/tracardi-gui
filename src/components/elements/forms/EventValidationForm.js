@@ -9,6 +9,7 @@ import ErrorsBox from "../../errors/ErrorsBox";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import JsonEditor from "../editors/JsonEditor";
 import TuiTagger from "../tui/TuiTagger";
+import {external} from "../misc/linking"
 
 export default function EventValidationForm({onSubmit, init}) {
 
@@ -155,7 +156,8 @@ export default function EventValidationForm({onSubmit, init}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Validation schema" description="Set validation schema. ">
+                <TuiFormGroupField header="Validation schema" description={<>
+                    {"Set validation schema. "} <b>{"More on JsonSchema validation"} <span style={{textDecoration: "underline", cursor: "pointer"}} onClick={external("http://docs.tracardi.com/events/event_validation/", true)}>here</span></b> </>}>
                     <fieldset style={{marginTop: 10}}>
                         <legend>Schema</legend>
                         <JsonEditor value={jsonSchema} onChange={(value) => setJsonSchema(value)} autocomplete={true}/>
