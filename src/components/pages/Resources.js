@@ -79,7 +79,6 @@ export default function Resources({defaultLayout="rows"}) {
         rowFunc={sourceRows}
         buttomLabel="New resource"
         buttonIcon={<AiOutlineCloudServer size={20}/>}
-        drawerDetailsTitle="Resource details"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
         drawerAddTitle="New resource"

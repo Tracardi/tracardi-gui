@@ -19,11 +19,9 @@ const CardBrowser = ({
                          rowFunc = null,
                          buttomLabel = null,
                          buttonIcon,
-                         drawerDetailsTitle = "Details",
                          drawerDetailsWidth = 600,
                          detailsFunc = () => {},
                          drawerAddWidth = 600,
-                         drawerAddTitle = "New",
                          addFunc = () => {},
                          className,
                          refresh: forceRefresh,
@@ -145,7 +143,6 @@ const CardBrowser = ({
 
             <FormDrawer
                 width={drawerDetailsWidth}
-                label={drawerDetailsTitle}
                 onClose={handleCloseDetails}
                 open={cardId !== null}>
                 {cardId && detailsFunc(cardId, handleCloseDetails)}
@@ -153,7 +150,6 @@ const CardBrowser = ({
 
             <FormDrawer
                 width={drawerAddWidth}
-                label={drawerAddTitle}
                 onClose={handleCloseAdd}
                 open={displayAddForm}>
                 {addFunc && buttomLabel && addFunc(handleCloseAdd)}

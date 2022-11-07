@@ -219,7 +219,6 @@ export default function ProServiceList() {
 
         <FormDrawer
             width={width}
-            label="Configure"
             onClose={() => setSelectedService(null)}
             open={selectedService !== null}>
             {selectedService?.metadata?.documentation

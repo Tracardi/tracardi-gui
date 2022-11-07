@@ -56,7 +56,6 @@ export default function LiveSegments() {
         rowFunc={liveSegmentsRows}
         buttomLabel="New live segment"
         buttonIcon={<VscOrganization size={20}/>}
-        drawerDetailsTitle="Live segment details"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
         drawerAddTitle="New live segment"

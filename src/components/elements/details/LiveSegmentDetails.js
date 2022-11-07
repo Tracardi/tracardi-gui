@@ -100,7 +100,6 @@ export default function LiveSegmentDetails({id, onDeleteComplete}) {
         {data && <Details/>}
         <FormDrawer
             width={800}
-            label="Edit Live Segment"
             onClose={() => {
                 setDisplayEdit(false)
             }}

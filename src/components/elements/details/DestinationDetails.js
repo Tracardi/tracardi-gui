@@ -101,7 +101,6 @@ function DestinationDetails({id, onDelete, onEdit}) {
 
             <FormDrawer
                 width={750}
-                label="Edit destination"
                 onClose={() => {
                     setOpenEdit(false)
                 }}

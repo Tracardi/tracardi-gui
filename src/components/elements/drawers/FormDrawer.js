@@ -19,7 +19,6 @@ export default function FormDrawer(
 
 FormDrawer.propTypes = {
     width: PropTypes.number,
-        label: PropTypes.string,
-        open: PropTypes.bool,
-        onClose: PropTypes.func
-  };
+    open: PropTypes.bool,
+    onClose: PropTypes.func
+};

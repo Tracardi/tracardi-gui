@@ -6,14 +6,15 @@ import {useConfirm} from "material-ui-confirm";
 import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
-import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import EventMetadataForm from "../forms/EventMetadataForm";
 import TuiTags from "../tui/TuiTags";
-import {ObjectInspector} from "react-inspector";
-import Tag from "../misc/Tag";
+import PropertyField from "./PropertyField";
+import IconLabel from "../misc/IconLabels/IconLabel";
+import FlowNodeIcons from "../../flow/FlowNodeIcons";
 
-export default function EventManagementDetails({id, onDeleteComplete, onEditComplete}) {
+export default function EventMataDataDetails({id, onDeleteComplete, onEditComplete}) {
 
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -34,7 +35,9 @@ export default function EventManagementDetails({id, onDeleteComplete, onEditComp
                 .then((result) => {
                     if(mounted.current) setData(result.data);
                 })
-                .catch()
+                .catch((e)=> {
+                    console.log(e)
+                })
                 .finally(
                     () => {if(mounted.current) setLoading(false)}
                 )
@@ -49,7 +52,10 @@ export default function EventManagementDetails({id, onDeleteComplete, onEditComp
     }
 
     const onDelete = () => {
-        confirm({title: "Do you want to delete this event type metadata?", description: "This action can not be undone."})
+        confirm({
+            title: "Do you want to delete this event type metadata?",
+            description: "This action can not be undone."
+        })
             .then(async () => {
                 if(mounted.current) setDeleteProgress(true);
                     try {
@@ -73,40 +79,24 @@ export default function EventManagementDetails({id, onDeleteComplete, onEditComp
         <TuiFormGroup>
             <TuiFormGroupHeader header="Event type metadata" description="Information on event type"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header={`${data.name} (${data.event_type})`} description={data.description}>
-                    <TuiTags tags={data.tags} style={{marginLeft: 5, marginTop: 10}}/>
-                    <Rows style={{marginTop: 20}}>
-                        <Button onClick={onEditClick}
-                                icon={<VscEdit size={20}/>}
-                                label="Edit" disabled={typeof data === "undefined"}/>
-                        <Button
-                            progress={deleteProgress}
-                            icon={<VscTrash size={20}/>}
-                            onClick={onDelete}
-                            label="Delete"
-                            disabled={typeof data === "undefined"}/>
-                    </Rows>
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Json schema validation"/>
-            <TuiFormGroupContent>
-                <ObjectInspector data={data?.validation?.json_schema || {}} expandLevel={3}/>
-                {data.validation && <div style={{marginTop: 10}}>
-                    <Tag backgroundColor={data.validation?.enabled ? "#00c49f" : "#d81b60"} color="white">{data.validation?.enabled ? "enabled" : "disabled"}</Tag>
-                </div>}
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Event reshaping settings"/>
-            <TuiFormGroupContent>
-            <TuiFormGroupField header="Reshape when condition is met">
-                    {data?.reshaping?.condition || "No condition provided"}
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Reshape template">
-                    <ObjectInspector data={data?.reshaping?.template || {}} expandLevel={3}/>
-                </TuiFormGroupField>
+
+                <PropertyField name="Event type" content={<IconLabel value={data.event_type} icon={<FlowNodeIcons icon="event"/>}/>}/>
+                <PropertyField name="Name" content={data.name}/>
+                <PropertyField name="Description" content={data.description}/>
+                <PropertyField name="Tags" content={<TuiTags tags={data.tags} size="small"/>}/>
+
+                <Rows style={{marginTop: 20}}>
+                    <Button onClick={onEditClick}
+                            icon={<VscEdit size={20}/>}
+                            label="Edit" disabled={typeof data === "undefined"}/>
+                    <Button
+                        progress={deleteProgress}
+                        icon={<VscTrash size={20}/>}
+                        onClick={onDelete}
+                        label="Delete"
+                        disabled={typeof data === "undefined"}/>
+                </Rows>
+
             </TuiFormGroupContent>
         </TuiFormGroup>
     </TuiForm>
@@ -116,7 +106,6 @@ export default function EventManagementDetails({id, onDeleteComplete, onEditComp
         {data && <Details/>}
         <FormDrawer
             width={800}
-            label="Edit schema"
             onClose={() => {
                 setDisplayEdit(false)
             }}
@@ -129,7 +118,7 @@ export default function EventManagementDetails({id, onDeleteComplete, onEditComp
     </div>
 }
 
-EventManagementDetails.propTypes = {
+EventMataDataDetails.propTypes = {
     id: PropTypes.string,
     onDeleteComplete: PropTypes.func,
     onEditComplete: PropTypes.func

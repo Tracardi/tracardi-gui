@@ -93,7 +93,6 @@ export default function Reports() {
         rowFunc={reportRows}
         buttomLabel="New report"
         buttonIcon={<BsBarChartFill size={20}/>}
-        drawerDetailsTitle="Report details"
         drawerDetailsWidth={600}
         detailsFunc={detailsFunc}
         drawerAddTitle="New report"

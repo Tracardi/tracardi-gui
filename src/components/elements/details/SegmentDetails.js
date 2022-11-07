@@ -100,7 +100,6 @@ export default function SegmentDetails({id, onDeleteComplete}) {
         {data && <Details/>}
         <FormDrawer
             width={800}
-            label="Edit Segment"
             onClose={() => {
                 setDisplayEdit(false)
             }}

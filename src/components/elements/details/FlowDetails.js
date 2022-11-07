@@ -129,7 +129,6 @@ export default function FlowDetails({id, onDeleteComplete}) {
         {data && <Details/>}
         <FormDrawer
             width={800}
-            label="Edit Flow"
             onClose={() => {
                 setDisplayEdit(false)
             }}

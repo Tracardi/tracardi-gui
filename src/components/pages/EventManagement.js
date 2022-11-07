@@ -4,13 +4,13 @@ import CardBrowser from "../elements/lists/CardBrowser";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import EventMetadataForm from "../elements/forms/EventMetadataForm";
 import {BsFolderCheck} from "react-icons/bs";
-import EventManagementDetails from "../elements/details/EventManagementDetails";
+import EventMataDataDetails from "../elements/details/EventMataDataDetails";
 
 export default function EventManagement() {
 
     const urlFunc= useCallback((query) => ('/event-type/management/search/by_tag'+ ((query) ? "?query=" + query : "")),[]);
     const addFunc = useCallback((close) => <EventMetadataForm onSaveComplete={close}/>,[]);
-    const detailsFunc= useCallback((id, close) => <EventManagementDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
+    const detailsFunc= useCallback((id, close) => <EventMataDataDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
 
     const cards = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
@@ -39,7 +39,6 @@ export default function EventManagement() {
         cardFunc={cards}
         buttomLabel="New event type"
         buttonIcon={<BsFolderCheck size={20}/>}
-        drawerDetailsTitle="Event type details"
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
         drawerAddTitle="New event type"

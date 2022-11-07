@@ -100,7 +100,6 @@ export default function EventReshapingDetails({id, onDeleteComplete}) {
         {data && <Details/>}
         <FormDrawer
             width={800}
-            label="Edit event reshaping"
             onClose={() => {
                 setDisplayEdit(false)
             }}

@@ -354,7 +354,6 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
 
         <FormDrawer
             width={800}
-            label="Edit event source"
             onClose={() => {
                 setEditData(null)
             }}

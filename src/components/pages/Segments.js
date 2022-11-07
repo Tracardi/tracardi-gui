@@ -56,7 +56,6 @@ export default function Segments() {
         rowFunc={segmentsRows}
         buttomLabel="New segment"
         buttonIcon={<VscOrganization size={20}/>}
-        drawerDetailsTitle="Source details"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
         drawerAddTitle="New segment"

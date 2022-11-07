@@ -40,7 +40,6 @@ export default function  Consents() {
         cardFunc={flows}
         buttomLabel="New consent type"
         buttonIcon={<VscLaw size={20}/>}
-        drawerDetailsTitle="Consent type details"
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
         drawerAddTitle="New consent type"

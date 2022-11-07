@@ -206,7 +206,6 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
 
         <FormDrawer
             width={750}
-            label="Test console"
             onClose={() => {
                 setTestConsoleOpened(false)
             }}
@@ -217,7 +216,6 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
 
         <FormDrawer
             width={1300}
-            label="Flow details"
             onClose={() => {
                 setEventsOpened(false)
             }}
@@ -241,7 +239,6 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
 
         <FormDrawer
             width={800}
-            label="Rule details"
             onClose={() => {
                 setRulesOpened(false)
             }}

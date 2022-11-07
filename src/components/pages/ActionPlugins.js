@@ -118,7 +118,6 @@ export default function ActionPlugins() {
         cardFunc={pluginsCards}
         rowFunc={pluginsRows}
         defaultLayout="rows"
-        drawerDetailsTitle="Edit Plugin Action"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
         refresh={refresh}

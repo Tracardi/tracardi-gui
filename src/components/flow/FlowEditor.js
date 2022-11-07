@@ -39,7 +39,6 @@ const FlowEditor = () => {
                 />
                 <FormDrawer
                     width={800}
-                    label="Flow details"
                     onClose={() => {
                         setFlowFormOpened(false)
                     }}

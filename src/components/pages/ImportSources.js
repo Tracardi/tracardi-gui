@@ -38,7 +38,6 @@ export default function ImportSources () {
         cardFunc={importCard}
         buttomLabel="New import"
         buttonIcon={<BsFileEarmarkArrowUp size={20}/>}
-        drawerDetailsTitle="Import details"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
         drawerAddTitle="New import"

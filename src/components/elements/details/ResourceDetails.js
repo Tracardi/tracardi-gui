@@ -161,7 +161,6 @@ export default function ResourceDetails({id, onDeleteComplete}) {
 
         <FormDrawer
             width={700}
-            label="Edit Resource"
             onClose={() => {
                 setEditData(null)
             }}

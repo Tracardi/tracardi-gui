@@ -131,7 +131,6 @@ function RuleDetails({id, onDelete, onEdit}) {
             </TuiFormGroup>
             <FormDrawer
                 width={700}
-                label="Edit rule"
                 onClose={() => {
                     setOpenEdit(false)
                 }}

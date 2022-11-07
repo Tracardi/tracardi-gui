@@ -103,7 +103,6 @@ export default function Flows({defaultLayout="rows", type="collection"}) {
         rowFunc={flowRows}
         buttomLabel="New workflow"
         buttonIcon={<IoGitNetworkSharp size={20}/>}
-        drawerDetailsTitle="Workflow details"
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
         drawerAddTitle="New workflow"

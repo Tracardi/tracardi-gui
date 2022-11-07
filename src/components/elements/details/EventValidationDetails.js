@@ -100,7 +100,6 @@ export default function EventValidationDetails({id, onDeleteComplete}) {
         {data && <Details/>}
         <FormDrawer
             width={800}
-            label="Edit event validation"
             onClose={() => {
                 setDisplayEdit(false)
             }}

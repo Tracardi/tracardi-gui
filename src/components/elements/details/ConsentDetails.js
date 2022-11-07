@@ -108,7 +108,6 @@ export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
         {data && <Details/>}
         <FormDrawer
             width={800}
-            label="Edit consent type"
             onClose={() => {
                 setDisplayEdit(false)
             }}
