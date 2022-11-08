@@ -1,9 +1,11 @@
 export function profileName(profile) {
     if(!profile) {
         return 'profileless'
-    }else if(profile?.pii?.name || profile?.pii?.last_name) {
-        return `${profile?.pii?.name || ""} ${profile?.pii?.last_name || ""} ${profile?.pii?.email || ""}`
+    } else if(profile?.pii?.name || profile?.pii?.surname) {
+        return `${profile?.pii?.name || ""} ${profile?.pii?.surname || ""}`
+    } else if (profile?.pii?.email) {
+        return profile?.pii?.email
     } else {
-        return `anonymous ${profile?.pii?.email || ""}`
+        return "anonymous"
     }
 }

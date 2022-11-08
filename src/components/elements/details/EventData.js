@@ -7,10 +7,10 @@ import EventSourceDetails from "./EventSourceDetails";
 import EventStatusTag from "../misc/EventStatusTag";
 import EventValidation from "../misc/EventValidation";
 import {BsCheckCircle, BsXSquare} from "react-icons/bs";
-import TimeDifference from "../datepickers/TimeDifference";
 import React from "react";
 import SessionContextInfo from "./SessionContextInfo";
 import TuiTags from "../tui/TuiTags";
+import DateValue from "../misc/DateValue";
 
 
 const EventData = ({event, allowedDetails=[]}) => {
@@ -26,18 +26,13 @@ const EventData = ({event, allowedDetails=[]}) => {
                                                                          content={eventProperties[key]}/>)}</>
     }
 
-    const insertTime = (event) => {
-        return typeof event?.metadata?.time?.insert === "string" && `${event.metadata.time.insert.substring(0, 10)} ${event.metadata.time.insert.substring(11, 19)}`
-    }
-
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Event details"/>
             <TuiFormGroupContent style={{display: "flex", flexDirection: "column"}}>
                 <PropertyField name="Type" content={event?.type}/>
                 <PropertyField name="Insert time"
-                               content={<> {insertTime(event)} <TimeDifference
-                                   date={event?.metadata?.time?.insert}/> </>}
+                               content={<DateValue date={event?.metadata?.time?.insert}/>}
                 />
                 <PropertyField name="Status"
                                content={<><EventStatusTag label={event?.metadata?.status}/>
@@ -65,7 +60,7 @@ const EventData = ({event, allowedDetails=[]}) => {
                                    <BsXSquare size={18} color="#d81b60"/>}/>
 
                 <PropertyField name="Tags"
-                               content={Array.isArray(event?.tags?.values) && event.tags.values.join(", ")}
+                               content={Array.isArray(event?.tags?.values) && <TuiTags tags={event.tags.values} size="small"/>}
                 />
                 {Array.isArray(event?.metadata?.processed_by?.rules) && <PropertyField name="Routed by rules"
                                content={<TuiTags tags={event.metadata?.processed_by?.rules} size="small"/>}/>}
@@ -77,6 +72,7 @@ const EventData = ({event, allowedDetails=[]}) => {
                 <EventProperties/>
             </TuiFormGroupContent>
         </TuiFormGroup>}
+
         {!isEmptyObjectOrNull(event?.context) && <TuiFormGroup>
             <TuiFormGroupHeader header="Context"/>
             <TuiFormGroupContent>
@@ -84,9 +80,13 @@ const EventData = ({event, allowedDetails=[]}) => {
                 <div style={{marginTop: 20}}>
                     {event?.session?.id && <SessionContextInfo sessionId={event?.session?.id}/>}
                 </div>
-
             </TuiFormGroupContent>
         </TuiFormGroup>}
+
+        <div style={{marginTop: 20}}>
+            {event?.session?.id && <SessionContextInfo sessionId={event?.session?.id}/>}
+        </div>
+
     </TuiForm>
 }
 

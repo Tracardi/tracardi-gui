@@ -16,12 +16,8 @@ const PiiDetails = ({data}) => {
                 </div>
                 <div>
                     <header className="Name">
-                        {data?.pii?.name} {data?.pii?.last_name ? data?.pii?.last_name : "Anonymous"}
+                        {data?.pii?.name} {data?.pii?.surname ? data?.pii?.surname : "Anonymous"}
                     </header>
-                    <div>
-                        Last event: {data?.metadata?.time?.lastVisit ? data?.metadata?.time?.lastVisit : "not available"}
-                    </div>
-
                 </div>
 
             </div>
