@@ -2,48 +2,48 @@ import React, {Suspense} from "react";
 import MainContent from "./MainContent";
 import {Redirect, Route} from "react-router-dom";
 import PrivateRoute from "./authentication/PrivateRoute";
-import Resources from "./pages/Resources";
-import Rules from "./pages/Rules";
-import EventsAnalytics from "./pages/EventsAnalytics";
-import ProfilesAnalytics from "./pages/ProfilesAnalytics";
-import SessionsAnalytics from "./pages/SessionsAnalytics";
-import Flows from "./pages/Flows";
 import urlPrefix from "../misc/UrlPrefix";
-import ActionPlugins from "./pages/ActionPlugins";
-import Segments from "./pages/Segments";
-import FlowReader from "./flow/FlowReader";
-import Instances from "./pages/Instances";
-import Settings from "./pages/Settings";
-import TryOut from "./pages/TryOut";
-import TestEditor from "./pages/TestEditor";
-import NewUser from "./pages/NewUser";
-import EventSources from "./pages/EventSources";
-import Consents from "./pages/Consents";
-import EventManagement from "./pages/EventManagement";
-import Users from "./pages/Users";
-import Destinations from "./pages/Destinations";
-import UserLogs from "./pages/UserLogs";
 import PrivateTab from "./authentication/PrivateTab";
-import UserAccount from "./pages/UserAccount";
-import LogsAnalytics from "./pages/LogsAnalytics";
-import ImportSources from "./pages/ImportSources";
-import ElasticClusterHealthInfo from "./pages/ElasticClusterHealthInfo";
-import ElasticIndicesInfo from "./pages/ElasticIndicesInfo";
-import Migrations from "./pages/Migrations";
 import {BsStar} from "react-icons/bs";
-import BackgroundTasks from "./pages/BackgroundTasks";
-import EntityAnalytics from "./pages/EntityAnalytics";
-import Reports from "./pages/Reports";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
 import {ErrorBoundary} from "@sentry/react";
-import LiveSegments from "./pages/LiveSegments";
-import EventReshaping from "./pages/EventReshaping";
-import EventValidation from "./pages/EventValidation";
 
 const ProRouter = React.lazy(() => import('./pages/pro/ProRouter'))
 const Dashboard = React.lazy(() => import('./pages/Dashboard'))
 const PageTabs = React.lazy(() => import('./pages/groups/PageTabs'))
 const FlowEditor = React.lazy(() => import('./flow/FlowEditor'))
+const EventReshaping =  React.lazy(() => import("./pages/EventReshaping"))
+const EventValidation =  React.lazy(() => import("./pages/EventValidation"))
+const LiveSegments =  React.lazy(() => import("./pages/LiveSegments"))
+const LogsAnalytics =  React.lazy(() => import("./pages/LogsAnalytics"))
+const UserAccount =  React.lazy(() => import("./pages/UserAccount"))
+const TryOut =  React.lazy(() => import("./pages/TryOut"))
+const EventsAnalytics =  React.lazy(() => import("./pages/EventsAnalytics"))
+const ProfilesAnalytics =  React.lazy(() => import("./pages/ProfilesAnalytics"))
+const SessionsAnalytics =  React.lazy(() => import("./pages/SessionsAnalytics"))
+const Reports =  React.lazy(() => import("./pages/Reports"))
+const BackgroundTasks =  React.lazy(() => import("./pages/BackgroundTasks"))
+const EntityAnalytics =  React.lazy(() => import("./pages/EntityAnalytics"))
+const EventSources =  React.lazy(() => import("./pages/EventSources"))
+const Consents =  React.lazy(() => import("./pages/Consents"))
+const ImportSources =  React.lazy(() => import("./pages/ImportSources"))
+const ElasticClusterHealthInfo =  React.lazy(() => import("./pages/ElasticClusterHealthInfo"))
+const ElasticIndicesInfo =  React.lazy(() => import("./pages/ElasticIndicesInfo"))
+const Migrations =  React.lazy(() => import("./pages/Migrations"))
+const EventManagement =  React.lazy(() => import("./pages/EventManagement"))
+const Users =  React.lazy(() => import("./pages/Users"))
+const Destinations =  React.lazy(() => import("./pages/Destinations"))
+const UserLogs =  React.lazy(() => import("./pages/UserLogs"))
+const Resources =  React.lazy(() => import("./pages/Resources"))
+const Flows =  React.lazy(() => import("./pages/Flows"))
+const Segments =  React.lazy(() => import("./pages/Segments"))
+const Rules =  React.lazy(() => import("./pages/Rules"))
+const FlowReader =  React.lazy(() => import("./flow/FlowReader"))
+const ActionPlugins =  React.lazy(() => import("./pages/ActionPlugins"))
+const Instances =  React.lazy(() => import("./pages/Instances"))
+const Settings =  React.lazy(() => import("./pages/Settings"))
+const NewUser =  React.lazy(() => import("./pages/NewUser"))
+const TestEditor =  React.lazy(() => import("./pages/TestEditor"))
 
 const AppBox = () => {
 
@@ -234,6 +234,7 @@ const AppBox = () => {
                 </Suspense>
             </ErrorBoundary>
         </PrivateRoute>
+
         <PrivateRoute exact path={urlPrefix("/flow/preview/:id")} roles={["admin", "developer", "marketer"]}>
             <FlowReader/>
         </PrivateRoute>
