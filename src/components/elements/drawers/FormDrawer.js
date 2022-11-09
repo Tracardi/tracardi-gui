@@ -10,7 +10,17 @@ export default function FormDrawer(
         children
     }) {
 
-    return <Drawer anchor="right" open={open} onClose={onClose}>
+    return <Drawer anchor="right"
+                   open={open}
+                   onClose={onClose}
+                   PaperProps={{
+                       sx: {
+                           borderRadius: "15px",
+                           margin: "10px",
+                           height: "calc(100% - 20px)"
+                       }
+                   }}
+    >
         <div style={{width: (width) ? width : 1200, overflowX: "hidden", height:"inherit"}}>
             {open && children}
         </div>

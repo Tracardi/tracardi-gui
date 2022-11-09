@@ -104,8 +104,7 @@ export default function Dashboard() {
 
     }
 
-    return <div
-        style={{display: "flex", flexDirection: "column", padding: 15, height: "100%"}}>
+    return <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
         <MetricTimeLine fitContent={false}>
             <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
                 <div style={{width: "100%", height: 325, padding: 30}}>

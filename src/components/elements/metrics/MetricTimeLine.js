@@ -3,8 +3,8 @@ import React from "react";
 export default function MetricTimeLine({children, onClick, fitContent = true}) {
     return <div style={{
         display: "flex",
-        backgroundColor: "whitesmoke",
-        borderRadius: 5,
+        backgroundColor: "white",
+        borderRadius: 15,
         margin: 8,
         padding: 10,
         width: fitContent ? "fit-content" : "auto",

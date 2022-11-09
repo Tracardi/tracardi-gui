@@ -11,14 +11,17 @@
     user-select: none;
     padding: 5px 5px 10px 0;
     justify-content: space-between;
+
 }
 
 .FullMainMenu {
-    width: 195px;
+    width: 200px;
+    border-radius: 15px;
 }
 
 .CollapsedMainMenu {
     width: 61px;
+    border-radius: 15px;
 }
 
 .MainMenu .Branding {
