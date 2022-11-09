@@ -59,7 +59,10 @@ export default function EventSources() {
     }
 
     return <CardBrowser
+        defaultLayout="row"
         label="Event Sources"
+        description="Event source opens an API through which you will be able to send data. Click on event source to
+        see the Javascript snippet or API URL that you can use to collect data."
         urlFunc={urlFunc}
         rowFunc={sourcesRows}
         cardFunc={sources}

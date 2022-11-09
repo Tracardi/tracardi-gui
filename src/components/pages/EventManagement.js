@@ -5,6 +5,7 @@ import SquareCard from "../elements/lists/cards/SquareCard";
 import EventMetadataForm from "../elements/forms/EventMetadataForm";
 import {BsFolderCheck} from "react-icons/bs";
 import EventMataDataDetails from "../elements/details/EventMataDataDetails";
+import BrowserRow from "../elements/lists/rows/BrowserRow";
 
 export default function EventManagement() {
 
@@ -32,11 +33,30 @@ export default function EventManagement() {
         })
     }
 
+    const rows = (data, onClick) => {
+        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
+            return <div className="RowGroup" style={{width:"100%"}} key={index}>
+                <header>{category}</header>
+                <div>
+                    {plugs.map((row, subIndex) => {
+                        return <BrowserRow key={index + "-" + subIndex}
+                                           id={row?.id}
+                                           data={{...row, icon: "validator"}}
+                                           tags={row.tags}
+                                           onClick={() => onClick(row?.id)}/>
+                    })}
+                </div>
+            </div>
+        })
+    }
+
     return <CardBrowser
+        defaultLayout="rows"
         label="Event type Prerequisites and Meta-data"
         description="List of event types."
         urlFunc={urlFunc}
         cardFunc={cards}
+        rowFunc={rows}
         buttomLabel="New event type"
         buttonIcon={<BsFolderCheck size={20}/>}
         drawerDetailsWidth={900}

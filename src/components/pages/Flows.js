@@ -37,7 +37,7 @@ export default function Flows({defaultLayout="rows", type="collection"}) {
         }
     }, [])
 
-    const onDelete = async (id) => {
+    const handleDelete = async (id) => {
         confirm({title: "Do you want to delete this workflow?", description: "This action can not be undone."})
             .then(async () => {
                     try {
@@ -65,7 +65,7 @@ export default function Flows({defaultLayout="rows", type="collection"}) {
                                                    name={row?.name}
                                                    onClick={() => onClick(row?.id)}
                                                    onEdit={handleFlowEdit}
-                                                   onDelete={onDelete}
+                                                   onDelete={handleDelete}
                         />
                     })}
                 </div>
@@ -83,7 +83,7 @@ export default function Flows({defaultLayout="rows", type="collection"}) {
                                            id={row?.id}
                                            data={{...row, icon: row.type==='collection' ? "flow" : "segment"}}
                                            onClick={handleFlowEdit}
-                                           onDelete={onDelete}
+                                           onDelete={handleDelete}
                                            onSettingsClick={onClick}
                         >
                             {`${row.description} (${row.type})`}

@@ -134,7 +134,7 @@ export default function EventValidationForm({onSubmit, init}) {
                 <TuiFormGroupField header="Tags" description="Tags help with data organisation.">
                     <TuiTagger tags={tags} onChange={setTags}/>
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Active" description="Enable disable validation.">
+                <TuiFormGroupField header="Active" description="Enable/disable validation.">
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Switch
                             checked={enabled}

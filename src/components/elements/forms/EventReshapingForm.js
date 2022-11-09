@@ -133,7 +133,7 @@ export default function EventReshapingForm({onSubmit, init}) {
                 <TuiFormGroupField header="Tags" description="Tags help with data organisation.">
                     <TuiTagger tags={tags} onChange={setTags}/>
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Active" description="Enable disable reshaping.">
+                <TuiFormGroupField header="Active" description="Enable/disable reshaping.">
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Switch
                             checked={enabled}
