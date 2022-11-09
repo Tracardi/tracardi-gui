@@ -132,8 +132,8 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                                     onChange={(ev) => setData({...data, enabled: ev.target.checked})}
                                 />
                                 <span>
-                        This destination is {data?.enabled === true ? "enabled" : "disabled"}
-                    </span>
+                                    This destination is {data?.enabled === true ? "enabled" : "disabled"}
+                                </span>
                             </div>
                         </TuiTopHeaderWrapper>
                     </TuiColumnsFlex>

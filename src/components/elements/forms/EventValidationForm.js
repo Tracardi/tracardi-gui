@@ -10,6 +10,7 @@ import TuiSelectEventType from "../tui/TuiSelectEventType";
 import JsonEditor from "../editors/JsonEditor";
 import TuiTagger from "../tui/TuiTagger";
 import {external} from "../misc/linking"
+import Switch from "@mui/material/Switch";
 
 export default function EventValidationForm({onSubmit, init}) {
 
@@ -20,6 +21,7 @@ export default function EventValidationForm({onSubmit, init}) {
             description: "",
             event_type: "",
             tags: [],
+            enabled: false,
             validation: {
                 json_schema: {},
                 condition: ""
@@ -31,6 +33,7 @@ export default function EventValidationForm({onSubmit, init}) {
     const [description, setDescription] = useState(init.description);
     const [eventType, setEventType] = useState(init.event_type);
     const [tags, setTags] = useState(init.tags);
+    const [enabled, setEnabled] = useState(init.enabled);
     const [jsonSchema, setJsonSchema] = useState(JSON.stringify(init.validation?.json_schema, null, '  '));
     const [condition, setCondition] = useState(init.validation?.condition);
 
@@ -61,13 +64,14 @@ export default function EventValidationForm({onSubmit, init}) {
         try {
             setProcessing(true);
             setError(null);
-            console.log(jsonSchema)
+
             const payload = {
                 id: (!init?.id) ? uuid4() : init.id,
                 name: name,
                 description: description,
                 event_type: eventType,
                 tags: tags,
+                enabled: enabled,
                 validation: {
                     json_schema: (jsonSchema === "") ? {} : JSON.parse(jsonSchema),
                     condition: condition
@@ -129,6 +133,14 @@ export default function EventValidationForm({onSubmit, init}) {
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Tags" description="Tags help with data organisation.">
                     <TuiTagger tags={tags} onChange={setTags}/>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Active" description="Enable disable validation.">
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <Switch
+                            checked={enabled}
+                            onChange={(ev) => setEnabled(ev.target.checked)}
+                        />
+                    </div>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
