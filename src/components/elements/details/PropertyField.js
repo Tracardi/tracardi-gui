@@ -4,7 +4,7 @@ import {FiMoreHorizontal} from "react-icons/fi";
 import FormDrawer from "../drawers/FormDrawer";
 import "./PropertyField.css";
 
-const PropertyField = ({name, content, children, drawerSize=800, underline=true, whiteSpace='nowrap'}) => {
+const PropertyField = ({name, content, children, drawerSize=800, underline=true, whiteSpace='normal'}) => {
 
     const [displayDetails, setDisplayDetails] = useState(false)
 

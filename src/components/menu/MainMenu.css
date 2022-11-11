@@ -9,7 +9,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    padding: 5px 5px 10px 0;
+    padding: 5px;
     justify-content: space-between;
 
 }
@@ -20,7 +20,7 @@
 }
 
 .CollapsedMainMenu {
-    width: 61px;
+    width: 63px;
     border-radius: 15px;
 }
 
@@ -63,7 +63,7 @@
     font-family: Viga, "IBM Plex Sans", serif;
 }
 .MainMenu .Branding > .Tracardi {
-    margin-top: 20px;
+    margin-top: 10px;
     margin-left: 20px;
     font-size: 120%;
     text-transform: uppercase;

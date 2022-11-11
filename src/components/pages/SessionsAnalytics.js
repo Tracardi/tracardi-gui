@@ -1,7 +1,6 @@
 import React from "react";
 import "./DataAnalytics.css";
 import DataAnalytics from "./DataAnalytics";
-import SessionDetails from "../elements/details/SessionDetails";
 import { makeUtcStringTzAware } from "../../misc/converters";
 import SessionRow from "../elements/lists/rows/SessionRow";
 
@@ -29,8 +28,6 @@ export default function SessionsAnalytics({displayChart=true}) {
         }
     }
 
-    const displayDetails = (data) => <SessionDetails data={data}/>
-
     return <DataAnalytics
         label="List of sessions"
         enableFiltering={true}
@@ -42,7 +39,6 @@ export default function SessionsAnalytics({displayChart=true}) {
         onLoadDataRequest={handleLoadDataRequest}
         onLoadDetails={handleLoadDetails}
         displayChart={displayChart}
-        displayDetails={displayDetails}
         detailsDrawerWidth={1200}
         rowDetails={(session, filterFields) => <SessionRow session={session} filterFields={filterFields}/>}
     />

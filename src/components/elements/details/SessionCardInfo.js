@@ -4,6 +4,7 @@ import {BsApple, BsClock, BsGlobe, BsWindows} from "react-icons/bs";
 import React from "react";
 import {VscTerminalLinux} from "react-icons/vsc";
 import IdLabel from "../misc/IconLabels/IdLabel";
+import {ProfileDetailsById} from "./ProfileDetails";
 
 function PlatformIcon({platform}) {
     const platforms = {
@@ -40,6 +41,12 @@ export default function SessionCardInfo({session}) {
             content={session.context.browser.local.browser.name}
         />}
 
-        {session?.profile?.id && <PropertyField name="Profile id" content={<IdLabel label={session.profile.id}/>} underline={false}/>}
+        {session?.profile?.id && <PropertyField name="Profile id"
+                                                content={<IdLabel label={session.profile.id}/>}
+                                                underline={false}
+                                                drawerSize={1250}
+        >
+            <ProfileDetailsById id={session.profile.id}/>
+        </PropertyField>}
     </>
 }

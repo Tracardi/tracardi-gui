@@ -11,6 +11,7 @@
     color: #444;
     display: flex;
     align-items: center;
+    font-weight: 500;
 }
 
 .PageTabs > DIV > .Info {
@@ -25,6 +26,7 @@
     padding: 2px 37px;
 }
 .PageTabs > .TabNav {
+    font-weight: 400;
     height: inherit;
     display: flex;
     flex-direction: column;

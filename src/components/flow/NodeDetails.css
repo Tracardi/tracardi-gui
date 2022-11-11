@@ -1,14 +1,16 @@
 .NodeDetails {
     height: 100%;
     display: flex;
+    border-radius: 15px;
 }
 
 .NodeDetails > .NodeDetailsIcons {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 4px;
+    padding: 10px;
     background-color: rgba(235, 235, 235, 0.85);
+    border-radius: 15px 0 0 15px;
 }
 
 .NodeDetails > .NodeDetailsContent {
@@ -16,6 +18,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    border-radius: 0 15px 0 0;
 }
 
 .NodeDetails > .NodeDetailsContent .Title {
@@ -25,18 +28,19 @@
     font-size: 20px;
     font-weight: 400;
     justify-content: space-between;
-    padding: 10px;
+    padding: 13px;
     color: #444;
     background-color: whitesmoke;
-    height: 62px;
+    height: 70px;
     border-bottom: solid 1px #ccc;
     z-index: 2;
+    border-radius: inherit;
 }
 
-.NodeDetails > .NodeDetailsContent .Title:hover {
-    -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.28);
-    -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.28);
-    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.28);
+.NodeDetails:hover {
+    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.28);
+    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.28);
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.28);
 }
 
 .NodeDetails > .NodeDetailsContent > .Title> SPAN {
@@ -62,4 +66,5 @@
     margin-top: 5px;
     padding: 10px;
     overflow-y: auto;
+
 }

@@ -15,5 +15,6 @@
     display: flex;
     flex-direction: column;
     border-radius: 15px;
-    border: solid 1px #ddd;
+    border: solid 2px #ccc;
+    background-color: white;
 }

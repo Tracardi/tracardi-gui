@@ -12,6 +12,9 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import {ProfileData} from "./ProfileInfo";
 import ProfileSessionsDetails from "./ProfileSessionsDetails";
 import ProfileLogDetails from "./ProfileLogDetails";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import ErrorsBox from "../../errors/ErrorsBox";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 
 export default function ProfileDetails({profile}) {
 
@@ -50,7 +53,40 @@ export default function ProfileDetails({profile}) {
             </Tabs>
         </div>
     </div>;
+}
 
+export function ProfileDetailsById({id}) {
+
+    const [profile, setProfile] = React.useState(null);
+    const [loading, setLoading] = React.useState(true);
+    const [error, setError] = React.useState(null);
+
+    React.useEffect(() => {
+        let isSubscribed = true;
+        if (isSubscribed) setError(null);
+        if (isSubscribed) setLoading(true);
+        if (id) {
+            asyncRemote({
+                url: "/profile/" + id
+            })
+                .then(response => setProfile(response.data))
+                .catch(e => setError(getError(e)))
+                .finally(() => setLoading(false))
+        }
+        return () => isSubscribed = false;
+    }, [id])
+
+    if (error) {
+        return <ErrorsBox errorList={error}/>
+    }
+
+    if (loading) {
+        return <CenteredCircularProgress/>
+    }
+
+    return <>
+        {profile && <ProfileDetails profile={profile} />}
+    </>
 }
 
 ProfileDetails.propTypes = {

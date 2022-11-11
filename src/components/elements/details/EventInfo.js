@@ -29,7 +29,7 @@ const EventDataDetails = ({event, allowedDetails=[]}) => {
                                                                          content={eventProperties[key]}/>)}</>
     }
 
-    return <TuiForm style={{margin: 20}}>
+    return <TuiForm>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Event details"/>
             <TuiFormGroupContent style={{display: "flex", flexDirection: "column"}}>

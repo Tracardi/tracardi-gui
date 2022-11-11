@@ -51,6 +51,7 @@
     grid-template-columns: 1fr auto;
     grid-template-areas: "editor properties"
                          "debug debug";
+    background-color: white;
 }
 
 .FlowEditor > .WorkArea {

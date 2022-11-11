@@ -4,6 +4,7 @@
     padding: 10px;
     border-radius: 5px;
     user-select: text;
+    border-radius: inherit;
 }
 .MdManual A {
     color: rgb(0, 105, 192);

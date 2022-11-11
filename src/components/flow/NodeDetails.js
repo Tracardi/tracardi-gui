@@ -50,7 +50,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
             height: "100%"
         }}>
             <div className="NodeDetails">
-                <div className="NodeDetailsIcons" style={{width: 50}}>
+                <div className="NodeDetailsIcons" style={{width: 60}}>
                     <div>
                         <IconButton label="Info" onClick={() => setTab(0)} selected={tab === 0} size="large">
                             <BsInfoCircle size={22}/>
@@ -97,7 +97,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                     </div>}
 
                 </div>
-                <div className="NodeDetailsContent" style={{width: 589, backgroundColor: "rgba(235, 235, 235, 0.85)"}}>
+                <div className="NodeDetailsContent" style={{width: 580, backgroundColor: "rgba(235, 235, 235, 0.85)"}}>
                     <div className="Title">
                         <FilterTextField label="Node name"
                                          initValue={node?.data?.metadata?.name}
@@ -165,7 +165,14 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                     </div>
                 </div>
                 {node?.data?.spec?.manual && displayManual &&
-                <div style={{width: 658, backgroundColor: "aliceblue", borderLeft: "solid 1px #ccc", height: "100%"}}>
+                <div style={{
+                    width: 660,
+                    backgroundColor: "aliceblue",
+                    borderLeft: "solid 1px #ccc",
+                    borderRight: "solid 1px #ccc",
+                    height: "100%",
+                    borderRadius: "0 15px 15px 0"
+                }}>
                     <MdManual mdFile={node?.data?.spec?.manual} style={{padding: 20}}/>
                 </div>}
             </div>

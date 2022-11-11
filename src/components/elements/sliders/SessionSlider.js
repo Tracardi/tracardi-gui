@@ -71,7 +71,7 @@ export default function SessionSlider({profileId, onEventSelect}) {
             </div>}
 
             {!loading && session !== null && <>
-                <fieldset style={{margin: 10, padding: 20, width: "100%"}}>
+                <fieldset style={{padding: "10px 20px", width: "100%"}}>
                     <legend>Session details</legend>
                     <SessionCardInfo session={session}/>
                 </fieldset>

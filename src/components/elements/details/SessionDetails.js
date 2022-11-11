@@ -7,6 +7,8 @@ import PropTypes from "prop-types";
 import SessionStepper from "../steppers/SessionStepper";
 import EventInfo from "./EventInfo";
 import SessionCardInfo from "./SessionCardInfo";
+import {ObjectInspector} from "react-inspector";
+import theme from "../../../themes/inspector_light_theme";
 
 
 export default function SessionDetails({data}) {
@@ -15,11 +17,11 @@ export default function SessionDetails({data}) {
 
     return <div style={{height: "inherit"}}>
         <div className="RightTabScroller">
-            <Tabs tabs={["Session time-line"]}>
+            <Tabs tabs={["Session time-line", "Raw Json"]}>
                 <TabCase id={0}>
-                    <div style={{display: "flex", width: "100%", height: "inherit", padding: 5}}>
-                        <div style={{width: "100%", padding: 5, flexBasis: "40%", height: "inherit"}}>
-                            <fieldset style={{margin: 10, padding: 20, width: "100%"}}>
+                    <div style={{display: "flex", width: "100%", height: "inherit", padding: 20, gap: 20}}>
+                        <div style={{flex: "1 1 0", height: "inherit"}}>
+                            <fieldset style={{padding: 10}}>
                                 <legend>Session details</legend>
                                 <SessionCardInfo session={data}/>
                             </fieldset>
@@ -29,9 +31,14 @@ export default function SessionDetails({data}) {
                                             onEventSelect={setEventId}
                             />
                         </div>
-                        <div style={{width: "100%", padding: 5, flexBasis: "60%", height: "inherit"}}>
+                        <div style={{flex: "1 1 0", height: "inherit", marginTop: 7}}>
                             {eventId && <EventInfo id={eventId} allowedDetails={['source', 'profile']}/>}
                         </div>
+                    </div>
+                </TabCase>
+                <TabCase id={1}>
+                    <div className="Box10">
+                        <ObjectInspector data={data} theme={theme} expandLevel={3}/>
                     </div>
                 </TabCase>
             </Tabs>

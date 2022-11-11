@@ -1,7 +1,6 @@
 import React from 'react';
 import FlowNodeIcons from "../../../flow/FlowNodeIcons";
 import {BsGear, BsTrash} from "react-icons/bs";
-import Tag from "../../misc/Tag";
 import IconButton from "../../misc/IconButton";
 import TuiTags from "../../tui/TuiTags";
 

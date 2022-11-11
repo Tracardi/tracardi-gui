@@ -2,12 +2,14 @@
     grid-area: properties;
     width: fit-content;
     padding: 0;
-    height: 100%;
+    height: calc(100% - 20px);
     display: flex;
     flex-direction: column;
-    border-left: 1px #ccc solid;
     animation-name: fadeInOpacity;
     animation-iteration-count: 1;
     animation-timing-function: ease-out;
     animation-duration: .3s;
+    margin: 10px;
+    border-radius: 15px;
+    border: solid 2px #ccc;
 }
