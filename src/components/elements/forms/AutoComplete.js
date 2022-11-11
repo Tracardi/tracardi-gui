@@ -10,7 +10,7 @@ import {isObject, isString} from "../../../misc/typeChecking";
 const AutoComplete = ({
                           placeholder, error: errorMessage = null, endpoint, token=null, defaultValueSet, initValue, value = null, onSetValue,
                           onChange, onlyValueWithOptions = false, disabled, fullWidth = false,
-                          renderOption
+                          renderOption, noOptionsText = "No options"
                       }) => {
 
     const getValue = (initValue) => {
@@ -26,7 +26,7 @@ const AutoComplete = ({
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState(defaultValueSet || []);
     const [progress, setProgress] = React.useState(false);
-    const loading = open && typeof options !== "undefined" && options?.length >= 0;
+    const [loading, setLoading] = React.useState(false)
     const [selectedValue, setSelectedValue] = React.useState(getValue(initValue));
 
     const mounted = useRef(false);
@@ -48,6 +48,7 @@ const AutoComplete = ({
                 setProgress(true);
                 try {
                     setOpen(true)
+                    setLoading(true)
                     const response = await asyncRemote(endpoint, token)
                     if (response && mounted.current) {
                         let options = convertResponseToAutoCompleteOptions(response)
@@ -71,6 +72,7 @@ const AutoComplete = ({
                         setError(errors[0]?.msg)
                     }
                 } finally {
+                    setLoading(false)
                     if (mounted.current) {
                         setProgress(false);
                     }
@@ -139,6 +141,7 @@ const AutoComplete = ({
                 return option?.name || option?.id || ""
             }}
             options={options}
+            noOptionsText={noOptionsText}
             loading={loading}
             value={selectedValue}
             disabled={disabled}
@@ -186,6 +189,7 @@ AutoComplete.propTypes = {
     onlyValueWithOptions: PropTypes.bool,
     disabled: PropTypes.bool,
     fullWidth: PropTypes.bool,
+    noOptionsText: PropTypes.string
 }
 
 export default AutoComplete;
