@@ -3,7 +3,7 @@ import "./HighlightedTag.css";
 
 export default function EventWarnings({eventMetaData}) {
 
-    if (eventMetaData.warning) {
+    if (eventMetaData?.warning) {
         return <span style={{
             backgroundColor: "#ef6c00",
             color: "white"

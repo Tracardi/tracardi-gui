@@ -14,6 +14,10 @@ import TuiTags from "../tui/TuiTags";
 import DateValue from "../misc/DateValue";
 import IdLabel from "../misc/IconLabels/IdLabel";
 import EventDetails from "./EventDetails";
+import EventWarnings from "../misc/EventWarnings";
+import EventErrorTag from "../misc/EventErrorTag";
+import FlowNodeIcons from "../../flow/FlowNodeIcons";
+import IconLabel from "../misc/IconLabels/IconLabel";
 
 
 const EventDataDetails = ({event, allowedDetails=[]}) => {
@@ -36,13 +40,16 @@ const EventDataDetails = ({event, allowedDetails=[]}) => {
                 <PropertyField name="Id" content={<IdLabel label={event?.id}/>}>
                     <EventDetails event={event}/>
                 </PropertyField>
-                <PropertyField name="Type" content={event?.type}/>
+                <PropertyField name="Type" content={<IconLabel icon={<FlowNodeIcons icon="event" />} value={event?.type}/>}/>
                 <PropertyField name="Insert time"
                                content={<DateValue date={event?.metadata?.time?.insert}/>}
                 />
                 <PropertyField name="Status"
                                content={<><EventStatusTag label={event?.metadata?.status}/>
-                                   <EventValidation eventMetaData={event?.metadata}/></>}/>
+                                   <EventValidation eventMetaData={event?.metadata}/>
+                                   <EventWarnings eventMetaData={event?.metadata}/>
+                                   <EventErrorTag eventMetaData={event?.metadata}/>
+                                   </>}/>
                 {event?.session && <PropertyField name="Session id" content={event.session?.id}>
 
                 </PropertyField>}

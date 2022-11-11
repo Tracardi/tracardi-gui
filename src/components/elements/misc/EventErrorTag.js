@@ -3,7 +3,7 @@ import "./HighlightedTag.css";
 
 export default function EventErrorTag({eventMetaData}) {
 
-    if (eventMetaData.error) {
+    if (eventMetaData?.error) {
         return <span style={{
             backgroundColor: "#d81b60",
             color: "white",

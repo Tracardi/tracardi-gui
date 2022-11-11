@@ -11,6 +11,10 @@ import React from "react";
 import SessionContextInfo from "./SessionContextInfo";
 import TuiTags from "../tui/TuiTags";
 import DateValue from "../misc/DateValue";
+import EventWarnings from "../misc/EventWarnings";
+import EventErrorTag from "../misc/EventErrorTag";
+import IconLabel from "../misc/IconLabels/IconLabel";
+import FlowNodeIcons from "../../flow/FlowNodeIcons";
 
 
 const EventData = ({event, allowedDetails=[]}) => {
@@ -30,13 +34,17 @@ const EventData = ({event, allowedDetails=[]}) => {
         <TuiFormGroup>
             <TuiFormGroupHeader header="Event details"/>
             <TuiFormGroupContent style={{display: "flex", flexDirection: "column"}}>
-                <PropertyField name="Type" content={event?.type}/>
+                <PropertyField name="Type" content={<IconLabel icon={<FlowNodeIcons icon="event" />} value={event?.type}/>}/>
                 <PropertyField name="Insert time"
                                content={<DateValue date={event?.metadata?.time?.insert}/>}
                 />
                 <PropertyField name="Status"
                                content={<><EventStatusTag label={event?.metadata?.status}/>
-                                   <EventValidation eventMetaData={event?.metadata}/></>}/>
+                                   <EventValidation eventMetaData={event?.metadata}/>
+                                   <EventWarnings eventMetaData={event?.metadata}/>
+                                   <EventErrorTag eventMetaData={event?.metadata}/>
+                                   </>}/>
+
                 {event?.session && <PropertyField name="Session duration" content={Math.floor(event.session.duration / 60).toString() + "m"}>
 
                 </PropertyField>}
