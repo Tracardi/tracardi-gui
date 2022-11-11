@@ -14,6 +14,6 @@ export default function ProfileCardInfo({profile}) {
         <PropertyField name="Last visit" content={<DateValue date={profile?.metadata?.time?.visit?.current}/>}/>
         <PropertyField name="All visits" content={profile?.metadata?.time?.visit.count}/>
         <PropertyField name="Telephone" content={profile?.pii?.telephone}/>
-        <PropertyField name="Active" content={<ProfileMergeTag profile={profile}/>} underline={false}/>
+        <PropertyField name={profile?.metadata?.merged_with ? "Merged with" : "Active"} content={<ProfileMergeTag profile={profile}/>} underline={false}/>
     </>
 }

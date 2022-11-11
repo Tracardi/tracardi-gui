@@ -7,7 +7,7 @@ import SessionCardInfo from "../../details/SessionCardInfo";
 
 export default function SessionRow({session, filterFields}) {
     return <div style={{display: "flex"}}>
-        <div style={{flex: "1 1 0", minWidth: 400, borderRight: "solid 1px #ccc", paddingRight: 17}}>
+        <div style={{flex: "1 1 0", minWidth: 540, borderRight: "solid 1px #ccc", paddingRight: 17}}>
             <SessionCardInfo session={session}/>
         </div>
         <div style={{flex: "2 1 0", width: "100%", paddingLeft: 15}}>

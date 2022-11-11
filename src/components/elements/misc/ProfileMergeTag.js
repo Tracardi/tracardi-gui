@@ -9,6 +9,6 @@ export default function ProfileMergeTag({profile}) {
         <ActiveTag
             active={profile?.active}
             style={{marginRight: 5}}
-        /> {profile?.metadata?.merged_with && `Merged with {$profile.metadata.merged_with.substring(0, 12)}`}
+        /> {profile?.metadata?.merged_with && profile.metadata.merged_with}
     </span>
 }

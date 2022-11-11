@@ -1,6 +1,11 @@
 import React from "react";
 
 const TimeDifference = ({ date }) => {
+
+  if(date === null) {
+    return ""
+  }
+
   const days = getTimeDifference(date);
 
   const getSign = () => {
@@ -71,7 +76,6 @@ function calcTimeDifference(present, baseDate) {
 
 function getTimeDifference(date) {
   if (typeof date !== "string" || isNaN(new Date(date))) {
-    console.error(`Invalid input, ${date} should be a date string.`);
     return "";
   }
 
@@ -86,11 +90,11 @@ function getTimeDifference(date) {
     _havePassed 
   } = calcTimeDifference(present, baseDate);
 
-  const _days = `${Math.abs(days)} ${Math.abs(days) > 1 ? "days" : "day"}`;
+  const _days = `${Math.abs(days)}d`;
   const _hours = `${
     hours >= 1
-      ? `${hours} ${hours > 1 ? "hours" : "hour"}`
-      : `${minutes} ${minutes > 1 ? "minutes" : "minute"}`
+      ? `${hours}h`
+      : `${minutes}m`
   }`;
 
   return {

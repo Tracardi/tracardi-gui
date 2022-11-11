@@ -42,11 +42,17 @@ export function abbreviateNumber(value) {
 }
 
 export function makeUtcStringTzAware(utcString) {
+    if(utcString === null) {
+        return null
+    }
     let date = new Date(utcString + "Z");
     return date.toLocaleString();
 }
 
 export function formatDate(utcString) {
+    if(utcString === null) {
+        return null
+    }
     let date = new Date(utcString);
     return date.toLocaleString();
 }
