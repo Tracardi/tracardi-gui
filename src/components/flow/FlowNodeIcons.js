@@ -30,7 +30,8 @@ import {
     IoLanguageOutline,
     IoTextOutline,
     IoCalendarOutline,
-    IoGitNetworkSharp
+    IoGitNetworkSharp,
+    IoHandLeftOutline
 } from "react-icons/io5";
 import {
     VscSymbolEvent,
@@ -237,7 +238,8 @@ export const icons = {
     "chatwoot": (size) => <BsChatDots size={size}/>,
     "intercom": (size) => <SiIntercom size={size}/>,
     "sort": (size) => <BsSortAlphaDown size={size}/>,
-    "validator": (size) => <BsFolderCheck size={size}/>
+    "validator": (size) => <BsFolderCheck size={size}/>,
+    "hand-stop": (size) => <IoHandLeftOutline size={size}/>
 }
 
 

@@ -9,6 +9,11 @@ import EventProfilingDetails from "./EventProfilingDetails";
 import EventLogDetails from "./EventLogDetails";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import EventData from "./EventData";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import ErrorsBox from "../../errors/ErrorsBox";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import NoData from "../misc/NoData";
+import SessionDetails from "./SessionDetails";
 
 export default function EventDetails({event, metadata}) {
 
@@ -77,6 +82,60 @@ export default function EventDetails({event, metadata}) {
         </Tabs>
     </>
 }
+
+export function EventDetailsById({id}) {
+
+    const [event, setEvent] = React.useState(null);
+    const [loading, setLoading] = React.useState(true);
+    const [error, setError] = React.useState(null);
+    const [noData, setNoData] = React.useState(false);
+
+    React.useEffect(() => {
+        let isSubscribed = true;
+        setNoData(false)
+        setError(null);
+        setLoading(true);
+        if (id) {
+            asyncRemote({
+                url: "/event/" + id
+            })
+                .then(response => setEvent(response.data))
+                .catch(e => {
+                    if(isSubscribed) {
+                        if(e.request && e.request.status === 404) {
+                            setNoData(true)
+                        } else {
+                            setError(getError(e))
+                        }
+                    }
+                })
+                .finally(() => {if(isSubscribed) setLoading(false)})
+        }
+        return () => isSubscribed = false;
+    }, [id])
+
+    if(noData) {
+        return <NoData header="Could not find event.">
+            This can happen if the event was deleted or archived.
+        </NoData>
+    }
+
+    if (error) {
+        return <ErrorsBox errorList={error}/>
+    }
+
+    if (loading) {
+        return <CenteredCircularProgress/>
+    }
+
+    return <>
+        {event && <SessionDetails data={event}/>}
+    </>
+}
+
+EventDetailsById.propTypes = {
+    id: PropTypes.string,
+};
 
 EventDetails.propTypes = {
     data: PropTypes.object,

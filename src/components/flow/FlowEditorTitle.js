@@ -1,6 +1,6 @@
 import React, {useCallback, useState} from "react";
 import {TiTickOutline} from "react-icons/ti";
-import {BsToggleOn} from "react-icons/bs";
+import {VscRocket} from "react-icons/vsc";
 import "./FlowEditorTitle.css";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import Button from "../elements/forms/Button";
@@ -185,7 +185,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                     progress={draftSaveProgress}
             />
             <Button label="Deploy"
-                    icon={<BsToggleOn size={20}/>}
+                    icon={<VscRocket size={20}/>}
                     onClick={handleDeploy}
                     progress={deployProgress}
             />

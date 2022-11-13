@@ -580,7 +580,7 @@ export function FlowEditorPane(
         event.stopPropagation();
         selectNode(element);
         setDisplayNodeContextMenu(true);
-        setClientX(event?.clientX - 150);
+        setClientX(event?.clientX - 200);
         setClientY(event?.clientY - 50)
     }
 
@@ -695,6 +695,7 @@ export function FlowEditorPane(
                                                                     top: clientY
                                                                 }}
                                 >
+                                    <aside>v.{currentNode?.data?.spec?.version}</aside>
                                     {currentNode?.data?.metadata?.desc}
                                 </div>}
 

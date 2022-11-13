@@ -21,16 +21,16 @@ function PlatformIcon({platform}) {
 
 export default function SessionCardInfo({session}) {
     return <>
-        <PropertyField name="Id" content={<IdLabel label={session.id}/>}/>
-        <PropertyField name="Created" content={<DateValue date={session.metadata?.time?.insert}/>}/>
+        <PropertyField name="Id" content={<IdLabel label={session?.id}/>}/>
+        <PropertyField name="Created" content={<DateValue date={session?.metadata?.time?.insert}/>}/>
         {session?.context?.time?.tz && <PropertyField
             name="Time zone"
-            content={<><BsGlobe size={20} style={{marginRight: 5}}/> {session.context.time.tz}</>}
+            content={<><BsGlobe size={20} style={{marginRight: 5}}/> {session?.context.time.tz}</>}
         />}
         {session?.metadata?.time?.duration && <PropertyField
             name="Duration"
             content={<><BsClock size={20}
-                                style={{marginRight: 5}}/> {Math.floor(session.metadata.time.duration / 60)}m</>}
+                                style={{marginRight: 5}}/> {Math.floor(session?.metadata.time.duration / 60)}m</>}
         />}
         {session?.context?.browser?.local?.device?.platform && <PropertyField
             name="Platform"
@@ -46,7 +46,7 @@ export default function SessionCardInfo({session}) {
                                                 underline={false}
                                                 drawerSize={1250}
         >
-            <ProfileDetailsById id={session.profile.id}/>
+            <ProfileDetailsById id={session?.profile?.id}/>
         </PropertyField>}
     </>
 }

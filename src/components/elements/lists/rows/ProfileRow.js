@@ -9,7 +9,7 @@ import TuiTags from "../../tui/TuiTags";
 
 export default function ProfileRow({profile, filterFields}) {
     return <div style={{display: "flex"}}>
-        <div style={{flex: "1 1 0", minWidth: 520, borderRight: "solid 1px #ccc", paddingRight: 17}}>
+        <div style={{flex: "1 1 0", minWidth: 540, borderRight: "solid 1px #ccc", paddingRight: 17}}>
             <ProfileCardInfo profile={profile}/>
         </div>
         <div style={{flex: "2 1 0", width: "100%", paddingLeft: 15}}>

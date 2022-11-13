@@ -89,12 +89,14 @@ const StartNodeDynamic = ({data}) => {
 
     return (
         <div className="CondContainer">
-            <div style={{display: "flex", alignItems: "center"}}>
+            {data?.spec?.run_once?.enabled && <ThresholdIcon style={{left: -10}}/>}
+            <div className="RightPlaceholder">
                 {Array.isArray(data?.spec?.init?.event_types) && <div className="NodeInboundEvents">
                     {data?.spec?.init?.event_types.map((eventObj, idx)  => <span className="Event" key={idx}>{eventObj.name}</span>)}
                 </div>}
+            </div>
+            <div style={{display: "flex", alignItems: "center"}}>
                 <div>
-                    {data?.spec?.run_once?.enabled && <ThresholdIcon/>}
                     <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={portStyle}/>
 
                     <div className={nodeClass} style={nodeStyle}>
@@ -103,10 +105,13 @@ const StartNodeDynamic = ({data}) => {
                             <FlowNodeIcons icon={data?.metadata?.icon} size={24}/>
                         </div>
                     </div>
-                    <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={portStyle}/>
+                    <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs}
+                             style={portStyle}/>
                 </div>
             </div>
-            <div className="CondTitle">{data?.metadata?.name}</div>
+            <div className="LeftPlaceholder">
+                <div className="CondTitle">{data?.metadata?.name}</div>
+            </div>
         </div>
     );
 };

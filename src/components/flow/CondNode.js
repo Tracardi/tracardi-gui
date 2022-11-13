@@ -104,14 +104,14 @@ const CondNodeDynamic = ({data}) => {
     }
 
     return (
-        <div className="CondContainer" style={{gap: 15}}>
+        <div className="CondContainer" style={{gap: 10}}>
+            {data?.spec?.run_once?.enabled && <ThresholdIcon style={{left: "-50%"}}/>}
             <div style={{display: "flex", alignItems: "center"}}>
                 {Array.isArray(data?.spec?.init?.event_types) && <div className="NodeInboundEvents">
                     {data?.spec?.init?.event_types.map((eventObj, idx) => <span className="Event"
                                                                                 key={idx}>{eventObj.name}</span>)}
                 </div>}
                 <div style={{position: "relative"}}>
-                    {data?.spec?.run_once?.enabled && <ThresholdIcon/>}
                     {data?.debugging?.node?.warnings > 0 && data?.debugging?.node?.errors === 0 &&
                     <WarningNumber data={data}/>}
                     {data?.debugging?.node?.errors > 0 && <ErrorNumber data={data}/>}
@@ -128,8 +128,11 @@ const CondNodeDynamic = ({data}) => {
 
                 </div>
             </div>
-            <div className="CondTitle">{data?.metadata?.name}</div>
+            <div className="LeftPlaceholder">
+                <div className="CondTitle">{data?.metadata?.name}</div>
+            </div>
         </div>
+
     );
 };
 

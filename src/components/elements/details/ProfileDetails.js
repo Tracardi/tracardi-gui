@@ -15,6 +15,7 @@ import ProfileLogDetails from "./ProfileLogDetails";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import NoData from "../misc/NoData";
 
 export default function ProfileDetails({profile}) {
 
@@ -60,21 +61,37 @@ export function ProfileDetailsById({id}) {
     const [profile, setProfile] = React.useState(null);
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
+    const [noData, setNoData] = React.useState(false);
 
     React.useEffect(() => {
         let isSubscribed = true;
-        if (isSubscribed) setError(null);
-        if (isSubscribed) setLoading(true);
+        setError(null);
+        setLoading(true);
+        setNoData(false);
         if (id) {
             asyncRemote({
                 url: "/profile/" + id
             })
                 .then(response => setProfile(response.data))
-                .catch(e => setError(getError(e)))
-                .finally(() => setLoading(false))
+                .catch(e => {
+                    if(isSubscribed) {
+                        if(e.request && e.request.status === 404) {
+                            setNoData(true)
+                        } else {
+                            setError(getError(e))
+                        }
+                    }
+                })
+                .finally(() => {if(isSubscribed) setLoading(false)})
         }
         return () => isSubscribed = false;
     }, [id])
+
+    if(noData) {
+        return <NoData header="Could not find profile.">
+            This can happen if the profile was deleted or archived.
+        </NoData>
+    }
 
     if (error) {
         return <ErrorsBox errorList={error}/>

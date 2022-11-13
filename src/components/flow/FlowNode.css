@@ -155,6 +155,7 @@ DIV.CondContainer {
 
 DIV.CondContainer:hover DIV.CondTitle {
     display: flex !important;
+    align-items: center;
 }
 
 DIV.CondNode {
@@ -170,6 +171,13 @@ DIV.CondNode {
     border-radius: 10px;
 }
 
+DIV.LeftPlaceholder,
+DIV.RightPlaceholder {
+    width: 1px;
+    height: 50px;
+    position: relative;
+}
+
 DIV.CondTitle {
     background-color: whitesmoke;
     padding: 0px 5px;
@@ -177,7 +185,12 @@ DIV.CondTitle {
     width: max-content;
     font-size: 12px;
     max-width: 200px;
+    position: absolute;
+    bottom: 0;
+    top: 0;
     display: none;
+    margin: auto 0;
+    align-items: center;
 }
 
 DIV.NodePadding {
@@ -230,6 +243,8 @@ DIV.NodeInboundEvents {
     justify-items: flex-end;
     align-items: flex-end;
     margin-right: 5px;
+    position: absolute;
+    right: 0;
 }
 
 DIV.NodeInboundEvents SPAN.Event,
@@ -243,6 +258,7 @@ DIV.NodeOutboundEvents SPAN.Event {
     background-color: aliceblue;
     width: fit-content;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 DIV.NodeInboundEvents SPAN.Event:hover,

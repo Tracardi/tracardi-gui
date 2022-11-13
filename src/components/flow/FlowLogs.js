@@ -7,6 +7,8 @@ import JsonStringify from "../elements/misc/JsonStingify";
 import DateValue from "../elements/misc/DateValue";
 import PropertyField from "../elements/details/PropertyField";
 import ToggleIcon from "../elements/icons/ToggleIcon";
+import {EventDetailsById} from "../elements/details/EventDetails";
+import {ProfileDetailsById} from "../elements/details/ProfileDetails";
 
 const Row = ({log}) => {
 
@@ -42,8 +44,12 @@ const Row = ({log}) => {
                 <PropertyField name="Module" content={log.module}></PropertyField>
                 <PropertyField name="Class" content={log.class_name}></PropertyField>
                 {log?.flow_id && <PropertyField name="Flow" content={log.flow_id}></PropertyField>}
-                {log?.event_id && <PropertyField name="Event" content={log.event_id}></PropertyField>}
-                {log?.profile_id && <PropertyField name="Profile" content={log.profile_id}></PropertyField>}
+                {log?.event_id && <PropertyField name="Event" content={log.event_id}>
+                    <EventDetailsById id={log.event_id}/>
+                </PropertyField>}
+                {log?.profile_id && <PropertyField name="Profile" content={log.profile_id}>
+                    <ProfileDetailsById id={log.profile_id}/>
+                </PropertyField>}
             </>
             }
             <div className='flexLine' style={{padding: 10}}>

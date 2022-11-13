@@ -21,6 +21,7 @@ import {BsXCircle} from "react-icons/bs";
 import {ObjectInspector} from "react-inspector";
 import theme from "../../../../themes/inspector_light_theme";
 import {VscJson} from "react-icons/vsc";
+import {SessionDetailsById} from "../../details/SessionDetails";
 
 export function EventRow({row, filterFields}) {
 
@@ -39,7 +40,7 @@ export function EventRow({row, filterFields}) {
             <ObjectInspector data={jsonData} theme={theme} expandLevel={5}/>
         </ResponsiveDialog>}
         <div style={{display: "flex"}}>
-            <div style={{flex: "1 1 0", minWidth: 540, borderRight: "solid 1px #ccc", paddingRight: 17}}>
+            <div style={{flex: "1 1 0", minWidth: 560, borderRight: "solid 1px #ccc", paddingRight: 17}}>
                 <PropertyField name="id" content={<IdLabel label={row.id}/>}/>
                 <PropertyField name="Created" content={<DateValue date={row.metadata?.time?.insert}/>}/>
                 <PropertyField name="Profile" content={<ProfileLabel label={profileName(row.profile)}
@@ -51,7 +52,12 @@ export function EventRow({row, filterFields}) {
                 <PropertyField name="Source id" content={<IdLabel label={row.source?.id}/>}>
                     <EventSourceDetails id={row.source?.id}/>
                 </PropertyField>
-                {row.session?.id && <PropertyField name="Session id" content={<IdLabel label={row.session?.id}/>}/>}
+                {row.session?.id && <PropertyField name="Session id"
+                                                   content={<IdLabel label={row.session?.id}/>}
+                                                   drawerSize={1320}
+                >
+                    <SessionDetailsById id={row.session?.id}/>
+                </PropertyField>}
                 {isNotEmptyArray(row.metadata?.processed_by?.rules) && <PropertyField name="Routed by" content={<TuiTags
                     tags={row.metadata?.processed_by?.rules} size="small"/>}/>}
                 <PropertyField name="Process time" content={row.metadata?.time?.process_time} underline={false}/>

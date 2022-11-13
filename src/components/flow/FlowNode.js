@@ -112,7 +112,7 @@ const FlowNodeDynamic = ({data}) => {
 
     return (
         <div style={{position: "relative"}}>
-            {data?.spec?.run_once?.enabled && <ThresholdIcon/>}
+            {data?.spec?.run_once?.enabled && <ThresholdIcon style={{width: "100%"}}/>}
             {data?.debugging?.node?.warnings > 0 && data?.debugging?.node?.errors === 0 && <WarningNumber data={data}/>}
             {data?.debugging?.node?.errors > 0 && <ErrorNumber data={data}/>}
             <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={portStyle}
@@ -125,7 +125,6 @@ const FlowNodeDynamic = ({data}) => {
                     <div className="NodeLabel"
                          style={{maxWidth: data?.metadata?.width, maxHeight: data?.metadata?.height}}>
                         <p style={{marginLeft: 5}}>{data?.metadata?.name}</p>
-                        <aside>v.{data?.spec?.version}</aside>
                     </div>
                 </div>
                 {data?.metadata?.pro ? <div className="NodePro" style={backgroundStyle}>Pro</div> : ""}
