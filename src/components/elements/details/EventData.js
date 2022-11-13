@@ -53,7 +53,7 @@ const EventData = ({event, allowedDetails=[]}) => {
                 </PropertyField>}
 
                 {event?.profile && <PropertyField name="Profile id" content={event.profile.id} drawerSize={1320}>
-                    {allowedDetails.includes("profile") && <ProfileDetails profile={event.profile}/>}
+                    {allowedDetails.includes("profile") && event.profile && <ProfileDetails profile={event.profile}/>}
                 </PropertyField>}
                 {event?.source && <PropertyField name="Event source" content={event.source.id} drawerSize={820}>
                     {allowedDetails.includes("source") && <EventSourceDetails id={event.source.id}/>}

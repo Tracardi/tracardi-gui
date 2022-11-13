@@ -23,14 +23,6 @@ export default function EntityAnalytics({displayChart=true}) {
         }
     }
 
-    // const onLoadDetails = (id) => {
-    //     return {
-    //         url: "/entity/" + id, method: "get"
-    //     }
-    // }
-
-    // const displayDetails = (data) => <ProfileDetails profile={data}/>
-
     return <DataAnalytics
         type="entity"
         label="List of Entities"
@@ -40,8 +32,6 @@ export default function EntityAnalytics({displayChart=true}) {
         filterFields={['timestamp']}
         onLoadHistogramRequest={onLoadHistogramRequest}
         onLoadDataRequest={onLoadDataRequest}
-        // onLoadDetails={onLoadDetails}
-        // displayDetails={displayDetails}
         detailsDrawerWidth={1250}
         displayChart={displayChart}
     />

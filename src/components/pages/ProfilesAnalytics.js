@@ -1,7 +1,6 @@
 import React from "react";
 import "./DataAnalytics.css";
 import DataAnalytics from "./DataAnalytics";
-import ProfileDetails from "../elements/details/ProfileDetails";
 import { makeUtcStringTzAware } from "../../misc/converters";
 import ProfileRow from "../elements/lists/rows/ProfileRow";
 
@@ -31,8 +30,6 @@ export default function ProfilesAnalytics({displayChart=true}) {
         }
     }
 
-    const displayDetails = (data) => <ProfileDetails profile={data}/>
-
     return <DataAnalytics
         type="profile"
         label="List of profiles"
@@ -43,7 +40,6 @@ export default function ProfilesAnalytics({displayChart=true}) {
         onLoadHistogramRequest={onLoadHistogramRequest}
         onLoadDataRequest={onLoadDataRequest}
         onLoadDetails={onLoadDetails}
-        displayDetails={displayDetails}
         detailsDrawerWidth={1320}
         displayChart={displayChart}
         rowDetails={(profile, filterFields) => {
