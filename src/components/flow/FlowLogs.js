@@ -44,10 +44,10 @@ const Row = ({log}) => {
                 <PropertyField name="Module" content={log.module}></PropertyField>
                 <PropertyField name="Class" content={log.class_name}></PropertyField>
                 {log?.flow_id && <PropertyField name="Flow" content={log.flow_id}></PropertyField>}
-                {log?.event_id && <PropertyField name="Event" content={log.event_id}>
+                {log?.event_id && <PropertyField name="Event" content={log.event_id} drawerSize={1350}>
                     <EventDetailsById id={log.event_id}/>
                 </PropertyField>}
-                {log?.profile_id && <PropertyField name="Profile" content={log.profile_id}>
+                {log?.profile_id && <PropertyField name="Profile" content={log.profile_id} drawerSize={1350}>
                     <ProfileDetailsById id={log.profile_id}/>
                 </PropertyField>}
             </>

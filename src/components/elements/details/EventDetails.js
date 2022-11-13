@@ -99,7 +99,7 @@ export function EventDetailsById({id}) {
             asyncRemote({
                 url: "/event/" + id
             })
-                .then(response => setEvent(response.data))
+                .then(response => setEvent(response.data?.event))
                 .catch(e => {
                     if(isSubscribed) {
                         if(e.request && e.request.status === 404) {
