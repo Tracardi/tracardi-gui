@@ -6,13 +6,13 @@ import reportWebVitals from './reportWebVitals';
 import store from './redux/store'
 import {Provider} from "react-redux";
 import App from "./components/App";
-import {mainTheme} from "./themes";
-import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
+import { StyledEngineProvider } from "@mui/material/styles";
 import {ConfirmProvider} from "material-ui-confirm";
 import Installer from "./components/Installer";
 import ApiUrlSelector from "./components/ApiUrlSelector";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
+import Intl from "./locale"
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'development') {
     Sentry.init({
@@ -31,7 +31,7 @@ ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
             <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={mainTheme}>
+                <Intl>
                     <CssBaseline/>
                     <ConfirmProvider>
                         <ApiUrlSelector>
@@ -40,7 +40,7 @@ ReactDOM.render(
                             </Installer>
                         </ApiUrlSelector>
                     </ConfirmProvider>
-                </ThemeProvider>
+                </Intl>
             </StyledEngineProvider>
         </Provider>
     </React.StrictMode>,

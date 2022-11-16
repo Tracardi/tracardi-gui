@@ -7,7 +7,7 @@ import version from '../../misc/version';
 import {BiChevronLeftCircle, BiChevronRightCircle} from "react-icons/bi";
 import {BsPersonCircle, BsFileEarmarkArrowUp} from "react-icons/bs";
 import {VscOrganization, VscPulse, VscTools} from "react-icons/vsc";
-import {IoGitNetworkSharp} from "react-icons/io5";
+import {IoGitNetworkSharp, IoLanguageOutline} from "react-icons/io5";
 import {GoSettings} from "react-icons/go";
 import {VscLaw, VscDashboard} from "react-icons/vsc";
 import {BsClipboardCheck, BsStar, BsBoxArrowRight, BsBoxArrowInRight} from "react-icons/bs";
@@ -16,8 +16,13 @@ import {useConfirm} from "material-ui-confirm";
 import {asyncRemote, getError} from "../../remote_api/entrypoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
+import {changeLanguage} from "../../redux/reducers/localeSlice";
+import Popover from '@mui/material/Popover';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import {T} from "../../locale/tool"
 
-function MainMenu({showAlert}) {
+function MainMenu({showAlert, locale, changeLanguage}) {
 
     const [collapsed, setCollapsed] = useState(false);
     const confirm = useConfirm()
@@ -46,6 +51,62 @@ function MainMenu({showAlert}) {
             <div className="MenuRow" onClick={onClick} style={style}><span className="Icon">{icon}</span>{!collapsed && <span className="Label">{label}</span>}</div>
             :
             null
+        )
+    }
+
+    const LanguageRow = ({collapsed}) => {
+        const languageMap = {
+            en: "English",
+            zh: "中文",
+        };
+        const languageName = languageMap[locale.language]
+        const [anchorEl, setAnchorEl] = React.useState(null);
+        const open = Boolean(anchorEl);
+        const id = open ? "language-popover" : undefined;
+
+        const handleClick = (event) => {
+            setAnchorEl(event.currentTarget);
+        };
+        const handleClose = (language = null) => {
+            setAnchorEl(null);
+            if (language) {
+                changeLanguage({language: language})
+            }
+        };
+
+        return (
+          <div>
+              <div className="MenuRow"
+                   onClick={handleClick}
+                   aria-controls={open ? 'composition-menu' : undefined}
+                   aria-expanded={open ? 'true' : undefined}
+                   aria-haspopup="true"
+              >
+                  <span className="Icon"><IoLanguageOutline /></span>{!collapsed && <span className="Label">{languageName}</span>}
+              </div>
+              <Popover id={id}
+                       open={open}
+                       anchorEl={anchorEl}
+                       onClose={() => handleClose()}
+                       anchorOrigin={{
+                           vertical: 'center',
+                           horizontal: 'right',
+                       }}
+                       transformOrigin={{
+                           vertical: 'center',
+                           horizontal: 'left',
+                       }}
+              >
+                  <MenuList
+                    autoFocusItem={open}
+                    id="composition-menu"
+                    aria-labelledby={id}
+                  >
+                      <MenuItem onClick={() => handleClose('en')}>English</MenuItem>
+                      <MenuItem onClick={() => handleClose('zh')}>简体中文</MenuItem>
+                  </MenuList>
+              </Popover>
+          </div>
         )
     }
 
@@ -86,7 +147,7 @@ function MainMenu({showAlert}) {
         <div>
             <Branding collapsed={collapsed}/>
             <div>
-                <MenuRow icon={<VscDashboard size={20}/>} label="Dashboard" collapsed={collapsed} onClick={go("/dashboard")} roles={["admin", "developer", "marketer", "maintainer"]} style={{marginBottom: 20}}/>
+                <MenuRow icon={<VscDashboard size={20}/>} label={T("app.menu.dashboard")} collapsed={collapsed} onClick={go("/dashboard")} roles={["admin", "developer", "marketer", "maintainer"]} style={{marginBottom: 20}}/>
 
                 <MenuRow icon={<BsBoxArrowInRight size={20}/>} label="Inbound Traffic" collapsed={collapsed} onClick={go("/inbound")} roles={["admin", "developer"]}/>
                 <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")} roles={["admin", "developer", "marketer"]}/>
@@ -121,6 +182,7 @@ function MainMenu({showAlert}) {
                      onClick={go("/maintenance")}
                      roles={["admin", "maintainer"]}/>
             <MenuRow icon={<BsFileEarmarkArrowUp size={20}/>} label="Import" collapsed={collapsed} onClick={go("/import")} roles={["admin", "developer"]}/>
+            <LanguageRow collapsed={collapsed} />
             <MenuRow icon={<GoSettings size={20}/>}
                      label="Settings"
                      collapsed={collapsed}
@@ -140,10 +202,11 @@ function MainMenu({showAlert}) {
 
 const mapProps = (state) => {
     return {
+        locale: state.localeReducer,
         notification: state.notificationReducer,
     }
 };
 export default connect(
     mapProps,
-    {showAlert}
+    {showAlert, changeLanguage}
 )(MainMenu);
