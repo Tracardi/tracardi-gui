@@ -1,10 +1,11 @@
 import PropertyField from "./PropertyField";
 import DateValue from "../misc/DateValue";
-import {BsApple, BsClock, BsGlobe, BsWindows} from "react-icons/bs";
+import {BsApple, BsGlobe, BsWindows} from "react-icons/bs";
 import React from "react";
 import {VscTerminalLinux} from "react-icons/vsc";
 import IdLabel from "../misc/IconLabels/IdLabel";
 import {ProfileDetailsById} from "./ProfileDetails";
+import TimeValue from "../misc/TimeValue";
 
 function PlatformIcon({platform}) {
     const platforms = {
@@ -29,8 +30,7 @@ export default function SessionCardInfo({session}) {
         />}
         {session?.metadata?.time?.duration && <PropertyField
             name="Duration"
-            content={<><BsClock size={20}
-                                style={{marginRight: 5}}/> {Math.floor(session?.metadata.time.duration / 60)}m</>}
+            content={<TimeValue time={session?.metadata?.time?.duration}/>}
         />}
         {session?.context?.browser?.local?.device?.platform && <PropertyField
             name="Platform"

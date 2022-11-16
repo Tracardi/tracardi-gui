@@ -13,6 +13,9 @@
     border-radius: 7px;
     color: #444;
     align-self: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 .SessionStepper .MuiStep-root {
     display: flex;

@@ -6,7 +6,7 @@ import {
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
     BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown,
-    BsFolderCheck
+    BsFolderCheck,BsClock
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -18,7 +18,6 @@ import {
     BiGroup,
     BiBarChartAlt,
     BiCloudRain,
-    BiTime,
     BiParagraph,
     BiArrowToRight,
     BiMessageSquareCheck
@@ -127,7 +126,7 @@ export const icons = {
     'clock': (size) => <BiTimeFive size={size}/>,
     'sleep': (size) => <RiRestTimeLine size={size}/>,
     'time-lapse': (size) => <MdTimelapse size={size}/>,
-    'time': (size) => <BiTime size={size}/>,
+    'time': (size) => <BsClock size={size}/>,
     'wait': (size) => <AiOutlineFieldTime size={size}/>,
     'x': (size) => <TiTimes size={size}/>,
     'message-alert': (size) => <BiMessageRoundedError size={size}/>,
