@@ -73,7 +73,7 @@ export const TuiFormGroupContent = ({children, className, style}) => {
 export const TuiFormGroupField = ({children, header=null, description=null}) => {
     return <>
         {header && <h3>{header}</h3>}
-        {description && <p>{description}</p>}
+        {description && <p className="flexLine" style={{flexWrap: "wrap"}}>{description}</p>}
         {children}
     </>
 }

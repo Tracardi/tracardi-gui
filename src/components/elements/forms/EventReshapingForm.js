@@ -10,6 +10,7 @@ import TuiSelectEventType from "../tui/TuiSelectEventType";
 import JsonEditor from "../editors/JsonEditor";
 import TuiTagger from "../tui/TuiTagger";
 import Switch from "@mui/material/Switch";
+import DocsLink from "../drawers/DocsLink";
 
 export default function EventReshapingForm({onSubmit, init}) {
 
@@ -153,8 +154,10 @@ export default function EventReshapingForm({onSubmit, init}) {
                         onSetValue={(event) => setEventType(event.id)}
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Trigger condition" description="Set the condition that must be met to
-                start reshaping. More on writing conditions can be found here: http://docs.tracardi.com/notations/logic_notation/">
+                <TuiFormGroupField header="Trigger condition" description={<>
+                    <span>Set the condition that must be met to start reshaping.</span>
+                    <DocsLink src="http://docs.tracardi.com/notations/logic_notation/"> How to write a condition </DocsLink>
+                </>}>
                     <TextField
                         label={"Condition"}
                         value={condition}
@@ -167,9 +170,10 @@ export default function EventReshapingForm({onSubmit, init}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Reshaping event properties" description="Set reshaping schema for event properties.
-                Properties will be replaced bu the schema defined here. Use object template to reference data.
-                More info on object schema in http://docs.tracardi.com/notations/object_template/">
+                <TuiFormGroupField header="Reshaping event properties" description={<>
+                    <span>Set reshaping schema for event properties. Properties will be replaced bu the schema defined here. Use object template to reference data.</span>
+                    <DocsLink src="http://docs.tracardi.com/notations/object_template/"> Do you need help with object templates? </DocsLink>
+                </>}>
                     <fieldset style={{marginTop: 10}}>
                         <legend>Event Properties Schema</legend>
                         <JsonEditor value={reshapeSchema} onChange={(value) => setReshapeSchema(value)} autocomplete={true}/>

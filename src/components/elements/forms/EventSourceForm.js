@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 import ErrorsBox from "../../errors/ErrorsBox";
 import Chip from "@mui/material/Chip";
 import NotImplemented from "../misc/NotImplemented";
+import DocsLink from "../drawers/DocsLink";
 
 const EventSourceForm = ({value, style, onClose}) => {
 
@@ -108,8 +109,10 @@ const EventSourceForm = ({value, style, onClose}) => {
                                    onChange={setId}/>
                 </TuiFormGroupField>
 
-                <TuiFormGroupField header="Name" description="Event source name can be any string that
-                    identifies Event source.">
+                <TuiFormGroupField header="Name" description={<>
+                    <span>Event source name can be any string that identifies Event source. </span>
+                    <DocsLink src="http://docs.tracardi.com/traffic/inbound/#event-sources">Would you like to learn more?</DocsLink>
+                    </>}>
                     <TextField
                         label={"Event source name"}
                         value={name}

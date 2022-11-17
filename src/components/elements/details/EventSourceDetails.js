@@ -26,6 +26,7 @@ import PropertyField from "./PropertyField";
 import IdLabel from "../misc/IconLabels/IdLabel";
 import DateValue from "../misc/DateValue";
 import ActiveTag from "../misc/ActiveTag";
+import DocsLink from "../drawers/DocsLink";
 
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
@@ -130,7 +131,12 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
         {data.type === "rest" && <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Integration"
-                                    description="Please paste this code into your web page. This code should appear on every page."/>
+                                    description={
+                                        <>
+                                            <span>Please paste this code into your web page. This code should appear on every page.</span>
+                                            <DocsLink src="http://docs.tracardi.com/integration/js-integration/">Do you need help?</DocsLink>
+                                        </>
+                                    }/>
                 <TuiFormGroupContent>
                     <Suspense fallback={<CenteredCircularProgress/>}><TrackerScript sourceId={data.id}/></Suspense>
                 </TuiFormGroupContent>

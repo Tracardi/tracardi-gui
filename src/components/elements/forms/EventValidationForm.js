@@ -11,6 +11,7 @@ import JsonEditor from "../editors/JsonEditor";
 import TuiTagger from "../tui/TuiTagger";
 import {external} from "../misc/linking"
 import Switch from "@mui/material/Switch";
+import DocsLink from "../drawers/DocsLink";
 
 export default function EventValidationForm({onSubmit, init}) {
 
@@ -169,7 +170,7 @@ export default function EventValidationForm({onSubmit, init}) {
                     />
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Validation schema" description={<>
-                    {"Set validation schema. "} <b>{"More on JsonSchema validation"} <span style={{textDecoration: "underline", cursor: "pointer"}} onClick={external("http://docs.tracardi.com/events/event_validation/", true)}>here</span></b> </>}>
+                    {"Set validation schema. More on JsonSchema validation"} <DocsLink label="label" src="http://docs.tracardi.com/events/event_validation/"> in documentation </DocsLink> </>}>
                     <fieldset style={{marginTop: 10}}>
                         <legend>Schema</legend>
                         <JsonEditor value={jsonSchema} onChange={(value) => setJsonSchema(value)} autocomplete={true}/>

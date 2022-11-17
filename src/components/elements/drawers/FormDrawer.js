@@ -7,10 +7,11 @@ export default function FormDrawer(
         width,
         open,
         onClose,
-        children
+        children,
+        anchor="right"
     }) {
 
-    return <Drawer anchor="right"
+    return <Drawer anchor={anchor}
                    open={open}
                    onClose={onClose}
                    PaperProps={{

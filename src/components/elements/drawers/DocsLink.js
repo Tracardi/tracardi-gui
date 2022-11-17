@@ -1,0 +1,27 @@
+import FormDrawer from "./FormDrawer";
+import React, {useState} from "react";
+import NoData from "../misc/NoData";
+import {IoHelpOutline} from "react-icons/io5";
+
+export default function DocsLink({children, src, style, icon=false}) {
+
+    const [show, setShow] = useState(false)
+
+    return <>
+        <span onClick={() => setShow(!show)} style={{
+            textDecoration: "underline",
+            margin: "0 5px",
+            cursor: "pointer",
+            display: "inline-flex",
+            alignItems: "center",
+            backgroundColor: "#eee",
+            padding: "5px 12px 5px 12px",
+            borderRadius: 12,
+            ...style
+        }}>{icon && <IoHelpOutline size={20} style={{marginRight: 5}}/>}{children}</span>
+        <FormDrawer width={800} anchor="left" open={show} onClose={() => setShow(false)}>
+            {src ? <iframe src={src} width="100%" height="100%" frameBorder={0}/> :
+                <NoData header="No documentation source defined."/>}
+        </FormDrawer>
+    </>
+}
