@@ -154,7 +154,7 @@ export default function EventReshapingForm({onSubmit, init}) {
                     />
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Trigger condition" description="Set the condition that must be met to
-                start reshaping">
+                start reshaping. More on writing conditions can be found here: http://docs.tracardi.com/notations/logic_notation/">
                     <TextField
                         label={"Condition"}
                         value={condition}
@@ -167,9 +167,11 @@ export default function EventReshapingForm({onSubmit, init}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Reshaping schema" description="Set reshaping schema. ">
+                <TuiFormGroupField header="Reshaping event properties" description="Set reshaping schema for event properties.
+                Properties will be replaced bu the schema defined here. Use object template to reference data.
+                More info on object schema in http://docs.tracardi.com/notations/object_template/">
                     <fieldset style={{marginTop: 10}}>
-                        <legend>Schema</legend>
+                        <legend>Event Properties Schema</legend>
                         <JsonEditor value={reshapeSchema} onChange={(value) => setReshapeSchema(value)} autocomplete={true}/>
                     </fieldset>
                 </TuiFormGroupField>

@@ -15,6 +15,7 @@ import EventWarnings from "../misc/EventWarnings";
 import EventErrorTag from "../misc/EventErrorTag";
 import IconLabel from "../misc/IconLabels/IconLabel";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
+import NoData from "../misc/NoData";
 
 
 const EventData = ({event, allowedDetails=[]}) => {
@@ -74,12 +75,12 @@ const EventData = ({event, allowedDetails=[]}) => {
                                content={<TuiTags tags={event.metadata?.processed_by?.rules} size="small"/>}/>}
             </TuiFormGroupContent>
         </TuiFormGroup>
-        {!isEmptyObjectOrNull(event?.properties) && <TuiFormGroup>
+        <TuiFormGroup>
             <TuiFormGroupHeader header="Properties"/>
-            <TuiFormGroupContent>
-                <EventProperties/>
-            </TuiFormGroupContent>
-        </TuiFormGroup>}
+                {!isEmptyObjectOrNull(event?.properties) ? <EventProperties/> : <NoData header="No properties">
+                    This event does not have any properties.
+                </NoData>}
+        </TuiFormGroup>
 
         {!isEmptyObjectOrNull(event?.context) && <TuiFormGroup>
             <TuiFormGroupHeader header="Context"/>
@@ -90,11 +91,6 @@ const EventData = ({event, allowedDetails=[]}) => {
                 </div>
             </TuiFormGroupContent>
         </TuiFormGroup>}
-
-        <div style={{marginTop: 20}}>
-            {event?.session?.id && <SessionContextInfo sessionId={event?.session?.id}/>}
-        </div>
-
     </TuiForm>
 }
 

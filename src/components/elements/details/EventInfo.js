@@ -9,7 +9,6 @@ import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import EventSourceDetails from "./EventSourceDetails";
 import EventStatusTag from "../misc/EventStatusTag";
 import EventValidation from "../misc/EventValidation";
-import SessionContextInfo from "./SessionContextInfo";
 import TuiTags from "../tui/TuiTags";
 import DateValue from "../misc/DateValue";
 import IdLabel from "../misc/IconLabels/IdLabel";
@@ -18,6 +17,7 @@ import EventWarnings from "../misc/EventWarnings";
 import EventErrorTag from "../misc/EventErrorTag";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import IconLabel from "../misc/IconLabels/IconLabel";
+import NoData from "../misc/NoData";
 
 
 const EventDataDetails = ({event, allowedDetails=[]}) => {
@@ -63,12 +63,12 @@ const EventDataDetails = ({event, allowedDetails=[]}) => {
                                                                                        content={<TuiTags tags={event.metadata?.processed_by?.rules} size="small"/>}/>}
             </TuiFormGroupContent>
         </TuiFormGroup>
-        {!isEmptyObjectOrNull(event?.properties) && <TuiFormGroup>
+        <TuiFormGroup>
             <TuiFormGroupHeader header="Properties"/>
-            <TuiFormGroupContent>
-                <EventProperties/>
-            </TuiFormGroupContent>
-        </TuiFormGroup>}
+                {!isEmptyObjectOrNull(event?.properties) ? <EventProperties/> : <NoData header="No properties">
+                    This event does not have any properties.
+                </NoData>}
+        </TuiFormGroup>
 
         {!isEmptyObjectOrNull(event?.context) && <TuiFormGroup>
             <TuiFormGroupHeader header="Context"/>
@@ -78,10 +78,6 @@ const EventDataDetails = ({event, allowedDetails=[]}) => {
 
             </TuiFormGroupContent>
         </TuiFormGroup>}
-
-        <div style={{marginTop: 20}}>
-            {event?.session?.id && <SessionContextInfo sessionId={event?.session?.id}/>}
-        </div>
     </TuiForm>
 }
 

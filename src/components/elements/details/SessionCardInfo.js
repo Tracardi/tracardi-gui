@@ -6,6 +6,8 @@ import {VscTerminalLinux} from "react-icons/vsc";
 import IdLabel from "../misc/IconLabels/IdLabel";
 import {ProfileDetailsById} from "./ProfileDetails";
 import TimeValue from "../misc/TimeValue";
+import SessionContextInfo from "./SessionContextInfo";
+import {TuiForm} from "../tui/TuiForm";
 
 function PlatformIcon({platform}) {
     const platforms = {
@@ -48,5 +50,9 @@ export default function SessionCardInfo({session}) {
         >
             <ProfileDetailsById id={session?.profile?.id}/>
         </PropertyField>}
+
+        <div style={{marginTop: 20}}>
+            {session?.id && <SessionContextInfo sessionId={session?.id}/>}
+        </div>
     </>
 }
