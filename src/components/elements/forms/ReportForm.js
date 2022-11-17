@@ -9,6 +9,7 @@ import { TuiForm, TuiFormGroupHeader, TuiFormGroup, TuiFormGroupContent, TuiForm
 import TuiTagger from "../tui/TuiTagger";
 import Button from "./Button";
 import {JsonInput, SelectInput} from "./JsonFormComponents";
+import theme from "../../../themes/inspector_light_theme";
 
 
 export default function ReportForm({reportId, onComplete}) {
@@ -206,7 +207,10 @@ export default function ReportForm({reportId, onComplete}) {
                             {testError ?
                                 <ErrorsBox errorList={testError}/>
                                  :
-                                <div style={{borderRadius: 6, border: "1px solid #ccc", padding: 10, marginBottom: 20}}><ObjectInspector data={testResult} expandLevel={3}/></div>
+                                <div style={{borderRadius: 6, border: "1px solid #ccc", padding: 10, marginBottom: 20}}>
+                                    <ObjectInspector data={testResult} theme={theme}
+                                                     expandLevel={3}/>
+                                </div>
                             }
                         </TuiFormGroupField>
                     }

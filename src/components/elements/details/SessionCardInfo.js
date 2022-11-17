@@ -7,7 +7,6 @@ import IdLabel from "../misc/IconLabels/IdLabel";
 import {ProfileDetailsById} from "./ProfileDetails";
 import TimeValue from "../misc/TimeValue";
 import SessionContextInfo from "./SessionContextInfo";
-import {TuiForm} from "../tui/TuiForm";
 
 function PlatformIcon({platform}) {
     const platforms = {

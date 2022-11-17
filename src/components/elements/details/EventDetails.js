@@ -14,6 +14,7 @@ import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 import SessionDetails from "./SessionDetails";
+import theme from "../../../themes/inspector_light_theme";
 
 export default function EventDetails({event, metadata}) {
 
@@ -51,7 +52,7 @@ export default function EventDetails({event, metadata}) {
                         <TuiFormGroupHeader header="Raw event"/>
                         <TuiFormGroupContent>
                             <div style={{margin: 10}}>
-                                <ObjectInspector data={{event: event, _metadata: metadata}} expandLevel={5}/>
+                                <ObjectInspector data={{event: event, _metadata: metadata}} theme={theme} expandLevel={5}/>
                             </div>
                         </TuiFormGroupContent>
                     </TuiFormGroup>

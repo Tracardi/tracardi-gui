@@ -20,7 +20,7 @@ export default function DocsLink({children, src, style, icon=false}) {
             ...style
         }}>{icon && <IoHelpOutline size={20} style={{marginRight: 5}}/>}{children}</span>
         <FormDrawer width={800} anchor="left" open={show} onClose={() => setShow(false)}>
-            {src ? <iframe src={src} width="100%" height="100%" frameBorder={0}/> :
+            {src ? <iframe src={src} width="100%" height="100%" frameBorder={0} title="Documentation"/> :
                 <NoData header="No documentation source defined."/>}
         </FormDrawer>
     </>

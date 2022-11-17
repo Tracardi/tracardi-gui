@@ -9,7 +9,6 @@ import ErrorsBox from "../../errors/ErrorsBox";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import JsonEditor from "../editors/JsonEditor";
 import TuiTagger from "../tui/TuiTagger";
-import {external} from "../misc/linking"
 import Switch from "@mui/material/Switch";
 import DocsLink from "../drawers/DocsLink";
 

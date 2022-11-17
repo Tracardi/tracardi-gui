@@ -15,7 +15,7 @@ const StartNodeDynamic = ({data}) => {
         const [showDesc, setShowDesc] = useState(false);
 
         return <div className="NodePortContainer">
-            {showHint && <span className="InputPortHint PortHint">{value}</span> }
+            {showHint && <span className="InputPortHint PortHint">{value}</span>}
             {showDesc && doc && <span className="InputPortDesc PortHint">{doc}</span>}
 
             <Handle
@@ -24,8 +24,13 @@ const StartNodeDynamic = ({data}) => {
                 position="top"
                 id={value}
                 onMouseOver={() => setShowHint(true)}
-                onMouseOut={() => {setShowHint(false); setShowDesc(false);}}
-                onClick={()=>{setShowDesc(true)}}
+                onMouseOut={() => {
+                    setShowHint(false);
+                    setShowDesc(false);
+                }}
+                onClick={() => {
+                    setShowDesc(true)
+                }}
             />
 
         </div>
@@ -58,8 +63,13 @@ const StartNodeDynamic = ({data}) => {
                     position="bottom"
                     id={value}
                     onMouseOver={() => setShowHint(true)}
-                    onMouseOut={() => {setShowHint(false); setShowDesc(false);}}
-                    onClick={()=>{setShowDesc(true)}}
+                    onMouseOut={() => {
+                        setShowHint(false);
+                        setShowDesc(false);
+                    }}
+                    onClick={() => {
+                        setShowDesc(true)
+                    }}
                 />
                 {showHint && <span className="OutputPortHint PortHint">{value}</span>}
                 {showDesc && doc && <span className="OutputPortDesc PortHint">{doc}</span>}
@@ -84,15 +94,22 @@ const StartNodeDynamic = ({data}) => {
     }
 
     const nodeClass = (data?.metadata?.selected === true) ? "StartNode DebugNode" : "StartNode"
-    const nodeStyle = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {borderColor: "#ccc", color: "#999"} : {}
-    const portStyle = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {borderColor: "#ccc"} : {borderColor: "#1565c0", borderWidth: 2}
+    const nodeStyle = (data?.spec?.skip === true || data?.spec?.block_flow === true) ? {
+        borderColor: "#ccc",
+        color: "#999"
+    } : {}
+    const portStyle = (data?.spec?.skip === true || data?.spec?.block_flow === true) ? {borderColor: "#ccc"} : {
+        borderColor: "#1565c0",
+        borderWidth: 2
+    }
 
     return (
         <div className="CondContainer">
             {data?.spec?.run_once?.enabled && <ThresholdIcon style={{left: -10}}/>}
             <div className="RightPlaceholder">
                 {Array.isArray(data?.spec?.init?.event_types) && <div className="NodeInboundEvents">
-                    {data?.spec?.init?.event_types.map((eventObj, idx)  => <span className="Event" key={idx}>{eventObj.name}</span>)}
+                    {data?.spec?.init?.event_types.map((eventObj, idx) => <span className="Event"
+                                                                                key={idx}>{eventObj.name}</span>)}
                 </div>}
             </div>
             <div style={{display: "flex", alignItems: "center"}}>

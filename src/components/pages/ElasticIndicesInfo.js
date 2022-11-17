@@ -14,6 +14,7 @@ import { VscTrash } from "react-icons/vsc";
 import {useConfirm} from "material-ui-confirm";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
+import theme from "../../themes/inspector_light_theme";
 
 
 function ElasticIndicesInfo({showAlert}) {
@@ -133,7 +134,9 @@ function ElasticIndicesInfo({showAlert}) {
                             <TuiFormGroup>
                                 <TuiFormGroupHeader header="Index mapping" description="Index fields and data types."/>
                                 <TuiFormGroupContent>
-                                    <ObjectInspector data={data[inspected]?.mappings || {}} expandLevel={3}/>
+                                    <ObjectInspector data={data[inspected]?.mappings || {}}
+                                                     theme={theme}
+                                                     expandLevel={3}/>
                                 </TuiFormGroupContent>
                             </TuiFormGroup>
                         </TuiForm>
@@ -142,7 +145,7 @@ function ElasticIndicesInfo({showAlert}) {
                         <TuiForm style={{margin: 20}}>
                             <TuiFormGroup>
                                 <TuiFormGroupContent>
-                                    <ObjectInspector data={data[inspected]|| {}} expandLevel={5}/>
+                                    <ObjectInspector data={data[inspected]|| {}} theme={theme} expandLevel={5}/>
                                 </TuiFormGroupContent>
                             </TuiFormGroup>
                         </TuiForm>

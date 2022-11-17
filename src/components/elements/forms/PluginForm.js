@@ -19,6 +19,7 @@ import Properties from "../details/DetailProperties";
 import TuiTags from "../tui/TuiTags";
 import {isNotEmptyArray} from "../../../misc/typeChecking";
 import IdLabel from "../misc/IconLabels/IdLabel";
+import theme from "../../../themes/inspector_light_theme";
 
 export default function PluginForm({id}) {
 
@@ -272,13 +273,17 @@ export default function PluginForm({id}) {
                                         <TuiFormGroup>
                                             <TuiFormGroupHeader header="Plugin config" description="Here you can check initial configuration object."/>
                                             <TuiFormGroupContent>
-                                                <ObjectInspector data={plugin?.plugin?.spec?.init || {detail: "Configuration object not provided"}} expandLevel={5}/>
+                                                <ObjectInspector data={plugin?.plugin?.spec?.init || {detail: "Configuration object not provided"}}
+                                                                 theme={theme}
+                                                                 expandLevel={5}/>
                                             </TuiFormGroupContent>
                                         </TuiFormGroup>
                                         <TuiFormGroup>
                                             <TuiFormGroupHeader header="Plugin form" description="Here you can check form information from selected plugin."/>
                                             <TuiFormGroupContent>
-                                                <ObjectInspector data={plugin?.plugin?.spec?.form || {detail: "No form object provided"}} expandLevel={5}/>
+                                                <ObjectInspector data={plugin?.plugin?.spec?.form || {detail: "No form object provided"}}
+                                                                 theme={theme}
+                                                                 expandLevel={5}/>
                                             </TuiFormGroupContent>
                                         </TuiFormGroup>
                                         <TuiFormGroup>
@@ -397,7 +402,9 @@ export default function PluginForm({id}) {
                                         <TuiFormGroup>
                                             <TuiFormGroupHeader header="Plugin raw information" description="Here you can check all information about original plugin object."/>
                                             <TuiFormGroupContent>
-                                                <ObjectInspector data={plugin || {detail: "Plugin object not provided"}} expandLevel={10}/>
+                                                <ObjectInspector data={plugin || {detail: "Plugin object not provided"}}
+                                                                 theme={theme}
+                                                                 expandLevel={10}/>
                                             </TuiFormGroupContent>
                                         </TuiFormGroup>
                                     </TuiForm>

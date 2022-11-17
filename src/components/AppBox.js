@@ -83,7 +83,7 @@ const AppBox = () => {
 
         {/*Inbound Traffic*/}
 
-        <PrivateRoute path={urlPrefix("/inbound")} roles={["admin", "developer", "marketer"]}>
+        <PrivateRoute path={urlPrefix("/inbound")} roles={["admin", "developer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
                     <PageTabs title="Inbound Traffic and Event Management"
@@ -161,7 +161,7 @@ const AppBox = () => {
 
         {/*Processing*/}
 
-        <PrivateRoute path={urlPrefix("/processing")} roles={["admin", "developer", "marketer"]}>
+        <PrivateRoute path={urlPrefix("/processing")} roles={["admin", "developer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
                     <PageTabs title="Collection and Processing"
