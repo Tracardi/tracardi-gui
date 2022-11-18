@@ -13,7 +13,6 @@ import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
-import SessionDetails from "./SessionDetails";
 import theme from "../../../themes/inspector_light_theme";
 
 export default function EventDetails({event, metadata}) {
@@ -130,7 +129,7 @@ export function EventDetailsById({id}) {
     }
 
     return <>
-        {event && <SessionDetails data={event}/>}
+        {event && <EventDetails data={event}/>}
     </>
 }
 
