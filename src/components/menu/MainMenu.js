@@ -90,7 +90,7 @@ function MainMenu({showAlert}) {
 
                 <MenuRow icon={<BsBoxArrowInRight size={20}/>} label="Inbound Traffic" collapsed={collapsed} onClick={go("/inbound")} roles={["admin", "developer"]}/>
                 <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")} roles={["admin", "developer", "marketer"]}/>
-                <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Collection" collapsed={collapsed} onClick={go("/processing")} roles={["admin", "developer"]}/>
+                <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Integration" collapsed={collapsed} onClick={go("/processing")} roles={["admin", "developer"]}/>
                 <MenuRow icon={<VscOrganization size={20}/>} label="Segmentation" collapsed={collapsed} onClick={go("/segmentation")} roles={["admin", "developer", "marketer"]}/>
                 <MenuRow icon={<BsBarChartFill size={20}/>} label="Reporting" collapsed={collapsed} onClick={go("/reporting")} roles={["admin", "developer", "marketer"]}/>
                 <MenuRow icon={<BsBoxArrowRight size={20}/>} label="Outbound Traffic" collapsed={collapsed} onClick={go("/outbound")} roles={["admin", "developer"]}/>

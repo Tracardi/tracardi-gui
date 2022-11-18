@@ -30,15 +30,16 @@ const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, childre
 
                 <div style={{display: "flex", alignItems: "center", width: "auto"}}>
                     <span style={{color: "#555", display: "flex"}}><FlowNodeIcons icon={data?.icon} size={22}/></span>
-                    <div style={{display: "flex", alignItems: "baseline", marginLeft: 10}}>
-                        <div style={{fontSize: 16, marginRight: 5, fontWeight: 500, width: 200}}>{data.name}</div>
-                        <div style={{fontSize: 13}}>{children ? children : data.description}</div>
+                    <div style={{display: "flex", alignItems: "baseline", marginLeft: 10, gap: 5}}>
+                        <div className="flexLine" style={{fontSize: 16, marginRight: 5, fontWeight: 500, width: 200}}>{data.name}</div>
+                        <div className="flexLine" style={{fontSize: 13}}>{children ? children : data.description}</div>
 
                     </div>
                 </div>
-                <div style={{display: "flex", alignItems: "center", gap: 3}}>
+                <div className="flexLine" style={{gap: 3}}>
                     {Array.isArray(tags) && <TuiTags tags={tags} size="small"/>}
-                    {typeof data?.enabled !== "undefined" && <div style={{margin: "0 5px", width: 14, height: 14, borderRadius: 14, backgroundColor: statusColor(data?.enabled)}}></div>}
+                    {typeof data?.enabled !== "undefined" && <div
+                        style={{margin: "0 5px", width: 14, height: 14, borderRadius: 14, backgroundColor: statusColor(data?.enabled)}}></div>}
                 </div>
 
             </div>

@@ -10,6 +10,9 @@ import urlPrefix from "../../misc/UrlPrefix";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
+import {Chip} from "@mui/material";
+import Box from "@mui/material/Box";
+import TuiTags from "../elements/tui/TuiTags";
 
 
 export default function Flows({defaultLayout="rows", type="collection"}) {
@@ -86,7 +89,10 @@ export default function Flows({defaultLayout="rows", type="collection"}) {
                                            onDelete={handleDelete}
                                            onSettingsClick={onClick}
                         >
-                            {`${row.description} (${row.type})`}
+                            {`${row.description} (${row.type})`} {row.deployed && <Chip
+                            label="Deployed"
+                            style={{marginLeft: 5}}
+                            size="small"/>}
                         </BrowserRow>
                     })}
                 </div>
