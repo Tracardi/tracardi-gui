@@ -477,7 +477,7 @@ export function FlowEditorPane(
         }
     }
 
-    const onDebug = () => {
+    const handleDebug = () => {
         setDebugNode(null);
         setAnimatedEdge(null);
         setDisplayNodeContextMenu(false);
@@ -643,8 +643,8 @@ export function FlowEditorPane(
             flowId={id}
             reactFlowInstance={reactFlowInstance}
             flowMetaData={flowMetaData}
-            onDraftRestore={(flow) => {
-                updateFlow(flow)
+            onDraftRestore={(flowData) => {
+                updateFlow(flowData)
             }}
             onDeploy={() => setDeployed(true)}
             onSaveDraft={() => setModified(false)}
@@ -684,7 +684,7 @@ export function FlowEditorPane(
                                 style={{background: "white"}}
                                 defaultZoom={1}
                             >
-                                <SidebarLeft onDebug={onDebug}
+                                <SidebarLeft onDebug={handleDebug}
                                              debugInProgress={debugInProgress}
                                              flowType={flowMetaData?.type}
                                 />
@@ -735,11 +735,10 @@ export function FlowEditorPane(
                                                                              onMicroserviceChange={handleUpdate}
                     />}
 
-                    {displayDebugPane && <MemoDebugPane
+                    {displayDebugPane && <MemoDebugPane onDebug={handleDebug}
                         profilingData={profilingData}
                         logs={logs}
                         onDetails={onConnectionDetails}
-                        onDebug={onDebug}
                     />}
 
                     {!displayDebugPane && <FlowEditorBottomLine

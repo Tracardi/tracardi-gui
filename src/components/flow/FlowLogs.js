@@ -9,6 +9,7 @@ import PropertyField from "../elements/details/PropertyField";
 import ToggleIcon from "../elements/icons/ToggleIcon";
 import {EventDetailsById} from "../elements/details/EventDetails";
 import {ProfileDetailsById} from "../elements/details/ProfileDetails";
+import FlowDisplay from "./FlowDetails";
 
 const Row = ({log}) => {
 
@@ -43,7 +44,9 @@ const Row = ({log}) => {
                 <PropertyField name="Origin" content={log.origin} labelWith={150}></PropertyField>
                 <PropertyField name="Module" content={log.module}  labelWith={150}></PropertyField>
                 <PropertyField name="Class" content={log.class_name} labelWith={150}></PropertyField>
-                {log?.flow_id && <PropertyField name="Flow" content={log.flow_id} labelWith={150}></PropertyField>}
+                {log?.flow_id && <PropertyField name="Flow" content={log.flow_id} labelWith={150}>
+                    <FlowDisplay id={log.flow_id}/>
+                </PropertyField>}
                 {log?.event_id && <PropertyField name="Event" content={log.event_id} drawerSize={1350}  labelWith={150}>
                     <EventDetailsById id={log.event_id}/>
                 </PropertyField>}
