@@ -11,8 +11,6 @@ import {useConfirm} from "material-ui-confirm";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {Chip} from "@mui/material";
-import Box from "@mui/material/Box";
-import TuiTags from "../elements/tui/TuiTags";
 
 
 export default function Flows({defaultLayout="rows", type="collection"}) {

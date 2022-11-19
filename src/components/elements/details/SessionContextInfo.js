@@ -1,7 +1,5 @@
 import React, {useEffect} from "react";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
-import {object2dot} from "../../../misc/dottedObject";
-import PropertyField from "./PropertyField";
 import NoData from "../misc/NoData";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {isObject} from "../../../misc/typeChecking";
@@ -52,14 +50,6 @@ const SessionContextInfo = ({sessionId}) => {
         return () => isSubscribed = false;
 
     }, [sessionId, displaySessionContext])
-
-    const Content = ({session}) => {
-        const sessionContext = object2dot(session?.context);
-        return Object.keys(sessionContext).map(key => <PropertyField key={key}
-                                                                     name={key}
-                                                                     whiteSpace="normal"
-                                                                     content={sessionContext[key]}/>)
-    }
 
     if (error) {
         if (error.code === 404) {

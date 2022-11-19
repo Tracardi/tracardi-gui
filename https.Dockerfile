@@ -1,4 +1,4 @@
-FROM node:14.17.0-alpine as build
+FROM node:18.12.1-alpine as build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
@@ -8,14 +8,14 @@ COPY src ./src
 COPY public ./public
 COPY src/config.prod.js ./src/config.js
 
-RUN yarn install --network-timeout 200000
+RUN yarn install --network-timeout 180000
 COPY . ./
 RUN yarn build
 
 # Production environment
 FROM nginx:stable-alpine
 RUN rm -rf /etc/nginx/conf.d
-COPY nginx/conf /etc/nginx
+COPY nginx/conf-ssl /etc/nginx
 
 # Static build
 COPY --from=build /app/build /usr/share/nginx/html
