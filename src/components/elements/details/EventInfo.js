@@ -74,8 +74,6 @@ const EventDataDetails = ({event, allowedDetails=[]}) => {
             <TuiFormGroupHeader header="Context"/>
             <TuiFormGroupContent>
                 <ContextInfo/>
-
-
             </TuiFormGroupContent>
         </TuiFormGroup>}
     </TuiForm>

@@ -8,6 +8,8 @@ import {isObject} from "../../../misc/typeChecking";
 import Button from "../forms/Button";
 import {MdUnfoldLess, MdUnfoldMore} from "react-icons/md";
 import LinearProgress from "@mui/material/LinearProgress";
+import {ObjectInspector} from "react-inspector";
+import theme from "../../../themes/inspector_light_theme";
 
 const SessionContextInfo = ({sessionId}) => {
 
@@ -80,7 +82,9 @@ const SessionContextInfo = ({sessionId}) => {
                           }}/>}
         </div>
         {loading && <div style={{marginTop: 10}}><LinearProgress/></div>}
-        {isObject(session) && displaySessionContext && <Content session={session}/>}
+        {isObject(session) && displaySessionContext &&  <div style={{padding: 20}}>
+            <ObjectInspector data={session.context} theme={theme} expandLevel={4}/>
+        </div>}
     </>
 
 
