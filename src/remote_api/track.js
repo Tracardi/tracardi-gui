@@ -1,17 +1,6 @@
 import axios from "axios";
-import version from "../misc/version";
 import {v4 as uuid4} from 'uuid';
 import storageValue from "../misc/localStorageDriver";
-
-const getLocation = async () => {
-    try {
-        const res = await axios.get('https://geolocation-db.com/json/')
-        return res.data
-    } catch (e) {
-        return {}
-    }
-}
-
 
 function setCookie(name, value, hours) {
     let expires = "";
@@ -54,15 +43,14 @@ export const track = async (sourceId, eventType, properties) => {
         session: {
             id: sessionId
         },
-        context: {
-            platform: "Tracardi " + version(),
-            location: await getLocation()
-        },
+        context: {},
         properties: {},
         events: [
             event
         ],
-        options: {}
+        options: {
+            storage: true
+        }
     }
 
     if(profileId !== null) {

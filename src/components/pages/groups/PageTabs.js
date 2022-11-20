@@ -8,6 +8,7 @@ import ReadOnlyInput from "../../elements/forms/ReadOnlyInput";
 import {logout} from "../../authentication/login";
 import SponsorButton from "../../elements/misc/SponsorButton";
 import {track} from "../../../remote_api/track";
+import version from '../../../misc/version'
 
 export default function PageTabs({title, tabs = {}}) {
 
@@ -32,7 +33,9 @@ export default function PageTabs({title, tabs = {}}) {
                     value={getApiUrl()}
                     onReset={handleEndpointReset}/>
                 <span onMouseEnter={()=> {
-                    track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-need-help', {}).then(() => {})
+                    track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-need-help', {
+                        version: version()
+                    }).then(() => {})
                 }}><NeedHelpButton/></span>
             </span>
 

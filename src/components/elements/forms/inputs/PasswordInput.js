@@ -4,11 +4,13 @@ import {BsEye, BsEyeSlashFill} from "react-icons/bs";
 import TextField from "@mui/material/TextField";
 
 export default function PasswordInput({label = "Password", value, onChange, fullWidth = false, error, helperText, style, required}) {
-
     const [showPassword, setShowPassword] = useState(false);
+    const [data, setData] = useState(value);
 
     const handleChange = (event) => {
-        if (onChange) {
+        event.preventDefault();
+        setData(event.target.value)
+        if (onChange instanceof Function) {
             onChange(event)
         }
     };
@@ -21,14 +23,13 @@ export default function PasswordInput({label = "Password", value, onChange, full
         event.preventDefault();
     };
 
-
     return <TextField
         required={required}
         fullWidth={fullWidth}
         size="small"
         style={style}
         type={showPassword ? 'text' : 'password'}
-        value={value}
+        value={data}
         onChange={handleChange}
         error={error}
         helperText={helperText}
