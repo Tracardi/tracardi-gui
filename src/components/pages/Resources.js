@@ -18,7 +18,7 @@ export default function Resources({defaultLayout="rows"}) {
     const [refresh, setRefresh] = useState(0);
     const confirm = useConfirm();
 
-    const onDelete = async (id) => {
+    const handleDelete = async (id) => {
         confirm({title: "Do you want to delete this resource?", description: "This action can not be undone."})
             .then(async () => {
                     try {
@@ -63,7 +63,7 @@ export default function Resources({defaultLayout="rows"}) {
                                            id={row?.id}
                                            data={row}
                                            onClick={onClick}
-                                           onDelete={onDelete}
+                                           onDelete={handleDelete}
                         />
                     })}
                 </div>

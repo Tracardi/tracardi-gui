@@ -3,6 +3,7 @@
     height: inherit;
     display: flex;
     flex-direction: column;
+    border-radius: inherit;
 }
 
 .Tabs > .Navigation {
@@ -29,4 +30,5 @@
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
+    border-radius: inherit;
 }

@@ -6,7 +6,7 @@ import {
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
     BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown,
-    BsFolderCheck,BsClock
+    BsFolderCheck, BsClock, BsBoxArrowRight, BsBoxArrowInLeft
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -221,6 +221,7 @@ export const icons = {
     "civicrm": (size) => <SiCivicrm size={size}/>,
     "active-campaign": (size) => <ActiveCampaign size={size}/>,
     "source": (size) => <BsBoxArrowInRight size={size}/>,
+    "destination": (size) => <BsBoxArrowRight size={size}/>,
     "salesforce": (size) => <FaSalesforce size={size}/>,
     "transform": (size) => <MdTransform size={size}/>,
     "password": (size) => <MdPassword size={size} />,

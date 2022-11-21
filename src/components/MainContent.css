@@ -10,11 +10,9 @@
 
 .MainContent > .MainPane {
     width: inherit;
-    height: 100%;
     overflow: auto;
     display: flex;
     flex-direction: column;
+    gap: 10px;
     border-radius: 15px;
-    border: solid 2px #ccc;
-    background-color: white;
 }

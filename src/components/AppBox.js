@@ -7,6 +7,7 @@ import PrivateTab from "./authentication/PrivateTab";
 import {BsStar} from "react-icons/bs";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
 import {ErrorBoundary} from "@sentry/react";
+import TopBar from "./pages/top/TopBar";
 
 const ProRouter = React.lazy(() => import('./pages/pro/ProRouter'))
 const Dashboard = React.lazy(() => import('./pages/Dashboard'))
@@ -42,7 +43,6 @@ const FlowReader =  React.lazy(() => import("./flow/FlowReader"))
 const ActionPlugins =  React.lazy(() => import("./pages/ActionPlugins"))
 const Instances =  React.lazy(() => import("./pages/Instances"))
 const Settings =  React.lazy(() => import("./pages/Settings"))
-const NewUser =  React.lazy(() => import("./pages/NewUser"))
 const TestEditor =  React.lazy(() => import("./pages/TestEditor"))
 
 const AppBox = () => {
@@ -59,7 +59,10 @@ const AppBox = () => {
         {/*Dashboard*/}
 
         <Route exact path={urlPrefix("/dashboard")} roles={["admin", "developer", "marketer", "maintainer"]}>
-            <Suspense fallback={<CenteredCircularProgress/>}><Dashboard/></Suspense>
+            <Suspense fallback={<CenteredCircularProgress/>}>
+                <TopBar>Dashboard</TopBar>
+                <Dashboard/>
+            </Suspense>
         </Route>
 
         {/*Pro*/}
@@ -67,8 +70,8 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/resources")} roles={["admin", "developer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <PageTabs title="Resources"
-                              tabs={[
+                    <TopBar>Resources</TopBar>
+                    <PageTabs tabs={[
                                   new PrivateTab(["admin", "developer"],
                                       <Resources
                                           defaultLayout={"rows"}/>, "/resources", "Resources"),
@@ -86,8 +89,8 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/inbound")} roles={["admin", "developer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <PageTabs title="Inbound Traffic and Event Management"
-                              tabs={[
+                    <TopBar>Inbound Traffic and Event Management</TopBar>
+                    <PageTabs tabs={[
                                   new PrivateTab(["admin", "developer"],
                                       <EventSources/>, "/inbound/sources", "Event Sources"),
                                   new PrivateTab(["admin", "developer"],
@@ -110,8 +113,8 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/outbound")} roles={["admin", "developer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <PageTabs title="Outbound Traffic"
-                              tabs={[
+                    <TopBar>Outbound Traffic</TopBar>
+                    <PageTabs tabs={[
                                   new PrivateTab(["admin", "developer"],
                                       <Destinations/>, "/outbound/destinations", "Destinations"),
                               ]}
@@ -125,8 +128,8 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/import")} roles={["admin", "developer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <PageTabs title="Import and Export"
-                              tabs={[
+                    <TopBar>Import and Export</TopBar>
+                    <PageTabs tabs={[
                                   new PrivateTab(["admin", "developer"],
                                       <ImportSources/>, "/import/sources", "Import sources"),
                                   new PrivateTab(["admin", "developer"], <BackgroundTasks
@@ -142,8 +145,8 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/data")} roles={["admin", "marketer", "developer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <PageTabs title="Data"
-                              tabs={[
+                    <TopBar>Data</TopBar>
+                    <PageTabs tabs={[
                                   new PrivateTab(["admin", "marketer", "developer"],
                                       <EventsAnalytics/>, "/data/events", "Events"),
                                   new PrivateTab(["admin", "marketer", "developer"],
@@ -164,10 +167,10 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/processing")} roles={["admin", "developer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <PageTabs title="Data Collection and Integration"
-                              tabs={[
+                    <TopBar>Data Collection and Integration</TopBar>
+                    <PageTabs tabs={[
                                   new PrivateTab(["admin", "developer"],
-                                      <Flows type="collection"/>, "/processing/workflows", "Integration Workflows"),
+                                      <Flows type="collection" label="Integration Workflows"/>, "/processing/workflows", "Integration Workflows"),
                                   new PrivateTab(["admin", "developer"],
                                       <Rules/>, "/processing/routing", "Routing Rules"),
                               ]}
@@ -181,10 +184,10 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/segmentation")} roles={["admin", "developer", "marketer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <PageTabs title="Segmentation"
-                              tabs={[
+                    <TopBar>Segmentation</TopBar>
+                    <PageTabs tabs={[
                                   new PrivateTab(["admin", "developer"],
-                                      <Flows type="segmentation"/>, "/processing/workflows", <>
+                                      <Flows type="segmentation" label="Segmentation Workflows"/>, "/processing/workflows", <>
                                           <BsStar size={20}
                                                   style={{marginRight: 5}}/>{"Segmentation workflows"}</>),
                                   new PrivateTab(["admin", "developer", "marketer"],
@@ -204,8 +207,8 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/reporting")} roles={["admin", "developer", "marketer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <PageTabs title="Reporting"
-                              tabs={[
+                    <TopBar>Reporting</TopBar>
+                    <PageTabs tabs={[
                                   new PrivateTab(["admin", "developer", "marketer"],
                                       <Reports/>, "/reporting/reports", "Reports")
                               ]}
@@ -217,8 +220,8 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/consents")} roles={["admin", "developer", "marketer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <PageTabs title="Consents"
-                              tabs={[
+                    <TopBar>Consents</TopBar>
+                    <PageTabs tabs={[
                                   new PrivateTab(["admin", "developer", "marketer"],
                                       <Consents/>, "/consents/type", "Consent types")
                               ]}
@@ -227,7 +230,16 @@ const AppBox = () => {
             </ErrorBoundary>
         </PrivateRoute>
 
-        <PrivateRoute exact path={urlPrefix("/flow/edit/:id")} roles={["admin", "developer"]}>
+        {/*The same only different path*/}
+        <PrivateRoute exact path={urlPrefix("/flow/collection/edit/:id")} roles={["admin", "developer"]}>
+            <ErrorBoundary>
+                <Suspense fallback={<CenteredCircularProgress/>}>
+                    <FlowEditor/>
+                </Suspense>
+            </ErrorBoundary>
+        </PrivateRoute>
+        {/*The same only different path*/}
+        <PrivateRoute exact path={urlPrefix("/flow/segmentation/edit/:id")} roles={["admin", "developer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
                     <FlowEditor/>
@@ -236,7 +248,11 @@ const AppBox = () => {
         </PrivateRoute>
 
         <PrivateRoute exact path={urlPrefix("/flow/preview/:id")} roles={["admin", "developer", "marketer"]}>
-            <FlowReader/>
+            <ErrorBoundary>
+                <Suspense fallback={<CenteredCircularProgress/>}>
+                    <FlowReader/>
+                </Suspense>
+            </ErrorBoundary>
         </PrivateRoute>
 
         {/*Monitoring*/}
@@ -244,9 +260,8 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/monitoring")} roles={["admin", "maintainer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <PageTabs title="Monitoring"
-
-                              tabs={[
+                    <TopBar>Monitoring</TopBar>
+                    <PageTabs tabs={[
                                   new PrivateTab(["admin", "maintainer"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
                                   new PrivateTab(["admin", "maintainer"],
                                       <Instances/>, "/monitoring/instances", "Running instances"),
@@ -263,7 +278,12 @@ const AppBox = () => {
         {/*Testing*/}
 
         <PrivateRoute exact path={urlPrefix("/testing")} roles={["admin", "developer"]}>
-            <TestEditor/>
+            <TopBar>Testing</TopBar>
+            <PageTabs tabs={[
+                new PrivateTab(["admin", "developer"],
+                    <div style={{padding: "0 10px 0 10px"}}><TestEditor/></div>, "/testing", "Event testing"),
+            ]}
+            />
         </PrivateRoute>
 
         {/*Settings*/}
@@ -271,8 +291,8 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/settings")} roles={["admin", "developer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <PageTabs title="Settings"
-                              tabs={[
+                    <TopBar>Settings</TopBar>
+                    <PageTabs tabs={[
                                   new PrivateTab(["admin", "developer"],
                                       <Settings/>, "/settings/system", "System settings"),
                               ]}
@@ -287,8 +307,8 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/maintenance")} roles={["maintainer", "admin", "developer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <PageTabs title="Maintenance"
-                              tabs={[
+                    <TopBar>Maintenance</TopBar>
+                    <PageTabs tabs={[
                                   new PrivateTab(["maintainer"],
                                       <ElasticClusterHealthInfo/>, "/maintenance/elastic-cluster", "Cluster"),
                                   new PrivateTab(["maintainer"],
@@ -306,16 +326,18 @@ const AppBox = () => {
         {/*Current user account info*/}
 
         <PrivateRoute exact path={urlPrefix("/my-account")} roles={["admin", "developer", "marketer", "maintainer"]}>
-            <UserAccount/>
+            <TopBar>My account</TopBar>
+            <PageTabs tabs={[
+                new PrivateTab(["admin", "developer", "marketer", "maintainer"],
+                    <UserAccount/>, "/my-account", "Account")
+            ]}
+            />
         </PrivateRoute>
 
         {/*Other*/}
 
         <Route exact path={urlPrefix("/tryout")}>
             <TryOut/>
-        </Route>
-        <Route exact path={urlPrefix("/user/new")}>
-            <NewUser/>
         </Route>
 
     </MainContent>

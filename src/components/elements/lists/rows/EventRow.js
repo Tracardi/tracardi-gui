@@ -17,11 +17,12 @@ import ProfileLabel from "../../misc/IconLabels/ProfileLabel";
 import EventSourceDetails from "../../details/EventSourceDetails";
 import ResponsiveDialog from "../../dialog/ResponsiveDialog";
 import Button from "../../forms/Button";
-import {BsXCircle} from "react-icons/bs";
+import {BsGlobe, BsXCircle} from "react-icons/bs";
 import {ObjectInspector} from "react-inspector";
 import theme from "../../../../themes/inspector_light_theme";
 import {VscJson} from "react-icons/vsc";
 import {SessionDetailsById} from "../../details/SessionDetails";
+import IconLabel from "../../misc/IconLabels/IconLabel";
 
 export function EventRow({row, filterFields}) {
 
@@ -30,6 +31,8 @@ export function EventRow({row, filterFields}) {
     const handleJsonClick = (data) => {
         setJsonData(data)
     }
+
+    const labelWidth = 180
 
     return <>
         {jsonData && <ResponsiveDialog title="Event JSON"
@@ -41,30 +44,57 @@ export function EventRow({row, filterFields}) {
         </ResponsiveDialog>}
         <div style={{display: "flex"}}>
             <div style={{flex: "1 1 0", minWidth: 560, borderRight: "solid 1px #ccc", paddingRight: 17}}>
-                <PropertyField name="id" content={<IdLabel label={row.id}/>}/>
-                <PropertyField name="Created" content={<DateValue date={row.metadata?.time?.insert}/>}/>
-                <PropertyField name="Profile" content={<ProfileLabel label={profileName(row.profile)}
-                                                                     profileLess={row.profile === null}/>}
+                <PropertyField labelWith={labelWidth} name="id" content={<IdLabel label={row.id}/>}/>
+                <PropertyField labelWith={labelWidth} name="Date" content={<>
+                    <DateValue date={row.metadata?.time?.insert} style={{marginRight: 5}}/>
+                    {row?.session?.tz && <IconLabel
+                        value={row?.session?.tz}
+                        icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
+                    />}
+                </>}/>
+                <PropertyField labelWith={labelWidth}
+                               name="Profile"
+                               content={<ProfileLabel label={profileName(row.profile)}
+                                                      profileLess={row.profile === null}/>}
                                drawerSize={1320}>
                     {row.profile && <ProfileDetails profile={row.profile}/>}
                 </PropertyField>
-                <PropertyField name="Profile visits" content={row.profile?.metadata?.time?.visit?.count}/>
-                <PropertyField name="Source id" content={<IdLabel label={row.source?.id}/>}>
+                <PropertyField labelWith={labelWidth}
+                               name="Profile visits"
+                               content={row.profile?.metadata?.time?.visit?.count}/>
+                <PropertyField labelWith={labelWidth}
+                               name="Source id"
+                               content={<IdLabel label={row.source?.id}/>}>
                     <EventSourceDetails id={row.source?.id}/>
                 </PropertyField>
-                {row.session?.id && <PropertyField name="Session id"
+                {row.session?.id && <PropertyField labelWith={labelWidth}
+                                                   name="Session id"
                                                    content={<IdLabel label={row.session?.id}/>}
                                                    drawerSize={1320}
                 >
                     <SessionDetailsById id={row.session?.id}/>
                 </PropertyField>}
-                {isNotEmptyArray(row.metadata?.processed_by?.rules) && <PropertyField name="Routed by" content={<TuiTags
-                    tags={row.metadata?.processed_by?.rules} size="small"/>}/>}
-                <PropertyField name="Process time" content={row.metadata?.time?.process_time} underline={false}/>
-                {isNotEmptyArray(row.tags?.values) && <PropertyField name="Tags" content={<TuiTags
+                {isNotEmptyArray(row.metadata?.processed_by?.rules) && <PropertyField
+                    labelWith={labelWidth}
+                    name="Routed by"
+                    content={<TuiTags
+                        tags={row.metadata?.processed_by?.rules}
+                        size="small"/>}/>}
+                <PropertyField labelWith={labelWidth}
+                               name="Process time"
+                               content={row.metadata?.time?.process_time} underline={false}/>
+                {isNotEmptyArray(row.tags?.values) && <PropertyField
+                    labelWith={labelWidth}
+                    name="Tags" content={<TuiTags
                     tags={row.tags?.values} size="small"/>}/>}
             </div>
-            <div style={{flex: "2 1 0", paddingLeft: 15, display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
+            <div style={{
+                flex: "2 1 0",
+                paddingLeft: 15,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between"
+            }}>
                 <div>
                     <div style={{paddingRight: 15, marginBottom: 10}}>
                         <PropertyField underline={false}
