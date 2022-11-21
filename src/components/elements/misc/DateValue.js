@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {formatDate, makeUtcStringTzAware} from "../../../misc/converters";
 import {BsClock, BsGlobe} from "react-icons/bs";
 
-export default function DateValue({date}) {
+export default function DateValue({date, style}) {
 
     const [local, setLocal] = useState(true)
 
@@ -17,7 +17,7 @@ export default function DateValue({date}) {
         date = formatDate(date)
     }
 
-    return <span className="flexLine" style={{cursor: "pointer"}} onClick={handleTimeChange}>
+    return <span className="flexLine" style={{...style, cursor: "pointer"}} onClick={handleTimeChange}>
         {local ? <BsClock size={20}/> : <BsGlobe size={20}/>}
         <span style={{margin: 5, marginRight: 10}}>{date || '<empty>'}</span> <TimeDifference date={date}/>
         </span>
