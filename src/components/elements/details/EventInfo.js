@@ -65,7 +65,7 @@ const EventDataDetails = ({event, allowedDetails=[]}) => {
         </TuiFormGroup>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Properties"/>
-                {!isEmptyObjectOrNull(event?.properties) ? <EventProperties/> : <NoData header="No properties">
+                {!isEmptyObjectOrNull(event?.properties) ? <TuiFormGroupContent><EventProperties/></TuiFormGroupContent> : <NoData header="No properties">
                     This event does not have any properties.
                 </NoData>}
         </TuiFormGroup>
@@ -74,8 +74,6 @@ const EventDataDetails = ({event, allowedDetails=[]}) => {
             <TuiFormGroupHeader header="Context"/>
             <TuiFormGroupContent>
                 <ContextInfo/>
-
-
             </TuiFormGroupContent>
         </TuiFormGroup>}
     </TuiForm>
