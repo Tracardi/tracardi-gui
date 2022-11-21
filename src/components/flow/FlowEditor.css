@@ -36,7 +36,7 @@
 .FlowEditor {
     display: flex;
     flex-direction: column;
-    height: inherit;
+    height: 100%;
     user-select: none;
     overflow-y: auto;
 }

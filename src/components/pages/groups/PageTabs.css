@@ -2,32 +2,14 @@
     height: inherit;
     display: flex;
     flex-direction: column;
+    background-color: white;
+    border-radius: 15px;
 }
 
-.PageTabs > DIV > .Title {
-    font-weight: 400;
-    font-size: 220%;
-    margin: 0;
-    color: #444;
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-}
-
-.PageTabs > DIV > .Info {
-    display: flex;
-    white-space: nowrap;
-    justify-content: center;
-    align-items: flex-end;
-}
-
-.PageTabs > DIV {
-    background-color: #e1f5fe;
-    padding: 2px 37px;
-}
 .PageTabs > .TabNav {
     font-weight: 400;
     height: inherit;
     display: flex;
     flex-direction: column;
+    border-radius: inherit;
 }

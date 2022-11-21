@@ -26,7 +26,7 @@ const FlowEditor = () => {
     }
 
     return (
-        <>
+        <div style={{height: "100%"}}>
             <ReactFlowProvider>
                 <FlowEditorPane id={id}
                                 flowMetaData={flowMetaData}
@@ -37,26 +37,26 @@ const FlowEditor = () => {
                                 draft={true}
                                 schema={flowMetaData?.wf_schema}
                 />
-                <FormDrawer
-                    width={800}
-                    onClose={() => {
-                        setFlowFormOpened(false)
-                    }}
-                    open={flowFormOpened}>
-                    <FlowForm id={id}
-                              name={flowMetaData?.name}
-                              description={flowMetaData?.description}
-                              projects={flowMetaData?.projects}
-                              draft={true}
-                              type={flowMetaData?.type}
-                              disableType={true}
-                              onFlowSaveComplete={(payload) => {
-                                  setFlowMetaData(payload);
-                                  setFlowFormOpened(false)
-                              }}/>
-                </FormDrawer>
             </ReactFlowProvider>
-        </>
+            <FormDrawer
+                width={800}
+                onClose={() => {
+                    setFlowFormOpened(false)
+                }}
+                open={flowFormOpened}>
+                <FlowForm id={id}
+                          name={flowMetaData?.name}
+                          description={flowMetaData?.description}
+                          projects={flowMetaData?.projects}
+                          draft={true}
+                          type={flowMetaData?.type}
+                          disableType={true}
+                          onFlowSaveComplete={(payload) => {
+                              setFlowMetaData(payload);
+                              setFlowFormOpened(false)
+                          }}/>
+            </FormDrawer>
+        </div>
     );
 };
 

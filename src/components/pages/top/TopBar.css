@@ -1,0 +1,23 @@
+.TopBar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #e1f5fe;
+    padding: 2px 37px;
+    border-radius: 15px;
+}
+
+.TopBar > .Title {
+    font-weight: 400;
+    font-size: 220%;
+    margin: 0;
+    color: #444;
+    display: flex;
+    align-items: center;
+}
+
+.TopBar > .Info {
+    display: flex;
+    white-space: nowrap;
+    justify-content: center;
+    align-items: flex-end;
+}

@@ -231,7 +231,7 @@ export function FlowEditorPane(
     });
     const [displayElementDetails, setDisplayElementDetails] = useState(false);
     const [displayDebugPane, setDisplayDebugPane] = useState(false);
-    const [displayDebugHeight, setDisplayDebugHeight] = useState({gridTemplateRows: "calc(100% - 33px) 33px"});
+    const [displayDebugHeight, setDisplayDebugHeight] = useState({gridTemplateRows: "100%"});
     const [displayNodeContextMenu, setDisplayNodeContextMenu] = useState(false);
     const [animatedEdge, setAnimatedEdge] = useState(null);
     const [elements, setElements] = useState([]);
@@ -473,7 +473,7 @@ export function FlowEditorPane(
             setDisplayDebugHeight({gridTemplateRows: "calc(100% - 310px) 310px"});
         } else {
             setDisplayDebugPane(false);
-            setDisplayDebugHeight({gridTemplateRows: "calc(100% - 33px) 33px"})
+            setDisplayDebugHeight({gridTemplateRows: "100%"})
         }
     }
 
@@ -638,7 +638,7 @@ export function FlowEditorPane(
         }
     }
 
-    return <>
+    return <div style={{display: "flex", alignItems: "stretch", flexDirection: "column", height: "100%"}}>
         <FlowEditorTitle
             flowId={id}
             reactFlowInstance={reactFlowInstance}
@@ -741,17 +741,16 @@ export function FlowEditorPane(
                         onDetails={onConnectionDetails}
                     />}
 
-                    {!displayDebugPane && <FlowEditorBottomLine
-                        onZoomIn={zoomIn}
-                        onZoomOut={zoomOut}
-                        onEdit={handleEditClick}
-                        onDebug={() => handleDisplayDebugPane(true)}
-                    />}
-
                 </div>
             </div>
         </div>
-    </>
+        <FlowEditorBottomLine
+            onZoomIn={zoomIn}
+            onZoomOut={zoomOut}
+            onEdit={handleEditClick}
+            onDebug={() => handleDisplayDebugPane(true)}
+        />
+    </div>
 }
 
 FlowEditorPane.propTypes = {
