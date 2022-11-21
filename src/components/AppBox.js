@@ -170,7 +170,7 @@ const AppBox = () => {
                     <TopBar>Data Collection and Integration</TopBar>
                     <PageTabs tabs={[
                                   new PrivateTab(["admin", "developer"],
-                                      <Flows type="collection"/>, "/processing/workflows", "Integration Workflows"),
+                                      <Flows type="collection" label="Integration Workflows"/>, "/processing/workflows", "Integration Workflows"),
                                   new PrivateTab(["admin", "developer"],
                                       <Rules/>, "/processing/routing", "Routing Rules"),
                               ]}
@@ -187,7 +187,7 @@ const AppBox = () => {
                     <TopBar>Segmentation</TopBar>
                     <PageTabs tabs={[
                                   new PrivateTab(["admin", "developer"],
-                                      <Flows type="segmentation"/>, "/processing/workflows", <>
+                                      <Flows type="segmentation" label="Segmentation Workflows"/>, "/processing/workflows", <>
                                           <BsStar size={20}
                                                   style={{marginRight: 5}}/>{"Segmentation workflows"}</>),
                                   new PrivateTab(["admin", "developer", "marketer"],
@@ -230,7 +230,16 @@ const AppBox = () => {
             </ErrorBoundary>
         </PrivateRoute>
 
-        <PrivateRoute exact path={urlPrefix("/flow/edit/:id")} roles={["admin", "developer"]}>
+        {/*The same only different path*/}
+        <PrivateRoute exact path={urlPrefix("/flow/collection/edit/:id")} roles={["admin", "developer"]}>
+            <ErrorBoundary>
+                <Suspense fallback={<CenteredCircularProgress/>}>
+                    <FlowEditor/>
+                </Suspense>
+            </ErrorBoundary>
+        </PrivateRoute>
+        {/*The same only different path*/}
+        <PrivateRoute exact path={urlPrefix("/flow/segmentation/edit/:id")} roles={["admin", "developer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
                     <FlowEditor/>

@@ -13,7 +13,7 @@ import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {Chip} from "@mui/material";
 
 
-export default function Flows({defaultLayout="rows", type="collection"}) {
+export default function Flows({defaultLayout="rows", type="collection", label}) {
 
     const [refresh, setRefresh] = useState(0);
 
@@ -25,7 +25,7 @@ export default function Flows({defaultLayout="rows", type="collection"}) {
     const confirm = useConfirm();
 
     const handleFlowEdit = (id) => {
-        history.push(urlPrefix("/flow/edit/" + id))
+        history.push(urlPrefix(`/flow/${type}/edit/${id}`))
     }
 
     const mounted = useRef(false);
@@ -99,7 +99,7 @@ export default function Flows({defaultLayout="rows", type="collection"}) {
     }
 
     return <CardBrowser
-        label="Workflows"
+        label={label}
         defaultLayout={defaultLayout}
         description="List of defined workflows. You may filter this list by workflow name in the upper search box."
         urlFunc={urlFunc}
