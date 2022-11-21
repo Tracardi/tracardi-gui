@@ -7,7 +7,9 @@
 }
 
 .Tabs > .Navigation {
-    border-bottom: solid 1px #ccc;
+    -webkit-box-shadow: 0px 8px 14px -13px rgba(66, 68, 90, 1);
+    -moz-box-shadow: 0px 8px 14px -13px rgba(66, 68, 90, 1);
+    box-shadow: 0px 8px 14px -13px rgba(66, 68, 90, 1);
     display: flex;
     height: 45px;
 }

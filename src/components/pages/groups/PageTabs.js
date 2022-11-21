@@ -18,7 +18,7 @@ export default function PageTabs({tabs = {}}) {
             onTabSelect={setTab}
             tabStyle={{flex: "initial"}}
             tabContentStyle={{overflow: "initial"}}
-            tabsStyle={{paddingLeft: 30, borderBottom: "solid 1px #ccc"}}
+            tabsStyle={{paddingLeft: 30}}
         >
             {filteredTabs.map((tab, key) => {
                 i = i + 1;
