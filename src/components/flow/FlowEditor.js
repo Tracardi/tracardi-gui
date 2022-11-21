@@ -1,19 +1,30 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {ReactFlowProvider} from 'react-flow-renderer';
 import './FlowEditor.css'
 import {useParams} from "react-router-dom";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import FlowForm from "../elements/forms/FlowForm";
 import FlowEditorPane from "./FlowEditorPane";
-
+import {useDispatch} from "react-redux"
+import {changeRoute} from "../../redux/reducers/appSlice"
 
 const FlowEditor = () => {
-
     let {id} = useParams();
+    const dispatch = useDispatch();
 
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
     const [flowFormOpened, setFlowFormOpened] = useState(false);
     const [flowMetaData, setFlowMetaData] = useState(null);
+
+    useEffect(() => {
+      if (flowMetaData && flowMetaData.type) {
+        if (flowMetaData.type === "collection") {
+          dispatch(changeRoute({route: `/processing`}))
+        } else if (flowMetaData.type === "segmentation") {
+          dispatch(changeRoute({route: `/segmentation`}))
+        }
+      }
+    }, [dispatch, flowMetaData])
 
     const onFlowLoad = useCallback((flowMetadata) => {
         setFlowMetaData(flowMetadata);
