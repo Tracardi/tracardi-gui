@@ -8,6 +8,7 @@ import progressReducer from "./reducers/progressSlice";
 import newResource from "./reducers/newResource";
 import uqlReducer from "./reducers/uqlSlice";
 import pagingReducer from "./reducers/pagingSlice";
+import localeReducer from "./reducers/localeSlice";
 
 export default configureStore({
         reducer: {
@@ -20,6 +21,7 @@ export default configureStore({
             newResource,
             uqlReducer,
             pagingReducer,
+            localeReducer,
         }
     }
 );

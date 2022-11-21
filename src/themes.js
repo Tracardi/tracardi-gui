@@ -1,6 +1,39 @@
 import { createTheme} from '@mui/material/styles';
 
-export const mainTheme = createTheme({
+// export const mainTheme = createTheme({
+//     typography: {
+//         "fontFamily": `"IBM Plex Sans", "Arial", sans-serif`,
+//         "fontSize": 15,
+//         "fontWeightLight": 300,
+//         "fontWeightRegular": 400,
+//         "fontWeightMedium": 500
+//     },
+//     palette: {
+//         primary: {
+//             main: '#1976d2',
+//         },
+//         secondary: {
+//             main: '#EF6C00',
+//         },
+//         error: {
+//             main: "#d81b60",
+//         },
+//         success: {
+//             main: "#43a047",
+//         },
+//         gray: {
+//             main: "#ccc",
+//         },
+//         background: {
+//             default: '#ccc',
+//         },
+//         text: {
+//             primary: '#000'
+//         }
+//     },
+// });
+
+export const mainTheme = {
     typography: {
         "fontFamily": `"IBM Plex Sans", "Arial", sans-serif`,
         "fontSize": 15,
@@ -31,7 +64,7 @@ export const mainTheme = createTheme({
             primary: '#000'
         }
     },
-});
+};
 
 export const signInTheme = createTheme({
     palette: {
