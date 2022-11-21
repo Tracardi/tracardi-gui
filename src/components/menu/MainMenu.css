@@ -102,6 +102,7 @@
 }
 
 
+.MainMenu .MenuRow.active,
 .MainMenu .MenuRow:hover {
     color: white;
     animation-name: fadeInMenu;
