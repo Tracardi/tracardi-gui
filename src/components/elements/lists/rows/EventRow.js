@@ -1,7 +1,7 @@
 import PropertyField from "../../details/PropertyField";
 import EventDetails from "../../details/EventDetails";
 import {profileName} from "../../../../misc/formaters";
-import ProfileDetails from "../../details/ProfileDetails";
+import {ProfileDetailsById} from "../../details/ProfileDetails";
 import {isEmptyObject, isNotEmptyArray} from "../../../../misc/typeChecking";
 import JsonStringify from "../../misc/JsonStingify";
 import React, {useState} from "react";
@@ -57,7 +57,7 @@ export function EventRow({row, filterFields}) {
                                content={<ProfileLabel label={profileName(row.profile)}
                                                       profileLess={row.profile === null}/>}
                                drawerSize={1320}>
-                    {row.profile && <ProfileDetails profile={row.profile}/>}
+                    {row?.profile?.id && <ProfileDetailsById id={row.profile.id}/>}
                 </PropertyField>
                 <PropertyField labelWith={labelWidth}
                                name="Profile visits"

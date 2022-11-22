@@ -31,14 +31,11 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
     const [progress, setProgress] = useState(false);
     const [error, setError] = useState(null);
     const [hasAdminAccount, setHasAdminAccount] = useState(null);
-    // const [email, setEmail] = useState("");
-    // const [password, setPassword] = useState("");
-    // const [hash, setHash] = useState("");
-    //
+
     const data = useRef({
         username: "",
         password: "",
-        hash: "",
+        token: "",
         needs_admin: requireAdmin
     })
 
@@ -105,17 +102,17 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
                 <tr>
                     <td colSpan={2}>
                         <h2 style={{fontWeight: 300}}>
-                            Installation hash
+                            Installation token
                         </h2>
-                        <p style={{color: "gray"}}>Input installation hash. This is protection from unauthorized
+                        <p style={{color: "gray"}}>Input installation token. This is protection from unauthorized
                             installation. If this is a demo environment administrator most probably did not set
-                            the hash for your convenience. If so leave this field empty. If not ask your admin for an
-                            installation hash.
+                            the token for your convenience. If so leave this field empty. If not ask your admin for an
+                            installation token.
                         </p>
-                        <PasswordInput label="Installation hash"
+                        <PasswordInput label="Installation token"
                                        fullWidth={true}
-                                       value={data.current.hash}
-                                       onChange={(ev) => data.current.hash = ev.target.value}
+                                       value={data.current.token}
+                                       onChange={(ev) => data.current.token = ev.target.value}
                         />
                     </td>
                 </tr>
