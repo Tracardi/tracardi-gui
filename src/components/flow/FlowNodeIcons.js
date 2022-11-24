@@ -6,7 +6,7 @@ import {
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
     BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown,
-    BsFolderCheck, BsClock, BsBoxArrowRight, BsBoxArrowInLeft
+    BsFolderCheck, BsClock, BsBoxArrowRight, BsGithub
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -30,7 +30,7 @@ import {
     IoTextOutline,
     IoCalendarOutline,
     IoGitNetworkSharp,
-    IoHandLeftOutline
+    IoHandLeftOutline, IoArrowRedoOutline
 } from "react-icons/io5";
 import {
     VscSymbolEvent,
@@ -239,7 +239,9 @@ export const icons = {
     "intercom": (size) => <SiIntercom size={size}/>,
     "sort": (size) => <BsSortAlphaDown size={size}/>,
     "validator": (size) => <BsFolderCheck size={size}/>,
-    "hand-stop": (size) => <IoHandLeftOutline size={size}/>
+    "hand-stop": (size) => <IoHandLeftOutline size={size}/>,
+    "github": (size) => <BsGithub size={size} />,
+    "redirect": (size) => <IoArrowRedoOutline size={size}/>,
 }
 
 

@@ -36,9 +36,9 @@ const EventSourceForm = ({value, style, onClose}) => {
     const [transitional, setTransitional] = useState(value?.transitional);
     const [permanent, setPermanent] = useState(value?.permanent_profile_id);
     const [returnsProfile, setReturnsProfile] = useState(value?.returns_profile || false);
-    const [name, setName] = useState(value?.name);
     const [id, setId] = useState(value?.id);
     const [groups, setGroups] = useState(value?.groups);
+    const [name, setName] = useState(value?.name);
     const [description, setDescription] = useState(value?.description);
     const [errorNameMessage, setNameErrorMessage] = useState('');
     const [processing, setProcessing] = useState(false);
