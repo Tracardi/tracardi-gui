@@ -1,5 +1,5 @@
 import PropertyField from "../../details/PropertyField";
-import EventDetails from "../../details/EventDetails";
+import {EventDetailsById} from "../../details/EventDetails";
 import {profileName} from "../../../../misc/formaters";
 import {ProfileDetailsById} from "../../details/ProfileDetails";
 import {isEmptyObject, isNotEmptyArray} from "../../../../misc/typeChecking";
@@ -106,7 +106,7 @@ export function EventRow({row, filterFields}) {
                                            <EventWarnings eventMetaData={row.metadata}/>
                                            <EventErrorTag eventMetaData={row.metadata}/>
                                        </div>}>
-                            <EventDetails event={row}/>
+                            <EventDetailsById id={row.id}/>
                         </PropertyField>
                     </div>
 

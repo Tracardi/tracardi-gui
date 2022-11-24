@@ -20,7 +20,7 @@ import IconLabel from "../misc/IconLabels/IconLabel";
 import NoData from "../misc/NoData";
 
 
-const EventDataDetails = ({event, allowedDetails=[]}) => {
+const EventDataDetails = ({event, metadata, allowedDetails=[]}) => {
 
     const ContextInfo = () => {
         const context = object2dot(event?.context);
@@ -61,6 +61,7 @@ const EventDataDetails = ({event, allowedDetails=[]}) => {
                 />
                 {Array.isArray(event?.metadata?.processed_by?.rules) && <PropertyField name="Routed by rules"
                                                                                        content={<TuiTags tags={event.metadata?.processed_by?.rules} size="small"/>}/>}
+                {metadata?.index && <PropertyField name="Index" content={metadata.index}/>}
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
@@ -81,7 +82,7 @@ const EventDataDetails = ({event, allowedDetails=[]}) => {
 
 export default function EventInfo({id, allowedDetails}) {
 
-    const [event,setEvent] = useState(null);
+    const [eventData,setEventData] = useState(null);
     const [error,setError] = useState(null);
     const [loading,setLoading] = useState(false);
 
@@ -95,7 +96,7 @@ export default function EventInfo({id, allowedDetails}) {
             })
                 .then(response => {
                     if (isSubscribed && response?.data) {
-                        setEvent(response.data?.event);
+                        setEventData(response.data);
                     }
                 })
                 .catch(e => {
@@ -116,5 +117,7 @@ export default function EventInfo({id, allowedDetails}) {
         return <CenteredCircularProgress/>
     }
 
-    return <EventDataDetails event={event} allowedDetails={allowedDetails}/>
+    return <EventDataDetails event={eventData?.event}
+                             metadata={eventData?._metadata}
+                             allowedDetails={allowedDetails}/>
 }

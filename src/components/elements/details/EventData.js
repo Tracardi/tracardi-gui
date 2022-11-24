@@ -18,7 +18,7 @@ import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import NoData from "../misc/NoData";
 
 
-const EventData = ({event, allowedDetails=[]}) => {
+const EventData = ({event, metadata, allowedDetails=[]}) => {
 
     const ContextInfo = () => {
         const context = object2dot(event?.context);
@@ -73,6 +73,7 @@ const EventData = ({event, allowedDetails=[]}) => {
                 />
                 {Array.isArray(event?.metadata?.processed_by?.rules) && <PropertyField name="Routed by rules"
                                content={<TuiTags tags={event.metadata?.processed_by?.rules} size="small"/>}/>}
+                {metadata?.index && <PropertyField name="Index" content={metadata.index}/>}
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
