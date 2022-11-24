@@ -144,6 +144,10 @@ export default function EventRedirectForm({
                                size="small"
                     />
                 </TuiFormGroupField>
+                <TuiFormGroupField header="Event type tags"
+                                   description="Tag the event types to group it into meaningful groups.">
+                    <TuiTagger tags={tags} onChange={handleTagChange}/>
+                </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
@@ -184,10 +188,6 @@ export default function EventRedirectForm({
                         <legend>Event Properties Schema</legend>
                         <JsonEditor value={props} onChange={(value) => setProps(value)} autocomplete={true}/>
                     </fieldset>
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Event type tags"
-                                   description="Tag the event types to group it into meaningful groups.">
-                    <TuiTagger tags={tags} onChange={handleTagChange}/>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>

@@ -15,6 +15,7 @@ import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import {ObjectInspector} from "react-inspector";
 import theme from "../../../themes/inspector_light_theme";
 import EventRedirectForm from "../forms/EventRedirectForm";
+import IdLabel from "../misc/IconLabels/IdLabel";
 
 export default function EventRedirectDetails({id, onDeleteComplete, onEditComplete}) {
 
@@ -87,7 +88,7 @@ export default function EventRedirectDetails({id, onDeleteComplete, onEditComple
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Event redirection description"/>
                 <TuiFormGroupContent>
-
+                    <PropertyField name="Id" content={<IdLabel label={data.id}/>}/>
                     <PropertyField name="Name" content={data.name}/>
                     <PropertyField name="Description" content={data.description}/>
 
