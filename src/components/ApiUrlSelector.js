@@ -106,6 +106,7 @@ const ApiUrlSelector = ({children}) => {
                         value={apiLocation || apiUrlStorage().read() || ""}
                         options={new storageValue('tracardi-api-urls').read([])}
                         onChange={(v) => setEndpoint(v)}
+                        onEnter={() => {setApiLocation(endpoint)}}
                         errorMessage={progress ? null : apiLocation && (!isEndpointReachable ? "Given API URL is not reachable" : isEndpointValid ? null : "Given API URL is invalid")}
                         />          
                     <Button label="Select"

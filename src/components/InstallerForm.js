@@ -112,6 +112,7 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
                         <PasswordInput label="Installation token"
                                        fullWidth={true}
                                        value={data.current.token}
+                                       onEnter={handleClick}
                                        onChange={(ev) => data.current.token = ev.target.value}
                         />
                     </td>
@@ -130,11 +131,13 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
                         <td style={{width: "50%"}}><Input
                             label="Valid e-mail"
                             initValue=""
+                            onEnter={handleClick}
                             onChange={(ev) => data.current.username = ev.target.value}/>
                         </td>
                         <td style={{width: "50%"}}><PasswordInput
                             value={data.current.password}
                             onChange={(ev) => data.current.password = ev.target.value}
+                            onEnter={handleClick}
                             fullWidth={true}/>
                         </td>
                     </tr>

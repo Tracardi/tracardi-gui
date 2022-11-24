@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import makeStyles from '@mui/styles/makeStyles';
 import PropTypes from 'prop-types';
 
-export default function Input({onEnterPressed, onChange, label, initValue, error, variant}) {
+export default function Input({onEnterPressed, onChange, onEnter, label, initValue, error, variant}) {
     const useStyles = makeStyles(() => (
         {
             root: {
@@ -38,6 +38,11 @@ export default function Input({onEnterPressed, onChange, label, initValue, error
                    error={error}
                    variant={variant}
                    size="small"
+                   onKeyPress={(event) => {
+                       if (onEnter && event.key === "Enter") {
+                           onEnter()
+                       }
+                   }}
         />
     </div>
 }
