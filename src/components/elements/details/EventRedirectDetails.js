@@ -16,6 +16,8 @@ import {ObjectInspector} from "react-inspector";
 import theme from "../../../themes/inspector_light_theme";
 import EventRedirectForm from "../forms/EventRedirectForm";
 import IdLabel from "../misc/IconLabels/IdLabel";
+import {BsStar} from "react-icons/bs";
+import TextField from "@mui/material/TextField";
 
 export default function EventRedirectDetails({id, onDeleteComplete, onEditComplete}) {
 
@@ -98,7 +100,26 @@ export default function EventRedirectDetails({id, onDeleteComplete, onEditComple
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Redirection configuration" description="Information on event redirect settings."/>
+                <TuiFormGroupContent>
+                    <h3 className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Redirect URL</h3>
+                    <p>This URL will redirect customer to <b>{data.url}</b> and will register a <b>{data.event_type}</b> event in
+                        Tracardi along with the defined properties. Please remember to prefix the URL path with the
+                        server IP where you have the <b>API-bridge</b> running.
+                    </p>
+
+                    <TextField
+                        label="Event source with redirect"
+                        value={`/collect/redirect/${data.id}`}
+                        size="small"
+                        disabled={true}
+                        variant="outlined"
+                        fullWidth
+                    />
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Redirection configuration"
+                                    description="Information on event redirect settings."/>
                 <TuiFormGroupContent>
                     <PropertyField name="Raise event type"
                                    content={<IconLabel value={data.event_type} icon={<FlowNodeIcons icon="event"/>}/>}/>
