@@ -133,7 +133,7 @@ export default function EventRedirectForm({
                 <TuiFormGroupField header="Description"
                                    description="Redirection description. Be as descriptive as possible.">
                     <TextField variant="outlined"
-                               label="Flow description"
+                               label="Description"
                                multiline
                                rows={5}
                                value={description}
