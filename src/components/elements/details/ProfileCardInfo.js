@@ -7,6 +7,7 @@ import ProfileLabel from "../misc/IconLabels/ProfileLabel";
 import {profileName} from "../../../misc/formaters";
 import {BsGlobe} from "react-icons/bs";
 import IconLabel from "../misc/IconLabels/IconLabel";
+import {ProfileDetailsById} from "./ProfileDetails";
 
 export default function ProfileCardInfo({profile}) {
 
@@ -27,6 +28,8 @@ export default function ProfileCardInfo({profile}) {
         <PropertyField labelWith={labelWidth} name="All visits" content={profile?.metadata?.time?.visit.count}/>
         <PropertyField labelWith={labelWidth} name="Telephone" content={profile?.pii?.telephone}/>
         <PropertyField labelWith={labelWidth} name={profile?.metadata?.merged_with ? "Merged with" : "Active"}
-                       content={<ProfileMergeTag profile={profile}/>} underline={false}/>
+                       content={<ProfileMergeTag profile={profile}/>} underline={false} drawerSize={1300}>
+            {profile?.metadata?.merged_with && <ProfileDetailsById id={profile.metadata.merged_with} />}
+        </PropertyField>
     </>
 }
