@@ -22,6 +22,7 @@ const EventSourceForm = ({value, style, onClose}) => {
             type: 'rest',
             description: "",
             enabled: true,
+            synchronize_profiles: true,
             transitional: false,
             permanent_profile_id: false,
             returns_profile: false,
@@ -33,6 +34,7 @@ const EventSourceForm = ({value, style, onClose}) => {
 
     const [requiresConsent, setRequiresConsent] = useState(value?.requires_consent);
     const [enabledSource, setEnabledSource] = useState(value?.enabled);
+    const [enableSync, setEnableSync] = useState(value?.synchronize_profiles);
     const [transitional, setTransitional] = useState(value?.transitional);
     const [permanent, setPermanent] = useState(value?.permanent_profile_id);
     const [returnsProfile, setReturnsProfile] = useState(value?.returns_profile || false);
@@ -74,7 +76,8 @@ const EventSourceForm = ({value, style, onClose}) => {
                     groups: groups,
                     returns_profile: returnsProfile,
                     requires_consent: requiresConsent,
-                    permanent_profile_id: permanent
+                    permanent_profile_id: permanent,
+                    synchronize_profiles: enableSync
                 }
             })
 
@@ -165,6 +168,22 @@ const EventSourceForm = ({value, style, onClose}) => {
                         />
                         <span>
                         This event source is enabled
+                    </span>
+                    </div>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Event source will synchronize profile updates"
+                                   description="This event source will wait for the previous event to finish profile
+                                   modification before it will accept new event. This feature prevents accidental
+                                   profile overrides but slows event processing. If the events collected via
+                                   this event source do not modify profile you may disable this feature. ">
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <Switch
+                            checked={enableSync}
+                            onChange={(ev) => setEnableSync(ev.target.checked)}
+                            name="enabledSource"
+                        />
+                        <span>
+                        Profile synchronization enabled
                     </span>
                     </div>
                 </TuiFormGroupField>

@@ -44,30 +44,30 @@ export function EventRow({row, filterFields}) {
         </ResponsiveDialog>}
         <div style={{display: "flex"}}>
             <div style={{flex: "1 1 0", minWidth: 560, borderRight: "solid 1px #ccc", paddingRight: 17}}>
-                <PropertyField labelWith={labelWidth} name="id" content={<IdLabel label={row.id}/>}/>
-                <PropertyField labelWith={labelWidth} name="Date" content={<>
+                <PropertyField labelWidth={labelWidth} name="id" content={<IdLabel label={row.id}/>}/>
+                <PropertyField labelWidth={labelWidth} name="Date" content={<>
                     <DateValue date={row.metadata?.time?.insert} style={{marginRight: 5}}/>
                     {row?.session?.tz && <IconLabel
                         value={row?.session?.tz}
                         icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
                     />}
                 </>}/>
-                <PropertyField labelWith={labelWidth}
+                <PropertyField labelWidth={labelWidth}
                                name="Profile"
                                content={<ProfileLabel label={profileName(row.profile)}
                                                       profileLess={row.profile === null}/>}
                                drawerSize={1320}>
                     {row?.profile?.id && <ProfileDetailsById id={row.profile.id}/>}
                 </PropertyField>
-                <PropertyField labelWith={labelWidth}
+                <PropertyField labelWidth={labelWidth}
                                name="Profile visits"
                                content={row.profile?.metadata?.time?.visit?.count}/>
-                <PropertyField labelWith={labelWidth}
+                <PropertyField labelWidth={labelWidth}
                                name="Source id"
                                content={<IdLabel label={row.source?.id}/>}>
                     <EventSourceDetails id={row.source?.id}/>
                 </PropertyField>
-                {row.session?.id && <PropertyField labelWith={labelWidth}
+                {row.session?.id && <PropertyField labelWidth={labelWidth}
                                                    name="Session id"
                                                    content={<IdLabel label={row.session?.id}/>}
                                                    drawerSize={1320}
@@ -75,16 +75,16 @@ export function EventRow({row, filterFields}) {
                     <SessionDetailsById id={row.session?.id}/>
                 </PropertyField>}
                 {isNotEmptyArray(row.metadata?.processed_by?.rules) && <PropertyField
-                    labelWith={labelWidth}
+                    labelWidth={labelWidth}
                     name="Routed by"
                     content={<TuiTags
                         tags={row.metadata?.processed_by?.rules}
                         size="small"/>}/>}
-                <PropertyField labelWith={labelWidth}
+                <PropertyField labelWidth={labelWidth}
                                name="Process time"
                                content={row.metadata?.time?.process_time} underline={false}/>
                 {isNotEmptyArray(row.tags?.values) && <PropertyField
-                    labelWith={labelWidth}
+                    labelWidth={labelWidth}
                     name="Tags" content={<TuiTags
                     tags={row.tags?.values} size="small"/>}/>}
             </div>
@@ -115,6 +115,10 @@ export function EventRow({row, filterFields}) {
                         {!isEmptyObject(row.properties) ?
                             <JsonStringify data={row.properties} filterFields={filterFields}/> : "No properties"}
                     </fieldset>
+
+                    {!isEmptyObject(row.traits) && <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0}}>
+                        <legend>Traits</legend>
+                        <JsonStringify data={row.traits} filterFields={filterFields}/></fieldset>}
                 </div>
                 <div>
                     <Button label="Json" size="small" icon={<VscJson size={20}/>} onClick={() => handleJsonClick(row)}/>

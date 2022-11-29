@@ -28,6 +28,8 @@ import DateValue from "../misc/DateValue";
 import ActiveTag from "../misc/ActiveTag";
 import DocsLink from "../drawers/DocsLink";
 import {BsStar} from "react-icons/bs";
+import {ObjectInspector} from "react-inspector";
+import theme from "../../../themes/inspector_light_theme";
 
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
@@ -107,17 +109,17 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                 <TuiFormGroupHeader header="Event Source"/>
                 <TuiFormGroupContent header={"Data"}>
                     {data && <>
-                        <PropertyField name="Id" content={<IdLabel label={data.id}/>}/>
-                        <PropertyField name="Type" content={data.type}/>
-                        <PropertyField name="Created" content={<DateValue date={data.timestamp}/>}/>
-                        <PropertyField name="Active" content={<ActiveTag active={data.enabled}/>}/>
-                        <PropertyField name="Transitional" content={<ActiveTag active={data.transitional}/>}/>
-                        <PropertyField name="Returns profile" content={<ActiveTag active={data.returns_profile}/>}/>
-                        <PropertyField name="Permanent profile id"
-                                       content={<ActiveTag active={data.permanent_profile_id}/>}/>
-                        <PropertyField name="Requires consent" content={<ActiveTag active={data.requires_consent}/>}/>
-                        <PropertyField name="Groups" content={<TuiTags tags={data.groups} size="small"/>}/>
-                        <PropertyField name="Tags" content={<TuiTags tags={data.tags} size="small"/>}/>
+                        <PropertyField labelWidth={400} name="Id" content={<IdLabel label={data.id}/>}/>
+                        <PropertyField labelWidth={400} name="Type" content={data.type}/>
+                        <PropertyField labelWidth={400} name="Created" content={<DateValue date={data.timestamp}/>}/>
+                        <PropertyField labelWidth={400} name="Active" content={<ActiveTag active={data.enabled}/>}/>
+                        <PropertyField labelWidth={400} name="Synchronize profiles" content={<ActiveTag active={data.synchronize_profiles}/>}/>
+                        <PropertyField labelWidth={400} name="Transitional" content={<ActiveTag active={data.transitional}/>}/>
+                        <PropertyField labelWidth={400} name="Return profile" content={<ActiveTag active={data.returns_profile}/>}/>
+                        <PropertyField labelWidth={400} name="Make profile id permanent" content={<ActiveTag active={data.permanent_profile_id}/>}/>
+                        <PropertyField labelWidth={400} name="Require consent" content={<ActiveTag active={data.requires_consent}/>}/>
+                        <PropertyField labelWidth={400} name="Groups" content={<TuiTags tags={data.groups} size="small"/>}/>
+                        <PropertyField labelWidth={400} name="Tags" content={<TuiTags tags={data.tags} size="small"/>}/>
                         {data.locked &&
                         <NotImplemented style={{marginTop: 10}}>This event source is managed by external service.
                             Therefore
@@ -344,7 +346,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             </div>
 
             <Tabs
-                tabs={["Details", "Analytics"]}
+                tabs={["Details", "Analytics", "Raw"]}
                 defaultTab={tab}
                 onTabSelect={setTab}
                 tabContentStyle={{overflow: "initial"}}
@@ -373,6 +375,11 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                 </TabCase>
                 <TabCase id={1} key="Analytics">
                     <EventSourceAnalytics/>
+                </TabCase>
+                <TabCase id={2} key="Raw">
+                    <div className="Box10">
+                        <ObjectInspector data={data} theme={theme} expandLevel={3}/>
+                    </div>
                 </TabCase>
             </Tabs></>
         }

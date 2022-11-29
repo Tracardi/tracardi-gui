@@ -13,8 +13,8 @@ import BrowserLabel from "../misc/IconLabels/BrowserLabel";
 export default function SessionCardInfo({session}) {
     const labelWidth = 180
     return <>
-        <PropertyField labelWith={labelWidth} name="Id" content={<IdLabel label={session?.id}/>}/>
-        <PropertyField labelWith={labelWidth} name="Started"
+        <PropertyField labelWidth={labelWidth} name="Id" content={<IdLabel label={session?.id}/>}/>
+        <PropertyField labelWidth={labelWidth} name="Started"
                        content={<>
                            <DateValue date={session?.metadata?.time?.insert}/>
                            {session?.context?.time?.tz && <IconLabel
@@ -26,23 +26,23 @@ export default function SessionCardInfo({session}) {
                        }/>
 
         {session?.metadata?.time?.duration && <PropertyField
-            labelWith={labelWidth}
+            labelWidth={labelWidth}
             name="Duration"
             content={<TimeValue time={session?.metadata?.time?.duration}/>}
         />}
         {session?.context?.browser?.local?.device?.platform && <PropertyField
-            labelWith={labelWidth}
+            labelWidth={labelWidth}
             name="Platform"
             content={<PlatformIcon platform={session.context.browser.local.device.platform}/>}
         />}
         {session?.context?.browser?.local?.browser?.name && <PropertyField
-            labelWith={labelWidth}
+            labelWidth={labelWidth}
             name="Browser"
             content={<BrowserLabel browser={session.context.browser.local.browser.name} />}
         />}
 
         {session?.profile?.id && <PropertyField
-            labelWith={labelWidth}
+            labelWidth={labelWidth}
             name="Profile id"
             content={<IdLabel label={session.profile.id}/>}
             underline={false}

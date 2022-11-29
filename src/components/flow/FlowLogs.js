@@ -39,18 +39,18 @@ const Row = ({log}) => {
             <span><ToggleIcon toggle={showDetails} size={24} /></span>
         </div>
         <div style={{width: "calc(100% - 60px)"}}>
-            <PropertyField name="Date" content={<DateValue date={log.metadata.timestamp}/>}  labelWith={150}></PropertyField>
+            <PropertyField name="Date" content={<DateValue date={log.metadata.timestamp}/>}  labelWidth={150}></PropertyField>
             {showDetails && <>
-                <PropertyField name="Origin" content={log.origin} labelWith={150}></PropertyField>
-                <PropertyField name="Module" content={log.module}  labelWith={150}></PropertyField>
-                <PropertyField name="Class" content={log.class_name} labelWith={150}></PropertyField>
-                {log?.flow_id && <PropertyField name="Flow" content={log.flow_id} labelWith={150}>
+                <PropertyField name="Origin" content={log.origin} labelWidth={150}></PropertyField>
+                <PropertyField name="Module" content={log.module}  labelWidth={150}></PropertyField>
+                <PropertyField name="Class" content={log.class_name} labelWidth={150}></PropertyField>
+                {log?.flow_id && <PropertyField name="Flow" content={log.flow_id} labelWidth={150}>
                     <FlowDisplay id={log.flow_id}/>
                 </PropertyField>}
-                {log?.event_id && <PropertyField name="Event" content={log.event_id} drawerSize={1350}  labelWith={150}>
+                {log?.event_id && <PropertyField name="Event" content={log.event_id} drawerSize={1350}  labelWidth={150}>
                     <EventDetailsById id={log.event_id}/>
                 </PropertyField>}
-                {log?.profile_id && <PropertyField name="Profile" content={log.profile_id} drawerSize={1350}  labelWith={150}>
+                {log?.profile_id && <PropertyField name="Profile" content={log.profile_id} drawerSize={1350}  labelWidth={150}>
                     <ProfileDetailsById id={log.profile_id}/>
                 </PropertyField>}
             </>
