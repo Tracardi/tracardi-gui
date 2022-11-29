@@ -14,7 +14,7 @@ export function isEmptyObject(obj) {
     if (!obj) {
         return true
     }
-    return !obj && (isObject(obj) && Object.keys(obj).length === 0);
+    return (isObject(obj) && Object.keys(obj).length === 0);
 }
 
 export function isEmptyObjectOrNull(obj) {
