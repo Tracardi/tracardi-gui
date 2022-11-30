@@ -30,10 +30,127 @@ import DocsLink from "../drawers/DocsLink";
 import {BsStar} from "react-icons/bs";
 import {ObjectInspector} from "react-inspector";
 import theme from "../../../themes/inspector_light_theme";
+import Properties from "./DetailProperties";
 
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
+
+const Details = ({data}) => <>
+    <TuiForm style={{margin: 20}}>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Event Source"/>
+            <TuiFormGroupContent header={"Data"}>
+                {data && <>
+                    <PropertyField labelWidth={400} name="Id" content={<IdLabel label={data.id}/>}/>
+                    {data.bridge.name && <PropertyField labelWidth={400} name="Data bridge type" content={data.bridge.name}/>}
+                    <PropertyField labelWidth={400} name="Endpoint type" content={data.type}/>
+                    <PropertyField labelWidth={400} name="Created" content={<DateValue date={data.timestamp}/>}/>
+                    <PropertyField labelWidth={400} name="Active" content={<ActiveTag active={data.enabled}/>}/>
+                    <PropertyField labelWidth={400} name="Synchronize profiles" content={<ActiveTag active={data.synchronize_profiles}/>}/>
+                    <PropertyField labelWidth={400} name="Transitional" content={<ActiveTag active={data.transitional}/>}/>
+                    <PropertyField labelWidth={400} name="Return profile" content={<ActiveTag active={data.returns_profile}/>}/>
+                    <PropertyField labelWidth={400} name="Make profile id permanent" content={<ActiveTag active={data.permanent_profile_id}/>}/>
+                    <PropertyField labelWidth={400} name="Require consent" content={<ActiveTag active={data.requires_consent}/>}/>
+                    <PropertyField labelWidth={400} name="Groups" content={<TuiTags tags={data.groups} size="small"/>}/>
+                    <PropertyField labelWidth={400} name="Tags" content={<TuiTags tags={data.tags} size="small"/>}/>
+                    {data.locked &&
+                    <NotImplemented style={{marginTop: 10}}>This event source is managed by external service.
+                        Therefore it can not be edited in the system.</NotImplemented>}
+                </>}
+            </TuiFormGroupContent>
+
+        </TuiFormGroup>
+        {data?.config && <TuiFormGroup>
+            <TuiFormGroupHeader header="Data bridge configuration"/>
+            <TuiFormGroupContent>
+                    <Properties properties={data.config}/>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        }
+        {data?.manual && <TuiFormGroup>
+            <TuiFormGroupHeader header="Manual"/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupContent header="Manual">
+                        <MarkdownElement text={data.manual}/>
+                    </TuiFormGroupContent>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        }
+    </TuiForm>
+</>
+
+const JavascriptDetails = ({data}) => <>
+    {data.type !== "rest" && <NoData
+        style={{margin: 20}}
+        header="No javascript for this type of event source."
+    />}
+    {data.type === "rest" && <TuiForm style={{margin: 20}}>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Integration"
+                                description={
+                                    <>
+                                        <span>Please paste this code into your web page. This code should appear on every page.</span>
+                                        <DocsLink src="http://docs.tracardi.com/integration/js-integration/">Do you
+                                            need help?</DocsLink>
+                                    </>
+                                }/>
+            <TuiFormGroupContent>
+                <Suspense fallback={<CenteredCircularProgress/>}><TrackerScript sourceId={data.id}/></Suspense>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Javascript example"
+                                description="This is an example of event sending. This code sends multiple events.
+                                    Please refer to Tracardi documentation on more complex configuration."/>
+            <TuiFormGroupContent>
+                <Suspense fallback={<CenteredCircularProgress/>}><TrackerUseScript/></Suspense>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Webhook"
+                                description="For every event source there is a webhook created. Calling it will emit
+                                profile less event. For full fledged events call regular /track endpoint."/>
+            <TuiFormGroupContent>
+                <h3 className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Webhook URL</h3>
+                <p>Event properties should be send in the body of request or as URL parameters
+                    and <b>event-type</b> inside URL should be
+                    replaced with the event type you would like to emit. Please refer to the documentation to see
+                    what are profile less events as calling this web hook will emit one of them.
+                    <DocsLink src="http://docs.tracardi.com/events/event_tracking/#profile-less-events">Profile-less event documentation</DocsLink>
+                </p>
+
+                <TextField
+                    label="Web hook"
+                    value={`/collect/event-type/${data.id}`}
+                    size="small"
+                    disabled={true}
+                    variant="outlined"
+                    fullWidth
+                />
+
+                <h3 className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Webhook URL with session</h3>
+                <p>If you can add session ID to your url then the user profile will be recreated. Use this webhook
+                    if you have access to tracardi user session. Replace `session_id` with user <b>session id</b> and
+                    type your event type instead of <b>event-type</b>. Event properties
+                    should be send in the body of request or as URL parameters.
+                </p>
+
+                <TextField
+                    label="Web hook with session "
+                    value={`/collect/event-type/${data.id}/session_id`}
+                    size="small"
+                    disabled={true}
+                    variant="outlined"
+                    fullWidth
+                />
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+    </TuiForm>
+    }
+</>
 
 export default function EventSourceDetails({id, onDeleteComplete}) {
 
@@ -103,100 +220,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
         })
     }
 
-    const Details = () => <>
-        <TuiForm style={{margin: 20}}>
-            <TuiFormGroup>
-                <TuiFormGroupHeader header="Event Source"/>
-                <TuiFormGroupContent header={"Data"}>
-                    {data && <>
-                        <PropertyField labelWidth={400} name="Id" content={<IdLabel label={data.id}/>}/>
-                        <PropertyField labelWidth={400} name="Type" content={data.type}/>
-                        <PropertyField labelWidth={400} name="Created" content={<DateValue date={data.timestamp}/>}/>
-                        <PropertyField labelWidth={400} name="Active" content={<ActiveTag active={data.enabled}/>}/>
-                        <PropertyField labelWidth={400} name="Synchronize profiles" content={<ActiveTag active={data.synchronize_profiles}/>}/>
-                        <PropertyField labelWidth={400} name="Transitional" content={<ActiveTag active={data.transitional}/>}/>
-                        <PropertyField labelWidth={400} name="Return profile" content={<ActiveTag active={data.returns_profile}/>}/>
-                        <PropertyField labelWidth={400} name="Make profile id permanent" content={<ActiveTag active={data.permanent_profile_id}/>}/>
-                        <PropertyField labelWidth={400} name="Require consent" content={<ActiveTag active={data.requires_consent}/>}/>
-                        <PropertyField labelWidth={400} name="Groups" content={<TuiTags tags={data.groups} size="small"/>}/>
-                        <PropertyField labelWidth={400} name="Tags" content={<TuiTags tags={data.tags} size="small"/>}/>
-                        {data.locked &&
-                        <NotImplemented style={{marginTop: 10}}>This event source is managed by external service.
-                            Therefore
-                            it can not be edited in the system.</NotImplemented>}
-                    </>}
-                </TuiFormGroupContent>
 
-            </TuiFormGroup>
-        </TuiForm>
-
-
-        {data.type === "rest" && <TuiForm style={{margin: 20}}>
-            <TuiFormGroup>
-                <TuiFormGroupHeader header="Integration"
-                                    description={
-                                        <>
-                                            <span>Please paste this code into your web page. This code should appear on every page.</span>
-                                            <DocsLink src="http://docs.tracardi.com/integration/js-integration/">Do you
-                                                need help?</DocsLink>
-                                        </>
-                                    }/>
-                <TuiFormGroupContent>
-                    <Suspense fallback={<CenteredCircularProgress/>}><TrackerScript sourceId={data.id}/></Suspense>
-                </TuiFormGroupContent>
-            </TuiFormGroup>
-
-            <TuiFormGroup>
-                <TuiFormGroupHeader header="Javascript example"
-                                    description="This is an example of event sending. This code sends multiple events.
-                                    Please refer to Tracardi documentation on more complex configuration."/>
-                <TuiFormGroupContent>
-                    <Suspense fallback={<CenteredCircularProgress/>}><TrackerUseScript/></Suspense>
-                </TuiFormGroupContent>
-            </TuiFormGroup>
-
-            <TuiFormGroup>
-                <TuiFormGroupHeader header="Webhook"
-                                    description="For every event source there is a webhook created. Calling it will emit
-                                profile less event. For full fledged events call regular /track endpoint."/>
-                <TuiFormGroupContent>
-                    <h3 className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Webhook URL</h3>
-                    <p>Event properties should be send in the body of request or as URL parameters
-                        and <b>event-type</b> inside URL should be
-                        replaced with the event type you would like to emit. Please refer to the documentation to see
-                        what are profile less events as calling this web hook will emit one of them.
-                        <DocsLink src="http://docs.tracardi.com/events/event_tracking/#profile-less-events">Profile-less event documentation</DocsLink>
-                    </p>
-
-                    <TextField
-                        label="Web hook"
-                        value={`/collect/event-type/${data.id}`}
-                        size="small"
-                        disabled={true}
-                        variant="outlined"
-                        fullWidth
-                    />
-
-                    <h3 className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Webhook URL with session</h3>
-                    <p>If you can add session ID to your url then the user profile will be recreated. Use this webhook
-                        if you have access to tracardi user session. Replace `session_id` with user <b>session id</b> and
-                        type your event type instead of <b>event-type</b>. Event properties
-                        should be send in the body of request or as URL parameters.
-                    </p>
-
-                    <TextField
-                        label="Web hook with session "
-                        value={`/collect/event-type/${data.id}/session_id`}
-                        size="small"
-                        disabled={true}
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupContent>
-            </TuiFormGroup>
-        </TuiForm>
-        }
-    </>
 
     const EventSourceAnalytics = () => {
 
@@ -346,7 +370,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             </div>
 
             <Tabs
-                tabs={["Details", "Analytics", "Raw"]}
+                tabs={["Javascript", "Details", "Analytics", "Raw"]}
                 defaultTab={tab}
                 onTabSelect={setTab}
                 tabContentStyle={{overflow: "initial"}}
@@ -360,23 +384,16 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                     zIndex: 2
                 }}
             >
-                <TabCase id={0} key="Details">
-                    <Details/>
-                    {data?.manual && <TuiForm style={{margin: 20}}>
-                        <TuiFormGroup> <TuiFormGroupHeader header="Manual"/>
-                            <TuiFormGroupContent>
-                                <TuiFormGroupContent header="Manual">
-                                    <MarkdownElement text={data.manual}/>
-                                </TuiFormGroupContent>
-                            </TuiFormGroupContent>
-                        </TuiFormGroup>
-                    </TuiForm>
-                    }
+                <TabCase id={0} key="Javascript">
+                    <JavascriptDetails data={data}/>
                 </TabCase>
-                <TabCase id={1} key="Analytics">
+                <TabCase id={1} key="Details">
+                    <Details data={data}/>
+                </TabCase>
+                <TabCase id={2} key="Analytics">
                     <EventSourceAnalytics/>
                 </TabCase>
-                <TabCase id={2} key="Raw">
+                <TabCase id={3} key="Raw">
                     <div className="Box10">
                         <ObjectInspector data={data} theme={theme} expandLevel={3}/>
                     </div>

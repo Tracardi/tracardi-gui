@@ -35,7 +35,7 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
     const data = useRef({
         username: "",
         password: "",
-        token: "",
+        token: "tracardi",
         needs_admin: requireAdmin
     })
 
@@ -105,9 +105,8 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
                             Installation token
                         </h2>
                         <p style={{color: "gray"}}>Input installation token. This is protection from unauthorized
-                            installation. If this is a demo environment administrator most probably did not set
-                            the token for your convenience. If so leave this field empty. If not ask your admin for an
-                            installation token.
+                            installation. If this is a demo environment administrator most probably set the token to
+                            default value <b>tracardi</b>. If not ask your admin for an installation token.
                         </p>
                         <PasswordInput label="Installation token"
                                        fullWidth={true}
