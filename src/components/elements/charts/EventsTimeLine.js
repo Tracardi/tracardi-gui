@@ -178,9 +178,9 @@ export default function EventTimeLine() {
                 "timeZone": Intl.DateTimeFormat().resolvedOptions().timeZone,
                 "limit": 30
             }
-        }).then((resposne) => {
-            if (resposne) {
-                if (isSubscribed) setData(resposne?.data)
+        }).then((response) => {
+            if (response) {
+                if (isSubscribed) setData(response?.data)
             }
         }).catch(() => {
             if (isSubscribed) setError(true)

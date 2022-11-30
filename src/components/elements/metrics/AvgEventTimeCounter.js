@@ -17,11 +17,11 @@ export default function AvgEventTime({width=200}) {
         setError(false);
         asyncRemote({
             url: "event/avg/process-time"
-        }).then((resposne) => {
-            if(resposne) {
+        }).then((response) => {
+            if(response) {
                 if(isSubscribed) {
-                    setValue(resposne?.data?.avg);
-                    setTotal(resposne?.data?.records)
+                    setValue(response?.data?.avg);
+                    setTotal(response?.data?.records)
                 }
             }
         }).catch(() => {

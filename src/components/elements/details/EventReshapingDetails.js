@@ -26,8 +26,8 @@ export default function EventReshapingDetails({id, onDeleteComplete}) {
             asyncRemote({
                 url: '/event-reshape-schema/' + id,
                 method: "get"
-            }).then(resposne => {
-                if (isSubscribed === true) setData(resposne.data);
+            }).then(response => {
+                if (isSubscribed === true) setData(response.data);
             }).catch((e) => {
                 console.error(e)
             }).finally(() => {
