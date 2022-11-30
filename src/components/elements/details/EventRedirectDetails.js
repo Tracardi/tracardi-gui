@@ -109,7 +109,7 @@ export default function EventRedirectDetails({id, onDeleteComplete, onEditComple
 
                     <TextField
                         label="Event source with redirect"
-                        value={`/collect/redirect/${data.id}`}
+                        value={`/redirect/${data.id}`}
                         size="small"
                         disabled={true}
                         variant="outlined"

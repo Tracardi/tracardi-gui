@@ -19,7 +19,7 @@ export function TuiSelectBridge({
     return <div>
         <AutoComplete disabled={disabled}
                       onlyValueWithOptions={true}
-                      placeholder="Data bridge"
+                      placeholder="Data bridge type"
                       endpoint={{url: "/bridges/entity"}}
                       initValue={value}
                       error={errorMessage}

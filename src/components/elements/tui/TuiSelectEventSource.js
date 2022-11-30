@@ -8,7 +8,8 @@ export function TuiSelectEventSource({
                                          errorMessage = null,
                                          onSetValue = null,
                                          fullWidth = false,
-                                         onlyValueWithOptions = true
+                                         onlyValueWithOptions = true,
+                                         type = null
                                      }) {
 
     const handleValueSet = (value) => {
@@ -17,13 +18,23 @@ export function TuiSelectEventSource({
         }
     };
 
-    const changeProp = onlyValueWithOptions ? {onSetValue: handleValueSet} : {onChange: handleValueSet, onSetValue: handleValueSet};
+    const changeProp = onlyValueWithOptions ? {onSetValue: handleValueSet} : {
+        onChange: handleValueSet,
+        onSetValue: handleValueSet
+    };
+
+    const url = (type) => {
+        if(type) {
+            return "/event-sources/entity?type=" + type
+        }
+        return "/event-sources/entity"
+    }
 
     return <div>
         <AutoComplete disabled={disabled}
                       onlyValueWithOptions={onlyValueWithOptions}
                       placeholder="Event source"
-                      endpoint={{url: "/event-sources/entity"}}
+                      endpoint={{url: url(type)}}
                       initValue={value}
                       error={errorMessage}
                       fullWidth={fullWidth}

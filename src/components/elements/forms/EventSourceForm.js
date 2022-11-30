@@ -167,11 +167,10 @@ const EventSourceDescriptionForm = ({value: _value, style, errorNameMessage, onC
 
     return <TuiForm style={style}>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Event source description"
-                                description="This is a source where Tracardi will collect events from."/>
+            <TuiFormGroupHeader header="Event source description"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Event source id"
-                                   description="Event source id is auto-generated. In most cases you do not have to do nothing
+                                   description="Event source id is auto-generated. In most cases you do not have to change it.
                                    just leave it like it is. In rare cases when you would like to create a event source
                                    with user defined value, then unlock the field and type your event source id. If you change
                                    the id of existing event source new event source will be created.">
@@ -245,8 +244,8 @@ const EventSourceForm = ({value, style, onClose}) => {
             requires_consent: false,
             tags: ['rest', 'api'],
             groups: [],
-            form: null,
-            config: null
+            config: null,
+            manual: null
         }
     }
 
@@ -294,9 +293,10 @@ const EventSourceForm = ({value, style, onClose}) => {
                         id: bridge.id,
                         name: bridge.name
                     },
-                    type: value.type,
+                    type: bridge.type,
                     tags: value.tags,
-                    config: config.current
+                    config: config.current,
+                    manual: bridge.manual
                 }
             })
 
@@ -335,11 +335,12 @@ const EventSourceForm = ({value, style, onClose}) => {
         <TuiForm>
             {errors && <ErrorsBox errorList={errors}/>}
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Event source bridge type"/>
+                <TuiFormGroupHeader header="Event source type"/>
                 <TuiFormGroupContent>
                     <TuiFormGroupField
-                        description="Data in tracardi is collected through bridges that send data to the event source.
-                        Select the type of data bridge you would like to open.">
+                        description="Data in Tracardi is collected through an open event source. Event source use a data bridge
+                        to get data. Data bridge can open and API endpoint or connect to the external system to monitor
+                        for changes. Please select the how would you like to collect data.">
 
                         <TuiSelectBridge value={bridge} onSetValue={handleBridgeChange}/>
 

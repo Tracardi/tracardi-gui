@@ -163,9 +163,11 @@ export default function EventRedirectForm({
                 <TuiFormGroupField header="Source"
                                    description="Select event source through which you would like to collect the event.">
                     <TuiSelectEventSource value={eventSource}
-                                        onlyValueWithOptions={true}
-                                        onSetValue={setEventSource}
-                                        label="Source"/>
+                                          onlyValueWithOptions={true}
+                                          onSetValue={setEventSource}
+                                          label="Source"
+                                          type="redirect"
+                    />
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Event type"
                                    description="Type or select the type of event you want to register.">

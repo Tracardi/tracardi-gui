@@ -68,89 +68,94 @@ const Details = ({data}) => <>
             </TuiFormGroupContent>
         </TuiFormGroup>
         }
-        {data?.manual && <TuiFormGroup>
-            <TuiFormGroupHeader header="Manual"/>
+    </TuiForm>
+</>
+
+const JavascriptDetails = ({data}) => {
+    if (data.manual) {
+        return <TuiForm style={{margin: 20}}><TuiFormGroup>
+            <TuiFormGroupHeader header="How to collect data with this event source"/>
+            <section className="MdManual" style={{padding: 20}}>
+                <MarkdownElement text={data.manual}/>
+            </section>
+        </TuiFormGroup></TuiForm>
+    }
+    if(data.type === "rest") {
+        return <TuiForm style={{margin: 20}}>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Integration"
+                                    description={
+                                        <>
+                                            <span>Please paste this code into your web page. This code should appear on every page.</span>
+                                            <DocsLink src="http://docs.tracardi.com/integration/js-integration/">Do you
+                                                need help?</DocsLink>
+                                        </>
+                                    }/>
                 <TuiFormGroupContent>
-                    <TuiFormGroupContent header="Manual">
-                        <MarkdownElement text={data.manual}/>
-                    </TuiFormGroupContent>
+                    <Suspense fallback={<CenteredCircularProgress/>}><TrackerScript sourceId={data.id}/></Suspense>
                 </TuiFormGroupContent>
             </TuiFormGroup>
-        }
-    </TuiForm>
-</>
 
-const JavascriptDetails = ({data}) => <>
-    {data.type !== "rest" && <NoData
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Javascript example"
+                                    description="Plase the code on you web page. This code will send multiple events.
+                                Please refer to Tracardi documentation on more complex configuration."/>
+                <TuiFormGroupContent>
+                    <Suspense fallback={<CenteredCircularProgress/>}><TrackerUseScript/></Suspense>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>
+    }
+
+    if(data.type === "webhook") {
+        return <TuiForm style={{margin: 20}}>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Webhook"
+                                    description="For every event source there is a webhook created. Calling it will emit
+                                profile less event. For full fledged events call regular /track endpoint."/>
+                <TuiFormGroupContent>
+                    <h3 className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Webhook URL</h3>
+                    <p>Event properties should be send in the body of request or as URL parameters
+                        and <b>event-type</b> inside URL should be
+                        replaced with the event type you would like to emit. Please refer to the documentation to see
+                        what are profile less events as calling this web hook will emit one of them.
+                        <DocsLink src="http://docs.tracardi.com/events/event_tracking/#profile-less-events">Profile-less event documentation</DocsLink>
+                    </p>
+
+                    <TextField
+                        label="Web hook"
+                        value={`/collect/event-type/${data.id}`}
+                        size="small"
+                        disabled={true}
+                        variant="outlined"
+                        fullWidth
+                    />
+
+                    <h3 className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Webhook URL with session</h3>
+                    <p>If you can add session ID to your url then the user profile will be recreated. Use this webhook
+                        if you have access to tracardi user session. Replace `session_id` with user <b>session id</b> and
+                        type your event type instead of <b>event-type</b>. Event properties
+                        should be send in the body of request or as URL parameters.
+                    </p>
+
+                    <TextField
+                        label="Web hook with session "
+                        value={`/collect/event-type/${data.id}/session_id`}
+                        size="small"
+                        disabled={true}
+                        variant="outlined"
+                        fullWidth
+                    />
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>
+    }
+
+    return <NoData
         style={{margin: 20}}
         header="No javascript for this type of event source."
-    />}
-    {data.type === "rest" && <TuiForm style={{margin: 20}}>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Integration"
-                                description={
-                                    <>
-                                        <span>Please paste this code into your web page. This code should appear on every page.</span>
-                                        <DocsLink src="http://docs.tracardi.com/integration/js-integration/">Do you
-                                            need help?</DocsLink>
-                                    </>
-                                }/>
-            <TuiFormGroupContent>
-                <Suspense fallback={<CenteredCircularProgress/>}><TrackerScript sourceId={data.id}/></Suspense>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Javascript example"
-                                description="This is an example of event sending. This code sends multiple events.
-                                    Please refer to Tracardi documentation on more complex configuration."/>
-            <TuiFormGroupContent>
-                <Suspense fallback={<CenteredCircularProgress/>}><TrackerUseScript/></Suspense>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Webhook"
-                                description="For every event source there is a webhook created. Calling it will emit
-                                profile less event. For full fledged events call regular /track endpoint."/>
-            <TuiFormGroupContent>
-                <h3 className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Webhook URL</h3>
-                <p>Event properties should be send in the body of request or as URL parameters
-                    and <b>event-type</b> inside URL should be
-                    replaced with the event type you would like to emit. Please refer to the documentation to see
-                    what are profile less events as calling this web hook will emit one of them.
-                    <DocsLink src="http://docs.tracardi.com/events/event_tracking/#profile-less-events">Profile-less event documentation</DocsLink>
-                </p>
-
-                <TextField
-                    label="Web hook"
-                    value={`/collect/event-type/${data.id}`}
-                    size="small"
-                    disabled={true}
-                    variant="outlined"
-                    fullWidth
-                />
-
-                <h3 className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Webhook URL with session</h3>
-                <p>If you can add session ID to your url then the user profile will be recreated. Use this webhook
-                    if you have access to tracardi user session. Replace `session_id` with user <b>session id</b> and
-                    type your event type instead of <b>event-type</b>. Event properties
-                    should be send in the body of request or as URL parameters.
-                </p>
-
-                <TextField
-                    label="Web hook with session "
-                    value={`/collect/event-type/${data.id}/session_id`}
-                    size="small"
-                    disabled={true}
-                    variant="outlined"
-                    fullWidth
-                />
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-    </TuiForm>
-    }
-</>
+    />
+}
 
 export default function EventSourceDetails({id, onDeleteComplete}) {
 
@@ -370,7 +375,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             </div>
 
             <Tabs
-                tabs={["Javascript", "Details", "Analytics", "Raw"]}
+                tabs={["Use", "Details", "Analytics", "Raw"]}
                 defaultTab={tab}
                 onTabSelect={setTab}
                 tabContentStyle={{overflow: "initial"}}

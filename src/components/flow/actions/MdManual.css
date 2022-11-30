@@ -5,6 +5,7 @@
     border-radius: 5px;
     user-select: text;
     border-radius: inherit;
+    color: #444;
 }
 .MdManual A {
     color: rgb(0, 105, 192);
@@ -14,11 +15,21 @@
     margin: 0;
     font-size: 20px;
     font-weight: normal;
+    color: black;
 }
 
 .MdManual H2 {
     margin: 0;
+    font-size: 18px;
+    font-weight: normal;
+    color: black;
+}
+
+.MdManual H3 {
+    margin: 0;
     font-size: 17px;
+    font-weight: normal;
+    color: black;
 }
 
 .MdManual CODE {
