@@ -268,12 +268,6 @@ const EventSourceForm = ({value, style, onClose}) => {
     })
 
     const [bridge, setBridge] = useState(value?.bridge);
-    const [requiresConsent, setRequiresConsent] = useState(value?.requires_consent);
-    const [enabledSource, setEnabledSource] = useState(value?.enabled);
-    const [enableSync, setEnableSync] = useState(value?.synchronize_profiles);
-    const [transitional, setTransitional] = useState(value?.transitional);
-    const [permanent, setPermanent] = useState(value?.permanent_profile_id);
-    const [returnsProfile, setReturnsProfile] = useState(value?.returns_profile || false);
     const [errorNameMessage, setNameErrorMessage] = useState('');
     const [processing, setProcessing] = useState(false);
     const [errors, setError] = useState(null);
@@ -341,15 +335,21 @@ const EventSourceForm = ({value, style, onClose}) => {
         <TuiForm>
             {errors && <ErrorsBox errorList={errors}/>}
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Event source bridge type"
-                                    description="Data in tracardi is collected through bridges select the type of data bridge you would like to create."/>
+                <TuiFormGroupHeader header="Event source bridge type"/>
                 <TuiFormGroupContent>
-                    <TuiSelectBridge value={bridge} onSetValue={handleBridgeChange}/>
+                    <TuiFormGroupField
+                        description="Data in tracardi is collected through bridges that send data to the event source.
+                        Select the type of data bridge you would like to open.">
+
+                        <TuiSelectBridge value={bridge} onSetValue={handleBridgeChange}/>
+
+                    </TuiFormGroupField>
                 </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>
         {bridge.id && <>
-            <EventSourceDescriptionForm value={metadata.current} errorNameMessage={errorNameMessage}
+            <EventSourceDescriptionForm value={metadata.current}
+                                        errorNameMessage={errorNameMessage}
                                         onChange={handleMetadataChange}/>
             <BridgeForm id={bridge?.id} value={config.current} onChange={handleConfigChange}/>
             <ShowHide label="Advanced settings" style={{marginBottom: 10}}>
