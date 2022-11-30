@@ -16,9 +16,9 @@ export default function SessionCounter() {
         setError(false);
         asyncRemote({
             url: "session/count"
-        }).then((resposne) => {
-            if(resposne) {
-                if(isSubscribed) setValue(resposne?.data?.count)
+        }).then((response) => {
+            if(response) {
+                if(isSubscribed) setValue(response?.data?.count)
             }
         }).catch(() => {
             if (isSubscribed) setError(true);

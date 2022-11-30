@@ -35,9 +35,9 @@ export default function Dashboard() {
         setLoadingByType(true);
         asyncRemote({
             url: "events/by_type"
-        }).then((resposne) => {
-            if (resposne) {
-                setEventsByType(resposne.data)
+        }).then((response) => {
+            if (response) {
+                setEventsByType(response.data)
             }
         }).catch(() => {
 
@@ -50,9 +50,9 @@ export default function Dashboard() {
         setLoadingByTag(true);
         asyncRemote({
             url: "events/by_tag"
-        }).then((resposne) => {
-            if (resposne) {
-                setEventsByTag(resposne.data)
+        }).then((response) => {
+            if (response) {
+                setEventsByTag(response.data)
             }
         }).catch(() => {
 
@@ -65,9 +65,9 @@ export default function Dashboard() {
         setLoadingByStatus(true);
         asyncRemote({
             url: "events/by_status"
-        }).then((resposne) => {
-            if (resposne) {
-                setEventsByStatus(resposne.data)
+        }).then((response) => {
+            if (response) {
+                setEventsByStatus(response.data)
             }
         }).catch(() => {
 
@@ -80,9 +80,9 @@ export default function Dashboard() {
         setLoadingBySource(true);
         asyncRemote({
             url: "events/by_source"
-        }).then((resposne) => {
-            if (resposne) {
-                setEventsBySource(resposne.data);
+        }).then((response) => {
+            if (response) {
+                setEventsBySource(response.data);
             }
         }).catch(() => {
 

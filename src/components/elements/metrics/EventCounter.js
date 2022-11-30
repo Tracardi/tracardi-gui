@@ -17,15 +17,15 @@ export default function EventCounter() {
         setError(false);
         asyncRemote({
             url: "event/count"
-        }).then((resposne) => {
-            if (resposne) {
-                const NoOfEvents = resposne?.data?.count
+        }).then((response) => {
+            if (response) {
+                const NoOfEvents = response?.data?.count
                 asyncRemote({
                     url: "event/avg/requests"
-                }).then((resposne) => {
-                    if (resposne) {
+                }).then((response) => {
+                    if (response) {
                         if (isSubscribed) {
-                            setAvg(resposne?.data)
+                            setAvg(response?.data)
                             setValue(NoOfEvents)
                         }
                     }

@@ -16,9 +16,9 @@ export default function ProfileCounter() {
         setError(false);
         asyncRemote({
             url: "profile/count"
-        }).then((resposne) => {
-            if(resposne) {
-                if(isSubscribed) setValue(resposne?.data?.count)
+        }).then((response) => {
+            if(response) {
+                if(isSubscribed) setValue(response?.data?.count)
             }
         }).catch(() => {
             if (isSubscribed) setError(true);
