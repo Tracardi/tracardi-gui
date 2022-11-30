@@ -15,8 +15,7 @@ export default function DocsLink({children, src, style, icon=false}) {
             display: "inline-flex",
             alignItems: "center",
             backgroundColor: "#eee",
-            padding: "5px 12px 5px 12px",
-            borderRadius: 12,
+            padding: "1px 7px",
             ...style
         }}>{icon && <IoHelpOutline size={20} style={{marginRight: 5}}/>}{children}</span>
         <FormDrawer width={800} anchor="left" open={show} onClose={() => setShow(false)}>

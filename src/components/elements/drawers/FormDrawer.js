@@ -22,7 +22,7 @@ export default function FormDrawer(
                        }
                    }}
     >
-        <div style={{width: (width) ? width : 1200, overflowX: "hidden", height:"inherit"}}>
+        <div style={{width: (width) ? width : 1200, overflowX: "hidden", height:"100%"}}>
             {open && children}
         </div>
     </Drawer>

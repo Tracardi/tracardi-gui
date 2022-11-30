@@ -27,6 +27,9 @@ import IdLabel from "../misc/IconLabels/IdLabel";
 import DateValue from "../misc/DateValue";
 import ActiveTag from "../misc/ActiveTag";
 import DocsLink from "../drawers/DocsLink";
+import {BsStar} from "react-icons/bs";
+import {ObjectInspector} from "react-inspector";
+import theme from "../../../themes/inspector_light_theme";
 
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
@@ -106,17 +109,17 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                 <TuiFormGroupHeader header="Event Source"/>
                 <TuiFormGroupContent header={"Data"}>
                     {data && <>
-                        <PropertyField name="Id" content={<IdLabel label={data.id}/>}/>
-                        <PropertyField name="Type" content={data.type}/>
-                        <PropertyField name="Created" content={<DateValue date={data.timestamp}/>}/>
-                        <PropertyField name="Active" content={<ActiveTag active={data.enabled}/>}/>
-                        <PropertyField name="Transitional" content={<ActiveTag active={data.transitional}/>}/>
-                        <PropertyField name="Returns profile" content={<ActiveTag active={data.returns_profile}/>}/>
-                        <PropertyField name="Permanent profile id"
-                                       content={<ActiveTag active={data.permanent_profile_id}/>}/>
-                        <PropertyField name="Requires consent" content={<ActiveTag active={data.requires_consent}/>}/>
-                        <PropertyField name="Groups" content={<TuiTags tags={data.groups} size="small"/>}/>
-                        <PropertyField name="Tags" content={<TuiTags tags={data.tags} size="small"/>}/>
+                        <PropertyField labelWidth={400} name="Id" content={<IdLabel label={data.id}/>}/>
+                        <PropertyField labelWidth={400} name="Type" content={data.type}/>
+                        <PropertyField labelWidth={400} name="Created" content={<DateValue date={data.timestamp}/>}/>
+                        <PropertyField labelWidth={400} name="Active" content={<ActiveTag active={data.enabled}/>}/>
+                        <PropertyField labelWidth={400} name="Synchronize profiles" content={<ActiveTag active={data.synchronize_profiles}/>}/>
+                        <PropertyField labelWidth={400} name="Transitional" content={<ActiveTag active={data.transitional}/>}/>
+                        <PropertyField labelWidth={400} name="Return profile" content={<ActiveTag active={data.returns_profile}/>}/>
+                        <PropertyField labelWidth={400} name="Make profile id permanent" content={<ActiveTag active={data.permanent_profile_id}/>}/>
+                        <PropertyField labelWidth={400} name="Require consent" content={<ActiveTag active={data.requires_consent}/>}/>
+                        <PropertyField labelWidth={400} name="Groups" content={<TuiTags tags={data.groups} size="small"/>}/>
+                        <PropertyField labelWidth={400} name="Tags" content={<TuiTags tags={data.tags} size="small"/>}/>
                         {data.locked &&
                         <NotImplemented style={{marginTop: 10}}>This event source is managed by external service.
                             Therefore
@@ -134,7 +137,8 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                                     description={
                                         <>
                                             <span>Please paste this code into your web page. This code should appear on every page.</span>
-                                            <DocsLink src="http://docs.tracardi.com/integration/js-integration/">Do you need help?</DocsLink>
+                                            <DocsLink src="http://docs.tracardi.com/integration/js-integration/">Do you
+                                                need help?</DocsLink>
                                         </>
                                     }/>
                 <TuiFormGroupContent>
@@ -156,10 +160,12 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                                     description="For every event source there is a webhook created. Calling it will emit
                                 profile less event. For full fledged events call regular /track endpoint."/>
                 <TuiFormGroupContent>
-                    <h3>Webhook URL</h3>
-                    <p>Event properties should be send in the body of request and <b>event-type</b> inside URL should be
+                    <h3 className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Webhook URL</h3>
+                    <p>Event properties should be send in the body of request or as URL parameters
+                        and <b>event-type</b> inside URL should be
                         replaced with the event type you would like to emit. Please refer to the documentation to see
                         what are profile less events as calling this web hook will emit one of them.
+                        <DocsLink src="http://docs.tracardi.com/events/event_tracking/#profile-less-events">Profile-less event documentation</DocsLink>
                     </p>
 
                     <TextField
@@ -171,6 +177,21 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                         fullWidth
                     />
 
+                    <h3 className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Webhook URL with session</h3>
+                    <p>If you can add session ID to your url then the user profile will be recreated. Use this webhook
+                        if you have access to tracardi user session. Replace `session_id` with user <b>session id</b> and
+                        type your event type instead of <b>event-type</b>. Event properties
+                        should be send in the body of request or as URL parameters.
+                    </p>
+
+                    <TextField
+                        label="Web hook with session "
+                        value={`/collect/event-type/${data.id}/session_id`}
+                        size="small"
+                        disabled={true}
+                        variant="outlined"
+                        fullWidth
+                    />
                 </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>
@@ -298,64 +319,69 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
         {data && <>
             <div style={{display: "flex", margin: 30, flexDirection: "column"}}>
 
-                    <div style={{display: "flex",justifyContent: "space-between", alignItems: 'center', marginBottom: 10}}>
-                        <div style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>
-                            <h1 className="header"
-                                style={{marginBottom: 0}}> {data.name} ({data.type})</h1>
-                        </div>
-                        <div style={{display: "flex", alignItems: "start"}}>
-                            <Rows>
-                                {data?.locked !== true && <Button onClick={onEdit}
-                                                                  icon={<VscEdit size={20}/>}
-                                                                  label="Edit"
-                                                                  disabled={typeof data === "undefined"}/>}
-                                <Button onClick={onDelete}
-                                        icon={<VscTrash size={20}/>}
-                                        label="Delete"
-                                        disabled={typeof data === "undefined"}/>
-                            </Rows>
-                        </div>
+                <div style={{display: "flex", justifyContent: "space-between", alignItems: 'center', marginBottom: 10}}>
+                    <div style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>
+                        <h1 className="header"
+                            style={{marginBottom: 0}}> {data.name} ({data.type})</h1>
+                    </div>
+                    <div style={{display: "flex", alignItems: "start"}}>
+                        <Rows>
+                            {data?.locked !== true && <Button onClick={onEdit}
+                                                              icon={<VscEdit size={20}/>}
+                                                              label="Edit"
+                                                              disabled={typeof data === "undefined"}/>}
+                            <Button onClick={onDelete}
+                                    icon={<VscTrash size={20}/>}
+                                    label="Delete"
+                                    disabled={typeof data === "undefined"}/>
+                        </Rows>
+                    </div>
 
-                    </div>
-                    {data.description && <h2 className="subHeader">{data.description}</h2>}
-                    <div style={{marginBottom: 10}}>
-                        <TuiTags tags={data.tags} style={{marginLeft: 5, marginTop: 10}}/>
-                    </div>
+                </div>
+                {data.description && <h2 className="subHeader">{data.description}</h2>}
+                <div style={{marginBottom: 10}}>
+                    <TuiTags tags={data.tags} style={{marginLeft: 5, marginTop: 10}}/>
+                </div>
 
             </div>
 
-        <Tabs
-            tabs={["Details", "Analytics"]}
-            defaultTab={tab}
-            onTabSelect={setTab}
-            tabContentStyle={{overflow: "initial"}}
-            tabsStyle={{
-                display: "flex",
-                backgroundColor: "white",
-                marginTop: 0,
-                marginBottom: 0,
-                position: "sticky",
-                top: 0,
-                zIndex: 2
-            }}
-        >
-            <TabCase id={0} key="Details">
-                <Details/>
-                {data?.manual && <TuiForm style={{margin: 20}}>
-                    <TuiFormGroup> <TuiFormGroupHeader header="Manual"/>
-                        <TuiFormGroupContent>
-                            <TuiFormGroupContent header="Manual">
-                                <MarkdownElement text={data.manual}/>
+            <Tabs
+                tabs={["Details", "Analytics", "Raw"]}
+                defaultTab={tab}
+                onTabSelect={setTab}
+                tabContentStyle={{overflow: "initial"}}
+                tabsStyle={{
+                    display: "flex",
+                    backgroundColor: "white",
+                    marginTop: 0,
+                    marginBottom: 0,
+                    position: "sticky",
+                    top: 0,
+                    zIndex: 2
+                }}
+            >
+                <TabCase id={0} key="Details">
+                    <Details/>
+                    {data?.manual && <TuiForm style={{margin: 20}}>
+                        <TuiFormGroup> <TuiFormGroupHeader header="Manual"/>
+                            <TuiFormGroupContent>
+                                <TuiFormGroupContent header="Manual">
+                                    <MarkdownElement text={data.manual}/>
+                                </TuiFormGroupContent>
                             </TuiFormGroupContent>
-                        </TuiFormGroupContent>
-                    </TuiFormGroup>
-                </TuiForm>
-                }
-            </TabCase>
-            <TabCase id={1} key="Analytics">
-                <EventSourceAnalytics/>
-            </TabCase>
-        </Tabs></>
+                        </TuiFormGroup>
+                    </TuiForm>
+                    }
+                </TabCase>
+                <TabCase id={1} key="Analytics">
+                    <EventSourceAnalytics/>
+                </TabCase>
+                <TabCase id={2} key="Raw">
+                    <div className="Box10">
+                        <ObjectInspector data={data} theme={theme} expandLevel={3}/>
+                    </div>
+                </TabCase>
+            </Tabs></>
         }
 
         <FormDrawer

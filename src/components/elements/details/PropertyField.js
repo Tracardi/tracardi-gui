@@ -4,13 +4,13 @@ import {FiMoreHorizontal} from "react-icons/fi";
 import FormDrawer from "../drawers/FormDrawer";
 import "./PropertyField.css";
 
-const PropertyField = ({name, content, children, drawerSize = 800, underline = true, whiteSpace = 'normal', labelWith=250}) => {
+const PropertyField = ({name, content, children, drawerSize = 800, underline = true, whiteSpace = 'normal', labelWidth = 250}) => {
 
     const [displayDetails, setDisplayDetails] = useState(false)
     return (
         <>
             <div className="PropertyRow" style={{borderBottom: underline ? "1px dashed #bbb" : 0}}>
-                {name && <div className="FieldName" style={{width: labelWith}}>
+                {name && <div className="FieldName" style={{width: labelWidth}}>
                     <span>{name}</span>
                 </div>}
                 <div className="FieldValue">

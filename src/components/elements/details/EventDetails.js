@@ -19,7 +19,6 @@ export default function EventDetails({event, metadata}) {
 
     const [tab, setTab] = React.useState(0);
 
-
     const tabs = ["Event", "Raw", "Flow debug", "Event logs"];
 
     return <>
@@ -43,7 +42,7 @@ export default function EventDetails({event, metadata}) {
             }}
         >
             <TabCase id={0}>
-                <EventData event={event} allowedDetails={['profile', 'source', 'session']}/>
+                <EventData event={event} metadata={metadata} allowedDetails={['profile', 'source', 'session']}/>
             </TabCase>
             <TabCase id={1}>
                 <TuiForm style={{margin: 20}}>
@@ -99,7 +98,7 @@ export function EventDetailsById({id}) {
             asyncRemote({
                 url: "/event/" + id
             })
-                .then(response => setEvent(response.data?.event))
+                .then(response => setEvent(response.data))
                 .catch(e => {
                     if(isSubscribed) {
                         if(e.request && e.request.status === 404) {
@@ -129,7 +128,7 @@ export function EventDetailsById({id}) {
     }
 
     return <>
-        {event && <EventDetails data={event}/>}
+        {event && <EventDetails event={event.event} metadata={event._metadata}/>}
     </>
 }
 

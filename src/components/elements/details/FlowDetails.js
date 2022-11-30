@@ -57,8 +57,8 @@ export default function FlowDetails({id, onDeleteComplete}) {
         setDisplayEdit(false);
     }
 
-    const onGoToEditFlow = (id) => {
-        history.push(urlPrefix("/flow/edit/") + id);
+    const onGoToEditFlow = (id, type) => {
+        history.push(urlPrefix(`/flow/${type}/edit/${id}`));
     }
 
     const onGoToDeployedFlow = (id) => {
@@ -94,7 +94,7 @@ export default function FlowDetails({id, onDeleteComplete}) {
                         <Button onClick={onEditClick}
                                 icon={<VscEdit size={20}/>}
                                 label="Edit" disabled={typeof data === "undefined"}/>
-                        <Button onClick={() => onGoToEditFlow(data.id)}
+                        <Button onClick={() => onGoToEditFlow(data.id, data.type)}
                                 icon={<IoGitNetworkSharp size={20} style={{marginRight: 5}}/>}
                                 label="Edit FLOW"
                                 disabled={typeof data === "undefined"}/>

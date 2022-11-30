@@ -10,6 +10,7 @@ import TuiTagger from "../tui/TuiTagger";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import DocsLink from "../drawers/DocsLink";
 import JsonEditor from "../editors/JsonEditor";
+import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 
 export default function EventRedirectForm({
                                               id,
@@ -18,6 +19,7 @@ export default function EventRedirectForm({
                                               url: _url,
                                               props: _props,
                                               event_type: _eventType,
+                                              source: _eventSource,
                                               tags: _tags,
                                               onSaveComplete
                                           }) {
@@ -30,6 +32,10 @@ export default function EventRedirectForm({
         id: _eventType,
         name: _eventType
     } : null);
+    const [eventSource, setEventSource] = useState(_eventSource || {
+        id: "",
+        name: ""
+    });
     const [tags, setTags] = useState(_tags || []);
 
     const [nameErrorMessage, setNameErrorMessage] = useState("");
@@ -81,6 +87,7 @@ export default function EventRedirectForm({
                 url: url,
                 props: JSON.parse(props),
                 event_type: eventType.id,
+                source: eventSource,
                 tags: tags && Array.isArray(tags) && tags.length > 0 ? tags : ["General"],
             }
 
@@ -144,15 +151,27 @@ export default function EventRedirectForm({
                                size="small"
                     />
                 </TuiFormGroupField>
+                <TuiFormGroupField header="Event type tags"
+                                   description="Tag the event types to group it into meaningful groups.">
+                    <TuiTagger tags={tags} onChange={handleTagChange}/>
+                </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Redirect configuration"/>
             <TuiFormGroupContent>
+                <TuiFormGroupField header="Source"
+                                   description="Select event source through which you would like to collect the event.">
+                    <TuiSelectEventSource value={eventSource}
+                                        onlyValueWithOptions={true}
+                                        onSetValue={setEventSource}
+                                        label="Source"/>
+                </TuiFormGroupField>
                 <TuiFormGroupField header="Event type"
                                    description="Type or select the type of event you want to register.">
                     <TuiSelectEventType value={eventType}
                                         errorMessage={eventTypeErrorMessage}
+                                        onlyValueWithOptions={false}
                                         onSetValue={setEventType}
                                         label="event type"/>
                 </TuiFormGroupField>
@@ -184,10 +203,6 @@ export default function EventRedirectForm({
                         <legend>Event Properties Schema</legend>
                         <JsonEditor value={props} onChange={(value) => setProps(value)} autocomplete={true}/>
                     </fieldset>
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Event type tags"
-                                   description="Tag the event types to group it into meaningful groups.">
-                    <TuiTagger tags={tags} onChange={handleTagChange}/>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
