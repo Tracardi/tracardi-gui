@@ -26,8 +26,8 @@ export default function LiveSegmentDetails({id, onDeleteComplete}) {
             asyncRemote({
                 url: '/segment/live/' + id,
                 method: "get"
-            }).then(resposne => {
-                if (isSubscribed === true) setData(resposne.data);
+            }).then(response => {
+                if (isSubscribed === true) setData(response.data);
             }).catch((e) => {
                 console.error(e)
             }).finally(() => {

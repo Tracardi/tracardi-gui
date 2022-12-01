@@ -26,9 +26,9 @@ export default function ProfileLineChart() {
                 "where": "",
                 "limit": 30
             }
-        }).then((resposne) => {
-            if (resposne) {
-                if (isSubscribed) setData(resposne?.data?.result)
+        }).then((response) => {
+            if (response) {
+                if (isSubscribed) setData(response?.data?.result)
             }
         }).catch(() => {
             setError(true)

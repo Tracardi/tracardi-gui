@@ -37,11 +37,11 @@
 //     const handleDelete = async () => {
 //         try {
 //             // Load again services
-//             const newResposne = await asyncRemote({
+//             const newresponse = await asyncRemote({
 //                 url: '/tracardi-pro/services',
 //                 method: "GET",
 //             })
-//             setServices(newResposne.data);
+//             setServices(newresponse.data);
 //         } catch (e) {
 //             alert("Could not refresh services")
 //         }
