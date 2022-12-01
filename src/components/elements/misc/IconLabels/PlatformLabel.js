@@ -8,7 +8,8 @@ export default function PlatformIcon({platform}) {
         "MacIntel": <BsApple size={20} style={{marginRight: 5}}/>,
         "Linux x86_64": <VscTerminalLinux size={20} style={{marginRight: 5}}/>,
         "Linux armv8l": <VscTerminalLinux size={20} style={{marginRight: 5}}/>,
-        "iPhone": <BsPhone size={20} style={{marginRight: 5}}/>
+        "iPhone": <BsPhone size={20} style={{marginRight: 5}}/>,
+        "Android 4.1": <BsPhone size={20} style={{marginRight: 5}}/>,
     }
     if (platform in platforms) {
         return <>{platforms[platform]} {platform}</>

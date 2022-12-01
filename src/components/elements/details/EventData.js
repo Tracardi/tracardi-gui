@@ -39,6 +39,8 @@ const EventData = ({event, metadata, allowedDetails=[]}) => {
                 <PropertyField name="Insert time"
                                content={<DateValue date={event?.metadata?.time?.insert}/>}
                 />
+                <PropertyField name="Process time"
+                               content={event?.metadata?.time?.process_time} underline={false}/>
                 <PropertyField name="Status"
                                content={<><EventStatusTag label={event?.metadata?.status}/>
                                    <EventValidation eventMetaData={event?.metadata}/>
@@ -74,6 +76,7 @@ const EventData = ({event, metadata, allowedDetails=[]}) => {
                 {Array.isArray(event?.metadata?.processed_by?.rules) && <PropertyField name="Routed by rules"
                                content={<TuiTags tags={event.metadata?.processed_by?.rules} size="small"/>}/>}
                 {metadata?.index && <PropertyField name="Index" content={metadata.index}/>}
+
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>

@@ -80,9 +80,6 @@ export function EventRow({row, filterFields}) {
                     content={<TuiTags
                         tags={row.metadata?.processed_by?.rules}
                         size="small"/>}/>}
-                <PropertyField labelWidth={labelWidth}
-                               name="Process time"
-                               content={row.metadata?.time?.process_time} underline={false}/>
                 {isNotEmptyArray(row.tags?.values) && <PropertyField
                     labelWidth={labelWidth}
                     name="Tags" content={<TuiTags
