@@ -9,6 +9,7 @@ import SessionContextInfo from "./SessionContextInfo";
 import IconLabel from "../misc/IconLabels/IconLabel";
 import PlatformIcon from "../misc/IconLabels/PlatformLabel";
 import BrowserLabel from "../misc/IconLabels/BrowserLabel";
+import ProfileLabel from "../misc/IconLabels/ProfileLabel";
 
 export default function SessionCardInfo({session}) {
     const labelWidth = 180
@@ -44,7 +45,7 @@ export default function SessionCardInfo({session}) {
         {session?.profile?.id && <PropertyField
             labelWidth={labelWidth}
             name="Profile id"
-            content={<IdLabel label={session.profile.id}/>}
+            content={<ProfileLabel label={session.profile.id}/>}
             underline={false}
             drawerSize={1250}
         >

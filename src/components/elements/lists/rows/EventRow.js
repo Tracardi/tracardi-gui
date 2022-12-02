@@ -54,7 +54,7 @@ export function EventRow({row, filterFields}) {
                 </>}/>
                 <PropertyField labelWidth={labelWidth}
                                name="Profile"
-                               content={<ProfileLabel label={profileName(row.profile)}
+                               content={<ProfileLabel label={row.profile.id}
                                                       profileLess={row.profile === null}/>}
                                drawerSize={1320}>
                     {row?.profile?.id && <ProfileDetailsById id={row.profile.id}/>}
