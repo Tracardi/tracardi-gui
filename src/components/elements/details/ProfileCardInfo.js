@@ -26,7 +26,7 @@ export default function ProfileCardInfo({profile}) {
             />}
         </>}/>
         <PropertyField labelWidth={labelWidth} name="All visits" content={profile?.metadata?.time?.visit.count}/>
-        <PropertyField labelWidth={labelWidth} name="Telephone" content={<IconLabel value={profile?.pii?.telephone} icon={<BsPhone size={20}/>}/>}/>
+        {profile?.pii?.telephone && <PropertyField labelWidth={labelWidth} name="Telephone" content={<IconLabel value={profile.pii.telephone} icon={<BsPhone size={20}/>}/>}/>}
         <PropertyField labelWidth={labelWidth} name={profile?.metadata?.merged_with ? "Merged with" : "Active"}
                        content={<ProfileMergeTag profile={profile}/>} underline={false} drawerSize={1300}>
             {profile?.metadata?.merged_with && <ProfileDetailsById id={profile.metadata.merged_with} />}

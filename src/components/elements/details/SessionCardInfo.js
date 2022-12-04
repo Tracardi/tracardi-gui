@@ -4,7 +4,6 @@ import {BsGlobe} from "react-icons/bs";
 import React from "react";
 import IdLabel from "../misc/IconLabels/IdLabel";
 import {ProfileDetailsById} from "./ProfileDetails";
-import TimeValue from "../misc/TimeValue";
 import SessionContextInfo from "./SessionContextInfo";
 import IconLabel from "../misc/IconLabels/IconLabel";
 import PlatformIcon from "../misc/IconLabels/PlatformLabel";
@@ -26,11 +25,11 @@ export default function SessionCardInfo({session}) {
                        </>
                        }/>
 
-        {session?.metadata?.time?.duration && <PropertyField
-            labelWidth={labelWidth}
-            name="Duration"
-            content={<TimeValue time={session?.metadata?.time?.duration}/>}
-        />}
+        {/*{session?.metadata?.time?.duration && <PropertyField*/}
+        {/*    labelWidth={labelWidth}*/}
+        {/*    name="Duration"*/}
+        {/*    content={<TimeValue time={session?.metadata?.time?.duration}/>}*/}
+        {/*/>}*/}
         {session?.context?.browser?.local?.device?.platform && <PropertyField
             labelWidth={labelWidth}
             name="Platform"

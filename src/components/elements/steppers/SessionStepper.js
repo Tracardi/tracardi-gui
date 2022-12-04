@@ -7,7 +7,6 @@ import Button from "../forms/Button";
 import {FiMoreHorizontal} from "react-icons/fi";
 import ErrorsBox from "../../errors/ErrorsBox";
 import DateValue from "../misc/DateValue";
-import TimeValue from "../misc/TimeValue";
 
 export default function SessionStepper({session, profileId, onEventSelect}) {
 
@@ -94,8 +93,9 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
 
     return <div className="SessionStepper">
 
-        {session && <div className="Header">Session starting {session?.metadata?.time?.insert && <DateValue date={session?.metadata?.time?.insert} />}
-            duration {<TimeValue time={session.metadata?.time?.duration} icon={false} seconds={false}/>}</div>}
+        {session && <div className="Header">
+            Session starting {session?.metadata?.time?.insert && <DateValue date={session?.metadata?.time?.insert} />}
+            </div>}
         {Array.isArray(eventsData) && eventsData.length > 0 && <Stepper
             orientation="vertical"
             connector={<div className="StepConnector"/>}
