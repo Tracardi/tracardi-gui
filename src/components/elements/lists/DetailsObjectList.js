@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from "react";
 import "./ObjectList.css";
 import Drawer from "@mui/material/Drawer";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "tss-react/mui";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import AutoLoadObjectList from "./AutoLoadObjectList";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
@@ -76,13 +76,13 @@ function DetailsObjectList({
         }
     }
 
-    const useStyles = makeStyles(() => ({
+    const useStyles = makeStyles()(() => ({
         drawerPaper: {
             overflow: "hidden"
         },
     }));
 
-    const classes = useStyles();
+    const { classes } = useStyles();
 
     return <React.Fragment>
 

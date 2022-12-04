@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "tss-react/mui";
 import Container from '@mui/material/Container';
 import {logout, setRoles, setToken} from "./login";
 import {loginUser} from "../../remote_api/user";
@@ -36,7 +36,7 @@ function Copyright() {
     );
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles()((theme) => ({
     paper: {
         marginTop: 8,
         display: 'flex',
@@ -89,7 +89,7 @@ const SignInForm = ({showAlert}) => {
         });
     }, [ver])
 
-    const classes = useStyles();
+    const { classes } = useStyles();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

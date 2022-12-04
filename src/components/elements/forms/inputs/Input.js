@@ -1,17 +1,17 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "tss-react/mui";
 import PropTypes from 'prop-types';
 
 export default function Input({onEnterPressed, onChange, label, initValue, error, variant}) {
-    const useStyles = makeStyles(() => (
+    const useStyles = makeStyles()(() => (
         {
             root: {
                 width: '100%'
             } 
         }
     ));
-    const classes = useStyles();
+    const { classes } = useStyles();
     const [searchValue, setSearchValue] = React.useState(initValue);
 
     const handleNameChange = (event) => {
