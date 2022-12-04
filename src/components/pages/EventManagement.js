@@ -57,7 +57,7 @@ export default function EventManagement() {
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}
-        buttomLabel="New event type"
+        buttonLabel="New event type"
         buttonIcon={<BsFolderCheck size={20}/>}
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}

@@ -36,7 +36,7 @@ export default function ImportSources () {
         description="List of configured import sources."
         urlFunc={urlFunc}
         cardFunc={importCard}
-        buttomLabel="New import"
+        buttonLabel="New import"
         buttonIcon={<BsFileEarmarkArrowUp size={20}/>}
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}

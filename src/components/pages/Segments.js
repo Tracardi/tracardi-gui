@@ -54,7 +54,7 @@ export default function Segments() {
         urlFunc={urlFunc}
         cardFunc={segmentsCards}
         rowFunc={segmentsRows}
-        buttomLabel="New segment"
+        buttonLabel="New segment"
         buttonIcon={<VscOrganization size={20}/>}
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}

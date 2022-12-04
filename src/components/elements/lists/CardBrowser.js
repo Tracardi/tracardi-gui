@@ -17,7 +17,7 @@ const CardBrowser = ({
                          urlFunc,
                          cardFunc,
                          rowFunc = null,
-                         buttomLabel = null,
+                         buttonLabel = null,
                          buttonIcon,
                          drawerDetailsWidth = 600,
                          detailsFunc = () => {},
@@ -128,7 +128,7 @@ const CardBrowser = ({
             <FilterAddForm
                 style={{margin: "0 20px", marginTop: 5}}
                 textFieldLabel="Type to filter"
-                buttonLabel={buttomLabel}
+                buttonLabel={buttonLabel}
                 buttonIcon={buttonIcon}
                 onFilter={handleFilter}
                 onAdd={handleOpenAdd}/>
@@ -152,7 +152,7 @@ const CardBrowser = ({
                 width={drawerAddWidth}
                 onClose={handleCloseAdd}
                 open={displayAddForm}>
-                {addFunc && buttomLabel && addFunc(handleCloseAdd)}
+                {addFunc && buttonLabel && addFunc(handleCloseAdd)}
             </FormDrawer>
 
         </div>

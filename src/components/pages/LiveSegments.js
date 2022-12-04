@@ -54,7 +54,7 @@ export default function LiveSegments() {
         urlFunc={urlFunc}
         cardFunc={liveSegmentsCards}
         rowFunc={liveSegmentsRows}
-        buttomLabel="New live segment"
+        buttonLabel="New live segment"
         buttonIcon={<VscOrganization size={20}/>}
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}

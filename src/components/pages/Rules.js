@@ -55,7 +55,7 @@ export default function Rules() {
         urlFunc={urlFunc}
         cardFunc={ruleCards}
         rowFunc={ruleRows}
-        buttomLabel="New routing rule"
+        buttonLabel="New routing rule"
         buttonIcon={<FaUncharted size={20}/>}
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
