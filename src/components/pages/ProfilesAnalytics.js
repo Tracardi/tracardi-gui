@@ -30,9 +30,11 @@ export default function ProfilesAnalytics({displayChart=true}) {
         }
     }
 
+    const label = `List of ${window?.CONFIG?.profile?.plural || 'profiles'}`
+
     return <DataAnalytics
         type="profile"
-        label="List of profiles"
+        label={label}
         enableFiltering={true}
         timeFieldLabel = "last visit"
         timeField={(row) => [makeUtcStringTzAware(row.metadata.time.insert)]}

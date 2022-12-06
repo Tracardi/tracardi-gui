@@ -1,7 +1,7 @@
 import React from "react";
-import {BsPersonX, BsPerson} from "react-icons/bs";
+import FlowNodeIcons from "../../../flow/FlowNodeIcons";
 
-export default function ProfileLabel({label, profileLess = false, size = 20}) {
-    return <>{profileLess ? <BsPersonX size={size} style={{marginRight: 5}}/> :
-        <BsPerson size={size} style={{marginRight: 5}}/>} {label}</>
+export default function ProfileLabel({label, profileLess = false, profileIcon = 'profile', profileLessIcon = 'profile-less', size = 20}) {
+    return <><span style={{marginRight: 5}}>{profileLess ? <FlowNodeIcons icon={profileLessIcon} size={size}/> :
+        <FlowNodeIcons icon={profileIcon} size={size}/>}</span> {label}</>
 }

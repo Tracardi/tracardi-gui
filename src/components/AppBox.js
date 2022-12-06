@@ -155,11 +155,11 @@ const AppBox = () => {
                         new PrivateTab(["admin", "marketer", "developer"],
                             <EventsAnalytics/>, "/data/events", "Events"),
                         new PrivateTab(["admin", "marketer", "developer"],
-                            <ProfilesAnalytics/>, "/data/profiles", "Profiles"),
+                            <ProfilesAnalytics/>, "/data/profiles", <>{window?.CONFIG?.profile?.plural || "Profiles"}</>),
                         new PrivateTab(["admin", "marketer", "developer"],
                             <SessionsAnalytics/>, "/data/sessions", "Sessions"),
-                        new PrivateTab(["admin", "marketer", "developer"],
-                            <EntityAnalytics/>, "/data/entities", "Entities")
+                        !window?.CONFIG?.entity?.disable  && new PrivateTab(["admin", "marketer", "developer"],
+                            <EntityAnalytics/>, "/data/entities", <>{window?.CONFIG?.entity?.plural || "Entities"}</>)
                     ]}
                     />
                 </Suspense>

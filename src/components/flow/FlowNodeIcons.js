@@ -6,7 +6,7 @@ import {
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
     BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown,
-    BsFolderCheck, BsClock, BsBoxArrowRight, BsGithub
+    BsFolderCheck, BsClock, BsBoxArrowRight, BsGithub, BsPersonX
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -22,7 +22,7 @@ import {
     BiArrowToRight,
     BiMessageSquareCheck
 } from "react-icons/bi";
-import {RiIncreaseDecreaseLine, RiScissorsCutFill} from "react-icons/ri";
+import {RiIncreaseDecreaseLine, RiScissorsCutFill, RiTrainLine} from "react-icons/ri";
 import {
     IoCloudOutline,
     IoPush,
@@ -119,6 +119,7 @@ export const icons = {
     "property": (size) => <RiScissorsCutFill size={size}/>,
     "start": (size) => <VscDebugStart size={size}/>,
     'profile': (size) => <BsPerson size={size}/>,
+    'profile-less': (size) => <BsPersonX size={size}/>,
     "stop": (size) => <VscDebugStop size={size}/>,
     'plugin': (size) => <VscPlug size={size}/>,
     "copy-property": (size) => <AiOutlineSisternode size={size}/>,
@@ -243,7 +244,8 @@ export const icons = {
     "hand-stop": (size) => <IoHandLeftOutline size={size}/>,
     "github": (size) => <BsGithub size={size} />,
     "redirect": (size) => <IoArrowRedoOutline size={size}/>,
-    "javascript": (size) => <SiJavascript size={size}/>
+    "javascript": (size) => <SiJavascript size={size}/>,
+    "train": (size) => <RiTrainLine size={size} />
 }
 
 

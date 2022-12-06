@@ -11,7 +11,10 @@ import BrowserLabel from "../misc/IconLabels/BrowserLabel";
 import ProfileLabel from "../misc/IconLabels/ProfileLabel";
 
 export default function SessionCardInfo({session}) {
+
     const labelWidth = 180
+    const displayMoreContext = window?.CONFIG?.session?.display?.row?.moreContext
+
     return <>
         <PropertyField labelWidth={labelWidth} name="Id" content={<IdLabel label={session?.id}/>}/>
         <PropertyField labelWidth={labelWidth} name="Started"
@@ -24,12 +27,6 @@ export default function SessionCardInfo({session}) {
                            />}
                        </>
                        }/>
-
-        {/*{session?.metadata?.time?.duration && <PropertyField*/}
-        {/*    labelWidth={labelWidth}*/}
-        {/*    name="Duration"*/}
-        {/*    content={<TimeValue time={session?.metadata?.time?.duration}/>}*/}
-        {/*/>}*/}
         {session?.context?.browser?.local?.device?.platform && <PropertyField
             labelWidth={labelWidth}
             name="Platform"
@@ -43,8 +40,9 @@ export default function SessionCardInfo({session}) {
 
         {session?.profile?.id && <PropertyField
             labelWidth={labelWidth}
-            name="Profile id"
-            content={<ProfileLabel label={session.profile.id}/>}
+            name={window?.CONFIG?.profile?.id  || "Profile id"}
+            content={<ProfileLabel label={session.profile.id}
+                                   profileIcon={window?.CONFIG?.profile?.icon1 || 'profile'}/>}
             underline={false}
             drawerSize={1250}
         >
@@ -52,7 +50,7 @@ export default function SessionCardInfo({session}) {
         </PropertyField>}
 
         <div style={{marginTop: 20}}>
-            {session?.id && <SessionContextInfo sessionId={session?.id}/>}
+            {displayMoreContext && session?.id && <SessionContextInfo sessionId={session?.id}/>}
         </div>
     </>
 }

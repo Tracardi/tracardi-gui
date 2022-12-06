@@ -19,8 +19,10 @@ import NoData from "../misc/NoData";
 
 export default function ProfileDetails({profile}) {
 
+    const displayPii = window?.CONFIG?.profile?.display?.details?.pii
+
     return <div style={{height: "inherit", display: "flex", flexDirection: "column"}}>
-        <PiiDetails data={profile}/>
+        {displayPii &&  <PiiDetails data={profile}/>}
         <div className="RightTabScroller">
             <Tabs tabs={["Personal data & Traits", "Sessions & Events", "Segments", "Logs", "Raw"]} tabsStyle={{backgroundColor: "#e1f5fe"}}>
                 <TabCase id={0}>

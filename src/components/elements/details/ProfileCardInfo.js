@@ -8,6 +8,7 @@ import {profileName} from "../../../misc/formaters";
 import {BsGlobe, BsPhone} from "react-icons/bs";
 import IconLabel from "../misc/IconLabels/IconLabel";
 import {ProfileDetailsById} from "./ProfileDetails";
+import FlowNodeIcons from "../../flow/FlowNodeIcons";
 
 export default function ProfileCardInfo({profile}) {
 
@@ -15,9 +16,16 @@ export default function ProfileCardInfo({profile}) {
 
     return <>
         <PropertyField labelWidth={labelWidth} name="Id" content={<IdLabel label={profile.id}/>}/>
-        <PropertyField labelWidth={labelWidth} name="Profile" content={<ProfileLabel label={profileName(profile)}/>}/>
-        <PropertyField labelWidth={labelWidth} name="First visit" content={<DateValue date={profile.metadata?.time?.insert}/>}/>
-        <PropertyField labelWidth={labelWidth} name="Last visit" content={<>
+        {window?.CONFIG?.profile?.display?.row?.id === "name" && <PropertyField labelWidth={labelWidth} name={window?.CONFIG?.profile?.name || "Profile"} content={<ProfileLabel
+            profileIcon={window?.CONFIG?.profile?.icon1 || "profile"}
+            label={profileName(profile)}/>}
+        />}
+        {window?.CONFIG?.profile?.display?.row?.id === "id" && <PropertyField labelWidth={labelWidth} name={window?.CONFIG?.profile?.id || "Profile id"} content={<IconLabel
+            icon={<span style={{marginRight: 5}}><FlowNodeIcons icon={window?.CONFIG?.profile?.icon1 || "profile"} size={20}/></span>}
+            value={profile.id}/>}
+        />}
+        <PropertyField labelWidth={labelWidth} name="First seen" content={<DateValue date={profile.metadata?.time?.insert}/>}/>
+        <PropertyField labelWidth={labelWidth} name="Last seen" content={<>
             <DateValue date={profile?.metadata?.time?.visit?.current}/>
             {profile?.metadata?.time?.visit?.tz && <IconLabel
                 value={profile?.metadata.time.visit.tz}

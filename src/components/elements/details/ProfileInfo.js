@@ -18,6 +18,8 @@ import {ProfileDetailsById} from "./ProfileDetails";
 
 export const ProfileData = ({profile}) => {
 
+    const displayPii = window?.CONFIG?.profile?.display?.details?.pii
+
     const pii = object2dot(profile?.pii);
     const stats = object2dot(profile?.stats);
     const privateTraits = object2dot(profile?.traits?.private)
@@ -25,7 +27,7 @@ export const ProfileData = ({profile}) => {
 
     return <div style={{margin: 20, display: "flex", gap: 20}}>
         <div style={{width: "50%"}}>
-            {pii && <fieldset style={{marginBottom: 20}}>
+            {displayPii && pii && <fieldset style={{marginBottom: 20}}>
                 <legend style={{fontSize: 13}}>Profile personal data</legend>
                 {Object.keys(pii).map(key => <PropertyField key={key}
                                                             name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}

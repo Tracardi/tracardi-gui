@@ -6,6 +6,9 @@ import SessionDetails from "../../details/SessionDetails";
 import SessionCardInfo from "../../details/SessionCardInfo";
 
 export default function SessionRow({session, filterFields}) {
+
+    const displayContext = window?.CONFIG?.session?.display?.row?.context
+
     return <div style={{display: "flex"}}>
         <div style={{flex: "1 1 0", minWidth: 540, borderRight: "solid 1px #ccc", paddingRight: 17}}>
             <SessionCardInfo session={session}/>
@@ -17,11 +20,11 @@ export default function SessionRow({session, filterFields}) {
                     <SessionDetails data={session}/>
                 </PropertyField>
             </div>
-            <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0}}>
+            {displayContext && <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0}}>
                 <legend>Context</legend>
                 {!isEmptyObject(session.context) ?
                     <JsonStringify data={session.context} filterFields={filterFields}/> : "No context"}
-            </fieldset>
+            </fieldset>}
         </div>
     </div>
 }
