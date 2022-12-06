@@ -26,6 +26,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'development') {
     });
 }
 
+console.log(window.CONFIG)
 
 ReactDOM.render(
     <React.StrictMode>

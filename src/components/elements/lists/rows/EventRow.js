@@ -1,6 +1,5 @@
 import PropertyField from "../../details/PropertyField";
 import {EventDetailsById} from "../../details/EventDetails";
-import {profileName} from "../../../../misc/formaters";
 import {ProfileDetailsById} from "../../details/ProfileDetails";
 import {isEmptyObject, isNotEmptyArray} from "../../../../misc/typeChecking";
 import JsonStringify from "../../misc/JsonStingify";
@@ -52,6 +51,7 @@ export function EventRow({row, filterFields}) {
                         icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
                     />}
                 </>}/>
+                {row?.metadata?.channel && <PropertyField labelWidth={labelWidth} name="Channel" content={row.metadata.channel}/>}
                 <PropertyField labelWidth={labelWidth}
                                name="Profile"
                                content={<ProfileLabel label={row.profile.id}
@@ -59,9 +59,9 @@ export function EventRow({row, filterFields}) {
                                drawerSize={1320}>
                     {row?.profile?.id && <ProfileDetailsById id={row.profile.id}/>}
                 </PropertyField>
-                <PropertyField labelWidth={labelWidth}
+                {row.profile?.metadata?.time?.visit?.count && <PropertyField labelWidth={labelWidth}
                                name="Profile visits"
-                               content={row.profile?.metadata?.time?.visit?.count}/>
+                               content={row.profile.metadata.time.visit.count}/>}
                 <PropertyField labelWidth={labelWidth}
                                name="Source id"
                                content={<IdLabel label={row.source?.id}/>}>

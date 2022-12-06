@@ -195,6 +195,18 @@ const EventSourceDescriptionForm = ({value: _value, style, errorNameMessage, onC
                         fullWidth
                     />
                 </TuiFormGroupField>
+                <TuiFormGroupField header="Channel"
+                                   description="Data channel describes from where the data comes from, e.g. web,
+                                   mobile, email, database, machine-1, etc. It is away of grouping data streams.">
+                    <TextField
+                        label={"Event source channel"}
+                        value={value.channel}
+                        size="small"
+                        onChange={(ev) => handleChange('channel', ev.target.value)}
+                        variant="outlined"
+                        fullWidth
+                    />
+                </TuiFormGroupField>
                 <TuiFormGroupField header="Description"
                                    description="Description will help you understand what kind of event source it is.">
                     <TextField
@@ -231,6 +243,7 @@ const EventSourceForm = ({value, style, onClose}) => {
             id: uuid4(),
             name: "",
             description: "",
+            channel: "",
             type: 'rest',
             bridge: {
                 id: "",
@@ -248,7 +261,7 @@ const EventSourceForm = ({value, style, onClose}) => {
             manual: null
         }
     }
-
+    console.log(value)
     const config = useRef(value.config)
     const metadata = useRef({
         id: (!value.id) ? uuid4() : value.id,
@@ -293,7 +306,7 @@ const EventSourceForm = ({value, style, onClose}) => {
                         id: bridge.id,
                         name: bridge.name
                     },
-                    type: bridge.type,
+                    type: bridge.type || value.type,
                     tags: value.tags,
                     config: config.current,
                     manual: bridge.manual

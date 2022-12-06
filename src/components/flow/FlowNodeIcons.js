@@ -87,7 +87,8 @@ import {
     SiHubspot,
     SiLivechat,
     SiZendesk,
-    SiIntercom
+    SiIntercom,
+    SiJavascript
 } from "react-icons/si";
 import {GrMysql} from "react-icons/gr";
 import {
@@ -242,6 +243,7 @@ export const icons = {
     "hand-stop": (size) => <IoHandLeftOutline size={size}/>,
     "github": (size) => <BsGithub size={size} />,
     "redirect": (size) => <IoArrowRedoOutline size={size}/>,
+    "javascript": (size) => <SiJavascript size={size}/>
 }
 
 

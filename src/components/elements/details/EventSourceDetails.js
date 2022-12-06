@@ -44,6 +44,7 @@ const Details = ({data}) => <>
                 {data && <>
                     <PropertyField labelWidth={400} name="Id" content={<IdLabel label={data.id}/>}/>
                     {data.bridge.name && <PropertyField labelWidth={400} name="Data bridge type" content={data.bridge.name}/>}
+                    {data.channel && <PropertyField labelWidth={400} name="Channel" content={data.channel}/>}
                     <PropertyField labelWidth={400} name="Endpoint type" content={data.type}/>
                     <PropertyField labelWidth={400} name="Created" content={<DateValue date={data.timestamp}/>}/>
                     <PropertyField labelWidth={400} name="Active" content={<ActiveTag active={data.enabled}/>}/>
