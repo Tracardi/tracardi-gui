@@ -35,6 +35,7 @@ export function EventRow({row, filterFields}) {
     const displaySession = window?.CONFIG?.event?.display?.row?.session
     const displaySource = window?.CONFIG?.event?.display?.row?.source
     const displayChannel = window?.CONFIG?.event?.display?.row?.channel
+    const displayCreateTime = window?.CONFIG?.event?.display?.row?.createTime
 
     return <>
         {jsonData && <ResponsiveDialog title="Event JSON"
@@ -47,7 +48,14 @@ export function EventRow({row, filterFields}) {
         <div style={{display: "flex"}}>
             <div style={{flex: "1 1 0", minWidth: 560, borderRight: "solid 1px #ccc", paddingRight: 17}}>
                 <PropertyField labelWidth={labelWidth} name="id" content={<IdLabel label={row.id}/>}/>
-                <PropertyField labelWidth={labelWidth} name="Date" content={<>
+                {displayCreateTime && row.metadata?.time?.create && <PropertyField labelWidth={labelWidth} name="Created" content={<>
+                    <DateValue date={row.metadata?.time?.create} style={{marginRight: 5}}/>
+                    {row?.session?.tz && <IconLabel
+                        value={row?.session?.tz}
+                        icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
+                    />}
+                </>}/>}
+                <PropertyField labelWidth={labelWidth} name="Inserted" content={<>
                     <DateValue date={row.metadata?.time?.insert} style={{marginRight: 5}}/>
                     {row?.session?.tz && <IconLabel
                         value={row?.session?.tz}

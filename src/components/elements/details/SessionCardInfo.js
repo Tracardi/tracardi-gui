@@ -14,9 +14,15 @@ export default function SessionCardInfo({session}) {
 
     const labelWidth = 180
     const displayMoreContext = window?.CONFIG?.session?.display?.row?.moreContext
+    const displayChannel = window?.CONFIG?.session?.display?.row?.channel
 
     return <>
         <PropertyField labelWidth={labelWidth} name="Id" content={<IdLabel label={session?.id}/>}/>
+        {displayChannel && session?.metadata?.channel && <PropertyField
+            labelWidth={labelWidth}
+            name="Channel"
+            content={session?.metadata?.channel}/>}
+
         <PropertyField labelWidth={labelWidth} name="Started"
                        content={<>
                            <DateValue date={session?.metadata?.time?.insert}/>
