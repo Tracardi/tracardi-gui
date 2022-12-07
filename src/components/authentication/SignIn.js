@@ -200,6 +200,11 @@ const SignInForm = ({showAlert}) => {
                                 autoComplete="email"
                                 size="small"
                                 autoFocus
+                                onKeyPress={async (event) => {
+                                    if (event.key === "Enter") {
+                                        await handleSubmit()
+                                    }
+                                }}
                                 onChange={handleEmailChange}/>
                             <PasswordInput
                                 fullWidth={true}
@@ -207,6 +212,7 @@ const SignInForm = ({showAlert}) => {
                                 id="password"
                                 autoComplete="current-password"
                                 onChange={handlePassChange}
+                                onEnter={handleSubmit}
                                 required={true}
                             />
                             <Button

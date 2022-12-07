@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {BsEye, BsEyeSlashFill} from "react-icons/bs";
 import TextField from "@mui/material/TextField";
 
-export default function PasswordInput({label = "Password", value, onChange, fullWidth = false, error, helperText, style, required}) {
+export default function PasswordInput({label = "Password", value, onChange, onEnter, fullWidth = false, error, helperText, style, required}) {
     const [showPassword, setShowPassword] = useState(false);
     const [data, setData] = useState(value);
 
@@ -46,5 +46,10 @@ export default function PasswordInput({label = "Password", value, onChange, full
         }}
         label={label}
         variant="outlined"
+        onKeyPress={(event) => {
+            if (onEnter && event.key === "Enter") {
+                onEnter()
+            }
+        }}
     />
 }
