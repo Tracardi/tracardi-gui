@@ -23,9 +23,8 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
     const [eventType, setEventType] = useState(evType);
     const [properties, setProperties] = useState(JSON.stringify({}));
     const [context, setContext] = useState(JSON.stringify({}));
-    const [profileFlag, setProfileFlag] = useState(true);
     const [progress, setProgress] = useState(false);
-    const [debug, setDebug] = useState(false);
+    const [debug, setDebug] = useState(true);
 
     const handleSubmit = async () => {
         setProgress(true);
@@ -54,7 +53,6 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
                         }
                     ],
                     options: {
-                        profile: profileFlag,
                         debugger: debug
                     }
                 }
@@ -104,7 +102,6 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
                 </TuiFormGroupField>
 
                 <TuiFormGroupField header="Options">
-                    <BoolInput label="Return profile data" value={profileFlag} onChange={setProfileFlag}/>
                     <BoolInput label="Return debugger data, TRACK_DEBUG env must be set to yes" value={debug} onChange={setDebug}/>
                 </TuiFormGroupField>
 

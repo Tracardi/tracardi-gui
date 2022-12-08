@@ -116,12 +116,15 @@ const SignInForm = ({showAlert}) => {
 
     const handleSubmit = async (event) => {
 
-        track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-login', {
-            email,
-            apiUrl,
-            platform: "Tracardi " + version(),
-            location: await getLocation()
-        }).then(() => {})
+        if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'development') {
+            track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-login', {
+                email,
+                apiUrl,
+                platform: "Tracardi " + version(),
+                location: await getLocation()
+            }).then(() => {
+            })
+        }
 
         const api = loginUser(email, password);
         setProgress(true);

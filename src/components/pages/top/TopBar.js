@@ -24,11 +24,14 @@ export default function TopBar({children}) {
                     label="Tracardi API"
                     value={getApiUrl()}
                     onReset={handleEndpointReset}/>
-                <span onMouseEnter={()=> {
-                    track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-need-help', {
-                        version: version()
-                    }).then(() => {})
-                }}><NeedHelpButton/></span>
+                <span onMouseEnter={() => {
+                    if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'development') {
+                        track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-need-help', {
+                            version: version()
+                        }).then(() => {})
+                    }
+                }
+                }><NeedHelpButton/></span>
             </span>
 
     </div>
