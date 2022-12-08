@@ -95,17 +95,17 @@ function MainMenu({app, showAlert, changeRoute}) {
             <div>
                 <MenuRow icon={<VscDashboard size={20}/>} label="Dashboard" collapsed={collapsed} onClick={go("/dashboard")} route="/dashboard" roles={["admin", "developer", "marketer", "maintainer"]} style={{marginBottom: 20}}/>
 
-                <MenuRow icon={<BsBoxArrowInRight size={20}/>} label="Inbound Traffic" collapsed={collapsed} onClick={go("/inbound")} route="/inbound" roles={["admin", "developer"]}/>
-                <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")} route="/data" roles={["admin", "developer", "marketer"]}/>
-                <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Integration" collapsed={collapsed} onClick={go("/processing")} route="/processing" roles={["admin", "developer"]}/>
-                <MenuRow icon={<VscOrganization size={20}/>} label="Segmentation" collapsed={collapsed} onClick={go("/segmentation")} route="/segmentation" roles={["admin", "developer", "marketer"]}/>
-                <MenuRow icon={<BsBarChartFill size={20}/>} label="Reporting" collapsed={collapsed} onClick={go("/reporting")} route="/reporting" roles={["admin", "developer", "marketer"]}/>
-                <MenuRow icon={<BsBoxArrowRight size={20}/>} label="Outbound Traffic" collapsed={collapsed} onClick={go("/outbound")} route="/outbound" roles={["admin", "developer"]}/>
+                {!window?.CONFIG?.menu?.inbound?.disable && <MenuRow icon={<BsBoxArrowInRight size={20}/>} label="Inbound Traffic" collapsed={collapsed} onClick={go("/inbound")} route="/inbound" roles={["admin", "developer"]}/>}
+                {!window?.CONFIG?.menu?.data?.disable && <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")} route="/data" roles={["admin", "developer", "marketer"]}/>}
+                {!window?.CONFIG?.menu?.integration?.disable && <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Integration" collapsed={collapsed} onClick={go("/processing")} route="/processing" roles={["admin", "developer"]}/>}
+                {!window?.CONFIG?.menu?.segmentation?.disable && <MenuRow icon={<VscOrganization size={20}/>} label="Segmentation" collapsed={collapsed} onClick={go("/segmentation")} route="/segmentation" roles={["admin", "developer", "marketer"]}/>}
+                {!window?.CONFIG?.menu?.reporting?.disable && <MenuRow icon={<BsBarChartFill size={20}/>} label="Reporting" collapsed={collapsed} onClick={go("/reporting")} route="/reporting" roles={["admin", "developer", "marketer"]}/>}
+                {!window?.CONFIG?.menu?.outbound?.disable && <MenuRow icon={<BsBoxArrowRight size={20}/>} label="Outbound Traffic" collapsed={collapsed} onClick={go("/outbound")} route="/outbound" roles={["admin", "developer"]}/>}
 
-                <MenuRow icon={<BsStar size={20}/>} label="Resources" collapsed={collapsed} onClick={go("/resources")} route="/resources" roles={["admin", "developer"]} style={{marginTop: 20}}/>
-                <MenuRow icon={<VscLaw size={20}/>} label="Consents" collapsed={collapsed} onClick={go("/consents")} route="/consents" roles={["admin", "developer", "marketer"]}/>
+                {!window?.CONFIG?.menu?.resources?.disable && <MenuRow icon={<BsStar size={20}/>} label="Resources" collapsed={collapsed} onClick={go("/resources")} route="/resources" roles={["admin", "developer"]} style={{marginTop: 20}}/>}
+                {!window?.CONFIG?.menu?.consents?.disable && <MenuRow icon={<VscLaw size={20}/>} label="Consents" collapsed={collapsed} onClick={go("/consents")} route="/consents" roles={["admin", "developer", "marketer"]}/>}
 
-                <MenuRow icon={<BsClipboardCheck size={20}/>} label="Test" collapsed={collapsed} onClick={go("/testing")} route="/testing" roles={["admin", "developer"]} style={{marginTop: 20}}/>
+                {!window?.CONFIG?.menu?.test?.disable && <MenuRow icon={<BsClipboardCheck size={20}/>} label="Test" collapsed={collapsed} onClick={go("/testing")} route="/testing" roles={["admin", "developer"]} style={{marginTop: 20}}/>}
 
 
             </div>
@@ -118,26 +118,26 @@ function MainMenu({app, showAlert, changeRoute}) {
                 route="/my-account"
                 alwaysDisplay={true}
                 />
-            <MenuRow icon={<VscPulse size={20}/>}
+            {!window?.CONFIG?.menu?.monitoring?.disable && <MenuRow icon={<VscPulse size={20}/>}
                      label="Monitoring"
                      collapsed={collapsed}
                      onClick={go("/monitoring")}
                      route="/monitoring"
-                     roles={["admin"]}/>
-            <MenuRow icon={<VscTools size={20}/>}
+                     roles={["admin"]}/>}
+            {!window?.CONFIG?.menu?.maintenance?.disable && <MenuRow icon={<VscTools size={20}/>}
                      label="Maintenance"
                      collapsed={collapsed}
                      onClick={go("/maintenance")}
                      route="/maintenance"
-                     roles={["admin", "maintainer"]}/>
-            <MenuRow icon={<BsFileEarmarkArrowUp size={20}/>} label="Import" collapsed={collapsed} onClick={go("/import")} route="/import" roles={["admin", "developer"]}/>
-            <MenuRow icon={<GoSettings size={20}/>}
+                     roles={["admin", "maintainer"]}/>}
+            {!window?.CONFIG?.menu?.import?.disable && <MenuRow icon={<BsFileEarmarkArrowUp size={20}/>} label="Import" collapsed={collapsed} onClick={go("/import")} route="/import" roles={["admin", "developer"]}/>}
+            {!window?.CONFIG?.menu?.settings?.disable && <MenuRow icon={<GoSettings size={20}/>}
                      label="Settings"
                      collapsed={collapsed}
                      onClick={go("/settings")}
                      route="/settings"
                      roles={["admin", "developer"]}
-                     style={{marginBottom: 20}}/>
+                     style={{marginBottom: 20}}/>}
             <MenuRow icon={collapsed ? <BiChevronRightCircle size={20}/> : <BiChevronLeftCircle size={20}/>}
                      collapsed={collapsed}
                      label="Collapse"
