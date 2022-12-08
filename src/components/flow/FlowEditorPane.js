@@ -589,6 +589,13 @@ export function FlowEditorPane(
         event.stopPropagation();
     }
 
+    const onNodeDragStop = (event, node) => {
+        const newElements = elements.map((item) => {
+            return item.id === node.id ? node : item
+        })
+        setElements(newElements)
+    }
+
     const selectNode = (node) => {
         selectedNode.current = node;
         setCurrentNode(node)
@@ -665,6 +672,7 @@ export function FlowEditorPane(
                                 onElementClick={onElementClick}
                                 onNodeDoubleClick={onElementDoubleClick}
                                 onEdgeDoubleClick={onElementDoubleClick}
+                                onNodeDragStop={onNodeDragStop}
                                 // onSelectionChange={onSelectionChange}
                                 onNodeContextMenu={onNodeContextMenu}
                                 onEdgeContextMenu={onEdgeContextMenu}
