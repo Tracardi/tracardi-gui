@@ -71,6 +71,7 @@ export default function EventSources() {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
                                            data={data}
+                                           status={row?.enabled}
                                            onClick={() => onClick(row?.id)}
                                            onDelete={handleDelete}
                                            tags={[row.type]}

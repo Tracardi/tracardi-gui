@@ -2,18 +2,22 @@ import TextField from "@mui/material/TextField";
 import React, {useEffect, useRef, useState} from "react";
 import Button from "./Button";
 import {v4 as uuid4} from 'uuid';
-import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField} from "../tui/TuiForm";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import PropTypes from 'prop-types';
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import TuiTagger from "../tui/TuiTagger";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
+import JsonEditor from "../editors/JsonEditor";
+import Switch from "@mui/material/Switch";
 
 export default function EventMetadataForm({
                                                 id,
                                                 name: _name,
                                                 description: _description,
                                                 event_type: _eventType,
+                                                index_schema: _indexSchema,
+    index_enabled: _indexEnabled,
                                                 tags: _tags,
                                                 onSaveComplete
                                             }) {
@@ -25,7 +29,8 @@ export default function EventMetadataForm({
         name: _eventType
     } : null);
     const [tags, setTags] = useState(_tags || []);
-
+    const [indexSchema, setIndexSchema] = useState(JSON.stringify(_indexSchema, null, " ") || "{}");
+    const [indexEnabled, setIndexEnabled] = useState(_indexEnabled || false);
     const [processing, setProcessing] = useState(false);
 
     const [nameErrorMessage, setNameErrorMessage] = useState("");
@@ -64,6 +69,8 @@ export default function EventMetadataForm({
                 name: name,
                 description: description,
                 event_type: eventType.id,
+                index_schema: JSON.parse(indexSchema),
+                index_enabled: indexEnabled,
                 tags: tags && Array.isArray(tags) && tags.length > 0 ? tags : ["General"],
             }
 
@@ -137,6 +144,27 @@ export default function EventMetadataForm({
                 <TuiFormGroupField header="Event type tags"
                                    description="Tag the event types to group it into meaningful groups.">
                     <TuiTagger tags={tags}  onChange={handleTagChange}/>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Event traits indexing"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Event data indexing"
+                                   description="Select which properties should be indexed as event traits.
+                                   Type key, value pair with the key as property name and value as trait name. ">
+                    <Switch
+                        checked={indexEnabled}
+                        onChange={(ev) => setIndexEnabled(ev.target.checked)}
+                    />
+                    <span>
+                        Enable traits indexing
+                    </span>
+                    <fieldset disabled={!indexEnabled}>
+                        <legend>Indexing schema</legend>
+                        <JsonEditor value={indexSchema} onChange={setIndexSchema}/>
+                    </fieldset>
+
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>

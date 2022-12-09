@@ -40,6 +40,7 @@ export default function Rules() {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
                                            data={{...row, icon: "route"}}
+                                           status={row?.enabled}
                                            onClick={() => onClick(row?.id)}/>
                     })}
                 </div>

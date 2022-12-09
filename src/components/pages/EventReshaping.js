@@ -63,6 +63,7 @@ export default function EventReshaping() {
                                            id={row?.id}
                                            data={{...row, icon: "map-properties"}}
                                            onDelete={handleDelete}
+                                           status={row?.enabled}
                                            onClick={() => onClick(row?.id)}/>
                     })}
                 </div>

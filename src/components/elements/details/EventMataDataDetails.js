@@ -13,6 +13,10 @@ import TuiTags from "../tui/TuiTags";
 import PropertyField from "./PropertyField";
 import IconLabel from "../misc/IconLabels/IconLabel";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
+import Properties from "./DetailProperties";
+import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
+import NoData from "../misc/NoData";
+import ActiveTag from "../misc/ActiveTag";
 
 export default function EventMataDataDetails({id, onDeleteComplete, onEditComplete}) {
 
@@ -77,28 +81,38 @@ export default function EventMataDataDetails({id, onDeleteComplete, onEditComple
 
     const Details = () => <TuiForm>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Event type metadata" description="Information on event type"/>
             <TuiFormGroupContent>
-
                 <PropertyField name="Event type" content={<IconLabel value={data.event_type} icon={<FlowNodeIcons icon="event"/>}/>}/>
                 <PropertyField name="Name" content={data.name}/>
                 <PropertyField name="Description" content={data.description}/>
-                <PropertyField name="Tags" content={<TuiTags tags={data.tags} size="small"/>}/>
-
-                <Rows style={{marginTop: 20}}>
-                    <Button onClick={onEditClick}
-                            icon={<VscEdit size={20}/>}
-                            label="Edit" disabled={typeof data === "undefined"}/>
-                    <Button
-                        progress={deleteProgress}
-                        icon={<VscTrash size={20}/>}
-                        onClick={onDelete}
-                        label="Delete"
-                        disabled={typeof data === "undefined"}/>
-                </Rows>
-
+                <PropertyField name="Tags" underline={false} content={<TuiTags tags={data.tags} size="small"/>}/>
             </TuiFormGroupContent>
         </TuiFormGroup>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Event data indexing"/>
+            <TuiFormGroupContent>
+                <PropertyField name="Indexing enabled" underline={false} content={<ActiveTag active={data.index_enabled}/>}/>
+                <h3>Property to Trait Indexing Schema</h3>
+                <p>This is the schema describing how properties are indexed as traits. Indexed property is removed from properties.</p>
+                {!isEmptyObjectOrNull(data?.index_schema)
+                    ? <Properties properties={data.index_schema}/>
+                    : <NoData header="No data indexing is set">
+                        <span style={{textAlign: "center"}}>Data is stored in event properties, it can be searched but it will not be visible as event traits, and no reporting will be possible.</span>
+                    </NoData>
+                }
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <Rows style={{marginTop: 20}}>
+            <Button onClick={onEditClick}
+                    icon={<VscEdit size={20}/>}
+                    label="Edit" disabled={typeof data === "undefined"}/>
+            <Button
+                progress={deleteProgress}
+                icon={<VscTrash size={20}/>}
+                onClick={onDelete}
+                label="Delete"
+                disabled={typeof data === "undefined"}/>
+        </Rows>
     </TuiForm>
 
     return <div className="Box10" style={{height: "100%"}}>

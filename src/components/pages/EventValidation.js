@@ -63,6 +63,7 @@ export default function EventValidation() {
                                            id={row?.id}
                                            data={{...row, icon: "validator"}}
                                            onDelete={handleDelete}
+                                           status={row?.enabled}
                                            onClick={() => onClick(row?.id)}/>
                     })}
                 </div>

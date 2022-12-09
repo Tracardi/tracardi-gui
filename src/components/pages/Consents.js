@@ -63,6 +63,7 @@ export default function  Consents() {
                                            id={row?.id}
                                            data={{...row, icon: "consent"}}
                                            onClick={onClick}
+                                           status={row?.enabled}
                                            onDelete={handleDelete}
                         />
                     })}

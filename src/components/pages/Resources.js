@@ -62,6 +62,7 @@ export default function Resources({defaultLayout="rows"}) {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
                                            data={row}
+                                           status={row?.enabled}
                                            onClick={onClick}
                                            onDelete={handleDelete}
                         />

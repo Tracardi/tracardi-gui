@@ -39,6 +39,7 @@ export default function Segments() {
                     {plugs.map((row, subIndex) => {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
+                                           status={row?.enabled}
                                            data={{...row, icon: "segment"}}
                                            onClick={() => onClick(row?.id)}/>
                     })}

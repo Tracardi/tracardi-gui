@@ -101,7 +101,6 @@ export default function EventValidationForm({onSubmit, init}) {
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Describe event validator"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Name">
                     <TextField
