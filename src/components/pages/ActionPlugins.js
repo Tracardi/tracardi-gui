@@ -95,13 +95,16 @@ export default function ActionPlugins() {
                             icon: row?.plugin?.metadata?.icon,
                             enabled: row?.settings?.enabled,
                             name: row?.plugin?.metadata?.name,
-                            description: row?.plugin?.metadata?.desc
+                            description: row?.plugin?.metadata?.desc,
+                            version: row?.plugin?.spec?.version
                         }
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
                                            data={data}
                                            onClick={() => onClick(row?.id)}
-                                           onDelete={onDelete}/>
+                                           onDelete={onDelete}>
+                            {data.description} (v{data.version})
+                        </BrowserRow>
                     })}
                 </div>
             </div>

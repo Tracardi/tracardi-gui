@@ -1,16 +1,38 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {VscOrganization} from "react-icons/vsc";
 import SegmentForm from "../elements/forms/SegmentForm";
 import SegmentDetails from "../elements/details/SegmentDetails";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
+import {useConfirm} from "material-ui-confirm";
+import {asyncRemote} from "../../remote_api/entrypoint";
 
 export default function Segments() {
+
+    const [refresh, setRefresh] = useState(0);
 
     const urlFunc = useCallback((query) => ('/segments' + ((query) ? "?query=" + query : "")), [])
     const addFunc = useCallback((close) => <SegmentForm onSubmit={close}/>, [])
     const detailsFunc = useCallback((id, close) => <SegmentDetails id={id} onDeleteComplete={close}/>, []);
+
+    const confirm = useConfirm();
+
+    const handleDelete = async (id) => {
+        confirm({title: "Do you want to delete this segmentation?", description: "This action can not be undone."})
+            .then(async () => {
+                    try {
+                        await asyncRemote({
+                            url: '/segment/' + id,
+                            method: "delete"
+                        })
+                        setRefresh(refresh+1)
+                    } catch (e) {
+                        console.error(e)
+                    }
+                }
+            )
+    }
 
     const segmentsCards = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
@@ -41,7 +63,9 @@ export default function Segments() {
                                            id={row?.id}
                                            status={row?.enabled}
                                            data={{...row, icon: "segment"}}
-                                           onClick={() => onClick(row?.id)}/>
+                                           onClick={() => onClick(row?.id)}
+                                           onDelete={handleDelete}
+                        />
                     })}
                 </div>
             </div>
@@ -53,6 +77,7 @@ export default function Segments() {
         description="Segmentation is triggered every time the profile is updated. It evalutes the segment condition and
         if it is met then the profile is assigned to defined segment. Segments can be added dynamically inside the workflow."
         urlFunc={urlFunc}
+        defaultLayout="rows"
         cardFunc={segmentsCards}
         rowFunc={segmentsRows}
         buttomLabel="New segment"

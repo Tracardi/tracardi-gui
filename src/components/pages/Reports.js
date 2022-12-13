@@ -29,7 +29,7 @@ export default function Reports() {
         }
     }, [])
 
-    const onDelete = async (id) => {
+    const handleDelete = async (id) => {
         confirm({title: "Do you want to delete this report?", description: "This action can not be undone."})
             .then(async () => {
                     try {
@@ -61,7 +61,7 @@ export default function Reports() {
                                                    onClick={() => onClick(row?.id)}
                                                    onEdit={_ => {}}
                                                    description={row?.description}
-                                                   onDelete={onDelete}
+                                                   onDelete={handleDelete}
                         />
                     })}
                 </div>
@@ -78,7 +78,9 @@ export default function Reports() {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
                                            data={{...row, icon: "report"}}
-                                           onClick={() => onClick(row?.id)}/>
+                                           onClick={() => onClick(row?.id)}
+                                           onDelete={handleDelete}
+                        />
                     })}
                 </div>
             </div>
@@ -99,6 +101,6 @@ export default function Reports() {
         drawerAddWidth={600}
         addFunc={addFunc}
         refresh={refresh}
-        defaultLayout={"rows"}
+        defaultLayout="rows"
     />
 }
