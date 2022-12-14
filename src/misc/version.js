@@ -1,3 +1,3 @@
 export default function version() {
-    return "0.7.4-dev";
+    return "0.7.4";
 }
