@@ -65,7 +65,7 @@ export function EventRow({row, filterFields}) {
                 {displayChannel && row?.metadata?.channel && <PropertyField labelWidth={labelWidth} name="Channel" content={row.metadata.channel}/>}
                 <PropertyField labelWidth={labelWidth}
                                name={window?.CONFIG?.profile?.id || "Profile id"}
-                               content={<ProfileLabel label={row.profile.id}
+                               content={<ProfileLabel label={row.profile?.id}
                                                       profileIcon={window?.CONFIG?.profile?.icon1 || "profile"}
                                                       profileLessIcon={window?.CONFIG?.profile?.icon2 || "profile-less"}
                                                       profileLess={row.profile === null}/>}
