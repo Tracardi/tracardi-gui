@@ -11,6 +11,7 @@ import JsonEditor from "../editors/JsonEditor";
 import TuiTagger from "../tui/TuiTagger";
 import Switch from "@mui/material/Switch";
 import DocsLink from "../drawers/DocsLink";
+import Tabs, {TabCase} from "../tabs/Tabs";
 
 export default function EventReshapingForm({onSubmit, init}) {
 
@@ -29,6 +30,7 @@ export default function EventReshapingForm({onSubmit, init}) {
         }
     }
 
+    const [tab, setTab] = useState(0);
     const [name, setName] = useState(init.name);
     const [description, setDescription] = useState(init.description);
     const [eventType, setEventType] = useState(init.event_type);
@@ -170,14 +172,20 @@ export default function EventReshapingForm({onSubmit, init}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Reshaping event properties" description={<>
-                    <span>Set reshaping schema for event properties. Properties will be replaced bu the schema defined here. Use object template to reference data.</span>
-                    <DocsLink src="http://docs.tracardi.com/notations/object_template/"> Do you need help with object templates? </DocsLink>
-                </>}>
-                    <fieldset style={{marginTop: 10}}>
-                        <legend>Event Properties Schema</legend>
-                        <JsonEditor value={reshapeSchema} onChange={(value) => setReshapeSchema(value)} autocomplete={true}/>
-                    </fieldset>
+                <TuiFormGroupField header="Reshaping event data" description={<span className="flexLine">
+                    Reshape event data schema. If the event contains data that should be split between
+                        different parts like session context, properties or event has a property that is a profile id,
+                        then define the rules here. Use object template to reference data. <DocsLink src="http://docs.tracardi.com/notations/object_template/"> Do you need help with object templates? </DocsLink>
+                </span>}>
+                    <Tabs tabs={["Properties", "Session", "Profile"]} defaultTab={tab} onTabSelect={setTab}>
+                        <TabCase id={0}>
+                            <fieldset style={{marginTop: 10}}>
+                                <legend>Event Properties Schema</legend>
+                                <JsonEditor value={reshapeSchema} onChange={(value) => setReshapeSchema(value)} autocomplete={true}/>
+                            </fieldset>
+                        </TabCase>
+                    </Tabs>
+
                 </TuiFormGroupField>
 
             </TuiFormGroupContent>
