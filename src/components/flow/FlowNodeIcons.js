@@ -61,7 +61,8 @@ import {
     VscRunErrors,
     VscExclude,
     VscSymbolArray,
-    VscLaw
+    VscLaw,
+    VscLock
 } from "react-icons/vsc";
 import {MdLibraryAdd, MdTimer, MdPassword, MdTimelapse, MdTransform, MdCallSplit} from "react-icons/md";
 import {GoBrowser} from "react-icons/go";
@@ -126,6 +127,7 @@ export const icons = {
     'location': (size) => <FiMapPin size={size}/>,
     'timer': (size) => <MdTimer size={size}/>,
     'clock': (size) => <BiTimeFive size={size}/>,
+    'lock': (size) => <VscLock size={size}/>,
     'sleep': (size) => <RiRestTimeLine size={size}/>,
     'time-lapse': (size) => <MdTimelapse size={size}/>,
     'time': (size) => <BsClock size={size}/>,

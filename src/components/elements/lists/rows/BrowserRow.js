@@ -4,7 +4,7 @@ import {BsGear, BsTrash} from "react-icons/bs";
 import IconButton from "../../misc/IconButton";
 import TuiTags from "../../tui/TuiTags";
 
-const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, children, status}) => {
+const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, children, status, lock}) => {
 
     const statusColor = (status) => {
         return status ? "#00c853" : "#d81b60"
@@ -38,6 +38,7 @@ const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, childre
                 </div>
                 <div className="flexLine" style={{gap: 3}}>
                     {Array.isArray(tags) && <TuiTags tags={tags} size="small"/>}
+                    {lock && <FlowNodeIcons icon="lock" size={22}/>}
                     {typeof  status !== 'undefined'  && <div
                         style={{margin: "0 5px", width: 14, height: 14, borderRadius: 14, backgroundColor: statusColor(status)}}></div>}
                 </div>

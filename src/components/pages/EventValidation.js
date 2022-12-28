@@ -74,7 +74,8 @@ export default function EventValidation() {
     return <CardBrowser
         defaultLayout="rows"
         label="Event validation"
-        description="Event validation allows the check of event payload before it reaches the database and workflow."
+        description="Event validation allows the check of event payload before it reaches the database and workflow.
+        Event validation is available in commercial version of Tracardi."
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}

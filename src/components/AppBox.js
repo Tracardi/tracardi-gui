@@ -159,7 +159,7 @@ const AppBox = () => {
                         new PrivateTab(["admin", "marketer", "developer"],
                             <SessionsAnalytics/>, "/data/sessions", "Sessions"),
                         !window?.CONFIG?.entity?.disable  && new PrivateTab(["admin", "marketer", "developer"],
-                            <EntityAnalytics/>, "/data/entities", <>{window?.CONFIG?.entity?.plural || "Entities"}</>)
+                            <EntityAnalytics/>, "/data/entities", <><BsStar size={20} style={{marginRight: 5}}/>{window?.CONFIG?.entity?.plural || "Entities"}</>)
                     ]}
                     />
                 </Suspense>

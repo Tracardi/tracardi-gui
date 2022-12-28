@@ -48,6 +48,7 @@ const Details = ({data}) => <>
                     <PropertyField labelWidth={400} name="Endpoint type" content={data.type}/>
                     <PropertyField labelWidth={400} name="Created" content={<DateValue date={data.timestamp}/>}/>
                     <PropertyField labelWidth={400} name="Active" content={<ActiveTag active={data.enabled}/>}/>
+                    <PropertyField labelWidth={400} name="Locked" content={<ActiveTag active={data.locked}/>}/>
                     <PropertyField labelWidth={400} name="Synchronize profiles" content={<ActiveTag active={data.synchronize_profiles}/>}/>
                     <PropertyField labelWidth={400} name="Transitional" content={<ActiveTag active={data.transitional}/>}/>
                     <PropertyField labelWidth={400} name="Return profile" content={<ActiveTag active={data.returns_profile}/>}/>

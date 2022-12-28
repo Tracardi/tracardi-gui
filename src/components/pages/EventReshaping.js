@@ -74,7 +74,8 @@ export default function EventReshaping() {
     return <CardBrowser
         defaultLayout="rows"
         label="Event reshaping"
-        description="Event reshaping allows the change of event payload before it reaches the database and workflow."
+        description="Event reshaping allows the change of event payload before it reaches the database and workflow.
+        Event reshaping is available in commercial version of Tracardi."
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}

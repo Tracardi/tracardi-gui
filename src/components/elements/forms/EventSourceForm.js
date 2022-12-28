@@ -261,7 +261,7 @@ const EventSourceForm = ({value, style, onClose}) => {
             manual: null
         }
     }
-    console.log(value)
+
     const config = useRef(value.config)
     const metadata = useRef({
         id: (!value.id) ? uuid4() : value.id,

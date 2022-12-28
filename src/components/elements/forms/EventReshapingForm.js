@@ -24,7 +24,11 @@ export default function EventReshapingForm({onSubmit, init}) {
             tags: [],
             enabled: false,
             reshaping: {
-                reshape_schema: {},
+                reshape_schema: {
+                    properties: null,
+                    context: null,
+                    session: null
+                },
                 condition: ""
             }
         }
@@ -36,7 +40,9 @@ export default function EventReshapingForm({onSubmit, init}) {
     const [eventType, setEventType] = useState(init.event_type);
     const [tags, setTags] = useState(init.tags);
     const [enabled, setEnabled] = useState(init.enabled);
-    const [reshapeSchema, setReshapeSchema] = useState(JSON.stringify(init.reshaping?.reshape_schema, null, '  '));
+    const [eventPropertiesSchema, setEventPropertiesSchema] = useState(init.reshaping?.reshape_schema.properties ? JSON.stringify(init.reshaping?.reshape_schema.properties, null, '  ') : "");
+    const [eventContextSchema, setEventContextSchema] = useState(init.reshaping?.reshape_schema.context ? JSON.stringify(init.reshaping?.reshape_schema.context, null, '  ') : "");
+    const [sessionContextSchema, setSessionContextSchema] = useState(init.reshaping?.reshape_schema.session ? JSON.stringify(init.reshaping?.reshape_schema.session, null, '  ') : "");
     const [condition, setCondition] = useState(init.reshaping?.condition);
 
     const [error, setError] = useState(null);
@@ -75,7 +81,11 @@ export default function EventReshapingForm({onSubmit, init}) {
                 tags: tags,
                 enabled: enabled,
                 reshaping: {
-                    reshape_schema: (reshapeSchema === "") ? {} : JSON.parse(reshapeSchema),
+                    reshape_schema: {
+                        properties: (eventPropertiesSchema === "") ? null : JSON.parse(eventPropertiesSchema),
+                        context: (eventContextSchema === "") ? null : JSON.parse(eventContextSchema),
+                        session: (sessionContextSchema === "") ? null : JSON.parse(sessionContextSchema)
+                    },
                     condition: condition
                 }
             }
@@ -123,7 +133,7 @@ export default function EventReshapingForm({onSubmit, init}) {
                                    description="Description will help you to understand when the event reshaping is applied.">
                     <TextField
                         label={"Description"}
-                        value={description}
+                        value={description || ""}
                         multiline
                         rows={3}
                         onChange={(ev) => {
@@ -147,9 +157,10 @@ export default function EventReshapingForm({onSubmit, init}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Reshaping Logic & Schema"/>
+            <TuiFormGroupHeader header="Condition" description="If conditions set beneath are met then the reshaping
+            process will start."/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Event type" description="Set the event type that will be reshaped.">
+                <TuiFormGroupField header="Event type" description="Set the event type that should be reshaped.">
                     <TuiSelectEventType
                         label={"Event type"}
                         value={eventType}
@@ -157,12 +168,13 @@ export default function EventReshapingForm({onSubmit, init}) {
                     />
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Trigger condition" description={<>
-                    <span>Set the condition that must be met to start reshaping.</span>
-                    <DocsLink src="http://docs.tracardi.com/notations/logic_notation/"> How to write a condition </DocsLink>
+                    <span>Set the condition that must be met to start reshaping. You may leave it empty if none is required.</span>
+                    <DocsLink src="http://docs.tracardi.com/notations/logic_notation/"> How to write a
+                        condition </DocsLink>
                 </>}>
                     <TextField
                         label={"Condition"}
-                        value={condition}
+                        value={condition || ""}
                         multiline
                         rows={3}
                         onChange={(ev) => {
@@ -172,27 +184,76 @@ export default function EventReshapingForm({onSubmit, init}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Reshaping" description="Define how the event's data should look like."/>
+            <TuiFormGroupContent>
                 <TuiFormGroupField header="Reshaping event data" description={<span className="flexLine">
-                    Reshape event data schema. If the event contains data that should be split between
-                        different parts like session context, properties or event has a property that is a profile id,
-                        then define the rules here. Use object template to reference data. <DocsLink src="http://docs.tracardi.com/notations/object_template/"> Do you need help with object templates? </DocsLink>
+                    Use object template to reference data. <DocsLink
+                    src="http://docs.tracardi.com/notations/object_template/"> Do you need help with object templates? </DocsLink>
                 </span>}>
-                    <Tabs tabs={["Properties", "Session", "Profile"]} defaultTab={tab} onTabSelect={setTab}>
+                    <Tabs tabs={["Event Properties", "Event Context", "Session Context"]} defaultTab={tab}
+                          onTabSelect={setTab}>
                         <TabCase id={0}>
                             <fieldset style={{marginTop: 10}}>
                                 <legend>Event Properties Schema</legend>
-                                <JsonEditor value={reshapeSchema} onChange={(value) => setReshapeSchema(value)} autocomplete={true}/>
+                                <JsonEditor value={eventPropertiesSchema || ""}
+                                            onChange={(value) => setEventPropertiesSchema(value)} autocomplete={true}/>
+                            </fieldset>
+                        </TabCase>
+                        <TabCase id={1}>
+                            <fieldset style={{marginTop: 10}}>
+                                <legend>Event Context Schema</legend>
+                                <JsonEditor value={eventContextSchema || ""}
+                                            onChange={(value) => setEventContextSchema(value)} autocomplete={true}/>
+                            </fieldset>
+                        </TabCase>
+                        <TabCase id={2}>
+                            <fieldset style={{marginTop: 10}}>
+                                <legend>Session Context Schema</legend>
+                                <JsonEditor value={sessionContextSchema || ""}
+                                            onChange={(value) => setSessionContextSchema(value)} autocomplete={true}/>
                             </fieldset>
                         </TabCase>
                     </Tabs>
 
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Mapping" description="Event data may come from some device that is
+                unaware of the tracardi payload schema. And there is no way yuo can change the data schema. But the data
+                has for example a profile id or session that could be mapped to the system's profile id. Filling this
+                mapping will join profile or session with the sent event."/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Profile id location" description="If event data has profile id type its
+                location. Use dot notation, eg. event@properties.userId">
+                    <TextField
+                        label="Profile id location"
+                        value=""
+                        size="small"
+                        variant="outlined"
+                        fullWidth
+                    />
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Session id location" description="If event data has session id type its
+                location. Use dot notation, eg. event@properties.session">
+                    <TextField
+                        label="Session id location"
+                        value=""
+                        size="small"
+                        variant="outlined"
+                        fullWidth
+                    />
                 </TuiFormGroupField>
 
             </TuiFormGroupContent>
         </TuiFormGroup>
 
         {error && <ErrorsBox errorList={error}/>}
-        <Button label="Save" error={error || nameErrorMessage} onClick={handleSubmit} progress={processing} style={{justifyContent: "center"}}/>
+        <Button label="Save" error={error || nameErrorMessage} onClick={handleSubmit} progress={processing}
+                style={{justifyContent: "center"}}/>
     </TuiForm>
 }
 

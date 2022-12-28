@@ -22,6 +22,7 @@ import AutoComplete from "./AutoComplete";
 import ReportConfigInput from "./inputs/ReportConfigInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import {BsEye, BsEyeSlashFill} from "react-icons/bs";
+import RefInput from "./inputs/RefInput";
 
 export const PasswordInput = ({label = "Password", value, onChange, fullWidth = false, error, helperText, style, required}) => {
 
@@ -304,6 +305,21 @@ export function DotPathInput({value, props, errorMessage, onChange = null}) {
                         onChange={handleChange}
                         errorMessage={errorMessage}
                         {...props}/>
+}
+
+export function RefTextInput({value, props, errorMessage, onChange = null}) {
+
+    const handleChange = (value) => {
+        console.log(value)
+        if (onChange) {
+            onChange(value);
+        }
+    }
+
+    return <RefInput value={value}
+                     onChange={handleChange}
+                     errorMessage={errorMessage}
+                     {...props}/>
 }
 
 export function DotPathAndTextInput({value, props, errorMessage, onChange}) {

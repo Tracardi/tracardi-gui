@@ -72,6 +72,7 @@ export default function EventSources() {
                                            id={row?.id}
                                            data={data}
                                            status={row?.enabled}
+                                           lock={row?.locked}
                                            onClick={() => onClick(row?.id)}
                                            onDelete={handleDelete}
                                            tags={[row.type]}

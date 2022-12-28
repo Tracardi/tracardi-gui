@@ -12,7 +12,7 @@ import {
     ListOfDotPaths,
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
     SelectInput, BoolInput, ReadOnlyTags, EventTypes, EventType, ConsentTypes, AutoCompleteInput,
-    ReportConfig, PasswordInput, FontSizeInput
+    ReportConfig, PasswordInput, FontSizeInput, RefTextInput
 } from "./JsonFormComponents";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {AiOutlineCheckCircle} from "react-icons/ai";
@@ -101,6 +101,13 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
 
         case "forceDotPath":
             return (props) => <DotPathInput
+                value={value}
+                errorMessage={errorMessage}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                props={props}/>
+
+        case "refTextInput":
+            return (props) => <RefTextInput
                 value={value}
                 errorMessage={errorMessage}
                 onChange={(value) => handleOnChange(value, fieldId)}
