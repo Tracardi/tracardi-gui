@@ -45,6 +45,7 @@ const ActionPlugins = React.lazy(() => import("./pages/ActionPlugins"))
 const Instances = React.lazy(() => import("./pages/Instances"))
 const Settings = React.lazy(() => import("./pages/Settings"))
 const TestEditor = React.lazy(() => import("./pages/TestEditor"))
+const Scheduler = React.lazy(() => import("./pages/Scheduler"))
 
 const AppBox = () => {
 
@@ -143,6 +144,22 @@ const AppBox = () => {
                     />
                 </Suspense>
             </ErrorBoundary>
+        </PrivateRoute>
+
+        {/*Data*/}
+
+        <PrivateRoute path={urlPrefix("/triggers")} roles={["admin", "marketer"]}>
+            <ErrorBoundary>
+                <Suspense fallback={<CenteredCircularProgress/>}>
+                    <TopBar>Triggers</TopBar>
+                    <PageTabs tabs={[
+                        new PrivateTab(["admin", "marketer"],
+                            <Scheduler/>, "/triggers/scheduler", "Scheduler"),
+                    ]}
+                    />
+                </Suspense>
+            </ErrorBoundary>
+
         </PrivateRoute>
 
         {/*Data*/}

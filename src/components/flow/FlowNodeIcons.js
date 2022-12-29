@@ -247,7 +247,8 @@ export const icons = {
     "github": (size) => <BsGithub size={size} />,
     "redirect": (size) => <IoArrowRedoOutline size={size}/>,
     "javascript": (size) => <SiJavascript size={size}/>,
-    "train": (size) => <RiTrainLine size={size} />
+    "train": (size) => <RiTrainLine size={size} />,
+
 }
 
 

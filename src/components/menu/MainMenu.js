@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./MainMenu.css";
-import {BsBarChartFill, BsFolder} from "react-icons/bs";
+import {BsBarChartFill, BsFolder, BsGear} from "react-icons/bs";
 import { useHistory, useLocation } from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import version from '../../misc/version';
@@ -96,9 +96,11 @@ function MainMenu({app, showAlert, changeRoute}) {
                 <MenuRow icon={<VscDashboard size={20}/>} label="Dashboard" collapsed={collapsed} onClick={go("/dashboard")} route="/dashboard" roles={["admin", "developer", "marketer", "maintainer"]} style={{marginBottom: 20}}/>
 
                 {!window?.CONFIG?.menu?.inbound?.disable && <MenuRow icon={<BsBoxArrowInRight size={20}/>} label="Inbound Traffic" collapsed={collapsed} onClick={go("/inbound")} route="/inbound" roles={["admin", "developer"]}/>}
+                {!window?.CONFIG?.menu?.triggers?.disable && <MenuRow icon={<BsGear size={20}/>} label="Triggers" collapsed={collapsed} onClick={go("/triggers")} route="/triggers" roles={["admin", "developer"]}/>}
                 {!window?.CONFIG?.menu?.data?.disable && <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")} route="/data" roles={["admin", "developer", "marketer"]}/>}
                 {!window?.CONFIG?.menu?.integration?.disable && <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Integration" collapsed={collapsed} onClick={go("/processing")} route="/processing" roles={["admin", "developer"]}/>}
                 {!window?.CONFIG?.menu?.segmentation?.disable && <MenuRow icon={<VscOrganization size={20}/>} label="Segmentation" collapsed={collapsed} onClick={go("/segmentation")} route="/segmentation" roles={["admin", "developer", "marketer"]}/>}
+
                 {!window?.CONFIG?.menu?.reporting?.disable && <MenuRow icon={<BsBarChartFill size={20}/>} label="Reporting" collapsed={collapsed} onClick={go("/reporting")} route="/reporting" roles={["admin", "developer", "marketer"]}/>}
                 {!window?.CONFIG?.menu?.outbound?.disable && <MenuRow icon={<BsBoxArrowRight size={20}/>} label="Outbound Traffic" collapsed={collapsed} onClick={go("/outbound")} route="/outbound" roles={["admin", "developer"]}/>}
 

@@ -70,6 +70,10 @@ const getConfig = () => {
                 name: "Segmentation",
                 disable: false
             },
+            triggers: {
+                name: "Triggers",
+                disable: false
+            },
             reporting: {
                 name: "Reporting",
                 disable: false
