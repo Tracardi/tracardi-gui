@@ -3,18 +3,17 @@ import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import FlowNodeIcons from "../flow/FlowNodeIcons";
-import EventValidationDetails from "../elements/details/EventValidationDetails";
-import EventValidationForm from "../elements/forms/EventValidationForm";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import {useConfirm} from "material-ui-confirm";
 import SchedulerJobDetails from "../elements/details/SchedulerJobDetails";
+import SchedulerJobForm from "../elements/forms/SchedulerJobForm";
 
 export default function Scheduler() {
 
     const [refresh, setRefresh] = useState(0);
 
     const urlFunc = useCallback((query) => ('/scheduler/jobs' + ((query) ? "?query=" + query : "")), [])
-    // const addFunc = useCallback((close) => <EventValidationForm onSubmit={close}/>, [])
+    const addFunc = useCallback((close) => <SchedulerJobForm onSubmit={close}/>, [])
     const detailsFunc = useCallback((id, close) => <SchedulerJobDetails id={id} onDeleteComplete={close}/>, []);
 
     const confirm = useConfirm();
@@ -85,7 +84,7 @@ export default function Scheduler() {
         drawerAddTitle="New schedule"
         drawerAddWidth={800}
         detailsFunc={detailsFunc}
-        // addFunc={addFunc}
+        addFunc={addFunc}
         className="Pad10"
     />
 

@@ -41,6 +41,13 @@ FORM.TuiForm > .TuiFormGroup > SECTION.TuiFormGroupContent {
     padding: 25px;
 }
 
+FORM.TuiForm > .TuiFormGroup > SECTION.TuiFormGroupContent > H2 {
+    font-size: 1.4em;
+    margin: 15px 0 10px 0;
+    font-weight: 400;
+    border-bottom: solid 1px #ccc;
+}
+
 FORM.TuiForm > .TuiFormGroup > SECTION.TuiFormGroupContent P {
     color: #555;
 }

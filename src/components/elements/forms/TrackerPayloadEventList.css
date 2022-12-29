@@ -1,0 +1,12 @@
+TABLE.TpEventList {
+    width: 100%;
+    margin-bottom: 20px;
+}
+TABLE.TpEventList > TR {
+    border-bottom: 1px solid #ccc;
+}
+
+TABLE.TpEventList TD {
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
