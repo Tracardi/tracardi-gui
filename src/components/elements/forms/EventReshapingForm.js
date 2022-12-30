@@ -12,6 +12,7 @@ import TuiTagger from "../tui/TuiTagger";
 import Switch from "@mui/material/Switch";
 import DocsLink from "../drawers/DocsLink";
 import Tabs, {TabCase} from "../tabs/Tabs";
+import RefInput from "./inputs/RefInput";
 
 export default function EventReshapingForm({onSubmit, init}) {
 
@@ -29,7 +30,12 @@ export default function EventReshapingForm({onSubmit, init}) {
                     context: null,
                     session: null
                 },
-                condition: ""
+                condition: "",
+                mapping: {
+                    profile: {value: "", ref: true},
+                    session: {value: "", ref: true},
+                    event_type: {value: "", ref: true}
+                }
             }
         }
     }
@@ -44,6 +50,7 @@ export default function EventReshapingForm({onSubmit, init}) {
     const [eventContextSchema, setEventContextSchema] = useState(init.reshaping?.reshape_schema.context ? JSON.stringify(init.reshaping?.reshape_schema.context, null, '  ') : "");
     const [sessionContextSchema, setSessionContextSchema] = useState(init.reshaping?.reshape_schema.session ? JSON.stringify(init.reshaping?.reshape_schema.session, null, '  ') : "");
     const [condition, setCondition] = useState(init.reshaping?.condition);
+    const [mapping, setMapping] = React.useState(init.reshaping?.mapping);
 
     const [error, setError] = useState(null);
     const [nameErrorMessage, setNameErrorMessage] = useState(null);
@@ -56,6 +63,10 @@ export default function EventReshapingForm({onSubmit, init}) {
         mounted.current = true;
         return () => mounted.current = false;
     }, [])
+
+    const handleSetMapping = (type, value) => {
+        setMapping({...mapping, [type]: value})
+    }
 
     const handleSubmit = async () => {
 
@@ -86,7 +97,8 @@ export default function EventReshapingForm({onSubmit, init}) {
                         context: (eventContextSchema === "") ? null : JSON.parse(eventContextSchema),
                         session: (sessionContextSchema === "") ? null : JSON.parse(sessionContextSchema)
                     },
-                    condition: condition
+                    condition: condition,
+                    mapping: mapping
                 }
             }
 
@@ -167,11 +179,11 @@ export default function EventReshapingForm({onSubmit, init}) {
                         onSetValue={(event) => setEventType(event.id)}
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Trigger condition" description={<>
-                    <span>Set the condition that must be met to start reshaping. You may leave it empty if none is required.</span>
+                <TuiFormGroupField header="Trigger condition" description={
+                    <span>Set the condition that must be met to start reshaping. You may leave this field empty if all the events must be reshaped.
                     <DocsLink src="http://docs.tracardi.com/notations/logic_notation/"> How to write a
-                        condition </DocsLink>
-                </>}>
+                        condition </DocsLink></span>
+                }>
                     <TextField
                         label={"Condition"}
                         value={condition || ""}
@@ -187,34 +199,26 @@ export default function EventReshapingForm({onSubmit, init}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Reshaping" description="Define how the event's data should look like."/>
+            <TuiFormGroupHeader header="Reshaping" description="Define how the event's data should look like. In this
+            section you can split the data between event and session and reshape its schema."/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Reshaping event data" description={<span className="flexLine">
-                    Use object template to reference data. <DocsLink
+                <TuiFormGroupField header="Reshaping event data" description={<span>
+                    Reshaping can be done for each part of the event payload. Use object template to reference data from the payload. <DocsLink
                     src="http://docs.tracardi.com/notations/object_template/"> Do you need help with object templates? </DocsLink>
                 </span>}>
                     <Tabs tabs={["Event Properties", "Event Context", "Session Context"]} defaultTab={tab}
                           onTabSelect={setTab}>
                         <TabCase id={0}>
-                            <fieldset style={{marginTop: 10}}>
-                                <legend>Event Properties Schema</legend>
-                                <JsonEditor value={eventPropertiesSchema || ""}
-                                            onChange={(value) => setEventPropertiesSchema(value)} autocomplete={true}/>
-                            </fieldset>
+                            <JsonEditor value={eventPropertiesSchema || ""}
+                                        onChange={(value) => setEventPropertiesSchema(value)} autocomplete={true}/>
                         </TabCase>
                         <TabCase id={1}>
-                            <fieldset style={{marginTop: 10}}>
-                                <legend>Event Context Schema</legend>
-                                <JsonEditor value={eventContextSchema || ""}
-                                            onChange={(value) => setEventContextSchema(value)} autocomplete={true}/>
-                            </fieldset>
+                            <JsonEditor value={eventContextSchema || ""}
+                                        onChange={(value) => setEventContextSchema(value)} autocomplete={true}/>
                         </TabCase>
                         <TabCase id={2}>
-                            <fieldset style={{marginTop: 10}}>
-                                <legend>Session Context Schema</legend>
-                                <JsonEditor value={sessionContextSchema || ""}
-                                            onChange={(value) => setSessionContextSchema(value)} autocomplete={true}/>
-                            </fieldset>
+                            <JsonEditor value={sessionContextSchema || ""}
+                                        onChange={(value) => setSessionContextSchema(value)} autocomplete={true}/>
                         </TabCase>
                     </Tabs>
 
@@ -223,31 +227,36 @@ export default function EventReshapingForm({onSubmit, init}) {
         </TuiFormGroup>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Mapping" description="Event data may come from some device that is
-                unaware of the tracardi payload schema. And there is no way yuo can change the data schema. But the data
-                has for example a profile id or session that could be mapped to the system's profile id. Filling this
-                mapping will join profile or session with the sent event."/>
+                unaware of the tracardi payload schema. And there is no way you can change the data schema. But the data
+                may have a profile id or session that could be mapped to the system's profile id. Filling this
+                section with proper mapping will join profile or session with the sent event."/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Profile id location" description="If event data has profile id type its
-                location. Use dot notation, eg. event@properties.userId">
-                    <TextField
-                        label="Profile id location"
-                        value=""
-                        size="small"
-                        variant="outlined"
-                        fullWidth
+                <TuiFormGroupField header="Profile ID" description="Type location of profile id in the payload.
+                Leave it empty if there is no profile id.">
+                    <RefInput value={mapping?.profile}
+                              onChange={(value) => handleSetMapping("profile", value)}
+                              defaultType={true}
+                              label="Location of profile ID"
+                              locked={true}
+                              fullWidth={true}/>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Session ID" description="Type location of session id in the payload.
+                Leave it empty if there is no session id.">
+                    <RefInput value={mapping?.session}
+                              onChange={(value) => handleSetMapping("session", value)}
+                              defaultType={true}
+                              locked={true}
+                              label="Location of session ID" fullWidth={true}/>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Event type" description="Type location of event type in the payload.
+                Leave it empty if there is no event type.">
+                    <RefInput value={mapping?.event_type}
+                              onChange={(value) => handleSetMapping("event_type", value)}
+                              defaultType={true}
+                              label="Location of event type"
+                              fullWidth={true}
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Session id location" description="If event data has session id type its
-                location. Use dot notation, eg. event@properties.session">
-                    <TextField
-                        label="Session id location"
-                        value=""
-                        size="small"
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-
             </TuiFormGroupContent>
         </TuiFormGroup>
 

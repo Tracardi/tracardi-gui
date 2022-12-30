@@ -4,12 +4,12 @@ import {IoTextOutline} from "react-icons/io5";
 import TextField from "@mui/material/TextField";
 import React, {useState} from "react";
 
-export default function RefInput({fullWidth, style, value: _value = null, disabled, errorMessage=null, label, onChange}) {
+export default function RefInput({fullWidth, style, value: _value = null, disabled, errorMessage=null, label, onChange, defaultType=false, locked=false}) {
 
     if(!_value) {
         _value = {
             value: "",
-            ref: false
+            ref: defaultType
         }
     }
 
@@ -28,9 +28,11 @@ export default function RefInput({fullWidth, style, value: _value = null, disabl
     }
 
     function handleTypeChange(v) {
-        const _value = {...value, ref: v}
-        setValue(_value)
-        handleChange(_value)
+        if (!locked) {
+            const _value = {...value, ref: v}
+            setValue(_value)
+            handleChange(_value)
+        }
     }
 
     return <TextField

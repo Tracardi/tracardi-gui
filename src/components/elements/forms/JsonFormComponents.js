@@ -310,7 +310,6 @@ export function DotPathInput({value, props, errorMessage, onChange = null}) {
 export function RefTextInput({value, props, errorMessage, onChange = null}) {
 
     const handleChange = (value) => {
-        console.log(value)
         if (onChange) {
             onChange(value);
         }
