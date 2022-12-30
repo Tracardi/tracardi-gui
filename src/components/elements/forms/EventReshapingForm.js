@@ -13,6 +13,7 @@ import Switch from "@mui/material/Switch";
 import DocsLink from "../drawers/DocsLink";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import RefInput from "./inputs/RefInput";
+import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 
 export default function EventReshapingForm({onSubmit, init}) {
 
@@ -22,6 +23,7 @@ export default function EventReshapingForm({onSubmit, init}) {
             name: "",
             description: "",
             event_type: "",
+            event_source: {name: "", id: ""},
             tags: [],
             enabled: false,
             reshaping: {
@@ -44,6 +46,7 @@ export default function EventReshapingForm({onSubmit, init}) {
     const [name, setName] = useState(init.name);
     const [description, setDescription] = useState(init.description);
     const [eventType, setEventType] = useState(init.event_type);
+    const [eventSource, setEventSource] = useState(init.event_source);
     const [tags, setTags] = useState(init.tags);
     const [enabled, setEnabled] = useState(init.enabled);
     const [eventPropertiesSchema, setEventPropertiesSchema] = useState(init.reshaping?.reshape_schema.properties ? JSON.stringify(init.reshaping?.reshape_schema.properties, null, '  ') : "");
@@ -89,6 +92,7 @@ export default function EventReshapingForm({onSubmit, init}) {
                 name: name,
                 description: description,
                 event_type: eventType,
+                event_source: eventSource,
                 tags: tags,
                 enabled: enabled,
                 reshaping: {
@@ -177,6 +181,14 @@ export default function EventReshapingForm({onSubmit, init}) {
                         label={"Event type"}
                         value={eventType}
                         onSetValue={(event) => setEventType(event.id)}
+                    />
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Event source" description="If the event must only come from a specific
+                source, select it here. If left empty, all events will be reshaped regardless of their source.">
+                    <TuiSelectEventSource
+                        label={"Event source"}
+                        value={eventSource}
+                        onSetValue={setEventSource}
                     />
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Trigger condition" description={

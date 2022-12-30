@@ -81,7 +81,7 @@ export default function EventReshaping() {
         rowFunc={rows}
         buttomLabel="New reshape"
         buttonIcon={<FlowNodeIcons icon="map-properties"/>}
-        drawerDetailsWidth={800}
+        drawerDetailsWidth={850}
         detailsFunc={detailsFunc}
         drawerAddTitle="New reshape"
         drawerAddWidth={800}
