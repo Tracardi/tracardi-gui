@@ -77,7 +77,7 @@ const SignInForm = ({showAlert}) => {
             if (response?.status === 200) {
                 if (response.data !== ver) {
                     setErrorMessage(
-                        `The GUI verision ${ver} does not match the API verision.`
+                        `The GUI version ${ver} does not match the API version.`
                     )
                 }
             }
@@ -213,6 +213,7 @@ const SignInForm = ({showAlert}) => {
                                 required={true}
                             />
                             <Button
+                                type="submit"
                                 style={{justifyContent: "center", marginTop: 20}}
                                 label="Sign In"
                                 onClick={handleSubmit}
