@@ -105,10 +105,6 @@ const AppBox = () => {
                             <EventValidation/>, "/inbound/event/validation", <>
                                 <BsStar size={20} style={{marginRight: 5}}/>{"Event validation"}
                             </>),
-                        new PrivateTab(["admin", "developer"],
-                            <EventReshaping/>, "/inbound/event/reshaping", <>
-                                <BsStar size={20} style={{marginRight: 5}}/>{"Event reshaping"}
-                            </>),
                     ]}
                     />
                 </Suspense>
@@ -146,7 +142,7 @@ const AppBox = () => {
             </ErrorBoundary>
         </PrivateRoute>
 
-        {/*Data*/}
+        {/*Triggers*/}
 
         <PrivateRoute path={urlPrefix("/triggers")} roles={["admin", "marketer"]}>
             <ErrorBoundary>
@@ -160,6 +156,23 @@ const AppBox = () => {
                 </Suspense>
             </ErrorBoundary>
 
+        </PrivateRoute>
+
+        {/*Transformation*/}
+
+        <PrivateRoute path={urlPrefix("/transformations")} roles={["admin", "developer"]}>
+            <ErrorBoundary>
+                <Suspense fallback={<CenteredCircularProgress/>}>
+                    <TopBar>Event Transformations</TopBar>
+                    <PageTabs tabs={[
+                        new PrivateTab(["admin", "developer"],
+                            <EventReshaping/>, "/inbound/event/reshaping", <>
+                                <BsStar size={20} style={{marginRight: 5}}/>{"Event reshaping"}
+                            </>),
+                    ]}
+                    />
+                </Suspense>
+            </ErrorBoundary>
         </PrivateRoute>
 
         {/*Data*/}

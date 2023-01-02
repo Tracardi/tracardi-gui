@@ -152,7 +152,8 @@ export default function EventMetadataForm({
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Event data indexing"
                                    description="Select which properties should be indexed as event traits.
-                                   Type key, value pair with the key as property name and value as trait name. ">
+                                   Type key, value pair with the key as property name and value as trait name.
+                                   If event was reshaped than index from new reshaped properties.">
                     <Switch
                         checked={indexEnabled}
                         onChange={(ev) => setIndexEnabled(ev.target.checked)}
