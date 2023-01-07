@@ -108,7 +108,7 @@ export default function EventMetadataForm({
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Event type"
                                    description="Type or select the type of event you want to manage.">
-                    <TuiSelectEventType value={eventType} onSetValue={setEventType}/>
+                    <TuiSelectEventType initValue={eventType} onSetValue={setEventType}/>
                 </TuiFormGroupField>
 
                 <TuiFormGroupField header="Name"

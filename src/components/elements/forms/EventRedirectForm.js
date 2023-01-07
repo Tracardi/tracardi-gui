@@ -171,7 +171,7 @@ export default function EventRedirectForm({
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Event type"
                                    description="Type or select the type of event you want to register.">
-                    <TuiSelectEventType value={eventType}
+                    <TuiSelectEventType initValue={eventType}
                                         errorMessage={eventTypeErrorMessage}
                                         onlyValueWithOptions={false}
                                         onSetValue={setEventType}

@@ -1,12 +1,21 @@
-TABLE.TpEventList {
+DIV.TpEventList {
     width: 100%;
     margin-bottom: 20px;
+    -webkit-box-shadow: 0px 0px 10px -3px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 10px -3px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 10px -3px rgba(0,0,0,0.75);
+    border-radius: 6px;
+    padding: 10px;
+    border-collapse: collapse;
 }
-TABLE.TpEventList > TR {
-    border-bottom: 1px solid #ccc;
+DIV.TpEventList > DIV {
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+DIV.TpEventList > DIV:hover{
+    background-color: whitesmoke;
 }
 
-TABLE.TpEventList TD {
-    padding: 5px;
-    border-bottom: 1px solid #ccc;
+DIV.TpEventList SPAN {
+    padding: 0px;
 }

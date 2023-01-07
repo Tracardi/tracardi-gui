@@ -504,7 +504,7 @@ export function EventType({value: initValue, errorMessage, onChange = null, prop
         }
     };
 
-    return <TuiSelectEventType value={value}
+    return <TuiSelectEventType initValue={value}
                                label="Event type"
                                onSetValue={handleChange}
                                fullWidth={true}

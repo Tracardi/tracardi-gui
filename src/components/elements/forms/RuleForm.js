@@ -131,7 +131,7 @@ export default function RuleForm({onEnd, init}) {
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Event type" description="Type event type to filter incoming events. If there
                 are no events please start collecting data first.">
-                    <TuiSelectEventType value={type} errorMessage={typeErrorMessage} onSetValue={handleType} onlyValueWithOptions={false}/>
+                    <TuiSelectEventType initValue={type} errorMessage={typeErrorMessage} onSetValue={handleType} onlyValueWithOptions={false}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Source" description="Select event source. Event without selected source will be
                     discarded.">

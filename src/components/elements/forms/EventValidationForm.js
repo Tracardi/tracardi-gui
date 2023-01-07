@@ -149,7 +149,7 @@ export default function EventValidationForm({onSubmit, init}) {
                 <TuiFormGroupField header="Event type" description="Set the event type that will be validated.">
                     <TuiSelectEventType
                         label={"Event type"}
-                        value={eventType}
+                        initValue={eventType}
                         onSetValue={(event) => setEventType(event.id)}
                     />
                 </TuiFormGroupField>

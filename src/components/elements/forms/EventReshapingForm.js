@@ -179,7 +179,7 @@ export default function EventReshapingForm({onSubmit, init}) {
                 <TuiFormGroupField header="Event type" description="Set the event type that should be reshaped.">
                     <TuiSelectEventType
                         label={"Event type"}
-                        value={eventType}
+                        initValue={eventType}
                         onSetValue={(event) => setEventType(event.id)}
                     />
                 </TuiFormGroupField>

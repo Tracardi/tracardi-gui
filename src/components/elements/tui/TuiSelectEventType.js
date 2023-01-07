@@ -1,7 +1,7 @@
 import AutoComplete from "../forms/AutoComplete";
 import React from "react";
 
-export default function TuiSelectEventType({value, label="Event type", errorMessage=null, onSetValue=null, multiple=false, fullWidth=false, onlyValueWithOptions=true, defaultValueSet=[]}) {
+export default function TuiSelectEventType({initValue, value, label="Event type", errorMessage=null, onSetValue=null, multiple=false, fullWidth=false, onlyValueWithOptions=true, defaultValueSet=[]}) {
 
     const handleChange = (v) => {
         if(onSetValue) {
@@ -15,7 +15,8 @@ export default function TuiSelectEventType({value, label="Event type", errorMess
         error={errorMessage}
         placeholder={label}
         endpoint={{url:"/events/metadata/type"}}
-        initValue={value}
+        initValue={initValue}
+        value={value}
         onSetValue={handleChange}
         multiple={multiple}
         fullWidth={fullWidth}

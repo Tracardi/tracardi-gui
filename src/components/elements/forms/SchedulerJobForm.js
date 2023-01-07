@@ -105,7 +105,7 @@ export default function SchedulerJobForm({onSubmit, init: value}) {
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
-        <TrackerPayloadFormGroup value={data.tracker_payload}/>
+        <TrackerPayloadFormGroup value={data.tracker_payload} onChange={()=>{}}/>
         <Button label="Save" onClick={handleSubmit} style={{justifyContent: "center"}}/>
     </TuiForm>
 }
