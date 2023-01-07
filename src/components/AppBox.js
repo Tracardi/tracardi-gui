@@ -46,6 +46,7 @@ const Instances = React.lazy(() => import("./pages/Instances"))
 const Settings = React.lazy(() => import("./pages/Settings"))
 const TestEditor = React.lazy(() => import("./pages/TestEditor"))
 const Scheduler = React.lazy(() => import("./pages/Scheduler"))
+const ConsentsDataCompliance = React.lazy(() => import("./pages/ConsentsCompliance"))
 
 const AppBox = () => {
 
@@ -260,7 +261,11 @@ const AppBox = () => {
                     <TopBar>Consents</TopBar>
                     <PageTabs tabs={[
                         new PrivateTab(["admin", "developer", "marketer"],
-                            <Consents/>, "/consents/type", "Consent types")
+                            <Consents/>, "/consents/type", "Consent types"),
+                        new PrivateTab(["admin", "developer", "marketer"],
+                            <ConsentsDataCompliance/>, "/consents/compliance", <>
+                                <BsStar size={20}
+                                        style={{marginRight: 5}}/>{"Data compliance"}</>)
                     ]}
                     />
                 </Suspense>

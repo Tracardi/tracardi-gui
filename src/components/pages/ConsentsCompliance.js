@@ -3,27 +3,27 @@ import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import {VscLaw} from "react-icons/vsc";
-import ConsentDetails from "../elements/details/ConsentDetails";
-import ConsentForm from "../elements/forms/ConsentForm";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import {useConfirm} from "material-ui-confirm";
+import DataComplianceForm from "../elements/forms/DataComplianceForm";
+import DataComplianceDetails from "../elements/details/DataComplianceDetails";
 
 
-export default function  Consents() {
+export default function  ConsentsDataCompliance() {
 
-    const urlFunc= useCallback((query) => ('/consents/type/by_tag' + ((query) ? "?query=" + query : "")),[]);
-    const addFunc = useCallback((close) => <ConsentForm onSaveComplete={close}/>,[]);
-    const detailsFunc= useCallback((id, close) => <ConsentDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
+    const urlFunc= useCallback((query) => ('/consent/compliance/fields' + ((query) ? "?query=" + query : "")),[]);
+    const addFunc = useCallback((close) => <DataComplianceForm onSaveComplete={close}/>,[]);
+    const detailsFunc= useCallback((id, close) => <DataComplianceDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
     const [refresh, setRefresh] = useState(0);
     const confirm = useConfirm();
 
     const handleDelete = async (id) => {
-        confirm({title: "Do you want to delete this consent?", description: "This action can not be undone."})
+        confirm({title: "Do you want to delete this data compliance enforcement?", description: "This action can not be undone."})
             .then(async () => {
                     try {
                         await asyncRemote({
-                            url: '/consent/type/' + id,
+                            url: '/consent/compliance/field/' + id,
                             method: "delete"
                         })
                         setRefresh(refresh+1)
@@ -74,18 +74,18 @@ export default function  Consents() {
 
     return <CardBrowser
         defaultLayout="row"
-        label="Consent types"
-        description="User consent refers to the process of obtaining permission from an individual to collect, use, or
-        share their personal data. This is the list of defined consent types that you may require from your customers.
-        You may filter this list by consent name in the upper search box."
+        label="Data compliance with customer consents"
+        description="Data compliance refers to the practice of adhering to laws, regulations, and guidelines related
+        to the handling, processing, and storing of data. This is the list of defined field level data compliances
+        with customer consents."
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}
-        buttomLabel="New consent type"
+        buttomLabel="New compliance"
         buttonIcon={<VscLaw size={20}/>}
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
-        drawerAddTitle="New consent type"
+        drawerAddTitle="New compliance"
         drawerAddWidth={600}
         addFunc={addFunc}
     />
