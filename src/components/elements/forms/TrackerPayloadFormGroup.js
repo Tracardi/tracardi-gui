@@ -49,9 +49,10 @@ function TrackerPayloadEventList({events, onChange}) {
         if(onChange instanceof Function) {
             const listOfEvents = [];
             for (const [key, value] of Object.entries(eventList)) {
-                listOfEvents.push(value)
+                listOfEvents.push({...value, type: value.type.id})
             }
             onChange(listOfEvents)
+            console.log(listOfEvents)
         }
     }
 
