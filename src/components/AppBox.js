@@ -150,7 +150,8 @@ const AppBox = () => {
                     <TopBar>Triggers</TopBar>
                     <PageTabs tabs={[
                         new PrivateTab(["admin", "marketer"],
-                            <Scheduler/>, "/triggers/scheduler", "Scheduler"),
+                            <Scheduler/>, "/triggers/scheduler", <><BsStar size={20}
+                                                                           style={{marginRight: 5}}/>{"Scheduler"}</>),
                     ]}
                     />
                 </Suspense>

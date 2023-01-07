@@ -57,7 +57,6 @@ const EventSourceAdvancedForm = ({value: _value, onChange}) => {
 
     return <TuiForm>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Event source advanced configuration"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Event source access"
                                    description="Disabled event sources will not be accessible. ">
@@ -70,87 +69,95 @@ const EventSourceAdvancedForm = ({value: _value, onChange}) => {
                         <span>This event source is enabled</span>
                     </div>
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Event source will synchronize profile updates"
-                                   description="This event source will wait for the previous event to finish profile
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <ShowHide label="Advanced settings" style={{marginBottom: 10}}>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Event source advanced configuration"/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField header="Event source will synchronize profile updates"
+                                       description="This event source will wait for the previous event to finish profile
                                    modification before it will accept new event. This feature prevents accidental
                                    profile overrides but slows event processing. If the events collected via
                                    this event source do not modify profile you may disable this feature. ">
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Switch
-                            checked={value.synchronize_profiles}
-                            onChange={(ev) => handleChange('synchronize_profiles', ev.target.checked)}
-                            name="enabledSource"
-                        />
-                        <span>
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <Switch
+                                checked={value.synchronize_profiles}
+                                onChange={(ev) => handleChange('synchronize_profiles', ev.target.checked)}
+                                name="enabledSource"
+                            />
+                            <span>
                         Profile synchronization enabled
                     </span>
-                    </div>
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Event source requires user consent"
-                                   description="Data collected through this source requires user consent.
+                        </div>
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="Event source requires user consent"
+                                       description="Data collected through this source requires user consent.
                                    System will embed the Javascript snippet to get the user consents.">
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Switch
-                            checked={value.requires_consent}
-                            onChange={(ev) => handleChange('requires_consent', ev.target.checked)}
-                            name="enabledSource"
-                        />
-                        <span>
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <Switch
+                                checked={value.requires_consent}
+                                onChange={(ev) => handleChange('requires_consent', ev.target.checked)}
+                                name="enabledSource"
+                            />
+                            <span>
                         Data collected through this source requires user consent
                     </span>
-                    </div>
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Return profile data in response to client"
-                                   description="For security reasons, the system returns only the profile id when
+                        </div>
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="Return profile data in response to client"
+                                       description="For security reasons, the system returns only the profile id when
                                    collecting data (events). In justified cases, it is possible to provide the browser
                                    with all data collected in the profile. When turned on, set event
                                    options to 'profile: true' to include profile data in response. Read 'event tracking'
                                    chapter in manual for details and use this option with caution. ">
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Switch
-                            checked={value.returns_profile}
-                            onChange={(ev) => handleChange('returns_profile', ev.target.checked)}
-                            name="returnsProfile"
-                        />
-                        <span>
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <Switch
+                                checked={value.returns_profile}
+                                onChange={(ev) => handleChange('returns_profile', ev.target.checked)}
+                                name="returnsProfile"
+                            />
+                            <span>
                         Return profile data with response
                     </span>
-                    </div>
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Make events from this source always transitional"
-                                   description="Transitional events are only processed but not saved in database. If you set
+                        </div>
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="Make events from this source always transitional"
+                                       description="Transitional events are only processed but not saved in database. If you set
                                    source to collect only transitional events then no event will be stored in the system.
                                    By default control over the event configuration is passed to the client. That
                                    means the event may become transitional if it is sent with options set to 'saveEvents: false'.
                                    Read 'event tracking' chapter in manual for details.">
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Switch
-                            checked={value.transitional}
-                            onChange={(ev) => handleChange('transitional', ev.target.checked)}
-                            name="transitional"
-                        />
-                        <span>
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <Switch
+                                checked={value.transitional}
+                                onChange={(ev) => handleChange('transitional', ev.target.checked)}
+                                name="transitional"
+                            />
+                            <span>
                         Event from this source are transitional (ephemeral)
                     </span>
-                    </div>
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Make profile id permanent"
-                                   description="Profile id may change due to being merged with other profile. If you want
+                        </div>
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="Make profile id permanent"
+                                       description="Profile id may change due to being merged with other profile. If you want
                                    profile it to stay always the same enable this option. For security reasons when you
                                    allow permanent profile ids it is advisable to disallow profile data in response to
                                    collected event. See manual for explanation.">
-                    <NotImplemented>This feature is not implemented yet</NotImplemented>
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Switch
-                            checked={value.permanent_profile_id}
-                            onChange={(ev) => handleChange('permanent_profile_id', ev.target.checked)}
-                            name="permanent"
-                        />
-                        <span>Make profile id permanent</span>
-                    </div>
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
+                        <NotImplemented>This feature is not implemented yet</NotImplemented>
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <Switch
+                                checked={value.permanent_profile_id}
+                                onChange={(ev) => handleChange('permanent_profile_id', ev.target.checked)}
+                                name="permanent"
+                            />
+                            <span>Make profile id permanent</span>
+                        </div>
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+
         </TuiFormGroup>
+        </ShowHide>
     </TuiForm>
 }
 
@@ -219,18 +226,19 @@ const EventSourceDescriptionForm = ({value: _value, style, errorNameMessage, onC
                         fullWidth
                     />
                 </TuiFormGroupField>
-
-                <TuiFormGroupField header="Grouping"
-                                   description="Sources can be grouped with tags that are typed here.">
-                    <TuiTagger tags={value.groups}
-                               onChange={(v) => handleChange('groups', v)}
-                    />
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Tags" description="Set tags. Sources will be grouped by tags that lets you
-                find sources quickly.">
-                    {Array.isArray(value.tags) && value.tags.map((tag, index) => <Chip label={tag} key={index}
-                                                                                       style={{marginLeft: 5}}/>)}
-                </TuiFormGroupField>
+                <ShowHide label="Grouping & Tags" style={{marginTop: 20}}>
+                    <TuiFormGroupField header="Grouping"
+                                       description="Sources can be grouped with tags that are typed here.">
+                        <TuiTagger tags={value.groups}
+                                   onChange={(v) => handleChange('groups', v)}
+                        />
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="Tags" description="Set tags. Sources will be grouped by tags that lets you
+                    find sources quickly.">
+                        {Array.isArray(value.tags) && value.tags.map((tag, index) => <Chip label={tag} key={index}
+                                                                                           style={{marginLeft: 5}}/>)}
+                    </TuiFormGroupField>
+                </ShowHide>
             </TuiFormGroupContent>
         </TuiFormGroup>
     </TuiForm>
@@ -366,9 +374,9 @@ const EventSourceForm = ({value, style, onClose}) => {
                                         errorNameMessage={errorNameMessage}
                                         onChange={handleMetadataChange}/>
             <BridgeForm id={bridge?.id} value={config.current} onChange={handleConfigChange}/>
-            <ShowHide label="Advanced settings" style={{marginBottom: 10}}>
+
                 <EventSourceAdvancedForm value={advanced.current} onChange={handleAdvancedChange}/>
-            </ShowHide>
+
             <div>
                 {errors && <ErrorsBox errorList={errors}/>}
                 <Button label="Save"

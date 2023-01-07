@@ -129,7 +129,6 @@ export default function EventReshapingForm({onSubmit, init}) {
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Describe event reshaping"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Name">
                     <TextField

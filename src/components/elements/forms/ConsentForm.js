@@ -108,7 +108,6 @@ export default function ConsentForm({
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Consent description"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Name" description="Type consent name. Be as descriptive as possible.">
                     <TextField variant="outlined"

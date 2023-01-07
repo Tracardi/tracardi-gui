@@ -90,6 +90,7 @@ export default function SchedulerJobForm({onSubmit, init: value}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
+            <TuiFormGroupHeader header="Time trigger" />
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Cron like trigger">
                     <TextField

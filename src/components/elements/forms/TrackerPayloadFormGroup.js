@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import PropTypes from 'prop-types';
-import {TuiFormGroup, TuiFormGroupContent, TuiFormGroupField} from "../tui/TuiForm";
+import {TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import JsonEditor from "../editors/JsonEditor";
@@ -88,7 +88,7 @@ function TrackerPayloadEventList({events, onChange}) {
         {objectMap(eventList, (key, event) => {
             return <div key={key} style={{display: "flex", justifyContent: "space-between", flexDirection: "row"}}>
                 <div className="flexLine" >
-                    <VscSymbolEvent size={20} />
+                    <VscSymbolEvent size={20} style={{width: 30}}/>
                     {event.type.name}
                 </div>
                 <div className="flexLine" >
@@ -135,7 +135,10 @@ function TrackerPayloadEventList({events, onChange}) {
                     </fieldset>
                 </TabCase>
             </Tabs></>}
-        <Button label="Add event" onClick={handleAddNewEvent}/></>
+            <div style={{marginTop: 20}}>
+                <Button label="Add event" onClick={handleAddNewEvent}/>
+            </div>
+        </>
 }
 
 export default function TrackerPayloadFormGroup({onChange, value}) {
@@ -171,6 +174,7 @@ export default function TrackerPayloadFormGroup({onChange, value}) {
     }
 
     return <TuiFormGroup>
+        <TuiFormGroupHeader header="Track payload" />
         <TuiFormGroupContent>
             <TuiFormGroupField header="Source" description="Select event source though which the data will be collected.">
                 <TuiSelectEventSource value={data.source} onSetValue={handleSourceChange}/>
