@@ -16,7 +16,7 @@ export default function DataComplianceForm({data: _data, onSaveComplete}) {
         _data = {
             name: "Data compliance enforcement for event: type-event-type",
             event_type: "",
-            settings: "{\"properties.some_field\": {\"consent_id\": \"\", \"action\": \"remove\" }}"
+            settings: "[{\"field\":\"xxx\", \"consent_id\": \"\", \"action\": \"remove\" }]"
         }
     }
 
