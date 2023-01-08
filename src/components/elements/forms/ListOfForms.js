@@ -22,13 +22,11 @@ const ListOfForms = ({onChange, form, value:_value, defaultFormValue={}}) => {
 
     }
 
-    console.log("val", _value)
-
     const [list, setList] = useState(_value)
 
     const handleChange = (list) => {
         if(onChange instanceof Function) {
-            onChange(list)
+            onChange(Object.values(list))
         }
     }
 
@@ -69,7 +67,10 @@ const ListOfForms = ({onChange, form, value:_value, defaultFormValue={}}) => {
                 </div>
             })
         }
-        <Button label="Add" onClick={handleRowAdd}/>
+        <div style={{margin: "20px 0"}}>
+            <Button label="Add" onClick={handleRowAdd}/>
+        </div>
+
 
     </div>
 }
