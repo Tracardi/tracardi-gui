@@ -5,16 +5,18 @@ import Button from "./Button";
 import {objectMap} from "../../../misc/mappers";
 
 
-const ListOfForms = ({onChange, form, value:_value, defaultFormValue={}}) => {
+const ListOfForms = ({onChange, form, details, value: _value, defaultFormValue = {}}) => {
 
-    if(!_value) {
-        _value = {[uuid4()]: defaultFormValue}
+    const initCurrentRow = uuid4()
+
+    if (!_value) {
+        _value = {[initCurrentRow]: defaultFormValue}
     } else {
         if (Array.isArray(_value)) {
             const valueObj = {};
 
             for (const item of _value) {
-                valueObj[uuid4()] = item;
+                valueObj[initCurrentRow] = item;
             }
 
             _value = valueObj
@@ -23,21 +25,24 @@ const ListOfForms = ({onChange, form, value:_value, defaultFormValue={}}) => {
     }
 
     const [list, setList] = useState(_value)
+    const [currentRow, setCurrentRow] = useState(initCurrentRow)
 
     const handleChange = (list) => {
-        if(onChange instanceof Function) {
+        if (onChange instanceof Function) {
             onChange(Object.values(list))
         }
     }
 
     const handleRowAdd = () => {
-        const _list = {...list, [uuid4()]: defaultFormValue}
+        const _currentRow = uuid4()
+        const _list = {...list, [_currentRow]: defaultFormValue}
         setList(_list)
+        setCurrentRow(_currentRow)
         handleChange(_list)
     }
 
     const handleRowChange = (key, value) => {
-        const _list= {...list, [key]: value}
+        const _list = {...list, [key]: value}
         setList(_list)
         handleChange(_list)
     }
@@ -55,14 +60,27 @@ const ListOfForms = ({onChange, form, value:_value, defaultFormValue={}}) => {
     return <div style={{width: "100%"}}>
         {
             objectMap(list, (key, formValue) => {
-                return <div key={key} style={{width: "100%", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 15}}>
-                        <span style={{width: "100%"}}>
+                console.log(key, formValue)
+                return <div key={key} style={{
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 15
+                }} onClick={() => setCurrentRow(key)}>
+                        <span style={{width: "100%"}} >
                         {
-                            React.createElement(
+                            (currentRow !== key && details) ? <span style={{cursor: "pointer"}}>{React.createElement(
+                                details,
+                                {value: formValue},
+                                null
+                            )}</span> : React.createElement(
                                 form,
                                 {value: formValue, onChange: (value) => handleRowChange(key, value)},
                                 null
-                            )}
+                            )
+                        }
                         </span><BsTrash size={20} style={{cursor: "pointer"}} onClick={() => handleDelete(key)}/>
                 </div>
             })

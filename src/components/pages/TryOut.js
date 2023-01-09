@@ -10,19 +10,37 @@ import BoxStyling from "../elements/tui/TuiBoxStyling";
 import TimeDifference from "../elements/datepickers/TimeDifference";
 import RefInput from "../elements/forms/inputs/RefInput";
 import Button from "../elements/forms/Button";
-import DataComplianceSettings from "../elements/forms/DataComplianceSettings";
+import FieldComplianceForm from "../elements/forms/FieldComplianceForm";
+import ListOfForms from "../elements/forms/ListOfForms";
+import Chip from "@mui/material/Chip";
 
 export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
     const [value, setValue] = React.useState("test");
     const [token, setToken] = useState(null)
 
+    const ComplianceRuleDetails = ({value}) => {
+
+        function chips(consents) {
+            return consents.map((consent, key) => {
+                console.log(consent)
+                return <Chip key={key}  size="small" label={consent.name} />
+            })
+        }
+
+        return <div style={{padding: "10px 7px"}} className="flexLine">{value.action} FILED "{value.field.value}" IF NO CONSENTS <span className="flexLine" style={{marginLeft: 10, gap: 3}}>{chips(value.consents)}</span></div>
+    }
 
     return (<div style={{padding: 10}}>
-            <DataComplianceSettings
-                value={[{field: {value:"1", ref: true}, consents: [], action: "hash"}, {field: {value:"2", ref: false}, consents: [], action: "nothing"}]}
-                onChange={(v) => console.log(v)}
-            />
+            <ListOfForms form={FieldComplianceForm}
+                         defaultFormValue={{field: {value:"", ref: true}, consents: [], action: "hash"}}
+                         details={ComplianceRuleDetails}
+                         // value={value}
+                         onChange={(v) => console.log(v)}/>
+            {/*<DataComplianceSettings*/}
+            {/*    value={[{field: {value:"1", ref: true}, consents: [], action: "hash"}, {field: {value:"2", ref: false}, consents: [], action: "nothing"}]}*/}
+            {/*    onChange={(v) => console.log(v)}*/}
+            {/*/>*/}
             <TimeDifference date={"2022-10-14T14:43:56.591642"}/>
             <RefInput value="123"/>
             <BoxStyling value={{
