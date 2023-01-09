@@ -10,7 +10,7 @@ import PlatformIcon from "../misc/IconLabels/PlatformLabel";
 import BrowserLabel from "../misc/IconLabels/BrowserLabel";
 import ProfileLabel from "../misc/IconLabels/ProfileLabel";
 
-export default function SessionCardInfo({session}) {
+export default function SessionCardInfo({session, displayContext=true}) {
 
     const labelWidth = 180
     const displayMoreContext = window?.CONFIG?.session?.display?.row?.moreContext
@@ -54,9 +54,8 @@ export default function SessionCardInfo({session}) {
         >
             <ProfileDetailsById id={session?.profile?.id}/>
         </PropertyField>}
-
         <div style={{marginTop: 20}}>
-            {displayMoreContext && session?.id && <SessionContextInfo sessionId={session?.id}/>}
+            {displayContext && displayMoreContext && session?.id && <SessionContextInfo sessionId={session?.id}/>}
         </div>
     </>
 }
