@@ -55,8 +55,8 @@ const ListOfForms = ({onChange, form, value:_value, defaultFormValue={}}) => {
     return <div style={{width: "100%"}}>
         {
             objectMap(list, (key, formValue) => {
-                return <div key={key} style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
-                        <span>
+                return <div key={key} style={{width: "100%", display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 15}}>
+                        <span style={{width: "100%"}}>
                         {
                             React.createElement(
                                 form,

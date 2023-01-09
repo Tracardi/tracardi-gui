@@ -10,23 +10,19 @@ import BoxStyling from "../elements/tui/TuiBoxStyling";
 import TimeDifference from "../elements/datepickers/TimeDifference";
 import RefInput from "../elements/forms/inputs/RefInput";
 import Button from "../elements/forms/Button";
-
-import ListOfForms from "../elements/forms/ListOfForms";
+import DataComplianceSettings from "../elements/forms/DataComplianceSettings";
 
 export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
     const [value, setValue] = React.useState("test");
     const [token, setToken] = useState(null)
 
-    const Form = ({value, onChange}) => {
-        return <><RefInput value={value} onChange={onChange}/>{value.value}</>
-    }
 
     return (<div style={{padding: 10}}>
-            <ListOfForms form={Form}
-                         defaultFormValue={{value:"1234", ref: true}}
-                         value={[{value:"1", ref: true},{value:"12", ref: false}]}
-                         onChange={(v)=> console.log(v)}/>
+            <DataComplianceSettings
+                value={[{field: {value:"1", ref: true}, consents: [], action: "hash"}, {field: {value:"2", ref: false}, consents: [], action: "nothing"}]}
+                onChange={(v) => console.log(v)}
+            />
             <TimeDifference date={"2022-10-14T14:43:56.591642"}/>
             <RefInput value="123"/>
             <BoxStyling value={{

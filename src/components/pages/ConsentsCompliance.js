@@ -86,7 +86,7 @@ export default function  ConsentsDataCompliance() {
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
         drawerAddTitle="New compliance"
-        drawerAddWidth={600}
+        drawerAddWidth={1500}
         addFunc={addFunc}
     />
 }

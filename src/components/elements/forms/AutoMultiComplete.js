@@ -82,7 +82,7 @@ const AutoMultiComplete = ({showAlert, placeholder, error, url, initValue, onSet
                 setOptions([]);
             }}
             isOptionEqualToValue={(option, value) => {
-                return option.id === value.id
+                return option.id === value?.id
             }}
             getOptionLabel={(option) => {
                 return option?.name || option?.id || ""
@@ -94,6 +94,7 @@ const AutoMultiComplete = ({showAlert, placeholder, error, url, initValue, onSet
             onChange={(event, value) => {
                 handleValueSet(value);
             }}
+            size="small"
             renderInput={(params) => (
                 <TextField
                     {...params}

@@ -44,7 +44,7 @@ export default function DataComplianceDetails({id, onDeleteComplete, onEditCompl
         },
         [id])
 
-    const onEditClick = () => {
+    const handleEdit = () => {
         if (data) {
             setDisplayEdit(true);
         }
@@ -75,7 +75,7 @@ export default function DataComplianceDetails({id, onDeleteComplete, onEditCompl
 
     const Details = () => <>
         <div style={{margin: "20px 0", display: "flex", justifyContent: "flex-end"}}>
-            <Button onClick={onEditClick}
+            <Button onClick={handleEdit}
                     icon={<VscEdit size={20}/>}
                     label="Edit" disabled={typeof data === "undefined"}/>
             <Button
@@ -101,14 +101,14 @@ export default function DataComplianceDetails({id, onDeleteComplete, onEditCompl
         {loading && <CenteredCircularProgress/>}
         {data && <Details/>}
         <FormDrawer
-            width={800}
+            width={1500}
             onClose={() => {
                 setDisplayEdit(false)
             }}
             open={displayEdit}>
             {displayEdit && <DataComplianceForm
                 onSaveComplete={onEditComplete}
-                {...data}
+                data={data}
             />}
         </FormDrawer>
     </div>
