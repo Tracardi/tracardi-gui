@@ -3,7 +3,7 @@ import dot from "dot-object";
 import "./JsonStringify.css";
 import ToggleIcon from "../icons/ToggleIcon";
 
-export default function JsonStringify({data, toggle: taggleValue=false, filterFields=[]}) {
+export default function JsonStringify({data, toggle: taggleValue=false, filterFields=[], disableToggle=false, style={}}) {
 
     const [toggle, setToggle] = useState(taggleValue);
 
@@ -49,12 +49,12 @@ export default function JsonStringify({data, toggle: taggleValue=false, filterFi
         }
     )
 
-    return <div style={{display: "flex", justifyContent: "space-between" , width: "100%"}}>
+    return <div style={{display: "flex", justifyContent: "space-between" , width: "100%", ...style}}>
         <div className="JsonStringify">
             {highlight(data, toggle ? [] : filterFields)}
         </div>
-        <div className="Toggle" onClick={() => setToggle(!toggle)}>
+        {disableToggle === false && <div className="Toggle" onClick={() => setToggle(!toggle)}>
             <ToggleIcon toggle={toggle}/>
-        </div>
+        </div>}
     </div>
 }

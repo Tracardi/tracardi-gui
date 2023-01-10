@@ -33,6 +33,13 @@ const ListOfForms = ({onChange, form, details, value: _value, defaultFormValue =
         }
     }
 
+    const handleSetCurrent = (e, value) => {
+        setCurrentRow(value)
+        e.stopPropagation()
+        e.preventDefault()
+    }
+
+
     const handleRowAdd = () => {
         const _currentRow = uuid4()
         const _list = {...list, [_currentRow]: defaultFormValue}
@@ -60,7 +67,6 @@ const ListOfForms = ({onChange, form, details, value: _value, defaultFormValue =
     return <div style={{width: "100%"}}>
         {
             objectMap(list, (key, formValue) => {
-                console.log(key, formValue)
                 return <div key={key} style={{
                     width: "100%",
                     display: "flex",
@@ -68,8 +74,8 @@ const ListOfForms = ({onChange, form, details, value: _value, defaultFormValue =
                     alignItems: "center",
                     justifyContent: "space-between",
                     gap: 15
-                }} onClick={() => setCurrentRow(key)}>
-                        <span style={{width: "100%"}} >
+                }}>
+                        <span style={{width: "100%"}} onClick={(e) => handleSetCurrent(e, key)}>
                         {
                             (currentRow !== key && details) ? <span style={{cursor: "pointer"}}>{React.createElement(
                                 details,
