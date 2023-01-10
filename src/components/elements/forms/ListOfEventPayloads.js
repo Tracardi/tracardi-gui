@@ -5,14 +5,15 @@ import EventPayloadRow from "../details/EventPayloadRow";
 import React from "react";
 
 const PaperEventPayloadForm = (props) => {
-    return <Paper elevation={3} style={{padding: "10px 30px 30px 30px"}}>
+    return <Paper elevation={3} style={{padding: "10px 30px 30px 30px", margin: 3}}>
         <EventPayloadForm {...props}/>
     </Paper>
 }
 
 const ListOfEventPayloads = ({value, onChange}) => {
     return <ListOfForms form={PaperEventPayloadForm}
-                        defaultFormValue={{properties: {value:"", "ref": true}, context: {}, type: "page-view"}}
+                        label="Add event"
+                        defaultFormValue={{properties: {}, context: {}, type: ""}}
                         details={EventPayloadRow}
                         value={value}
                         onChange={onChange}/>

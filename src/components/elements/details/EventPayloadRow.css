@@ -1,0 +1,6 @@
+.EventPayloadRow {
+    border-bottom: solid 1px whitesmoke;
+}
+.EventPayloadRow:hover {
+    background-color: whitesmoke;
+}

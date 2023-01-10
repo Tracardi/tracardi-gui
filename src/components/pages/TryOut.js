@@ -12,6 +12,7 @@ import RefInput from "../elements/forms/inputs/RefInput";
 import Button from "../elements/forms/Button";
 import Chip from "@mui/material/Chip";
 import ListOfEventPayloads from "../elements/forms/ListOfEventPayloads";
+import TrackerPayloadForm from "../elements/forms/TrackerPayloadForm";
 
 export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
@@ -35,7 +36,7 @@ export default function TryOut() {
 
     return (<div style={{padding: 10}}>
             <div style={{width: 600}}>
-                <ListOfEventPayloads
+                <TrackerPayloadForm
                     // value={value}
                              onChange={(v) => console.log(v)}/>
             </div>

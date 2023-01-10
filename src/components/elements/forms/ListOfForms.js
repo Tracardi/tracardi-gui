@@ -5,7 +5,7 @@ import Button from "./Button";
 import {objectMap} from "../../../misc/mappers";
 
 
-const ListOfForms = ({onChange, form, details, value: _value, defaultFormValue = {}}) => {
+const ListOfForms = ({onChange, label="Add", form, details, value: _value, defaultFormValue = {}}) => {
 
     const initCurrentRow = uuid4()
 
@@ -92,7 +92,7 @@ const ListOfForms = ({onChange, form, details, value: _value, defaultFormValue =
             })
         }
         <div style={{margin: "20px 0"}}>
-            <Button label="Add" onClick={handleRowAdd}/>
+            <Button label={label} onClick={handleRowAdd}/>
         </div>
 
 

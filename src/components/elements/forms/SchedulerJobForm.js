@@ -4,7 +4,9 @@ import TextField from "@mui/material/TextField";
 import PropTypes from 'prop-types';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import TuiTagger from "../tui/TuiTagger";
-import TrackerPayloadFormGroup from "./TrackerPayloadFormGroup";
+import TrackerPayloadForm from "./TrackerPayloadForm";
+import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import ErrorsBox from "../../errors/ErrorsBox";
 
 export default function SchedulerJobForm({onSubmit, init: value}) {
 
@@ -17,22 +19,10 @@ export default function SchedulerJobForm({onSubmit, init: value}) {
                 source: {
                     id: null,
                 },
-                session: {
-                    id: null
-                },
-                metadata: {
-                    time: {
-                        insert: "2022-12-29T14:22:11.001Z"
-                    },
-                    ip: "string",
-                    status: "string"
-                },
-                profile: {
-                    id: "string"
-                },
+                session: null,
+                profile: null,
                 context: {},
                 properties: {},
-                request: {},
                 events: [],
                 options: {},
                 profile_less: false
@@ -41,8 +31,8 @@ export default function SchedulerJobForm({onSubmit, init: value}) {
     }
 
     const [data, setData] = useState(value);
-    const [name, setName] = useState(value.name);
-    const [description, setDescription] = useState(value.description);
+    const [progress, setProgress] = useState(false);
+    const [error, setError] = useState(null);
 
     const mounted = React.useRef(false);
 
@@ -52,63 +42,95 @@ export default function SchedulerJobForm({onSubmit, init: value}) {
     }, [])
 
     const handleSubmit = async () => {
-
+        try {
+            setError(false)
+            setProgress(true)
+            const response = await asyncRemote({
+                url: "/scheduler/job",
+                method: "POST",
+                data: data
+            })
+            if(onSubmit instanceof Function) {
+                onSubmit()
+            }
+        } catch (e) {
+            if(mounted.current) setError(getError(e))
+        } finally {
+            if(mounted.current) setProgress(false)
+        }
     }
 
-    return <TuiForm style={{margin: 20}}>
-        <TuiFormGroup>
-            <TuiFormGroupContent>
-                <TuiFormGroupField header="Name">
-                    <TextField
-                        label={"Name"}
-                        value={name}
-                        onChange={(ev) => {
-                            setName(ev.target.value)
-                        }}
-                        size="small"
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
-                                   description="Description will help you to understand when the event validation is applied.">
-                    <TextField
-                        label={"Description"}
-                        value={description}
-                        multiline
-                        rows={3}
-                        onChange={(ev) => {
-                            setDescription(ev.target.value)
-                        }}
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Tags" description="Tags help with data organisation.">
-                    <TuiTagger tags={[]}/>
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Time trigger" />
-            <TuiFormGroupContent>
-                <TuiFormGroupField header="Cron like trigger">
-                    <TextField
-                        label="Cron"
-                        value={data.time}
-                        onChange={(ev) => {
-                            setData({...data, time: ev.target.value})
-                        }}
-                        size="small"
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-        <TrackerPayloadFormGroup value={data.tracker_payload} onChange={()=>{}}/>
-        <Button label="Save" onClick={handleSubmit} style={{justifyContent: "center"}}/>
-    </TuiForm>
+
+    return <>
+        <TuiForm style={{margin: 20}}>
+            <TuiFormGroup>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField header="Name">
+                        <TextField
+                            label={"Name"}
+                            value={data.name}
+                            onChange={(ev) => {
+                                setData({...data, name: ev.target.value})
+                            }}
+                            size="small"
+                            variant="outlined"
+                            fullWidth
+                        />
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="Description"
+                                       description="Description will help you to understand when the event validation is applied.">
+                        <TextField
+                            label={"Description"}
+                            value={data.description}
+                            multiline
+                            rows={3}
+                            onChange={(ev) => {
+                                setData({...data, description: ev.target.value})
+                            }}
+                            variant="outlined"
+                            fullWidth
+                        />
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="Tags" description="Tags help with data organisation.">
+                        <TuiTagger tags={[]}/>
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Time trigger"/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField header="Cron like trigger">
+                        <TextField
+                            label="Cron"
+                            value={data.time}
+                            onChange={(ev) => {
+                                setData({...data, time: ev.target.value})
+                            }}
+                            size="small"
+                            variant="outlined"
+                            fullWidth
+                        />
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>
+        <div style={{margin: 20}}>
+            <TrackerPayloadForm
+                value={data.tracker_payload}
+                profileLess={true}
+                onChange={(value) => { setData({...data, tracker_payload: value})}}/>
+
+            {error && <ErrorsBox errorList={error} />}
+
+            <Button label="Save"
+                    progress={progress}
+                    error={error}
+                    onClick={handleSubmit}
+                    style={{justifyContent: "center"}}/>
+        </div>
+
+    </>
+
 }
 
 SchedulerJobForm.propTypes = {onSubmit: PropTypes.func, init: PropTypes.object}

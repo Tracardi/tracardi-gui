@@ -39,7 +39,6 @@ export default function EventPayloadForm ({value, onChange}) {
 
         event = {...event, type: event.type.id}
 
-        console.log("cange", event)
         if (onChange instanceof Function) {
             try {
                 setJsonError(false);
