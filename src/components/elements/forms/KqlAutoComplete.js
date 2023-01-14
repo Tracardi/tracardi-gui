@@ -4,7 +4,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 
-export function Kql() {
+export default function KqlAutoComplete() {
 
     const [kql, setKql] = useState({value: "dddd", token: ""})
     const [options, setOptions] = React.useState([]);

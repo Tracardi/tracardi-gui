@@ -11,11 +11,8 @@ import TimeDifference from "../elements/datepickers/TimeDifference";
 import RefInput from "../elements/forms/inputs/RefInput";
 import Button from "../elements/forms/Button";
 import Chip from "@mui/material/Chip";
-import ListOfEventPayloads from "../elements/forms/ListOfEventPayloads";
 import TrackerPayloadForm from "../elements/forms/TrackerPayloadForm";
-import {AutocompleteQuery} from "../elements/tui/TuiAutocompleteQuery";
-import AutoComplete from "../elements/forms/AutoComplete";
-import KqlAutoComplete, {Kql} from "../elements/forms/KqlAutoComplete";
+import KqlAutoComplete from "../elements/forms/KqlAutoComplete";
 
 export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
@@ -38,7 +35,7 @@ export default function TryOut() {
 
 
     return (<div style={{padding: 10}}>
-            <Kql/>
+            <KqlAutoComplete/>
             <div style={{width: 600}}>
                 <TrackerPayloadForm
                     // value={value}
