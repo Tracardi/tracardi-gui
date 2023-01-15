@@ -35,7 +35,7 @@ export default function TryOut() {
 
 
     return (<div style={{padding: 10}}>
-            <KqlAutoComplete/>
+            <KqlAutoComplete onChange={(v) => console.log(v)}/>
             <div style={{width: 600}}>
                 <TrackerPayloadForm
                     // value={value}

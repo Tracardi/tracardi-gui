@@ -9,6 +9,7 @@ import DataTimePicker from "../datepickers/DateTimePicker";
 import MenuItem from "@mui/material/MenuItem";
 import PropTypes from 'prop-types';
 import {external} from "../misc/linking"
+import KqlAutoComplete from "./KqlAutoComplete";
 
 export default function ObjectFiltering({type, initDate, onFilterClick, initRefresh, onRefreshChange}) {
 
@@ -32,8 +33,8 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
         onRefreshChange(rate);
     }
 
-    function setQueryChange(ev) {
-        setQuery(ev.target.value);
+    function setQueryChange(value) {
+        setQuery(value);
     }
 
     function onEnterPressed(ev) {
@@ -70,14 +71,7 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
             </TextField>
         </div>
         <div className="Input">
-            <TextField id="search-input" label="Filter"
-                       value={query}
-                       onKeyPressCapture={onEnterPressed}
-                       onChange={setQueryChange}
-                       size="small"
-                       variant="outlined"
-                       fullWidth
-            />
+            <KqlAutoComplete index={type} value={query} onChange={setQueryChange} onKeyPressCapture={onEnterPressed}/>
             <div style={{fontSize: 11}}>Do not know how to filter. Click <span style={{textDecoration: "underline", cursor: "pointer"}} onClick={external("http://docs.tracardi.com/running/filtering/", true)}>here</span> for information.</div>
         </div>
         <div className="Date">
