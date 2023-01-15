@@ -11,8 +11,6 @@ export default function KqlAutoComplete() {
     const [progress, setProgress] = React.useState(false);
     const [open, setOpen] = React.useState(false);
 
-    const mounted = useRef(false);
-
     useEffect(() => {
         let isSubscribed = true;
         setProgress(true);
@@ -26,6 +24,7 @@ export default function KqlAutoComplete() {
                 let options = response.data
 
                 if (typeof options !== "undefined" && options !== null) {
+                    console.log(options)
                     setOptions(options);
                 } else {
                     setOptions([])
