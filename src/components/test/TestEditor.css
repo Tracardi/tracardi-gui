@@ -1,11 +1,15 @@
 .TestEditor {
     height: 100%;
+    display: flex;
+    flex-direction: row;
 }
 
 .TestEditor .LeftColumn {
+    flex: 1;
     padding: 10px;
 }
 
 .TestEditor .RightColumn {
+    flex: 1;
     padding: 10px;
 }

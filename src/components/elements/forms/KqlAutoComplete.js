@@ -149,8 +149,8 @@ export default function KqlAutoComplete({index, label, value, onChange, onKeyPre
                                 textTransform: "uppercase"
                             }}>{option.token}</span>
                     </span>
-                    <span style={{display: "table-cell", width: 500}}>{option.value}</span>
-                    <span style={{display: "table-cell", fontSize: 12, color: "gray"}}>{option.desc}</span>
+                    <span style={{display: "table-cell", marginRight: 10}}>{option.value}</span>
+                    {option.desc && <span style={{display: "table-cell", fontSize: 12, color: "gray"}}>{option.desc}</span>}
                 </div>
             }}
             value={kql}

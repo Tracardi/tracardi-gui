@@ -11,7 +11,7 @@ export default function TuiSelectMultiConsentType ({value, label="Consent types"
     }
 
     return <AutoMultiComplete 
-        solo={true}
+        solo={false}
         disabled={false}
         error={errorMessage}
         placeholder={label}

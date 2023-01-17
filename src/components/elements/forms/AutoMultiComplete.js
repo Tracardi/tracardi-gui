@@ -87,8 +87,9 @@ const AutoMultiComplete = ({showAlert, placeholder, error, url, initValue, onSet
             getOptionLabel={(option) => {
                 return option?.name || option?.id || ""
             }}
+            noOptionsText="Not found"
             options={options}
-            loading={loading}
+            // loading={loading}
             value={initValue === null ? [] : initValue}
             disabled={disabled}
             onChange={(event, value) => {

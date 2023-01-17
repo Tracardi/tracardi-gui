@@ -7,10 +7,9 @@ import version from '../../misc/version';
 import {BiChevronLeftCircle, BiChevronRightCircle} from "react-icons/bi";
 import {BsPersonCircle, BsFileEarmarkArrowUp} from "react-icons/bs";
 import {VscOrganization, VscPulse, VscTools} from "react-icons/vsc";
-import {IoGitNetworkSharp} from "react-icons/io5";
-import {GoSettings} from "react-icons/go";
-import {VscLaw, VscDashboard} from "react-icons/vsc";
-import {BsClipboardCheck, BsStar, BsBoxArrowRight, BsBoxArrowInRight} from "react-icons/bs";
+import {IoGitNetworkSharp, IoServerOutline} from "react-icons/io5";
+import {VscDashboard} from "react-icons/vsc";
+import {BsClipboardCheck, BsBoxArrowRight, BsBoxArrowInRight} from "react-icons/bs";
 import { getRoles } from "../authentication/login";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote, getError} from "../../remote_api/entrypoint";
@@ -99,6 +98,7 @@ function MainMenu({app, showAlert, changeRoute}) {
                 {!window?.CONFIG?.menu?.inbound?.disable && <MenuRow icon={<BsBoxArrowInRight size={20}/>} label="Inbound Traffic" collapsed={collapsed} onClick={go("/inbound")} route="/inbound" roles={["admin", "developer"]}/>}
                 {!window?.CONFIG?.menu?.triggers?.disable && <MenuRow icon={<BsGear size={20}/>} label="Triggers" collapsed={collapsed} onClick={go("/triggers")} route="/triggers" roles={["admin", "developer"]}/>}
                 {!window?.CONFIG?.menu?.transformations?.disable && <MenuRow icon={<FlowNodeIcons icon="map-properties"  size={20}/>} label="Transformations" collapsed={collapsed} onClick={go("/transformations")} route="/transformations" roles={["admin", "developer"]}/>}
+                {!window?.CONFIG?.menu?.identification?.disable && <MenuRow icon={<FlowNodeIcons icon="identity"  size={20}/>} label="Identification" collapsed={collapsed} onClick={go("/identification")} route="/identification" roles={["admin", "developer"]}/>}
 
                 {!window?.CONFIG?.menu?.data?.disable && <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")} route="/data" roles={["admin", "developer", "marketer"]}/>}
                 {!window?.CONFIG?.menu?.integration?.disable && <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Integration" collapsed={collapsed} onClick={go("/processing")} route="/processing" roles={["admin", "developer"]}/>}
@@ -107,8 +107,7 @@ function MainMenu({app, showAlert, changeRoute}) {
                 {!window?.CONFIG?.menu?.reporting?.disable && <MenuRow icon={<BsBarChartFill size={20}/>} label="Reporting" collapsed={collapsed} onClick={go("/reporting")} route="/reporting" roles={["admin", "developer", "marketer"]}/>}
                 {!window?.CONFIG?.menu?.outbound?.disable && <MenuRow icon={<BsBoxArrowRight size={20}/>} label="Outbound Traffic" collapsed={collapsed} onClick={go("/outbound")} route="/outbound" roles={["admin", "developer"]}/>}
 
-                {!window?.CONFIG?.menu?.resources?.disable && <MenuRow icon={<BsStar size={20}/>} label="Resources" collapsed={collapsed} onClick={go("/resources")} route="/resources" roles={["admin", "developer"]} style={{marginTop: 20}}/>}
-                {!window?.CONFIG?.menu?.consents?.disable && <MenuRow icon={<VscLaw size={20}/>} label="Consents" collapsed={collapsed} onClick={go("/consents")} route="/consents" roles={["admin", "developer", "marketer"]}/>}
+                {!window?.CONFIG?.menu?.resources?.disable && <MenuRow icon={<IoServerOutline size={20}/>} label="Resources" collapsed={collapsed} onClick={go("/resources")} route="/resources" roles={["admin", "developer"]} style={{marginTop: 20}}/>}
 
                 {!window?.CONFIG?.menu?.test?.disable && <MenuRow icon={<BsClipboardCheck size={20}/>} label="Test" collapsed={collapsed} onClick={go("/testing")} route="/testing" roles={["admin", "developer"]} style={{marginTop: 20}}/>}
 
@@ -135,14 +134,15 @@ function MainMenu({app, showAlert, changeRoute}) {
                      onClick={go("/maintenance")}
                      route="/maintenance"
                      roles={["admin", "maintainer"]}/>}
-            {!window?.CONFIG?.menu?.import?.disable && <MenuRow icon={<BsFileEarmarkArrowUp size={20}/>} label="Import" collapsed={collapsed} onClick={go("/import")} route="/import" roles={["admin", "developer"]}/>}
-            {!window?.CONFIG?.menu?.settings?.disable && <MenuRow icon={<GoSettings size={20}/>}
-                     label="Settings"
-                     collapsed={collapsed}
-                     onClick={go("/settings")}
-                     route="/settings"
-                     roles={["admin", "developer"]}
-                     style={{marginBottom: 20}}/>}
+            {!window?.CONFIG?.menu?.import?.disable && <MenuRow icon={<BsFileEarmarkArrowUp size={20}/>}
+                                                                label="Import"
+                                                                collapsed={collapsed}
+                                                                onClick={go("/import")}
+                                                                route="/import"
+                                                                roles={["admin", "developer"]}
+                                                                style={{marginBottom: 20}}
+            />}
+
             <MenuRow icon={collapsed ? <BiChevronRightCircle size={20}/> : <BiChevronLeftCircle size={20}/>}
                      collapsed={collapsed}
                      label="Collapse"

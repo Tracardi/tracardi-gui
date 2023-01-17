@@ -8,6 +8,7 @@ import {BsStar} from "react-icons/bs";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
 import {ErrorBoundary} from "@sentry/react";
 import TopBar from "./pages/top/TopBar";
+import IdentificationPoint from "./pages/IdentificationPoint";
 
 const ProRouter = React.lazy(() => import('./pages/pro/ProRouter'))
 const Dashboard = React.lazy(() => import('./pages/Dashboard'))
@@ -177,6 +178,29 @@ const AppBox = () => {
             </ErrorBoundary>
         </PrivateRoute>
 
+        {/*Identification*/}
+
+        <PrivateRoute path={urlPrefix("/identification")} roles={["admin", "developer", "marketer"]}>
+            <ErrorBoundary>
+                <Suspense fallback={<CenteredCircularProgress/>}>
+                    <TopBar>Customer Identification Points and Consents</TopBar>
+                    <PageTabs tabs={[
+                        new PrivateTab(["admin", "developer"],
+                            <IdentificationPoint/>, "/identification/point", <>
+                                <BsStar size={20} style={{marginRight: 5}}/>{"Identification points"}
+                            </>),
+                        new PrivateTab(["admin", "developer", "marketer"],
+                            <Consents/>, "/consents/type", "Consent types"),
+                        new PrivateTab(["admin", "developer", "marketer"],
+                            <ConsentsDataCompliance/>, "/consents/compliance", <>
+                                <BsStar size={20}
+                                        style={{marginRight: 5}}/>{"Data compliance"}</>)
+                    ]}
+                    />
+                </Suspense>
+            </ErrorBoundary>
+        </PrivateRoute>
+
         {/*Data*/}
 
         <PrivateRoute path={urlPrefix("/data")} roles={["admin", "marketer", "developer"]}>
@@ -255,23 +279,6 @@ const AppBox = () => {
             </ErrorBoundary>
         </PrivateRoute>
 
-        <PrivateRoute path={urlPrefix("/consents")} roles={["admin", "developer", "marketer"]}>
-            <ErrorBoundary>
-                <Suspense fallback={<CenteredCircularProgress/>}>
-                    <TopBar>Consents</TopBar>
-                    <PageTabs tabs={[
-                        new PrivateTab(["admin", "developer", "marketer"],
-                            <Consents/>, "/consents/type", "Consent types"),
-                        new PrivateTab(["admin", "developer", "marketer"],
-                            <ConsentsDataCompliance/>, "/consents/compliance", <>
-                                <BsStar size={20}
-                                        style={{marginRight: 5}}/>{"Data compliance"}</>)
-                    ]}
-                    />
-                </Suspense>
-            </ErrorBoundary>
-        </PrivateRoute>
-
         {/*The same only different path*/}
         <PrivateRoute exact path={urlPrefix("/flow/collection/edit/:id")} roles={["admin", "developer"]}>
             <ErrorBoundary>
@@ -328,28 +335,12 @@ const AppBox = () => {
             />
         </PrivateRoute>
 
-        {/*Settings*/}
-
-        <PrivateRoute path={urlPrefix("/settings")} roles={["admin", "developer"]}>
-            <ErrorBoundary>
-                <Suspense fallback={<CenteredCircularProgress/>}>
-                    <TopBar>Settings</TopBar>
-                    <PageTabs tabs={[
-                        new PrivateTab(["admin", "developer"],
-                            <Settings/>, "/settings/system", "System settings"),
-                    ]}
-                    />
-                </Suspense>
-            </ErrorBoundary>
-
-        </PrivateRoute>
-
         {/*Maintenance*/}
 
         <PrivateRoute path={urlPrefix("/maintenance")} roles={["maintainer", "admin", "developer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <TopBar>Maintenance</TopBar>
+                    <TopBar>Maintenance and Settings</TopBar>
                     <PageTabs tabs={[
                         new PrivateTab(["maintainer"],
                             <ElasticClusterHealthInfo/>, "/maintenance/elastic-cluster", "Cluster"),
@@ -359,6 +350,8 @@ const AppBox = () => {
                         new PrivateTab(["admin"], <Users/>, "/maintenance/users", "Users"),
                         new PrivateTab(["admin", "developer"],
                             <ActionPlugins/>, "/settings/plugins", "Action plug-ins"),
+                        new PrivateTab(["admin", "developer"],
+                            <Settings/>, "/settings/system", "System settings"),
                     ]}
                     />
                 </Suspense>

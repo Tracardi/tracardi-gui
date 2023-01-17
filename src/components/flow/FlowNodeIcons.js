@@ -6,7 +6,7 @@ import {
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
     BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown,
-    BsFolderCheck, BsClock, BsBoxArrowRight, BsGithub, BsPersonX
+    BsFolderCheck, BsClock, BsBoxArrowRight, BsGithub, BsPersonX, BsPersonBadge
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -248,6 +248,7 @@ export const icons = {
     "redirect": (size) => <IoArrowRedoOutline size={size}/>,
     "javascript": (size) => <SiJavascript size={size}/>,
     "train": (size) => <RiTrainLine size={size} />,
+    "identity": (size) => <BsPersonBadge size={size}/>
 
 }
 
