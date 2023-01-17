@@ -9,8 +9,9 @@ import {v4 as uuid4} from 'uuid';
 import TextField from "@mui/material/TextField";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 import IdentificationFieldMapping from "./IdentificationFieldMapping";
+import Switch from "@mui/material/Switch";
 
-export default function IdentificationPointForm({data: _data, onSaveComplete}) {
+export default function IdentificationPointForm({data: _data, onSubmit}) {
 
     if (!_data) {
         _data = {
@@ -26,7 +27,9 @@ export default function IdentificationPointForm({data: _data, onSaveComplete}) {
                 name: ""
             },
             fields:[ {event_property: {value:"", ref: true}, profile_trait: {value:"", ref: true}} ],
-            settings: []
+            settings: {
+                conflict_aux_field: "conflict"
+            }
         }
     }
 
@@ -71,8 +74,8 @@ export default function IdentificationPointForm({data: _data, onSaveComplete}) {
                 })
 
                 if (response?.data && mounted.current) {
-                    if (onSaveComplete) {
-                        onSaveComplete(data)
+                    if (onSubmit) {
+                        onSubmit(data)
                     }
                 }
 
@@ -159,6 +162,15 @@ export default function IdentificationPointForm({data: _data, onSaveComplete}) {
                 'mail'. If any of the set pairs match the profile will be attached to the event.">
                     <IdentificationFieldMapping value={data?.fields} onChange={v => handleChange("fields", v)}/>
                 </TuiFormGroupField>
+                <TuiFormGroupField header="Enable">
+                    <Switch
+                        checked={data?.enabled}
+                        onChange={(ev) => handleChange('enabled', ev.target.checked)}
+                    />
+                    <span>
+                        Enable identification point
+                    </span>
+                </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
         {error && <ErrorsBox errorList={error}/>}
@@ -172,5 +184,5 @@ export default function IdentificationPointForm({data: _data, onSaveComplete}) {
 
 IdentificationPointForm.propTypes = {
     data: PropTypes.object,
-    onSaveComplete: PropTypes.func
+    onSubmit: PropTypes.func
 }

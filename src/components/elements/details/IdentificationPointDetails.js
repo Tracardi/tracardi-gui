@@ -105,7 +105,7 @@ export default function IdentificationPointDetails({id, onDeleteComplete}) {
             }}
             open={displayEdit}>
             {displayEdit && <IdentificationPointForm
-                onSaveComplete={onEditComplete}
+                onSubmit={onEditComplete}
                 data={data}
             />}
         </FormDrawer>
