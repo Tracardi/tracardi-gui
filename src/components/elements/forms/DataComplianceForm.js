@@ -9,6 +9,7 @@ import {v4 as uuid4} from 'uuid';
 import TextField from "@mui/material/TextField";
 import DataComplianceSettings from "./DataComplianceSettings";
 import ErrorBox from "../../errors/ErrorBox";
+import Switch from "@mui/material/Switch";
 
 export default function DataComplianceForm({data: _data, onSaveComplete}) {
 
@@ -18,7 +19,8 @@ export default function DataComplianceForm({data: _data, onSaveComplete}) {
             name: "",
             description: "Data compliance enforcement for event: type-event-type",
             event_type: "",
-            settings: []
+            settings: [],
+            enabled: false
         }
     }
 
@@ -45,13 +47,12 @@ export default function DataComplianceForm({data: _data, onSaveComplete}) {
         setNameErrorMessage(null)
         setSettingsErrorMessage(null)
         setEventTypeErrorMessage(null)
-        console.log(data.name === "", data.settings.length === 0, !data?.event_type?.id, data?.event_type?.id )
+
         if (data.name === "") {
             setNameErrorMessage("Please set name")
         } else if (data.settings.length === 0) {
             setSettingsErrorMessage("Data compliance without rules has no effect. Add some rules.")
         } else if (!data?.event_type?.id) {
-            console.log("sss", eventTypeErrorMessage)
             setEventTypeErrorMessage("Set event type.")
         } else {
             setProcessing(true);
@@ -144,6 +145,15 @@ export default function DataComplianceForm({data: _data, onSaveComplete}) {
                         value={data?.settings}
                         onChange={(v) => handleChange("settings", v)}
                     />
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Enable">
+                    <Switch
+                        checked={data?.enabled}
+                        onChange={(ev) => handleChange('enabled', ev.target.checked)}
+                    />
+                    <span>
+                        Enable Compliance Rules
+                    </span>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
