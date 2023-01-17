@@ -49,8 +49,8 @@ export default function IdentificationPointForm({data: _data, onSaveComplete}) {
 
     const handleSave = async () => {
         setNameErrorMessage(null)
-        setEventTypeErrorMessage("Set event type.")
-        console.log(data?.event_type?.id === "")
+        setEventTypeErrorMessage(null)
+
         if (data.name === "" || data?.event_type?.id === "") {
             if (data.name === "") {
                 setNameErrorMessage("Please set name")
@@ -60,7 +60,7 @@ export default function IdentificationPointForm({data: _data, onSaveComplete}) {
                 setEventTypeErrorMessage("Set event type.")
             }
         } else {
-            console.log(data)
+
             setProcessing(true);
 
             try {
@@ -90,13 +90,13 @@ export default function IdentificationPointForm({data: _data, onSaveComplete}) {
 
     const handleChange = (key, value) => {
         const _value = {...data, [key]: value}
-        console.log(_value)
+
         setData(_value)
         if (key === "event_type" && value?.id) {
             setEventTypeErrorMessage(null)
         }
     }
-    console.log(data)
+
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
             <TuiFormGroupContent>
@@ -106,6 +106,7 @@ export default function IdentificationPointForm({data: _data, onSaveComplete}) {
                                value={data.name}
                                error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null)}
                                helperText={nameErrorMessage}
+                               FormHelperTextProps={{style: {color: "#d81b60"}}}
                                onChange={(ev) => {
                                    handleChange("name", ev.target.value)
                                }}

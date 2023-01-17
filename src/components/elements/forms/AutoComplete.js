@@ -8,7 +8,7 @@ import {convertResponseToAutoCompleteOptions} from "../../../misc/converters";
 import {isObject, isString} from "../../../misc/typeChecking";
 
 const AutoComplete = ({
-                          placeholder, error: errorMessage = null, endpoint, token=null, defaultValueSet, initValue, value = null, onSetValue,
+                          placeholder, error: _error = null, endpoint, token=null, defaultValueSet, initValue, value = null, onSetValue,
                           onChange, onlyValueWithOptions = false, disabled, fullWidth = false,
                           renderOption, noOptionsText = "No options"
                       }) => {
@@ -22,7 +22,7 @@ const AutoComplete = ({
         return initValue
     }
 
-    const [error, setError] = React.useState(errorMessage);
+    const [error, setError] = React.useState(_error);
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState(defaultValueSet || []);
     const [progress, setProgress] = React.useState(false);
@@ -33,14 +33,14 @@ const AutoComplete = ({
 
     useEffect(() => {
         mounted.current = true;
-        setError(errorMessage)
+        setError(_error)
         if (value) {
             setSelectedValue(value)
         }
         return () => {
             mounted.current = false;
         }
-    }, [errorMessage, value])
+    }, [_error, value])
 
     const handleLoading = async () => {
         if (mounted.current) {
@@ -62,8 +62,6 @@ const AutoComplete = ({
                         } else {
                             setOptions([])
                         }
-
-                        setError(null)
                     }
 
                 } catch (e) {

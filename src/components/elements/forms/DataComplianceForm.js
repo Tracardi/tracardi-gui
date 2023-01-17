@@ -41,24 +41,19 @@ export default function DataComplianceForm({data: _data, onSaveComplete}) {
     }, []);
 
     const handleSave = async () => {
+        setError(null)
         setNameErrorMessage(null)
         setSettingsErrorMessage(null)
-        setEventTypeErrorMessage("Set event type.")
-
-        if (data.name === "" || data.settings.length === 0 || data?.event_type?.id === "") {
-            if (data.name === "") {
-                setNameErrorMessage("Please set name")
-            }
-
-            if (data.settings.length === 0) {
-                setSettingsErrorMessage("Data compliance without rules has no effect. Add some rules.")
-            }
-
-            if(data?.event_type?.id === "") {
-                setEventTypeErrorMessage("Set event type.")
-            }
+        setEventTypeErrorMessage(null)
+        console.log(data.name === "", data.settings.length === 0, !data?.event_type?.id, data?.event_type?.id )
+        if (data.name === "") {
+            setNameErrorMessage("Please set name")
+        } else if (data.settings.length === 0) {
+            setSettingsErrorMessage("Data compliance without rules has no effect. Add some rules.")
+        } else if (!data?.event_type?.id) {
+            console.log("sss", eventTypeErrorMessage)
+            setEventTypeErrorMessage("Set event type.")
         } else {
-
             setProcessing(true);
 
             try {
@@ -106,6 +101,7 @@ export default function DataComplianceForm({data: _data, onSaveComplete}) {
                                value={data.name}
                                error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null)}
                                helperText={nameErrorMessage}
+                               FormHelperTextProps={{style: {color: "#d81b60"}}}
                                onChange={(ev) => {
                                    handleChange("name", ev.target.value)
                                }}
@@ -130,7 +126,7 @@ export default function DataComplianceForm({data: _data, onSaveComplete}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Event properties compliance setting" description="This form allows you to set rules for
+            <TuiFormGroupHeader header="Event properties compliance settings" description="This form allows you to set rules for
             data compliance for a specific event type, based on the customer consents that have been granted."/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Event type" description="To use this feature, you must first select an
@@ -154,7 +150,7 @@ export default function DataComplianceForm({data: _data, onSaveComplete}) {
         {error && <ErrorsBox errorList={error}/>}
         <Button label="Save"
                 onClick={handleSave}
-                error={nameErrorMessage !== null}
+                error={nameErrorMessage !== null || settingsErrorMessage!==null || eventTypeErrorMessage!==null}
                 progress={processing}
                 style={{justifyContent: "center"}}/>
     </TuiForm>

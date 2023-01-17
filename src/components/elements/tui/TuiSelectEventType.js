@@ -12,7 +12,7 @@ export default function TuiSelectEventType({initValue, value, label="Event type"
     return <AutoComplete
         onlyValueWithOptions={onlyValueWithOptions}
         disabled={false}
-        errorMessage={errorMessage}
+        error={errorMessage}
         placeholder={label}
         endpoint={{url:"/events/metadata/type"}}
         initValue={initValue}
