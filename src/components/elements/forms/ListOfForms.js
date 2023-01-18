@@ -7,15 +7,16 @@ import {objectMap} from "../../../misc/mappers";
 
 const ListOfForms = ({onChange, label="Add", form, details, value: _value, defaultFormValue = {}}) => {
 
-    const initCurrentRow = uuid4()
+    let initCurrentRow
 
     if (!_value) {
+        initCurrentRow = uuid4()
         _value = {[initCurrentRow]: defaultFormValue}
     } else {
         if (Array.isArray(_value)) {
             const valueObj = {};
-
             for (const item of _value) {
+                initCurrentRow = uuid4()
                 valueObj[initCurrentRow] = item;
             }
 
@@ -23,6 +24,7 @@ const ListOfForms = ({onChange, label="Add", form, details, value: _value, defau
         }
 
     }
+    console.log("-", _value)
 
     const [list, setList] = useState(_value)
     const [currentRow, setCurrentRow] = useState(initCurrentRow)
