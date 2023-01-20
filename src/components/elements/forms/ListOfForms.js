@@ -24,7 +24,6 @@ const ListOfForms = ({onChange, label="Add", form, details, value: _value, defau
         }
 
     }
-    console.log("-", _value)
 
     const [list, setList] = useState(_value)
     const [currentRow, setCurrentRow] = useState(initCurrentRow)

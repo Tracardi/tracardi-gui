@@ -93,7 +93,7 @@
     ]
   },
   "main": "index.js",
-  "repository": "https://github.com/atompie/tracardi-gui.git",
-  "author": "risto <risto.kowaczewski@gmail.com>",
+  "repository": "https://github.com/tracardi/tracardi-gui.git",
+  "author": "Tracardi <office@tracardi.com>",
   "license": "MIT"
 }
