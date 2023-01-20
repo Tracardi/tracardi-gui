@@ -72,7 +72,7 @@ const getConfig = () => {
             },
             triggers: {
                 name: "Triggers",
-                disable: false
+                disable: true
             },
             transformations: {
                 name: "Transformations",
