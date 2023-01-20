@@ -2,6 +2,7 @@
   "name": "tracardi-gui",
   "version": "0.8.0-dev",
   "private": true,
+  "homepage": ".",
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
     "@babel/eslint-parser": "^7.16.5",
