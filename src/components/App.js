@@ -33,17 +33,18 @@ const App = ({alert, resource, close}) => {
         return (
             <Router>
                 <Routes>
-                    <Route exact path={urlPrefix("/login")}>
-                        <SignIn/>
-                    </Route>
-                    <Route exact path={urlPrefix("/logout")}>
-                        <Logout/>
-                    </Route>
-                    <PrivateRoute path={urlPrefix("/")} roles={["admin", "marketer", "developer", "maintainer"]}>
-                        <Suspense fallback={<CenteredCircularProgress/>}>
-                            <AppBox/>
-                        </Suspense>
-                    </PrivateRoute>
+                    <Route exact path={urlPrefix("/login")} element={<SignIn/>} />
+                    <Route exact path={urlPrefix("/logout")} element={<Logout/>} />
+                    <Route
+                      path="*"
+                      element={
+                        <PrivateRoute path="*" roles={["admin", "marketer", "developer", "maintainer"]}>
+                          <Suspense fallback={<CenteredCircularProgress/>}>
+                              <AppBox/>
+                          </Suspense>
+                        </PrivateRoute>
+                      }
+                    />
                 </Routes>
                 <Snackbar open={alert.show} autoHideDuration={alert.hideAfter} onClose={handleClose} anchorOrigin={{
                     vertical: 'bottom',

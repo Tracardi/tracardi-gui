@@ -1,6 +1,6 @@
 import React, {Suspense} from "react";
 import MainContent from "./MainContent";
-import {Navigate, Route} from "react-router-dom";
+import {Navigate, Routes, Route} from "react-router-dom";
 import PrivateRoute from "./authentication/PrivateRoute";
 import urlPrefix from "../misc/UrlPrefix";
 import PrivateTab from "./authentication/PrivateTab";
@@ -62,12 +62,19 @@ const AppBox = () => {
 
         {/*Dashboard*/}
 
-        <Route exact path={urlPrefix("/dashboard")} roles={["admin", "developer", "marketer", "maintainer"]}>
-            <Suspense fallback={<CenteredCircularProgress/>}>
-                <TopBar>Dashboard</TopBar>
-                <Dashboard/>
-            </Suspense>
-        </Route>
+        <Routes>
+            <Route
+              exact
+              path={urlPrefix("/dashboard")}
+              roles={["admin", "developer", "marketer", "maintainer"]}
+              element={
+                <Suspense fallback={<CenteredCircularProgress/>}>
+                    <TopBar>Dashboard</TopBar>
+                    <Dashboard/>
+                </Suspense>
+              }
+            />
+        </Routes>
 
         {/*Pro*/}
 
@@ -158,7 +165,6 @@ const AppBox = () => {
                     />
                 </Suspense>
             </ErrorBoundary>
-
         </PrivateRoute>
 
         {/*Transformation*/}
@@ -371,9 +377,9 @@ const AppBox = () => {
 
         {/*Other*/}
 
-        <Route exact path={urlPrefix("/tryout")}>
-            <TryOut/>
-        </Route>
+        <Routes>
+            <Route exact path={urlPrefix("/tryout")} element={<TryOut/>} />
+        </Routes>
 
     </MainContent>
 }

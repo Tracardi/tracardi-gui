@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Navigate} from "react-router-dom";
+import {Route, Routes, Navigate} from "react-router-dom";
 import {getRoles, isAuth} from "./login";
 import NotAllowed from "./NotAllowed";
 import urlPrefix from "../../misc/UrlPrefix";
@@ -19,17 +19,14 @@ export default function PrivateRoute({children, location, roles, ...rest}) {
     }
 
     return (
-        <Route {...rest}>
-            {
-                isAuth()
-                    ? isAllowed() ? children : <NotAllowed/>
-                    : <Navigate to={
-                        {
-                            pathname: urlPrefix("/login"),
-                            state: {from: location}
-                        }
-                    }/>
-            }
-        </Route>
+        isAuth()
+            ?
+            isAllowed()
+              ?
+              <Routes><Route {...rest} element={children} /></Routes>
+              :
+              <Routes><Route {...rest} element={<NotAllowed/>} /></Routes>
+            :
+            <Navigate to={urlPrefix("/login")} state={{from: location}} />
     )
 };
