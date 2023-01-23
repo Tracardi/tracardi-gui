@@ -214,7 +214,9 @@ export default function EventReshapingForm({onSubmit, init}) {
             section you can split the data between event and session and reshape its schema."/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Reshaping event data" description={<span>
-                    Reshaping can be done for each part of the event payload. Use object template to reference data from the payload. <DocsLink
+                    Reshaping is the process of changing the data schema. Track payload is the data that arrives at the
+                    event collector and it can be filtered, and split into different parts. To do this, use an object
+                    template, which creates a new schema where you can reference data from the raw payload. <DocsLink
                     src="http://docs.tracardi.com/notations/object_template/"> Do you need help with object templates? </DocsLink>
                 </span>}>
                     <Tabs tabs={["Event Properties", "Event Context", "Session Context"]} defaultTab={tab}

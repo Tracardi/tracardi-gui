@@ -12,7 +12,7 @@ export default function EventValidation() {
 
     const [refresh, setRefresh] = useState(0);
 
-    const urlFunc = useCallback((query) => ('/event-validators' + ((query) ? "?query=" + query : "")), [])
+    const urlFunc = useCallback((query) => ('/event-validator/list' + ((query) ? "?query=" + query : "")), [])
     const addFunc = useCallback((close) => <EventValidationForm onSubmit={close}/>, [])
     const detailsFunc = useCallback((id, close) => <EventValidationDetails id={id} onDeleteComplete={close}/>, []);
 

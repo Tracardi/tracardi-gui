@@ -10,6 +10,7 @@ import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import {BsGrid, BsList} from "react-icons/bs";
 import IconButton from "../misc/IconButton";
+import {BsStar} from "react-icons/bs";
 
 const CardBrowser = ({
                          label,
@@ -34,11 +35,13 @@ const CardBrowser = ({
         const [loading, setLoading] = useState(false);
         const [errors, setErrors] = useState(null);
         const [layoutVert, setLayoutVert] = useState(defaultLayout!=="cards");
+        const [noLicense, setNotLicense] = useState(false)
 
         useEffect(() => {
                 setData(null);
                 const url = urlFunc(query)
                 setLoading(true);
+                setNotLicense(false)
                 let isSubscribed = true
                 asyncRemote({url})
                     .then((response) => {
@@ -47,6 +50,9 @@ const CardBrowser = ({
                         }
                     })
                     .catch((e) => {
+                        if(e?.response?.status === 402) {
+                            setNotLicense(true)
+                        }
                         if (e && isSubscribed) {
                             setErrors(getError(e))
                         }
@@ -68,6 +74,11 @@ const CardBrowser = ({
         }
 
         if (!loading && isEmptyObjectOrNull(data?.grouped)) {
+            if (noLicense === true) {
+                return <NoData header="This feature requires license." icon={<BsStar size={50}/>}>
+                    <p>Please contact Tracardi for a license key.</p>
+                </NoData>
+            }
             return <NoData header="There is no data here.">
                 <p>Please click create button in the upper right corner.</p>
             </NoData>

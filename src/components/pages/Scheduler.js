@@ -74,7 +74,7 @@ export default function Scheduler() {
     return <CardBrowser
         defaultLayout="rows"
         label="Scheduler"
-        description="Scheduler triggers event at defined time intervals."
+        description="Scheduler triggers event at defined time intervals. This is commercial feature. "
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}

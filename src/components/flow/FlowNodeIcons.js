@@ -6,7 +6,7 @@ import {
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
     BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown,
-    BsFolderCheck, BsClock, BsBoxArrowRight, BsGithub, BsPersonX, BsPersonBadge
+    BsFolderCheck, BsClock, BsBoxArrowRight, BsGithub, BsPersonX
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -64,7 +64,15 @@ import {
     VscLaw,
     VscLock
 } from "react-icons/vsc";
-import {MdLibraryAdd, MdTimer, MdPassword, MdTimelapse, MdTransform, MdCallSplit} from "react-icons/md";
+import {
+    MdLibraryAdd,
+    MdTimer,
+    MdPassword,
+    MdTimelapse,
+    MdTransform,
+    MdCallSplit,
+    MdFingerprint
+} from "react-icons/md";
 import {GoBrowser} from "react-icons/go";
 import {ReactComponent as MauticLogo} from "../../svg/mautic.svg";
 import {ReactComponent as Amplitude} from "../../svg/amplitude-icon.svg";
@@ -104,7 +112,16 @@ import {RiRestTimeLine} from "react-icons/ri";
 import {IoIosTimer, IoIosContact, IoIosAttach} from "react-icons/io";
 import {CgCalendarToday} from "react-icons/cg";
 import {ImInsertTemplate} from "react-icons/im";
-import {FaAws, FaTrello, FaRegDotCircle, FaMailchimp, FaHtml5, FaRobot, FaUncharted, FaSalesforce} from "react-icons/fa";
+import {
+    FaAws,
+    FaTrello,
+    FaRegDotCircle,
+    FaMailchimp,
+    FaHtml5,
+    FaRobot,
+    FaUncharted,
+    FaSalesforce
+} from "react-icons/fa";
 import {DiReact} from "react-icons/di";
 import {GiPathDistance} from "react-icons/gi";
 
@@ -217,9 +234,9 @@ export const icons = {
     'flow': (size) => <IoGitNetworkSharp size={size}/>,
     'route': (size) => <FaUncharted size={size}/>,
     'exists': (size) => <BsQuestionDiamond size={size}/>,
-    'matomo': (size) => <SiMatomo size={size} />,
+    'matomo': (size) => <SiMatomo size={size}/>,
     'previous': (size) => <BsArrowBarLeft size={size}/>,
-    'consent': (size) => <VscLaw size={size} />,
+    'consent': (size) => <VscLaw size={size}/>,
     'hash': (size) => <BsHash size={size}/>,
     "redis": (size) => <SiRedis size={size}/>,
     "civicrm": (size) => <SiCivicrm size={size}/>,
@@ -228,7 +245,7 @@ export const icons = {
     "destination": (size) => <BsBoxArrowRight size={size}/>,
     "salesforce": (size) => <FaSalesforce size={size}/>,
     "transform": (size) => <MdTransform size={size}/>,
-    "password": (size) => <MdPassword size={size} />,
+    "password": (size) => <MdPassword size={size}/>,
     "mqtt": (size) => <FiRss size={size}/>,
     "entity": (size) => <BsFillRecordFill size={size}/>,
     "report": (size) => <BsFillBarChartFill size={size}/>,
@@ -244,11 +261,11 @@ export const icons = {
     "sort": (size) => <BsSortAlphaDown size={size}/>,
     "validator": (size) => <BsFolderCheck size={size}/>,
     "hand-stop": (size) => <IoHandLeftOutline size={size}/>,
-    "github": (size) => <BsGithub size={size} />,
+    "github": (size) => <BsGithub size={size}/>,
     "redirect": (size) => <IoArrowRedoOutline size={size}/>,
     "javascript": (size) => <SiJavascript size={size}/>,
-    "train": (size) => <RiTrainLine size={size} />,
-    "identity": (size) => <BsPersonBadge size={size}/>
+    "train": (size) => <RiTrainLine size={size}/>,
+    "identity": (size) => <MdFingerprint size={size}/>
 
 }
 

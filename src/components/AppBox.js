@@ -183,7 +183,7 @@ const AppBox = () => {
         <PrivateRoute path={urlPrefix("/identification")} roles={["admin", "developer", "marketer"]}>
             <ErrorBoundary>
                 <Suspense fallback={<CenteredCircularProgress/>}>
-                    <TopBar>Customer Identification Points and Consents</TopBar>
+                    <TopBar>Identity Resolution and Consents</TopBar>
                     <PageTabs tabs={[
                         new PrivateTab(["admin", "developer"],
                             <IdentificationPoint/>, "/identification/point", <>

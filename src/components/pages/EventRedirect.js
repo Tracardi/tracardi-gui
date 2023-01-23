@@ -13,7 +13,7 @@ export default function EventRedirect() {
 
     const [refresh, setRefresh] = useState(0);
 
-    const urlFunc= useCallback((query) => ('/event-redirects'+ ((query) ? "?query=" + query : "")),[]);
+    const urlFunc= useCallback((query) => ('/event-redirect/list'+ ((query) ? "?query=" + query : "")),[]);
     const addFunc = useCallback((close) => <EventRedirectForm
         onSaveComplete={close}/>,[]);
     const detailsFunc= useCallback((id, close) => <EventRedirectDetails
