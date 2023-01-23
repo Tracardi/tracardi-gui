@@ -1,7 +1,7 @@
 import React, {Suspense} from "react";
 import {
     BrowserRouter as Router,
-    Switch,
+    Routes,
     Route
 } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
@@ -32,7 +32,7 @@ const App = ({alert, resource, close}) => {
     const application = () => {
         return (
             <Router>
-                <Switch>
+                <Routes>
                     <Route exact path={urlPrefix("/login")}>
                         <SignIn/>
                     </Route>
@@ -44,7 +44,7 @@ const App = ({alert, resource, close}) => {
                             <AppBox/>
                         </Suspense>
                     </PrivateRoute>
-                </Switch>
+                </Routes>
                 <Snackbar open={alert.show} autoHideDuration={alert.hideAfter} onClose={handleClose} anchorOrigin={{
                     vertical: 'bottom',
                     horizontal: 'center'

@@ -10,7 +10,7 @@ import { FiEdit3 } from "react-icons/fi";
 import { Box } from "@mui/material";
 import { AiOutlinePoweroff } from "react-icons/ai";
 import Button from "../elements/forms/Button";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import EditAccountForm from "../elements/forms/EditAccountForm";
@@ -24,10 +24,10 @@ export default function UserAccount () {
     const [logoutProgress, setLogoutProgress] = React.useState(false);
     const [logoutError, setLogoutError] = React.useState(null);
     const mounted = React.useRef(false);
-    const history = useHistory();
+    const navigate = useNavigate();
     
     const go = (url) => {
-        return () => history.push(urlPrefix(url));
+        return () => navigate(urlPrefix(url));
     }
 
     async function logout() {

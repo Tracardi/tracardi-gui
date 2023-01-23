@@ -1,6 +1,6 @@
 import React, {Suspense} from "react";
 import MainContent from "./MainContent";
-import {Redirect, Route} from "react-router-dom";
+import {Navigate, Route} from "react-router-dom";
 import PrivateRoute from "./authentication/PrivateRoute";
 import urlPrefix from "../misc/UrlPrefix";
 import PrivateTab from "./authentication/PrivateTab";
@@ -56,7 +56,7 @@ const AppBox = () => {
         {/*Redirects*/}
 
         <PrivateRoute exact path={urlPrefix("")} roles={["admin", "developer", "marketer", "maintainer"]}>
-            <Redirect to={urlPrefix("/dashboard")}/>
+            <Navigate to={urlPrefix("/dashboard")}/>
         </PrivateRoute>
 
 

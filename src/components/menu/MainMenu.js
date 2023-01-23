@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./MainMenu.css";
 import {BsBarChartFill, BsFolder, BsGear} from "react-icons/bs";
-import { useHistory, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import version from '../../misc/version';
 import {BiChevronLeftCircle, BiChevronRightCircle} from "react-icons/bi";
@@ -22,7 +22,7 @@ function MainMenu({app, showAlert, changeRoute}) {
 
     const [collapsed, setCollapsed] = useState(false);
     const confirm = useConfirm()
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const pathname = location.pathname
 
@@ -31,7 +31,7 @@ function MainMenu({app, showAlert, changeRoute}) {
     }, [changeRoute, pathname])
 
     const go = (url) => {
-        return () => history.push(urlPrefix(url));
+        return () => navigate(urlPrefix(url));
     }
 
     const MenuRow = ({label, icon, route = null, onClick, style, collapsed=false, roles=[], alwaysDisplay=false}) => {

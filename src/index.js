@@ -1,6 +1,6 @@
 import React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import store from './redux/store'
@@ -26,8 +26,10 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'development') {
     });
 }
 
-ReactDOM.render(
-    <React.StrictMode>
+const container = document.getElementById('root');
+const root = createRoot(container);
+root.render(
+  <React.StrictMode>
         <Provider store={store}>
             <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={mainTheme}>
@@ -42,8 +44,7 @@ ReactDOM.render(
                 </ThemeProvider>
             </StyledEngineProvider>
         </Provider>
-    </React.StrictMode>,
-    document.querySelector('#root'),
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

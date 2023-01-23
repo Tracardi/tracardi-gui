@@ -2,7 +2,7 @@ import AutoComplete from "../forms/AutoComplete";
 import React from "react";
 import {open} from '../../../redux/reducers/newResource';
 import {connect} from "react-redux";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../../misc/UrlPrefix";
 
 function TuiSelectResource({initValue = null, value = null, disabled = false, errorMessage = null,
@@ -20,9 +20,9 @@ function TuiSelectResource({initValue = null, value = null, disabled = false, er
 
     const resourceUrl = tag ? "/resources/entity/tag/"+tag : "/resources/entity"
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const go = (url) => {
-        return () => history.push(urlPrefix(url));
+        return () => navigate(urlPrefix(url));
     }
 
     return <div>

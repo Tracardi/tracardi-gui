@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {Redirect, useLocation} from "react-router-dom";
+import {Navigate, useLocation} from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
@@ -159,7 +159,7 @@ const SignInForm = ({showAlert}) => {
 
 
     if (redirectToReferrer) {
-        return <Redirect to={from}/>;
+        return <Navigate to={from}/>;
     }
 
     return (

@@ -12,7 +12,7 @@ import MetricTimeLine from "../elements/metrics/MetricTimeLine";
 import SessionLineChart from "../elements/charts/SessionLineChart";
 import AvgEventTime from "../elements/metrics/AvgEventTimeCounter";
 import EventTimeLine from "../elements/charts/EventsTimeLine";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 
 export default function Dashboard() {
@@ -26,9 +26,9 @@ export default function Dashboard() {
     const [loadingBySource, setLoadingBySource] = useState(false);
     const [loadingByStatus, setLoadingByStatus] = useState(false);
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const go = (url) => {
-        return () => history.push(urlPrefix(url));
+        return () => navigate(urlPrefix(url));
     }
 
     useEffect(() => {

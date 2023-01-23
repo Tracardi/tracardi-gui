@@ -31,7 +31,7 @@ import {asyncRemote, getError} from "../../remote_api/entrypoint";
 import NoData from "../elements/misc/NoData";
 import Button from "../elements/forms/Button";
 import ErrorsBox from "../errors/ErrorsBox";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import EdgeDetails from "./EdgeDetails";
 import CondNode from "./CondNode";
@@ -81,9 +81,9 @@ const NodeDetailsHandler = React.memo(({node, onLabelSet, onConfig, onRuntimeCon
     const [available, setAvailable] = useState(null);
     const [error, setError] = useState(null);
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const go = (url) => {
-        return () => history.push(urlPrefix(url));
+        return () => navigate(urlPrefix(url));
     }
 
     useEffect(() => {

@@ -6,7 +6,7 @@ import {IoGitNetworkSharp} from "react-icons/io5";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
 import urlPrefix from "../../../misc/UrlPrefix";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import FlowForm from "../forms/FlowForm";
 import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash, VscEdit} from "react-icons/vsc";
@@ -17,7 +17,7 @@ import {asyncRemote} from "../../../remote_api/entrypoint";
 
 export default function FlowDetails({id, onDeleteComplete}) {
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -58,11 +58,11 @@ export default function FlowDetails({id, onDeleteComplete}) {
     }
 
     const onGoToEditFlow = (id, type) => {
-        history.push(urlPrefix(`/flow/${type}/edit/${id}`));
+        navigate(urlPrefix(`/flow/${type}/edit/${id}`));
     }
 
     const onGoToDeployedFlow = (id) => {
-        history.push(urlPrefix("/flow/preview/") + id);
+        navigate(urlPrefix("/flow/preview/") + id);
     }
 
     const onDelete = () => {

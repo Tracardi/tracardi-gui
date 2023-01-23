@@ -5,7 +5,7 @@ import FlowDetails from "../elements/details/FlowDetails";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
 import AdvancedSquareCard from "../elements/lists/cards/AdvancedSquareCard";
-import {useHistory} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote} from "../../remote_api/entrypoint";
@@ -21,11 +21,11 @@ export default function Flows({defaultLayout="rows", type="collection", label}) 
     const addFunc = useCallback((close) => <FlowForm type={type} projects={[]} onFlowSaveComplete={close} />, [type])
     const detailsFunc = useCallback((id, close) => <FlowDetails id={id} onDeleteComplete={close}/>, [])
 
-    const history = useHistory();
     const confirm = useConfirm();
+    const navigate = useNavigate();
 
     const handleFlowEdit = (id) => {
-        history.push(urlPrefix(`/flow/${type}/edit/${id}`))
+        navigate(urlPrefix(`/flow/${type}/edit/${id}`))
     }
 
     const mounted = useRef(false);
