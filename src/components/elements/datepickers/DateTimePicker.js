@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import "./DateTimePicker.css";
 import Popover from "@mui/material/Popover";
-import makeStyles from '@mui/styles/makeStyles';
+import { makeStyles } from "tss-react/mui";
 import Button from "../forms/Button";
 import CalendarPicker from "./CalendarPicker";
 import RelativePicker from "./RelativePicker";
@@ -42,7 +42,7 @@ export default function DataTimePicker({type, datetime, onDatetimeSelect}) {
     const open = Boolean(anchorEl);
     const id = open ? 'datetime-popover' : undefined;
 
-    const useStyles = makeStyles((theme) => ({
+    const useStyles = makeStyles()((theme) => ({
         root: {
             marginTop: 5,
             transform: "none",
@@ -50,7 +50,7 @@ export default function DataTimePicker({type, datetime, onDatetimeSelect}) {
         },
     }));
 
-    const classes = useStyles();
+    const { classes } = useStyles();
 
     const datetimeString = (datetime) => {
         if (datetime == null || (datetime?.absolute === null && datetime?.delta === null)) {
