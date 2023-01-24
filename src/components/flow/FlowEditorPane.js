@@ -4,9 +4,12 @@ import {
     Background,
     isEdge,
     isNode,
-    removeElements, useZoomPanHelper
-} from "react-flow-renderer";
-import React, {Suspense, useCallback, useEffect, useRef, useState} from "react";
+    useReactFlow,
+    useNodesState,
+    useEdgesState,
+} from 'reactflow';
+import "reactflow/dist/style.css"
+import React, {Suspense, useCallback, useMemo, useEffect, useRef, useState} from "react";
 import PropTypes from 'prop-types';
 import FlowNode from "./FlowNode";
 import {v4 as uuid4} from "uuid";
@@ -37,7 +40,7 @@ import EdgeDetails from "./EdgeDetails";
 import CondNode from "./CondNode";
 import cloneDeep from 'lodash/cloneDeep';
 
-const ReactFlow = React.lazy(() => import('react-flow-renderer'))
+const ReactFlow = React.lazy(() => import('reactflow'))
 
 const ModifiedTag = () => {
     return <span style={{
@@ -204,21 +207,21 @@ export function FlowEditorPane(
     }) {
 
     const snapGrid = [20, 20];
-    const nodeTypes = {
-        flowNode: FlowNode,
-        flowNodeWithEvents: FlowNodeWithEvents,
-        startNode: StartNode,
-        condNode: CondNode
-    };
 
-    const edgeTypes = {
+    const edgeTypes = useMemo(() => ({
         info: InfoEdge,
         stop: StopEdge,
         cancel: CancelEdge,
         default: BoldEdge
-    };
+    }), []);
+    const nodeTypes = useMemo(() => ({
+        flowNode: FlowNode,
+        flowNodeWithEvents: FlowNodeWithEvents,
+        startNode: StartNode,
+        condNode: CondNode
+    }), []);
 
-    const {zoomIn, zoomOut} = useZoomPanHelper();
+    const {zoomIn, zoomOut} = useReactFlow();
 
     const reactFlowWrapper = useRef(null);
     const [flowLoading, setFlowLoading] = useState(false);
@@ -234,7 +237,10 @@ export function FlowEditorPane(
     const [displayDebugHeight, setDisplayDebugHeight] = useState({gridTemplateRows: "100%"});
     const [displayNodeContextMenu, setDisplayNodeContextMenu] = useState(false);
     const [animatedEdge, setAnimatedEdge] = useState(null);
-    const [elements, setElements] = useState([]);
+
+    const [nodes, setNodes, handleNodesChange] = useNodesState([]);
+    const [edges, setEdges, handleEdgesChange] = useEdgesState([]);
+
     const [logs, setLogs] = useState([]);
     const [refreshNodeId, setRefreshNodeId] = useState([null, null]);  // [nodeId, nodeData]
     const [refreshEdgeId, setRefreshEdgeId] = useState([null, null]);  // [edgeId, edgeData]
@@ -265,12 +271,10 @@ export function FlowEditorPane(
                 onFlowLoad(payload);
             }
 
-            let flowGraph = []
             if (data?.flowGraph) {
-                flowGraph = data.flowGraph.nodes.slice();
-                flowGraph = flowGraph.concat(data.flowGraph.edges.slice())
+                setNodes(data.flowGraph.nodes)
+                setEdges(data.flowGraph.edges)
             }
-            setElements(flowGraph);
         } else if (data === null) {
             // Missing flow
             if (showAlert) {
@@ -279,10 +283,9 @@ export function FlowEditorPane(
                 alert("This workflow is missing")
             }
         }
-    }, [showAlert, onFlowLoad]);
+    }, [setNodes, setEdges, showAlert, onFlowLoad]);
 
     const handleDraftSave = useCallback((deploy = false) => {
-
         if (reactFlowInstance) {
             save(id,
                 flowMetaData,
@@ -353,64 +356,56 @@ export function FlowEditorPane(
 
 
     useEffect(() => {
-        setElements((els) => els.map((el) => {
-                if (isEdge(el)) {
-                    if (animatedEdge === null) {
-                        if (el?.style?.stroke === '#ad1457') {
-                            const {stroke, ...newStyle} = el.style
-                            el.style = newStyle
-                        }
-
-                    } else if (el.id === animatedEdge) {
-                        el.style = {
-                            stroke: '#ad1457'
-                        }
-                    } else {
-                        if (el?.style?.stroke === '#ad1457') {
-                            const {stroke, ...newStyle} = el.style
-                            el.style = newStyle
-                        }
-                    }
+        setEdges((edges) => edges.map((edge) => {
+            if (animatedEdge === null) {
+                if (edge?.style?.stroke === '#ad1457') {
+                    const {stroke, ...newStyle} = edge.style
+                    edge.style = newStyle
                 }
-
-                if (isNode(el)) {
-                    el.data = {
-                        ...el.data,
-                        metadata: {...el.data.metadata, selected: el.id === debugNodeId},
-                    }
+            } else if (edge.id === animatedEdge) {
+                edge.style = {
+                    stroke: '#ad1457'
                 }
-
-                return el;
-            })
-        );
-
-    }, [animatedEdge, debugNodeId])
+            } else {
+                if (edge?.style?.stroke === '#ad1457') {
+                    const {stroke, ...newStyle} = edge.style
+                    edge.style = newStyle
+                }
+            }
+            return edge
+        }))
+        setNodes((nodes) => nodes.map((node) => {
+            node.data = {
+                ...node.data,
+                metadata: {...node.data.metadata, selected: node.id === debugNodeId},
+            }
+            return node
+        }))
+    }, [setEdges, setNodes, animatedEdge, debugNodeId])
 
     useEffect(() => {
-        setElements((els) => els.map((el) => {
-                if (isNode(el) && el.id === refreshNodeId[0]) {
-                    el.data = {...refreshNodeId[1].data}
-                }
-                return el;
-            })
-        );
-
-    }, [refreshNodeId, setElements]);
+        setNodes((nodes) => nodes.map((node) => {
+            if (node.id === refreshNodeId[0]) {
+                node.data = {...refreshNodeId[1].data}
+            }
+            return node;
+        }))
+    }, [refreshNodeId, setNodes]);
 
 
     useEffect(() => {
-        setElements((els) => els.map((el) => {
-                if (isEdge(el) && el.id === refreshEdgeId[0]) {
-                    el.data = {...refreshEdgeId[1].data}
-                }
-                return el;
-            })
-        );
+        setEdges((edges) => edges.map((edge) => {
+            if (edge.id === refreshEdgeId[0]) {
+                edge.data = {...refreshEdgeId[1].data}
+            }
+            return edge
+        }))
 
-    }, [refreshEdgeId, setElements]);
+    }, [refreshEdgeId, setEdges]);
 
     const handleCtrlVRelease = useCallback((event) => {
         if ((event?.ctrlKey || event?.metaKey) || event?.keyCode === 86) {
+            console.log("handleCtrlVRelease")
             nodePasted.current = false;
         }
     }, [])
@@ -431,7 +426,7 @@ export function FlowEditorPane(
                         id: uuid4(),
                         position: {x: data.position.x - 100, y: data.position.y + 50},
                     };
-                    setElements((es) => es.concat(newNode));
+                    setNodes(nodes.concat(newNode))
                     handleUpdate();
                 } catch (e) {
                     alert("Cannot paste node.");
@@ -441,7 +436,7 @@ export function FlowEditorPane(
     },
         // nodeTypes never change
         // eslint-disable-next-line
-        [])
+        [setNodes])
 
     useEffect(() => {
         const element = reactFlowWrapper.current;
@@ -451,7 +446,6 @@ export function FlowEditorPane(
         return () => {
             element.removeEventListener("keydown", handleCopyPasteNode);
             element.removeEventListener("keyup", handleCtrlVRelease);
-            selectedNode.current = null;
             copiedNode.current = false;
             selectedNode.current = null;
         }
@@ -462,7 +456,7 @@ export function FlowEditorPane(
         setDeployed(false);
     }
 
-    const onLoad = (reactFlowInstance) => {
+    const onInit = (reactFlowInstance) => {
         reactFlowInstance.fitView();
         onEditorReady(reactFlowInstance)
     };
@@ -486,15 +480,17 @@ export function FlowEditorPane(
             reactFlowInstance,
             (e) => showAlert(e),
             setDebugInProgress,
-            ({elements, logs}) => {
-                setElements(elements);
+            ({nodes, edges, logs}) => {
+                setNodes(nodes)
+                setEdges(edges)
                 setLogs(logs);
-                setProfilingData(convertNodesToProfilingData(elements))
+                setProfilingData(convertNodesToProfilingData(nodes))
                 handleDisplayDebugPane(true);
             }
         )
     }
 
+    // TODO I don't understand this function mean's what so let it alone
     const getElementsWithRunOnce = (elements) => {
         return elements.reduce((results, element) => {
             if (element?.data?.spec?.run_once?.enabled === true) {
@@ -504,21 +500,13 @@ export function FlowEditorPane(
         }, [])
     }
 
-    const onElementsRemove = (elementsToRemove) => {
-
-        if (Array.isArray(elementsToRemove)) {
-            // todo add endpoint call that removes the data
-            const elements = getElementsWithRunOnce(elementsToRemove)
-        }
-
-        setElements((els) => removeElements(elementsToRemove, els));
+    const onElementsRemove = () => {
         setDisplayElementDetails(false);
-
         handleUpdate();
     }
 
     const onConnect = (params) => {
-        setElements((els) => addEdge(params, els));
+        setEdges((els) => addEdge(params, els))
         setDisplayNodeContextMenu(false);
         handleUpdate();
     }
@@ -541,12 +529,11 @@ export function FlowEditorPane(
                 position,
                 data: data
             };
-            setElements((es) => es.concat(newNode));
+            setNodes(nodes.concat(newNode))
             handleUpdate();
         } catch (e) {
             alert("Json error. Dropped element without json.");
         }
-
     };
 
     const onDragOver = (event) => {
@@ -558,12 +545,6 @@ export function FlowEditorPane(
         selectNode(element)
         setDisplayElementDetails(true);
         setDisplayNodeContextMenu(false);
-    }
-
-    const onElementClick = (event, element) => {
-        if (onNodeClick) {
-            onNodeClick(event, element);
-        }
     }
 
     const onPaneClick = () => {
@@ -594,16 +575,16 @@ export function FlowEditorPane(
         setCurrentNode(node)
     }
 
-    const onNodeClick = (event, element) => {
-        selectNode(element);
+    const onNodeClick = (event, node) => {
+        selectNode(node);
         setDisplayNodeContextMenu(false);
-        if (element.data?.debugging && Array.isArray(element.data?.debugging)
-            && element.data?.debugging.length > 0 && element.data?.debugging[0]?.edge?.id) {
-            setAnimatedEdge(element.data.debugging[0].edge.id);
+        if (node.data?.debugging && Array.isArray(node.data?.debugging)
+            && node.data?.debugging.length > 0 && node.data?.debugging[0]?.edge?.id) {
+            setAnimatedEdge(node.data.debugging[0].edge.id);
         } else {
             setAnimatedEdge(null);
         }
-        selectNode(element);
+        selectNode(node);
     }
 
     const handleConfigSave = (value) => {
@@ -616,7 +597,7 @@ export function FlowEditorPane(
             currentNode.data.spec = {...currentNode.data.spec, ...value}
 
             // Refresh flow node
-            if (elements) {
+            if (nodes) {
                 setRefreshNodeId([currentNode.id, currentNode])
             }
 
@@ -654,35 +635,40 @@ export function FlowEditorPane(
                 <div className="FlowEditorGrid" style={displayDebugHeight}>
                     <div className="FlowPane" ref={reactFlowWrapper}>
                         {flowLoading && <CenteredCircularProgress/>}
-                        {!flowLoading && elements && <Suspense fallback={<CenteredCircularProgress/>}>
+                        {!flowLoading && nodes && <Suspense fallback={<CenteredCircularProgress/>}>
                             <ReactFlow
-                                elements={elements}
-                                zoomOnDoubleClick={false}
-                                zoomOnScroll={false}
+                                style={{background: "white"}}
+                                snapGrid={snapGrid}
+                                snapToGrid={false}
                                 panOnScroll={true}
-                                defaultPosition={[700, 100]} // set position so point (0, 0) is always visible
-                                onElementsRemove={onElementsRemove}
-                                onElementClick={onElementClick}
-                                onNodeDoubleClick={onElementDoubleClick}
-                                onEdgeDoubleClick={onElementDoubleClick}
-                                // onSelectionChange={onSelectionChange}
-                                onNodeContextMenu={onNodeContextMenu}
-                                onEdgeContextMenu={onEdgeContextMenu}
-                                onPaneClick={onPaneClick}
-                                nodeTypes={nodeTypes}
-                                edgeTypes={edgeTypes}
-                                onConnect={onConnect}
-                                deleteKeyCode={46}
+                                zoomOnScroll={false}
+                                nodesDraggable={!locked}
+                                zoomOnDoubleClick={false}
+                                deleteKeyCode={["Delete"]}
                                 zoomActivationKeyCode={32}
                                 multiSelectionKeyCode={32}
-                                onLoad={onLoad}
+                                defaultViewport={{ x: 700, y: 100, zoom: 1 }}
+
+                                nodes={nodes}
+                                edges={edges}
+                                nodeTypes={nodeTypes}
+                                edgeTypes={edgeTypes}
+
+                                onInit={onInit}
                                 onDrop={onDrop}
+                                onConnect={onConnect}
                                 onDragOver={onDragOver}
-                                snapToGrid={false}
-                                snapGrid={snapGrid}
-                                nodesDraggable={!locked}
-                                style={{background: "white"}}
-                                defaultZoom={1}
+                                onPaneClick={onPaneClick}
+                                onNodeClick={onNodeClick}
+                                onNodesChange={handleNodesChange}
+                                onEdgesChange={handleEdgesChange}
+                                onNodeContextMenu={onNodeContextMenu}
+                                onEdgeContextMenu={onEdgeContextMenu}
+                                onNodeDoubleClick={onElementDoubleClick}
+                                onEdgeDoubleClick={onElementDoubleClick}
+                                onNodesDelete={onElementsRemove}
+                                onEdgesDelete={onElementsRemove}
+                                // onSelectionChange={onSelectionChange}
                             >
                                 <SidebarLeft onDebug={handleDebug}
                                              debugInProgress={debugInProgress}
@@ -719,13 +705,13 @@ export function FlowEditorPane(
 
                     {displayElementDetails && currentNode && <DetailsHandler element={currentNode}
                                                                              onEdgeRefresh={(edge) => {
-                                                                                 if (elements) {
+                                                                                 if (edges) {
                                                                                      setRefreshEdgeId([edge.id, edge])
                                                                                  }
                                                                                  handleUpdate()
                                                                              }}
                                                                              onNodeRefresh={(node) => {
-                                                                                 if (elements) {
+                                                                                 if (nodes) {
                                                                                      setRefreshNodeId([node.id, node])
                                                                                  }
                                                                                  handleUpdate()

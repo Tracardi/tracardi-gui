@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Handle} from 'react-flow-renderer';
+import {Handle} from 'reactflow';
 import './FlowNode.css';
 import FlowNodeIcons from "./FlowNodeIcons";
 import {ExecutionSeqNumber} from "./NodeAlerts";

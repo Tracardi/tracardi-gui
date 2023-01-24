@@ -1,4 +1,4 @@
-import {isNode} from "react-flow-renderer";
+import {isNode} from 'reactflow';
 
 export default function convertNodesToProfilingData(nodes) {
 

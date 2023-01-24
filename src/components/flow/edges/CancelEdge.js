@@ -2,9 +2,8 @@ import React from 'react';
 import {
     EdgeText,
     getBezierPath,
-    getEdgeCenter,
     getMarkerEnd,
-} from 'react-flow-renderer';
+} from 'reactflow';
 import {AiOutlineCloseCircle} from "react-icons/ai";
 
 const foreignObjectSize = 19;
@@ -22,7 +21,7 @@ const CancelEdge = ({
                         markerEndId,
                         data
                     }) => {
-    const edgePath = getBezierPath({
+    const [edgePath, centerX, centerY] = getBezierPath({
         sourceX,
         sourceY,
         sourcePosition,
@@ -31,13 +30,6 @@ const CancelEdge = ({
         targetPosition,
     });
     const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
-
-    const [centerX, centerY] = getEdgeCenter({
-        sourceX,
-        sourceY,
-        targetX,
-        targetY,
-    });
 
     return (
         <>

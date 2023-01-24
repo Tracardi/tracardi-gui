@@ -3,6 +3,7 @@
     background-color: aliceblue;
     border-top: #ccc 1px solid;
     height: 32px;
+    user-select:none;
 }
 
 .FlowEditorBottomLine  > SPAN {

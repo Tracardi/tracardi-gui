@@ -5,11 +5,11 @@ import CondNode from "./CondNode";
 import React, {Suspense, useEffect, useState} from "react";
 import {asyncRemote, getError} from "../../remote_api/entrypoint";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
-import {Background} from "react-flow-renderer";
+import {Background} from 'reactflow';
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 
-const ReactFlow = React.lazy(() => import('react-flow-renderer'))
+const ReactFlow = React.lazy(() => import('reactflow'))
 
 export function FlowDisplay({showAlert, id}) {
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import {
     EdgeText,
-    getBezierPath, getEdgeCenter,
+    getBezierPath,
     getMarkerEnd,
-} from 'react-flow-renderer';
+} from 'reactflow';
 
 const BoldEdge = React.memo(({
                                  id,
@@ -18,7 +18,7 @@ const BoldEdge = React.memo(({
                                  markerEndId,
                                  data
                              }) => {
-    const edgePath = getBezierPath({
+    const [edgePath, centerX, centerY] = getBezierPath({
         sourceX,
         sourceY,
         sourcePosition,
@@ -27,12 +27,6 @@ const BoldEdge = React.memo(({
         targetPosition,
     });
     const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
-    const [centerX, centerY] = getEdgeCenter({
-        sourceX,
-        sourceY,
-        targetX,
-        targetY,
-    });
 
     return (
         <>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Handle} from 'react-flow-renderer';
+import {Handle} from 'reactflow';
 import './FlowNode.css';
 import ThresholdIcon from "./ThresholdIcon";
 import {isObject} from "../../misc/typeChecking";

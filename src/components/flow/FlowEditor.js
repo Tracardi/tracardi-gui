@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import {ReactFlowProvider} from 'react-flow-renderer';
+import {ReactFlowProvider} from 'reactflow';
 import './FlowEditor.css'
 import {useParams} from "react-router-dom";
 import FormDrawer from "../elements/drawers/FormDrawer";

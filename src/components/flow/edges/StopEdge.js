@@ -2,9 +2,8 @@ import React from 'react';
 import {
     EdgeText,
     getBezierPath,
-    getEdgeCenter,
     getMarkerEnd,
-} from 'react-flow-renderer';
+} from 'reactflow';
 import {BiStopCircle} from "react-icons/bi";
 
 const foreignObjectSize = 20;
@@ -22,7 +21,7 @@ const StopEdge = ({
                                      markerEndId,
                                      data
                                  }) => {
-    const edgePath = getBezierPath({
+    const [edgePath, centerX, centerY] = getBezierPath({
         sourceX,
         sourceY,
         sourcePosition,
@@ -31,12 +30,6 @@ const StopEdge = ({
         targetPosition,
     });
     const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
-    const [centerX, centerY] = getEdgeCenter({
-        sourceX,
-        sourceY,
-        targetX,
-        targetY,
-    });
 
     return (
         <>

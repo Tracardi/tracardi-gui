@@ -2,9 +2,8 @@ import React from 'react';
 import {
     EdgeText,
     getBezierPath,
-    getEdgeCenter,
     getMarkerEnd,
-} from 'react-flow-renderer';
+} from 'reactflow';
 import {BiPlayCircle} from "react-icons/bi";
 
 const foreignObjectSize = 20;
@@ -27,7 +26,7 @@ const InfoEdge = ({
                       markerEndId,
                       data
                   }) => {
-    const edgePath = getBezierPath({
+    const [edgePath, centerX, centerY]  = getBezierPath({
         sourceX,
         sourceY,
         sourcePosition,
@@ -36,12 +35,6 @@ const InfoEdge = ({
         targetPosition,
     });
     const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
-    const [centerX, centerY] = getEdgeCenter({
-        sourceX,
-        sourceY,
-        targetX,
-        targetY,
-    });
 
     return (
         <>
