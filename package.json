@@ -34,7 +34,6 @@
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.2.5",
     "@mui/material": "5.11.5",
-    "@mui/styles": "^5.2.3",
     "@reduxjs/toolkit": "^1.5.0",
     "@sentry/react": "^6.16.1",
     "@sentry/tracing": "^6.16.1",
@@ -64,6 +63,7 @@
     "react-transition-group": "^4.4.2",
     "recharts": "2.3.2",
     "safe-marked": "^5.0.0",
+    "tss-react": "^4.5.2",
     "use-debounce": "^8.0.4",
     "uuid": "^8.3.2",
     "web-vitals": "^2.1.0"
