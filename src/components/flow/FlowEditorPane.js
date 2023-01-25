@@ -491,14 +491,14 @@ export function FlowEditorPane(
     }
 
     // TODO I don't understand this function mean's what so let it alone
-    const getElementsWithRunOnce = (elements) => {
-        return elements.reduce((results, element) => {
-            if (element?.data?.spec?.run_once?.enabled === true) {
-                results.push(element.id)
-            }
-            return results
-        }, [])
-    }
+    // const getElementsWithRunOnce = (elements) => {
+    //     return elements.reduce((results, element) => {
+    //         if (element?.data?.spec?.run_once?.enabled === true) {
+    //             results.push(element.id)
+    //         }
+    //         return results
+    //     }, [])
+    // }
 
     const onElementsRemove = () => {
         setDisplayElementDetails(false);
