@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import FlowNodeIcons from "../../../flow/FlowNodeIcons";
 import {asyncRemote} from "../../../../remote_api/entrypoint";
 
-export default function DestinationInput({value: initValue, onChange}) {
+export default function DestinationInput({value: initValue, onChange, fullWidth=false}) {
 
     const [destinations, setDestinations] = useState([]);
     const [destinationsDb, setDestionationsDb] = useState({})
@@ -40,11 +40,11 @@ export default function DestinationInput({value: initValue, onChange}) {
     }
 
     return <TextField
+        fullWidth={fullWidth}
         select
         variant="outlined"
         size="small"
         value={value}
-        style={{width: 150}}
         onChange={handleOnChange}
     >
         {destinations.map((item) => {

@@ -9,8 +9,8 @@ import JsonEditor from "../editors/JsonEditor";
 import DestinationInput from "./inputs/DestinationInput";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import Switch from "@mui/material/Switch";
-import TuiTopHeaderWrapper from "../tui/TuiTopHeaderWrapper";
-import TuiColumnsFlex from "../tui/TuiColumnsFlex";
+import TuiSelectEventType from "../tui/TuiSelectEventType";
+import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 
 export default function DestinationForm({onSubmit, value: initValue}) {
 
@@ -37,7 +37,16 @@ export default function DestinationForm({onSubmit, value: initValue}) {
             },
             mapping: "{}",
             condition: "",
-            resource: null
+            resource: null,
+            on_profile_change_only: true,
+            event_type: {
+                id: "",
+                name: ""
+            },
+            source: {
+                id: "",
+                name: ""
+            }
         }
     }
     const [processing, setProcessing] = useState(false);
@@ -73,7 +82,10 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                     },
                     mapping: JSON.parse(data.mapping),
                     condition: data?.condition,
-                    resource: data?.resource
+                    resource: data?.resource,
+                    source: data?.source,
+                    event_type: data?.event_type,
+                    on_profile_change_only: data?.on_profile_change_only
                 }
             })
 
@@ -111,39 +123,6 @@ export default function DestinationForm({onSubmit, value: initValue}) {
     return <TuiForm style={{margin: 20}}>
 
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Destination" description="Destinations is a list of services where Tracardi will
-            send profile data. Destinations will be triggered only when the profile changes. Depending on the
-            configuration the whole process may be postponed and triggered when the stream of events associated with
-            a set of profile changes ends."/>
-            <TuiFormGroupContent>
-                <TuiFormGroupField header="Destination" description="Select destination system.">
-                    <TuiColumnsFlex width={300}>
-                        <TuiTopHeaderWrapper header="Destination"
-                                             description="Select destination resource.">
-                            <DestinationInput
-                                value={data?.resource?.id || ""}
-                                onChange={handleDestinationChange}/>
-                        </TuiTopHeaderWrapper>
-                        <TuiTopHeaderWrapper header="Is active"
-                                             description="Profile will NOT be sent to deactivated destination.">
-                            <div style={{display: "flex", alignItems: "center"}}>
-                                <Switch
-                                    checked={data?.enabled}
-                                    onChange={(ev) => setData({...data, enabled: ev.target.checked})}
-                                />
-                                <span>
-                                    This destination is {data?.enabled === true ? "enabled" : "disabled"}
-                                </span>
-                            </div>
-                        </TuiTopHeaderWrapper>
-                    </TuiColumnsFlex>
-
-
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Destination description"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Name" description="Destination name can be any string that
                     identifies destination.">
@@ -180,9 +159,65 @@ export default function DestinationForm({onSubmit, value: initValue}) {
         </TuiFormGroup>
 
         <TuiFormGroup>
+            <TuiFormGroupHeader header="Destination" description="Destinations is a list of services where Tracardi will
+            send profile data. Destinations will be triggered only when the profile changes. Depending on the
+            configuration the whole process may be postponed and triggered when the stream of events associated with
+            a set of profile changes ends."/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Destination">
+                    <DestinationInput
+                        fullWidth={true}
+                        value={data?.resource?.id || ""}
+                        onChange={handleDestinationChange}/>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Activate" description="Data will NOT be sent to deactivated destination.">
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <Switch
+                            checked={data?.enabled}
+                            onChange={(ev) => setData({...data, enabled: ev.target.checked})}
+                        />
+                        <span>This destination is {data?.enabled === true ? "enabled" : "disabled"}</span>
+                    </div>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+
+
+        <TuiFormGroup>
             <TuiFormGroupHeader header="Prerequisites"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Destination prerequisites" description="Type a condition that has to be met
+                <TuiFormGroupField header="Send only on profile change"
+                                   description="This destination will be triggered only if profile changes.">
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <Switch
+                            checked={data?.on_profile_change_only}
+                            onChange={(ev) => setData({...data, on_profile_change_only: ev.target.checked})}
+                        />
+                        <span>This destination is triggered on {data?.on_profile_change_only === true ? "profile change only" : "on every event"}</span>
+                    </div>
+                </TuiFormGroupField>
+                {!data?.on_profile_change_only && <>
+                    <TuiFormGroupField header="Send only when event comes form event source"
+                                       description="This destination will be triggered only for selected event source.">
+                        <TuiSelectEventSource
+                            label="Event source"
+                            value={data?.source}
+                            onSetValue={(source) => setData({...data, source})}
+                        />
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="Send only selected event type"
+                                       description="This destination will be triggered only for selected event type.">
+                        <TuiSelectEventType
+                            label="Event type"
+                            onlyValueWithOptions={false}
+                            initValue={data?.event_type}
+                            onSetValue={(event) => setData({...data, event_type: event})}
+                        />
+                    </TuiFormGroupField>
+                </>
+                }
+
+                <TuiFormGroupField header="Data prerequisites" description="Type a condition that has to be met
                 before the data is sent to the destination. E.g. Some destinations may require not empty e-mail field.
                 Leave the prerequisites blank if the destination does not have any pre-condition to be checked.">
                     <TextField

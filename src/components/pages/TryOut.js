@@ -13,6 +13,11 @@ import Button from "../elements/forms/Button";
 import Chip from "@mui/material/Chip";
 import TrackerPayloadForm from "../elements/forms/TrackerPayloadForm";
 import KqlAutoComplete from "../elements/forms/KqlAutoComplete";
+import ListOfForms from "../elements/forms/ListOfForms";
+import {func} from "prop-types";
+import Switch from "@mui/material/Switch";
+import Checkbox from "@mui/material/Checkbox";
+import {TextFields} from "@mui/icons-material";
 
 export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
@@ -31,21 +36,46 @@ export default function TryOut() {
     }
 
 
+    const FRM = ({value: _value, onChange}) => {
 
+        const [value, setValue] = useState(_value)
+
+        function handleChange(e) {
+            console.log(e.target.checked)
+            setValue(e.target.checked)
+            onChange(e.target.checked)
+        }
+        return <>
+            <Checkbox checked={value} onChange={handleChange}/>
+            <Switch checked={value} onChange={handleChange}/>
+            </>
+    }
 
 
     return (<div style={{padding: 10}}>
             <KqlAutoComplete onChange={(v) => console.log(v)}/>
+            <FRM value={false} onChange={(v) => console.log("c", v)}/>
             <div style={{width: 600}}>
                 <TrackerPayloadForm
                     // value={value}
                              onChange={(v) => console.log(v)}/>
             </div>
-
+            {
+                React.createElement(
+                    FRM,
+                    {value: true, onChange: (value) => console.log("key", value)},
+                    null
+                )
+            }
             {/*<DataComplianceSettings*/}
             {/*    value={[{field: {value:"1", ref: true}, consents: [], action: "hash"}, {field: {value:"2", ref: false}, consents: [], action: "nothing"}]}*/}
             {/*    onChange={(v) => console.log(v)}*/}
             {/*/>*/}
+            --------
+            <ListOfForms
+                form={FRM}
+                defaultFormValue={true}
+            />
             <TimeDifference date={"2022-10-14T14:43:56.591642"}/>
             <RefInput value="123"/>
             <BoxStyling value={{

@@ -37,7 +37,6 @@ const ListOfForms = ({onChange, label="Add", form, details, value: _value, defau
     const handleSetCurrent = (e, value) => {
         setCurrentRow(value)
         e.stopPropagation()
-        e.preventDefault()
     }
 
 
