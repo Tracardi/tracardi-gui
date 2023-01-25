@@ -60,6 +60,7 @@ export default function Destinations() {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
                                            data={{...row, icon: "destination"}}
+                                           status={row?.enabled}
                                            onClick={onClick}
                                            onDelete={handleDelete}
                         />

@@ -23,6 +23,8 @@ import ReportConfigInput from "./inputs/ReportConfigInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import {BsEye, BsEyeSlashFill} from "react-icons/bs";
 import RefInput from "./inputs/RefInput";
+import TuiSelectEventSourceType from "../tui/TuiSelectEventSourceType";
+import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 
 export const PasswordInput = ({label = "Password", value, onChange, fullWidth = false, error, helperText, style, required}) => {
 
@@ -447,6 +449,38 @@ export function ResourceSelect({value, errorMessage, onChange = null, tag = null
                               onSetValue={handleChange}
                               tag={tag}
                               pro={pro}
+    />
+}
+
+export function SourceTypeSelect({value, errorMessage, onChange = null, tag = null, pro = false}) {
+
+    const handleChange = (value) => {
+        if (onChange instanceof Function) {
+            onChange(value);
+        }
+    };
+
+    return <TuiSelectEventSourceType value={value}
+                              errorMessage={errorMessage}
+                              onSetValue={handleChange}
+                              tag={tag}
+                              pro={pro}
+    />
+}
+
+export function SourceSelect({value, errorMessage, onChange = null, tag = null, pro = false}) {
+
+    const handleChange = (value) => {
+        if (onChange instanceof Function) {
+            onChange(value);
+        }
+    };
+
+    return <TuiSelectEventSource value={value}
+                                 errorMessage={errorMessage}
+                                 onSetValue={handleChange}
+                                 tag={tag}
+                                 pro={pro}
     />
 }
 

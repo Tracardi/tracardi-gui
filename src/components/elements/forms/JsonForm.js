@@ -12,7 +12,7 @@ import {
     ListOfDotPaths,
     ResourceSelect, SqlInput, TextAreaInput, TextInput,
     SelectInput, BoolInput, ReadOnlyTags, EventTypes, EventType, ConsentTypes, AutoCompleteInput,
-    ReportConfig, PasswordInput, FontSizeInput, RefTextInput
+    ReportConfig, PasswordInput, FontSizeInput, RefTextInput, SourceTypeSelect, SourceSelect
 } from "./JsonFormComponents";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {AiOutlineCheckCircle} from "react-icons/ai";
@@ -87,6 +87,20 @@ const getComponentByType = ({value, values, errorMessage, componentType, fieldId
 
         case "resource":
             return (props) => <ResourceSelect
+                value={value}
+                errorMessage={errorMessage}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                {...props}/>
+
+        case "sourceType":
+            return (props) => <SourceTypeSelect
+                value={value}
+                errorMessage={errorMessage}
+                onChange={(value) => handleOnChange(value, fieldId)}
+                {...props}/>
+
+        case "source":
+            return (props) => <SourceSelect
                 value={value}
                 errorMessage={errorMessage}
                 onChange={(value) => handleOnChange(value, fieldId)}
