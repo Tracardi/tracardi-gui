@@ -4,7 +4,7 @@ import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
-import {VscTrash, VscEdit} from "react-icons/vsc";
+import {VscTrash} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote} from "../../../remote_api/entrypoint";

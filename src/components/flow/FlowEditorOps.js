@@ -1,4 +1,3 @@
-import {isEdge, isNode} from 'reactflow';
 import {request} from "../../remote_api/uql_api_endpoint";
 import {asyncRemote} from "../../remote_api/entrypoint";
 

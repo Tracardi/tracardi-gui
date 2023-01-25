@@ -689,8 +689,8 @@ export function FlowEditorPane(
                                           style={{
                                               position: "absolute",
                                               color: "#555",
-                                              bottom: 5,
-                                              right: 10,
+                                              bottom: 17,
+                                              right: 5,
                                               fontSize: "80%",
                                               display: "flex",
                                               alignItems: "center"
