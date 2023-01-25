@@ -41,7 +41,6 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
     const [draftRestoreProgress, setDraftRestoreProgress] = useState(false);
     const [draftSaveProgress, setDraftSaveProgress] = useState(false);
     const [deployProgress, setDeployProgress] = useState(false);
-    // const [displayDeployed, setDisplayDeployed] = useState(false);
 
     const confirm = useConfirm();
 
@@ -213,16 +212,6 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
             open={testConsoleOpened}>
             {testConsoleOpened && <TestEditor eventType="page-view"/>}
         </FormDrawer>
-
-
-        {/*<FormDrawer*/}
-        {/*    width={750}*/}
-        {/*    onClose={() => {*/}
-        {/*        setDisplayDeployed(false)*/}
-        {/*    }}*/}
-        {/*    open={displayDeployed}>*/}
-        {/*    {flowId && <FlowDisplay id={flowId}/>}*/}
-        {/*</FormDrawer>*/}
 
         <FormDrawer
             width={1300}

@@ -248,8 +248,8 @@ export function FlowEditorPane(
     const [clientX, setClientX] = useState(0);
     const [clientY, setClientY] = useState(0);
     const selectedNode = useRef({});
-    const copiedNode = useRef(null);
-    const nodePasted = useRef(false);
+    // const copiedNode = useRef(null);
+    // const nodePasted = useRef(false);
 
     const [modified, setModified] = useState(false);
     const [deployed, setDeployed] = useState(false);
@@ -403,53 +403,53 @@ export function FlowEditorPane(
 
     }, [refreshEdgeId, setEdges]);
 
-    const handleCtrlVRelease = useCallback((event) => {
-        if ((event?.ctrlKey || event?.metaKey) || event?.keyCode === 86) {
-            console.log("handleCtrlVRelease")
-            nodePasted.current = false;
-        }
-    }, [])
+    // const handleCtrlVRelease = useCallback((event) => {
+    //     if ((event?.ctrlKey || event?.metaKey) || event?.keyCode === 86) {
+    //         console.log("handleCtrlVRelease")
+    //         nodePasted.current = false;
+    //     }
+    // }, [])
+    //
+    // const handleCopyPasteNode = useCallback(event => {
+    //     if ((event?.ctrlKey || event?.metaKey) && Object.keys(nodeTypes).includes(selectedNode.current?.type)) {
+    //         // Ctrl / Cmd + C
+    //         if (event?.keyCode === 67) {
+    //             copiedNode.current = selectedNode.current;
+    //         }
+    //         // Ctrl / Cmd + V
+    //         if (event?.keyCode === 86 && !nodePasted.current && selectedNode.current) {
+    //             try {
+    //                 nodePasted.current = true;
+    //                 const data = cloneDeep(copiedNode.current);
+    //                 const newNode = {
+    //                     ...data,
+    //                     id: uuid4(),
+    //                     position: {x: data.position.x - 100, y: data.position.y + 50},
+    //                 };
+    //                 setNodes(nodes.concat(newNode))
+    //                 handleUpdate();
+    //             } catch (e) {
+    //                 alert("Cannot paste node.");
+    //             }
+    //         }
+    //     }
+    // },
+    //     // nodeTypes never change
+    //     // eslint-disable-next-line
+    //     [setNodes])
 
-    const handleCopyPasteNode = useCallback(event => {
-        if ((event?.ctrlKey || event?.metaKey) && Object.keys(nodeTypes).includes(selectedNode.current?.type)) {
-            // Ctrl / Cmd + C
-            if (event?.keyCode === 67) {
-                copiedNode.current = selectedNode.current;
-            }
-            // Ctrl / Cmd + V
-            if (event?.keyCode === 86 && !nodePasted.current && selectedNode.current) {
-                try {
-                    nodePasted.current = true;
-                    const data = cloneDeep(copiedNode.current);
-                    const newNode = {
-                        ...data,
-                        id: uuid4(),
-                        position: {x: data.position.x - 100, y: data.position.y + 50},
-                    };
-                    setNodes(nodes.concat(newNode))
-                    handleUpdate();
-                } catch (e) {
-                    alert("Cannot paste node.");
-                }
-            }
-        }
-    },
-        // nodeTypes never change
-        // eslint-disable-next-line
-        [setNodes])
-
-    useEffect(() => {
-        const element = reactFlowWrapper.current;
-        element.tabIndex = "0";
-        element.addEventListener("keydown", handleCopyPasteNode);
-        element.addEventListener("keyup", handleCtrlVRelease);
-        return () => {
-            element.removeEventListener("keydown", handleCopyPasteNode);
-            element.removeEventListener("keyup", handleCtrlVRelease);
-            copiedNode.current = false;
-            selectedNode.current = null;
-        }
-    }, [handleCopyPasteNode, handleCtrlVRelease])
+    // useEffect(() => {
+    //     const element = reactFlowWrapper.current;
+    //     element.tabIndex = "0";
+    //     element.addEventListener("keydown", handleCopyPasteNode);
+    //     element.addEventListener("keyup", handleCtrlVRelease);
+    //     return () => {
+    //         element.removeEventListener("keydown", handleCopyPasteNode);
+    //         element.removeEventListener("keyup", handleCtrlVRelease);
+    //         copiedNode.current = false;
+    //         selectedNode.current = null;
+    //     }
+    // }, [handleCopyPasteNode, handleCtrlVRelease])
 
     const handleUpdate = () => {
         setModified(true);
@@ -457,7 +457,7 @@ export function FlowEditorPane(
     }
 
     const onInit = (reactFlowInstance) => {
-        reactFlowInstance.fitView();
+        // reactFlowInstance.fitView();
         onEditorReady(reactFlowInstance)
     };
 
