@@ -7,6 +7,7 @@ import TuiTags from "../../../elements/tui/TuiTags";
 import {isEmptyObject} from "../../../../misc/typeChecking";
 import MicroserviceForm from "../../../elements/forms/MicroserviceForm";
 import Button from "../../../elements/forms/Button";
+import ErrorsBox from "../../../errors/ErrorsBox";
 
 function MicroserviceAndResourceForm({onSubmit}) {
 
@@ -144,6 +145,7 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
     const init = useRef(service?.init);
 
     const [errorMessages, setErrorMessages] = useState(null)
+    const [error, setError] = useState(null)
 
     const handleChange = (values) => {
         init.current = values
@@ -173,7 +175,8 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
 
     const handleSubmitOfMicroservice = async (microservice, resource) => {
         try {
-
+            setError(null)
+            setErrorMessages(null)
             const response = await asyncRemote({
                 url: '/tpro/install/microservice',
                 method: "POST",
@@ -195,14 +198,16 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
         } catch (e) {
             if (e?.response?.status === 422) {
                 setErrorMessages(e.response.data)
+            } else {
+                setError(getError(e))
             }
-            // todo global error - when url not available
-            // setError(getError(e))
         }
     }
 
     const handleSubmitOfLocalResource = async (value) => {
         try {
+            setError(null)
+            setErrorMessages(null)
             const response = await asyncRemote({
                 url: '/tpro/install',
                 method: "POST",
@@ -220,9 +225,9 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
         } catch (e) {
             if (e?.response?.status === 422) {
                 setErrorMessages(e.response.data)
+            } else {
+                setError(getError(e))
             }
-            // todo global error - when url not available
-            // setError(getError(e))
         }
     }
 
@@ -251,5 +256,6 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
             onChange={handleChange}
             onSubmit={handleSubmitOfLocalResource}/>
         }
+        {error && <ErrorsBox errorList={error} />}
     </div>
 }

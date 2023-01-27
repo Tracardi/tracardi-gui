@@ -683,6 +683,7 @@ export function FlowEditorPane(
                                 >
                                     <aside>v.{currentNode?.data?.spec?.version}</aside>
                                     {currentNode?.data?.metadata?.desc}
+                                    <div>To <u>delete</u> the node please select it and press <span style={{border: "solid 1px #ccc", padding: 2, borderRadius: 5}}>DELETE</span> key on keyboard.</div>
                                 </div>}
 
                                 <WfSchema schema={schema}
