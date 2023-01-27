@@ -38,7 +38,7 @@ import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import EdgeDetails from "./EdgeDetails";
 import CondNode from "./CondNode";
-import cloneDeep from 'lodash/cloneDeep';
+import {MdAdsClick} from "react-icons/md";
 
 const ReactFlow = React.lazy(() => import('reactflow'))
 
@@ -683,9 +683,10 @@ export function FlowEditorPane(
                                 >
                                     <aside>v.{currentNode?.data?.spec?.version}</aside>
                                     {currentNode?.data?.metadata?.desc}
-                                    <div>To <u>delete</u> the node please select it and press
-                                        <span style={{padding: "2px 5px", borderRadius: 8, backgroundColor: "black", color: "white"}}>DELETE</span>
-                                        key on keyboard.</div>
+                                    <div style={{marginTop: 10}}>To <u>delete</u> the node please select it and press
+                                        <span style={{fontSize:11, padding: "2px 5px", borderRadius: 5, backgroundColor: "black", color: "white", margin: "0 5px"}}>DELETE</span>
+                                        key.</div>
+                                    <div>To <u>open node properties</u> <MdAdsClick size={18}/>double click on the node.</div>
                                 </div>}
 
                                 <WfSchema schema={schema}
