@@ -14,6 +14,7 @@ import {
 import TuiColumnsFlex from "../elements/tui/TuiColumnsFlex";
 import TuiTopHeaderWrapper from "../elements/tui/TuiTopHeaderWrapper";
 import {TuiSelectEventSource} from "../elements/tui/TuiSelectEventSource";
+import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
 
 export const RequestForm = ({onError, onRequest, eventType: evType}) => {
 
@@ -120,20 +121,22 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
                     Tracardi."
             />
             <TuiFormGroupContent>
+                <p>Only REST API can be testes with this tool. Event source select will only list REST API event
+                    sources.<br/>You can select existing event type or type a new one.</p>
                 <TuiFormGroupField>
                     <TuiColumnsFlex width={320}>
                         <TuiTopHeaderWrapper header="Event source">
                             <TuiSelectEventSource
                                 value={resource}
                                 onSetValue={setResource}
+                                type="rest"
                             />
                         </TuiTopHeaderWrapper>
                         <TuiTopHeaderWrapper header="Event type">
-                            <Input label="Event type"
-                                   initValue={eventType}
-                                   style={{width: "100%"}}
-                                   variant="outlined"
-                                   onChange={(e) => setEventType(e.target.value)}
+                            <TuiSelectEventType
+                                label="Event type"
+                                onlyValueWithOptions={false}
+                                onSetValue={(v) => setEventType(v.id)}
                             />
                         </TuiTopHeaderWrapper>
                     </TuiColumnsFlex>

@@ -200,7 +200,7 @@ const AppBox = () => {
                         new PrivateTab(["admin", "developer", "marketer"],
                             <ConsentsDataCompliance/>, "/consents/compliance", <>
                                 <BsStar size={20}
-                                        style={{marginRight: 5}}/>{"Data compliance"}</>)
+                                        style={{marginRight: 5}}/>{"Event data compliance"}</>)
                     ]}
                     />
                 </Suspense>

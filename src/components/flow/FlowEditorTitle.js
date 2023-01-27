@@ -210,7 +210,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                 setTestConsoleOpened(false)
             }}
             open={testConsoleOpened}>
-            {testConsoleOpened && <TestEditor eventType="page-view"/>}
+            {testConsoleOpened && <div style={{margin: 20}}><TestEditor eventType="page-view" sxOnly={true}/></div>}
         </FormDrawer>
 
         <FormDrawer

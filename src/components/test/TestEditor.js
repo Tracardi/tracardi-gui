@@ -4,9 +4,9 @@ import {RequestForm} from "./RequestForm";
 import "./RequestResponse.css";
 import {asyncRemote, getError} from "../../remote_api/entrypoint";
 import ResponseForm from "./ResponseFrom";
-import ErrorsBox from "../errors/ErrorsBox";
+import Grid from "@mui/material/Grid";
 
-export default function TestEditor({style, eventType = 'page-view'}) {
+export default function TestEditor({eventType = 'page-view', sxOnly=false}) {
 
     const [request, setRequest] = useState({});
     const [response, setResponse] = useState({});
@@ -41,13 +41,12 @@ export default function TestEditor({style, eventType = 'page-view'}) {
         setErrors(getError(e))
     }
 
-    return <div className="TestEditor" style={style}>
-        <div className="LeftColumn">
+    return <Grid container spacing={2}>
+        <Grid item xs={12} lg={sxOnly ? 12 : 6}>
             <RequestForm onRequest={handleRequest} onError={handlerError} eventType={eventType}/>
-        </div>
-        <div className="RightColumn">
-            {errors && <ErrorsBox errorList={errors}/>}
+        </Grid>
+        <Grid item xs={12} lg={sxOnly ? 12 : 6}>
             <ResponseForm loading={loading} response={response} request={request}/>
-        </div>
-    </div>
+        </Grid>
+    </Grid>
 }
