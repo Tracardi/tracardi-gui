@@ -683,10 +683,12 @@ export function FlowEditorPane(
                                 >
                                     <aside>v.{currentNode?.data?.spec?.version}</aside>
                                     {currentNode?.data?.metadata?.desc}
-                                    <div style={{marginTop: 10}}>To <u>delete</u> the node please select it and press
-                                        <span style={{fontSize:11, padding: "2px 5px", borderRadius: 5, backgroundColor: "black", color: "white", margin: "0 5px"}}>DELETE</span>
+                                    <div style={{marginTop: 10}}>To <u>delete a node</u>: select the node and press
+                                        <span className="keyButton">DELETE</span>
                                         key.</div>
-                                    <div>To <u>open node properties</u> <MdAdsClick size={18}/>double click on the node.</div>
+                                    <div>To <u>open node properties</u>: <MdAdsClick size={18}/>double click on the node.</div>
+                                    <div>To <u>select multiple nodes</u>: press <span className="keyButton">SHIFT</span> and d
+                                        rag you mouse and make a rectangular selecting the nodes you want.</div>
                                 </div>}
 
                                 <WfSchema schema={schema}

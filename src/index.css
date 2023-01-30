@@ -65,3 +65,12 @@ H2.subHeader {
   align-items: center;
   flex-wrap: wrap;
 }
+
+.keyButton {
+  font-size:11px;
+  padding: 2px 5px;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  margin: 0 5px;
+}
