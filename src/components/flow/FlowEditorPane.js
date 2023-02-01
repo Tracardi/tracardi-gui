@@ -687,8 +687,8 @@ export function FlowEditorPane(
                                         <span className="keyButton">DELETE</span>
                                         key.</div>
                                     <div>To <u>open node properties</u>: <MdAdsClick size={18}/>double click on the node.</div>
-                                    <div>To <u>select multiple nodes</u>: press <span className="keyButton">SHIFT</span> and d
-                                        rag you mouse and make a rectangular selecting the nodes you want.</div>
+                                    <div>To <u>select multiple nodes</u>: press <span className="keyButton">SHIFT</span> and
+                                        drag you mouse and make a rectangular selecting the nodes you want.</div>
                                 </div>}
 
                                 <WfSchema schema={schema}

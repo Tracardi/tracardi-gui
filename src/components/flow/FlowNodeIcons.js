@@ -6,9 +6,9 @@ import {
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
     BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown,
-    BsFolderCheck, BsClock, BsBoxArrowRight, BsGithub, BsPersonX
+    BsFolderCheck, BsClock, BsBoxArrowRight, BsGithub, BsPersonX, BsClockHistory
 } from "react-icons/bs";
-import {AiOutlineSisternode, AiOutlineFieldTime, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
+import {AiOutlineSisternode, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
 import {
     BiMessageRoundedError,
@@ -148,7 +148,6 @@ export const icons = {
     'sleep': (size) => <RiRestTimeLine size={size}/>,
     'time-lapse': (size) => <MdTimelapse size={size}/>,
     'time': (size) => <BsClock size={size}/>,
-    'wait': (size) => <AiOutlineFieldTime size={size}/>,
     'x': (size) => <TiTimes size={size}/>,
     'message-alert': (size) => <BiMessageRoundedError size={size}/>,
     'message-ok': (size) => <BiMessageRoundedCheck size={size}/>,
@@ -265,7 +264,8 @@ export const icons = {
     "redirect": (size) => <IoArrowRedoOutline size={size}/>,
     "javascript": (size) => <SiJavascript size={size}/>,
     "train": (size) => <RiTrainLine size={size}/>,
-    "identity": (size) => <MdFingerprint size={size}/>
+    "identity": (size) => <MdFingerprint size={size}/>,
+    "wait": (size) => <BsClockHistory size={size}/>
 
 }
 
