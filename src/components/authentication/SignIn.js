@@ -211,6 +211,7 @@ const SignInForm = ({showAlert}) => {
                                 autoComplete="current-password"
                                 onChange={handlePassChange}
                                 required={true}
+                                value={password || ""}
                             />
                             <Button
                                 style={{justifyContent: "center", marginTop: 20}}
