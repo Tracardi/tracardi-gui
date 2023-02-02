@@ -66,7 +66,7 @@ function MainMenu({app, showAlert, changeRoute}) {
 
             const message = <>
                 <b>Frontend Version:</b> {version()}<br/>
-                <b>Backend Version: </b> {response?.data?.version}.${response?.data?.name}<br/>
+                <b>Backend Version: </b> {response?.data?.version}.{response?.data?.name}<br/>
                 <b>Backend Type: </b> {response?.data?.production ? "Production": "Staging"}<br/><br />
                 <b>Owner: </b> {response?.data?.owner}<br/>
                 <b>Licenses: </b>{response?.data?.licenses.join(", ")}<br/>
