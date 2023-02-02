@@ -192,6 +192,20 @@ const DetailsHandler = ({element, onNodeRefresh, onEdgeRefresh, onNodeConfig, on
     return ""
 }
 
+const edgeTypes = {
+    info: InfoEdge,
+    stop: StopEdge,
+    cancel: CancelEdge,
+    default: BoldEdge
+};
+const nodeTypes = {
+    flowNode: FlowNode,
+    flowNodeWithEvents: FlowNodeWithEvents,
+    startNode: StartNode,
+    condNode: CondNode
+};
+
+
 export function FlowEditorPane(
     {
         id,
@@ -208,18 +222,6 @@ export function FlowEditorPane(
 
     const snapGrid = [20, 20];
 
-    const edgeTypes = useMemo(() => ({
-        info: InfoEdge,
-        stop: StopEdge,
-        cancel: CancelEdge,
-        default: BoldEdge
-    }), []);
-    const nodeTypes = useMemo(() => ({
-        flowNode: FlowNode,
-        flowNodeWithEvents: FlowNodeWithEvents,
-        startNode: StartNode,
-        condNode: CondNode
-    }), []);
 
     const {zoomIn, zoomOut} = useReactFlow();
 
