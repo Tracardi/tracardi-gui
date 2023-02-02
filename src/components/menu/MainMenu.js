@@ -65,10 +65,14 @@ function MainMenu({app, showAlert, changeRoute}) {
             })
 
             const message = <>
-                {`Frontend Version: ${version()}`}<br/>
-                {`Backend Version: ${response?.data?.version}.${response?.data?.name}`}<br/>
-                {`Backend Upgrades: ${(Array.isArray(response?.data?.upgrades) && response?.data?.upgrades.length>0) ? response?.data?.upgrades.join() : "None"}`}<br />
-                {response?.data?.prev_version && `Previous Backend Version: ${response?.data?.prev_version?.version}.${response?.data?.prev_version?.name}`}<br/>
+                <b>Frontend Version:</b> {version()}<br/>
+                <b>Backend Version: </b> {response?.data?.version}.${response?.data?.name}<br/>
+                <b>Backend Type: </b> {response?.data?.production ? "Production": "Staging"}<br/><br />
+                <b>Owner: </b> {response?.data?.owner}<br/>
+                <b>Licenses: </b>{response?.data?.licenses.join(", ")}<br/>
+                <b>Expires: </b>{response?.data?.expires}<br/><br />
+                <b>Backend Upgrades: </b>{(Array.isArray(response?.data?.upgrades) && response?.data?.upgrades.length>0) ? response?.data?.upgrades.join() : "None"}<br />
+                <b>Previous Backend Version: </b>{response?.data?.prev_version ? `${response?.data?.prev_version?.version}.${response?.data?.prev_version?.name}` : "None"}<br/>
             </>
 
             confirm({title: "TRACARDI Version Information", description: message}).then(() => {}).catch(() => {})
