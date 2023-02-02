@@ -80,7 +80,7 @@ export default function LiveSegments() {
         defaultLayout="rows"
         cardFunc={liveSegmentsCards}
         rowFunc={liveSegmentsRows}
-        buttomLabel="New live segment"
+        buttonLabel="New live segment"
         buttonIcon={<VscOrganization size={20}/>}
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}

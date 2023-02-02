@@ -80,7 +80,7 @@ export default function Segments() {
         defaultLayout="rows"
         cardFunc={segmentsCards}
         rowFunc={segmentsRows}
-        buttomLabel="New segment"
+        buttonLabel="New segment"
         buttonIcon={<VscOrganization size={20}/>}
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}

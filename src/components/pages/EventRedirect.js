@@ -83,7 +83,7 @@ export default function EventRedirect() {
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}
-        buttomLabel="New event redirect"
+        buttonLabel="New event redirect"
         buttonIcon={<IoArrowRedoOutline size={20}/>}
         drawerDetailsWidth={700}
         detailsFunc={detailsFunc}

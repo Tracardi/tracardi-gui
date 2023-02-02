@@ -78,7 +78,7 @@ export default function Resources({defaultLayout="rows"}) {
         urlFunc={urlFunc}
         cardFunc={sourceCards}
         rowFunc={sourceRows}
-        buttomLabel="New resource"
+        buttonLabel="New resource"
         buttonIcon={<AiOutlineCloudServer size={20}/>}
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}

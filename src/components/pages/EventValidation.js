@@ -79,7 +79,7 @@ export default function EventValidation() {
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}
-        buttomLabel="New validation"
+        buttonLabel="New validation"
         buttonIcon={<FlowNodeIcons icon="validator"/>}
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}

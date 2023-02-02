@@ -93,7 +93,7 @@ export default function Reports() {
         urlFunc={urlFunc}
         cardFunc={reportCards}
         rowFunc={reportRows}
-        buttomLabel="New report"
+        buttonLabel="New report"
         buttonIcon={<BsBarChartFill size={20}/>}
         drawerDetailsWidth={600}
         detailsFunc={detailsFunc}

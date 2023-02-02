@@ -79,7 +79,7 @@ export default function EventReshaping() {
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}
-        buttomLabel="New reshape"
+        buttonLabel="New reshape"
         buttonIcon={<FlowNodeIcons icon="map-properties"/>}
         drawerDetailsWidth={850}
         detailsFunc={detailsFunc}
