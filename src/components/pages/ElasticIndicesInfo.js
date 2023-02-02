@@ -15,11 +15,23 @@ import {useConfirm} from "material-ui-confirm";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import theme from "../../themes/inspector_light_theme";
+import {Chip} from "@mui/material";
+import JsonChip from "../elements/misc/JsonChip";
+import {objectMap} from "../../misc/mappers";
 
+function InconsistentMappingChips({mappingCheck}) {
+    if(mappingCheck) {
+        return <fieldset><legend>Inconsistent mapping</legend>
+            {objectMap(mappingCheck, (index, data) => <JsonChip label={index} object={data}></JsonChip>)}
+        </fieldset>
+    }
+    return ""
+}
 
 function ElasticIndicesInfo({showAlert}) {
 
     const [data, setData] = React.useState({});
+    const [mappingCheck, setMappingCheck] = React.useState({});
     const [error, setError] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [inspected, setInspected] = React.useState(null);
@@ -31,6 +43,7 @@ function ElasticIndicesInfo({showAlert}) {
         mounted.current = true;
         setLoading(true);
         setError(null);
+
         asyncRemote({url: "/test/elasticsearch/indices"})
         .then(response => {
             if (mounted.current) {
@@ -47,6 +60,24 @@ function ElasticIndicesInfo({showAlert}) {
                 setLoading(false);
             }
         })
+
+        asyncRemote({url: "/storage/mapping/check"})
+            .then(response => {
+                if (mounted.current) {
+                    setMappingCheck(response.data);
+                }
+            })
+            .catch(e => {
+                if (mounted.current) {
+                    setError(getError(e));
+                }
+            })
+            .finally(() => {
+                if (mounted.current) {
+                    setLoading(false);
+                }
+            })
+
         return () => mounted.current = false;
     }, [refresh])
 
@@ -97,6 +128,7 @@ function ElasticIndicesInfo({showAlert}) {
                     description="Mappings, status and other details of storage indices. Indices connected to Tracardi are tagged as 'Connected'."
                 />
                 <TuiFormGroupContent>
+                    <InconsistentMappingChips mappingCheck={mappingCheck}/>
                     {
                         loading ? 
                             <CenteredCircularProgress />

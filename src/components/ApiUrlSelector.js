@@ -5,6 +5,8 @@ import {BsHddNetwork} from "react-icons/bs";
 import TuiApiUrlInput from "./elements/tui/TuiApiUrlInput";
 import Button from "./elements/forms/Button";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
 
 const ApiUrlSelector = ({children}) => {
 
@@ -86,37 +88,51 @@ const ApiUrlSelector = ({children}) => {
     }
 
     if (isEndpointValid === false) {
-        return <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100%"}}>
-            <div style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                padding: 50,
-                width: "50%",
-                maxWidth: 660,
-                backgroundColor: "white",
-                borderRadius: 10
-            }}>
-                <BsHddNetwork size={50} style={{color: "#666"}}/>
-                <h1 style={{fontWeight: 300}}>Select TRACARDI server</h1>
-                <p>Type or select TRACARDI API Url.</p>
-                <div style={{width: 400, display: "flex", alignItems: "flex-end", marginBottom: (!isEndpointValid || !isEndpointReachable) && apiLocation && !progress ? 0 : 22}}>
-                    <TuiApiUrlInput
-                        label="API Endpoint URL"
-                        value={apiLocation || apiUrlStorage().read() || ""}
-                        options={new storageValue('tracardi-api-urls').read([])}
-                        onChange={(v) => setEndpoint(v)}
-                        errorMessage={progress ? null : apiLocation && (!isEndpointReachable ? "Given API URL is not reachable" : isEndpointValid ? null : "Given API URL is invalid")}
-                        />          
-                    <Button label="Select"
-                            onClick={()=> setApiLocation(endpoint)}
-                            progress={progress}
-                            error={failed}
-                            style={{height: 38, marginBottom: (!isEndpointValid || !isEndpointReachable) && apiLocation && !progress ? 31 : 9}}
-                    />
-                </div>
-            </div>
+        return <>
+            <Grid container xs={12} display="flex" justifyContent="center" alignItems="center" style={{height: "100%"}}>
+                <Grid xs={10} sm={8} md={7} lg={6} xl={4}>
+                    <Paper style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        padding: 50,
+                        backgroundColor: "white",
+                        borderRadius: 10
+                    }}>
+                        <BsHddNetwork size={50} style={{color: "#666"}}/>
+                        <h1 style={{fontWeight: 300}}>Select TRACARDI server</h1>
+                        <p>Type or select TRACARDI API Url.</p>
+                        <Grid container xs={12} display="flex" justifyContent="center">
+                            <Grid xs={8}>
+                                <div style={{ display: "flex", alignItems: "flex-end", marginBottom: (!isEndpointValid || !isEndpointReachable) && apiLocation && !progress ? 0 : 22}}>
+                                    <TuiApiUrlInput
+                                        label="API Endpoint URL"
+                                        value={apiLocation || apiUrlStorage().read() || ""}
+                                        options={new storageValue('tracardi-api-urls').read([])}
+                                        onChange={(v) => setEndpoint(v)}
+                                        errorMessage={progress ? null : apiLocation && (!isEndpointReachable ? "Given API URL is not reachable" : isEndpointValid ? null : "Given API URL is invalid")}
+                                    />
+                                    <Button label="Select"
+                                            onClick={()=> setApiLocation(endpoint)}
+                                            progress={progress}
+                                            error={failed}
+                                            style={{height: 38, marginBottom: (!isEndpointValid || !isEndpointReachable) && apiLocation && !progress ? 31 : 9}}
+                                    />
+                                </div>
+
+                            </Grid>
+                        </Grid>
+
+
+                    </Paper>
+                </Grid>
+            </Grid>
+
+
+        <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100%"}}>
+
         </div>
+            </>
     }
 
     return children;

@@ -1,14 +1,11 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {Navigate, useLocation} from "react-router-dom";
-import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import { makeStyles } from "tss-react/mui";
-import Container from '@mui/material/Container';
 import {logout, setRoles, setToken} from "./login";
 import {loginUser} from "../../remote_api/user";
 import {signInTheme} from "../../themes";
@@ -22,6 +19,9 @@ import PasswordInput from "../elements/forms/inputs/PasswordInput";
 import ReadOnlyInput from "../elements/forms/ReadOnlyInput";
 import {track} from "../../remote_api/track";
 import getLocation from "../../misc/location";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import {BsShieldLock} from "react-icons/bs";
 
 function Copyright() {
     return (
@@ -38,13 +38,12 @@ function Copyright() {
 
 const useStyles = makeStyles()((theme) => ({
     paper: {
-        marginTop: 8,
+        padding: 40,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        padding: "10px 20px",
         backgroundColor: 'white',
-        borderRadius: "5px",
+        borderRadius: 10,
         color: "black"
     },
     avatar: {
@@ -165,66 +164,76 @@ const SignInForm = ({showAlert}) => {
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={signInTheme}>
-                <Container component="main" maxWidth="xs">
-                    <div className={classes.paper}>
-                        <Avatar className={classes.avatar}>
-                            <LockOutlinedIcon/>
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Sign in
-                        </Typography>
+                <Grid container xs={12} display="flex" justifyContent="center" alignItems="center" style={{height: "100%"}}>
+                    <Grid xs={10} sm={8} md={7} lg={6} xl={4}>
+                        <Paper className={classes.paper}>
 
-                        {!loading && errorMessage ? (
-                            <p style={{
-                                backgroundColor: "#c2185b",
-                                padding: "3px 6px",
-                                borderRadius: 4,
-                                color: "white",
-                                marginTop: "10px",
-                                fontSize: "90%"
+                            <BsShieldLock size={40} />
+                            <div>
+                                <span style={{
+                                    fontSize: "150%",
+                                    textTransform: "uppercase",
+                                    fontWeight: 400,
+                                    fontFamily: "Viga, IBM Plex Sans, serif"
+                                }}>TRACARDI</span>
+                                <div style={{fontSize: 11, color: "gray", textAlign: "center"}}> v. {version()}</div>
+                            </div>
 
-                            }}>{errorMessage}</p>
-                        ) : null}
 
-                        <ReadOnlyInput label="Tracardi API"
-                                       value={apiUrl}
-                                       hint="You will authorize yourself in the above Tracardi server."
-                                       onReset={handleEndpointReset}/>
 
-                        <form onSubmitCapture={handleSubmit} className={classes.form} noValidate>
-                            <TextField
-                                variant="outlined"
-                                margin="normal"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                                size="small"
-                                autoFocus
-                                onChange={handleEmailChange}/>
-                            <PasswordInput
-                                fullWidth={true}
-                                label="Password"
-                                id="password"
-                                autoComplete="current-password"
-                                onChange={handlePassChange}
-                                required={true}
-                                value={password || ""}
-                            />
-                            <Button
-                                style={{justifyContent: "center", marginTop: 20}}
-                                label="Sign In"
-                                onClick={handleSubmit}
-                                progress={progress}
-                            />
-                        </form>
-                        <Box mt={1}>
-                            <Copyright/>
-                        </Box>
-                    </div>
-                </Container>
+                            {!loading && errorMessage ? (
+                                <p style={{
+                                    backgroundColor: "#c2185b",
+                                    padding: "3px 6px",
+                                    borderRadius: 4,
+                                    color: "white",
+                                    marginTop: "10px",
+                                    fontSize: "90%"
+
+                                }}>{errorMessage}</p>
+                            ) : null}
+
+                            <ReadOnlyInput label="Tracardi API"
+                                           value={apiUrl}
+                                           hint="You will authorize yourself in the above Tracardi server."
+                                           onReset={handleEndpointReset}/>
+
+                            <form onSubmitCapture={handleSubmit} className={classes.form} noValidate>
+                                <TextField
+                                    variant="outlined"
+                                    margin="normal"
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                    size="small"
+                                    autoFocus
+                                    onChange={handleEmailChange}/>
+                                <PasswordInput
+                                    fullWidth={true}
+                                    label="Password"
+                                    id="password"
+                                    autoComplete="current-password"
+                                    onChange={handlePassChange}
+                                    required={true}
+                                    value={password || ""}
+                                />
+                                <Button
+                                    style={{justifyContent: "center", marginTop: 20}}
+                                    label="Sign In"
+                                    onClick={handleSubmit}
+                                    progress={progress}
+                                />
+                            </form>
+                            <Box mt={1}>
+                                <Copyright/>
+                            </Box>
+                        </Paper>
+                    </Grid>
+
+                </Grid>
             </ThemeProvider>
         </StyledEngineProvider>
     );
