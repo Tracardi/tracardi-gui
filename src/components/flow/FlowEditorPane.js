@@ -473,7 +473,7 @@ export function FlowEditorPane(
         }
     }
 
-    const handleDebug = () => {
+    const handleDebug = useCallback(() => {
         setDebugNode(null);
         setAnimatedEdge(null);
         setDisplayNodeContextMenu(false);
@@ -490,7 +490,7 @@ export function FlowEditorPane(
                 handleDisplayDebugPane(true);
             }
         )
-    }
+    }, [id, reactFlowInstance, setEdges, setNodes, showAlert])
 
     // TODO I don't understand this function mean's what so let it alone
     // const getElementsWithRunOnce = (elements) => {
