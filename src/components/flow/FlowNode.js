@@ -5,7 +5,7 @@ import FlowNodeIcons from "./FlowNodeIcons";
 import {ErrorNumber, ExecutionSeqNumber, WarningNumber} from "./NodeAlerts";
 import {isObject} from '../../misc/typeChecking';
 import ThresholdIcon from "./ThresholdIcon";
-import {BsArrowDownShort, BsCloud} from "react-icons/bs";
+import {BsArrowDownShort, BsCloud, BsStar} from "react-icons/bs";
 
 
 const FlowNodeDynamic = ({data}) => {
@@ -127,7 +127,7 @@ const FlowNodeDynamic = ({data}) => {
                         <p style={{marginLeft: 5}}>{data?.metadata?.name}</p>
                     </div>
                 </div>
-                {data?.metadata?.pro ? <div className="NodePro" style={backgroundStyle}>Pro</div> : ""}
+                {data?.metadata?.pro ? <div className="NodePro" style={backgroundStyle}><BsStar size={20} /></div> : ""}
                 {data?.metadata?.remote ? <div className="NodePro" style={backgroundStyle}><BsCloud size={20} /></div> : ""}
             </div>
             <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs} style={portStyle}
