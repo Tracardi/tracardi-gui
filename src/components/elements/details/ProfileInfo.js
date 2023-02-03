@@ -56,13 +56,6 @@ export const ProfileData = ({profile}) => {
             <fieldset style={{marginBottom: 20}}>
                 <legend style={{fontSize: 13}}>Profile metadata</legend>
                 <PropertyField name="Id" content={<IdLabel label={profile.id}/>}/>
-                {profile.metadata?.merged_with && <PropertyField name="Merged with"
-                                                                 content={<IdLabel
-                                                                 style={{color: "rgb(216, 27, 96)"}}
-                                                                     label={profile.metadata?.merged_with}/>}
-                                                                 drawerSize={1300}>
-                    <ProfileDetailsById id={profile.metadata?.merged_with}/>
-                </PropertyField>}
                 <PropertyField name="Profile" content={<ProfileLabel label={profileName(profile)}
                                                                      profileLess={profile === null}/>}/>
                 {profile?.metadata?.time?.insert &&
