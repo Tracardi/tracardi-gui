@@ -8,7 +8,7 @@ import {
 import React from "react";
 import Button from "../elements/forms/Button";
 import {useConfirm} from "material-ui-confirm";
-import {asyncRemote} from "../../remote_api/entrypoint";
+import {asyncRemote, getError, covertErrorIntoObject} from "../../remote_api/entrypoint";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import {connect} from "react-redux";
 
@@ -36,7 +36,8 @@ function Deployment({showAlert}) {
                             hideAfter: 3000
                         })
                     } catch (e) {
-                        showAlert({type: "error", message: e.toString(), hideAfter: 3000})
+                        e = getError(e)
+                        showAlert({type: "error", message: e[0].msg, hideAfter: 5000})
                     }
                 }
             )
@@ -60,7 +61,8 @@ function Deployment({showAlert}) {
                         const type = response?.data?.acknowledged !== true ? "warning" : "success"
                         showAlert({type, message: `All changes linked.`, hideAfter: 3000})
                     } catch (e) {
-                        showAlert({type: "error", message: e.toString(), hideAfter: 3000})
+                        e = getError(e)
+                        showAlert({type: "error", message: e[0].msg, hideAfter: 5000})
                     }
                 }
             )
@@ -82,7 +84,8 @@ function Deployment({showAlert}) {
                         const type = response?.data?.acknowledged !== true ? "warning" : "success"
                         showAlert({type, message: `All changes reverted.`, hideAfter: 3000})
                     } catch (e) {
-                        showAlert({type: "error", message: e.toString(), hideAfter: 3000})
+                        e = getError(e)
+                        showAlert({type: "error", message: e[0].msg, hideAfter: 5000})
                     }
                 }
             )

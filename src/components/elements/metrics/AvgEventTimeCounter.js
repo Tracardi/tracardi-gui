@@ -16,7 +16,7 @@ export default function AvgEventTime({width=200}) {
         setLoading(true);
         setError(false);
         asyncRemote({
-            url: "event/avg/process-time"
+            url: "/event/avg/process-time"
         }).then((response) => {
             if(response) {
                 if(isSubscribed) {
