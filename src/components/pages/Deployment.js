@@ -5,17 +5,20 @@ import {
     TuiFormGroupField,
     TuiFormGroupHeader
 } from "../elements/tui/TuiForm";
-import React from "react";
+import React, {useState} from "react";
 import Button from "../elements/forms/Button";
 import {useConfirm} from "material-ui-confirm";
-import {asyncRemote, getError, covertErrorIntoObject} from "../../remote_api/entrypoint";
+import {asyncRemote, getError} from "../../remote_api/entrypoint";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import {connect} from "react-redux";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 
 function Deployment({showAlert}) {
 
     const confirm = useConfirm();
+    const [progress, setProgress] = useState(false)
 
     const handleDeploy = () => {
         confirm({
@@ -23,8 +26,8 @@ function Deployment({showAlert}) {
             description: "This action can not be undone. All changes made on staging server will be copied to production server."
         })
             .then(async () => {
+                    setProgress(true)
                     try {
-
                         const response = await asyncRemote({
                             url: '/production/deploy',
                             method: "get"
@@ -38,6 +41,8 @@ function Deployment({showAlert}) {
                     } catch (e) {
                         e = getError(e)
                         showAlert({type: "error", message: e[0].msg, hideAfter: 5000})
+                    } finally {
+                        setProgress(false)
                     }
                 }
             )
@@ -51,8 +56,8 @@ function Deployment({showAlert}) {
                 "visible on production."
         })
             .then(async () => {
+                    setProgress(true)
                     try {
-
                         const response = await asyncRemote({
                             url: '/production/dry-run',
                             method: "get"
@@ -63,6 +68,8 @@ function Deployment({showAlert}) {
                     } catch (e) {
                         e = getError(e)
                         showAlert({type: "error", message: e[0].msg, hideAfter: 5000})
+                    } finally {
+                        setProgress(false)
                     }
                 }
             )
@@ -74,8 +81,8 @@ function Deployment({showAlert}) {
             description: "This action reverts all changes made on staging server from production server."
         })
             .then(async () => {
+                    setProgress(true)
                     try {
-
                         const response = await asyncRemote({
                             url: '/production/dry-run/revert',
                             method: "get"
@@ -86,12 +93,14 @@ function Deployment({showAlert}) {
                     } catch (e) {
                         e = getError(e)
                         showAlert({type: "error", message: e[0].msg, hideAfter: 5000})
+                    } finally {
+                        setProgress(false)
                     }
                 }
             )
     }
 
-    return <TuiForm style={{margin: '20px'}}>
+    return <><TuiForm style={{margin: '20px'}}>
         <TuiFormGroup>
             <TuiFormGroupHeader header='Deployment'
                                 description='Deployment is a process of coping the changes made on staging server to the production server.'/>
@@ -104,8 +113,9 @@ function Deployment({showAlert}) {
                                    that something is not functioning as expected, you have the option to revert
                                    back to the original production settings, ensuring that your data is not
                                    impacted by any potential issues.">
-                    <Button label="Test on production" onClick={handleTest}/>
-                    <Button label="Revert production" onClick={handleRevert} style={{marginLeft: 10}}/>
+                    <Button label="Test on production" onClick={handleTest} disabled={progress}/>
+                    <Button label="Revert production" onClick={handleRevert} disabled={progress}
+                            style={{marginLeft: 10}}/>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
             <TuiFormGroupContent>
@@ -118,11 +128,19 @@ function Deployment({showAlert}) {
                                    and processes relying on it. Before proceeding with this action, it is recommended
                                    to thoroughly test and validate the new settings in a non-production environment
                                    to minimize the risk of potential issues.">
-                    <Button label="Deploy to production" onClick={handleDeploy}/>
+                    <Button label="Deploy to production" onClick={handleDeploy}
+                            disabled={progress}/>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
     </TuiForm>
+        <Backdrop
+            sx={{ color: '#fff', zIndex: 10 }}
+            open={progress}
+        >
+            <CircularProgress color="inherit" />
+        </Backdrop>
+        </>
 }
 
 export default connect(
