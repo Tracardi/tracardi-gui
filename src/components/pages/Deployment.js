@@ -39,8 +39,8 @@ function Deployment({showAlert}) {
                             hideAfter: 3000
                         })
                     } catch (e) {
-                        e = getError(e)
-                        showAlert({type: "error", message: e[0].msg, hideAfter: 5000})
+                        const err = getError(e)
+                        showAlert({type: "error", message: err[0].msg, hideAfter: 5000})
                     } finally {
                         setProgress(false)
                     }
@@ -66,8 +66,8 @@ function Deployment({showAlert}) {
                         const type = response?.data?.acknowledged !== true ? "warning" : "success"
                         showAlert({type, message: `All changes linked.`, hideAfter: 3000})
                     } catch (e) {
-                        e = getError(e)
-                        showAlert({type: "error", message: e[0].msg, hideAfter: 5000})
+                        const err = getError(e)
+                        showAlert({type: "error", message: err[0].msg, hideAfter: 5000})
                     } finally {
                         setProgress(false)
                     }
@@ -91,8 +91,8 @@ function Deployment({showAlert}) {
                         const type = response?.data?.acknowledged !== true ? "warning" : "success"
                         showAlert({type, message: `All changes reverted.`, hideAfter: 3000})
                     } catch (e) {
-                        e = getError(e)
-                        showAlert({type: "error", message: e[0].msg, hideAfter: 5000})
+                        const err = getError(e)
+                        showAlert({type: "error", message: err[0].msg, hideAfter: 5000})
                     } finally {
                         setProgress(false)
                     }
