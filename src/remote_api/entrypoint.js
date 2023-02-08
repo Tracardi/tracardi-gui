@@ -42,7 +42,8 @@ export const asyncRemote = async (config, token=null) => {
 
     config.headers = {
         ...config?.headers,
-        'Authorization': token === null ? authToken() : authToken(token)
+        'Authorization': token === null ? authToken() : authToken(token),
+        'X-Context': "staging"
     }
 
     config.timeout = 1000 * 60
