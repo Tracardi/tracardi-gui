@@ -78,6 +78,15 @@
     font-weight: 300;
 }
 
+.MainMenu .Context {
+    padding: 3px 10px;
+    background-color: #d81b60;
+    border-radius: 10px;
+    font-weight: 400;
+    display: inline-flex;
+    align-items: center;
+}
+
 .MainMenu .MenuRow {
     display: flex;
     flex-wrap: nowrap;
@@ -125,3 +134,4 @@
     align-items: center;
     font-size: 14px;
 }
+

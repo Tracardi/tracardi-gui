@@ -17,14 +17,17 @@ import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import {changeRoute} from "../../redux/reducers/appSlice"
 import FlowNodeIcons from "../flow/FlowNodeIcons";
+import ServerContext from "../context/ServerContext";
+import {Restrict} from "../authentication/Restrict";
+
 
 function MainMenu({app, showAlert, changeRoute}) {
 
     const [collapsed, setCollapsed] = useState(false);
     const confirm = useConfirm()
-    const navigate = useNavigate();
     const location = useLocation();
     const pathname = location.pathname
+    const navigate = useNavigate();
 
     useEffect(() => {
         changeRoute({route: pathname})
@@ -87,9 +90,12 @@ function MainMenu({app, showAlert, changeRoute}) {
         if(collapsed === true) {
             return <div className="Branding"><div className="T">T</div></div>
         }
-        return <div className="Branding" onClick={handleVersionWindow}>
-                <div className="Tracardi">TRACARDI</div>
-                <div className="Version">v. {version()}</div>
+        return <div className="Branding">
+                <div className="Tracardi" onClick={handleVersionWindow}>TRACARDI</div>
+                <div className="Version">v. {version()} <Restrict roles={['admin']}>
+                    <ServerContext style={{marginLeft: 5}}/>
+                </Restrict>
+                </div>
             </div>
     }
 
