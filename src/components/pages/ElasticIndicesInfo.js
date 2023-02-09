@@ -15,14 +15,13 @@ import {useConfirm} from "material-ui-confirm";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import theme from "../../themes/inspector_light_theme";
-import {Chip} from "@mui/material";
 import JsonChip from "../elements/misc/JsonChip";
 import {objectMap} from "../../misc/mappers";
 
 function InconsistentMappingChips({mappingCheck}) {
     if(mappingCheck) {
         return <fieldset><legend>Inconsistent mapping</legend>
-            {objectMap(mappingCheck, (index, data) => <JsonChip label={index} object={data}></JsonChip>)}
+            {objectMap(mappingCheck, (index, data) => <JsonChip label={index} object={data} key={index}></JsonChip>)}
         </fieldset>
     }
     return ""

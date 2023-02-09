@@ -90,7 +90,7 @@ const ApiUrlSelector = ({children}) => {
     if (isEndpointValid === false) {
         return <>
             <Grid container xs={12} display="flex" justifyContent="center" alignItems="center" style={{height: "100%"}}>
-                <Grid xs={10} sm={8} md={7} lg={6} xl={4}>
+                <Grid item xs={10} sm={8} md={7} lg={6} xl={4}>
                     <Paper style={{
                         display: "flex",
                         flexDirection: "column",
@@ -103,7 +103,7 @@ const ApiUrlSelector = ({children}) => {
                         <h1 style={{fontWeight: 300}}>Select TRACARDI server</h1>
                         <p>Type or select TRACARDI API Url.</p>
                         <Grid container xs={12} display="flex" justifyContent="center">
-                            <Grid xs={8}>
+                            <Grid item xs={8}>
                                 <div style={{ display: "flex", alignItems: "flex-end", marginBottom: (!isEndpointValid || !isEndpointReachable) && apiLocation && !progress ? 0 : 22}}>
                                     <TuiApiUrlInput
                                         label="API Endpoint URL"

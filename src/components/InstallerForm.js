@@ -57,7 +57,7 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
             })
             if (response) {
                 const result = response.data
-                const hasAdmin = result?.admin
+                const hasAdmin = result[0]?.admin
                 setHasAdminAccount(hasAdmin)
                 if (hasAdmin) {
                     onInstalled()
