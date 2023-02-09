@@ -1,11 +1,9 @@
 import storageValue from "../../misc/localStorageDriver";
-import React, {useState} from "react";
-import {connect} from "react-redux";
-import {showAlert} from "../../redux/reducers/alertSlice";
+import React from "react";
 import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 
-const ServerContext = ({style, showAlert}) => {
+const ServerContext = ({style}) => {
 
     const navigate = useNavigate();
 
@@ -19,12 +17,12 @@ const ServerContext = ({style, showAlert}) => {
     function handleOnClick(production) {
         if (production) {
             storage.save('production')
-            showAlert({message: "Now you are working on production server", type: "warning", hideAfter: 4000});
+            go("/context/production")
         } else {
             storage.save('staging');
-            showAlert({message: "Now you are working on staging server", type: "warning", hideAfter: 4000});
+            go("/context/staging")
         }
-        go("/dashboard")
+
     }
 
     function display() {
@@ -41,12 +39,4 @@ const ServerContext = ({style, showAlert}) => {
     return <span style={style}>{display()}</span>
 }
 
-const mapProps = (state) => {
-    return {
-        notification: state.notificationReducer,
-    }
-};
-export default connect(
-    mapProps,
-    {showAlert}
-)(ServerContext);
+export default ServerContext;

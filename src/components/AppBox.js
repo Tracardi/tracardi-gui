@@ -9,6 +9,7 @@ import CenteredCircularProgress from "./elements/progress/CenteredCircularProgre
 import {ErrorBoundary} from "@sentry/react";
 import TopBar from "./pages/top/TopBar";
 import IdentificationPoint from "./pages/IdentificationPoint";
+import ContextChangeConfirmation from "./context/ContextChangeConfirmation";
 
 const ProRouter = React.lazy(() => import('./pages/pro/ProRouter'))
 const Dashboard = React.lazy(() => import('./pages/Dashboard'))
@@ -53,6 +54,14 @@ const ConsentsDataCompliance = React.lazy(() => import("./pages/ConsentsComplian
 const AppBox = () => {
 
     return <MainContent>
+
+        <PrivateRoute exact path={urlPrefix("/context/production")} roles={["admin", "developer", "marketer", "maintainer"]}>
+            <ContextChangeConfirmation context="production"/>
+        </PrivateRoute>
+
+        <PrivateRoute exact path={urlPrefix("/context/staging")} roles={["admin", "developer", "marketer", "maintainer"]}>
+            <ContextChangeConfirmation context="staging"/>
+        </PrivateRoute>
 
         {/*Redirects*/}
 

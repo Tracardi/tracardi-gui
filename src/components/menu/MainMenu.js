@@ -19,6 +19,7 @@ import {changeRoute} from "../../redux/reducers/appSlice"
 import FlowNodeIcons from "../flow/FlowNodeIcons";
 import ServerContext from "../context/ServerContext";
 import {Restrict} from "../authentication/Restrict";
+import storageValue from "../../misc/localStorageDriver";
 
 
 function MainMenu({app, showAlert, changeRoute}) {
@@ -70,7 +71,8 @@ function MainMenu({app, showAlert, changeRoute}) {
             const message = <>
                 <b>Frontend Version:</b> {version()}<br/>
                 <b>Backend Version: </b> {response?.data?.version}.{response?.data?.name}<br/>
-                <b>Backend Type: </b> {response?.data?.production ? "Production": "Staging"}<br/><br />
+                <b>Default server context: </b> {response?.data?.production ? "production": "staging"}<br/>
+                <b>Current server context: </b> {new storageValue('.tr-srv-context').read('unknown')}<br/><br />
                 <b>Owner: </b> {response?.data?.owner}<br/>
                 <b>Licenses: </b>{response?.data?.licenses.join(", ")}<br/>
                 <b>Expires: </b>{response?.data?.expires}<br/><br />
