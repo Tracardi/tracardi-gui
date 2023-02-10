@@ -16,9 +16,10 @@ import EventErrorTag from "../misc/EventErrorTag";
 import IconLabel from "../misc/IconLabels/IconLabel";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import NoData from "../misc/NoData";
+import TuiWorkflowTags from "../tui/TuiWorkflowTags";
 
 
-const EventData = ({event, metadata, allowedDetails=[]}) => {
+const EventData = ({event, metadata, allowedDetails = []}) => {
 
     const ContextInfo = () => {
         const context = object2dot(event?.context);
@@ -35,7 +36,8 @@ const EventData = ({event, metadata, allowedDetails=[]}) => {
         <TuiFormGroup>
             <TuiFormGroupHeader header="Event details"/>
             <TuiFormGroupContent style={{display: "flex", flexDirection: "column"}}>
-                <PropertyField name="Type" content={<IconLabel icon={<FlowNodeIcons icon="event" />} value={event?.type}/>}/>
+                <PropertyField name="Type"
+                               content={<IconLabel icon={<FlowNodeIcons icon="event"/>} value={event?.type}/>}/>
                 <PropertyField name="Insert time"
                                content={<DateValue date={event?.metadata?.time?.insert}/>}
                 />
@@ -46,9 +48,10 @@ const EventData = ({event, metadata, allowedDetails=[]}) => {
                                    <EventValidation eventMetaData={event?.metadata}/>
                                    <EventWarnings eventMetaData={event?.metadata}/>
                                    <EventErrorTag eventMetaData={event?.metadata}/>
-                                   </>}/>
+                               </>}/>
 
-                {event?.session && <PropertyField name="Session duration" content={Math.floor(event.session.duration / 60).toString() + "m"}>
+                {event?.session && <PropertyField name="Session duration"
+                                                  content={Math.floor(event.session.duration / 60).toString() + "m"}>
 
                 </PropertyField>}
                 {event?.session && <PropertyField name="Session id" content={event.session?.id}>
@@ -71,17 +74,24 @@ const EventData = ({event, metadata, allowedDetails=[]}) => {
                                    <BsXSquare size={18} color="#d81b60"/>}/>
 
                 <PropertyField name="Tags"
-                               content={Array.isArray(event?.tags?.values) && <TuiTags tags={event.tags.values} size="small"/>}
+                               content={Array.isArray(event?.tags?.values) &&
+                               <TuiTags tags={event.tags.values} size="small"/>}
                 />
                 {Array.isArray(event?.metadata?.processed_by?.rules) && <PropertyField name="Routed by rules"
-                               content={<TuiTags tags={event.metadata?.processed_by?.rules} size="small"/>}/>}
+                                                                                       content={<TuiTags
+                                                                                           tags={event.metadata?.processed_by?.rules}
+                                                                                           size="small"/>}/>}
+                {Array.isArray(event?.metadata?.processed_by?.flows) && <PropertyField
+                    name="Processed by flow"
+                    content={<TuiWorkflowTags tags={event.metadata?.processed_by?.flows} size="small" />}/>}
                 {metadata?.index && <PropertyField name="Index" content={metadata.index}/>}
 
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Properties"/>
-            {!isEmptyObjectOrNull(event?.properties) ? <TuiFormGroupContent><EventProperties/></TuiFormGroupContent> : <NoData header="No properties">
+            {!isEmptyObjectOrNull(event?.properties) ? <TuiFormGroupContent><EventProperties/></TuiFormGroupContent> :
+                <NoData header="No properties">
                     This event does not have any properties.
                 </NoData>}
         </TuiFormGroup>
