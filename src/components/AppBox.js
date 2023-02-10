@@ -115,8 +115,6 @@ const AppBox = () => {
                         new PrivateTab(["admin", "developer"],
                             <EventSources/>, "/inbound/sources", "Event Sources"),
                         new PrivateTab(["admin", "developer"],
-                            <EventManagement/>, "/inbound/event/management", "Event metadata"),
-                        new PrivateTab(["admin", "developer"],
                             <EventRedirect/>, "/inbound/event/redirect", <>
                                 <BsStar size={20} style={{marginRight: 5}}/>{"Event redirects"}
                             </>),
@@ -184,6 +182,9 @@ const AppBox = () => {
                 <Suspense fallback={<CenteredCircularProgress/>}>
                     <TopBar>Event Transformations</TopBar>
                     <PageTabs tabs={[
+                        new PrivateTab(["admin", "developer"],
+                            <EventManagement/>, "/inbound/event/management",  <><BsStar size={20} style={{marginRight: 5}}/>{"Event indexing"}</>
+                            ),
                         new PrivateTab(["admin", "developer"],
                             <EventReshaping/>, "/inbound/event/reshaping", <>
                                 <BsStar size={20} style={{marginRight: 5}}/>{"Event reshaping"}
