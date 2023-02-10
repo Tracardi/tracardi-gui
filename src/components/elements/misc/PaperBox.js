@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper";
 import React from "react";
 
 export default function PaperBox({children}) {
-    return  <Grid container xs={12} display="flex" justifyContent="center" alignItems="center" style={{height: "100%"}}>
+    return  <Grid container display="flex" justifyContent="center" alignItems="center" style={{height: "100%"}}>
         <Grid item xs={10} sm={8} md={7} lg={6} xl={5}>
             <Paper style={{
                 display: "flex",

@@ -1,6 +1,4 @@
 .SidebarRight {
-    grid-area: properties;
-    width: fit-content;
     padding: 0;
     height: calc(100% - 20px);
     display: flex;
@@ -12,4 +10,6 @@
     margin: 10px;
     border-radius: 15px;
     border: solid 2px #ccc;
+    z-index: 50;
+    position: relative;
 }

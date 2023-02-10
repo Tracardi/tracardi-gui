@@ -16,7 +16,6 @@ const Row = ({log}) => {
     const [showDetails, setShowDetails] = useState(false);
 
     const handleHide = () => {
-        console.log("sss")
         setShowDetails(!showDetails)
     }
 

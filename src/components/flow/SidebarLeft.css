@@ -30,9 +30,8 @@
 }
 
 .FlowEditor > .WorkArea .SidebarSection {
-    position: absolute;
     height: calc(100% - 20px);
-    width: 250px;
+    width: 300px;
     background: rgba(255,255,255,0.85);
     border-radius: 15px;
     margin: 10px;

@@ -1,6 +1,3 @@
-.FlowPane .react-flow {
-    height: inherit !important;
-}
 
 .FlowPane .react-flow .react-flow__edge-path {
     stroke-width: 2;

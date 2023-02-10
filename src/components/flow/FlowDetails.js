@@ -2,41 +2,56 @@ import FlowNode from "./FlowNode";
 import FlowNodeWithEvents from "./FlowNodeWithEvents";
 import StartNode from "./StartNode";
 import CondNode from "./CondNode";
-import React, {Suspense, useEffect, useState} from "react";
+import React, {Suspense, useCallback, useEffect, useState} from "react";
 import {asyncRemote, getError} from "../../remote_api/entrypoint";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
-import {Background} from 'reactflow';
+import {Background, useEdgesState, useNodesState} from 'reactflow';
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 
+const nodeTypes = {
+    flowNode: FlowNode,
+    flowNodeWithEvents: FlowNodeWithEvents,
+    startNode: StartNode,
+    condNode: CondNode
+};
+
 const ReactFlow = React.lazy(() => import('reactflow'))
+
 
 export function FlowDisplay({showAlert, id}) {
 
-    const nodeTypes = {
-        flowNode: FlowNode,
-        flowNodeWithEvents: FlowNodeWithEvents,
-        startNode: StartNode,
-        condNode: CondNode
-    };
-
-    const [elements, setElements] = useState(null);
     const [flowLoading, setFlowLoading] = useState(false);
+    const [nodes, setNodes, handleNodesChange] = useNodesState([]);
+    const [edges, setEdges, handleEdgesChange] = useEdgesState([]);
+
+    const updateFlow = useCallback((data) => {
+        if (data) {
+            if (data?.flowGraph) {
+                setNodes(data.flowGraph.nodes)
+                setEdges(data.flowGraph.edges)
+            }
+        } else if (data === null) {
+            // Missing flow
+            if (showAlert) {
+                showAlert({message: "This workflow is missing", type: "warning", hideAfter: 2000});
+            } else {
+                alert("This workflow is missing")
+            }
+        }
+    }, [setNodes, setEdges, showAlert]);
 
     useEffect(() => {
         setFlowLoading(true);
         let isSubscribed = true;
-
         asyncRemote({
             url: "/flow/production/" + id,
         }).then(response => {
             if (response && isSubscribed === true) {
-                let flowGraph = []
                 if (response?.data?.flowGraph) {
-                    flowGraph = response?.data?.flowGraph.nodes.slice();
-                    flowGraph = flowGraph.concat(response?.data?.flowGraph.edges.slice())
+
+                    updateFlow(response?.data)
                 }
-                setElements(flowGraph);
             }
         }).catch(e => {
             if (e && isSubscribed === true) {
@@ -54,9 +69,10 @@ export function FlowDisplay({showAlert, id}) {
 
     return <div style={{flex: 1, height: "inherit"}}>
         {flowLoading && <CenteredCircularProgress/>}
-        {elements && <Suspense fallback={<CenteredCircularProgress/>}>
+        <Suspense fallback={<CenteredCircularProgress/>}>
             <ReactFlow
-                elements={elements}
+                nodes={nodes}
+                edges={edges}
                 zoomOnDoubleClick={false}
                 zoomOnScroll={false}
                 panOnScroll={true}
@@ -64,11 +80,11 @@ export function FlowDisplay({showAlert, id}) {
                 nodeTypes={nodeTypes}
                 nodesDraggable={false}
                 style={{background: "white"}}
-                defaultZoom={1}
+                defaultViewport={{ x: 100, y: 100, zoom: 1 }}
             >
                 <Background color="#555" gap={16}/>
             </ReactFlow>
-        </Suspense>}
+        </Suspense>
     </div>
 }
 

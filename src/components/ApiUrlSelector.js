@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {apiUrlStorage, asyncRemote} from "../remote_api/entrypoint";
+import {apiUrlStorage, asyncRemote, getError} from "../remote_api/entrypoint";
 import storageValue from "../misc/localStorageDriver";
 import {BsHddNetwork} from "react-icons/bs";
 import TuiApiUrlInput from "./elements/tui/TuiApiUrlInput";
@@ -7,8 +7,10 @@ import Button from "./elements/forms/Button";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
 import Grid from "@mui/material/Grid";
 import PaperBox from "./elements/misc/PaperBox";
+import {connect} from "react-redux";
+import {showAlert} from "../redux/reducers/alertSlice";
 
-const ApiUrlSelector = ({children}) => {
+const ApiUrlSelector = ({children, showAlert}) => {
 
     const [endpoint, setEndpoint] = useState(apiUrlStorage().read());
     const [progress, setProgress] = useState(false);
@@ -73,6 +75,9 @@ const ApiUrlSelector = ({children}) => {
                     setFailed(true);
                     setIsEndpointReachable(false);
                     setIsEndpointValid(false);
+                    const errors = getError(e)
+                    console.log(errors)
+                    showAlert({type: "error", message: errors[0].msg, hideAfter: 4000})
                 }
 
             }).finally(() => {
@@ -92,7 +97,7 @@ const ApiUrlSelector = ({children}) => {
                 <BsHddNetwork size={50} style={{color: "#666"}}/>
                 <h1 style={{fontWeight: 300}}>Select TRACARDI server</h1>
                 <p>Type or select TRACARDI API Url.</p>
-                <Grid container xs={12} display="flex" justifyContent="center">
+                <Grid container display="flex" justifyContent="center">
                     <Grid item xs={8}>
                         <div style={{
                             display: "flex",
@@ -125,4 +130,13 @@ const ApiUrlSelector = ({children}) => {
     return children;
 }
 
-export default ApiUrlSelector;
+const mapProps = (state) => {
+    return {
+        notification: state.notificationReducer,
+    }
+};
+
+export default connect(
+    mapProps,
+    {showAlert}
+)(ApiUrlSelector)

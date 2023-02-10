@@ -39,6 +39,8 @@ import urlPrefix from "../../misc/UrlPrefix";
 import EdgeDetails from "./EdgeDetails";
 import CondNode from "./CondNode";
 import {MdAdsClick} from "react-icons/md";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 
 const ReactFlow = React.lazy(() => import('reactflow'))
 
@@ -69,8 +71,8 @@ const DraftTag = () => {
 const StatusTag = ({modified, deployed}) => {
     return <div style={{
         position: "absolute",
-        top: 5,
-        right: 5,
+        top: 15,
+        right: 15,
         display: "flex",
     }}>
         {modified && <ModifiedTag/>}
@@ -492,16 +494,6 @@ export function FlowEditorPane(
         )
     }, [id, reactFlowInstance, setEdges, setNodes, showAlert])
 
-    // TODO I don't understand this function mean's what so let it alone
-    // const getElementsWithRunOnce = (elements) => {
-    //     return elements.reduce((results, element) => {
-    //         if (element?.data?.spec?.run_once?.enabled === true) {
-    //             results.push(element.id)
-    //         }
-    //         return results
-    //     }, [])
-    // }
-
     const onElementsRemove = () => {
         setDisplayElementDetails(false);
         handleUpdate();
@@ -519,7 +511,7 @@ export function FlowEditorPane(
 
             const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
             const position = reactFlowInstance.project({
-                x: event.clientX - reactFlowBounds.left,
+                x: event.clientX - reactFlowBounds.left - 300,
                 y: event.clientY - reactFlowBounds.top,
             });
 
@@ -563,7 +555,7 @@ export function FlowEditorPane(
         event.stopPropagation();
         selectNode(element);
         setDisplayNodeContextMenu(true);
-        setClientX(event?.clientX - 200);
+        setClientX(event?.clientX - 500);
         setClientY(event?.clientY - 50)
     }
 
@@ -638,101 +630,112 @@ export function FlowEditorPane(
                     <div className="FlowPane" ref={reactFlowWrapper}>
                         {flowLoading && <CenteredCircularProgress/>}
                         {!flowLoading && nodes && <Suspense fallback={<CenteredCircularProgress/>}>
-                            <ReactFlow
-                                style={{background: "white"}}
-                                snapGrid={snapGrid}
-                                snapToGrid={false}
-                                panOnScroll={true}
-                                zoomOnScroll={false}
-                                nodesDraggable={!locked}
-                                zoomOnDoubleClick={false}
-                                deleteKeyCode={["Delete"]}
-                                zoomActivationKeyCode={32}
-                                multiSelectionKeyCode={32}
-                                defaultViewport={{ x: 700, y: 100, zoom: 1 }}
-
-                                nodes={nodes}
-                                edges={edges}
-                                nodeTypes={nodeTypes}
-                                edgeTypes={edgeTypes}
-
-                                onInit={onInit}
-                                onDrop={onDrop}
-                                onConnect={onConnect}
-                                onDragOver={onDragOver}
-                                onPaneClick={onPaneClick}
-                                onNodeClick={onNodeClick}
-                                onNodesChange={handleNodesChange}
-                                onEdgesChange={handleEdgesChange}
-                                onNodeContextMenu={onNodeContextMenu}
-                                onEdgeContextMenu={onEdgeContextMenu}
-                                onNodeDoubleClick={onElementDoubleClick}
-                                onEdgeDoubleClick={onElementDoubleClick}
-                                onNodesDelete={onElementsRemove}
-                                onEdgesDelete={onElementsRemove}
-                                // onSelectionChange={onSelectionChange}
-                            >
+                            <div style={{display: "flex", width: "100%", height: "100%"}}>
                                 <SidebarLeft onDebug={handleDebug}
                                              debugInProgress={debugInProgress}
                                              flowType={flowMetaData?.type}
                                 />
+                                <div style={{width: "100%"}}>
+                                    <ReactFlow
+                                        style={{background: "white"}}
+                                        snapGrid={snapGrid}
+                                        snapToGrid={false}
+                                        panOnScroll={true}
+                                        zoomOnScroll={false}
+                                        nodesDraggable={!locked}
+                                        zoomOnDoubleClick={false}
+                                        deleteKeyCode={["Delete"]}
+                                        zoomActivationKeyCode={32}
+                                        multiSelectionKeyCode={32}
+                                        defaultViewport={{x: 100, y: 100, zoom: 1}}
 
-                                {displayNodeContextMenu && <div className="NodeContextForm"
-                                                                style={{
-                                                                    left: clientX,
-                                                                    top: clientY
-                                                                }}
-                                >
-                                    <aside>v.{currentNode?.data?.spec?.version}</aside>
-                                    {currentNode?.data?.metadata?.desc}
-                                    <div style={{marginTop: 10}}>To <u>delete a node</u>: select the node and press
-                                        <span className="keyButton">DELETE</span>
-                                        key.</div>
-                                    <div>To <u>open node properties</u>: <MdAdsClick size={18}/>double click on the node.</div>
-                                    <div>To <u>select multiple nodes</u>: press <span className="keyButton">SHIFT</span> and
-                                        drag you mouse and make a rectangular selecting the nodes you want.</div>
-                                </div>}
+                                        nodes={nodes}
+                                        edges={edges}
+                                        nodeTypes={nodeTypes}
+                                        edgeTypes={edgeTypes}
 
-                                <WfSchema schema={schema}
-                                          style={{
-                                              position: "absolute",
-                                              color: "#555",
-                                              bottom: 17,
-                                              right: 5,
-                                              fontSize: "80%",
-                                              display: "flex",
-                                              alignItems: "center"
-                                          }}/>
+                                        onInit={onInit}
+                                        onDrop={onDrop}
+                                        onConnect={onConnect}
+                                        onDragOver={onDragOver}
+                                        onPaneClick={onPaneClick}
+                                        onNodeClick={onNodeClick}
+                                        onNodesChange={handleNodesChange}
+                                        onEdgesChange={handleEdgesChange}
+                                        onNodeContextMenu={onNodeContextMenu}
+                                        onEdgeContextMenu={onEdgeContextMenu}
+                                        onNodeDoubleClick={onElementDoubleClick}
+                                        onEdgeDoubleClick={onElementDoubleClick}
+                                        onNodesDelete={onElementsRemove}
+                                        onEdgesDelete={onElementsRemove}
+                                        // onSelectionChange={onSelectionChange}
+                                    >
+                                        {displayNodeContextMenu && <div className="NodeContextForm"
+                                                                        style={{
+                                                                            left: clientX,
+                                                                            top: clientY
+                                                                        }}
+                                        >
+                                            <aside>v.{currentNode?.data?.spec?.version}</aside>
+                                            {currentNode?.data?.metadata?.desc}
+                                            <div style={{marginTop: 10}}>To <u>delete a node</u>: select the node and press
+                                                <span className="keyButton">DELETE</span>
+                                                key.
+                                            </div>
+                                            <div>To <u>open node properties</u>: <MdAdsClick size={18}/>double click on the
+                                                node.
+                                            </div>
+                                            <div>To <u>select multiple nodes</u>: press <span
+                                                className="keyButton">SHIFT</span> and
+                                                drag you mouse and make a rectangular selecting the nodes you want.
+                                            </div>
+                                        </div>}
 
-                                <StatusTag modified={modified} deployed={deployed}/>
+                                        <WfSchema schema={schema}
+                                                  style={{
+                                                      position: "absolute",
+                                                      color: "#555",
+                                                      bottom: 17,
+                                                      right: 5,
+                                                      fontSize: "80%",
+                                                      display: "flex",
+                                                      alignItems: "center"
+                                                  }}/>
 
-                                <Background color="#444" gap={16}/>
-                            </ReactFlow>
+                                        <StatusTag modified={modified} deployed={deployed}/>
+
+                                        <Background color="#444" gap={16}/>
+                                    </ReactFlow>
+                                </div>
+                                <div style={{position: "absolute", right:10, height: "calc(100% - 100px)"}}>
+
+                                    {displayElementDetails && currentNode && <DetailsHandler element={currentNode}
+                                                                                             onEdgeRefresh={(edge) => {
+                                                                                                 if (edges) {
+                                                                                                     setRefreshEdgeId([edge.id, edge])
+                                                                                                 }
+                                                                                                 handleUpdate()
+                                                                                             }}
+                                                                                             onNodeRefresh={(node) => {
+                                                                                                 if (nodes) {
+                                                                                                     setRefreshNodeId([node.id, node])
+                                                                                                 }
+                                                                                                 handleUpdate()
+                                                                                             }}
+                                                                                             onNodeConfig={handleConfigSave}
+                                                                                             onNodeRuntimeConfig={handleRuntimeConfig}
+                                                                                             onMicroserviceChange={handleUpdate}
+                                    />}
+                                </div>
+                            </div>
                         </Suspense>}
                     </div>
 
-                    {displayElementDetails && currentNode && <DetailsHandler element={currentNode}
-                                                                             onEdgeRefresh={(edge) => {
-                                                                                 if (edges) {
-                                                                                     setRefreshEdgeId([edge.id, edge])
-                                                                                 }
-                                                                                 handleUpdate()
-                                                                             }}
-                                                                             onNodeRefresh={(node) => {
-                                                                                 if (nodes) {
-                                                                                     setRefreshNodeId([node.id, node])
-                                                                                 }
-                                                                                 handleUpdate()
-                                                                             }}
-                                                                             onNodeConfig={handleConfigSave}
-                                                                             onNodeRuntimeConfig={handleRuntimeConfig}
-                                                                             onMicroserviceChange={handleUpdate}
-                    />}
 
                     {displayDebugPane && <MemoDebugPane onDebug={handleDebug}
-                        profilingData={profilingData}
-                        logs={logs}
-                        onDetails={onConnectionDetails}
+                                                        profilingData={profilingData}
+                                                        logs={logs}
+                                                        onDetails={onConnectionDetails}
                     />}
 
                 </div>
