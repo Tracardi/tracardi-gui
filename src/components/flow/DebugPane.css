@@ -10,7 +10,6 @@
     animation-iteration-count: 1;
     animation-timing-function: ease-out;
     animation-duration: .3s;
-    z-index: 60;
 }
 
 .DebugPane .ResizeHorizontalHandler {
