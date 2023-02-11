@@ -15,6 +15,7 @@ import NodeMicroserviceForm from "./NodeMicroserviceForm";
 import MdManual from "./actions/MdManual";
 import NodeLogDetails from "../elements/details/NodeLogDetails";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
+import Drawer from "@mui/material/Drawer";
 
 export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicroserviceChange}) {
 
@@ -46,11 +47,11 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
         <div style={{
             display: "flex",
             flexDirection: "row",
-            width: (displayManual && node?.data?.spec?.manual) ? 1300 : 640,
+            width: 640,
             height: "100%"
         }}>
             <div className="NodeDetails">
-                <div className="NodeDetailsIcons" style={{width: 60}}>
+                <div className="NodeDetailsIcons" style={{width: 60, overflow: "auto"}}>
                     <div>
                         <IconButton label="Info" onClick={() => setTab(0)} selected={tab === 0} size="large">
                             <BsInfoCircle size={22}/>
@@ -164,17 +165,30 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
 
                     </div>
                 </div>
-                {node?.data?.spec?.manual && displayManual &&
-                <div style={{
-                    width: 660,
-                    backgroundColor: "aliceblue",
-                    borderLeft: "solid 1px #ccc",
-                    borderRight: "solid 1px #ccc",
-                    height: "100%",
-                    borderRadius: "0 15px 15px 0"
-                }}>
-                    <MdManual mdFile={node?.data?.spec?.manual} style={{padding: 20}}/>
-                </div>}
+                <Drawer
+                    PaperProps={{
+                        sx: {
+                            borderRadius: "15px",
+                            margin: "10px",
+                            height: "calc(100% - 20px)",
+                            backgroundColor: "aliceblue",
+                            boxShadow: "0px 0px 14px -6px rgba(66, 68, 90, 1)"
+                        }
+                    }}
+                    hideBackDrop={true}
+                    anchor="left"
+                    variant="persistent"
+                    open={node?.data?.spec?.manual && displayManual}
+                    onClose={()=>setDisplayManual(false)}
+                    >
+                    {node?.data?.spec?.manual && displayManual &&
+
+                        <div style={{width: 660}}>
+                            <MdManual mdFile={node?.data?.spec?.manual} style={{padding: 20}}/>
+                        </div>
+                    }
+                </Drawer>
+
             </div>
         </div>
 

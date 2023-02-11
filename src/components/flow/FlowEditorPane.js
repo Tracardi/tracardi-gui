@@ -631,11 +631,17 @@ export function FlowEditorPane(
                         {flowLoading && <CenteredCircularProgress/>}
                         {!flowLoading && nodes && <Suspense fallback={<CenteredCircularProgress/>}>
                             <div style={{display: "flex", width: "100%", height: "100%"}}>
-                                <SidebarLeft onDebug={handleDebug}
-                                             debugInProgress={debugInProgress}
-                                             flowType={flowMetaData?.type}
-                                />
-                                <div style={{width: "100%"}}>
+                                <div style={{
+                                    width: "322px",
+                                    height: "100%",
+                                    flex: "0 0 322px"
+                                }}>
+                                    <SidebarLeft onDebug={handleDebug}
+                                                 debugInProgress={debugInProgress}
+                                                 flowType={flowMetaData?.type}
+                                    />
+                                </div>
+                                <div style={{width: "100%", flex: 1}}>
                                     <ReactFlow
                                         style={{background: "white"}}
                                         snapGrid={snapGrid}
@@ -707,26 +713,29 @@ export function FlowEditorPane(
                                         <Background color="#444" gap={16}/>
                                     </ReactFlow>
                                 </div>
-                                <div style={{position: "absolute", right:10, height: "calc(100% - 100px)"}}>
-
-                                    {displayElementDetails && currentNode && <DetailsHandler element={currentNode}
-                                                                                             onEdgeRefresh={(edge) => {
-                                                                                                 if (edges) {
-                                                                                                     setRefreshEdgeId([edge.id, edge])
-                                                                                                 }
-                                                                                                 handleUpdate()
-                                                                                             }}
-                                                                                             onNodeRefresh={(node) => {
-                                                                                                 if (nodes) {
-                                                                                                     setRefreshNodeId([node.id, node])
-                                                                                                 }
-                                                                                                 handleUpdate()
-                                                                                             }}
-                                                                                             onNodeConfig={handleConfigSave}
-                                                                                             onNodeRuntimeConfig={handleRuntimeConfig}
-                                                                                             onMicroserviceChange={handleUpdate}
-                                    />}
-                                </div>
+                                {displayElementDetails && currentNode && <div style={{
+                                    width: "664px",
+                                    height: "100%",
+                                    flex: "0 0 664px"
+                                }}>
+                                    <DetailsHandler element={currentNode}
+                                                    onEdgeRefresh={(edge) => {
+                                                        if (edges) {
+                                                            setRefreshEdgeId([edge.id, edge])
+                                                        }
+                                                        handleUpdate()
+                                                    }}
+                                                    onNodeRefresh={(node) => {
+                                                        if (nodes) {
+                                                            setRefreshNodeId([node.id, node])
+                                                        }
+                                                        handleUpdate()
+                                                    }}
+                                                    onNodeConfig={handleConfigSave}
+                                                    onNodeRuntimeConfig={handleRuntimeConfig}
+                                                    onMicroserviceChange={handleUpdate}
+                                    />
+                                </div>}
                             </div>
                         </Suspense>}
                     </div>

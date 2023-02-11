@@ -8,12 +8,16 @@ export default function FormDrawer(
         open,
         onClose,
         children,
-        anchor="right"
+        anchor="right",
+        backdrop=true,
+        variant="temporary"
     }) {
 
     return <Drawer anchor={anchor}
+                   hideBackdrop={!backdrop}
                    open={open}
                    onClose={onClose}
+                   variant={variant}
                    PaperProps={{
                        sx: {
                            borderRadius: "15px",
