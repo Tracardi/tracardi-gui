@@ -78,7 +78,7 @@ export default function IdentificationPoint() {
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}
-        buttomLabel="New identification"
+        buttonLabel="New identification"
         buttonIcon={<FlowNodeIcons icon="identity"/>}
         drawerDetailsWidth={850}
         detailsFunc={detailsFunc}

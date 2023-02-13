@@ -78,7 +78,7 @@ export default function Scheduler() {
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}
-        buttomLabel="New schedule"
+        buttonLabel="New schedule"
         buttonIcon={<FlowNodeIcons icon="calendar"/>}
         drawerDetailsWidth={800}
         drawerAddTitle="New schedule"

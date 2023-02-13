@@ -81,7 +81,7 @@ export default function  ConsentsDataCompliance() {
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}
-        buttomLabel="New compliance"
+        buttonLabel="New compliance"
         buttonIcon={<VscLaw size={20}/>}
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
