@@ -23,7 +23,7 @@ export default function ProfileCardInfo({profile}) {
             value={profile.id}/>}
         />}
         <PropertyField labelWidth={labelWidth} name="First seen" content={<DateValue date={profile.metadata?.time?.insert}/>}/>
-        <PropertyField labelWidth={labelWidth} name="Last seen" content={<>
+        <PropertyField labelWidth={labelWidth} name="Session start" content={<>
             <DateValue date={profile?.metadata?.time?.visit?.current}/>
             {profile?.metadata?.time?.visit?.tz && <IconLabel
                 value={profile?.metadata.time.visit.tz}

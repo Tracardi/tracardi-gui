@@ -14,7 +14,6 @@ import {profileName} from "../../../misc/formaters";
 import IconLabel from "../misc/IconLabels/IconLabel";
 import {BsGlobe} from "react-icons/bs";
 import {VscLaw} from "react-icons/vsc";
-import {ProfileDetailsById} from "./ProfileDetails";
 
 export const ProfileData = ({profile}) => {
 
@@ -60,7 +59,8 @@ export const ProfileData = ({profile}) => {
                                                                      profileLess={profile === null}/>}/>
                 {profile?.metadata?.time?.insert &&
                 <PropertyField name="Created" content={<DateValue date={profile?.metadata.time.insert}/>}/>}
-                <PropertyField name="Visits" content={profile.metadata.time.visit.count}/>
+                <PropertyField name="Updated" content={<DateValue date={profile?.metadata?.aux?.update}/>}/>
+
                 {profile?.metadata?.time?.visit?.last &&
                 <PropertyField name="Previous visit" content={<DateValue date={profile?.metadata.time.visit.last}/>}/>}
                 {profile?.metadata?.time?.visit?.current &&
@@ -71,6 +71,7 @@ export const ProfileData = ({profile}) => {
                                                                           icon={<BsGlobe size={20}
                                                                                          style={{marginRight: 5}}/>}
                                                                       />}/>}
+                <PropertyField name="Visits" content={profile.metadata.time.visit.count}/>
                 {profile?.consents
                     && <PropertyField name="Consents"
                                      content={<div className="flexLine" style={{gap: 5}}>
