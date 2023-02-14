@@ -24,6 +24,10 @@ function getCookie(name) {
 }
 
 export const track = async (sourceId, eventType, properties) => {
+    let trackerUrl = "//track.tracardi.com"
+    if (process.env.NODE_ENV && process.env.NODE_ENV === 'development') {
+        trackerUrl = "//localhost:8686"
+    }
 
     const profile = new storageValue("tracardi-profile-id")
     const cookie = getCookie("tracardi-session-id")
@@ -60,7 +64,7 @@ export const track = async (sourceId, eventType, properties) => {
     }
 
     return axios({
-        baseURL: "//track.tracardi.com",
+        baseURL: trackerUrl,
         url: "/track",
         method: "post",
         data: payload,

@@ -29,7 +29,8 @@ export default function IdentificationPointForm({data: _data, onSubmit}) {
             fields:[ {event_property: {value:"", ref: true}, profile_trait: {value:"", ref: true}} ],
             settings: {
                 conflict_aux_field: "conflict"
-            }
+            },
+            enabled: false
         }
     }
 

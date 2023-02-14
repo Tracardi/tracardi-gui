@@ -6,8 +6,8 @@
         tracker: {
             url: {
                 // This is url to tracardi backend. Please mind the correct port.
-                script: 'http://localhost:80/tracker',
-                api: 'http://localhost:80'
+                script: '//localhost:8686/tracker',
+                api: '//localhost:8686'
             },
             source: {
                 id: "<paste-your-source-id>"

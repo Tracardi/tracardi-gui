@@ -4,8 +4,8 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
-import { makeStyles } from "tss-react/mui";
+import {ThemeProvider, StyledEngineProvider} from '@mui/material/styles';
+import {makeStyles} from "tss-react/mui";
 import {logout, setRoles, setToken} from "./login";
 import {loginUser} from "../../remote_api/user";
 import {signInTheme} from "../../themes";
@@ -88,7 +88,7 @@ const SignInForm = ({showAlert}) => {
         });
     }, [ver])
 
-    const { classes } = useStyles();
+    const {classes} = useStyles();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -115,15 +115,13 @@ const SignInForm = ({showAlert}) => {
 
     const handleSubmit = async (event) => {
 
-        if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'development') {
-            track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-login', {
-                email,
-                apiUrl,
-                platform: "Tracardi " + version(),
-                location: await getLocation()
-            }).then(() => {
-            })
-        }
+        track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-login', {
+            email,
+            apiUrl,
+            platform: "Tracardi " + version(),
+            location: await getLocation()
+        }).then(() => {
+        })
 
         const api = loginUser(email, password);
         setProgress(true);
@@ -133,19 +131,19 @@ const SignInForm = ({showAlert}) => {
             setStoredApiUrl(apiUrl);
             setRedirectToReferrer(true);
         }).catch(e => {
-                let message = e.message;
-                if (typeof e.response == "undefined") {
-                    message = 'Api unavailable.';
-                } else if (e.response.status === 422) {
-                    message = 'Bad request. Fill all fields.';
-                } else if (typeof e.response.data['detail'] == "string") {
-                    message = e.response.data['detail']
-                }
-                showAlert({type: "error", message: message, hideAfter: 3000})
-            }).finally(()=>{
-                if(mounted.current === true) {
-                    setProgress(false)
-                }
+            let message = e.message;
+            if (typeof e.response == "undefined") {
+                message = 'Api unavailable.';
+            } else if (e.response.status === 422) {
+                message = 'Bad request. Fill all fields.';
+            } else if (typeof e.response.data['detail'] == "string") {
+                message = e.response.data['detail']
+            }
+            showAlert({type: "error", message: message, hideAfter: 3000})
+        }).finally(() => {
+            if (mounted.current === true) {
+                setProgress(false)
+            }
         });
         event.preventDefault();
     };
@@ -164,11 +162,12 @@ const SignInForm = ({showAlert}) => {
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={signInTheme}>
-                <Grid container xs={12} display="flex" justifyContent="center" alignItems="center" style={{height: "100%"}}>
-                    <Grid xs={10} sm={8} md={7} lg={6} xl={4}>
+                <Grid container xs={12} display="flex" justifyContent="center" alignItems="center"
+                      style={{height: "100%"}}>
+                    <Grid item xs={10} sm={8} md={7} lg={6} xl={4}>
                         <Paper className={classes.paper}>
 
-                            <BsShieldLock size={40} />
+                            <BsShieldLock size={40}/>
                             <div>
                                 <span style={{
                                     fontSize: "150%",
@@ -178,7 +177,6 @@ const SignInForm = ({showAlert}) => {
                                 }}>TRACARDI</span>
                                 <div style={{fontSize: 11, color: "gray", textAlign: "center"}}> v. {version()}</div>
                             </div>
-
 
 
                             {!loading && errorMessage ? (
