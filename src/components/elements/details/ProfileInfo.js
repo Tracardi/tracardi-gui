@@ -75,7 +75,10 @@ export const ProfileData = ({profile}) => {
                     && <PropertyField name="Consents"
                                      content={<div className="flexLine" style={{gap: 5}}>
                                          <IconLabel
-                                             value={isNotEmptyArray(profile?.consents) ? <TuiTags tags={profile?.consents}/> : "None granted"}
+                                             value={isEmptyObjectOrNull(profile?.consents) ? "None granted" : <TuiTags
+                                                 size="small"
+                                                 style={{marginRight: 2}}
+                                                 tags={Object.getOwnPropertyNames(profile?.consents)}/> }
                                              icon={<VscLaw size={20} style={{marginRight: 5}}/>}/>
                                      </div>}/>}
 
