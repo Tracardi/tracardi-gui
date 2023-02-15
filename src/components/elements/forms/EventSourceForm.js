@@ -272,11 +272,8 @@ const EventSourceForm = ({value, style, onClose}) => {
 
     const config = useRef(value.config)
     const metadata = useRef({
-        id: (!value.id) ? uuid4() : value.id,
-        name: value.name,
-        description: value.description,
-        groups: value.groups,
-        tags: value.tags
+        ...value,
+        id: (!value.id) ? uuid4() : value.id
     })
     const advanced = useRef({
         enabled: value.enabled,
