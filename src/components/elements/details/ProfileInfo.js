@@ -71,7 +71,7 @@ export const ProfileData = ({profile}) => {
                                                                           icon={<BsGlobe size={20}
                                                                                          style={{marginRight: 5}}/>}
                                                                       />}/>}
-                <PropertyField name="Visits" content={profile.metadata.time.visit.count}/>
+                <PropertyField name="Visits" content={profile?.metadata?.time?.visit?.count}/>
                 {profile?.consents
                     && <PropertyField name="Consents"
                                      content={<div className="flexLine" style={{gap: 5}}>
