@@ -1,9 +1,9 @@
 import {getError, asyncRemote} from "./entrypoint";
 
-export const request = ({url, header, method, data}, setLoading, setError, setReady, setDefaultValues=true) => {
+export const request = ({url, headers, method, data}, setLoading, setError, setReady, setDefaultValues=true) => {
 
-    if(typeof header == "undefined") {
-        header = {"Content-Type":'application/json'};
+    if(typeof headers == "undefined") {
+        headers = {"Content-Type":'application/json'};
     }
 
     if(typeof method == "undefined") {
@@ -14,7 +14,7 @@ export const request = ({url, header, method, data}, setLoading, setError, setRe
         asyncRemote({
             url,
             method,
-            header,
+            headers,
             data
         }).then(response => {
             setLoading(false);

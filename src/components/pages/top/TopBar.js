@@ -4,11 +4,14 @@ import {getApiUrl, resetApiUrlConfig} from "../../../remote_api/entrypoint";
 import {track} from "../../../remote_api/track";
 import version from "../../../misc/version";
 import NeedHelpButton from "../../elements/misc/NeedHelpButton";
-import React from "react";
+import React, {useContext} from "react";
 import {logout} from "../../authentication/login";
 import "./TopBar.css";
+import {DataContext} from "../../AppBox";
 
 export default function TopBar({children}) {
+
+    const production = useContext(DataContext)
 
     const handleEndpointReset = () => {
         resetApiUrlConfig();
@@ -16,7 +19,15 @@ export default function TopBar({children}) {
         window.location.reload()
     }
 
-    return <div className="TopBar">
+    let style = {}
+
+    if(production) {
+        style = {
+            backgroundColor: "#ffebee"
+        }
+    }
+
+    return <div className="TopBar" style={style}>
         <h1 className="Title">{children}</h1>
         <span className="Info">
                 <SponsorButton/>

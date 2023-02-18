@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "./MainMenu.css";
 import {BsBarChartFill, BsFolder, BsGear} from "react-icons/bs";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -19,10 +19,13 @@ import {changeRoute} from "../../redux/reducers/appSlice"
 import FlowNodeIcons from "../flow/FlowNodeIcons";
 import ServerContext from "../context/ServerContext";
 import {Restrict} from "../authentication/Restrict";
-import storageValue from "../../misc/localStorageDriver";
+import {DataContext} from "../AppBox";
+import {getDataContextHeader} from "../../config";
 
 
-function MainMenu({app, showAlert, changeRoute}) {
+function MainMenu({app, showAlert, changeRoute, onContextChange}) {
+
+    const production = useContext(DataContext)
 
     const [collapsed, setCollapsed] = useState(false);
     const confirm = useConfirm()
@@ -72,7 +75,7 @@ function MainMenu({app, showAlert, changeRoute}) {
                 <b>Frontend Version:</b> {version()}<br/>
                 <b>Backend Version: </b> {response?.data?.version}.{response?.data?.name}<br/>
                 <b>API context: </b> {response?.data?.production ? "production": "staging"}<br/>
-                <b>GUI context: </b> {new storageValue('.tr-srv-context').read('unknown')}<br/><br />
+                <b>GUI context: </b> {getDataContextHeader("unknown")}<br/><br />
                 <b>Owner: </b> {response?.data?.owner}<br/>
                 <b>Licenses: </b>{response?.data?.licenses.join(", ")}<br/>
                 <b>Expires: </b>{response?.data?.expires}<br/><br />
@@ -95,13 +98,18 @@ function MainMenu({app, showAlert, changeRoute}) {
         return <div className="Branding">
                 <div className="Tracardi" onClick={handleVersionWindow}>TRACARDI</div>
                 <div className="Version">v. {version()} <Restrict roles={['admin']}>
-                    <ServerContext style={{marginLeft: 5}}/>
+                    <ServerContext style={{marginLeft: 5}} onContextChange={onContextChange}/>
                 </Restrict>
                 </div>
             </div>
     }
 
-    return <div className={collapsed ? "MainMenu CollapsedMainMenu": "MainMenu FullMainMenu"}>
+    let style = {}
+    if(production) {
+        style = {backgroundColor: "#ad1457"}
+    }
+
+    return <div style={style} className={collapsed ? "MainMenu CollapsedMainMenu": "MainMenu FullMainMenu"}>
         <div>
             <Branding collapsed={collapsed}/>
             <div>
@@ -121,7 +129,7 @@ function MainMenu({app, showAlert, changeRoute}) {
 
                 {!window?.CONFIG?.menu?.resources?.disable && <MenuRow icon={<IoServerOutline size={20}/>} label="Resources" collapsed={collapsed} onClick={go("/resources")} route="/resources" roles={["admin", "developer"]} style={{marginTop: 20}}/>}
 
-                {!window?.CONFIG?.menu?.test?.disable && <MenuRow icon={<BsClipboardCheck size={20}/>} label="Test" collapsed={collapsed} onClick={go("/testing")} route="/testing" roles={["admin", "developer"]} style={{marginTop: 20}}/>}
+                {!window?.CONFIG?.menu?.test?.disable && <MenuRow icon={<BsClipboardCheck size={20}/>} label="Test" collapsed={collapsed} onClick={go("/test/form")} route="/test/form" roles={["admin", "developer"]} style={{marginTop: 20}}/>}
 
 
             </div>

@@ -6,7 +6,8 @@ import {
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
     BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown,
-    BsFolderCheck, BsClock, BsBoxArrowRight, BsGithub, BsPersonX, BsClockHistory, BsListCheck
+    BsFolderCheck, BsClock, BsBoxArrowRight, BsGithub, BsPersonX, BsClockHistory, BsListCheck,
+    BsTag
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -266,7 +267,8 @@ export const icons = {
     "train": (size) => <RiTrainLine size={size}/>,
     "identity": (size) => <MdFingerprint size={size}/>,
     "wait": (size) => <BsClockHistory size={size}/>,
-    "list-check": (size) => <BsListCheck size={size}/>
+    "list-check": (size) => <BsListCheck size={size}/>,
+    "tag": (size) => <BsTag size={size}/>
 
 }
 

@@ -3,6 +3,7 @@ import {getToken, logout} from "../components/authentication/login";
 import storageValue from "../misc/localStorageDriver";
 import {isObject} from "../misc/typeChecking";
 import {objectMap} from "../misc/mappers";
+import {getDataContextHeader} from "../config";
 
 export const apiUrlStorage = () => {
     return new storageValue('tracardi-api-url')
@@ -40,10 +41,17 @@ export const asyncRemote = async (config, token=null) => {
 
     }
 
+
     config.headers = {
         ...config?.headers,
-        'Authorization': token === null ? authToken() : authToken(token),
-        'X-Context': new storageValue('.tr-srv-context').read('staging')
+        'Authorization': token === null ? authToken() : authToken(token)
+    }
+
+    if (!('x-context' in config.headers)) {
+        config.headers = {
+            ...config?.headers,
+            'x-context': getDataContextHeader()
+        }
     }
 
     config.timeout = 1000 * 60

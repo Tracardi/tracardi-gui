@@ -1,33 +1,23 @@
-import storageValue from "../../misc/localStorageDriver";
-import React from "react";
-import {useNavigate} from "react-router-dom";
-import urlPrefix from "../../misc/UrlPrefix";
+import React, {useContext, useState} from "react";
+import {DataContext} from "../AppBox";
 
-const ServerContext = ({style}) => {
+const ServerContext = ({style, onContextChange}) => {
 
-    const navigate = useNavigate();
+    const context = useContext(DataContext)
+    const [production, setProduction] = useState(context)
 
-    const storage = new storageValue('.tr-srv-context')
-    const context = storage.read('staging')
 
-    const go = (url) => {
-        return navigate(urlPrefix(url));
-    }
-
-    function handleOnClick(production) {
-        if (production) {
-            storage.save('production')
-            go("/context/production")
-        } else {
-            storage.save('staging');
-            go("/context/staging")
+    function handleOnClick(value) {
+        setProduction(value)
+        if(onContextChange instanceof Function) {
+            onContextChange(value)
         }
 
     }
 
     function display() {
-        if (context === 'production') {
-            return <span className="Context" style={{backgroundColor: "#d81b60"}}
+        if (production) {
+            return <span className="Context" style={{backgroundColor: "white", color: "black"}}
                          onClick={() => handleOnClick(false)}>production</span>
         } else {
             return <span className="Context" style={{backgroundColor: "white", color: "black"}}
