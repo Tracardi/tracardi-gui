@@ -10,7 +10,8 @@ export const mainTheme = createTheme({
     },
     palette: {
         primary: {
-            main: '#1976d2',
+            main: '#1976d2',  // #1976d2
+            light: '#e1f5fe'  // e1f5fe
         },
         secondary: {
             main: '#EF6C00',
@@ -22,13 +23,19 @@ export const mainTheme = createTheme({
             main: "#43a047",
         },
         gray: {
-            main: "#ccc",
+            main: "#ccc"
         },
         background: {
-            default: '#ccc',
+            default: 'whitesmoke',  // whitesmoke
+            paper: "white" // white
         },
         text: {
-            primary: '#000'
+            primary: '#000',
+            secondary: '#444',
+        },
+        common: {
+            white: "white",
+            black: "black"
         }
     },
 });

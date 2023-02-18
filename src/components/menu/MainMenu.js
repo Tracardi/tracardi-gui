@@ -21,11 +21,13 @@ import ServerContext from "../context/ServerContext";
 import {Restrict} from "../authentication/Restrict";
 import {DataContext} from "../AppBox";
 import {getDataContextHeader} from "../../config";
+import useTheme from "@mui/material/styles/useTheme";
 
 
 function MainMenu({app, showAlert, changeRoute, onContextChange}) {
 
     const production = useContext(DataContext)
+    const theme = useTheme()
 
     const [collapsed, setCollapsed] = useState(false);
     const confirm = useConfirm()
@@ -106,7 +108,9 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
 
     let style = {}
     if(production) {
-        style = {backgroundColor: "#ad1457"}
+        style = {backgroundColor: "#ad1457", color: "white"}
+    } else {
+        style = {backgroundColor: theme.palette.primary.main, color: theme.palette.common.white}
     }
 
     return <div style={style} className={collapsed ? "MainMenu CollapsedMainMenu": "MainMenu FullMainMenu"}>

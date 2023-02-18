@@ -383,7 +383,6 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                 tabContentStyle={{overflow: "initial"}}
                 tabsStyle={{
                     display: "flex",
-                    backgroundColor: "white",
                     marginTop: 0,
                     marginBottom: 0,
                     position: "sticky",

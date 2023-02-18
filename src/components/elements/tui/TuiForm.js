@@ -1,8 +1,11 @@
 import React from "react";
 import "./TuiForm.css";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
+import useTheme from "@mui/material/styles/useTheme";
 
 export const TuiForm = ({children, className, style}) => {
+
+    const theme = useTheme()
 
     let baseClassName = ["TuiForm"]
 
@@ -14,6 +17,13 @@ export const TuiForm = ({children, className, style}) => {
     if(className) {
         baseClassName.push(className)
     }
+
+    style = {
+        ...style,
+        backgroundColor: theme.palette.background.paper,
+        color: theme.palette.common.black
+    }
+
     return <form className={baseClassName.join(" ")} style={style} onSubmit={onSubmit}>
         {children}
     </form>
@@ -41,11 +51,18 @@ export const TuiFormGroup = ({children, className, style, fitHeight=false}) => {
 
 export const TuiFormGroupHeader = ({className, style, header, description=null}) => {
 
+    const theme = useTheme()
+
     let baseClassName = ["TuiFormGroupHeader"]
 
     if(className) {
         baseClassName.push(className)
     }
+
+    style = {
+        ...style, backgroundColor: theme.palette.grey["150"]
+    }
+
     return <div className={baseClassName.join(" ")} style={style}>
         <h2>{header}</h2>
         {description && <p>{description}</p>}

@@ -351,9 +351,7 @@ const AppBox = () => {
                 <TopBar>Testing</TopBar>
                 <PageTabs tabs={[
                     new PrivateTab(["admin", "developer"],
-                        <div style={{padding: "0 10px 0 10px"}}><TestEditor/></div>, "/test/form", "Event testing"),
-                    new PrivateTab(["admin", "marketer", "developer"],
-                        <EventsAnalytics displayChart={false} context="staging"/>, "/test/data/events", "Test Data"),
+                        <div style={{padding: "0 10px 0 10px"}}><TestEditor/></div>, "/test/form", "Event testing")
                 ]}
                 />
             </PrivateRoute>

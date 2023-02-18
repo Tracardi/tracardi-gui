@@ -5,10 +5,13 @@ import {BiPhoneCall} from "react-icons/bi";
 import {FaBirthdayCake, FaFacebookSquare} from "react-icons/fa";
 import {VscTwitter, VscPerson} from "react-icons/vsc";
 import {FaWhatsapp} from "react-icons/fa";
+import useTheme from "@mui/material/styles/useTheme";
 
 const PiiDetails = ({data}) => {
+    const theme = useTheme()
+    const style = {backgroundColor: theme.palette.primary.light}
 
-    return <div className="PiiDetails">
+    return <div className="PiiDetails" style={style}>
         <div className="PiiBox">
             <div className="PiiNameSurname">
                 <div className="PiiIcon">

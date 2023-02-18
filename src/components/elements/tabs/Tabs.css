@@ -24,10 +24,6 @@
     text-transform: uppercase;
 }
 
-.Tabs > .Navigation > .Selected {
-    border-bottom: solid 3px rgb(0, 105, 192);
-}
-
 .Tabs .TabContent {
     height: inherit;
     flex: 1;

@@ -8,10 +8,12 @@ import React, {useContext} from "react";
 import {logout} from "../../authentication/login";
 import "./TopBar.css";
 import {DataContext} from "../../AppBox";
+import useTheme from "@mui/material/styles/useTheme";
 
 export default function TopBar({children}) {
 
     const production = useContext(DataContext)
+    const theme = useTheme();
 
     const handleEndpointReset = () => {
         resetApiUrlConfig();
@@ -23,7 +25,13 @@ export default function TopBar({children}) {
 
     if(production) {
         style = {
-            backgroundColor: "#ffebee"
+            backgroundColor: "#ffebee",
+            color: "white"
+        }
+    } else {
+        style = {
+            backgroundColor: theme.palette.primary.light,
+            color: theme.palette.common.black
         }
     }
 

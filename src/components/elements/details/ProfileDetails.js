@@ -16,15 +16,17 @@ import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
+import useTheme from "@mui/material/styles/useTheme";
 
 export default function ProfileDetails({profile}) {
+    const theme = useTheme()
 
     const displayPii = window?.CONFIG?.profile?.display?.details?.pii
 
     return <div style={{height: "inherit", display: "flex", flexDirection: "column"}}>
         {displayPii &&  <PiiDetails data={profile}/>}
         <div className="RightTabScroller">
-            <Tabs tabs={["Personal data & Traits", "Sessions & Events", "Segments", "Logs", "Raw"]} tabsStyle={{backgroundColor: "#e1f5fe"}}>
+            <Tabs tabs={["Personal data & Traits", "Sessions & Events", "Segments", "Logs", "Raw"]} tabsStyle={{backgroundColor: theme.palette.primary.light}}>
                 <TabCase id={0}>
                     <ProfileData profile={profile}/>
                 </TabCase>

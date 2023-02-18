@@ -2,15 +2,22 @@ import React, {useState} from "react";
 import Tabs, {TabCase} from "../../elements/tabs/Tabs";
 import "./PageTabs.css";
 import PrivateTab from "../../authentication/PrivateTab";
+import useTheme from "@mui/material/styles/useTheme";
 
 export default function PageTabs({tabs = {}}) {
 
     const filteredTabs = tabs.filter((tab) => tab instanceof PrivateTab && tab.isAuth())
+    const theme = useTheme()
 
     const [tab, setTab] = useState(0);
     let i = -1;
 
-    return <div className="PageTabs">
+    const style = {
+        backgroundColor: theme.palette.background.paper,
+        color: theme.palette.common.black
+    }
+
+    return <div className="PageTabs" style={style}>
         <Tabs
             className="TabNav"
             tabs={filteredTabs.map(tab => tab.label)}

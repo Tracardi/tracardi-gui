@@ -1,8 +1,6 @@
 .MainMenu {
     display: flex;
     flex-direction: column;
-    color: white;
-    background: #1976d2;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;

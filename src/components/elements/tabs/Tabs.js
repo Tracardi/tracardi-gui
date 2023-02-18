@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import "./Tabs.css";
 import PropTypes from 'prop-types';
+import useTheme from "@mui/material/styles/useTheme";
 
 export function TabCases({children, tabId}) {
     return React.Children.map(children,
@@ -27,6 +28,7 @@ TabCase.propTypes = {
 
 export default function Tabs({tabs, children, defaultTab = 0, onTabSelect, className, tabStyle, tabsStyle, tabContentStyle}) {
 
+    const theme = useTheme()
     const [tabId, setTabId] = useState((defaultTab) ? defaultTab : 0);
 
     useEffect(() => {
@@ -41,7 +43,12 @@ export default function Tabs({tabs, children, defaultTab = 0, onTabSelect, class
     }
 
     function Tab({label, index, selected, style}) {
-        return <span className={(selected) ? "Tab Selected" : "Tab"}
+
+        if(selected) {
+            style = {...style, borderBottom: `solid 3px ${theme.palette.primary.main}`}
+        }
+
+        return <span className={"Tab"}
                      style={style}
                      onClick={() => onTabClick(index)}>{label}</span>
     }

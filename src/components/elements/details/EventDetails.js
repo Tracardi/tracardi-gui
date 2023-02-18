@@ -33,7 +33,6 @@ export default function EventDetails({event, metadata}) {
                 margin: 20,
                 display: "flex",
                 flexDirection: "row",
-                backgroundColor: "white",
                 marginTop: 0,
                 marginBottom: 0,
                 position: "sticky",
