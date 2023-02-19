@@ -175,7 +175,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                             boxShadow: "0px 0px 14px -6px rgba(66, 68, 90, 1)"
                         }
                     }}
-                    hideBackDrop={true}
+                    hideBackdrop={true}
                     anchor="left"
                     variant="persistent"
                     open={node?.data?.spec?.manual && displayManual}
