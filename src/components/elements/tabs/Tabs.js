@@ -61,7 +61,7 @@ export default function Tabs({tabs, children, defaultTab = 0, onTabSelect, class
     }
 
     return <section className="Tabs">
-        <nav className={css()} style={tabsStyle}>
+        <nav className={css()} style={{...tabStyle, backgroundColor: theme.palette.common.white}}>
             {tabs.map((label, key) => {
                     if (tabId === key) {
                         return <Tab label={label}

@@ -50,8 +50,8 @@ export const productionTheme = createTheme({
     },
     palette: {
         primary: {
-            main: 'rgb(173, 20, 87)',  // #1976d2
-            light: 'rgb(255, 235, 238)'  // e1f5fe
+            main: '#ad1457',  // #1976d2
+            light: '#f3e5f5'  // e1f5fe
         },
         secondary: {
             main: '#EF6C00',

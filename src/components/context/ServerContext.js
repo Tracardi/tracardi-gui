@@ -21,7 +21,7 @@ const ServerContext = ({style, onContextChange}) => {
                          onClick={() => handleOnClick(false)}>production</span>
         } else {
             return <span className="Context" style={{backgroundColor: "white", color: "black"}}
-                         onClick={() => handleOnClick(true)}>staging</span>
+                         onClick={() => handleOnClick(true)}>development</span>
         }
     }
 

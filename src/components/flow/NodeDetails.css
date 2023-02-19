@@ -31,7 +31,7 @@
     justify-content: space-between;
     padding: 13px;
     color: #444;
-    background-color: whitesmoke;
+    background-color: white;
     height: 70px;
     border-bottom: solid 1px #ccc;
     z-index: 2;
@@ -39,9 +39,9 @@
 }
 
 .NodeDetails:hover {
-    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.28);
-    -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.28);
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.28);
+    -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,0.28);
+    -moz-box-shadow: 0 0 10px 0 rgba(0,0,0,0.28);
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.28);
 }
 
 .NodeDetails > .NodeDetailsContent > .Title> SPAN {

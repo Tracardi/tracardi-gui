@@ -108,6 +108,17 @@
   }
 }
 
+@keyframes moveDownAndOpacity {
+  0% {
+    opacity: .3;
+    transform: translateY(-10%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
 @keyframes moveLeftAndOpacity {
   0% {
     opacity: .1;

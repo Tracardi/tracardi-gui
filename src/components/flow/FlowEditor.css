@@ -61,6 +61,7 @@
     width: inherit;
     height: inherit;
     grid-area: editor;
+    overflow: hidden;
 }
 
 .FlowEditor .NodeContextForm {

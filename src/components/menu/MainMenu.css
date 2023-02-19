@@ -9,12 +9,11 @@
     user-select: none;
     padding: 5px;
     justify-content: space-between;
-
+    overflow-y: auto;
 }
 
 .FullMainMenu {
-    min-width: 200px;
-    max-width: 240px;
+    width: 220px;
     border-radius: 15px;
 }
 

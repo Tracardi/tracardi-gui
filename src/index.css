@@ -20,7 +20,7 @@ html * {
   scrollbar-color: #666 transparent;
 }
 html *::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 html *::-webkit-scrollbar-track {
   background-color: rgb(235, 235, 235);
@@ -28,7 +28,7 @@ html *::-webkit-scrollbar-track {
 }
 html *::-webkit-scrollbar-thumb {
   border-radius: 3px;
-  background: #006db3; 
+  background: #888;
 }
 html *::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(0, 109, 179, 20%); 
