@@ -13,6 +13,7 @@
 }
 
 .FullMainMenu {
+    min-width: 200px;
     width: 220px;
     border-radius: 15px;
 }
@@ -54,7 +55,7 @@
     height: 40px;
     font-size: 175%;
     background-color: whitesmoke;
-    color: #004A98;
+    color: #000;
     font-weight: 600;
     justify-content: center;
     border-radius: 6px;
