@@ -75,7 +75,7 @@ const getConfig = () => {
                 disable: true
             },
             transformations: {
-                name: "Transformations",
+                name: "Collection",
                 disable: false
             },
             identification: {

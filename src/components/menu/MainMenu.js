@@ -116,11 +116,11 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
 
                 {!window?.CONFIG?.menu?.inbound?.disable && <MenuRow icon={<BsBoxArrowInRight size={20}/>} label="Inbound Traffic" collapsed={collapsed} onClick={go("/inbound")} route="/inbound" roles={["admin", "developer"]}/>}
                 {!window?.CONFIG?.menu?.triggers?.disable && <MenuRow icon={<BsGear size={20}/>} label="Triggers" collapsed={collapsed} onClick={go("/triggers")} route="/triggers" roles={["admin", "developer"]}/>}
-                {!window?.CONFIG?.menu?.transformations?.disable && <MenuRow icon={<FlowNodeIcons icon="map-properties"  size={20}/>} label="Transformations" collapsed={collapsed} onClick={go("/transformations")} route="/transformations" roles={["admin", "developer"]}/>}
+                {!window?.CONFIG?.menu?.transformations?.disable && <MenuRow icon={<FlowNodeIcons icon="map-properties"  size={20}/>} label="Collection" collapsed={collapsed} onClick={go("/transformations")} route="/transformations" roles={["admin", "developer"]}/>}
                 {!window?.CONFIG?.menu?.identification?.disable && <MenuRow icon={<FlowNodeIcons icon="identity"  size={20}/>} label="Identification" collapsed={collapsed} onClick={go("/identification")} route="/identification" roles={["admin", "developer"]}/>}
 
                 {!window?.CONFIG?.menu?.data?.disable && <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")} route="/data" roles={["admin", "developer", "marketer"]}/>}
-                {!window?.CONFIG?.menu?.integration?.disable && <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Integration" collapsed={collapsed} onClick={go("/processing")} route="/processing" roles={["admin", "developer"]}/>}
+                {!window?.CONFIG?.menu?.integration?.disable && <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Processing" collapsed={collapsed} onClick={go("/processing")} route="/processing" roles={["admin", "developer"]}/>}
                 {!window?.CONFIG?.menu?.segmentation?.disable && <MenuRow icon={<VscOrganization size={20}/>} label="Segmentation" collapsed={collapsed} onClick={go("/segmentation")} route="/segmentation" roles={["admin", "developer", "marketer"]}/>}
 
                 {!window?.CONFIG?.menu?.reporting?.disable && <MenuRow icon={<BsBarChartFill size={20}/>} label="Reporting" collapsed={collapsed} onClick={go("/reporting")} route="/reporting" roles={["admin", "developer", "marketer"]}/>}

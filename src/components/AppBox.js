@@ -185,16 +185,16 @@ const AppBox = () => {
             <PrivateRoute path={urlPrefix("/transformations")} roles={["admin", "developer"]}>
                 <ErrorBoundary>
                     <Suspense fallback={<CenteredCircularProgress/>}>
-                        <TopBar>Event Transformations</TopBar>
+                        <TopBar>Event Collection and Transformation</TopBar>
                         <PageTabs tabs={[
-                            new PrivateTab(["admin", "developer"],
-                                <EventManagement/>, "/inbound/event/management", <><BsStar size={20}
-                                                                                           style={{marginRight: 5}}/>{"Event indexing"}</>
-                            ),
                             new PrivateTab(["admin", "developer"],
                                 <EventReshaping/>, "/inbound/event/reshaping", <>
                                     <BsStar size={20} style={{marginRight: 5}}/>{"Event reshaping"}
                                 </>),
+                            new PrivateTab(["admin", "developer"],
+                                <EventManagement/>, "/inbound/event/management", <><BsStar size={20}
+                                                                                           style={{marginRight: 5}}/>{"Event indexing"}</>
+                            ),
                         ]}
                         />
                     </Suspense>
@@ -252,11 +252,11 @@ const AppBox = () => {
             <PrivateRoute path={urlPrefix("/processing")} roles={["admin", "developer"]}>
                 <ErrorBoundary>
                     <Suspense fallback={<CenteredCircularProgress/>}>
-                        <TopBar>Data Collection and Integration</TopBar>
+                        <TopBar>Data Processing and Integration</TopBar>
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
                                 <Flows type="collection"
-                                       label="Integration Workflows"/>, "/processing/workflows", "Integration Workflows"),
+                                       label="Processing Workflows"/>, "/processing/workflows", "Processing Workflows"),
                             new PrivateTab(["admin", "developer"],
                                 <Rules/>, "/processing/routing", "Routing Rules"),
                         ]}
