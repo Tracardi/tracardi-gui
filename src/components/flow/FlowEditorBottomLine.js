@@ -4,9 +4,17 @@ import {AiOutlinePlusCircle} from "react-icons/ai";
 import {AiOutlineMinusCircle} from "react-icons/ai";
 import {BsPencil} from "react-icons/bs";
 import {VscDebugAlt} from "react-icons/vsc";
+import useTheme from "@mui/material/styles/useTheme";
 
 export const FlowEditorBottomLine = ({onDebug, onEdit, onZoomIn, onZoomOut}) => {
-    return <div className="FlowEditorBottomLine">
+
+    const theme = useTheme()
+
+    const style = {
+        backgroundColor: theme.palette.primary.light
+    }
+
+    return <div className="FlowEditorBottomLine" style={style}>
         <span onClick={onZoomIn} style={{display: "inline-flex", alignItems: "center"}}>
             <AiOutlinePlusCircle size={20} style={{marginRight: 5}}/> Zoom-in
         </span>

@@ -41,6 +41,7 @@ import CondNode from "./CondNode";
 import {MdAdsClick} from "react-icons/md";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import useTheme from "@mui/material/styles/useTheme";
 
 const ReactFlow = React.lazy(() => import('reactflow'))
 
@@ -254,6 +255,8 @@ export function FlowEditorPane(
     const selectedNode = useRef({});
     // const copiedNode = useRef(null);
     // const nodePasted = useRef(false);
+
+    const theme = useTheme()
 
     const [modified, setModified] = useState(false);
     const [deployed, setDeployed] = useState(false);
@@ -626,7 +629,7 @@ export function FlowEditorPane(
         />
         <div className="FlowEditor">
             <div className="WorkArea">
-                <div className="FlowEditorGrid" style={displayDebugHeight}>
+                <div className="FlowEditorGrid" style={{...displayDebugHeight, backgroundColor: theme.palette.background.paper}}>
                     <div className="FlowPane" ref={reactFlowWrapper}>
                         {flowLoading && <CenteredCircularProgress/>}
                         {!flowLoading && nodes && <Suspense fallback={<CenteredCircularProgress/>}>
@@ -643,7 +646,6 @@ export function FlowEditorPane(
                                 </div>
                                 <div style={{width: "100%", flex: 1}}>
                                     <ReactFlow
-                                        style={{background: "white"}}
                                         snapGrid={snapGrid}
                                         snapToGrid={false}
                                         panOnScroll={true}

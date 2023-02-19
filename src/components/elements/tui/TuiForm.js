@@ -5,8 +5,6 @@ import useTheme from "@mui/material/styles/useTheme";
 
 export const TuiForm = ({children, className, style}) => {
 
-    const theme = useTheme()
-
     let baseClassName = ["TuiForm"]
 
     const onSubmit = e => {
@@ -16,12 +14,6 @@ export const TuiForm = ({children, className, style}) => {
 
     if(className) {
         baseClassName.push(className)
-    }
-
-    style = {
-        ...style,
-        backgroundColor: theme.palette.background.paper,
-        color: theme.palette.common.black
     }
 
     return <form className={baseClassName.join(" ")} style={style} onSubmit={onSubmit}>
@@ -73,6 +65,7 @@ export const TuiFormGroupContent = ({children, className, style, name, descripti
 
     let baseClassName = ["TuiFormGroupContent"]
     let baseStyle =  {overflowY: "auto"}
+    const theme = useTheme()
 
     if(className) {
         baseClassName.push(className)
@@ -80,6 +73,12 @@ export const TuiFormGroupContent = ({children, className, style, name, descripti
 
     if(style) {
         baseStyle = {...baseStyle, ...style}
+    }
+
+    baseStyle = {
+        ...baseStyle,
+        backgroundColor: theme.palette.background.paper,
+        color: theme.palette.common.black
     }
 
     return <section className={baseClassName.join(" ")} style={baseStyle}>

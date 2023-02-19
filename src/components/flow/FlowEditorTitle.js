@@ -29,6 +29,7 @@ import {BsClipboardCheck} from "react-icons/bs";
 import DropDownMenu from "../menu/DropDownMenu";
 import {ReinstallButton} from "../pages/ActionPlugins";
 import EntityAnalytics from "../pages/EntityAnalytics";
+import useTheme from "@mui/material/styles/useTheme";
 
 export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onDraftRestore, onDeploy, onSaveDraft}) {
 
@@ -43,6 +44,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
     const [deployProgress, setDeployProgress] = useState(false);
 
     const confirm = useConfirm();
+    const theme = useTheme();
 
     const handleDraftSave = useCallback((progress, deploy = false) => {
 
@@ -163,7 +165,11 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
         }).catch(()=>{})
     }
 
-    return <aside className="FlowEditorTitle">
+    const style = {
+        backgroundColor: theme.palette.primary.light
+    }
+
+    return <aside className="FlowEditorTitle" style={style}>
         <div>
             <span style={{marginLeft: 10}}>{flowMetaData?.name} <sup>({flowMetaData?.type})</sup></span>
         </div>

@@ -10,6 +10,8 @@ import {ErrorBoundary} from "@sentry/react";
 import TopBar from "./pages/top/TopBar";
 import IdentificationPoint from "./pages/IdentificationPoint";
 import {getDataContext, setDataContext} from "../config";
+import {stagingTheme, productionTheme} from "../themes";
+import {ThemeProvider} from "@mui/material/styles";
 
 const ProRouter = React.lazy(() => import('./pages/pro/ProRouter'))
 const Dashboard = React.lazy(() => import('./pages/Dashboard'))
@@ -63,6 +65,7 @@ const AppBox = () => {
     }
 
     return <DataContext.Provider value={production}>
+        <ThemeProvider theme={production ? productionTheme : stagingTheme}>
         <MainContent onContextChange={handleContextChange}>
 
             {/*Redirects*/}
@@ -400,6 +403,7 @@ const AppBox = () => {
             </Routes>
 
         </MainContent>
+        </ThemeProvider>
     </DataContext.Provider>
 }
 

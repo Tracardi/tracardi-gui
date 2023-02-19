@@ -4,15 +4,13 @@ import {getApiUrl, resetApiUrlConfig} from "../../../remote_api/entrypoint";
 import {track} from "../../../remote_api/track";
 import version from "../../../misc/version";
 import NeedHelpButton from "../../elements/misc/NeedHelpButton";
-import React, {useContext} from "react";
+import React from "react";
 import {logout} from "../../authentication/login";
 import "./TopBar.css";
-import {DataContext} from "../../AppBox";
 import useTheme from "@mui/material/styles/useTheme";
 
 export default function TopBar({children}) {
 
-    const production = useContext(DataContext)
     const theme = useTheme();
 
     const handleEndpointReset = () => {
@@ -21,18 +19,9 @@ export default function TopBar({children}) {
         window.location.reload()
     }
 
-    let style = {}
-
-    if(production) {
-        style = {
-            backgroundColor: "#ffebee",
-            color: "white"
-        }
-    } else {
-        style = {
-            backgroundColor: theme.palette.primary.light,
-            color: theme.palette.common.black
-        }
+    const style = {
+        backgroundColor: theme.palette.primary.light,
+        color: theme.palette.common.black
     }
 
     return <div className="TopBar" style={style}>

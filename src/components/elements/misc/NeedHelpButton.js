@@ -6,8 +6,11 @@ import "./NeedHelpButton.css";
 import {IoLogoYoutube, IoDocumentTextOutline, IoLogoTwitter, IoShareSocial} from "react-icons/io5";
 import {AiOutlineSlack} from "react-icons/ai";
 import {BsGithub} from "react-icons/bs";
+import useTheme from "@mui/material/styles/useTheme";
 
 export default function NeedHelpButton() {
+
+    const theme = useTheme()
 
     const external = (url, newWindow=false) => {
         if(newWindow===true) {
@@ -15,6 +18,10 @@ export default function NeedHelpButton() {
         } else {
             return () => window.location.href = url;
         }
+    }
+
+    const style = {
+        backgroundColor: theme.palette.primary.light
     }
 
     return (
@@ -36,7 +43,7 @@ export default function NeedHelpButton() {
                         }}
                         style={{marginTop:10}}
                     >
-                        <div className="NeedHelpButton">
+                        <div className="NeedHelpButton" style={style}>
                             <div>
                                 Mention us on Twitter @tracardi. We will respond as quickly as possible.
                                 <div style={{display: "flex", justifyContent: "center", marginTop: 10}}>
