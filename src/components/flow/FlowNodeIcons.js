@@ -98,7 +98,8 @@ import {
     SiLivechat,
     SiZendesk,
     SiIntercom,
-    SiJavascript
+    SiJavascript,
+    SiOpenai
 } from "react-icons/si";
 import {GrMysql} from "react-icons/gr";
 import {
@@ -268,7 +269,8 @@ export const icons = {
     "identity": (size) => <MdFingerprint size={size}/>,
     "wait": (size) => <BsClockHistory size={size}/>,
     "list-check": (size) => <BsListCheck size={size}/>,
-    "tag": (size) => <BsTag size={size}/>
+    "tag": (size) => <BsTag size={size}/>,
+    "openai": (size) => <SiOpenai size={size}/>
 
 }
 
