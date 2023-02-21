@@ -19,14 +19,14 @@ import NoData from "../misc/NoData";
 import useTheme from "@mui/material/styles/useTheme";
 
 export default function ProfileDetails({profile}) {
-    const theme = useTheme()
+    const _theme = useTheme()
 
     const displayPii = window?.CONFIG?.profile?.display?.details?.pii
 
     return <div style={{height: "inherit", display: "flex", flexDirection: "column"}}>
         {displayPii &&  <PiiDetails data={profile}/>}
         <div className="RightTabScroller">
-            <Tabs tabs={["Personal data & Traits", "Sessions & Events", "Segments", "Logs", "Raw"]} tabsStyle={{backgroundColor: theme.palette.primary.light}}>
+            <Tabs tabs={["Personal data & Events", "Sessions & Events", "Segments", "Logs", "Raw"]} tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
                 <TabCase id={0}>
                     <ProfileData profile={profile}/>
                 </TabCase>

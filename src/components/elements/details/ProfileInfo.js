@@ -14,6 +14,8 @@ import {profileName} from "../../../misc/formaters";
 import IconLabel from "../misc/IconLabels/IconLabel";
 import {BsGlobe} from "react-icons/bs";
 import {VscLaw} from "react-icons/vsc";
+import {Grid} from "@mui/material";
+import ProfileEvents from "./ProfileEvents";
 
 export const ProfileData = ({profile}) => {
 
@@ -24,8 +26,8 @@ export const ProfileData = ({profile}) => {
     const privateTraits = object2dot(profile?.traits?.private)
     const publicTraits = object2dot(profile?.traits?.public)
 
-    return <div style={{margin: 20, display: "flex", gap: 20}}>
-        <div style={{width: "50%"}}>
+    return <Grid container spacing={2} style={{padding: 20}}>
+        <Grid item xs={6}>
             {displayPii && pii && <fieldset style={{marginBottom: 20}}>
                 <legend style={{fontSize: 13}}>Profile personal data</legend>
                 {Object.keys(pii).map(key => <PropertyField key={key}
@@ -50,8 +52,7 @@ export const ProfileData = ({profile}) => {
                                                                                           content={publicTraits[key]}/>)
                     : "None"}
             </fieldset>
-        </div>
-        <div style={{width: "50%"}}>
+
             <fieldset style={{marginBottom: 20}}>
                 <legend style={{fontSize: 13}}>Profile metadata</legend>
                 <PropertyField name="Id" content={<IdLabel label={profile.id}/>}/>
@@ -73,15 +74,15 @@ export const ProfileData = ({profile}) => {
                                                                       />}/>}
                 <PropertyField name="Visits" content={profile?.metadata?.time?.visit?.count}/>
                 {profile?.consents
-                    && <PropertyField name="Consents"
-                                     content={<div className="flexLine" style={{gap: 5}}>
-                                         <IconLabel
-                                             value={isEmptyObjectOrNull(profile?.consents) ? "None granted" : <TuiTags
-                                                 size="small"
-                                                 style={{marginRight: 2}}
-                                                 tags={Object.getOwnPropertyNames(profile?.consents)}/> }
-                                             icon={<VscLaw size={20} style={{marginRight: 5}}/>}/>
-                                     </div>}/>}
+                && <PropertyField name="Consents"
+                                  content={<div className="flexLine" style={{gap: 5}}>
+                                      <IconLabel
+                                          value={isEmptyObjectOrNull(profile?.consents) ? "None granted" : <TuiTags
+                                              size="small"
+                                              style={{marginRight: 2}}
+                                              tags={Object.getOwnPropertyNames(profile?.consents)}/> }
+                                          icon={<VscLaw size={20} style={{marginRight: 5}}/>}/>
+                                  </div>}/>}
 
                 <PropertyField name="Active" content={<ActiveTag active={profile?.active}/>}
                 />
@@ -108,8 +109,14 @@ export const ProfileData = ({profile}) => {
                                                               content={stats[key]}/>)}
             </fieldset>}
 
-        </div>
-    </div>
+        </Grid>
+        <Grid item xs={6}>
+            <fieldset style={{marginBottom: 20}}>
+                <legend style={{fontSize: 13}}>Last events</legend>
+                <ProfileEvents profileId={profile?.id}/>
+            </fieldset>
+        </Grid>
+    </Grid>
 }
 
 const ProfileInfo = ({id}) => {
