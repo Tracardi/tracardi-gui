@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback, useRef} from "react";
 import {request} from "../../../remote_api/uql_api_endpoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import {MemoObjectRow} from "./rows/ObjectRow";
+import {ObjectRow} from "./rows/ObjectRow";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
@@ -141,7 +141,7 @@ const AutoLoadObjectList = ({
         if (Array.isArray(rows)) {
             return rows.map((row, index) => {
                 return (
-                    <MemoObjectRow
+                    <ObjectRow
                         key={index}
                         row={row}
                         timeField={timeField}
