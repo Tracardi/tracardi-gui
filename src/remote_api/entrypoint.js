@@ -4,6 +4,7 @@ import storageValue from "../misc/localStorageDriver";
 import {isObject} from "../misc/typeChecking";
 import {objectMap} from "../misc/mappers";
 import {getDataContextHeader} from "../config";
+import {publish} from "../misc/events";
 
 export const apiUrlStorage = () => {
     return new storageValue('tracardi-api-url')
@@ -53,7 +54,7 @@ export const asyncRemote = async (config, token=null) => {
             'x-context': getDataContextHeader()
         }
     }
-
+    publish('connect');
     config.timeout = 1000 * 60
     return axios(config).catch(e => {
         if (e?.response?.status === 401) {

@@ -28,31 +28,6 @@ export const ProfileData = ({profile}) => {
 
     return <Grid container spacing={2} style={{padding: 20}}>
         <Grid item xs={6}>
-            {displayPii && pii && <fieldset style={{marginBottom: 20}}>
-                <legend style={{fontSize: 13}}>Profile personal data</legend>
-                {Object.keys(pii).map(key => <PropertyField key={key}
-                                                            name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
-                                                            content={pii[key]}/>)}
-            </fieldset>}
-
-            <fieldset style={{marginBottom: 20}}>
-                <legend style={{fontSize: 13}}>Private traits</legend>
-                {privateTraits && !isEmptyObjectOrNull(privateTraits)
-                    ? Object.keys(privateTraits).map(key => <PropertyField key={key}
-                                                                           name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
-                                                                           content={privateTraits[key]}/>)
-                    : "None"}
-            </fieldset>
-
-            <fieldset style={{marginBottom: 20}}>
-                <legend style={{fontSize: 13}}>Public traits</legend>
-                {publicTraits && !isEmptyObjectOrNull(publicTraits)
-                    ? publicTraits && Object.keys(publicTraits).map(key => <PropertyField key={key}
-                                                                                          name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
-                                                                                          content={publicTraits[key]}/>)
-                    : "None"}
-            </fieldset>
-
             <fieldset style={{marginBottom: 20}}>
                 <legend style={{fontSize: 13}}>Profile metadata</legend>
                 <PropertyField name="Id" content={<IdLabel label={profile.id}/>}/>
@@ -86,6 +61,31 @@ export const ProfileData = ({profile}) => {
 
                 <PropertyField name="Active" content={<ActiveTag active={profile?.active}/>}
                 />
+            </fieldset>
+
+            {displayPii && pii && <fieldset style={{marginBottom: 20}}>
+                <legend style={{fontSize: 13}}>Profile personal data</legend>
+                {Object.keys(pii).map(key => <PropertyField key={key}
+                                                            name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
+                                                            content={pii[key]}/>)}
+            </fieldset>}
+
+            <fieldset style={{marginBottom: 20}}>
+                <legend style={{fontSize: 13}}>Private traits</legend>
+                {privateTraits && !isEmptyObjectOrNull(privateTraits)
+                    ? Object.keys(privateTraits).map(key => <PropertyField key={key}
+                                                                           name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
+                                                                           content={privateTraits[key]}/>)
+                    : "None"}
+            </fieldset>
+
+            <fieldset style={{marginBottom: 20}}>
+                <legend style={{fontSize: 13}}>Public traits</legend>
+                {publicTraits && !isEmptyObjectOrNull(publicTraits)
+                    ? publicTraits && Object.keys(publicTraits).map(key => <PropertyField key={key}
+                                                                                          name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
+                                                                                          content={publicTraits[key]}/>)
+                    : "None"}
             </fieldset>
 
             <fieldset style={{marginBottom: 20}}>

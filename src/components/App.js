@@ -18,6 +18,8 @@ import FormDrawer from "./elements/drawers/FormDrawer";
 import {close} from "../redux/reducers/newResource";
 import ResourceForm from "./elements/forms/ResourceForm";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
+import {IdleTimerProvider} from "react-idle-timer";
+
 
 const AppBox = React.lazy(() => import('./AppBox'))
 
@@ -25,25 +27,36 @@ const App = ({alert, resource, close}) => {
 
     const dispatch = useDispatch()
 
+    const onIdle = () => {
+        window.location.replace("/logout");
+    }
+
     const handleClose = () => {
         dispatch(hideAlert())
     };
 
-    const application = () => {
-        return (
+    return (
+        <IdleTimerProvider
+            onIdle={onIdle}
+            stopOnIdle={true}
+            startManually={true}
+            timeout={15*60*1000}
+            throttle={500}
+            events={["connect"]}
+        >
             <Router>
                 <Routes>
-                    <Route exact path={urlPrefix("/login")} element={<SignIn/>} />
-                    <Route exact path={urlPrefix("/logout")} element={<Logout/>} />
+                    <Route exact path={urlPrefix("/login")} element={<SignIn/>}/>
+                    <Route exact path={urlPrefix("/logout")} element={<Logout/>}/>
                     <Route
-                      path="*"
-                      element={
-                        <PrivateRoute path="*" roles={["admin", "marketer", "developer", "maintainer"]}>
-                          <Suspense fallback={<CenteredCircularProgress/>}>
-                              <AppBox/>
-                          </Suspense>
-                        </PrivateRoute>
-                      }
+                        path="*"
+                        element={
+                            <PrivateRoute path="*" roles={["admin", "marketer", "developer", "maintainer"]}>
+                                <Suspense fallback={<CenteredCircularProgress/>}>
+                                    <AppBox/>
+                                </Suspense>
+                            </PrivateRoute>
+                        }
                     />
                 </Routes>
                 <Snackbar open={alert.show} autoHideDuration={alert.hideAfter} onClose={handleClose} anchorOrigin={{
@@ -63,10 +76,8 @@ const App = ({alert, resource, close}) => {
                     }}/>
                 </FormDrawer>
             </Router>
-        );
-    }
-
-    return application();
+        </IdleTimerProvider>
+    );
 }
 
 const mapState = (state) => {

@@ -22,6 +22,7 @@ import getLocation from "../../misc/location";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import {BsShieldLock} from "react-icons/bs";
+import {useIdleTimerContext} from "react-idle-timer";
 
 function Copyright() {
     return (
@@ -99,6 +100,7 @@ const SignInForm = ({showAlert}) => {
     const [redirectToReferrer, setRedirectToReferrer] = useState(false);
 
     const mounted = useRef(false);
+    const idleTimer = useIdleTimerContext()
 
     const handleEmailChange = (evt) => {
         setEmail(evt.target.value);
@@ -129,6 +131,7 @@ const SignInForm = ({showAlert}) => {
             setToken(response.data['access_token']);
             setRoles(response.data['roles']);
             setStoredApiUrl(apiUrl);
+            idleTimer.start()
             setRedirectToReferrer(true);
         }).catch(e => {
             let message = e.message;
@@ -162,7 +165,7 @@ const SignInForm = ({showAlert}) => {
     return (
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={signInTheme}>
-                <Grid container xs={12} display="flex" justifyContent="center" alignItems="center"
+                <Grid container display="flex" justifyContent="center" alignItems="center"
                       style={{height: "100%"}}>
                     <Grid item xs={10} sm={8} md={7} lg={6} xl={4}>
                         <Paper className={classes.paper}>
