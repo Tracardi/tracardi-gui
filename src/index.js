@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import store from './redux/store'
 import {Provider} from "react-redux";
 import App from "./components/App";
-import {stagingTheme, productionTheme} from "./themes";
+import {stagingTheme} from "./themes";
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import {ConfirmProvider} from "material-ui-confirm";
 import Installer from "./components/Installer";
