@@ -74,6 +74,10 @@ const getConfig = () => {
                 name: "Triggers",
                 disable: true
             },
+            routing: {
+                name: "Routing",
+                disable: false
+            },
             transformations: {
                 name: "Collection",
                 disable: false

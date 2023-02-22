@@ -167,14 +167,31 @@ const AppBox = () => {
 
             {/*Triggers*/}
 
-            <PrivateRoute path={urlPrefix("/triggers")} roles={["admin", "marketer"]}>
+            <PrivateRoute path={urlPrefix("/triggers")} roles={["admin", "developer"]}>
                 <ErrorBoundary>
                     <Suspense fallback={<CenteredCircularProgress/>}>
                         <TopBar>Triggers</TopBar>
                         <PageTabs tabs={[
-                            new PrivateTab(["admin", "marketer"],
+                            new PrivateTab(["admin", "developer"],
                                 <Scheduler/>, "/triggers/scheduler", <><BsStar size={20}
                                                                                style={{marginRight: 5}}/>{"Scheduler"}</>),
+                        ]}
+                        />
+                    </Suspense>
+                </ErrorBoundary>
+            </PrivateRoute>
+
+            {/*Routing*/}
+
+            <PrivateRoute path={urlPrefix("/routing")} roles={["admin", "developer"]}>
+                <ErrorBoundary>
+                    <Suspense fallback={<CenteredCircularProgress/>}>
+                        <TopBar>Traffic routing</TopBar>
+                        <PageTabs tabs={[
+                            new PrivateTab(["admin", "developer"],
+                                <EventTypesToRules/>, "/event/routing", "Event Routing"),
+                            new PrivateTab(["admin", "developer"],
+                                <Rules/>, "/processing/routing", "Routing Rules"),
                         ]}
                         />
                     </Suspense>
@@ -250,31 +267,14 @@ const AppBox = () => {
 
             {/*Processing*/}
 
-            <PrivateRoute path={urlPrefix("/processing")} roles={["admin", "developer"]}>
+            <PrivateRoute path={urlPrefix("/processing")} roles={["admin", "developer", "marketer"]}>
                 <ErrorBoundary>
                     <Suspense fallback={<CenteredCircularProgress/>}>
-                        <TopBar>Data Processing and Integration</TopBar>
+                        <TopBar>Data Processing and Segmentation</TopBar>
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
                                 <Flows type="collection"
                                        label="Processing Workflows"/>, "/processing/workflows", "Processing Workflows"),
-                            new PrivateTab(["admin", "developer"],
-                                <Rules/>, "/processing/routing", "Routing Rules"),
-                            new PrivateTab(["admin", "developer"],
-                                <EventTypesToRules/>, "/event/routing", "Event Routing"),
-                        ]}
-                        />
-                    </Suspense>
-                </ErrorBoundary>
-            </PrivateRoute>
-
-            {/*Segmentation*/}
-
-            <PrivateRoute path={urlPrefix("/segmentation")} roles={["admin", "developer", "marketer"]}>
-                <ErrorBoundary>
-                    <Suspense fallback={<CenteredCircularProgress/>}>
-                        <TopBar>Segmentation</TopBar>
-                        <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
                                 <Flows type="segmentation" label="Segmentation Workflows"/>, "/processing/workflows", <>
                                     <BsStar size={20}
