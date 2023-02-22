@@ -8,6 +8,7 @@ import CenteredCircularProgress from "../elements/progress/CenteredCircularProgr
 import {Background, useEdgesState, useNodesState} from 'reactflow';
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
+import './FlowEditor.css'
 
 const nodeTypes = {
     flowNode: FlowNode,

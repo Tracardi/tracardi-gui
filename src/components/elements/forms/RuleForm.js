@@ -108,7 +108,7 @@ export default function RuleForm({onEnd, init}) {
                 data: payload
             })
 
-            if (response.data && mounted.current) {
+            if (response.data && mounted.current && onEnd instanceof Function) {
                 onEnd(response.data)
             }
         } catch (e) {

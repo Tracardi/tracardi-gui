@@ -12,6 +12,7 @@ import IdentificationPoint from "./pages/IdentificationPoint";
 import {getDataContext, setDataContext} from "../config";
 import {stagingTheme, productionTheme} from "../themes";
 import {ThemeProvider} from "@mui/material/styles";
+import EventTypesToRules from "./pages/EventRouting";
 
 const ProRouter = React.lazy(() => import('./pages/pro/ProRouter'))
 const Dashboard = React.lazy(() => import('./pages/Dashboard'))
@@ -259,6 +260,8 @@ const AppBox = () => {
                                        label="Processing Workflows"/>, "/processing/workflows", "Processing Workflows"),
                             new PrivateTab(["admin", "developer"],
                                 <Rules/>, "/processing/routing", "Routing Rules"),
+                            new PrivateTab(["admin", "developer"],
+                                <EventTypesToRules/>, "/event/routing", "Event Routing"),
                         ]}
                         />
                     </Suspense>

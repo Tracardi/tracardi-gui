@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import ListOfDottedInputs from "../elements/forms/ListOfDottedInputs";
 import TimeInput from "../elements/forms/inputs/TimeInput";
 import IconSelector from "../elements/IconSelector";
@@ -14,10 +14,8 @@ import Chip from "@mui/material/Chip";
 import TrackerPayloadForm from "../elements/forms/TrackerPayloadForm";
 import KqlAutoComplete from "../elements/forms/KqlAutoComplete";
 import ListOfForms from "../elements/forms/ListOfForms";
-import {func} from "prop-types";
 import Switch from "@mui/material/Switch";
 import Checkbox from "@mui/material/Checkbox";
-import {TextFields} from "@mui/icons-material";
 
 export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
@@ -50,7 +48,6 @@ export default function TryOut() {
             <Switch checked={value} onChange={handleChange}/>
             </>
     }
-
 
     return (<div style={{padding: 10}}>
             <KqlAutoComplete onChange={(v) => console.log(v)}/>
