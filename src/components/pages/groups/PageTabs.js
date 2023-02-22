@@ -19,13 +19,11 @@ export default function PageTabs({tabs = {}}) {
 
     return <div className="PageTabs" style={style}>
         <Tabs
-            className="TabNav"
             tabs={filteredTabs.map(tab => tab.label)}
             defaultTab={tab}
             onTabSelect={setTab}
             tabStyle={{flex: "initial"}}
             tabContentStyle={{overflow: "initial"}}
-            tabsStyle={{paddingLeft: 30}}
         >
             {filteredTabs.map((tab, key) => {
                 i = i + 1;

@@ -19,14 +19,12 @@ import {changeRoute} from "../../redux/reducers/appSlice"
 import FlowNodeIcons from "../flow/FlowNodeIcons";
 import ServerContext from "../context/ServerContext";
 import {Restrict} from "../authentication/Restrict";
-import {DataContext} from "../AppBox";
 import {getDataContextHeader} from "../../config";
 import useTheme from "@mui/material/styles/useTheme";
 
 
 function MainMenu({app, showAlert, changeRoute, onContextChange}) {
 
-    const production = useContext(DataContext)
     const theme = useTheme()
 
     const [collapsed, setCollapsed] = useState(false);

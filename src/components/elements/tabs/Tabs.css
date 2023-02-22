@@ -17,6 +17,7 @@
     top: 0;
     border-top-left-radius: inherit;
     border-top-right-radius: inherit;
+    padding-left: 20px;
 }
 
 .Tabs > .Navigation > .Tab {
