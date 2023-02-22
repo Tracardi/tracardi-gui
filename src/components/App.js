@@ -40,7 +40,7 @@ const App = ({alert, resource, close}) => {
             onIdle={onIdle}
             stopOnIdle={true}
             startManually={true}
-            timeout={15*60*1000}
+            timeout={20*60*1000}
             throttle={500}
             events={["connect"]}
         >
