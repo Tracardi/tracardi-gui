@@ -29,13 +29,13 @@ const EventRoutingRule = ({rule, onChange}) => {
     const [shadow, setShadow] = useState(1)
     return <Paper style={{margin: 5, padding: 10}} elevation={shadow} onMouseOver={() => setShadow(6)}
                   onMouseOut={() => setShadow(1)}>
-        <PropertyField name="Rule name" content={rule.name}>
+        <PropertyField name="Rule name" content={rule.name} labelWidth={200}>
             <RuleForm init={rule} onEnd={onChange}/>
         </PropertyField>
-        <PropertyField name="Event source" content={rule.source.name}>
+        <PropertyField name="Event source" content={rule.source.name} labelWidth={200}>
             <EventSourceDetails id={rule.source.id}/>
         </PropertyField>
-        <PropertyField name="Workflow" content={rule.flow.name} underline={false}>
+        <PropertyField name="Workflow" content={rule.flow.name} underline={false} labelWidth={200}>
             <FlowDisplay id={rule.flow.id}/>
         </PropertyField>
     </Paper>

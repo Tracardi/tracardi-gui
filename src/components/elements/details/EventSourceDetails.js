@@ -82,7 +82,8 @@ const JavascriptDetails = ({data}) => {
             </section>
         </TuiFormGroup></TuiForm>
     }
-    if(data.type === "rest") {
+
+    if(Array.isArray(data.type) &&  data.type.includes("rest")) {
         return <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Integration"
@@ -108,8 +109,20 @@ const JavascriptDetails = ({data}) => {
             </TuiFormGroup>
         </TuiForm>
     }
-
-    if(data.type === "webhook") {
+    if(Array.isArray(data.type) &&  data.type.includes("internal")) {
+        return <TuiForm style={{margin: 20}}>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Internal event source"
+                                    description="Internal endpoint is used for internal system communication."/>
+                <TuiFormGroupContent>
+                    <h3 className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Internal communication only</h3>
+                    <p>This event source does not have endpoint and it is used for internal communication like heartbeats, etc.
+                    </p>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>
+    }
+    if(Array.isArray(data.type) &&  data.type.includes("webhook")) {
         return <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Webhook"
@@ -377,7 +390,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             </div>
 
             <Tabs
-                tabs={["Use", "Details", "Analytics", "Raw"]}
+                tabs={["Details", "Use & Javascript", "Analytics", "Raw"]}
                 defaultTab={tab}
                 onTabSelect={setTab}
                 tabContentStyle={{overflow: "initial"}}
@@ -390,10 +403,10 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                     zIndex: 2
                 }}
             >
-                <TabCase id={0} key="Javascript">
+                <TabCase id={1} key="Javascript">
                     <JavascriptDetails data={data}/>
                 </TabCase>
-                <TabCase id={1} key="Details">
+                <TabCase id={0} key="Details">
                     <Details data={data}/>
                 </TabCase>
                 <TabCase id={2} key="Analytics">
