@@ -8,6 +8,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import NoData from "../misc/NoData";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import {FilterContext} from "../../pages/DataAnalytics";
+import {DataContext} from "../../AppBox";
 
 const AutoLoadObjectList = ({
                                 label,
@@ -23,6 +24,7 @@ const AutoLoadObjectList = ({
                             }) => {
 
     const filter = useContext(FilterContext);
+    const context = useContext(DataContext)
 
     const [page, setPage] = useState(onLoadRequest?.page || 0)
     const [hasMore, setHasMode] = useState(false)
@@ -34,6 +36,7 @@ const AutoLoadObjectList = ({
     const [progress, setProgress] = useState(false)
     const [refresh, setRefresh] = useState(0);
     const [lastFilter, setLastFilter] = useState(filter)
+    const [lastContext, setLastContext] = useState(context)
 
     useEffect(() => {
         let timer;
@@ -67,11 +70,13 @@ const AutoLoadObjectList = ({
         }
 
         let _page = page;
-        if(filter !== lastFilter){
+        // Condition when the page should be reset
+        if(filter !== lastFilter || context !== lastContext){
             _page = 0
             setPage(_page)
         }
         setLastFilter(filter)
+        setLastContext(context)
 
         const endpoint = {...onLoadRequest, url: `${onLoadRequest.url}/page/${page}`};
 
@@ -96,7 +101,7 @@ const AutoLoadObjectList = ({
             }
         })
         return () => isSubscribed = false;
-    }, [page, refresh, filter]);
+    }, [page, refresh, filter, context]);
 
     const widthStyle =
         typeof timeFieldWidth !== "undefined"
