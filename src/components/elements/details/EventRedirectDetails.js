@@ -12,12 +12,11 @@ import TuiTags from "../tui/TuiTags";
 import PropertyField from "./PropertyField";
 import IconLabel from "../misc/IconLabels/IconLabel";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
-import {ObjectInspector} from "react-inspector";
-import theme from "../../../themes/inspector_light_theme";
 import EventRedirectForm from "../forms/EventRedirectForm";
 import IdLabel from "../misc/IconLabels/IdLabel";
 import {BsStar} from "react-icons/bs";
 import TextField from "@mui/material/TextField";
+import JsonBrowser from "../misc/JsonBrowser";
 
 export default function EventRedirectDetails({id, onDeleteComplete, onEditComplete}) {
 
@@ -123,9 +122,7 @@ export default function EventRedirectDetails({id, onDeleteComplete, onEditComple
                 <TuiFormGroupContent>
                     <PropertyField name="Raise event type"
                                    content={<IconLabel value={data.event_type} icon={<FlowNodeIcons icon="event"/>}/>}/>
-                    <PropertyField name="Event properties" content={<ObjectInspector data={data.props}
-                                                                                     theme={theme}
-                                                                                     expandLevel={3}/>}/>
+                    <PropertyField name="Event properties" content={<JsonBrowser data={data.props}/>}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>

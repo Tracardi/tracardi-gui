@@ -17,11 +17,10 @@ import EventSourceDetails from "../../details/EventSourceDetails";
 import ResponsiveDialog from "../../dialog/ResponsiveDialog";
 import Button from "../../forms/Button";
 import {BsGlobe, BsXCircle} from "react-icons/bs";
-import {ObjectInspector} from "react-inspector";
-import theme from "../../../../themes/inspector_light_theme";
 import {VscJson} from "react-icons/vsc";
 import {SessionDetailsById} from "../../details/SessionDetails";
 import IconLabel from "../../misc/IconLabels/IconLabel";
+import JsonBrowser from "../../misc/JsonBrowser";
 
 export function EventRow({row, filterFields}) {
 
@@ -43,7 +42,7 @@ export function EventRow({row, filterFields}) {
                                        button={<Button label="Close"
                                                        icon={<BsXCircle size={20}/>}
                                                        onClick={() => setJsonData(null)}/>}>
-            <ObjectInspector data={jsonData} theme={theme} expandLevel={5}/>
+            <JsonBrowser data={jsonData} />
         </ResponsiveDialog>}
         <div style={{display: "flex"}}>
             <div style={{flex: "1 1 0", minWidth: 560, borderRight: "solid 1px #ccc", paddingRight: 17}}>

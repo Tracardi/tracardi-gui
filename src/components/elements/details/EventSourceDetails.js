@@ -28,9 +28,8 @@ import DateValue from "../misc/DateValue";
 import ActiveTag from "../misc/ActiveTag";
 import DocsLink from "../drawers/DocsLink";
 import {BsStar} from "react-icons/bs";
-import {ObjectInspector} from "react-inspector";
-import theme from "../../../themes/inspector_light_theme";
 import Properties from "./DetailProperties";
+import JsonBrowser from "../misc/JsonBrowser";
 
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
@@ -414,7 +413,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                 </TabCase>
                 <TabCase id={3} key="Raw">
                     <div className="Box10">
-                        <ObjectInspector data={data} theme={theme} expandLevel={3}/>
+                        <JsonBrowser data={data}/>
                     </div>
                 </TabCase>
             </Tabs></>

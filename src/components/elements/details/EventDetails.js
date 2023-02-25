@@ -1,5 +1,4 @@
 import React from "react";
-import {ObjectInspector} from "react-inspector";
 import "../lists/cards/SourceCard.css";
 import "./RuleDetails.css";
 import "./Details.css";
@@ -13,7 +12,7 @@ import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
-import theme from "../../../themes/inspector_light_theme";
+import JsonBrowser from "../misc/JsonBrowser";
 
 export default function EventDetails({event, metadata}) {
 
@@ -49,7 +48,7 @@ export default function EventDetails({event, metadata}) {
                         <TuiFormGroupHeader header="Raw event"/>
                         <TuiFormGroupContent>
                             <div style={{margin: 10}}>
-                                <ObjectInspector data={{event: event, _metadata: metadata}} theme={theme} expandLevel={5}/>
+                                <JsonBrowser data={{event: event, _metadata: metadata}} />
                             </div>
                         </TuiFormGroupContent>
                     </TuiFormGroup>

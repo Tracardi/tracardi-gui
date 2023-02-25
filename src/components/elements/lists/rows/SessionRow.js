@@ -7,9 +7,8 @@ import SessionCardInfo from "../../details/SessionCardInfo";
 import ResponsiveDialog from "../../dialog/ResponsiveDialog";
 import Button from "../../forms/Button";
 import {BsXCircle} from "react-icons/bs";
-import {ObjectInspector} from "react-inspector";
-import theme from "../../../../themes/inspector_light_theme";
 import {VscJson} from "react-icons/vsc";
+import JsonBrowser from "../../misc/JsonBrowser";
 
 export default function SessionRow({session, filterFields}) {
 
@@ -26,7 +25,7 @@ export default function SessionRow({session, filterFields}) {
                                        button={<Button label="Close"
                                                        icon={<BsXCircle size={20}/>}
                                                        onClick={() => setJsonData(null)}/>}>
-            <ObjectInspector data={jsonData} theme={theme} expandLevel={5}/>
+            <JsonBrowser data={jsonData}/>
         </ResponsiveDialog>}
         <div style={{display: "flex"}}>
             <div style={{flex: "1 1 0", minWidth: 540, borderRight: "solid 1px #ccc", paddingRight: 17}}>

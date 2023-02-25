@@ -1,6 +1,5 @@
 import { TextField } from "@mui/material";
 import React from "react";
-import { ObjectInspector } from "react-inspector";
 import {v4 as uuid} from 'uuid';
 import { asyncRemote, getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
@@ -9,7 +8,7 @@ import { TuiForm, TuiFormGroupHeader, TuiFormGroup, TuiFormGroupContent, TuiForm
 import TuiTagger from "../tui/TuiTagger";
 import Button from "./Button";
 import {JsonInput, SelectInput} from "./JsonFormComponents";
-import theme from "../../../themes/inspector_light_theme";
+import JsonBrowser from "../misc/JsonBrowser";
 
 
 export default function ReportForm({reportId, onComplete}) {
@@ -208,8 +207,7 @@ export default function ReportForm({reportId, onComplete}) {
                                 <ErrorsBox errorList={testError}/>
                                  :
                                 <div style={{borderRadius: 6, border: "1px solid #ccc", padding: 10, marginBottom: 20}}>
-                                    <ObjectInspector data={testResult} theme={theme}
-                                                     expandLevel={3}/>
+                                    <JsonBrowser data={testResult}/>
                                 </div>
                             }
                         </TuiFormGroupField>

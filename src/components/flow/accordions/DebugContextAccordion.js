@@ -5,8 +5,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import theme from "../../../themes/inspector_light_theme";
-import {ObjectInspector} from "react-inspector";
+import JsonBrowser from "../../elements/misc/JsonBrowser";
 
 const useStyles = makeStyles()((theme) => ({
     root: {
@@ -43,7 +42,7 @@ export default function DebugContextAccordions({profile, event, session}) {
                     <Typography className={classes.secondaryHeading}>Profile data object</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <ObjectInspector data={profile} theme={theme} expandLevel={5}/>
+                    <JsonBrowser data={profile}/>
                 </AccordionDetails>
             </Accordion>
             <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
@@ -58,7 +57,7 @@ export default function DebugContextAccordions({profile, event, session}) {
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <ObjectInspector data={event} theme={theme} expandLevel={5}/>
+                    <JsonBrowser data={event}/>
                 </AccordionDetails>
             </Accordion>
             <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
@@ -73,7 +72,7 @@ export default function DebugContextAccordions({profile, event, session}) {
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <ObjectInspector data={session} theme={theme} expandLevel={5}/>
+                    <JsonBrowser data={session}/>
                 </AccordionDetails>
             </Accordion>
         </div>

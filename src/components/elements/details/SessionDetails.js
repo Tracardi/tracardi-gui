@@ -7,12 +7,11 @@ import PropTypes from "prop-types";
 import SessionStepper from "../steppers/SessionStepper";
 import EventInfo from "./EventInfo";
 import SessionCardInfo from "./SessionCardInfo";
-import {ObjectInspector} from "react-inspector";
-import theme from "../../../themes/inspector_light_theme";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
+import JsonBrowser from "../misc/JsonBrowser";
 
 
 export default function SessionDetails({data: session}) {
@@ -42,7 +41,7 @@ export default function SessionDetails({data: session}) {
                 </TabCase>
                 <TabCase id={1}>
                     <div className="Box10">
-                        <ObjectInspector data={session} theme={theme} expandLevel={3}/>
+                        <JsonBrowser data={session}/>
                     </div>
                 </TabCase>
             </Tabs>

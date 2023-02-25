@@ -1,6 +1,4 @@
 import React from "react";
-import theme from "../../../themes/inspector_light_theme";
-import {ObjectInspector} from "react-inspector";
 import "../lists/cards/SourceCard.css";
 import "./RuleDetails.css";
 import "./Details.css";
@@ -17,6 +15,7 @@ import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 import useTheme from "@mui/material/styles/useTheme";
+import JsonBrowser from "../misc/JsonBrowser";
 
 export default function ProfileDetails({profile}) {
     const _theme = useTheme()
@@ -52,7 +51,7 @@ export default function ProfileDetails({profile}) {
                 </TabCase>
                 <TabCase id={4}>
                     <div className="Box10">
-                        <ObjectInspector data={profile} theme={theme} expandLevel={3}/>
+                        <JsonBrowser data={profile}/>
                     </div>
                 </TabCase>
             </Tabs>
