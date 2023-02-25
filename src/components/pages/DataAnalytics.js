@@ -1,10 +1,12 @@
-import React, {useState} from "react";
+import React, {useState, createContext} from "react";
 import "./DataAnalytics.css";
 import ObjectFiltering from "../elements/forms/ObjectFiltering";
 import moment from "moment";
 import DataBrowsingList from "./DataBrowsingList";
 import BarChartElement from "../elements/charts/BarChart";
 import {isString} from "../../misc/typeChecking";
+
+export const FilterContext = createContext(0);
 
 export default function DataAnalytics({
                                           type,
@@ -21,6 +23,8 @@ export default function DataAnalytics({
                                           displayChart = true,
                                           barChartColors = {}
                                       }) {
+
+    const [filterNumber, setFilterNumber] = useState(0)
 
     const getQuery = (type, label) => {
         const key = type + label;
@@ -98,18 +102,20 @@ export default function DataAnalytics({
             maxDate: getSavedData(type, "DateTo"),
             where: getQuery(type, "Query"),
             limit: 30,
+            random: Math.random()
         })
     );
 
     const onFilter = ({to, from, where}) => {
-        setQuery(
-            encodeParams({
-                minDate: from,
-                maxDate: to,
-                where: where,
-                limit: 30,
-            })
-        );
+        const _query = encodeParams({
+            minDate: from,
+            maxDate: to,
+            where: where,
+            limit: 30,
+            random: Math.random()
+        })
+        setFilterNumber(filterNumber+1)
+        setQuery(_query);
     };
 
     const handleRefreshChange = (rate) => {
@@ -129,6 +135,7 @@ export default function DataAnalytics({
     }
 
     return (
+        <FilterContext.Provider value={filterNumber}>
         <div className="DataAnalytics">
                 <ObjectFiltering
                     type={type}
@@ -161,5 +168,6 @@ export default function DataAnalytics({
                 </DataBrowsingList>
             </div>
         </div>
+        </FilterContext.Provider>
     );
 }

@@ -1,12 +1,13 @@
-import React, {useState, useEffect, useCallback, useRef} from "react";
-import {request} from "../../../remote_api/uql_api_endpoint";
+import React, {useState, useEffect, useContext} from "react";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import {ObjectRow} from "./rows/ObjectRow";
+import {MemoObjectRow} from "./rows/ObjectRow";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 import NoData from "../misc/NoData";
+import {asyncRemote} from "../../../remote_api/entrypoint";
+import {FilterContext} from "../../pages/DataAnalytics";
 
 const AutoLoadObjectList = ({
                                 label,
@@ -21,74 +22,18 @@ const AutoLoadObjectList = ({
                                 rowDetails = null
                             }) => {
 
-    const [page, setPage] = useState(0)
+    const filter = useContext(FilterContext);
+
+    const [page, setPage] = useState(onLoadRequest?.page || 0)
     const [hasMore, setHasMode] = useState(false)
     const [total, setTotal] = useState(0)
     const [rows, setRows] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [allowLoadingSpinner, setAllowLoadingSpinner] = useState(true);
-    const [lastQuery, setLastQuery] = useState("")
     const [progress, setProgress] = useState(false)
-
-    const mounted = useRef(false);
-
-    useEffect(() => {
-        mounted.current = true;
-
-        return () => {
-            mounted.current = false;
-        };
-    }, []);
-
-    const loadData = useCallback((fresh=false, progress=false) => {
-        if (mounted.current===true) {
-            setProgress(true);
-            if(progress) {
-                setLoading(true);
-                setAllowLoadingSpinner(false);
-            }
-        }
-
-        let endpoint;
-
-        if(onLoadRequest?.data?.where !== lastQuery) {  // query changed, start search form beginning
-            endpoint = {...onLoadRequest, url: `${onLoadRequest.url}/page/0`};
-            setLastQuery(endpoint?.data?.where);
-            setPage(0);
-        } else {
-            endpoint = {...onLoadRequest, url: `${onLoadRequest.url}/page/${page}`};
-        }
-
-        request(
-            endpoint,
-            (state) => {
-                if (mounted.current===true) {
-                    if(progress) {
-                        setLoading(state);
-                    }
-                    setProgress(false);
-                }
-            },
-            (e) => {
-                if (mounted.current===true) {
-                    setError(e)
-                }
-            },
-            (response) => {
-                if (response) {
-                    if (mounted.current===true) {
-                        setHasMode(response.data.result.length !== 0);
-                        setTotal(response.data.total);
-                        setRows((page === 0 || fresh === true) ? [...response.data.result] : [...rows, ...response.data.result]);
-
-                    }
-                }
-            }
-        );
-    },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [page, onLoadRequest]);
+    const [refresh, setRefresh] = useState(0);
+    const [lastFilter, setLastFilter] = useState(filter)
 
     useEffect(() => {
         let timer;
@@ -97,7 +42,7 @@ const AutoLoadObjectList = ({
             if (timer) {
                 clearInterval(timer);
             }
-            timer = setInterval(() => {loadData(true, false)}, refreshInterval * 1000);
+            timer = setInterval(() => {setRefresh(Math.random())}, refreshInterval * 1000);
         } else {
             if (timer) {
                 clearInterval(timer);
@@ -109,13 +54,49 @@ const AutoLoadObjectList = ({
                 clearInterval(timer);
             }
         };
-    }, [refreshInterval, loadData]);
+    }, [refreshInterval]);
+
 
     useEffect(() => {
-        loadData(false, allowLoadingSpinner);
-    },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [loadData]);
+        let isSubscribed = true;
+
+        setProgress(true);
+        if (allowLoadingSpinner) {
+            setLoading(true);
+            setAllowLoadingSpinner(false);
+        }
+
+        let _page = page;
+        if(filter !== lastFilter){
+            _page = 0
+            setPage(_page)
+        }
+        setLastFilter(filter)
+
+        const endpoint = {...onLoadRequest, url: `${onLoadRequest.url}/page/${page}`};
+
+        asyncRemote(endpoint).then(response => {
+            if (response) {
+                if (isSubscribed) {
+                    setHasMode(response.data.result.length !== 0);
+                    setTotal(response.data.total);
+                    setRows(_page === 0 ? [...response.data.result] : [...rows, ...response.data.result]);
+                }
+            }
+        }).catch(e => {
+            if (isSubscribed) {
+                setError(e)
+            }
+        }).finally(() => {
+            if (isSubscribed) {
+                if (allowLoadingSpinner) {
+                    setLoading(false);
+                }
+                setProgress(false);
+            }
+        })
+        return () => isSubscribed = false;
+    }, [page, refresh, filter]);
 
     const widthStyle =
         typeof timeFieldWidth !== "undefined"
@@ -141,7 +122,7 @@ const AutoLoadObjectList = ({
         if (Array.isArray(rows)) {
             return rows.map((row, index) => {
                 return (
-                    <ObjectRow
+                    <MemoObjectRow
                         key={index}
                         row={row}
                         timeField={timeField}

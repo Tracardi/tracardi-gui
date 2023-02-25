@@ -84,7 +84,7 @@ function DetailsObjectList({
 
     const { classes } = useStyles();
 
-    return <React.Fragment>
+    return <>
 
         <AutoLoadObjectList
             label={label}
@@ -106,7 +106,7 @@ function DetailsObjectList({
                 {detailsData && displayDetails && displayDetails(detailsData)}
             </div>
         </Drawer>}
-    </React.Fragment>
+    </>
 }
 
 export default DetailsObjectList

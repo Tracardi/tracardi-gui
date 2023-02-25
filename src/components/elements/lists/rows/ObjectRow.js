@@ -53,3 +53,9 @@ export function ObjectRow({row, timeField, onClick, filterFields, displayDetailB
         onClick={onClick}
     />
 }
+
+function rowsAreEqual(prevRow, nextRow) {
+    return prevRow.id === nextRow.id;
+}
+
+export const MemoObjectRow = React.memo(ObjectRow, rowsAreEqual);
