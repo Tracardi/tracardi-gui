@@ -37,6 +37,7 @@ const ElasticClusterHealthInfo = React.lazy(() => import("./pages/ElasticCluster
 const ElasticIndicesInfo = React.lazy(() => import("./pages/ElasticIndicesInfo"))
 const Migrations = React.lazy(() => import("./pages/Migrations"))
 const EventManagement = React.lazy(() => import("./pages/EventManagement"))
+const EventToProfile = React.lazy(() => import("./pages/EventToProfile"))
 const EventRedirect = React.lazy(() => import('./pages/EventRedirect'))
 const Users = React.lazy(() => import("./pages/Users"))
 const Destinations = React.lazy(() => import("./pages/Destinations"))
@@ -213,6 +214,10 @@ const AppBox = () => {
                                 <EventManagement/>, "/inbound/event/management", <><BsStar size={20}
                                                                                            style={{marginRight: 5}}/>{"Event indexing"}</>
                             ),
+                            new PrivateTab(["admin", "developer"],
+                                <EventToProfile/>, "/inbound/event-to-profile", "Event to profile coping"
+                            ),
+
                         ]}
                         />
                     </Suspense>
