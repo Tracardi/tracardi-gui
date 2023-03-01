@@ -117,12 +117,13 @@ const SignInForm = ({showAlert}) => {
 
     const handleSubmit = async (event) => {
 
-        track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-login', {
-            email,
-            apiUrl,
-            platform: "Tracardi " + version(),
-            location: await getLocation()
-        }).then(() => {
+        getLocation().then(result => {
+            track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-login', {
+                email,
+                apiUrl,
+                platform: "Tracardi " + version(),
+                location: result
+            }).then(() => {})
         })
 
         const api = loginUser(email, password);

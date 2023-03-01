@@ -153,7 +153,7 @@ export default function EventToProfileForm({
             <TuiFormGroupContent>
                 <TuiFormGroupField header="What should be copied"
                                    description="Select which event items should be copied to the profile.
-                                   Type key, value pair with the key as event data (e.g. property.email) and value as
+                                   Type key, value pair with the key as event data (e.g. properties.email) and value as
                                    the profile data (e.g. pii.email)">
                     <Switch
                         checked={enabled}
