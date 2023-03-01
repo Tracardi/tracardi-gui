@@ -111,6 +111,7 @@ const EventSourceAdvancedForm = ({value: _value, onChange}) => {
                                    with all data collected in the profile. When turned on, set event
                                    options to 'profile: true' to include profile data in response. Read 'event tracking'
                                    chapter in manual for details and use this option with caution. ">
+                        <NotImplemented>This feature is disabled for security reasons. This feature will be removed in future versions. Use Create Response in the workflow.</NotImplemented>
                         <div style={{display: "flex", alignItems: "center"}}>
                             <Switch
                                 checked={value.returns_profile}
