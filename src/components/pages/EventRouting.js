@@ -1,20 +1,17 @@
 import React, {useEffect, useState} from "react";
 import {SlMinus, SlPlus} from "react-icons/sl";
 import Paper from "@mui/material/Paper";
-import PropertyField from "../elements/details/PropertyField";
 import Grid from "@mui/material/Grid";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import NoData from "../elements/misc/NoData";
-import FlowDisplay from "../flow/FlowDetails";
-import EventSourceDetails from "../elements/details/EventSourceDetails";
-import RuleForm from "../elements/forms/RuleForm";
+import RoutingFlow from "../elements/details/RoutingFlow";
+import Chip from "@mui/material/Chip";
 
-const PlusMinusIcon = ({onChange}) => {
-    const [expand, setExpand] = useState(false)
+
+const PlusMinusIcon = ({expand, onChange}) => {
 
     const handleChange = () => {
         const state = !expand
-        setExpand(state)
         if (onChange instanceof Function) {
             onChange(state)
         }
@@ -25,39 +22,46 @@ const PlusMinusIcon = ({onChange}) => {
         : <SlMinus size={20} style={{marginRight: 5, cursor: "pointer"}} onClick={handleChange}/>
 }
 
-const EventRoutingRule = ({rule, onChange}) => {
-    const [shadow, setShadow] = useState(1)
-    return <Paper style={{margin: 5, padding: 10}} elevation={shadow} onMouseOver={() => setShadow(6)}
-                  onMouseOut={() => setShadow(1)}>
-        <PropertyField name="Rule name" content={rule.name} labelWidth={200}>
-            <RuleForm init={rule} onEnd={onChange}/>
-        </PropertyField>
-        <PropertyField name="Event source" content={rule.source.name} labelWidth={200}>
-            <EventSourceDetails id={rule.source.id}/>
-        </PropertyField>
-        <PropertyField name="Workflow" content={rule.flow.name} underline={false} labelWidth={200}>
-            <FlowDisplay id={rule.flow.id}/>
-        </PropertyField>
-    </Paper>
-}
+// const EventRoutingCard = ({rule, onChange}) => {
+//     const [shadow, setShadow] = useState(1)
+//     return <div style={{margin: 5, padding: 10}} elevation={shadow} onMouseOver={() => setShadow(6)}
+//                   onMouseOut={() => setShadow(1)}>
+//         <RoutingFlow/>
+//         <PropertyField name="Rule name" content={rule.name} labelWidth={200}>
+//             <RuleForm init={rule} onEnd={onChange}/>
+//         </PropertyField>
+//         <PropertyField name="Event source" content={rule.source.name} labelWidth={200}>
+//             <EventSourceDetails id={rule.source.id}/>
+//         </PropertyField>
+//         <PropertyField name="Workflow" content={rule.flow.name} underline={false} labelWidth={200}>
+//             <FlowDisplay id={rule.flow.id}/>
+//         </PropertyField>
+//     </div>
+// }
 
-const EventRoutingRuleTree = ({rule, onChange}) => {
+const EventTypeTree = ({event, onChange}) => {
 
     const [expand, setExpand] = useState(false)
 
 
     return <div style={{flexDirection: "column", marginBottom: 5}}>
         <div className="flexLine" style={{width: "100%"}}>
-            <PlusMinusIcon onChange={(v) => setExpand(v)}/>
-            <Paper style={{padding: "5px 10px"}} elevation={3}>
-                {rule.event.type}
+            <PlusMinusIcon expand={expand} onChange={(v) => setExpand(v)}/>
+            <Paper style={{padding: "6px 20px", marginRight: 10, fontSize: 16,cursor: "pointer"}}
+                   onClick={() => setExpand(!expand)}
+                   elevation={6}>
+                {event.type}
             </Paper>
+            <div style={{padding: "5px 10px"}}>
+                Event sources: {Array.isArray(event.source) && event.source.map((src) => <Chip label={src.id} key={src.id}
+                                                                                                              style={{marginRight: 2}}
+                                                                                                              size="small"/>)}
+            </div>
         </div>
         {expand && <Grid container style={{margin: 10, display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
-            {rule['_inner_hits'].types.result.map((item, index) => <Grid item xs={12} md={6} lg={4}
-                                                                         xl={3} key={index}>
-                <EventRoutingRule rule={item} onChange={onChange}/></Grid>)}
-        </Grid>}
+            <RoutingFlow event={event}/>
+        </Grid>
+        }
     </div>
 }
 
@@ -66,22 +70,25 @@ const EventTypesToRules = () => {
     const [data, setData] = useState([])
     const [refresh, setRefresh] = useState(1);
 
+
     useEffect(() => {
         asyncRemote({
-            url: '/rules/by_event_type'
-        }).then(response => {
+            url: "/events/by-type/by-source"
+        }).then((response) => {
             setData(response.data)
+            console.log(response.data)
         })
     }, [refresh])
 
-    if (Array.isArray(data.result)) {
+
+    if (Array.isArray(data)) {
         return <div style={{
-            margin: 10,
-            padding: "20px 20px",
+            margin: 15,
+            padding: "40px 30px 30px 30px",
             backgroundColor: "#dfdfdf",
-            borderRadius: 10
-        }}>{data.result.map((rule, index) => <EventRoutingRuleTree
-            key={index} rule={rule}
+            borderRadius: 15
+        }}>{data.map((event, index) => <EventTypeTree
+            key={index} event={event}
             onChange={() => setRefresh(refresh + 1)}/>)}</div>
     }
 

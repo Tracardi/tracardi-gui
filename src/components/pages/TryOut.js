@@ -16,6 +16,14 @@ import KqlAutoComplete from "../elements/forms/KqlAutoComplete";
 import ListOfForms from "../elements/forms/ListOfForms";
 import Switch from "@mui/material/Switch";
 import Checkbox from "@mui/material/Checkbox";
+import Box from "@mui/material/Box";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepContent from "@mui/material/StepContent";
+import StepLabel from "@mui/material/StepLabel";
+import Paper from "@mui/material/Paper";
+import {BsStar} from "react-icons/bs";
+import NoData from "../elements/misc/NoData";
 
 export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
@@ -49,7 +57,68 @@ export default function TryOut() {
             </>
     }
 
+    const Routing = () => {
+        return (
+            <Box sx={{ maxWidth: 400 }}>
+                <Stepper orientation="vertical">
+                    <Step key={"event-source"} active={true}>
+                            <StepLabel optional="Collected from event source">Event source</StepLabel>
+                            <StepContent>
+                                <Paper style={{padding: 20}}>
+                                    <h3>Desc</h3>
+                                    <Box sx={{ mb: 2 }}>
+                                        sss
+                                    </Box>
+                                </Paper>
+
+                            </StepContent>
+                    </Step>
+                    <Step key={"validation"} active={true}>
+                        <StepLabel optional="Event data validation">
+                            Data Validation
+                        </StepLabel>
+                        <StepContent>
+                            <Paper>
+                                <NoData header="No validation set"/>
+                            </Paper>
+                        </StepContent>
+                    </Step>
+                    <Step key={"reshaping"} active={true}>
+                        <StepLabel optional="Event data reshaping">
+                            Reshaping
+                        </StepLabel>
+                        <StepContent>
+                            <Paper>
+                                <NoData header="No reshaping set"/>
+                            </Paper>
+                        </StepContent>
+                    </Step>
+                    <Step key={"indexing"} active={true}>
+                        <StepLabel optional="Event indexing">
+                            Indexing
+                        </StepLabel>
+                        <StepContent>
+                            <Paper>
+                                <NoData header="No indexing set"/>
+                            </Paper>
+                        </StepContent>
+                    </Step>
+                    <Step key={"coping"} active={true}>
+                        <StepLabel optional="How the date is transferred form event to profile">
+                            Event to profile
+                        </StepLabel>
+                        <StepContent>
+                            <Paper>
+                                <NoData header="No coping of data set"/>
+                            </Paper>
+                        </StepContent>
+                    </Step>
+                </Stepper>
+            </Box>)
+    }
+
     return (<div style={{padding: 10}}>
+            <Routing/>
             <KqlAutoComplete onChange={(v) => console.log(v)}/>
             <FRM value={false} onChange={(v) => console.log("c", v)}/>
             <div style={{width: 600}}>
