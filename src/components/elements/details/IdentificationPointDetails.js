@@ -11,13 +11,87 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import IdentificationPointForm from "../forms/IdentifiactionPointForm";
 
-export default function IdentificationPointDetails({id, onDeleteComplete}) {
+export function IdentificationPointCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
-    const [data, setData] = React.useState(null);
-    const [loading, setLoading] = React.useState(false);
     const [displayEdit, setDisplayEdit] = React.useState(false);
 
     const confirm = useConfirm();
+
+    const handleEdit = () => {
+        if (data) {
+            setDisplayEdit(true);
+        }
+    }
+
+    const handleEditComplete = (flowData) => {
+        setDisplayEdit(false);
+        if(onEditComplete instanceof Function) onEditComplete(flowData);
+    }
+
+    const handleDelete = () => {
+        confirm({title: "Do you want to delete this event identification point?", description: "This action can not be undone."})
+            .then(async () => {
+                    try {
+                        await asyncRemote({
+                            url: '/identification/point/' + data?.id,
+                            method: "delete"
+                        })
+                        if (onDeleteComplete) {
+                            onDeleteComplete(data?.id)
+                        }
+                    } catch (e) {
+                        console.error(e)
+                    }
+                }
+            )
+            .catch(() => {
+            })
+    }
+
+    const Details = () => <TuiForm>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Identification Point"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField>
+                    <Properties properties={data}/>
+                    <Rows style={{marginTop: 20}}>
+                        <Button onClick={handleEdit}
+                                icon={<VscEdit size={20}/>}
+                                label="Edit"
+                                disabled={typeof data === "undefined"}/>
+                        {onDeleteComplete && <Button
+                            icon={<VscTrash size={20}/>}
+                            onClick={handleDelete}
+                            label="Delete"
+                            disabled={typeof data === "undefined"}
+                        />}
+                    </Rows>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+    </TuiForm>
+
+    return <div className="Box10" style={{height: "100%"}}>
+        {data && <Details/>}
+        <FormDrawer
+            width={800}
+            onClose={() => {
+                setDisplayEdit(false)
+            }}
+            open={displayEdit}>
+            {displayEdit && <IdentificationPointForm
+                onSubmit={handleEditComplete}
+                data={data}
+            />}
+        </FormDrawer>
+    </div>
+}
+
+
+export default function IdentificationPointDetails({id, onDeleteComplete, onEditComplete}) {
+
+    const [data, setData] = React.useState(null);
+    const [loading, setLoading] = React.useState(false);
 
     useEffect(() => {
             let isSubscribed = true;
@@ -41,78 +115,13 @@ export default function IdentificationPointDetails({id, onDeleteComplete}) {
         },
         [id])
 
-    const onEditClick = () => {
-        if (data) {
-            setDisplayEdit(true);
-        }
-    }
+    if (loading) return <CenteredCircularProgress/>
 
-    const onEditComplete = (flowData) => {
-        setData(flowData);
-        setDisplayEdit(false);
-    }
-
-    const onDelete = () => {
-        confirm({title: "Do you want to delete this event identification point?", description: "This action can not be undone."})
-            .then(async () => {
-                    try {
-                        await asyncRemote({
-                            url: '/identification/point/' + id,
-                            method: "delete"
-                        })
-                        if (onDeleteComplete) {
-                            onDeleteComplete(id)
-                        }
-                    } catch (e) {
-                        console.error(e)
-                    }
-                }
-            )
-            .catch(() => {
-            })
-    }
-
-    const Details = () => <TuiForm>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Identification Point"/>
-            <TuiFormGroupContent>
-                <TuiFormGroupField>
-                    <Properties properties={data}/>
-                    <Rows style={{marginTop: 20}}>
-                        <Button onClick={onEditClick}
-                                icon={<VscEdit size={20}/>}
-                                label="Edit"
-                                disabled={typeof data === "undefined"}/>
-                        {onDeleteComplete && <Button
-                            icon={<VscTrash size={20}/>}
-                            onClick={onDelete}
-                            label="Delete"
-                            disabled={typeof data === "undefined"}
-                        />}
-                    </Rows>
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-    </TuiForm>
-
-    return <div className="Box10" style={{height: "100%"}}>
-        {loading && <CenteredCircularProgress/>}
-        {data && <Details/>}
-        <FormDrawer
-            width={800}
-            onClose={() => {
-                setDisplayEdit(false)
-            }}
-            open={displayEdit}>
-            {displayEdit && <IdentificationPointForm
-                onSubmit={onEditComplete}
-                data={data}
-            />}
-        </FormDrawer>
-    </div>
+    return <IdentificationPointCard data={data} onDeleteComplete={onDeleteComplete} onEditComplete={onEditComplete}/>
 }
 
 IdentificationPointDetails.propTypes = {
     id: PropTypes.string,
     onDeleteComplete: PropTypes.func,
+    onEditComplete: PropTypes.func
 };

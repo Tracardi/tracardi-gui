@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, {useEffect} from "react";
 import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
@@ -18,82 +18,69 @@ import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import ActiveTag from "../misc/ActiveTag";
 
-export default function EventMataDataDetails({id, onDeleteComplete, onEditComplete}) {
+export function EventMetaDataCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
-    const [data, setData] = React.useState(null);
-    const [loading, setLoading] = React.useState(false);
     const [displayEdit, setDisplayEdit] = React.useState(false);
     const [deleteProgress, setDeleteProgress] = React.useState(false);
 
     const confirm = useConfirm();
 
-    const mounted = useRef(false);
-
-    useEffect(() => {
-            mounted.current = true;
-            setLoading(true);
-            asyncRemote({
-                url: '/event-type/management/' + id,
-                method: "get"
-            })
-                .then((result) => {
-                    if(mounted.current) setData(result.data);
-                })
-                .catch((e)=> {
-                    console.log(e)
-                })
-                .finally(
-                    () => {if(mounted.current) setLoading(false)}
-                )
-            return () => mounted.current = false;
-        },
-        [id])
-
-    const onEditClick = () => {
+    const handleEdit = () => {
         if (data) {
             setDisplayEdit(true);
         }
     }
 
-    const onDelete = () => {
+    const handleEditComplete = (flowData) => {
+        setDisplayEdit(false);
+        if(onEditComplete instanceof Function) onEditComplete(flowData);
+    }
+
+    const handleDelete = () => {
         confirm({
             title: "Do you want to delete this event type metadata?",
             description: "This action can not be undone."
         })
             .then(async () => {
-                if(mounted.current) setDeleteProgress(true);
+                    setDeleteProgress(true);
                     try {
                         await asyncRemote({
-                            url: '/event-type/management/' + id,
+                            url: '/event-type/management/' + data?.id,
                             method: "delete"
                         })
                         if (onDeleteComplete) {
-                            onDeleteComplete(data.id)
+                            onDeleteComplete(data?.id)
                         }
                     } catch (e) {
 
                     }
                 }
             )
-            .catch(() => {})
-            .finally(() => {if(mounted.current) setDeleteProgress(false);})
+            .catch(() => {
+            })
+            .finally(() => {
+                setDeleteProgress(false);
+            })
     }
 
     const Details = () => <TuiForm>
-        <TuiFormGroup>
+        {displayMetadata && <TuiFormGroup>
             <TuiFormGroupContent>
-                <PropertyField name="Event type" content={<IconLabel value={data.event_type} icon={<FlowNodeIcons icon="event"/>}/>}/>
+                <PropertyField name="Event type"
+                               content={<IconLabel value={data.event_type} icon={<FlowNodeIcons icon="event"/>}/>}/>
                 <PropertyField name="Name" content={data.name}/>
                 <PropertyField name="Description" content={data.description}/>
                 <PropertyField name="Tags" underline={false} content={<TuiTags tags={data.tags} size="small"/>}/>
             </TuiFormGroupContent>
-        </TuiFormGroup>
+        </TuiFormGroup>}
         <TuiFormGroup>
             <TuiFormGroupHeader header="Event data indexing"/>
             <TuiFormGroupContent>
-                <PropertyField name="Indexing enabled" underline={false} content={<ActiveTag active={data.index_enabled}/>}/>
+                <PropertyField name="Indexing enabled" underline={false}
+                               content={<ActiveTag active={data.index_enabled}/>}/>
                 <h3>Property to Trait Indexing Schema</h3>
-                <p>This is the schema describing how properties are indexed as traits. Indexed property is removed from properties.</p>
+                <p>This is the schema describing how properties are indexed as traits. Indexed property is removed from
+                    properties.</p>
                 {!isEmptyObjectOrNull(data?.index_schema)
                     ? <Properties properties={data.index_schema}/>
                     : <NoData header="No data indexing is set">
@@ -103,20 +90,19 @@ export default function EventMataDataDetails({id, onDeleteComplete, onEditComple
             </TuiFormGroupContent>
         </TuiFormGroup>
         <Rows style={{marginTop: 20}}>
-            <Button onClick={onEditClick}
+            <Button onClick={handleEdit}
                     icon={<VscEdit size={20}/>}
                     label="Edit" disabled={typeof data === "undefined"}/>
             <Button
                 progress={deleteProgress}
                 icon={<VscTrash size={20}/>}
-                onClick={onDelete}
+                onClick={handleDelete}
                 label="Delete"
                 disabled={typeof data === "undefined"}/>
         </Rows>
     </TuiForm>
 
     return <div className="Box10" style={{height: "100%"}}>
-        {loading && <CenteredCircularProgress/>}
         {data && <Details/>}
         <FormDrawer
             width={800}
@@ -125,11 +111,51 @@ export default function EventMataDataDetails({id, onDeleteComplete, onEditComple
             }}
             open={displayEdit}>
             {displayEdit && <EventMetadataForm
-                onSaveComplete={onEditComplete}
+                onSubmit={handleEditComplete}
                 {...data}
             />}
         </FormDrawer>
     </div>
+}
+
+
+export default function EventMataDataDetails({id, onDeleteComplete, onEditComplete}) {
+
+    const [data, setData] = React.useState(null);
+    const [loading, setLoading] = React.useState(false);
+
+    useEffect(() => {
+            let isSubscribed = true;
+            setLoading(true);
+            asyncRemote({
+                url: '/event-type/management/' + id,
+                method: "get"
+            })
+                .then((result) => {
+                    if (isSubscribed) setData(result.data);
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
+                .finally(
+                    () => {
+                        if (isSubscribed) setLoading(false)
+                    }
+                )
+            return () => isSubscribed = false;
+        },
+        [id])
+
+    const handleEditComplete = (data) => {
+        setData(data)
+        if (onEditComplete instanceof Function) {
+            onEditComplete(data)
+        }
+    }
+
+    if (loading) return <CenteredCircularProgress/>
+
+    return <EventMetaDataCard data={data} onDeleteComplete={onDeleteComplete} onEditComplete={handleEditComplete}/>
 }
 
 EventMataDataDetails.propTypes = {

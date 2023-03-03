@@ -157,7 +157,7 @@ export default function EventValidationForm({onSubmit, init}) {
                 start validation. Empty condition means validate defined event type.">
                     <TextField
                         label={"Condition"}
-                        value={condition}
+                        value={condition || ""}
                         multiline
                         rows={3}
                         onChange={(ev) => {

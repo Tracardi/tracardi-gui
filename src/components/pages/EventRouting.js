@@ -22,23 +22,6 @@ const PlusMinusIcon = ({expand, onChange}) => {
         : <SlMinus size={20} style={{marginRight: 5, cursor: "pointer"}} onClick={handleChange}/>
 }
 
-// const EventRoutingCard = ({rule, onChange}) => {
-//     const [shadow, setShadow] = useState(1)
-//     return <div style={{margin: 5, padding: 10}} elevation={shadow} onMouseOver={() => setShadow(6)}
-//                   onMouseOut={() => setShadow(1)}>
-//         <RoutingFlow/>
-//         <PropertyField name="Rule name" content={rule.name} labelWidth={200}>
-//             <RuleForm init={rule} onEnd={onChange}/>
-//         </PropertyField>
-//         <PropertyField name="Event source" content={rule.source.name} labelWidth={200}>
-//             <EventSourceDetails id={rule.source.id}/>
-//         </PropertyField>
-//         <PropertyField name="Workflow" content={rule.flow.name} underline={false} labelWidth={200}>
-//             <FlowDisplay id={rule.flow.id}/>
-//         </PropertyField>
-//     </div>
-// }
-
 const EventTypeTree = ({event, onChange}) => {
 
     const [expand, setExpand] = useState(false)
@@ -76,7 +59,6 @@ const EventTypesToRules = () => {
             url: "/events/by-type/by-source"
         }).then((response) => {
             setData(response.data)
-            console.log(response.data)
         })
     }, [refresh])
 

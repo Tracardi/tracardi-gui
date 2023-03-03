@@ -19,7 +19,7 @@ export default function EventMetadataForm({
                                               index_schema: _indexSchema,
                                               index_enabled: _indexEnabled,
                                               tags: _tags,
-                                              onSaveComplete
+                                              onSubmit
                                           }) {
 
     const [name, setName] = useState(_name || "");
@@ -83,8 +83,8 @@ export default function EventMetadataForm({
             })
 
             if (response?.data && mounted.current) {
-                if (onSaveComplete) {
-                    onSaveComplete(payload)
+                if (onSubmit) {
+                    onSubmit(payload)
                 }
             }
 
@@ -181,5 +181,5 @@ EventMetadataForm.propTypes = {
     description: PropTypes.string,
     enabled: PropTypes.bool,
     tags: PropTypes.array,
-    onSaveComplete: PropTypes.func
+    onSubmit: PropTypes.func
 }

@@ -269,7 +269,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                 <Drawer anchor="right" open={openRuleForm} onClose={() => setOpenRuleForm(false)}>
                     <div style={{width: 600}}>
                         {openRuleForm && <RuleForm
-                            init={{
+                            data={{
                                 flow: {
                                     id: flowId,
                                     name: flowMetaData?.name
@@ -280,7 +280,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                                 source: {},
                                 sourceDisabled: true
                             }}
-                            onEnd={() => {
+                            onSubmit={() => {
                                 setOpenRuleForm(false);
                                 setRefresh(refresh + 1)
                             }}/>}

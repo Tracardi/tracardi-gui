@@ -14,7 +14,7 @@ export default function EventManagement() {
     const [refresh, setRefresh] = useState(0);
 
     const urlFunc= useCallback((query) => ('/event-type/management/search/by_tag'+ ((query) ? "?query=" + query : "")),[]);
-    const addFunc = useCallback((close) => <EventMetadataForm onSaveComplete={close}/>,[]);
+    const addFunc = useCallback((close) => <EventMetadataForm onSubmit={close}/>,[]);
     const detailsFunc= useCallback((id, close) => <EventMataDataDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
 
     const confirm = useConfirm();

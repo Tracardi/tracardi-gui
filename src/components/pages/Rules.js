@@ -13,8 +13,8 @@ export default function Rules() {
     const [refresh, setRefresh] = useState(0);
 
     const urlFunc = useCallback((query) => ('/rules/by_tag' + ((query) ? "?query=" + query : "")), [])
-    const addFunc = useCallback((close) => <RuleForm onEnd={close}/>, [])
-    const detailsFunc = useCallback((id, close) => <RuleDetails id={id} onDelete={close} onEdit={close}/>, []);
+    const addFunc = useCallback((close) => <RuleForm onSubmit={close}/>, [])
+    const detailsFunc = useCallback((id, close) => <RuleDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, []);
 
     const confirm = useConfirm();
 

@@ -12,10 +12,10 @@ import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import TuiTagger from "../tui/TuiTagger";
 import ErrorsBox from "../../errors/ErrorsBox";
 
-export default function RuleForm({onEnd, init}) {
+export default function RuleForm({onSubmit, data}) {
 
-    if (!init) {
-        init = {
+    if (!data) {
+        data = {
             source: {},
             event: {},
             flow: {},
@@ -25,18 +25,18 @@ export default function RuleForm({onEnd, init}) {
         }
     }
 
-    const [flow, setFlow] = useState(init?.flow || {});
-    const [type, setType] = useState(init?.event?.type ? {name: init.event.type, id: init.event.type} : {});
-    const [name, setName] = useState(init?.name || "");
-    const [description, setDescription] = useState(init.description);
-    const [source, setSource] = useState(init.source);
+    const [flow, setFlow] = useState(data?.flow || {});
+    const [type, setType] = useState(data?.event?.type ? {name: data.event.type, id: data.event.type} : {});
+    const [name, setName] = useState(data?.name || "");
+    const [description, setDescription] = useState(data.description);
+    const [source, setSource] = useState(data.source);
     const [error, setError] = useState(null);
     const [nameErrorMessage, setNameErrorMessage] = useState("");
     const [typeErrorMessage, setTypeErrorMessage] = useState("");
     const [flowErrorMessage, setFlowErrorMessage] = useState("");
     const [sourceErrorMessage, setSourceErrorMessage] = useState("");
     const [processing, setProcessing] = useState(false);
-    const [tags, setTags] = useState(init?.tags || []);
+    const [tags, setTags] = useState(data?.tags || []);
 
     const mounted = useRef(false);
 
@@ -91,7 +91,7 @@ export default function RuleForm({onEnd, init}) {
         }
 
         const payload = {
-            id: (!init?.id) ? uuid4() : init.id,
+            id: (!data?.id) ? uuid4() : data.id,
             name: name,
             event: {type: type.name},
             source: (source?.id) ? source : null,
@@ -108,8 +108,8 @@ export default function RuleForm({onEnd, init}) {
                 data: payload
             })
 
-            if (response.data && mounted.current && onEnd instanceof Function) {
-                onEnd(response.data)
+            if (response.data && mounted.current && onSubmit instanceof Function) {
+                onSubmit(response.data)
             }
         } catch (e) {
             if (e && mounted.current) {
@@ -194,4 +194,4 @@ export default function RuleForm({onEnd, init}) {
     </TuiForm>
 }
 
-RuleForm.propTypes = {onEnd: PropTypes.func, init: PropTypes.object}
+RuleForm.propTypes = {onSubmit: PropTypes.func, data: PropTypes.object}

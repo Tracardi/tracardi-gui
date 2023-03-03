@@ -21,49 +21,20 @@ import TuiTags from "../tui/TuiTags";
 import ActiveTag from "../misc/ActiveTag";
 import EventSourceDetails from "./EventSourceDetails";
 
+export function RuleCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
-function RuleDetails({id, onDelete, onEdit}) {
-
-    const [loading, setLoading] = React.useState(false);
     const [deleteProgress, setDeleteProgress] = React.useState(false);
-    const [data, setData] = React.useState(null);
     const [openEdit, setOpenEdit] = React.useState(false);
 
-    const mounted = useRef(false);
     const confirm = useConfirm()
-
-    useEffect(() => {
-        mounted.current = true;
-        return () => {
-            mounted.current = false;
-        };
-    }, []);
-
-    useEffect(() => {
-        setLoading(true);
-        asyncRemote({
-                url: '/rule/' + id,
-                method: "get"
-            }
-        ).then((response) => {
-            if (response?.data && mounted.current) {
-                setData(response?.data)
-            }
-        }).catch((e) => {
-            if (e && mounted.current) {
-
-            }
-        }).finally(
-            () => {
-                if (mounted.current) {
-                    setLoading(false)
-                }
-            }
-        )
-    }, [id])
 
     const handleEdit = () => {
         setOpenEdit(true)
+    }
+
+    const handleEditComplete = (flowData) => {
+        setOpenEdit(false);
+        if(onEditComplete instanceof Function) onEditComplete(flowData);
     }
 
     const handleDelete = () => {
@@ -71,11 +42,11 @@ function RuleDetails({id, onDelete, onEdit}) {
             .then(async () => {
                     setDeleteProgress(true);
                     await asyncRemote({
-                        url: '/rule/' + id,
+                        url: '/rule/' + data?.id,
                         method: "delete"
                     })
-                    if (onDelete) {
-                        onDelete(data.id)
+                    if (onDeleteComplete) {
+                        onDeleteComplete(data?.id)
                     }
                 }
             )
@@ -83,16 +54,12 @@ function RuleDetails({id, onDelete, onEdit}) {
                 () => {
                 }
             ).finally(() => {
-                if (mounted) {
-                    setDeleteProgress(false);
-                }
+                setDeleteProgress(false);
             }
         )
     }
 
-    return <>
-        {loading && <CenteredCircularProgress/>}
-        {!loading && <TuiForm style={{margin: 20}}>
+    return <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header={data?.name} description="Routing rule properties"/>
                 <TuiFormGroupContent>
@@ -136,19 +103,56 @@ function RuleDetails({id, onDelete, onEdit}) {
                 }}
                 open={openEdit}>
                 {openEdit && <RuleForm
-                    onEnd={onEdit}
-                    init={data}
+                    onSubmit={handleEditComplete}
+                    data={data}
                 />}
             </FormDrawer>
-    </TuiForm>}
-    </>
+        </TuiForm>
+
+}
+
+
+export default function RuleDetails({id, onDeleteComplete, onEditComplete}) {
+
+    const [loading, setLoading] = React.useState(false);
+    const [data, setData] = React.useState(null);
+
+    useEffect(() => {
+        let isSubscribed = true
+        setLoading(true);
+        asyncRemote({
+                url: '/rule/' + id,
+                method: "get"
+            }
+        ).then((response) => {
+            if (response?.data && isSubscribed) {
+                setData(response?.data)
+            }
+        }).catch((e) => {
+            if (e && isSubscribed) {
+
+            }
+        }).finally(
+            () => {
+                if (isSubscribed) {
+                    setLoading(false)
+                }
+            }
+        )
+        return () => {
+            isSubscribed = false;
+        };
+    }, [id])
+
+    if (loading) return <CenteredCircularProgress/>
+
+    return <RuleCard data={data} onEditComplete={onEditComplete} onDeleteComplete={onDeleteComplete}/>
 
 }
 
 RuleDetails.propTypes = {
     id: PropTypes.string,
-    onDelete: PropTypes.func,
-    onEdit: PropTypes.func,
+    onDeleteComplete: PropTypes.func,
+    onEditComplete: PropTypes.func,
 };
 
-export default RuleDetails;

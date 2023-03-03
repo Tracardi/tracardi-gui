@@ -18,41 +18,22 @@ import NoData from "../misc/NoData";
 import ActiveTag from "../misc/ActiveTag";
 import EventToProfileForm from "../forms/EventToProfileForm";
 
-export default function EventToProfileDetails({id, onDeleteComplete, onEditComplete}) {
+export function EventToProfileCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
-    const [data, setData] = React.useState(null);
-    const [loading, setLoading] = React.useState(false);
     const [displayEdit, setDisplayEdit] = React.useState(false);
     const [deleteProgress, setDeleteProgress] = React.useState(false);
 
     const confirm = useConfirm();
 
-    const mounted = useRef(false);
-
-    useEffect(() => {
-            mounted.current = true;
-            setLoading(true);
-            asyncRemote({
-                url: '/event-to-profile/' + id,
-                method: "get"
-            })
-                .then((result) => {
-                    if(mounted.current) setData(result.data);
-                })
-                .catch((e)=> {
-                    console.log(e)
-                })
-                .finally(
-                    () => {if(mounted.current) setLoading(false)}
-                )
-            return () => mounted.current = false;
-        },
-        [id])
-
     const onEditClick = () => {
         if (data) {
             setDisplayEdit(true);
         }
+    }
+
+    const handleEditComplete = (flowData) => {
+        setDisplayEdit(false);
+        if(onEditComplete instanceof Function) onEditComplete(flowData);
     }
 
     const onDelete = () => {
@@ -61,14 +42,14 @@ export default function EventToProfileDetails({id, onDeleteComplete, onEditCompl
             description: "This action can not be undone."
         })
             .then(async () => {
-                if(mounted.current) setDeleteProgress(true);
+                    setDeleteProgress(true);
                     try {
                         await asyncRemote({
-                            url: '/event-to-profile/' + id,
+                            url: '/event-to-profile/' + data?.id,
                             method: "delete"
                         })
                         if (onDeleteComplete) {
-                            onDeleteComplete(data.id)
+                            onDeleteComplete(data?.id)
                         }
                     } catch (e) {
 
@@ -76,7 +57,7 @@ export default function EventToProfileDetails({id, onDeleteComplete, onEditCompl
                 }
             )
             .catch(() => {})
-            .finally(() => {if(mounted.current) setDeleteProgress(false);})
+            .finally(() => {setDeleteProgress(false);})
     }
 
     const Details = () => <TuiForm>
@@ -115,7 +96,6 @@ export default function EventToProfileDetails({id, onDeleteComplete, onEditCompl
     </TuiForm>
 
     return <div className="Box10" style={{height: "100%"}}>
-        {loading && <CenteredCircularProgress/>}
         {data && <Details/>}
         <FormDrawer
             width={800}
@@ -124,11 +104,43 @@ export default function EventToProfileDetails({id, onDeleteComplete, onEditCompl
             }}
             open={displayEdit}>
             {displayEdit && <EventToProfileForm
-                onSaveComplete={onEditComplete}
+                onSaveComplete={handleEditComplete}
                 {...data}
             />}
         </FormDrawer>
     </div>
+}
+
+
+export default function EventToProfileDetails({id, onDeleteComplete, onEditComplete}) {
+
+    const [data, setData] = React.useState(null);
+    const [loading, setLoading] = React.useState(false);
+
+    useEffect(() => {
+            let isSubscribed = true;
+            setLoading(true);
+            asyncRemote({
+                url: '/event-to-profile/' + id,
+                method: "get"
+            })
+                .then((result) => {
+                    if(isSubscribed) setData(result.data);
+                })
+                .catch((e)=> {
+                    console.log(e)
+                })
+                .finally(
+                    () => {if(isSubscribed) setLoading(false)}
+                )
+            return () => isSubscribed= false;
+        },
+        [id])
+
+    if (loading)
+        return <CenteredCircularProgress/>
+
+    return <EventToProfileCard data={data} onDeleteComplete={onDeleteComplete} onEditComplete={onEditComplete}/>
 }
 
 EventToProfileDetails.propTypes = {
