@@ -1,5 +1,4 @@
 import React, {useEffect} from "react";
-import Properties from "./DetailProperties";
 import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
@@ -10,10 +9,10 @@ import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import EventValidationForm from "../forms/EventValidationForm";
-import MappingsObjectDetails from "./MappingsObjectDetails";
 import JsonBrowser from "../misc/JsonBrowser";
 import {isEmptyObject} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
+import EventTypeMetadata from "./EventTypeMetadata";
 
 export function EventValidationCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
@@ -56,13 +55,7 @@ export function EventValidationCard({data, onDeleteComplete, onEditComplete, dis
 
     const Details = () => <>
         <TuiForm>
-            {displayMetadata && <TuiFormGroup>
-                <TuiFormGroupContent>
-                <TuiFormGroupField>
-                    <Properties properties={data} show={['id', 'event_type', 'name', 'description', 'tags']}/>
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-            </TuiFormGroup> }
+            {displayMetadata && <EventTypeMetadata data={data}/> }
             {data.validation.condition && <TuiFormGroup>
                 <TuiFormGroupHeader header="Trigger condition"
                                     description="This validation schema is triggered only when."/>
@@ -79,7 +72,7 @@ export function EventValidationCard({data, onDeleteComplete, onEditComplete, dis
                                     validate JSON documents."/>
                 <TuiFormGroupContent>
                     <TuiFormGroupField>
-                        <JsonBrowser data={data.validation.json_schema} />
+                        <JsonBrowser data={data.validation.json_schema} tree={false}/>
 
                     </TuiFormGroupField>
                 </TuiFormGroupContent>

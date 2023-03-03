@@ -5,8 +5,8 @@ import Button from "../forms/Button";
 import 'react-json-pretty/themes/monikai.css';
 import JSONPretty from "react-json-pretty";
 
-export default function JsonBrowser({data}) {
-    const [tree, setTree] = useState(true)
+export default function JsonBrowser({data, tree: _tree =true}) {
+    const [tree, setTree] = useState(_tree)
     return <>
         <div style={{marginBottom: 20}}>
             <Button label="tree" style={{padding: 2}}  onClick={() => setTree(true)} selected={tree}/>

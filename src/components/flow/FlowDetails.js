@@ -76,10 +76,7 @@ export function FlowDisplay({showAlert, id}) {
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
-                zoomOnDoubleClick={false}
                 zoomOnScroll={false}
-                panOnScroll={false}
-                snapToGrid={true}
                 nodeTypes={nodeTypes}
                 nodesDraggable={false}
 

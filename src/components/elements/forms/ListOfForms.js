@@ -87,13 +87,14 @@ const ListOfForms = ({onChange, label="Add", form, details, value: _value, defau
                                 null
                             )
                         }
-                        </span><BsTrash size={20} style={{cursor: "pointer"}} onClick={() => handleDelete(key)}/>
+                        </span>
+                    {onChange instanceof Function &&<BsTrash size={20} style={{cursor: "pointer"}} onClick={() => handleDelete(key)}/>}
                 </div>
             })
         }
-        <div style={{margin: "20px 0"}}>
+        {onChange instanceof Function && <div style={{margin: "20px 0"}}>
             <Button label={label} onClick={handleRowAdd}/>
-        </div>
+        </div>}
 
 
     </div>

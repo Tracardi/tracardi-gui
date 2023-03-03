@@ -17,6 +17,8 @@ import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import ActiveTag from "../misc/ActiveTag";
 import EventToProfileForm from "../forms/EventToProfileForm";
+import EventTypeMetadata from "./EventTypeMetadata";
+import MappingsObjectDetails from "./MappingsObjectDetails";
 
 export function EventToProfileCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
@@ -61,24 +63,15 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
     }
 
     const Details = () => <TuiForm>
+        {displayMetadata && <EventTypeMetadata data={data}/>}
         <TuiFormGroup>
+            <TuiFormGroupHeader header="Assign data to profile"
+            description="This schema outlines which data from an event are copied to which profile data. e.g.
+                    (event) properties.email to (profile) pii.email."/>
             <TuiFormGroupContent>
-                <PropertyField name="Event type" content={<IconLabel value={data.event_type} icon={<FlowNodeIcons icon="event"/>}/>}/>
-                <PropertyField name="Name" content={data.name}/>
-                <PropertyField name="Description" content={data.description}/>
-                <PropertyField name="Tags" underline={false} content={<TuiTags tags={data.tags} size="small"/>}/>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="The schema for copying data from event to profile"/>
-            <TuiFormGroupContent>
-                <PropertyField name="Enabled" underline={false} content={<ActiveTag active={data.enabled}/>}/>
-                <h3>Copy data from event to profile</h3>
-                <p>This schema outlines which data from an event are copied to which profile data. e.g.
-                    (event) properties.email to (profile) pii.email.</p>
                 {!isEmptyObjectOrNull(data?.event_to_profile)
-                    ? <Properties properties={data.event_to_profile}/>
-                    : <NoData header="The schema for copying data is not set"/>
+                    ? <MappingsObjectDetails properties={data.event_to_profile}/>
+                    : <NoData header="No schema defined"/>
                 }
             </TuiFormGroupContent>
         </TuiFormGroup>

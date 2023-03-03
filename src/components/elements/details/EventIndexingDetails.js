@@ -8,7 +8,7 @@ import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote} from "../../../remote_api/entrypoint";
-import EventMetadataForm from "../forms/EventMetadataForm";
+import EventIndexingForm from "../forms/EventIndexingForm";
 import TuiTags from "../tui/TuiTags";
 import PropertyField from "./PropertyField";
 import IconLabel from "../misc/IconLabels/IconLabel";
@@ -18,7 +18,7 @@ import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import ActiveTag from "../misc/ActiveTag";
 
-export function EventMetaDataCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
+export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
     const [displayEdit, setDisplayEdit] = React.useState(false);
     const [deleteProgress, setDeleteProgress] = React.useState(false);
@@ -70,20 +70,21 @@ export function EventMetaDataCard({data, onDeleteComplete, onEditComplete, displ
                                content={<IconLabel value={data.event_type} icon={<FlowNodeIcons icon="event"/>}/>}/>
                 <PropertyField name="Name" content={data.name}/>
                 <PropertyField name="Description" content={data.description}/>
-                <PropertyField name="Tags" underline={false} content={<TuiTags tags={data.tags} size="small"/>}/>
+                <PropertyField name="Tags"
+                               content={<TuiTags tags={data.tags} size="small"/>}/>
+                <PropertyField name="Indexing enabled" underline={false}
+                               content={<ActiveTag active={data.index_enabled}/>}/>
             </TuiFormGroupContent>
         </TuiFormGroup>}
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Event data indexing"/>
+            <TuiFormGroupHeader header="Property to Trait Indexing Schema"
+            description="This is the schema describing how properties are indexed as traits. Indexed property is removed from
+                    properties."
+            />
             <TuiFormGroupContent>
-                <PropertyField name="Indexing enabled" underline={false}
-                               content={<ActiveTag active={data.index_enabled}/>}/>
-                <h3>Property to Trait Indexing Schema</h3>
-                <p>This is the schema describing how properties are indexed as traits. Indexed property is removed from
-                    properties.</p>
                 {!isEmptyObjectOrNull(data?.index_schema)
                     ? <Properties properties={data.index_schema}/>
-                    : <NoData header="No data indexing is set">
+                    : <NoData header="No data indexing">
                         <span style={{textAlign: "center"}}>Data is stored in event properties, it can be searched but it will not be visible as event traits, and no reporting will be possible.</span>
                     </NoData>
                 }
@@ -110,7 +111,7 @@ export function EventMetaDataCard({data, onDeleteComplete, onEditComplete, displ
                 setDisplayEdit(false)
             }}
             open={displayEdit}>
-            {displayEdit && <EventMetadataForm
+            {displayEdit && <EventIndexingForm
                 onSubmit={handleEditComplete}
                 {...data}
             />}
@@ -119,7 +120,7 @@ export function EventMetaDataCard({data, onDeleteComplete, onEditComplete, displ
 }
 
 
-export default function EventMataDataDetails({id, onDeleteComplete, onEditComplete}) {
+export default function EventIndexingDetails({id, onDeleteComplete, onEditComplete}) {
 
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -155,10 +156,10 @@ export default function EventMataDataDetails({id, onDeleteComplete, onEditComple
 
     if (loading) return <CenteredCircularProgress/>
 
-    return <EventMetaDataCard data={data} onDeleteComplete={onDeleteComplete} onEditComplete={handleEditComplete}/>
+    return <EventIndexingCard data={data} onDeleteComplete={onDeleteComplete} onEditComplete={handleEditComplete}/>
 }
 
-EventMataDataDetails.propTypes = {
+EventIndexingDetails.propTypes = {
     id: PropTypes.string,
     onDeleteComplete: PropTypes.func,
     onEditComplete: PropTypes.func

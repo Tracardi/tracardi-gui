@@ -10,6 +10,8 @@ import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import IdentificationPointForm from "../forms/IdentifiactionPointForm";
+import EventTypeMetadata from "./EventTypeMetadata";
+import IdentificationFieldMapping from "../forms/IdentificationFieldMapping";
 
 export function IdentificationPointCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
@@ -48,28 +50,34 @@ export function IdentificationPointCard({data, onDeleteComplete, onEditComplete,
             })
     }
 
-    const Details = () => <TuiForm>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Identification Point"/>
-            <TuiFormGroupContent>
-                <TuiFormGroupField>
-                    <Properties properties={data}/>
-                    <Rows style={{marginTop: 20}}>
-                        <Button onClick={handleEdit}
-                                icon={<VscEdit size={20}/>}
-                                label="Edit"
-                                disabled={typeof data === "undefined"}/>
-                        {onDeleteComplete && <Button
-                            icon={<VscTrash size={20}/>}
-                            onClick={handleDelete}
-                            label="Delete"
-                            disabled={typeof data === "undefined"}
-                        />}
-                    </Rows>
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-    </TuiForm>
+    const Details = () => <>
+        <TuiForm>
+            {displayMetadata && <EventTypeMetadata data={data}/>}
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Identification data fields"
+                                    description="Customer will data will be merged and loaded if the data from event matches
+                the data in profile. Eg. profile trait 'email' is equal to e-mail delivered in event property
+                'mail'. If any of the defined pairs match, the profile will be attached to the event."/>
+                <TuiFormGroupContent>
+                    <IdentificationFieldMapping value={data?.fields}/>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>
+        <div>
+            <Rows style={{marginTop: 20}}>
+                <Button onClick={handleEdit}
+                        icon={<VscEdit size={20}/>}
+                        label="Edit"
+                        disabled={typeof data === "undefined"}/>
+                {onDeleteComplete && <Button
+                    icon={<VscTrash size={20}/>}
+                    onClick={handleDelete}
+                    label="Delete"
+                    disabled={typeof data === "undefined"}
+                />}
+            </Rows>
+        </div>
+    </>
 
     return <div className="Box10" style={{height: "100%"}}>
         {data && <Details/>}

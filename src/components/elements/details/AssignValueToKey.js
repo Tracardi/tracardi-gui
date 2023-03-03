@@ -1,12 +1,12 @@
 import React from "react";
-import "./DetailKeyValue.css";
 import PropTypes from "prop-types";
+import Tag from "../misc/Tag";
 
 const AssignValueToKey = ({label, value}) => {
-    return <div className="DetailKeyValue">
-        <div title={label} className="DetailKey">{label}</div>
-        <div>=</div>
-        <div title={value} className='DetailValue'>{value}</div>
+    return <div className="flexLine" style={{fontSize: 20}}>
+        <div title={value} style={{padding: 5}}>{value}</div>
+        <Tag>=</Tag>
+        <div title={label} style={{padding: "5px 2px"}}>{label}</div>
     </div>
 }
 

@@ -2,9 +2,9 @@ import React, {useCallback, useState} from "react";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
 import SquareCard from "../elements/lists/cards/SquareCard";
-import EventMetadataForm from "../elements/forms/EventMetadataForm";
+import EventIndexingForm from "../elements/forms/EventIndexingForm";
 import {BsFolderCheck} from "react-icons/bs";
-import EventMataDataDetails from "../elements/details/EventMataDataDetails";
+import EventIndexingDetails from "../elements/details/EventIndexingDetails";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote} from "../../remote_api/entrypoint";
@@ -14,8 +14,8 @@ export default function EventManagement() {
     const [refresh, setRefresh] = useState(0);
 
     const urlFunc= useCallback((query) => ('/event-type/management/search/by_tag'+ ((query) ? "?query=" + query : "")),[]);
-    const addFunc = useCallback((close) => <EventMetadataForm onSubmit={close}/>,[]);
-    const detailsFunc= useCallback((id, close) => <EventMataDataDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
+    const addFunc = useCallback((close) => <EventIndexingForm onSubmit={close}/>,[]);
+    const detailsFunc= useCallback((id, close) => <EventIndexingDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
 
     const confirm = useConfirm();
 

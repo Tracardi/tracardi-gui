@@ -11,7 +11,7 @@ import TuiSelectEventType from "../tui/TuiSelectEventType";
 import JsonEditor from "../editors/JsonEditor";
 import Switch from "@mui/material/Switch";
 
-export default function EventMetadataForm({
+export default function EventIndexingForm({
                                               id,
                                               name: _name,
                                               description: _description,
@@ -175,7 +175,7 @@ export default function EventMetadataForm({
     </TuiForm>
 }
 
-EventMetadataForm.propTypes = {
+EventIndexingForm.propTypes = {
     id: PropTypes.string,
     name: PropTypes.string,
     description: PropTypes.string,

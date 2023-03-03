@@ -15,7 +15,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import {BsXCircle, BsBoxArrowDown} from "react-icons/bs";
 import {EventValidationCard} from "./EventValidationDetails";
 import {EventReshapingCard} from "./EventReshapingDetails";
-import {EventMetaDataCard} from "./EventMataDataDetails";
+import {EventIndexingCard} from "./EventIndexingDetails";
 import {IdentificationPointCard} from "./IdentificationPointDetails";
 import {EventToProfileCard} from "./EventToProfileDetails";
 import Button from "../forms/Button";
@@ -23,7 +23,7 @@ import FormDrawer from "../drawers/FormDrawer";
 import EventValidationForm from "../forms/EventValidationForm";
 import {BsPlusCircleDotted} from "react-icons/bs";
 import EventReshapingForm from "../forms/EventReshapingForm";
-import EventMetadataForm from "../forms/EventMetadataForm";
+import EventIndexingForm from "../forms/EventIndexingForm";
 import IdentificationPointForm from "../forms/IdentifiactionPointForm";
 import RuleForm from "../forms/RuleForm";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -265,8 +265,8 @@ const RoutingFlow = ({event}) => {
                              nodata="No indexing"
                              passData={true}
                              singleValue={true}
-                             details={EventMetaDataCard}
-                             add={EventMetadataForm}  // requires onSubmit
+                             details={EventIndexingCard}
+                             add={EventIndexingForm}  // requires onSubmit
                              onLoad={(response) => { return {
                                  result: [response.data],
                                  total: 1
