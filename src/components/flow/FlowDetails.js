@@ -9,6 +9,8 @@ import {Background, useEdgesState, useNodesState} from 'reactflow';
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import "reactflow/dist/style.css"
+import {MiniMap} from "@reactflow/minimap";
+import {Controls} from "@reactflow/controls";
 
 const nodeTypes = {
     flowNode: FlowNode,
@@ -76,14 +78,16 @@ export function FlowDisplay({showAlert, id}) {
                 edges={edges}
                 zoomOnDoubleClick={false}
                 zoomOnScroll={false}
-                panOnScroll={true}
+                panOnScroll={false}
                 snapToGrid={true}
                 nodeTypes={nodeTypes}
                 nodesDraggable={false}
-                style={{background: "white"}}
-                defaultViewport={{ x: 100, y: 100, zoom: 1 }}
+
+                defaultViewport={{ x: 100, y: 100, zoom: 0.8 }}
             >
                 <Background color="#555" gap={16}/>
+                <MiniMap zoomable pannable />
+                <Controls />
             </ReactFlow>
         </Suspense>
     </div>
