@@ -10,14 +10,130 @@ import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import EventReshapingForm from "../forms/EventReshapingForm";
+import {isEmptyObject} from "../../../misc/typeChecking";
+import JsonBrowser from "../misc/JsonBrowser";
+import NoData from "../misc/NoData";
+import Tabs, {TabCase} from "../tabs/Tabs";
+
+function Spanner({children}) {
+    return <div style={{padding: 20}}>{children}</div>
+}
+
+export function EventReshapingCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
+
+    const [displayEdit, setDisplayEdit] = React.useState(false);
+    const [tab, setTab] = React.useState(0);
+
+    const confirm = useConfirm();
+
+    const onEditClick = () => {
+        if (data) {
+            setDisplayEdit(true);
+        }
+    }
+
+    const handleEdit = (flowData) => {
+        if(onEditComplete instanceof Function) onEditComplete(flowData);
+        setDisplayEdit(false);
+    }
+
+    const onDelete = () => {
+        confirm({title: "Do you want to delete this event reshaping schema?", description: "This action can not be undone."})
+            .then(async () => {
+                    try {
+                        await asyncRemote({
+                            url: '/event-reshape-schema/' + data.id,
+                            method: "delete"
+                        })
+                        if (onDeleteComplete) {
+                            onDeleteComplete(data.id)
+                        }
+                    } catch (e) {
+                        console.error(e)
+                    }
+                }
+            )
+            .catch(() => {
+            })
+    }
+
+    const Details = () => <>
+        <TuiForm>
+            {displayMetadata && <TuiFormGroup>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField>
+                        <Properties properties={data} show={['id', 'event_type', 'name', 'description', 'tags']}/>
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>}
+            <Tabs tabs={["Event Properties", "Event Context", "Session Context"]} defaultTab={tab}
+                  onTabSelect={setTab}>
+                <TabCase id={0}>
+                    {!isEmptyObject(data?.reshaping?.reshape_schema?.properties)
+                        ? <Spanner><JsonBrowser data={data.reshaping.reshape_schema.properties}/></Spanner>
+                        : <NoData header="No schema defined"/>}
+                </TabCase>
+                <TabCase id={1}>
+                    {!isEmptyObject(data?.reshaping?.reshape_schema?.context)
+                        ? <Spanner><JsonBrowser data={data.reshaping.reshape_schema.context} /></Spanner>
+                        : <NoData header="No schema defined"/> }
+                </TabCase>
+                <TabCase id={2}>
+                    {!isEmptyObject(data?.reshaping?.reshape_schema?.session)
+                        ? <Spanner><JsonBrowser data={data.reshaping.reshape_schema.session} /></Spanner>
+                        : <NoData header="No schema defined"/> }
+                </TabCase>
+            </Tabs>
+
+
+
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Event reshaping schema" description="Information on event reshaping."/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField>
+                        <Properties properties={data}/>
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>
+        <div style={{marginBottom: 20}}>
+            <Rows style={{marginTop: 20}}>
+                <Button onClick={onEditClick}
+                        icon={<VscEdit size={20}/>}
+                        label="Edit"
+                        disabled={typeof data === "undefined"}/>
+                {onDeleteComplete && <Button
+                    icon={<VscTrash size={20}/>}
+                    onClick={onDelete}
+                    label="Delete"
+                    disabled={typeof data === "undefined"}
+                />}
+            </Rows>
+        </div>
+
+    </>
+
+    return <div className="Box10" style={{height: "100%"}}>
+        {data && <Details/>}
+        <FormDrawer
+            width={800}
+            onClose={() => {
+                setDisplayEdit(false)
+            }}
+            open={displayEdit}>
+            {displayEdit && <EventReshapingForm
+                onSubmit={handleEdit}
+                init={data}
+            />}
+        </FormDrawer>
+    </div>
+}
 
 export default function EventReshapingDetails({id, onDeleteComplete}) {
 
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
-    const [displayEdit, setDisplayEdit] = React.useState(false);
 
-    const confirm = useConfirm();
 
     useEffect(() => {
             let isSubscribed = true;
@@ -41,75 +157,10 @@ export default function EventReshapingDetails({id, onDeleteComplete}) {
         },
         [id])
 
-    const onEditClick = () => {
-        if (data) {
-            setDisplayEdit(true);
-        }
-    }
+    if(loading)
+        return <CenteredCircularProgress/>
 
-    const onEditComplete = (flowData) => {
-        setData(flowData);
-        setDisplayEdit(false);
-    }
-
-    const onDelete = () => {
-        confirm({title: "Do you want to delete this event reshaping schema?", description: "This action can not be undone."})
-            .then(async () => {
-                    try {
-                        await asyncRemote({
-                            url: '/event-reshape-schema/' + id,
-                            method: "delete"
-                        })
-                        if (onDeleteComplete) {
-                            onDeleteComplete(id)
-                        }
-                    } catch (e) {
-                        console.error(e)
-                    }
-                }
-            )
-            .catch(() => {
-            })
-    }
-
-    const Details = () => <TuiForm>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Event reshaping schema" description="Information on event reshaping."/>
-            <TuiFormGroupContent>
-                <TuiFormGroupField>
-                    <Properties properties={data}/>
-                    <Rows style={{marginTop: 20}}>
-                        <Button onClick={onEditClick}
-                                icon={<VscEdit size={20}/>}
-                                label="Edit"
-                                disabled={typeof data === "undefined"}/>
-                        {onDeleteComplete && <Button
-                            icon={<VscTrash size={20}/>}
-                            onClick={onDelete}
-                            label="Delete"
-                            disabled={typeof data === "undefined"}
-                        />}
-                    </Rows>
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-    </TuiForm>
-
-    return <div className="Box10" style={{height: "100%"}}>
-        {loading && <CenteredCircularProgress/>}
-        {data && <Details/>}
-        <FormDrawer
-            width={800}
-            onClose={() => {
-                setDisplayEdit(false)
-            }}
-            open={displayEdit}>
-            {displayEdit && <EventReshapingForm
-                onSubmit={onEditComplete}
-                init={data}
-            />}
-        </FormDrawer>
-    </div>
+    return <EventReshapingCard data={data} onDeleteComplete={onDeleteComplete} onEditComplete={(data) => setData(data)}/>
 }
 
 EventReshapingDetails.propTypes = {

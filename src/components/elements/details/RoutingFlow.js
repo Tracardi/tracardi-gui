@@ -13,15 +13,21 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import Typography from "@mui/material/Typography";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import {BsXCircle, BsBoxArrowDown} from "react-icons/bs";
-import EventValidationDetails from "./EventValidationDetails";
-import EventReshapingDetails from "./EventReshapingDetails";
+import {EventValidationCard} from "./EventValidationDetails";
+import {EventReshapingCard} from "./EventReshapingDetails";
 import EventMataDataDetails from "./EventMataDataDetails";
 import IdentificationPointDetails from "./IdentificationPointDetails";
 import EventToProfileDetails from "./EventToProfileDetails";
 import RuleDetails from "./RuleDetails";
+import Button from "../forms/Button";
+import FormDrawer from "../drawers/FormDrawer";
+import EventValidationForm from "../forms/EventValidationForm";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import {BsPlusCircleDotted} from "react-icons/bs";
+import EventReshapingForm from "../forms/EventReshapingForm";
 
 function hasData(data) {
-    return Array.isArray(data) && data.length >0
+    return Array.isArray(data) && data.length > 0
 }
 
 const BigStepLabel = ({children, optional, ...props}) =>
@@ -55,80 +61,147 @@ const EnabledChip = ({item}) => {
     </span>
 }
 
-const AccordionCard = ({items, nodata, details}) => {
+const AccordionCard = ({items, nodata, details, passData, displayMetadata, add, onDeleteComplete, onEditComplete, onAddComplete}) => {
     const [expanded, setExpanded] = React.useState(false);
+    const [openAddDrawer, setOpenAddDrawer] = React.useState(false);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
     };
 
-    if(!hasData(items))
+    function displayAccordion() {
+        return Array.isArray(items) && items.map((item, index) => <Accordion
+            sx={{minWidth: 700}}
+            expanded={expanded === index}
+            key={item.id}
+            onChange={handleChange(index)}
+            elevation={6}
+        >
+            <AccordionSummary
+                expandIcon={<BsBoxArrowDown size={24}/>}
+            >
+                <div className="flexLine">
+                    <EnabledChip item={item}/>
+                    <Typography
+                        sx={{color: 'text.secondary', marginLeft: 1, marginRight: 1}}>{item.description}</Typography>
+                </div>
+
+            </AccordionSummary>
+            <AccordionDetails>
+                {details && React.createElement(
+                    details,
+                    passData ? {
+                        data: item, displayMetadata,
+                        onDeleteComplete: onDeleteComplete,
+                        onEditComplete: onEditComplete,
+                    } : {
+                        id: item.id,
+                        onDeleteComplete: onDeleteComplete,
+                        onEditComplete: onEditComplete,
+                    },
+                    null
+                )}
+            </AccordionDetails>
+        </Accordion>)
+    }
+
+    function displayNoData() {
         return <Card><NoData header={nodata}
                              fontSize="1.5em"
                              icon={<BsXCircle size={30}/>}
                              style={{minWidth: 550}}/></Card>
+    }
 
-    return  Array.isArray(items) && items.map((item, index) => <Accordion
-        sx ={{minWidth: 700}}
-        expanded={expanded === index}
-        key={item.id}
-        onChange={handleChange(index)}
-    >
-        <AccordionSummary
-            expandIcon={<BsBoxArrowDown size={24}/>}
-        >
-            <div className="flexLine">
-                <EnabledChip item={item}/>
-                <Typography sx={{ color: 'text.secondary', marginLeft: 1, marginRight: 1}}>{item.description}</Typography>
-            </div>
-
-        </AccordionSummary>
-        <AccordionDetails>
-            {details && React.createElement(
-                details,
-                {id: item.id},
+    return <>
+        {add && <div style={{display: "flex", justifyContent: "end", marginBottom: 5}}>
+            <Button label="add" onClick={() => setOpenAddDrawer(true)} icon={<BsPlusCircleDotted/>}/>
+        </div>}
+        {(!hasData(items)) ? displayNoData() : displayAccordion()}
+        {add && <FormDrawer
+            width={800}
+            onClose={() => {
+                setOpenAddDrawer(false)
+            }}
+            open={openAddDrawer}>
+            {openAddDrawer && React.createElement(
+                add,
+                {
+                    onSubmit: () => {
+                        setOpenAddDrawer(false);
+                        if (onAddComplete instanceof Function) onAddComplete()
+                    }
+                },
                 null
             )}
-        </AccordionDetails>
-    </Accordion>)
+        </FormDrawer>}
+    </>
+}
+
+const RoutingStep = ({endpoint, passData, nodata, details, add, onChange, onLoad}) => {
+
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [refresh, setRefresh] = useState(0)
+
+    useEffect(() => {
+        setLoading(true)
+        asyncRemote(endpoint).then(response => {
+            setData(response.data)
+            if(onLoad instanceof Function) {
+                onLoad(hasData(response.data.result))
+            }
+        }).catch(e => {
+            setData([])
+            if(onLoad instanceof Function) {
+                onLoad(false)
+            }
+        }).finally(() => {
+            setLoading(false)
+        })
+    }, [endpoint, refresh])
+
+    if (loading) {
+        return <CenteredCircularProgress/>
+    }
+
+    const handleChange = () => {
+        setRefresh(refresh + 1)
+        if (onChange instanceof Function) {
+            onChange()
+        }
+    }
+
+    return <AccordionCard items={data.result}
+                          nodata={nodata}
+                          details={details}
+                          add={add}
+                          passData={passData}
+                          displayMetadata={false}
+                          onDeleteComplete={handleChange}
+                          onAddComplete={handleChange}
+                          onEditComplete={handleChange}
+    />
 }
 
 const RoutingFlow = ({event}) => {
 
     const [rules, setRules] = useState([])
-    const [validation, setValidation] = useState([])
-    const [reshaping, setReshaping] = useState([])
+
     const [indexing, setIndexing] = useState([])
     const [identification, setIdentification] = useState([])
     const [coping, setCoping] = useState([])
-    const [validationStep, setValidationStep] = useState(false)
-    const [reshapingStep, setReshapingStep] = useState(false)
+
     const [indexingStep, setIndexingStep] = useState(false)
     const [copingStep, setCopingStep] = useState(false)
     const [identificationStep, setIdentificationStep] = useState(false)
     const [workflowStep, setWorkflowStep] = useState(false)
     const [destinationStep, setDestinationStep] = useState(false)
 
+    const [validationStep, setValidationStep] = useState(true)
+    const [reshapingStep, setReshapingStep] = useState(true)
 
 
     useEffect(() => {
-        asyncRemote({
-            url: `/event-validators/by_type/${event.type}?only_enabled=false`
-        }).then(response => {
-            setValidation(response.data)
-            setValidationStep(hasData(response.data.result))
-            console.log(validation)
-        }).catch(e => {
-
-        })
-        asyncRemote({
-            url: `/event-reshape-schemas/by_type/${event.type}?only_enabled=false`
-        }).then(response => {
-            setReshaping(response.data)
-            setReshapingStep(hasData(response.data.result))
-        }).catch(e => {
-            console.log(e.status)
-        })
 
         asyncRemote({
             url: `/event-type/management/${event.type}`
@@ -177,30 +250,40 @@ const RoutingFlow = ({event}) => {
         <Box>
             <Stepper orientation="vertical">
                 <Step key={"validation"} active={validationStep}>
-                    <BigStepLabel optional={<span style={{fontSize: 13}}>How was the data validated</span>} onClick={() => setValidationStep(!validationStep)} style={{cursor: "pointer"}}>
+                    <BigStepLabel optional={<span style={{fontSize: 13}}>How was the data validated</span>}
+                                  onClick={() => setValidationStep(!validationStep)} style={{cursor: "pointer"}}>
                         Data Validation
                     </BigStepLabel>
                     <BigStepContent>
-                        <AccordionCard items={validation.result}
-                                       nodata="No validation"
-                                       details={EventValidationDetails}/>
+                        <RoutingStep
+                            endpoint={{url: `/event-validators/by_type/${event.type}?only_enabled=false`}}
+                            passData={true}
+                            nodata="No validation"
+                            details={EventValidationCard}
+                            add={EventValidationForm}
+                        />
                     </BigStepContent>
                 </Step>
                 <Step key={"reshaping"} active={reshapingStep}>
                     <BigStepLabel optional="How was the data changed" onClick={() => setReshapingStep(!reshapingStep)}
-                               style={{cursor: "pointer"}}>
+                                  style={{cursor: "pointer"}}>
                         Event Reshaping
                     </BigStepLabel>
                     <BigStepContent>
-                        <AccordionCard items={reshaping.result}
-                                       nodata="No reshaping"
-                                       details={EventReshapingDetails}/>
+                        <RoutingStep
+                            endpoint={{url: `/event-reshape-schemas/by_type/${event.type}?only_enabled=false`}}
+                            passData={true}
+                            nodata="No reshaping"
+                            details={EventReshapingCard}
+                            add={EventReshapingForm}
+                            // onLoad={(v) => setReshapingStep(v)}
+                        />
                     </BigStepContent>
                 </Step>
                 <Step key={"indexing"} active={indexingStep}>
                     <BigStepLabel optional="Event indexing"
-                               onClick={() => setIndexingStep(!indexingStep)}
-                               style={{cursor: "pointer"}}>
+                                  onClick={() => setIndexingStep(!indexingStep)}
+                                  style={{cursor: "pointer"}}>
                         <span style={{fontSize: 18}}>Event Indexing</span>
                     </BigStepLabel>
                     <BigStepContent>
@@ -212,7 +295,8 @@ const RoutingFlow = ({event}) => {
                 </Step>
                 <Step key={"identification"} active={identificationStep}>
                     <BigStepLabel optional="Is this event used to identify a customer"
-                               onClick={() => setIdentificationStep(!identificationStep)} style={{cursor: "pointer"}}>
+                                  onClick={() => setIdentificationStep(!identificationStep)}
+                                  style={{cursor: "pointer"}}>
                         Identification check point
                     </BigStepLabel>
                     <BigStepContent>
@@ -222,7 +306,8 @@ const RoutingFlow = ({event}) => {
                     </BigStepContent>
                 </Step>
                 <Step key={"coping"} active={copingStep}>
-                    <BigStepLabel optional="How the date is transferred form event to profile"  onClick={() => setCopingStep(!copingStep)} style={{cursor: "pointer"}}>
+                    <BigStepLabel optional="How the date is transferred form event to profile"
+                                  onClick={() => setCopingStep(!copingStep)} style={{cursor: "pointer"}}>
                         Event to profile
                     </BigStepLabel>
                     <BigStepContent>
@@ -232,17 +317,19 @@ const RoutingFlow = ({event}) => {
                     </BigStepContent>
                 </Step>
                 <Step key={"routing"} active={workflowStep}>
-                    <BigStepLabel optional="How the event was routed to the workflow"  onClick={() => setWorkflowStep(!workflowStep)} style={{cursor: "pointer"}}>
+                    <BigStepLabel optional="How the event was routed to the workflow"
+                                  onClick={() => setWorkflowStep(!workflowStep)} style={{cursor: "pointer"}}>
                         Workflow
                     </BigStepLabel>
                     <BigStepContent>
                         <AccordionCard items={rules.result}
-                        nodata="This event is not routed any to workflow"
-                        details={RuleDetails}/>
+                                       nodata="This event is not routed any to workflow"
+                                       details={RuleDetails}/>
                     </BigStepContent>
                 </Step>
                 <Step key={"destination"} active={destinationStep}>
-                    <BigStepLabel optional="Where the profile will be sent"  onClick={() => setDestinationStep(!destinationStep)} style={{cursor: "pointer"}}>
+                    <BigStepLabel optional="Where the profile will be sent"
+                                  onClick={() => setDestinationStep(!destinationStep)} style={{cursor: "pointer"}}>
                         Destinations
                     </BigStepLabel>
                     <BigStepContent>
