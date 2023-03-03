@@ -17,8 +17,7 @@ import {EventValidationCard} from "./EventValidationDetails";
 import {EventReshapingCard} from "./EventReshapingDetails";
 import {EventMetaDataCard} from "./EventMataDataDetails";
 import {IdentificationPointCard} from "./IdentificationPointDetails";
-import EventToProfileDetails, {EventToProfileCard} from "./EventToProfileDetails";
-import {RuleCard} from "./RuleDetails";
+import {EventToProfileCard} from "./EventToProfileDetails";
 import Button from "../forms/Button";
 import FormDrawer from "../drawers/FormDrawer";
 import EventValidationForm from "../forms/EventValidationForm";
@@ -29,6 +28,7 @@ import IdentificationPointForm from "../forms/IdentifiactionPointForm";
 import RuleForm from "../forms/RuleForm";
 import CircularProgress from "@mui/material/CircularProgress";
 import EventToProfileForm from "../forms/EventToProfileForm";
+import FlowDisplay from "../../flow/FlowDetails";
 
 function hasData(data) {
     return Array.isArray(data) && data.length > 0
@@ -117,7 +117,9 @@ const AccordionCard = ({items, nodata, details, passData, singleValue=false, dis
 
     return <>
         {add && <div style={{display: "flex", justifyContent: "end", marginBottom: 5}}>
-            <Button label={singleValue ? "Add or Replace ":"Add"} onClick={() => setOpenAddDrawer(true)} icon={<BsPlusCircleDotted/>}/>
+            <Button label={singleValue ? "Add or Replace ":"Add"}
+                    onClick={() => setOpenAddDrawer(true)}
+                    icon={<BsPlusCircleDotted size={20}/>}/>
         </div>}
         {(!hasData(items)) ? displayNoData() : displayAccordion()}
         {add && <FormDrawer
@@ -154,49 +156,6 @@ const ProcessStepAccordion = ({data, passData, singleValue=false, nodata, detail
                           onEditComplete={onChange}
     />
 }
-
-// const RoutingStep = ({endpoint, passData, singleValue=false, nodata, details, add, onChange, onLoad, onLoading}) => {
-//
-//     const [data, setData] = useState([])
-//     const [refresh, setRefresh] = useState(0)
-//
-//     useEffect(() => {
-//         if(onLoading instanceof Function) onLoading(true)
-//         asyncRemote(endpoint).then(response => {
-//             let _data;
-//
-//             if(onLoad instanceof Function) {
-//                 _data = onLoad(response)
-//             } else {
-//                 _data = response.data
-//             }
-//             setData(_data)
-//         }).catch(e => {
-//             setData([])
-//         }).finally(() => {
-//             if(onLoading instanceof Function) onLoading(false)
-//         })
-//     }, [endpoint, refresh])
-//
-//     const handleChange = () => {
-//         setRefresh(refresh + 1)
-//         if (onChange instanceof Function) {
-//             onChange()
-//         }
-//     }
-//
-//     return <AccordionCard items={data.result}
-//                           nodata={nodata}
-//                           details={details}
-//                           add={add}
-//                           passData={passData}
-//                           displayMetadata={false}
-//                           onDeleteComplete={handleChange}
-//                           onAddComplete={handleChange}
-//                           singleValue={singleValue}
-//                           onEditComplete={handleChange}
-//     />
-// }
 
 const ProcessStep = ({step, label, optional, endpoint, passData, singleValue, nodata, details, add, onLoad}) => {
 
@@ -253,6 +212,10 @@ const ProcessStep = ({step, label, optional, endpoint, passData, singleValue, no
             />
         </BigStepContent>
     </Step>
+}
+
+const PreviewFlow = ({data, onDeleteComplete, onEditComplete}) => {
+    return <div style={{height: 700}}><FlowDisplay id={data.flow.id}/></div>
 }
 
 const RoutingFlow = ({event}) => {
@@ -399,7 +362,7 @@ const RoutingFlow = ({event}) => {
                              endpoint={{url: `/rules/by_event_type/${event.type}`}}
                              nodata="This event is not routed any to workflow"
                              passData={true}
-                             details={RuleCard}
+                             details={PreviewFlow}
                              add={RuleForm}
                 />
                 {/*<Step key={"routing"} active={workflowStep}>*/}
