@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {isString, startsWith} from "../../../misc/typeChecking";
 import AssignValueToKey from "./AssignValueToKey";
 
-export default function MappingsObjectDetails({properties, show, exclude}) {
+export default function MappingsObjectDetails({properties, show, exclude, keyPrefix, valuePrefix}) {
 
     function empty(obj) {
         return obj  && Object.keys(obj).length === 0 && obj.constructor === Object
@@ -30,23 +30,32 @@ export default function MappingsObjectDetails({properties, show, exclude}) {
     const keyValues = () => Object.entries(dotted).map(
         ([label, value]) => {
 
-            if(exclude) {
-                if(exclude.includes(label) || startsWith(label, exclude)) {
+            if (exclude) {
+                if (exclude.includes(label) || startsWith(label, exclude)) {
                     return ""
                 } else {
-                    return <AssignValueToKey key={label} label={label} value={getValue(value)}/>
+                    return <AssignValueToKey
+                        key={label}
+                        label={keyPrefix ? `${keyPrefix}${label}` : label}
+                        value={valuePrefix ? `${valuePrefix}${getValue(value)}` : getValue(value)}/>
                 }
             }
 
-            if(show) {
-                if(show.includes(label)) {
-                    return <AssignValueToKey key={label} label={label} value={getValue(value)}/>
+            if (show) {
+                if (show.includes(label)) {
+                    return <AssignValueToKey
+                        key={label}
+                        label={keyPrefix ? `${keyPrefix}${label}` : label}
+                        value={valuePrefix ? `${valuePrefix}${getValue(value)}` : getValue(value)}/>
                 } else {
                     return ""
                 }
             }
 
-            return <AssignValueToKey key={label} label={label} value={getValue(value)}/>
+            return <AssignValueToKey
+                key={label}
+                label={keyPrefix ? `${keyPrefix}${label}` : label}
+                value={valuePrefix ? `${valuePrefix}${getValue(value)}` : getValue(value)}/>
         }
     )
     return <>

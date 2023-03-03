@@ -61,10 +61,14 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
         <TuiFormGroup>
             <TuiFormGroupHeader header="Assign data to profile"
             description="This schema outlines which data from an event are copied to which profile data. e.g.
-                    (event) properties.email to (profile) pii.email."/>
+                    (profile) pii.email equals (event) properties.email."/>
             <TuiFormGroupContent>
                 {!isEmptyObjectOrNull(data?.event_to_profile)
-                    ? <MappingsObjectDetails properties={data.event_to_profile}/>
+                    ? <MappingsObjectDetails
+                        properties={data.event_to_profile}
+                        keyPrefix="event@"
+                        valuePrefix="profile@"
+                    />
                     : <NoData header="No schema defined"/>
                 }
             </TuiFormGroupContent>

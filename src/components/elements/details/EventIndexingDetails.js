@@ -83,7 +83,11 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
             />
             <TuiFormGroupContent>
                 {!isEmptyObjectOrNull(data?.index_schema)
-                    ? <MappingsObjectDetails properties={data.index_schema}/>
+                    ? <MappingsObjectDetails
+                        properties={data.index_schema}
+                        keyPrefix="event@"
+                        valuePrefix="profile@"
+                    />
                     : <NoData header="No data indexing">
                         <span style={{textAlign: "center"}}>Data is stored in event properties, it can be searched but it will not be visible as event traits, and no reporting will be possible.</span>
                     </NoData>

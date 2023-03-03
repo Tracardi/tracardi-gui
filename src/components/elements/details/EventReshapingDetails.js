@@ -79,17 +79,17 @@ export function EventReshapingCard({data, onDeleteComplete, onEditComplete, disp
                       onTabSelect={setTab}>
                     <TabCase id={0}>
                         {!isEmptyObject(data?.reshaping?.reshape_schema?.properties)
-                            ? <Spanner><JsonBrowser data={data.reshaping.reshape_schema.properties}/></Spanner>
+                            ? <Spanner><JsonBrowser data={data.reshaping.reshape_schema.properties} tree={false}/></Spanner>
                             : <NoData header="No schema defined"/>}
                     </TabCase>
                     <TabCase id={1}>
                         {!isEmptyObject(data?.reshaping?.reshape_schema?.context)
-                            ? <Spanner><JsonBrowser data={data.reshaping.reshape_schema.context}/></Spanner>
+                            ? <Spanner><JsonBrowser data={data.reshaping.reshape_schema.context} tree={false}/></Spanner>
                             : <NoData header="No schema defined"/>}
                     </TabCase>
                     <TabCase id={2}>
                         {!isEmptyObject(data?.reshaping?.reshape_schema?.session)
-                            ? <Spanner><JsonBrowser data={data.reshaping.reshape_schema.session}/></Spanner>
+                            ? <Spanner><JsonBrowser data={data.reshaping.reshape_schema.session} tree={false}/></Spanner>
                             : <NoData header="No schema defined"/>}
                     </TabCase>
                 </Tabs>
