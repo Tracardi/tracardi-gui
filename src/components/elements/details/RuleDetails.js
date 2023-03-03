@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, {useEffect} from "react";
 import "./Details.css";
 import "./RuleDetails.css";
 import Button from "../forms/Button";

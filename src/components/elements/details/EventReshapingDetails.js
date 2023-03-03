@@ -15,6 +15,7 @@ import JsonBrowser from "../misc/JsonBrowser";
 import NoData from "../misc/NoData";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import EventTypeMetadata from "./EventTypeMetadata";
+import Tag from "../misc/Tag";
 
 function Spanner({children}) {
     return <div style={{padding: 20}}>{children}</div>
@@ -68,7 +69,7 @@ export function EventReshapingCard({data, onDeleteComplete, onEditComplete, disp
                 <TuiFormGroupHeader header="Trigger condition" description="Event reshaping is triggered only when."/>
                 <TuiFormGroupContent>
                 <span style={{fontSize: 24}}>
-                    {data.reshaping.condition}
+                    <Tag backgroundColor="black" color="white">if</Tag>{data.reshaping.condition}
                 </span>
                 </TuiFormGroupContent>
             </TuiFormGroup>}

@@ -13,6 +13,7 @@ import JsonBrowser from "../misc/JsonBrowser";
 import {isEmptyObject} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import EventTypeMetadata from "./EventTypeMetadata";
+import Tag from "../misc/Tag";
 
 export function EventValidationCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
@@ -61,7 +62,7 @@ export function EventValidationCard({data, onDeleteComplete, onEditComplete, dis
                                     description="This validation schema is triggered only when."/>
                 <TuiFormGroupContent>
                     <span style={{fontSize: 24}}>
-                       {data.validation.condition}
+                       <Tag backgroundColor="black" color="white">if</Tag>{data.validation.condition}
                     </span>
                 </TuiFormGroupContent>
             </TuiFormGroup>}

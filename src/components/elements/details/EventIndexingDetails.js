@@ -13,10 +13,10 @@ import TuiTags from "../tui/TuiTags";
 import PropertyField from "./PropertyField";
 import IconLabel from "../misc/IconLabels/IconLabel";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
-import Properties from "./DetailProperties";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import ActiveTag from "../misc/ActiveTag";
+import MappingsObjectDetails from "./MappingsObjectDetails";
 
 export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
@@ -83,7 +83,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
             />
             <TuiFormGroupContent>
                 {!isEmptyObjectOrNull(data?.index_schema)
-                    ? <Properties properties={data.index_schema}/>
+                    ? <MappingsObjectDetails properties={data.index_schema}/>
                     : <NoData header="No data indexing">
                         <span style={{textAlign: "center"}}>Data is stored in event properties, it can be searched but it will not be visible as event traits, and no reporting will be possible.</span>
                     </NoData>

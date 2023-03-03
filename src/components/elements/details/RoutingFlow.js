@@ -142,21 +142,6 @@ const AccordionCard = ({items, nodata, details, passData, singleValue=false, dis
     </>
 }
 
-const ProcessStepAccordion = ({data, passData, singleValue=false, nodata, details, add, onChange}) => {
-
-    return <AccordionCard items={data.result}
-                          nodata={nodata}
-                          details={details}
-                          add={add}
-                          passData={passData}
-                          displayMetadata={false}
-                          onDeleteComplete={onChange}
-                          onAddComplete={onChange}
-                          singleValue={singleValue}
-                          onEditComplete={onChange}
-    />
-}
-
 const ProcessStep = ({step, label, optional, endpoint, passData, singleValue, nodata, details, add, onLoad}) => {
 
     const [loading, setLoading] = useState(false)
