@@ -9,7 +9,7 @@ import {
     useEdgesState,
 } from 'reactflow';
 import "reactflow/dist/style.css"
-import React, {Suspense, useCallback, useMemo, useEffect, useRef, useState} from "react";
+import React, {Suspense, useCallback, useEffect, useRef, useState} from "react";
 import PropTypes from 'prop-types';
 import FlowNode from "./FlowNode";
 import {v4 as uuid4} from "uuid";
@@ -39,8 +39,6 @@ import urlPrefix from "../../misc/UrlPrefix";
 import EdgeDetails from "./EdgeDetails";
 import CondNode from "./CondNode";
 import {MdAdsClick} from "react-icons/md";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import useTheme from "@mui/material/styles/useTheme";
 
 const ReactFlow = React.lazy(() => import('reactflow'))
@@ -154,7 +152,7 @@ const NodeDetailsHandler = React.memo(({node, onLabelSet, onConfig, onRuntimeCon
     return <NoData header="Available only as Tracardi Pro service">
         <p style={{textAlign: "center"}}>Please join Tracardi Pro for free and premium connectors and services. It is a
             free lifetime membership.</p>
-        <Button label="Sure" onClick={go("/resources/pro")}/>
+        <Button label="Sure" onClick={go("/resources#pro")}/>
     </NoData>
 
 })

@@ -105,7 +105,7 @@ function SidebarLeft({showAlert, onDebug, debugInProgress, flowType}) {
                             })
                             :
                             <div className="PluginsNotFoundMessage">
-                                No plugins match your search criteria. Please check <span style={{fontWeight: 700}}>Extensions</span> tab in <a href="/resources" className="ResourcesHref">Resources</a> section.
+                                No plugins match your search criteria. Please check <span style={{fontWeight: 700}}>Extensions</span> tab in <a href="/resources#pro" className="ResourcesHref">Resources</a> section.
                             </div>
                         }</>
                     }

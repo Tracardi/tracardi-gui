@@ -1,11 +1,12 @@
 import {getRoles} from "./login";
 
 export default class PrivateTab {
-    constructor(roles, component, path, label) {
+    constructor(roles, component, path, label, hash) {
         this.roles = roles;
         this.component = component;
         this.path = path;
         this.label = label;
+        this.hash = hash;
     }
 
     intersect(a, b) {

@@ -3,13 +3,20 @@ import Tabs, {TabCase} from "../../elements/tabs/Tabs";
 import "./PageTabs.css";
 import PrivateTab from "../../authentication/PrivateTab";
 import useTheme from "@mui/material/styles/useTheme";
+import {useLocation} from "react-router";
 
 export default function PageTabs({tabs = {}}) {
 
     const filteredTabs = tabs.filter((tab) => tab instanceof PrivateTab && tab.isAuth())
     const theme = useTheme()
+    const location = useLocation();
 
-    const [tab, setTab] = useState(0);
+    let defaultTab = 0
+    if(location?.hash) {
+        defaultTab = filteredTabs.map(e => e.hash).indexOf(location.hash);
+    }
+
+    const [tab, setTab] = useState(defaultTab);
     let i = -1;
 
     const style = {

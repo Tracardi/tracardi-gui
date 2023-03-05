@@ -41,7 +41,7 @@ function TuiSelectResource({initValue = null, value = null, disabled = false, er
                 onClick={go("/resources")} style={{textDecoration: "underline", cursor: "pointer"}}>Resource page</span>
         </div>}
         {pro && <div style={{marginTop: 8, color: "#444"}}>If the list is empty (not loading) you need to add service in Tracardi Pro. <span
-            onClick={go("/resources/pro")} style={{textDecoration: "underline", cursor: "pointer"}}>Click here</span>.</div>}
+            onClick={go("/resources#pro")} style={{textDecoration: "underline", cursor: "pointer"}}>Click here</span>.</div>}
     </div>
 }
 

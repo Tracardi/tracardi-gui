@@ -95,7 +95,7 @@ const AppBox = () => {
 
             {/*Pro*/}
 
-            <PrivateRoute path={urlPrefix("/resources")} roles={["admin", "developer"]}>
+            <PrivateRoute path={urlPrefix("/resources/*")} roles={["admin", "developer"]}>
                 <ErrorBoundary>
                     <Suspense fallback={<CenteredCircularProgress/>}>
                         <TopBar>Resources</TopBar>
@@ -104,9 +104,12 @@ const AppBox = () => {
                                 <Resources
                                     defaultLayout={"rows"}/>, "/resources", "Resources"),
                             new PrivateTab(["admin", "developer"],
-                                <ProRouter/>, "/resources/pro", <>
+                                <ProRouter/>,
+                                "/resources#pro",
+                                <>
                                     <BsStar size={20}
-                                            style={{marginRight: 5}}/>{"Extensions"}</>),
+                                            style={{marginRight: 5}}/>{"Extensions"}</>,
+                                "#pro"),
                         ]}/>
                     </Suspense>
                 </ErrorBoundary>
