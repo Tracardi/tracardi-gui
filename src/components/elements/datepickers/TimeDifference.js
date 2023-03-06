@@ -81,7 +81,7 @@ function getTimeDifference(date) {
 
 
   const baseDate = new Date(date);
-  const present = new Date(Date.now());
+  const utc_present = Date.now()
 
   const utc_base = Date.UTC(
       baseDate.getFullYear(),
@@ -90,14 +90,6 @@ function getTimeDifference(date) {
       baseDate.getHours(),
       baseDate.getMinutes(),
       baseDate.getSeconds()
-  );
-  const utc_present = Date.UTC(
-      present.getFullYear(),
-      present.getMonth(),
-      present.getDate(),
-      present.getHours(),
-      present.getMinutes(),
-      present.getSeconds()
   );
 
   const { 
