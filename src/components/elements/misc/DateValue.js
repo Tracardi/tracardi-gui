@@ -18,7 +18,7 @@ export default function DateValue({date, style}) {
         iso_date = formatDateIso(date)
         date = formatDate(date)
     }
-    console.log(date, iso_date)
+
     return <span className="flexLine" style={{...style, cursor: "pointer"}} onClick={handleTimeChange}>
         {local ? <BsClock size={20}/> : <BsGlobe size={20}/>}
         <span style={{margin: 5, marginRight: 10}}>{date || '<empty>'}</span> <TimeDifference date={iso_date}/>
