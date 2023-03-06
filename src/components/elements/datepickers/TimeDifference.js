@@ -42,7 +42,7 @@ function calcTimeDifference(present, baseDate) {
   const _days = Math.floor(diff / day);
 
   if (_days <= -1) {
-    const seconds = Math.floor((present.getTime() - baseDate.getTime()) / 1000);
+    const seconds = Math.floor(diff / 1000);
     let minutes = Math.floor(seconds / 60);
     let hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
@@ -79,8 +79,26 @@ function getTimeDifference(date) {
     return "";
   }
 
+
   const baseDate = new Date(date);
   const present = new Date(Date.now());
+
+  const utc_base = Date.UTC(
+      baseDate.getFullYear(),
+      baseDate.getMonth(),
+      baseDate.getDate(),
+      baseDate.getHours(),
+      baseDate.getMinutes(),
+      baseDate.getSeconds()
+  );
+  const utc_present = Date.UTC(
+      present.getFullYear(),
+      present.getMonth(),
+      present.getDate(),
+      present.getHours(),
+      present.getMinutes(),
+      present.getSeconds()
+  );
 
   const { 
     days, 
@@ -88,7 +106,7 @@ function getTimeDifference(date) {
     minutes, 
     _willHappen, 
     _havePassed 
-  } = calcTimeDifference(present, baseDate);
+  } = calcTimeDifference(utc_present, utc_base);
 
   const _days = `${Math.abs(days)}d`;
   const _hours = `${
