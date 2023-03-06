@@ -56,3 +56,19 @@ export function formatDate(utcString) {
     let date = new Date(utcString);
     return date.toLocaleString();
 }
+
+export function makeUtcStringTzAwareIso(utcString) {
+    if(utcString === null) {
+        return null
+    }
+    let date = new Date(utcString + "Z");
+    return date.toISOString();
+}
+
+export function formatDateIso(utcString) {
+    if(utcString === null) {
+        return null
+    }
+    let date = new Date(utcString);
+    return date.toISOString();
+}
