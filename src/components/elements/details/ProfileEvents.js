@@ -54,7 +54,6 @@ export default function ProfileEvents({profileId}) {
         asyncRemote({
             url: `/events/profile/${profileId}`
         }).then((response) => {
-            console.log(response.data)
             setEvents(response.data.result)
         }).finally(() => {
             setLoading(false)

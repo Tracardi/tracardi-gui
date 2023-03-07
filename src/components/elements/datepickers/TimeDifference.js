@@ -32,46 +32,35 @@ const TimeDifference = ({ date }) => {
   );
 };
 
-function calcTimeDifference(present, baseDate) {
-  const second = 1000;
-  const minute = second * 60;
-  const hour = minute * 60;
-  const day = hour * 24;
+function calcTimeDifference(present, eventDate) {
 
-  const diff = baseDate - present;
-  const _days = Math.floor(diff / day);
+  let diff
+  diff = present - eventDate;
 
-  if (_days <= -1) {
-    const seconds = Math.floor(diff / 1000);
-    let minutes = Math.floor(seconds / 60);
-    let hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
+  let plusMinus
+  if(diff < 0) {
+    plusMinus = -1
+  } else {
+    plusMinus = 1
+  }
 
-    hours = hours - days * 24;
-    minutes = minutes - days * 24 * 60 - hours * 60;
+  diff = diff * plusMinus
 
-    return {
+  const seconds = Math.floor(diff / 1000);
+  let minutes = Math.floor(seconds / 60);
+  let hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  hours = hours - days * 24;
+  minutes = minutes - days * 24 * 60 - hours * 60;
+
+  return {
       days,
       hours,
       minutes,
-      _willHappen: _days >= 0,
-      _havePassed: _days <= -1,
-    };
-  }
-
-  if (_days >= 0) {
-    const days = Math.abs(_days);
-    const hours = Math.abs(Math.floor((diff % day) / hour));
-    const minutes = Math.abs(Math.floor((diff % hour) / minute)) + 1;
-
-    return {
-      days,
-      hours,
-      minutes,
-      _willHappen: _days >= 0,
-      _havePassed: _days <= -1,
-    };
-  }
+      _willHappen: plusMinus > 0,
+      _havePassed: plusMinus < 0,
+    }
 }
 
 function getTimeDifference(date) {
@@ -79,10 +68,8 @@ function getTimeDifference(date) {
     return "";
   }
 
-
   const baseDate = new Date(date);
   const utc_present = Date.now()
-
   const utc_base = Date.UTC(
       baseDate.getFullYear(),
       baseDate.getMonth(),

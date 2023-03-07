@@ -12,10 +12,10 @@ export default function DateValue({date, style}) {
     }
     let iso_date;
     if(local) {
-        iso_date = makeUtcStringTzAwareIso(date)
+        iso_date = formatDateIso(date)
         date = makeUtcStringTzAware(date)
     } else {
-        iso_date = formatDateIso(date)
+        iso_date = makeUtcStringTzAwareIso(date)
         date = formatDate(date)
     }
 

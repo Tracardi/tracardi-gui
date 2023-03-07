@@ -58,7 +58,7 @@ export function formatDate(utcString) {
 }
 
 export function makeUtcStringTzAwareIso(utcString) {
-    if(utcString === null) {
+    if(!utcString) {
         return null
     }
     let date = new Date(utcString + "Z");
@@ -66,7 +66,7 @@ export function makeUtcStringTzAwareIso(utcString) {
 }
 
 export function formatDateIso(utcString) {
-    if(utcString === null) {
+    if(!utcString) {
         return null
     }
     let date = new Date(utcString);
