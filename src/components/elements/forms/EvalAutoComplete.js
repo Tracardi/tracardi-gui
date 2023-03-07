@@ -11,7 +11,8 @@ import {isString} from "../../../misc/typeChecking";
 import EvalAdornment from "./inputs/EvalAdornment";
 import {InputAdornment} from "@mui/material";
 
-const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChange, solo = true, disabled, fullWidth = false, autoCastValue: initCast}) => {
+const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChange, solo = true,
+                              disabled, fullWidth = false, autoCastValue: initCast, disableCast=false}) => {
 
     const getValue = (initValue) => {
         if (!initValue) {
@@ -138,7 +139,7 @@ const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChang
                         endAdornment: <InputAdornment position="end">
                             <>
                                 {progress ? <CircularProgress color="inherit" size={20} style={{marginRight: 3}}/> : null}
-                                <EvalAdornment position="end" value={autoCastValue} onChange={handleCastChange}/>
+                                {!disableCast && <EvalAdornment position="end" value={autoCastValue} onChange={handleCastChange}/>}
                                 {params.InputProps.endAdornment}
                             </>
                         </InputAdornment>
@@ -158,6 +159,7 @@ EvalAutoComplete.propTypes = {
     solo: PropTypes.bool,
     disabled: PropTypes.bool,
     fullWidth: PropTypes.bool,
+    disableCast: PropTypes.bool
 }
 
 const mapProps = (state) => {

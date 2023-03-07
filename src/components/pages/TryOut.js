@@ -22,7 +22,6 @@ import Step from "@mui/material/Step";
 import StepContent from "@mui/material/StepContent";
 import StepLabel from "@mui/material/StepLabel";
 import Paper from "@mui/material/Paper";
-import {BsStar} from "react-icons/bs";
 import NoData from "../elements/misc/NoData";
 
 export default function TryOut() {
@@ -116,8 +115,11 @@ export default function TryOut() {
                 </Stepper>
             </Box>)
     }
-
+    //value={{value:"123", ref:true}} autocomplete="profile"
     return (<div style={{padding: 10}}>
+
+            <RefInput label="sss" onChange={(v)=>console.log(v)} errorMessage="ssss" fullWidth/>
+            <DotAccessor label="xxx"/>
             <Routing/>
             <KqlAutoComplete onChange={(v) => console.log(v)}/>
             <FRM value={false} onChange={(v) => console.log("c", v)}/>
@@ -143,7 +145,7 @@ export default function TryOut() {
                 defaultFormValue={true}
             />
             <TimeDifference date={"2022-10-14T14:43:56.591642"}/>
-            <RefInput value="123"/>
+
             <BoxStyling value={{
                 margin: {
                     left: 10, top: 10, right: 10, bottom: 10

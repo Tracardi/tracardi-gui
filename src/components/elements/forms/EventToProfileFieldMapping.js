@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import ListOfForms from "./ListOfForms";
 import RefInput from "./inputs/RefInput";
 
-const IdentificationField = ({value, onChange}) => {
+const EventToProfileField = ({value, onChange}) => {
 
     const [data, setData] = useState(value || {
         event_property: {value:"", ref: true},
@@ -19,29 +19,30 @@ const IdentificationField = ({value, onChange}) => {
 
     return <div style={{width: "100%", display: "flex", margin: "5px 0", alignItems: "center", justifyContent: "space-between"}}>
         <RefInput value={data?.profile_trait}
-                  fullWidth={false}
+                  autocomplete="profile"
+                  fullWidth={true}
                   locked={true}
                   defaultType={true}
-                  label="Profile trait"
+                  label="Profile"
                   onChange={(value) => handleDataChange("profile_trait", value)}
-                  style={{marginRight: 5, width: "100%"}}/>
-        <span style={{padding: 5, width: 80, whiteSpace: "nowrap"}}>EQUALS</span>
+                  style={{width: "100%"}}/>
+        <span style={{margin: "0px 5px 0 5px", padding: "10px 15px", backgroundColor: "#999", color: "white", borderRadius: 10}}>=</span>
         <RefInput value={data?.event_property}
-                  fullWidth={false}
+                  fullWidth={true}
                   locked={true}
                   defaultType={true}
                   label="Event property"
                   onChange={(value) => handleDataChange("event_property", value)}
-                  style={{marginRight: 5, width: "100%"}}/>
+                  style={{width: "100%"}}/>
     </div>
 }
 
 
-const IdentificationFieldMapping = ({value, onChange}) => {
-    return <ListOfForms form={IdentificationField}
+const EventToProfileFieldMapping = ({value, onChange}) => {
+    return <ListOfForms form={EventToProfileField}
                         defaultFormValue={{event_property: {value:"", ref: true}, profile_trait: {value:"", ref: true}}}
                         value={value}
                         onChange={onChange}/>
 }
 
-export default IdentificationFieldMapping;
+export default EventToProfileFieldMapping;

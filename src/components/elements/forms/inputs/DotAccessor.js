@@ -3,7 +3,10 @@ import React, {useCallback} from "react";
 import EvalAutoComplete from "../EvalAutoComplete";
 import {isString} from "../../../../misc/typeChecking";
 
-const ValueInput = ({source, value: initValue, cast: initCast, onChange}) => {
+export function ValueInput({
+                               source, value: initValue, cast: initCast, onChange, disableCast = false,
+                               fullWidth = false
+                           }) {
 
     const [value, setValue] = React.useState(initValue || "");
     const [cast, setCast] = React.useState(initCast || false);
@@ -41,9 +44,11 @@ const ValueInput = ({source, value: initValue, cast: initCast, onChange}) => {
         return <EvalAutoComplete
             solo={true}
             autoCastValue={cast}
+            fullWidth={fullWidth}
             disabled={false}
             url={url}
             initValue={value}
+            disableCast={disableCast}
             onSetValue={(value, castValue) => handleChange(value?.id, castValue)}
             onChange={(value, castValue) => handleTyping(value?.id, castValue)}
             multiple={false}
@@ -122,7 +127,7 @@ export default function DotAccessor({
         handleNotationChange(dataSource, value, cast)
     }
 
-    let fieldsetStyle = {display: "flex", padding: "0px 15px 7px", width: "fit-content", margin: 0}
+    let fieldsetStyle = {display: "flex", padding: "0px 15px 5px", width: "fit-content", margin: 0, marginTop: -8}
     let textStyle = {}
 
     if (errorMessage) {

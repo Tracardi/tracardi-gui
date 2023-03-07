@@ -8,7 +8,7 @@ import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {v4 as uuid4} from 'uuid';
 import TextField from "@mui/material/TextField";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
-import IdentificationFieldMapping from "./IdentificationFieldMapping";
+import EventToProfileFieldMapping from "./EventToProfileFieldMapping";
 import Switch from "@mui/material/Switch";
 
 export default function IdentificationPointForm({data: _data, onSubmit}) {
@@ -159,9 +159,9 @@ export default function IdentificationPointForm({data: _data, onSubmit}) {
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Identification data fields" description="Type the location of the data that
                 will be used to identify customer. Customer will data will be loaded if the data from event matches
-                the data in profile. Eg. profile trait 'email' is equal to e-mail delivered in event property
+                the data in profile. Eg. profile 'pii.email' is equal to e-mail delivered in event property
                 'mail'. If any of the set pairs match the profile will be attached to the event.">
-                    <IdentificationFieldMapping value={data?.fields} onChange={v => handleChange("fields", v)}/>
+                    <EventToProfileFieldMapping value={data?.fields} onChange={v => handleChange("fields", v)}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Enable">
                     <Switch

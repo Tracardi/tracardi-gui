@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {v4 as uuid4} from 'uuid';
-import {BsTrash} from "react-icons/bs";
+import {SlClose} from "react-icons/sl";
 import Button from "./Button";
 import {objectMap} from "../../../misc/mappers";
 
@@ -88,7 +88,7 @@ const ListOfForms = ({onChange, label="Add", form, details, value: _value, defau
                             )
                         }
                         </span>
-                    {onChange instanceof Function &&<BsTrash size={20} style={{cursor: "pointer"}} onClick={() => handleDelete(key)}/>}
+                    {onChange instanceof Function && <SlClose size={24} style={{cursor: "pointer"}} onClick={() => handleDelete(key)}/>}
                 </div>
             })
         }
