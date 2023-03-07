@@ -35,7 +35,7 @@ const TimeDifference = ({ date }) => {
 function calcTimeDifference(present, eventDate) {
 
   let diff
-  diff = present - eventDate;
+  diff = eventDate - present;
 
   let plusMinus
   if(diff < 0) {
