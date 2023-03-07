@@ -31,8 +31,6 @@ export default function EventsAnalytics({displayChart = true}) {
         }
     }
 
-    // const displayDetails = (data) => <EventDetails event={data?.event} metadata={data?._metadata}/>
-
     return <DataAnalytics
         type="event"
         label="List of events"
@@ -59,7 +57,6 @@ export default function EventsAnalytics({displayChart = true}) {
         onLoadDataRequest={handleLoadDataRequest}
         onLoadDetails={handleLoadDetails}
         detailsDrawerWidth={1050}
-        // displayDetails={displayDetails}
         displayChart={displayChart}
         barChartColors={{processed: "#00C49F", error: "#d81b60", collected: '#0088FE'}}
     />

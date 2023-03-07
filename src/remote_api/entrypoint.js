@@ -42,7 +42,6 @@ export const asyncRemote = async (config, token=null) => {
 
     }
 
-
     config.headers = {
         ...config?.headers,
         'Authorization': token === null ? authToken() : authToken(token)

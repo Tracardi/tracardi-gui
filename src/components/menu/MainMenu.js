@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import "./MainMenu.css";
 import {BsBarChartFill, BsFolder, BsGear} from "react-icons/bs";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -17,11 +17,12 @@ import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import {changeRoute} from "../../redux/reducers/appSlice"
 import FlowNodeIcons from "../flow/FlowNodeIcons";
-import ServerContext from "../context/ServerContext";
+import ServerContextTag from "../context/ServerContextTag";
 import {Restrict} from "../authentication/Restrict";
 import {getDataContextHeader} from "../../config";
 import useTheme from "@mui/material/styles/useTheme";
 import {FaUncharted} from "react-icons/fa";
+import {DataContext} from "../AppBox";
 
 
 function MainMenu({app, showAlert, changeRoute, onContextChange}) {
@@ -33,6 +34,8 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
     const location = useLocation();
     const pathname = location.pathname
     const navigate = useNavigate();
+
+    const context = useContext(DataContext)
 
     useEffect(() => {
         changeRoute({route: pathname})
@@ -96,10 +99,13 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
         if(collapsed === true) {
             return <div className="Branding"><div className="T">T</div></div>
         }
+
         return <div className="Branding">
                 <div className="Tracardi" onClick={handleVersionWindow}>TRACARDI</div>
                 <div className="Version">v. {version()} <Restrict roles={['admin']}>
-                    <ServerContext style={{marginLeft: 5}} onContextChange={onContextChange}/>
+                    <Restrict roles={['maintainer']}>
+                        <span className="Context" style={{marginLeft: 5}}><ServerContextTag context={context} onContextChange={onContextChange}/></span>
+                    </Restrict>
                 </Restrict>
                 </div>
             </div>

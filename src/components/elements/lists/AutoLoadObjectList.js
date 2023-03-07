@@ -9,6 +9,8 @@ import NoData from "../misc/NoData";
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import {FilterContext} from "../../pages/DataAnalytics";
 import {DataContext} from "../../AppBox";
+import {LocalDataContext} from "../../pages/DataBrowsingList";
+// import {useQuery} from "react-query";
 
 const AutoLoadObjectList = ({
                                 label,
@@ -25,6 +27,7 @@ const AutoLoadObjectList = ({
 
     const filter = useContext(FilterContext);
     const context = useContext(DataContext)
+    const localContext = useContext(LocalDataContext)
 
     const [page, setPage] = useState(onLoadRequest?.page || 0)
     const [hasMore, setHasMode] = useState(false)
@@ -37,6 +40,10 @@ const AutoLoadObjectList = ({
     const [refresh, setRefresh] = useState(0);
     const [lastFilter, setLastFilter] = useState(filter)
     const [lastContext, setLastContext] = useState(context)
+
+    if(localContext) {
+        onLoadRequest = {...onLoadRequest, headers: {"x-context": "production"}}
+    }
 
     useEffect(() => {
         let timer;
@@ -59,6 +66,7 @@ const AutoLoadObjectList = ({
         };
     }, [refreshInterval]);
 
+    useEffect(()=>{setPage(0)}, [localContext])
 
     useEffect(() => {
         let isSubscribed = true;
@@ -101,7 +109,15 @@ const AutoLoadObjectList = ({
             }
         })
         return () => isSubscribed = false;
-    }, [page, refresh, filter, context]);
+    }, [page, refresh, filter, context, localContext]);
+
+    // const { _isLoading, _error, _data } = useQuery('getData', () => asyncRemote(endpoint).then(response => {
+    //     if (response) {
+    //         setHasMode(response.data.result.length !== 0);
+    //         setTotal(response.data.total);
+    //         setRows(_page === 0 ? [...response.data.result] : [...rows, ...response.data.result]);
+    //     }
+    // }))
 
     const widthStyle =
         typeof timeFieldWidth !== "undefined"

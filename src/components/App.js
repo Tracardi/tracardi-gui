@@ -19,6 +19,7 @@ import {close} from "../redux/reducers/newResource";
 import ResourceForm from "./elements/forms/ResourceForm";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
 import {IdleTimerProvider} from "react-idle-timer";
+import {QueryClient, QueryClientProvider} from "react-query";
 
 
 const AppBox = React.lazy(() => import('./AppBox'))
@@ -26,6 +27,7 @@ const AppBox = React.lazy(() => import('./AppBox'))
 const App = ({alert, resource, close}) => {
 
     const dispatch = useDispatch()
+    const queryClient = new QueryClient()
 
     const onIdle = () => {
         window.location.replace("/logout");
@@ -40,42 +42,44 @@ const App = ({alert, resource, close}) => {
             onIdle={onIdle}
             stopOnIdle={true}
             startManually={true}
-            timeout={20*60*1000}
+            timeout={20 * 60 * 1000}
             throttle={500}
             events={["connect"]}
         >
-            <Router>
-                <Routes>
-                    <Route exact path={urlPrefix("/login")} element={<SignIn/>}/>
-                    <Route exact path={urlPrefix("/logout")} element={<Logout/>}/>
-                    <Route
-                        path="*"
-                        element={
-                            <PrivateRoute path="*" roles={["admin", "marketer", "developer", "maintainer"]}>
-                                <Suspense fallback={<CenteredCircularProgress/>}>
-                                    <AppBox/>
-                                </Suspense>
-                            </PrivateRoute>
-                        }
-                    />
-                </Routes>
-                <Snackbar open={alert.show} autoHideDuration={alert.hideAfter} onClose={handleClose} anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center'
-                }}>
-                    <MuiAlert variant="filled" elevation={6} onClose={handleClose} severity={alert.type}>
-                        <AlertTitle style={{textTransform: "uppercase"}}>{alert.type}</AlertTitle>
-                        <span style={{fontWeight: 400}}>{alert.message}</span>
-                    </MuiAlert>
-                </Snackbar>
-                <FormDrawer open={resource.show} onClose={() => {
-                    close()
-                }} width={550}>
-                    <ResourceForm onClose={() => {
+            <QueryClientProvider client={queryClient}>
+                <Router>
+                    <Routes>
+                        <Route exact path={urlPrefix("/login")} element={<SignIn/>}/>
+                        <Route exact path={urlPrefix("/logout")} element={<Logout/>}/>
+                        <Route
+                            path="*"
+                            element={
+                                <PrivateRoute path="*" roles={["admin", "marketer", "developer", "maintainer"]}>
+                                    <Suspense fallback={<CenteredCircularProgress/>}>
+                                        <AppBox/>
+                                    </Suspense>
+                                </PrivateRoute>
+                            }
+                        />
+                    </Routes>
+                    <Snackbar open={alert.show} autoHideDuration={alert.hideAfter} onClose={handleClose} anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center'
+                    }}>
+                        <MuiAlert variant="filled" elevation={6} onClose={handleClose} severity={alert.type}>
+                            <AlertTitle style={{textTransform: "uppercase"}}>{alert.type}</AlertTitle>
+                            <span style={{fontWeight: 400}}>{alert.message}</span>
+                        </MuiAlert>
+                    </Snackbar>
+                    <FormDrawer open={resource.show} onClose={() => {
                         close()
-                    }}/>
-                </FormDrawer>
-            </Router>
+                    }} width={550}>
+                        <ResourceForm onClose={() => {
+                            close()
+                        }}/>
+                    </FormDrawer>
+                </Router>
+            </QueryClientProvider>
         </IdleTimerProvider>
     );
 }
