@@ -7,6 +7,7 @@ import BarChartElement from "../elements/charts/BarChart";
 import {isString} from "../../misc/typeChecking";
 
 export const FilterContext = createContext(0);
+export const LocalDataContext = createContext(null);
 
 export default function DataAnalytics({
                                           type,
@@ -25,6 +26,12 @@ export default function DataAnalytics({
                                       }) {
 
     const [filterNumber, setFilterNumber] = useState(0)
+    const [localProductionContext, setLocalProductionContext] = useState(false)
+
+    const handleLocalContextChange = (event, state) => {
+        state = (state === "production")
+        setLocalProductionContext(state)
+    }
 
     const getQuery = (type, label) => {
         const key = type + label;
@@ -114,7 +121,7 @@ export default function DataAnalytics({
             limit: 30,
             random: Math.random()
         })
-        setFilterNumber(filterNumber+1)
+        setFilterNumber(filterNumber + 1)
         setQuery(_query);
     };
 
@@ -125,9 +132,9 @@ export default function DataAnalytics({
 
     function getRefreshRate() {
         let rate = localStorage.getItem(type + "RefreshRate");
-        if(isString(rate)) {
+        if (isString(rate)) {
             const value = parseInt(rate)
-            if(!isNaN(value)) {
+            if (!isNaN(value)) {
                 rate = value
             }
         }
@@ -136,38 +143,42 @@ export default function DataAnalytics({
 
     return (
         <FilterContext.Provider value={filterNumber}>
-        <div className="DataAnalytics">
-                <ObjectFiltering
-                    type={type}
-                    initDate={query}
-                    initRefresh={refresh}
-                    onFilterClick={onFilter}
-                    onRefreshChange={handleRefreshChange}
-                />
-            <div className="Data">
-                <DataBrowsingList
-                    label={label}
-                    onLoadDataRequest={onLoadDataRequest}
-                    onLoadHistogramRequest={onLoadHistogramRequest}
-                    onLoadDetails={onLoadDetails}
-                    timeFieldLabel={timeFieldLabel}
-                    filterFields={filterFields}
-                    timeField={timeField}
-                    initQuery={query}
-                    displayDetails={displayDetails}
-                    detailsDrawerWidth={detailsDrawerWidth}
-                    displayChart={displayChart}
-                    refreshInterval={refresh}
-                    rowDetails={rowDetails}
-                >
-                  <BarChartElement
-                        onLoadRequest={onLoadHistogramRequest(query)}
-                        refreshInterval={refresh}
-                        barChartColors = {barChartColors}
-                  />
-                </DataBrowsingList>
-            </div>
-        </div>
+            <LocalDataContext.Provider value={localProductionContext}>
+                <div className="DataAnalytics">
+                    <ObjectFiltering
+                        type={type}
+                        initDate={query}
+                        initRefresh={refresh}
+                        onFilterClick={onFilter}
+                        onRefreshChange={handleRefreshChange}
+                    />
+                    <div className="Data">
+                        <DataBrowsingList
+                            label={label}
+                            onLoadDataRequest={onLoadDataRequest}
+                            onLoadHistogramRequest={onLoadHistogramRequest}
+                            onLoadDetails={onLoadDetails}
+                            timeFieldLabel={timeFieldLabel}
+                            filterFields={filterFields}
+                            timeField={timeField}
+                            initQuery={query}
+                            displayDetails={displayDetails}
+                            detailsDrawerWidth={detailsDrawerWidth}
+                            displayChart={displayChart}
+                            refreshInterval={refresh}
+                            rowDetails={rowDetails}
+                            localContext={localProductionContext}
+                            onLocalContextChange={handleLocalContextChange}
+                        >
+                            <BarChartElement
+                                onLoadRequest={onLoadHistogramRequest(query)}
+                                refreshInterval={refresh}
+                                barChartColors={barChartColors}
+                            />
+                        </DataBrowsingList>
+                    </div>
+                </div>
+            </LocalDataContext.Provider>
         </FilterContext.Provider>
     );
 }

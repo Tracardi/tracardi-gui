@@ -20,6 +20,7 @@ import ResourceForm from "./elements/forms/ResourceForm";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
 import {IdleTimerProvider} from "react-idle-timer";
 import {QueryClient, QueryClientProvider} from "react-query";
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 
 const AppBox = React.lazy(() => import('./AppBox'))
@@ -79,6 +80,7 @@ const App = ({alert, resource, close}) => {
                         }}/>
                     </FormDrawer>
                 </Router>
+                <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
         </IdleTimerProvider>
     );

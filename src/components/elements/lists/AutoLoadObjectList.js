@@ -1,16 +1,12 @@
-import React, {useState, useEffect, useContext} from "react";
-import ErrorsBox from "../../errors/ErrorsBox";
-import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import React, {useState, useEffect, useContext, useRef} from "react";
 import {ObjectRow} from "./rows/ObjectRow";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 import NoData from "../misc/NoData";
-import {asyncRemote} from "../../../remote_api/entrypoint";
-import {FilterContext} from "../../pages/DataAnalytics";
+import {FilterContext, LocalDataContext} from "../../pages/DataAnalytics";
 import {DataContext} from "../../AppBox";
-import {LocalDataContext} from "../../pages/DataBrowsingList";
-// import {useQuery} from "react-query";
+import {useFetch} from "../../../remote_api/remoteState";
 
 const AutoLoadObjectList = ({
                                 label,
@@ -26,29 +22,23 @@ const AutoLoadObjectList = ({
                             }) => {
 
     const filter = useContext(FilterContext);
-    const context = useContext(DataContext)
-    const localContext = useContext(LocalDataContext)
+    const context = useContext(DataContext);
+    const localContext = useContext(LocalDataContext);
 
-    const [page, setPage] = useState(onLoadRequest?.page || 0)
+    const page = useRef(0)
+    const lastFilter = useRef(filter)
+    const lastContext = useRef(context)
+    const lastLocalContext = useRef(localContext)
+
     const [hasMore, setHasMode] = useState(false)
     const [total, setTotal] = useState(0)
     const [rows, setRows] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
-    const [allowLoadingSpinner, setAllowLoadingSpinner] = useState(true);
-    const [progress, setProgress] = useState(false)
     const [refresh, setRefresh] = useState(0);
-    const [lastFilter, setLastFilter] = useState(filter)
-    const [lastContext, setLastContext] = useState(context)
-
-    if(localContext) {
-        onLoadRequest = {...onLoadRequest, headers: {"x-context": "production"}}
-    }
 
     useEffect(() => {
         let timer;
         if (refreshInterval > 0) {
-            setPage(0);
+            page.current = 0;
             if (timer) {
                 clearInterval(timer);
             }
@@ -66,58 +56,29 @@ const AutoLoadObjectList = ({
         };
     }, [refreshInterval]);
 
-    useEffect(()=>{setPage(0)}, [localContext])
-
-    useEffect(() => {
-        let isSubscribed = true;
-
-        setProgress(true);
-        if (allowLoadingSpinner) {
-            setLoading(true);
-            setAllowLoadingSpinner(false);
-        }
-
-        let _page = page;
-        // Condition when the page should be reset
-        if(filter !== lastFilter || context !== lastContext){
-            _page = 0
-            setPage(_page)
-        }
-        setLastFilter(filter)
-        setLastContext(context)
-
-        const endpoint = {...onLoadRequest, url: `${onLoadRequest.url}/page/${page}`};
-
-        asyncRemote(endpoint).then(response => {
-            if (response) {
-                if (isSubscribed) {
-                    setHasMode(response.data.result.length !== 0);
-                    setTotal(response.data.total);
-                    setRows(_page === 0 ? [...response.data.result] : [...rows, ...response.data.result]);
-                }
+     const {isLoading: loading} = useFetch(
+        ["getData", [refresh, filter, context, localContext]],
+        () => {
+            if(filter !== lastFilter.current) {
+                lastFilter.current = filter
+                page.current = 0
             }
-        }).catch(e => {
-            if (isSubscribed) {
-                setError(e)
+            if(context !== lastContext.current) {
+                lastContext.current = context
+                page.current = 0
             }
-        }).finally(() => {
-            if (isSubscribed) {
-                if (allowLoadingSpinner) {
-                    setLoading(false);
-                }
-                setProgress(false);
+            if(localContext !== lastLocalContext.current) {
+                lastLocalContext.current = localContext
+                page.current = 0
             }
+            return {...onLoadRequest, url: `${onLoadRequest.url}/page/${page.current}`}
+        },
+        data => {
+            setHasMode(data.result.length !== 0)
+            setTotal(data.total)
+            setRows(page.current === 0 ? [...data.result] : [...rows, ...data.result])
+            return data
         })
-        return () => isSubscribed = false;
-    }, [page, refresh, filter, context, localContext]);
-
-    // const { _isLoading, _error, _data } = useQuery('getData', () => asyncRemote(endpoint).then(response => {
-    //     if (response) {
-    //         setHasMode(response.data.result.length !== 0);
-    //         setTotal(response.data.total);
-    //         setRows(_page === 0 ? [...response.data.result] : [...rows, ...response.data.result]);
-    //     }
-    // }))
 
     const widthStyle =
         typeof timeFieldWidth !== "undefined"
@@ -160,23 +121,16 @@ const AutoLoadObjectList = ({
         }
     };
 
-    if (loading) {
-        return <CenteredCircularProgress/>;
-    }
-
-    if (error) {
-        return <ErrorsBox errorList={error}/>;
-    }
-
     if (Array.isArray(rows) && rows.length > 0) {
         return (
             <div className="ObjectList">
                 {renderHeader(timeFieldLabel)}
-                <div style={{height: 5}}>{progress && <LinearProgress/>}</div>
+                <div style={{height: 5}}>{loading && <LinearProgress/>}</div>
                 <InfiniteScroll
                     dataLength={rows.length}
                     next={() => {
-                        setPage(page + 1)
+                        page.current = page.current + 1
+                        setRefresh(Math.random())
                     }}
                     inverse={false}
                     hasMore={hasMore && refreshInterval === 0}

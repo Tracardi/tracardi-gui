@@ -5,8 +5,6 @@ import DetailsObjectList from "../elements/lists/DetailsObjectList";
 import ServerContextBar from "../context/ServerContextBar";
 import {DataContext} from "../AppBox";
 
-export const LocalDataContext = createContext(null);
-
 export default function DataBrowsingList(
     {
         label,
@@ -21,23 +19,17 @@ export default function DataBrowsingList(
         detailsDrawerWidth,
         displayChart = true,
         refreshInterval = 0,
-        rowDetails = null
+        rowDetails = null,
+        localContext,
+        onLocalContextChange
     }) {
 
-
-    const [localProductionContext, setLocalProductionContext] = useState(false)
     const globalProductionContext = useContext(DataContext)
 
-    const handleLocalContextChange = (event, state) => {
-        state = (state === "production")
-        setLocalProductionContext(state)
-    }
-
-    return <LocalDataContext.Provider value={localProductionContext}>
-        <section className="DataBrowsingList">
+    return <section className="DataBrowsingList">
             <div style={{display: "flex", justifyContent: "center"}}>
-                {!globalProductionContext && <ServerContextBar context={localProductionContext}
-                                                               onContextChange={handleLocalContextChange}/>}
+                {!globalProductionContext && <ServerContextBar context={localContext}
+                                                               onContextChange={onLocalContextChange}/>}
             </div>
             {displayChart === true && <div className="Chart">
                 {children}
@@ -57,5 +49,4 @@ export default function DataBrowsingList(
                 />
             </div>
         </section>
-    </LocalDataContext.Provider>
 }

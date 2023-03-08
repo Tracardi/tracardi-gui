@@ -1,53 +1,39 @@
 import {BarChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Bar} from 'recharts';
-import React, {useEffect, useState} from "react";
-import {request} from "../../../remote_api/uql_api_endpoint";
+import React, {useContext, useEffect} from "react";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import "./Chart.css";
 import PropTypes from "prop-types";
-import NoDataError from "../../errors/NoDataError";
+import {useFetch} from "../../../remote_api/remoteState";
+import {LocalDataContext} from "../../pages/DataAnalytics";
 
 
 // todo onLoadRequest is a misleading name - it is an object with information on endpoint to call
 // todo this needs to be refactored.
 export default function BarChartElement({onLoadRequest: endpoint, refreshInterval, barChartColors}) {
 
-    const [loading, setLoading] = React.useState(false);
-    const [error, setError] = React.useState(false);
-    const [ready, setReady] = React.useState(false);
+    const [refresh, setRefresh] = React.useState(0);
+    const [refreshing, setRefreshing] = React.useState(false);
+    const [data, setData] = React.useState([]);
 
-    const [allowLoadingSpinner, setAllowLoadingSpinner] = useState(true);
+    const localContext = useContext(LocalDataContext)
 
-    useEffect(() => {
-
-        let isSubscribed = true
-        if(isSubscribed===true && allowLoadingSpinner) {
-            setLoading(true);
-        }
-        request(
-            endpoint,
-            (value)=> {if(isSubscribed===true && allowLoadingSpinner) setLoading(value);},
-            (value) => {if(isSubscribed===true) setError(value);},
-            (value) => {if(isSubscribed===true) {setReady(value); setAllowLoadingSpinner(false);}}
-        );
-        return () => isSubscribed = false
-    },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [endpoint])
+    const {isLoading} = useFetch(
+        ["getChartData", [endpoint, refresh, localContext]],
+        endpoint,
+        data => {
+            setData(data)
+        })
 
     useEffect(() => {
         let timer;
         let isSubscribed = true
         if (refreshInterval > 0) {
+            setRefreshing(true)
             if (timer) {
                 clearInterval(timer);
             }
             timer = setInterval(() => {
-                request(
-                    endpoint,
-                    ()=> {},
-                    (value) => {if(isSubscribed===true) setError(value);},
-                    (value) => {if(isSubscribed===true) setReady(value);}
-                );
+                setRefresh(Math.random())
             }, refreshInterval * 1000);
         } else {
             if (timer) {
@@ -58,6 +44,7 @@ export default function BarChartElement({onLoadRequest: endpoint, refreshInterva
         return () => {
             if (timer) {
                 clearInterval(timer);
+                setRefreshing(false)
             }
             isSubscribed = false;
         };
@@ -78,13 +65,13 @@ export default function BarChartElement({onLoadRequest: endpoint, refreshInterva
 
     return (
         <div style={{height: 200, width: '100%'}}>
-            {loading === true && <CenteredCircularProgress/>}
-            {error !== false && loading === false && <NoDataError msg="Data is unavailable"/>}
-            {ready !== false && loading === false && <ResponsiveContainer>
-                <BarChart data={ready.data.result} margin={{top: 15, right: 20, bottom: 5, left: 0}}>
+            {(!refreshing && isLoading === true)
+                ? <CenteredCircularProgress/>
+                : <ResponsiveContainer>
+                <BarChart data={data?.result} margin={{top: 15, right: 20, bottom: 5, left: 0}}>
                     <CartesianGrid strokeDasharray="3 3"/>
                     <Tooltip isAnimationActive={false} content={<CustomTooltip/>}/>
-                    {ready?.data?.buckets?.map((column, index)=> {
+                    {data?.buckets?.map((column, index)=> {
                         return <Bar key={index}
                                     stackId="stack"
                                     dataKey={column}

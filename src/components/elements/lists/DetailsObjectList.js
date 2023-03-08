@@ -85,7 +85,6 @@ function DetailsObjectList({
     const { classes } = useStyles();
 
     return <>
-
         <AutoLoadObjectList
             label={label}
             timeField={timeField}
