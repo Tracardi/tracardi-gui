@@ -1,6 +1,7 @@
 import Drawer from "@mui/material/Drawer";
-import React from "react";
+import React, {useContext} from "react";
 import PropTypes from 'prop-types';
+import {LocalDataContext} from "../../pages/DataAnalytics";
 
 export default function FormDrawer(
     {
@@ -12,6 +13,15 @@ export default function FormDrawer(
         backdrop=true,
         variant="temporary"
     }) {
+
+    const localContext = useContext(LocalDataContext)
+
+    let style={width: (width) ? width : 1200, overflowX: "hidden", height:"100%"}
+
+    if(localContext) {
+        // Production
+        style = {...style, border: "solid 3px rgb(173, 20, 87)", borderRadius: "inherit"}
+    }
 
     return <Drawer anchor={anchor}
                    hideBackdrop={!backdrop}
@@ -26,7 +36,7 @@ export default function FormDrawer(
                        }
                    }}
     >
-        <div style={{width: (width) ? width : 1200, overflowX: "hidden", height:"100%"}}>
+        <div style={style}>
             {open && children}
         </div>
     </Drawer>

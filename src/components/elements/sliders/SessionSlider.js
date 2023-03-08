@@ -1,41 +1,26 @@
 import React from "react";
 import SessionStepper from "../steppers/SessionStepper";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import "./SessionSlider.css";
 import {Slider} from "@mui/material";
-import ErrorsBox from "../../errors/ErrorsBox";
 import NoData from "../misc/NoData";
 import SessionCardInfo from "../details/SessionCardInfo";
+import {useFetch} from "../../../remote_api/remoteState";
+import {getProfileSession} from "../../../remote_api/endpoints/profile";
+import FetchError from "../../errors/FetchError";
 
 export default function SessionSlider({profileId, onEventSelect}) {
 
-    const [session, setSession] = React.useState(null);
-    const [loading, setLoading] = React.useState(true);
-    const [error, setError] = React.useState(null);
     const [offset, setOffset] = React.useState(0);
 
-    React.useEffect(() => {
-        let subscribed = true;
-        setLoading(true);
-        setError(null);
-        asyncRemote({
-            url: "/session/profile/" + profileId + "?n=" + -offset
-        })
-            .then(response => {
-                if (subscribed) setSession(response.data)
-            })
-            .catch(e => {
-                if (subscribed) setError(getError(e))
-            })
-            .finally(() => {
-                if (subscribed) setLoading(false)
-            })
-        return () => subscribed = false;
-    }, [offset, profileId])
+    const {isLoading, data: session, error} = useFetch(
+        ["getProfileSession",[profileId, offset]],
+        getProfileSession(profileId, offset),
+        (data) => {return data}
+    )
 
     if (error) {
-        return <ErrorsBox errorList={error} style={{marginTop: 20}}/>
+        return <FetchError error={error} style={{marginTop: 20}}/>
     }
 
     return (
@@ -59,8 +44,8 @@ export default function SessionSlider({profileId, onEventSelect}) {
                     onChangeCommitted={(_, value) => setOffset(value)}
                 />
             </div>
-            {loading && <CenteredCircularProgress/>}
-            {!loading && session === null && <div style={{
+            {isLoading && <CenteredCircularProgress/>}
+            {!isLoading && session === null && <div style={{
                 height: "inherit",
                 width: "100%",
                 display: "flex",
@@ -70,7 +55,7 @@ export default function SessionSlider({profileId, onEventSelect}) {
                 <NoData header="No data found for defined session offset" fontSize="16px"/>
             </div>}
 
-            {!loading && session !== null && <>
+            {!isLoading && session !== null && <>
                 <fieldset style={{padding: "10px 20px", width: "100%"}}>
                     <legend>Session details</legend>
                     <SessionCardInfo session={session}/>

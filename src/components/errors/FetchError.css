@@ -1,0 +1,35 @@
+.FetchError {
+    border: solid 2px #d81b60;
+    padding: 15px;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: row;
+    color: #fff;
+    background-color: #d81b60;
+    width: 100%;
+}
+
+.NotFullErrorBox {
+    border-radius: 12px;
+}
+
+.FetchError > .ErrorDetails {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+.FetchError > .ErrorDetails > .ErrorList {
+    margin: 13px;
+}
+
+.FetchError > .ErrorDetails > .ErrorList TD:first-child {
+    padding-right: 10px;
+    font-weight: 600;
+}
+
+.FetchError .ErrorDetails > .Header {
+    font-size: 120%;
+    text-decoration: underline;
+    font-weight: 400;
+    margin-left: 15px;
+}

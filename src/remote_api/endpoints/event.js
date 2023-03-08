@@ -3,3 +3,4 @@ export function getEventById(id) {
         url: "/event/" + id
     }
 }
+

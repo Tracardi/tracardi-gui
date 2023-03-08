@@ -1,18 +1,17 @@
 import React from "react";
 import {Stepper, Step, StepLabel} from "@mui/material";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import "./SessionStepper.css";
 import Button from "../forms/Button";
 import {FiMoreHorizontal} from "react-icons/fi";
-import ErrorsBox from "../../errors/ErrorsBox";
 import DateValue from "../misc/DateValue";
+import {useFetch} from "../../../remote_api/remoteState";
+import {getSessionEvents} from "../../../remote_api/endpoints/session";
+import FetchError from "../../errors/FetchError";
 
 export default function SessionStepper({session, profileId, onEventSelect}) {
 
     const [eventsData, setEventsData] = React.useState([]);
-    const [loading, setLoading] = React.useState(true);
-    const [error, setError] = React.useState(null);
     const [limit, setLimit] = React.useState(20);
     const [hasMore, setHasMore] = React.useState(false);
     const [selectedEvent, setSelectedEvent] = React.useState(null);
@@ -24,29 +23,14 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
         }
     }, [onEventSelect])
 
-    React.useEffect(() => {
-        let subscribed = true;
-        if (session !== null) {
-            setLoading(true);
-            setError(null);
-            asyncRemote({
-                url: "/events/session/" + session?.id + "/profile/" + profileId + "?limit=" + limit
-            })
-                .then(response => {
-                    if (subscribed) {
-                        setEventsData(response.data.result);
-                        setHasMore(response.data.more_to_load);
-                    }
-                })
-                .catch(e => {
-                    if (subscribed) setError(getError(e))
-                })
-                .finally(() => {
-                    if (subscribed) setLoading(false)
-                })
+    const {isLoading, error} = useFetch(
+        ["sessionEvents", [limit, session.id, profileId]],
+        getSessionEvents(session.id, profileId, limit),
+        (data) => {
+            setEventsData(data.result);
+            setHasMore(data.more_to_load);
         }
-        return () => subscribed = false;
-    }, [limit, session, profileId])
+    )
 
     React.useEffect(() => {
         if (limit === 20) {
@@ -83,12 +67,12 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
         }}/>
     }
 
-    if (loading && Array.isArray(eventsData) && eventsData.length === 0) {
+    if (isLoading && Array.isArray(eventsData) && eventsData.length === 0) {
         return <CenteredCircularProgress/>
     }
 
     if (error) {
-        return <ErrorsBox errorList={error} style={{alignSelf: "flex-start"}}/>
+        return <FetchError error={error} style={{alignSelf: "flex-start"}}/>
     }
 
     return <div className="SessionStepper">
@@ -126,7 +110,7 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
             label={"LOAD MORE"}
             icon={<FiMoreHorizontal/>}
             onClick={() => setLimit(limit + 20)}
-            progress={loading}
+            progress={isLoading}
             style={{width: "100%", display: "flex", justifyContent: 'center'}}
         />}
     </div>

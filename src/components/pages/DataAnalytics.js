@@ -5,6 +5,7 @@ import moment from "moment";
 import DataBrowsingList from "./DataBrowsingList";
 import BarChartElement from "../elements/charts/BarChart";
 import {isString} from "../../misc/typeChecking";
+import {getLocalContext, localContextKey, setLocalContext} from "../../config";
 
 export const FilterContext = createContext(0);
 export const LocalDataContext = createContext(null);
@@ -26,11 +27,12 @@ export default function DataAnalytics({
                                       }) {
 
     const [filterNumber, setFilterNumber] = useState(0)
-    const [localProductionContext, setLocalProductionContext] = useState(false)
+    const [localProductionContext, setLocalProductionContext] = useState(getLocalContext(localContextKey))
 
     const handleLocalContextChange = (event, state) => {
         state = (state === "production")
         setLocalProductionContext(state)
+        setLocalContext(localContextKey, state)
     }
 
     const getQuery = (type, label) => {

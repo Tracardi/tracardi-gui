@@ -16,6 +16,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import JsonBrowser from "../misc/JsonBrowser";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getProfileById} from "../../../remote_api/endpoints/profile";
+import FetchError from "../../errors/FetchError";
 
 export default function ProfileDetails({profile}) {
     const _theme = useTheme()
@@ -73,9 +74,7 @@ export function ProfileDetailsById({id}) {
             return <NoData header="Could not find profile.">
                 This can happen if the profile was deleted or archived.
             </NoData>
-        return <NoData header={`Error ${query.error.status }.`}>
-            {query.error.statusText}
-        </NoData>
+        return <FetchError error={query.error}/>
     }
 
     if (query.isLoading) {

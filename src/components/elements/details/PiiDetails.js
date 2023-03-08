@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {FiMail} from "react-icons/fi";
 import './PiiDetails.css';
 import {BiPhoneCall} from "react-icons/bi";
@@ -6,10 +6,13 @@ import {FaBirthdayCake, FaFacebookSquare} from "react-icons/fa";
 import {VscTwitter, VscPerson} from "react-icons/vsc";
 import {FaWhatsapp} from "react-icons/fa";
 import useTheme from "@mui/material/styles/useTheme";
+import {LocalDataContext} from "../../pages/DataAnalytics";
 
 const PiiDetails = ({data}) => {
+
+    const localContext = useContext(LocalDataContext)
     const theme = useTheme()
-    const style = {backgroundColor: theme.palette.primary.light}
+    const style = {backgroundColor: localContext ? "#f3e5f5": theme.palette.primary.light}
 
     return <div className="PiiDetails" style={style}>
         <div className="PiiBox">

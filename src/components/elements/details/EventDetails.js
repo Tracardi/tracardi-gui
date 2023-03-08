@@ -13,6 +13,7 @@ import NoData from "../misc/NoData";
 import JsonBrowser from "../misc/JsonBrowser";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getEventById} from "../../../remote_api/endpoints/event";
+import FetchError from "../../errors/FetchError";
 
 export default function EventDetails({event, metadata}) {
 
@@ -94,9 +95,7 @@ export function EventDetailsById({id}) {
             return <NoData header="Could not find event.">
                 This can happen if the event was deleted or archived.
             </NoData>
-        return <NoData header={`Error ${query.error.status }.`}>
-            {query.error.statusText}
-        </NoData>
+        return <FetchError error={query.error}/>
     }
 
     if (query.isLoading) {

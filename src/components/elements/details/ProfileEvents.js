@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from "react";
-import {asyncRemote} from "../../../remote_api/entrypoint";
+import React from "react";
 import {Step, StepLabel, Stepper} from "@mui/material";
 import "./ProfileEvents.css";
 import DateValue from "../misc/DateValue";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import {useFetch} from "../../../remote_api/remoteState";
+import {getProfileEvents} from "../../../remote_api/endpoints/profile";
 
 const stepIconComponent = event => {
     return <div className="EventIcon" style={{
@@ -46,23 +47,15 @@ function EventStream({events}) {
 
 export default function ProfileEvents({profileId}) {
 
-    const [events, setEvents] = useState([])
-    const [loading, setLoading] = useState(false)
+    const {isLoading, data} = useFetch(
+        ["profileEvents", profileId],
+        getProfileEvents(profileId),
+        (data) => data
+        )
 
-    useEffect(() => {
-        setLoading(true)
-        asyncRemote({
-            url: `/events/profile/${profileId}`
-        }).then((response) => {
-            setEvents(response.data.result)
-        }).finally(() => {
-            setLoading(false)
-        })
-    }, [profileId])
-
-    if(loading) {
+    if(isLoading) {
         return <CenteredCircularProgress/>
     }
 
-    return <EventStream events={events}/>
+    return <EventStream events={data.result}/>
 }

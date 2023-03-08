@@ -1,6 +1,4 @@
-import React, {useState} from "react";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
-import ErrorsBox from "../../errors/ErrorsBox";
+import React from "react";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {object2dot} from "../../../misc/dottedObject";
 import PropertyField from "./PropertyField";
@@ -18,9 +16,12 @@ import EventErrorTag from "../misc/EventErrorTag";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import IconLabel from "../misc/IconLabels/IconLabel";
 import NoData from "../misc/NoData";
+import {useFetch} from "../../../remote_api/remoteState";
+import {getEventById} from "../../../remote_api/endpoints/event";
+import FetchError from "../../errors/FetchError";
 
 
-const EventDataDetails = ({event, metadata, allowedDetails=[]}) => {
+const EventDataDetails = ({event, metadata, allowedDetails = []}) => {
 
     const ContextInfo = () => {
         const context = object2dot(event?.context);
@@ -41,7 +42,8 @@ const EventDataDetails = ({event, metadata, allowedDetails=[]}) => {
                     <EventDetails event={event}/>
                 </PropertyField>
                 {metadata?.index && <PropertyField name="Index" content={metadata.index}/>}
-                <PropertyField name="Type" content={<IconLabel icon={<FlowNodeIcons icon="event" />} value={event?.type}/>}/>
+                <PropertyField name="Type"
+                               content={<IconLabel icon={<FlowNodeIcons icon="event"/>} value={event?.type}/>}/>
                 <PropertyField name="Insert time"
                                content={<DateValue date={event?.metadata?.time?.insert}/>}
                 />
@@ -50,7 +52,7 @@ const EventDataDetails = ({event, metadata, allowedDetails=[]}) => {
                                    <EventValidation eventMetaData={event?.metadata}/>
                                    <EventWarnings eventMetaData={event?.metadata}/>
                                    <EventErrorTag eventMetaData={event?.metadata}/>
-                                   </>}/>
+                               </>}/>
                 {event?.session && <PropertyField name="Session id" content={event.session?.id}>
 
                 </PropertyField>}
@@ -58,16 +60,19 @@ const EventDataDetails = ({event, metadata, allowedDetails=[]}) => {
                     {allowedDetails.includes("source") && <EventSourceDetails id={event.source.id}/>}
                 </PropertyField>}
                 <PropertyField name="Tags"
-                               content={Array.isArray(event?.tags?.values) && <TuiTags tags={event.tags.values} size="small"/>}
+                               content={Array.isArray(event?.tags?.values) &&
+                               <TuiTags tags={event.tags.values} size="small"/>}
                 />
-                {Array.isArray(event?.metadata?.processed_by?.rules) && <PropertyField name="Routed by rules"
-                                                                                       content={<TuiTags tags={event.metadata?.processed_by?.rules} size="small"/>}/>}
+                {Array.isArray(event?.metadata?.processed_by?.rules) && <PropertyField
+                    name="Routed by rules"
+                    content={<TuiTags tags={event.metadata?.processed_by?.rules} size="small"/>}/>}
 
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Properties"/>
-            {!isEmptyObjectOrNull(event?.properties) ? <TuiFormGroupContent><EventProperties/></TuiFormGroupContent> : <NoData header="No properties">
+            {!isEmptyObjectOrNull(event?.properties) ? <TuiFormGroupContent><EventProperties/></TuiFormGroupContent> :
+                <NoData header="No properties">
                     This event does not have any properties.
                 </NoData>}
         </TuiFormGroup>
@@ -83,42 +88,23 @@ const EventDataDetails = ({event, metadata, allowedDetails=[]}) => {
 
 export default function EventInfo({id, allowedDetails}) {
 
-    const [eventData,setEventData] = useState(null);
-    const [error,setError] = useState(null);
-    const [loading,setLoading] = useState(false);
-
-    React.useEffect(() => {
-        let isSubscribed = true;
-        setError(null);
-        setLoading(true);
-        if (id) {
-            asyncRemote({
-                url: "/event/" + id
-            })
-                .then(response => {
-                    if (isSubscribed && response?.data) {
-                        setEventData(response.data);
-                    }
-                })
-                .catch(e => {
-                    if (isSubscribed) setError(getError(e))
-                })
-                .finally(() => {
-                    if (isSubscribed) setLoading(false)
-                })
+    const {isLoading, data, error} = useFetch(
+        ["event", [id]],
+        getEventById(id),
+        (data) => {
+            return data
         }
-        return () => isSubscribed = false;
-    }, [id])
+    )
 
     if (error) {
-        return <ErrorsBox errorList={error}/>
+        return <FetchError error={error}/>
     }
 
-    if (loading) {
+    if (isLoading) {
         return <CenteredCircularProgress/>
     }
 
-    return <EventDataDetails event={eventData?.event}
-                             metadata={eventData?._metadata}
+    return <EventDataDetails event={data?.event}
+                             metadata={data?._metadata}
                              allowedDetails={allowedDetails}/>
 }
