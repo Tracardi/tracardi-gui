@@ -1,4 +1,4 @@
-import React, {createContext, useContext, useState} from "react";
+import React, {useContext} from "react";
 import "./DataAnalytics.css";
 import "./DataBrowsingList.css";
 import DetailsObjectList from "../elements/lists/DetailsObjectList";

@@ -7,11 +7,11 @@ import PropTypes from "prop-types";
 import SessionStepper from "../steppers/SessionStepper";
 import EventInfo from "./EventInfo";
 import SessionCardInfo from "./SessionCardInfo";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
-import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 import JsonBrowser from "../misc/JsonBrowser";
+import {useFetch} from "../../../remote_api/remoteState";
+import {getSessionById} from "../../../remote_api/endpoints/session";
 
 
 export default function SessionDetails({data: session}) {
@@ -52,51 +52,29 @@ export default function SessionDetails({data: session}) {
 
 export function SessionDetailsById({id}) {
 
-    const [session, setSession] = React.useState(null);
-    const [loading, setLoading] = React.useState(true);
-    const [error, setError] = React.useState(null);
-    const [noData, setNoData] = React.useState(false);
+    const query = useFetch(
+        ["getSession", [id]],
+        getSessionById(id),
+        data => {
+            return data
+        })
 
-    React.useEffect(() => {
-        let isSubscribed = true;
-        setNoData(false)
-        setError(null);
-        setLoading(true);
-        if (id) {
-            asyncRemote({
-                url: "/session/" + id
-            })
-                .then(response => setSession(response.data))
-                .catch(e => {
-                    if(isSubscribed) {
-                        if(e.request && e.request.status === 404) {
-                            setNoData(true)
-                        } else {
-                            setError(getError(e))
-                        }
-                    }
-                })
-                .finally(() => {if(isSubscribed) setLoading(false)})
-        }
-        return () => isSubscribed = false;
-    }, [id])
-
-    if(noData) {
-        return <NoData header="Could not find session.">
-            This can happen if the session was deleted or archived.
+    if(query.isError) {
+        if(query.error.status === 404)
+            return <NoData header="Could not find session.">
+                This can happen if the session was deleted or archived.
+            </NoData>
+        return <NoData header={`Error ${query.error.status }.`}>
+            {query.error.statusText}
         </NoData>
     }
 
-    if (error) {
-        return <ErrorsBox errorList={error}/>
-    }
-
-    if (loading) {
+    if (query.isLoading) {
         return <CenteredCircularProgress/>
     }
 
     return <>
-        {session && <SessionDetails data={session}/>}
+        {query.data && <SessionDetails data={query.data}/>}
     </>
 }
 

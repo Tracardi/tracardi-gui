@@ -8,11 +8,11 @@ import EventProfilingDetails from "./EventProfilingDetails";
 import EventLogDetails from "./EventLogDetails";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import EventData from "./EventData";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
-import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 import JsonBrowser from "../misc/JsonBrowser";
+import {useFetch} from "../../../remote_api/remoteState";
+import {getEventById} from "../../../remote_api/endpoints/event";
 
 export default function EventDetails({event, metadata}) {
 
@@ -82,51 +82,29 @@ export default function EventDetails({event, metadata}) {
 
 export function EventDetailsById({id}) {
 
-    const [event, setEvent] = React.useState(null);
-    const [loading, setLoading] = React.useState(true);
-    const [error, setError] = React.useState(null);
-    const [noData, setNoData] = React.useState(false);
+    const query = useFetch(
+        ["getEvent", [id]],
+        getEventById(id),
+        data => {
+            return data
+        })
 
-    React.useEffect(() => {
-        let isSubscribed = true;
-        setNoData(false)
-        setError(null);
-        setLoading(true);
-        if (id) {
-            asyncRemote({
-                url: "/event/" + id
-            })
-                .then(response => setEvent(response.data))
-                .catch(e => {
-                    if(isSubscribed) {
-                        if(e.request && e.request.status === 404) {
-                            setNoData(true)
-                        } else {
-                            setError(getError(e))
-                        }
-                    }
-                })
-                .finally(() => {if(isSubscribed) setLoading(false)})
-        }
-        return () => isSubscribed = false;
-    }, [id])
-
-    if(noData) {
-        return <NoData header="Could not find event.">
-            This can happen if the event was deleted or archived.
+    if(query.isError) {
+        if(query.error.status === 404)
+            return <NoData header="Could not find event.">
+                This can happen if the event was deleted or archived.
+            </NoData>
+        return <NoData header={`Error ${query.error.status }.`}>
+            {query.error.statusText}
         </NoData>
     }
 
-    if (error) {
-        return <ErrorsBox errorList={error}/>
-    }
-
-    if (loading) {
+    if (query.isLoading) {
         return <CenteredCircularProgress/>
     }
 
     return <>
-        {event && <EventDetails event={event.event} metadata={event._metadata}/>}
+        {query.data && <EventDetails event={query.data.event} metadata={query.data._metadata}/>}
     </>
 }
 

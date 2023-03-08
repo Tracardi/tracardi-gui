@@ -10,12 +10,12 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import {ProfileData} from "./ProfileInfo";
 import ProfileSessionsDetails from "./ProfileSessionsDetails";
 import ProfileLogDetails from "./ProfileLogDetails";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
-import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 import useTheme from "@mui/material/styles/useTheme";
 import JsonBrowser from "../misc/JsonBrowser";
+import {useFetch} from "../../../remote_api/remoteState";
+import {getProfileById} from "../../../remote_api/endpoints/profile";
 
 export default function ProfileDetails({profile}) {
     const _theme = useTheme()
@@ -61,51 +61,29 @@ export default function ProfileDetails({profile}) {
 
 export function ProfileDetailsById({id}) {
 
-    const [profile, setProfile] = React.useState(null);
-    const [loading, setLoading] = React.useState(true);
-    const [error, setError] = React.useState(null);
-    const [noData, setNoData] = React.useState(false);
+    const query = useFetch(
+        ["getProfile", [id]],
+        getProfileById(id),
+        data => {
+            return data
+        })
 
-    React.useEffect(() => {
-        let isSubscribed = true;
-        setError(null);
-        setLoading(true);
-        setNoData(false);
-        if (id) {
-            asyncRemote({
-                url: "/profile/" + id
-            })
-                .then(response => setProfile(response.data))
-                .catch(e => {
-                    if(isSubscribed) {
-                        if(e.request && e.request.status === 404) {
-                            setNoData(true)
-                        } else {
-                            setError(getError(e))
-                        }
-                    }
-                })
-                .finally(() => {if(isSubscribed) setLoading(false)})
-        }
-        return () => isSubscribed = false;
-    }, [id])
-
-    if(noData) {
-        return <NoData header="Could not find profile.">
-            This can happen if the profile was deleted or archived.
+    if(query.isError) {
+        if(query.error.status === 404)
+            return <NoData header="Could not find profile.">
+                This can happen if the profile was deleted or archived.
+            </NoData>
+        return <NoData header={`Error ${query.error.status }.`}>
+            {query.error.statusText}
         </NoData>
     }
 
-    if (error) {
-        return <ErrorsBox errorList={error}/>
-    }
-
-    if (loading) {
+    if (query.isLoading) {
         return <CenteredCircularProgress/>
     }
 
     return <>
-        {profile && <ProfileDetails profile={profile} />}
+        {query.data && <ProfileDetails profile={query.data} />}
     </>
 }
 

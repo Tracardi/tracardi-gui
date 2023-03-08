@@ -18,7 +18,7 @@ import {Grid} from "@mui/material";
 import ProfileEvents from "./ProfileEvents";
 
 export const ProfileData = ({profile}) => {
-    console.log(profile)
+
     const displayPii = window?.CONFIG?.profile?.display?.details?.pii
 
     const pii = object2dot(profile?.pii);
@@ -49,7 +49,7 @@ export const ProfileData = ({profile}) => {
                                                                                          style={{marginRight: 5}}/>}
                                                                       />}/>}
                 <PropertyField name="Visits" content={profile?.metadata?.time?.visit?.count}/>
-                
+
                 {profile?.consents
                 && <PropertyField name="Consents"
                                   content={<div className="flexLine" style={{gap: 5}}>
