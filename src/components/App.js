@@ -20,7 +20,8 @@ import ResourceForm from "./elements/forms/ResourceForm";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
 import {IdleTimerProvider} from "react-idle-timer";
 import {QueryClient, QueryClientProvider} from "react-query";
-import { ReactQueryDevtools } from 'react-query/devtools'
+import {ReactQueryDevtools} from 'react-query/devtools'
+import {getToken} from "./authentication/login";
 
 
 const AppBox = React.lazy(() => import('./AppBox'))
@@ -29,6 +30,11 @@ const App = ({alert, resource, close}) => {
 
     const dispatch = useDispatch()
     const queryClient = new QueryClient()
+
+    if(!getToken() && window.location.pathname !== "/login") {
+        window.location.replace("/login");
+        return <CenteredCircularProgress label="Redirecting"/>
+    }
 
     const onIdle = () => {
         window.location.replace("/logout");
@@ -48,39 +54,40 @@ const App = ({alert, resource, close}) => {
             events={["connect"]}
         >
             <QueryClientProvider client={queryClient}>
-                <Router>
-                    <Routes>
-                        <Route exact path={urlPrefix("/login")} element={<SignIn/>}/>
-                        <Route exact path={urlPrefix("/logout")} element={<Logout/>}/>
-                        <Route
-                            path="*"
-                            element={
-                                <PrivateRoute path="*" roles={["admin", "marketer", "developer", "maintainer"]}>
-                                    <Suspense fallback={<CenteredCircularProgress/>}>
-                                        <AppBox/>
-                                    </Suspense>
-                                </PrivateRoute>
-                            }
-                        />
-                    </Routes>
-                    <Snackbar open={alert.show} autoHideDuration={alert.hideAfter} onClose={handleClose} anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'center'
-                    }}>
-                        <MuiAlert variant="filled" elevation={6} onClose={handleClose} severity={alert.type}>
-                            <AlertTitle style={{textTransform: "uppercase"}}>{alert.type}</AlertTitle>
-                            <span style={{fontWeight: 400}}>{alert.message}</span>
-                        </MuiAlert>
-                    </Snackbar>
-                    <FormDrawer open={resource.show} onClose={() => {
-                        close()
-                    }} width={550}>
-                        <ResourceForm onClose={() => {
+                    <Router>
+                        <Routes>
+                            <Route exact path={urlPrefix("/login")} element={<SignIn/>}/>
+                            <Route exact path={urlPrefix("/logout")} element={<Logout/>}/>
+                            <Route
+                                path="*"
+                                element={
+                                    <PrivateRoute path="*" roles={["admin", "marketer", "developer", "maintainer"]}>
+                                        <Suspense fallback={<CenteredCircularProgress/>}>
+                                            <AppBox/>
+                                        </Suspense>
+                                    </PrivateRoute>
+                                }
+                            />
+                        </Routes>
+                        <Snackbar open={alert.show} autoHideDuration={alert.hideAfter} onClose={handleClose}
+                                  anchorOrigin={{
+                                      vertical: 'bottom',
+                                      horizontal: 'center'
+                                  }}>
+                            <MuiAlert variant="filled" elevation={6} onClose={handleClose} severity={alert.type}>
+                                <AlertTitle style={{textTransform: "uppercase"}}>{alert.type}</AlertTitle>
+                                <span style={{fontWeight: 400}}>{alert.message}</span>
+                            </MuiAlert>
+                        </Snackbar>
+                        <FormDrawer open={resource.show} onClose={() => {
                             close()
-                        }}/>
-                    </FormDrawer>
-                </Router>
-                <ReactQueryDevtools initialIsOpen={false} />
+                        }} width={550}>
+                            <ResourceForm onClose={() => {
+                                close()
+                            }}/>
+                        </FormDrawer>
+                    </Router>
+                    <ReactQueryDevtools initialIsOpen={false}/>
             </QueryClientProvider>
         </IdleTimerProvider>
     );

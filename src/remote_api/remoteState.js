@@ -39,7 +39,7 @@ export const request = async (config, token=null) => {
 
     // Success handler
     const onSuccess = (response) => {
-        return response.data
+        return response?.data
     }
 
     // Error handler
@@ -47,7 +47,7 @@ export const request = async (config, token=null) => {
         if (e?.response?.status === 401) {
             window.location.replace("/logout");
         }
-        return Promise.reject(e.response)
+        return Promise.reject(e?.response ? e.response: { status: e.status, data: {detail: e.toString()}})
     }
 
     return axios(config).then(onSuccess).catch(onError)

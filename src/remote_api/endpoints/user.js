@@ -1,5 +1,3 @@
-import {asyncRemote} from "./entrypoint";
-
 function JsonToURLEncoded(element, key, list) {
     list = list || [];
     if (typeof (element) == 'object') {
@@ -11,18 +9,18 @@ function JsonToURLEncoded(element, key, list) {
     return list.join('&');
 }
 
-export const loginUser = (username, password) => {
+export function userLogIn(username, password) {
 
     const params = {
         username: username,
         password: password
     };
 
-    return asyncRemote({
+    return {
         url: "/user/token",
         headers: {"Content-Type": "application/x-www-form-urlencoded"},
         method: "post",
         data: JsonToURLEncoded(params)
-    });
+    }
 
-};
+}

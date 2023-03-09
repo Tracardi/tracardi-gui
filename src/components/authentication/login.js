@@ -1,3 +1,5 @@
+import Cookies from 'universal-cookie';
+
 export function isAuth() {
     return getToken() !== null;
 }
@@ -8,7 +10,8 @@ export function logout() {
 }
 
 export function setToken(token) {
-    localStorage.setItem('auth-token', token);
+    const cookies = new Cookies();
+    cookies.set('tracardi-auth-token', token, { path: '/' });
 }
 
 export function setRoles(roles) {
@@ -20,5 +23,6 @@ export function getRoles() {
 }
 
 export function getToken() {
-    return localStorage.getItem('auth-token');
+    const cookies = new Cookies();
+    return cookies.get('tracardi-auth-token');
 }

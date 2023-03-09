@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState} from 'react';
 import {Navigate, useLocation} from "react-router-dom";
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
@@ -7,13 +7,12 @@ import Typography from '@mui/material/Typography';
 import {ThemeProvider, StyledEngineProvider} from '@mui/material/styles';
 import {makeStyles} from "tss-react/mui";
 import {logout, setRoles, setToken} from "./login";
-import {loginUser} from "../../remote_api/user";
 import {signInTheme} from "../../themes";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import {connect} from "react-redux";
 import urlPrefix from "../../misc/UrlPrefix";
 import version from '../../misc/version';
-import {asyncRemote, getApiUrl, resetApiUrlConfig, setApiUrl as setStoredApiUrl} from "../../remote_api/entrypoint";
+import {getApiUrl, resetApiUrlConfig, setApiUrl as setStoredApiUrl} from "../../remote_api/entrypoint";
 import Button from "../elements/forms/Button";
 import PasswordInput from "../elements/forms/inputs/PasswordInput";
 import ReadOnlyInput from "../elements/forms/ReadOnlyInput";
@@ -23,6 +22,10 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import {BsShieldLock} from "react-icons/bs";
 import {useIdleTimerContext} from "react-idle-timer";
+import {useFetch} from "../../remote_api/remoteState";
+import {getSystemInfo} from "../../remote_api/endpoints/system";
+import {userLogIn} from "../../remote_api/endpoints/user";
+import RemoteService from "../../remote_api/endpoints/raw";
 
 function Copyright() {
     return (
@@ -63,31 +66,8 @@ const useStyles = makeStyles()((theme) => ({
 }));
 
 const SignInForm = ({showAlert}) => {
-    const ver = version()
-    const [errorMessage, setErrorMessage] = useState(null);
-    const [loading, setLoading] = useState(false);
+    const guiVersion = version()
     const apiUrl = getApiUrl();
-
-    useEffect(() => {
-        setLoading(true);
-        asyncRemote(
-            {url: "/info/version"}
-        ).then((response) => {
-            setLoading(false);
-            if (response?.status === 200) {
-                if (response.data !== ver) {
-                    setErrorMessage(
-                        `The GUI verision ${ver} does not match the API verision.`
-                    )
-                }
-            }
-        }).catch((e) => {
-            setLoading(false);
-            setErrorMessage(
-                'Could not connect to the API server. Please try again later.'
-            )
-        });
-    }, [ver])
 
     const {classes} = useStyles();
 
@@ -99,8 +79,21 @@ const SignInForm = ({showAlert}) => {
     const {from} = state || {from: {pathname: urlPrefix("/")}};
     const [redirectToReferrer, setRedirectToReferrer] = useState(false);
 
-    const mounted = useRef(false);
     const idleTimer = useIdleTimerContext()
+
+    const {isLoading, data: installedVersion, error} = useFetch(
+        ["systemInfo"],
+        getSystemInfo(),
+        (data) => {return data}
+    )
+
+    let errorMessage;
+    if (installedVersion !== guiVersion) {
+        errorMessage = `The GUI verision ${guiVersion} does not match the API version.`
+    }
+    if(error) {
+        errorMessage = 'Could not connect to the API server. Please try again later.'
+    }
 
     const handleEmailChange = (evt) => {
         setEmail(evt.target.value);
@@ -116,6 +109,7 @@ const SignInForm = ({showAlert}) => {
     }
 
     const handleSubmit = async (event) => {
+        event.preventDefault();
 
         getLocation().then(result => {
             track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-login', {
@@ -126,37 +120,24 @@ const SignInForm = ({showAlert}) => {
             }).then(() => {})
         })
 
-        const api = loginUser(email, password);
-        setProgress(true);
-        api.then(response => {
-            setToken(response.data['access_token']);
-            setRoles(response.data['roles']);
+        setProgress(true)
+        RemoteService.fetch(userLogIn(email, password)).then((data => {
+            setToken(data['access_token']);
+            setRoles(data['roles']);
             setStoredApiUrl(apiUrl);
             idleTimer.start()
             setRedirectToReferrer(true);
-        }).catch(e => {
-            let message = e.message;
-            if (typeof e.response == "undefined") {
-                message = 'Api unavailable.';
-            } else if (e.response.status === 422) {
-                message = 'Bad request. Fill all fields.';
-            } else if (typeof e.response.data['detail'] == "string") {
-                message = e.response.data['detail']
+        })).catch(error => {
+            if (error.status === 404) {
+                showAlert({type: "error", message: 'Api unavailable.', hideAfter: 3000})
+            } else if (error.status === 422) {
+                showAlert({type: "error", message: 'Bad request. Fill all fields.', hideAfter: 3000})
+            } else if (error?.data?.detail) {
+                showAlert({type: "error", message: error.data.detail, hideAfter: 3000})
             }
-            showAlert({type: "error", message: message, hideAfter: 3000})
-        }).finally(() => {
-            if (mounted.current === true) {
-                setProgress(false)
-            }
-        });
-        event.preventDefault();
+        }).finally(()=> setProgress(false))
+
     };
-
-
-    React.useEffect(() => {
-        mounted.current = true;
-        return () => mounted.current = false;
-    }, [])
 
 
     if (redirectToReferrer) {
@@ -183,7 +164,7 @@ const SignInForm = ({showAlert}) => {
                             </div>
 
 
-                            {!loading && errorMessage ? (
+                            {!isLoading && errorMessage ? (
                                 <p style={{
                                     backgroundColor: "#c2185b",
                                     padding: "3px 6px",
