@@ -10,11 +10,11 @@ export default function ServerContextBar({context, onContextChange}) {
 
     return <ToggleButtonGroup
         color="primary"
-        value={context ? "production" : "development"}
+        value={context ? "production" : "test"}
         exclusive
         onChange={onContextChange}
     >
-        <ToggleButton value="development" size="small">Development</ToggleButton>
+        <ToggleButton value="test" size="small">Test</ToggleButton>
         <ToggleButton value="production" size="small" style={style}>Production</ToggleButton>
     </ToggleButtonGroup>
 }

@@ -5,7 +5,7 @@ import Button from "../forms/Button";
 import 'react-json-pretty/themes/monikai.css';
 import JSONPretty from "react-json-pretty";
 
-export default function JsonBrowser({data, tree: _tree =true}) {
+export default function JsonBrowser({data, tree: _tree =false}) {
     const [tree, setTree] = useState(_tree)
     return <>
         <div style={{marginBottom: 20}}>
