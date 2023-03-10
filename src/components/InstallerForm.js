@@ -1,18 +1,20 @@
 import React, {useRef, useState} from "react";
-import {asyncRemote, getApiUrl, getError, resetApiUrlConfig} from "../remote_api/entrypoint";
+import {getApiUrl, resetApiUrlConfig} from "../remote_api/entrypoint";
 import {logout} from "./authentication/login";
 import {BsCloudUpload} from "react-icons/bs";
 import ReadOnlyInput from "./elements/forms/ReadOnlyInput";
 import PasswordInput from "./elements/forms/inputs/PasswordInput";
 import Input from "./elements/forms/inputs/Input";
 import Button from "./elements/forms/Button";
-import ErrorsBox from "./errors/ErrorsBox";
 import ErrorBox from "./errors/ErrorBox";
+import Switch from "@mui/material/Switch";
+import RemoteService from "../remote_api/endpoints/raw";
+import FetchError from "./errors/FetchError";
 
 const InstallerError = ({error, errorMessage, hasAdminAccount}) => {
 
     if (error) {
-        return <ErrorsBox errorList={error}/>
+        return <FetchError error={error}/>
     }
 
     if (errorMessage) {
@@ -36,7 +38,8 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
         username: "",
         password: "",
         token: "tracardi",
-        needs_admin: requireAdmin
+        needs_admin: requireAdmin,
+        update_mapping: false
     })
 
     const handleEndpointReset = () => {
@@ -50,28 +53,26 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
             setError(null);
             setProgress(true);
             setHasAdminAccount(null);
-            const response = await asyncRemote({
+            const responseData = await RemoteService.fetch({
                 url: "/install",
                 method: "POST",
                 data: data.current
             })
-            if (response) {
-                const result = response.data
-                const hasAdmin = result[0]?.admin
-                setHasAdminAccount(hasAdmin)
-                if (hasAdmin) {
-                    onInstalled()
-                }
+            const hasAdmin = responseData[0]?.admin
+            setHasAdminAccount(hasAdmin)
+            if (hasAdmin) {
+                onInstalled()
             }
         } catch (e) {
-            setError(getError(e))
+            console.log(error)
+            setError(e)
         } finally {
             setProgress(false);
         }
 
     }
 
-    return <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100%"}}>
+    return <div style={{display: "flex", alignItems: "center", justifyContent: "center", height: "100%", overflow: "auto"}}>
         <div style={{
             display: "flex",
             flexDirection: "column",
@@ -138,6 +139,19 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
                         </td>
                     </tr>
                 </>}
+                <tr>
+                    <td colSpan={2}>
+                        <h2 style={{fontWeight: 300, display: "flex", justifyContent: "space-between", marginBottom: 0}}>
+                            Update database schema
+                            <Switch label="Installation token"
+                                    value={data.current.update_mapping}
+                                    onChange={(ev) => data.current.update_mapping = ev.target.checked}
+                            />
+                        </h2>
+                        <div style={{color: "gray"}}>If this is your first installation, the database schema does not have to be updated.</div>
+
+                    </td>
+                </tr>
                 </tbody>
             </table>
 

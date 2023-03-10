@@ -29,7 +29,7 @@ function ErrorDetails({error}) {
             })
             : <tr>
                 <td>Details</td>
-                <td>{error.data.detail}</td>
+                <td>{error?.data?.detail}</td>
             </tr>
         }
     </table>
