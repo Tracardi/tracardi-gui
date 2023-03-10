@@ -252,7 +252,7 @@ const RoutingFlow = ({event}) => {
                 <ProcessStep step={"5"}
                              label="Event to profile"
                              optional="How the date is transferred form event to profile"
-                             endpoint={{url: `/event-to-profile/${event.type}`}}
+                             endpoint={{url: `/event-to-profiles/type/${event.type}`}}
                              nodata="No data is copied to profile"
                              details={EventToProfileCard}
                              add={EventToProfileForm}
