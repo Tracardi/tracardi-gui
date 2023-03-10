@@ -185,9 +185,11 @@ export default function EventToProfileForm({
                 </TuiFormGroupField>
 
                 <TuiFormGroupField header="What should be copied"
-                                   description="Select which event items should be copied to the profile.
-                                   Type key, value pair with the key as event data (e.g. properties.email) and value as
-                                   the profile data (e.g. pii.email)">
+                                   description='To copy event items to your profile, choose which ones to copy by
+                                   entering a "key, value" pair. For example, if you want to copy an email address
+                                   from the event, type "properties.email" as the key and "pii.email" as the value.
+                                   If the email address does not exist in the event, it will not be copied and you
+                                   will get a warning.'>
 
                     <fieldset>
                         <legend>Coping schema</legend>
