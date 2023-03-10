@@ -5,8 +5,7 @@ import StepLabel from "@mui/material/StepLabel";
 import StepContent from "@mui/material/StepContent";
 import Paper from "@mui/material/Paper";
 import NoData from "../misc/NoData";
-import React, {useEffect, useState} from "react";
-import {asyncRemote} from "../../../remote_api/entrypoint";
+import React, {useState} from "react";
 import {StatusPoint} from "../misc/StatusPoint";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -29,6 +28,8 @@ import RuleForm from "../forms/RuleForm";
 import CircularProgress from "@mui/material/CircularProgress";
 import EventToProfileForm from "../forms/EventToProfileForm";
 import FlowDisplay from "../../flow/FlowDetails";
+import {useFetch} from "../../../remote_api/remoteState";
+import FetchError from "../../errors/FetchError";
 
 function hasData(data) {
     return Array.isArray(data) && data.length > 0
@@ -41,7 +42,7 @@ const BigStepLabel = ({children, optional, ...props}) =>
     </StepLabel>
 
 const BigStepContent = ({children}) => <StepContent>
-    <div style={{padding: "10px 30px 30px 30px", width: 1000}}>{children}</div>
+    <div style={{padding: "10px 30px 30px 30px"}}>{children}</div>
 </StepContent>
 
 const Card = ({children}) => {
@@ -65,7 +66,7 @@ const EnabledChip = ({item}) => {
     </span>
 }
 
-const AccordionCard = ({items, nodata, details, passData, singleValue=false, displayMetadata, add, onDeleteComplete, onEditComplete, onAddComplete}) => {
+const AccordionCard = ({items, nodata, details, passData, singleValue = false, displayMetadata, add, onDeleteComplete, onEditComplete, onAddComplete}) => {
     const [expanded, setExpanded] = React.useState(false);
     const [openAddDrawer, setOpenAddDrawer] = React.useState(false);
 
@@ -117,7 +118,7 @@ const AccordionCard = ({items, nodata, details, passData, singleValue=false, dis
 
     return <>
         {add && <div style={{display: "flex", justifyContent: "end", marginBottom: 5}}>
-            <Button label={singleValue ? "Add or Replace ":"Add"}
+            <Button label={singleValue ? "Add or Replace " : "Add"}
                     onClick={() => setOpenAddDrawer(true)}
                     icon={<BsPlusCircleDotted size={20}/>}/>
         </div>}
@@ -144,47 +145,43 @@ const AccordionCard = ({items, nodata, details, passData, singleValue=false, dis
 
 const ProcessStep = ({step, label, optional, endpoint, passData, singleValue, nodata, details, add, onLoad}) => {
 
-    const [loading, setLoading] = useState(false)
     const [active, setActive] = useState(false)
-    const [data, setData] = useState([])
     const [refresh, setRefresh] = useState(0)
 
-    useEffect(() => {
-        if(endpoint?.url) {
-            setLoading(true)
-            asyncRemote(endpoint).then(response => {
-                let _data;
-
-                if(onLoad instanceof Function) {
-                    _data = onLoad(response)
-                } else {
-                    _data = response.data
-                }
-                setData(_data)
-                if(hasData(_data.result)) setActive(true)
-            }).catch(e => {
-                setData([])
-            }).finally(() => {
-                setLoading(false)
-            })
-        }
-
-    }, [endpoint, refresh])
+    const {isLoading: loading, data, error} = useFetch(
+        [`Routing${step}`, [endpoint, refresh]],
+        endpoint,
+        (data) => {
+            if (onLoad instanceof Function) {
+                data = onLoad(data)
+            }
+            if (hasData(data.result)) setActive(true)
+            return data;
+        },
+        {retry: 0}
+    )
 
     const handleChange = () => {
-        setRefresh(refresh+1)
+        setRefresh(refresh + 1)
     }
 
-    return <Step active={active}>
+    if (error) {
+        if (error.status !== 404) {
+            return <FetchError error={error}/>
+        }
+    }
+
+    return <Step active={active} xs={{width: "100%"}}>
         <BigStepLabel optional={<span style={{fontSize: 13}}>{optional}</span>}
                       onClick={() => setActive(!active)}
                       style={{cursor: "pointer"}}
                       icon={loading ? <CircularProgress size={24}/> : step}
         >
-            {label}
+            <div className="flexLine" style={{justifyContent: "space-between"}}>{label} {hasData(data?.result) &&
+            <span className="flexLine" style={{fontSize: 13}}>Running<StatusPoint status={true}/></span>}</div>
         </BigStepLabel>
         <BigStepContent>
-            <AccordionCard items={data.result}
+            <AccordionCard items={data?.result}
                            nodata={nodata}
                            details={details}
                            add={add}
@@ -206,7 +203,7 @@ const PreviewFlow = ({data, onDeleteComplete, onEditComplete}) => {
 const RoutingFlow = ({event}) => {
 
     return (
-        <Box>
+        <Box sx={{width: "100%"}}>
             <Stepper orientation="vertical">
                 <ProcessStep step={"1"}
                              label="Data Validation"
@@ -235,10 +232,12 @@ const RoutingFlow = ({event}) => {
                              singleValue={true}
                              details={EventIndexingCard}
                              add={EventIndexingForm}  // requires onSubmit
-                             onLoad={(response) => { return {
-                                 result: [response.data],
-                                 total: 1
-                             }}}
+                             onLoad={(data) => {
+                                 return {
+                                     result: [data],
+                                     total: 1
+                                 }
+                             }}
                 />
                 <ProcessStep step={"4"}
                              label="Identification check point"

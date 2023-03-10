@@ -14,12 +14,13 @@ import JsonBrowser from "../misc/JsonBrowser";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getEventById} from "../../../remote_api/endpoints/event";
 import FetchError from "../../errors/FetchError";
+import RoutingFlow from "./RoutingFlow";
 
 export default function EventDetails({event, metadata}) {
 
     const [tab, setTab] = React.useState(0);
 
-    const tabs = ["Event", "Raw", "Flow debug", "Event logs"];
+    const tabs = ["Event", "Routing", "Raw", "Flow debug", "Event logs"];
 
     return <>
         <Tabs
@@ -46,16 +47,40 @@ export default function EventDetails({event, metadata}) {
             <TabCase id={1}>
                 <TuiForm style={{margin: 20}}>
                     <TuiFormGroup>
+                        <TuiFormGroupHeader
+                            header={`Event routing for event type ${event.type}`}
+                            description={`This is the current rounting for the event type ${event.type}. 
+                            But it's possible that the routing has been altered since the event was recorded. `}
+                        />
+                        <TuiFormGroupContent style={{padding: 0}}>
+                            <div style={{
+                                padding: 20,
+                                backgroundColor: "#eee",
+                                backgroundImage: "radial-gradient(#ddd 1px, transparent 0)",
+                                backgroundSize: "20px 20px",
+                                borderRadius:0,
+                                borderBottomLeftRadius: "inherit",
+                                borderBottomRightRadius: "inherit"
+                            }}><RoutingFlow event={event}/></div>
+                        </TuiFormGroupContent>
+                    </TuiFormGroup>
+
+                </TuiForm>
+
+            </TabCase>
+            <TabCase id={2}>
+                <TuiForm style={{margin: 20}}>
+                    <TuiFormGroup>
                         <TuiFormGroupHeader header="Raw event"/>
                         <TuiFormGroupContent>
                             <div style={{margin: 10}}>
-                                <JsonBrowser data={{event: event, _metadata: metadata}} />
+                                <JsonBrowser data={{event: event, _metadata: metadata}}/>
                             </div>
                         </TuiFormGroupContent>
                     </TuiFormGroup>
                 </TuiForm>
             </TabCase>
-            <TabCase id={2}>
+            <TabCase id={3}>
                 <TuiForm style={{margin: 20, height: "inherit"}}>
                     <TuiFormGroup style={{height: "inherit"}}>
                         <TuiFormGroupHeader header="Flow profiling"
@@ -66,7 +91,7 @@ export default function EventDetails({event, metadata}) {
                     </TuiFormGroup>
                 </TuiForm>
             </TabCase>
-            <TabCase id={3}>
+            <TabCase id={4}>
                 <TuiForm style={{margin: 20, height: "inherit"}}>
                     <TuiFormGroup style={{height: "inherit"}}>
                         <TuiFormGroupHeader header="Logs"
@@ -90,8 +115,8 @@ export function EventDetailsById({id}) {
             return data
         })
 
-    if(query.isError) {
-        if(query.error.status === 404)
+    if (query.isError) {
+        if (query.error.status === 404)
             return <NoData header="Could not find event.">
                 This can happen if the event was deleted or archived.
             </NoData>

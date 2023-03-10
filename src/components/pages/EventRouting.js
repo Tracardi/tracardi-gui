@@ -1,11 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import {SlMinus, SlPlus} from "react-icons/sl";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import NoData from "../elements/misc/NoData";
 import RoutingFlow from "../elements/details/RoutingFlow";
 import Chip from "@mui/material/Chip";
+import {useFetch} from "../../remote_api/remoteState";
+import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
+import {DataContext} from "../AppBox";
+import {getEventsAndSources} from "../../remote_api/endpoints/event";
 
 
 const PlusMinusIcon = ({expand, onChange}) => {
@@ -50,24 +53,27 @@ const EventTypeTree = ({event, onChange}) => {
 
 const EventTypesToRules = () => {
 
-    const [data, setData] = useState([])
     const [refresh, setRefresh] = useState(1);
+    const context = useContext(DataContext)
+
+    const {isLoading, data} = useFetch(
+        ["routingByType", [refresh, context]],
+        getEventsAndSources(),
+        data => { return data }
+        )
 
 
-    useEffect(() => {
-        asyncRemote({
-            url: "/events/by-type/by-source"
-        }).then((response) => {
-            setData(response.data)
-        })
-    }, [refresh])
-
+    if(isLoading) {
+        return <CenteredCircularProgress/>
+    }
 
     if (Array.isArray(data)) {
         return <div style={{
             margin: 15,
             padding: "40px 30px 30px 30px",
-            backgroundColor: "#dfdfdf",
+            backgroundColor: "#eee",
+            backgroundImage: "radial-gradient(#ddd 1px, transparent 0)",
+            backgroundSize: "20px 20px",
             borderRadius: 15
         }}>{data.map((event, index) => <EventTypeTree
             key={index} event={event}

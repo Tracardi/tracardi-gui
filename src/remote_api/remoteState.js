@@ -53,7 +53,7 @@ export const request = async (config, token=null) => {
     return axios(config).then(onSuccess).catch(onError)
 }
 
-export const useFetch = (name, endpoint, resolveFn) => {
+export const useFetch = (name, endpoint, resolveFn, options={}) => {
     publish('connect');
 
     const localContext = useContext(LocalDataContext)
@@ -68,5 +68,5 @@ export const useFetch = (name, endpoint, resolveFn) => {
 
     const closure = () => RemoteService.fetch(endpoint).then(data => {return resolveFn(data)})
 
-    return useQuery(name, closure)
+    return useQuery(name, closure, options)
 }

@@ -47,7 +47,11 @@ export default function ProfileDetails({profile}) {
                 </TabCase>
                 <TabCase id={3}>
                     <div className="Box10">
-                        <ProfileLogDetails profileId={profile.id} />
+                        {profile?.id
+                            ? <ProfileLogDetails profileId={profile.id} />
+                            : <NoData header="This event has no profile attached.">
+                                That means the profile was deleted.
+                            </NoData>}
                     </div>
                 </TabCase>
                 <TabCase id={4}>

@@ -15,3 +15,7 @@ export function getProfileSession(profileId, offset) {
         url: `/session/profile/${profileId}?n=${-offset}`
     }
 }
+
+export function getProfileLogs(profileId) {
+    return {url: `/profile/logs/${profileId}?sort=desc`}
+}
