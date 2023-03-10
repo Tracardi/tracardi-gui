@@ -226,23 +226,6 @@ const RoutingFlow = ({event}) => {
                              details={EventReshapingCard}
                              add={EventReshapingForm}
                 />
-                {/*<Step key={"reshaping"} active={reshapingStep}>*/}
-                {/*    <BigStepLabel optional="How was the data changed" onClick={() => setReshapingStep(!reshapingStep)}*/}
-                {/*                  style={{cursor: "pointer"}}*/}
-                {/*                  icon={null}*/}
-                {/*    >*/}
-                {/*        Event Reshaping*/}
-                {/*    </BigStepLabel>*/}
-                {/*    <BigStepContent>*/}
-                {/*        <RoutingStep*/}
-                {/*            endpoint={{url: `/event-reshape-schemas/by_type/${event.type}?only_enabled=false`}}*/}
-                {/*            passData={true}*/}
-                {/*            nodata="No reshaping"*/}
-                {/*            details={EventReshapingCard}*/}
-                {/*            add={EventReshapingForm}*/}
-                {/*        />*/}
-                {/*    </BigStepContent>*/}
-                {/*</Step>*/}
                 <ProcessStep step={"3"}
                              label="Event Indexing"
                              optional="How was the data indexed"
@@ -257,27 +240,6 @@ const RoutingFlow = ({event}) => {
                                  total: 1
                              }}}
                 />
-                {/*<Step key={"indexing"} active={indexingStep}>*/}
-                {/*    <BigStepLabel optional="Event indexing"*/}
-                {/*                  onClick={() => setIndexingStep(!indexingStep)}*/}
-                {/*                  style={{cursor: "pointer"}}>*/}
-                {/*        <span style={{fontSize: 18}}>Event Indexing</span>*/}
-                {/*    </BigStepLabel>*/}
-                {/*    <BigStepContent>*/}
-                {/*        <RoutingStep */}
-                {/*            endpoint={{url: `/event-type/management/${event.type}`}}*/}
-                {/*                     nodata="No indexing"*/}
-                {/*                     passData={true}*/}
-                {/*                     singleValue={true}*/}
-                {/*                     details={EventMetaDataCard}*/}
-                {/*                     add={EventMetadataForm}  // requires onSubmit*/}
-                {/*                     onLoad={(response) => { return {*/}
-                {/*                         result: [response.data],*/}
-                {/*                         total: 1*/}
-                {/*                     }}}*/}
-                {/*        />*/}
-                {/*    </BigStepContent>*/}
-                {/*</Step>*/}
                 <ProcessStep step={"4"}
                              label="Identification check point"
                              optional="Is this event used to identify a customer"
@@ -287,23 +249,6 @@ const RoutingFlow = ({event}) => {
                              passData={true}
                              add={IdentificationPointForm}  // requires onSubmit
                 />
-                {/*<Step key={"identification"} active={identificationStep}>*/}
-                {/*    <BigStepLabel optional="Is this event used to identify a customer"*/}
-                {/*                  onClick={() => setIdentificationStep(!identificationStep)}*/}
-                {/*                  style={{cursor: "pointer"}}>*/}
-                {/*        Identification check point*/}
-                {/*    </BigStepLabel>*/}
-                {/*    <BigStepContent>*/}
-                {/*        <RoutingStep */}
-                {/*            endpoint={{url: `/identification/points/by_type/${event.type}`}}*/}
-                {/*                     nodata="This event is not an identification point"*/}
-                {/*                     details={IdentificationPointCard}*/}
-                {/*                     passData={true}*/}
-                {/*                     add={IdentificationPointForm}  // requires onSubmit*/}
-
-                {/*        />*/}
-                {/*    </BigStepContent>*/}
-                {/*</Step>*/}
                 <ProcessStep step={"5"}
                              label="Event to profile"
                              optional="How the date is transferred form event to profile"
@@ -312,35 +257,7 @@ const RoutingFlow = ({event}) => {
                              details={EventToProfileCard}
                              add={EventToProfileForm}
                              passData={true}
-                             singleValue={true}
-                             onLoad={(response) => {
-                                 return {
-                                     result: [response.data],
-                                     total: 1
-                                 }
-                             }}
                 />
-                {/*<Step key={"coping"} active={copingStep}>*/}
-                {/*    <BigStepLabel optional="How the date is transferred form event to profile"*/}
-                {/*                  onClick={() => setCopingStep(!copingStep)} style={{cursor: "pointer"}}>*/}
-                {/*        Event to profile*/}
-                {/*    </BigStepLabel>*/}
-                {/*    <BigStepContent>*/}
-                {/*        <RoutingStep */}
-                {/*            endpoint={{url: `/event-to-profile/${event.type}`}}*/}
-                {/*                     nodata="No data is copied to profile"*/}
-                {/*                     details={EventToProfileDetails}*/}
-                {/*                     passData={false}*/}
-                {/*                     singleValue={true}*/}
-                {/*                     onLoad={(response) => {*/}
-                {/*                         return {*/}
-                {/*                             result: [response.data],*/}
-                {/*                             total: 1*/}
-                {/*                         }*/}
-                {/*                     }}*/}
-                {/*        />*/}
-                {/*    </BigStepContent>*/}
-                {/*</Step>*/}
                 <ProcessStep step={"6"}
                              label="Workflow"
                              optional="How the event was routed to the workflow"
@@ -350,21 +267,6 @@ const RoutingFlow = ({event}) => {
                              details={PreviewFlow}
                              add={RuleForm}
                 />
-                {/*<Step key={"routing"} active={workflowStep}>*/}
-                {/*    <BigStepLabel optional="How the event was routed to the workflow"*/}
-                {/*                  onClick={() => setWorkflowStep(!workflowStep)} style={{cursor: "pointer"}}>*/}
-                {/*        Workflow*/}
-                {/*    </BigStepLabel>*/}
-                {/*    <BigStepContent>*/}
-                {/*        <RoutingStep */}
-                {/*            endpoint={{url: `/rules/by_event_type/${event.type}`}}*/}
-                {/*                     nodata="This event is not routed any to workflow"*/}
-                {/*                     passData={true}*/}
-                {/*                     details={RuleCard}*/}
-                {/*                     add={RuleForm}*/}
-                {/*        />*/}
-                {/*    </BigStepContent>*/}
-                {/*</Step>*/}
             </Stepper>
         </Box>)
 }

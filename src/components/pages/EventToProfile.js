@@ -14,7 +14,7 @@ export default function EventToProfile() {
     const [refresh, setRefresh] = useState(0);
 
     const urlFunc = useCallback((query) => ('/events-to-profiles/by_tag' + ((query) ? "?query=" + query : "")), []);
-    const addFunc = useCallback((close) => <EventToProfileForm onSaveComplete={close}/>, []);
+    const addFunc = useCallback((close) => <EventToProfileForm onSubmit={close}/>, []);
     const detailsFunc = useCallback((id, close) => <EventToProfileDetails id={id} onDeleteComplete={close}
                                                                          onEditComplete={close}/>, [])
 

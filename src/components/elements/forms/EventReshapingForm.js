@@ -2,10 +2,8 @@ import React, {useState} from "react";
 import Button from "./Button";
 import TextField from "@mui/material/TextField";
 import {v4 as uuid4} from "uuid";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import PropTypes from 'prop-types';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import ErrorsBox from "../../errors/ErrorsBox";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import JsonEditor from "../editors/JsonEditor";
 import TuiTagger from "../tui/TuiTagger";
@@ -14,6 +12,8 @@ import DocsLink from "../drawers/DocsLink";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import RefInput from "./inputs/RefInput";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
+import RemoteService from "../../../remote_api/endpoints/raw";
+import FetchError from "../../errors/FetchError";
 
 export default function EventReshapingForm({onSubmit, init}) {
 
@@ -106,22 +106,19 @@ export default function EventReshapingForm({onSubmit, init}) {
                 }
             }
 
-            const response = await asyncRemote(
+            await RemoteService.fetch(
                 {
                     url: '/event-reshape-schema',
                     method: 'post',
                     data: payload
                 }
             )
-            if (response) {
-                if (onSubmit) {
-                    onSubmit(payload)
-                }
+
+            if (onSubmit) {
+                onSubmit(payload)
             }
         } catch (e) {
-            if (e) {
-                if (mounted.current) setError(getError(e));
-            }
+            if (mounted.current) setError(e);
         } finally {
             if (mounted.current) setProcessing(false);
         }
@@ -273,7 +270,7 @@ export default function EventReshapingForm({onSubmit, init}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
 
-        {error && <ErrorsBox errorList={error}/>}
+        {error && <FetchError error={error} style={{marginBottom: 10}}/>}
         <Button label="Save" error={error || nameErrorMessage} onClick={handleSubmit} progress={processing}
                 style={{justifyContent: "center"}}/>
     </TuiForm>

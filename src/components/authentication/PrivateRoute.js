@@ -10,7 +10,7 @@ export default function PrivateRoute({children, location, roles, ...rest}) {
         let setB = new Set(b);
         return [...new Set(a)].filter(x => setB.has(x));
     }
-    console.log(getToken(), getRoles())
+
     const isAllowed = () => {
         if(getToken() && intersect(getRoles(), roles).length > 0) {
             return true

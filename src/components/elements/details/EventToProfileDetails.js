@@ -13,6 +13,7 @@ import NoData from "../misc/NoData";
 import EventToProfileForm from "../forms/EventToProfileForm";
 import EventTypeMetadata from "./EventTypeMetadata";
 import MappingsObjectDetails from "./MappingsObjectDetails";
+import Tag from "../misc/Tag";
 
 export function EventToProfileCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
@@ -56,35 +57,50 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
             .finally(() => {setDeleteProgress(false);})
     }
 
-    const Details = () => <TuiForm>
-        {displayMetadata && <EventTypeMetadata data={data}/>}
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Assign data to profile"
-            description="This schema outlines which data from an event are copied to which profile data. e.g.
+    const Details = () => <>
+        <TuiForm>
+            {displayMetadata && <EventTypeMetadata data={data}/>}
+            {data?.config?.condition && <TuiFormGroup>
+                <TuiFormGroupHeader header="Trigger condition" description="Data will be copied only if."/>
+                <TuiFormGroupContent>
+                <span style={{fontSize: 24}}>
+                    <Tag backgroundColor="black" color="white">if</Tag>{data.config.condition}
+                </span>
+                </TuiFormGroupContent>
+            </TuiFormGroup>}
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="What data will be copied"
+                                    description="This schema outlines which data from an event are copied to which profile data. e.g.
                     (profile) pii.email equals (event) properties.email."/>
-            <TuiFormGroupContent>
-                {!isEmptyObjectOrNull(data?.event_to_profile)
-                    ? <MappingsObjectDetails
-                        properties={data.event_to_profile}
-                        keyPrefix="event@"
-                        valuePrefix="profile@"
-                    />
-                    : <NoData header="No schema defined"/>
-                }
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-        <Rows style={{marginTop: 20}}>
-            <Button onClick={onEditClick}
-                    icon={<VscEdit size={20}/>}
-                    label="Edit" disabled={typeof data === "undefined"}/>
-            <Button
-                progress={deleteProgress}
-                icon={<VscTrash size={20}/>}
-                onClick={onDelete}
-                label="Delete"
-                disabled={typeof data === "undefined"}/>
-        </Rows>
-    </TuiForm>
+
+                <TuiFormGroupContent>
+                    {!isEmptyObjectOrNull(data?.event_to_profile)
+                        ? <MappingsObjectDetails
+                            properties={data.event_to_profile}
+                            keyPrefix="event@"
+                            valuePrefix="profile@"
+                        />
+                        : <NoData header="No schema defined"/>
+                    }
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+
+        </TuiForm>
+        <div style={{marginBottom: 20,marginTop: 20}}>
+            <Rows>
+                <Button onClick={onEditClick}
+                        icon={<VscEdit size={20}/>}
+                        label="Edit" disabled={typeof data === "undefined"}/>
+                <Button
+                    progress={deleteProgress}
+                    icon={<VscTrash size={20}/>}
+                    onClick={onDelete}
+                    label="Delete"
+                    disabled={typeof data === "undefined"}/>
+            </Rows>
+        </div>
+
+    </>
 
     return <div className="Box10" style={{height: "100%"}}>
         {data && <Details/>}
@@ -95,7 +111,7 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
             }}
             open={displayEdit}>
             {displayEdit && <EventToProfileForm
-                onSaveComplete={handleEditComplete}
+                onSubmit={handleEditComplete}
                 {...data}
             />}
         </FormDrawer>
