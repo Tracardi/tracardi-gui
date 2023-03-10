@@ -60,14 +60,15 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
     const Details = () => <>
         <TuiForm>
             {displayMetadata && <EventTypeMetadata data={data}/>}
-            {data?.config?.condition && <TuiFormGroup>
-                <TuiFormGroupHeader header="Trigger condition" description="Data will be copied only if."/>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Trigger condition" description="Data will be copied only if the below condition is met."/>
                 <TuiFormGroupContent>
-                <span style={{fontSize: 24}}>
-                    <Tag backgroundColor="black" color="white">if</Tag>{data.config.condition}
-                </span>
+                    <div style={{fontSize: 24, marginBottom: 5}}><Tag backgroundColor="black" color="white">when</Tag>event type <Tag>equals</Tag>{data.event_type}</div>
+                    {data?.config?.condition && <div style={{fontSize: 24}}>
+                        <Tag backgroundColor="black" color="white">if</Tag>{data.config.condition}
+                    </div>}
                 </TuiFormGroupContent>
-            </TuiFormGroup>}
+            </TuiFormGroup>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="What data will be copied"
                                     description="This schema outlines which data from an event are copied to which profile data. e.g.
