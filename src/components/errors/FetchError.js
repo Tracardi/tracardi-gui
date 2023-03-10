@@ -28,7 +28,7 @@ function ErrorDetails({error}) {
                 </tr>
             })
             : <tr>
-                <td>Details</td>
+                <td valign="top">Details</td>
                 <td>{error?.data?.detail}</td>
             </tr>
         }
