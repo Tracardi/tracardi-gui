@@ -18,6 +18,7 @@ export default function EventToProfileForm({
                                                description: _description,
                                                event_type: _eventType,
                                                event_to_profile: _indexSchema,
+                                               config: _config,
                                                enabled: _indexEnabled,
                                                tags: _tags,
                                                onSubmit
@@ -33,7 +34,7 @@ export default function EventToProfileForm({
     const [copingSchema, setCopingSchema] = useState(JSON.stringify(_indexSchema, null, " ") || "{}");
     const [enabled, setEnabled] = useState(_indexEnabled || false);
     const [processing, setProcessing] = useState(false);
-    const [config, setConfig] = useState({});
+    const [config, setConfig] = useState(_config);
 
     const [nameErrorMessage, setNameErrorMessage] = useState("");
     const [typeErrorMessage, setTypeErrorMessage] = useState("");
@@ -188,7 +189,7 @@ export default function EventToProfileForm({
                                    Type key, value pair with the key as event data (e.g. properties.email) and value as
                                    the profile data (e.g. pii.email)">
 
-                    <fieldset disabled={!enabled}>
+                    <fieldset>
                         <legend>Coping schema</legend>
                         <JsonEditor value={copingSchema} onChange={setCopingSchema}/>
                     </fieldset>
