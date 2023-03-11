@@ -1,11 +1,13 @@
 import React, {useState} from "react";
-import {apiUrlStorage, asyncRemote, getError} from "../remote_api/entrypoint";
+import {apiUrlStorage} from "../remote_api/entrypoint";
 import storageValue from "../misc/localStorageDriver";
 import {BsHddNetwork} from "react-icons/bs";
 import TuiApiUrlInput from "./elements/tui/TuiApiUrlInput";
 import Button from "./elements/forms/Button";
 import Grid from "@mui/material/Grid";
 import PaperBox from "./elements/misc/PaperBox";
+import RemoteService from "../remote_api/endpoints/raw";
+import {getFetchError} from "../remote_api/remoteState";
 
 const ApiUrlSelector = ({children}) => {
 
@@ -40,29 +42,23 @@ const ApiUrlSelector = ({children}) => {
         if(isValidUrl(endpoint)) {
             try {
                 setProgress(true)
-                const response = await asyncRemote({
-                    url: "/healthcheck",
+                setErrorMessage(null)
+                const data = await RemoteService.fetch({
+                    url: "/info/version/details",
                     baseURL: endpoint
                 })
-
-                if(response.status === 200) {
-                    apiUrlStorage().save(endpoint)
-                    const storedUrls = new storageValue('tracardi-api-urls')
-                    let historicalEndpoints = storedUrls.read([]);
-                    if (!historicalEndpoints.includes(endpoint)) {
-                        historicalEndpoints.push(endpoint);
-                        storedUrls.save(historicalEndpoints, []);
-                    }
-                    setErrorMessage(null)
-                    setApiLocation(endpoint)
-
-                } else {
-                    setErrorMessage("This API URL did not respond with status OK.")
+                new storageValue('version').save(data)
+                apiUrlStorage().save(endpoint)
+                const storedUrls = new storageValue('tracardi-api-urls')
+                let historicalEndpoints = storedUrls.read([]);
+                if (!historicalEndpoints.includes(endpoint)) {
+                    historicalEndpoints.push(endpoint);
+                    storedUrls.save(historicalEndpoints, []);
                 }
+                setApiLocation(endpoint)
 
             } catch(e) {
-                const errors = getError(e)
-                setErrorMessage("API response: " + errors[0].msg)
+                setErrorMessage("API response: " + getFetchError(e))
             } finally {
                 setProgress(false)
             }

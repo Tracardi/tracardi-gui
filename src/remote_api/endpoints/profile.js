@@ -19,3 +19,9 @@ export function getProfileSession(profileId, offset) {
 export function getProfileLogs(profileId) {
     return {url: `/profile/logs/${profileId}?sort=desc`}
 }
+
+export function getProfilesCount() {
+    return {
+        url: "profile/count"
+    }
+}

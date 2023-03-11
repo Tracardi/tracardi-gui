@@ -1,33 +1,21 @@
-import React, {useEffect, useState} from "react";
-import {asyncRemote} from "../../../remote_api/entrypoint";
+import React from "react";
 import Counter from "./Counter";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
+import {useFetch} from "../../../remote_api/remoteState";
+import {getProfilesCount} from "../../../remote_api/endpoints/profile";
+import storageValue from "../../../misc/localStorageDriver";
 
 export default function ProfileCounter() {
 
-    const [value,setValue] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-
-    useEffect(() => {
-        let isSubscribed = true;
-        setLoading(true);
-        setError(false);
-        asyncRemote({
-            url: "profile/count"
-        }).then((response) => {
-            if(response) {
-                if(isSubscribed) setValue(response?.data?.count)
-            }
-        }).catch(() => {
-            if (isSubscribed) setError(true);
-        }).finally(() => {
-            if(isSubscribed) setLoading(false)
-        })
-
-        return () => isSubscribed = false;
-    }, [])
+    const {data: count, isLoading, error} = useFetch(
+        ["profileCount"],
+        getProfilesCount(),
+        data => {
+            new storageValue("profiles").save(data.count)
+            return data.count
+        }
+    )
 
     if(error) {
         return <NoData header="Error">
@@ -35,11 +23,11 @@ export default function ProfileCounter() {
         </NoData>
     }
 
-    if(loading) {
+    if(isLoading) {
         return <CenteredCircularProgress />
     }
 
     return <div>
-        <Counter label="Profiles" value={value}/>
+        <Counter label="Profiles" value={count}/>
     </div>
 }

@@ -11,6 +11,6 @@ export default function Counter({label, value, subValue, subValueSuffix = "",wid
             color: "#0088FE",
             fontWeight: 800
         }}>{abbreviateNumber(value)}</div>
-        {subValue && <div style={{fontSize: "80%", textAlign: "center", color: "#666"}}>{round(subValue,3)} {subValueSuffix}</div>}
+        <div style={{fontSize: "80%", textAlign: "center", color: "#666"}}>{subValue && round(subValue,3)} {subValueSuffix}</div>
     </div>
 }

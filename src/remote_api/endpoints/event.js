@@ -20,3 +20,10 @@ export function getEventDebugLogs(eventId) {
     return {url: `/event/debug/${eventId}`}
 }
 
+export function getEventsCount() {
+    return { url: "event/count" }
+}
+
+export function getEventsAvg() {
+    return { url: "event/avg/requests" }
+}

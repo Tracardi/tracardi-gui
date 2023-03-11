@@ -70,3 +70,7 @@ export const useFetch = (name, endpoint, resolveFn, options={}) => {
 
     return useQuery(name, closure, options)
 }
+
+export const getFetchError = (e) => {
+    return `Status: ${e?.status}, Message: ${e?.statusText}, Details: ${e?.data?.detail}`
+}
