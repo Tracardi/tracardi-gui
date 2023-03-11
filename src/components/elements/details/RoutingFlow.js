@@ -30,6 +30,7 @@ import EventToProfileForm from "../forms/EventToProfileForm";
 import FlowDisplay from "../../flow/FlowDetails";
 import {useFetch} from "../../../remote_api/remoteState";
 import FetchError from "../../errors/FetchError";
+import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
 
 function hasData(data) {
     return Array.isArray(data) && data.length > 0
@@ -117,11 +118,13 @@ const AccordionCard = ({items, nodata, details, passData, singleValue = false, d
     }
 
     return <>
-        {add && <div style={{display: "flex", justifyContent: "end", marginBottom: 5}}>
-            <Button label={singleValue ? "Add or Replace " : "Add"}
-                    onClick={() => setOpenAddDrawer(true)}
-                    icon={<BsPlusCircleDotted size={20}/>}/>
-        </div>}
+        {add && <RestrictToLocalStagingContext>
+            <div style={{display: "flex", justifyContent: "end", marginBottom: 5}}>
+                <Button label={singleValue ? "Add or Replace " : "Add"}
+                        onClick={() => setOpenAddDrawer(true)}
+                        icon={<BsPlusCircleDotted size={20}/>}/>
+            </div>
+        </RestrictToLocalStagingContext>}
         {(!hasData(items)) ? displayNoData() : displayAccordion()}
         {add && <FormDrawer
             width={800}

@@ -14,8 +14,9 @@ import {isEmptyObject} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import EventTypeMetadata from "./EventTypeMetadata";
 import Tag from "../misc/Tag";
+import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
 
-export function EventValidationCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
+export function EventValidationCard({data, onDeleteComplete, onEditComplete, displayMetadata = true}) {
 
     const [displayEdit, setDisplayEdit] = React.useState(false);
 
@@ -35,7 +36,10 @@ export function EventValidationCard({data, onDeleteComplete, onEditComplete, dis
     }
 
     const handleDelete = () => {
-        confirm({title: "Do you want to delete this event schema validation?", description: "This action can not be undone."})
+        confirm({
+            title: "Do you want to delete this event schema validation?",
+            description: "This action can not be undone."
+        })
             .then(async () => {
                     try {
                         await asyncRemote({
@@ -56,7 +60,7 @@ export function EventValidationCard({data, onDeleteComplete, onEditComplete, dis
 
     const Details = () => <>
         <TuiForm>
-            {displayMetadata && <EventTypeMetadata data={data}/> }
+            {displayMetadata && <EventTypeMetadata data={data}/>}
             {data.validation.condition && <TuiFormGroup>
                 <TuiFormGroupHeader header="Trigger condition"
                                     description="This validation schema is triggered only when."/>
@@ -77,22 +81,24 @@ export function EventValidationCard({data, onDeleteComplete, onEditComplete, dis
 
                     </TuiFormGroupField>
                 </TuiFormGroupContent>
-            </TuiFormGroup>: <NoData header="No schema defined"/> }
+            </TuiFormGroup> : <NoData header="No schema defined"/>}
         </TuiForm>
-        <div style={{marginBottom: 20}}>
-            <Rows style={{marginTop: 20}}>
-                <Button onClick={handleEditClick}
-                        icon={<VscEdit size={20}/>}
-                        label="Edit"
-                        disabled={typeof data === "undefined"}/>
-                {onDeleteComplete && <Button
-                    icon={<VscTrash size={20}/>}
-                    onClick={handleDelete}
-                    label="Delete"
-                    disabled={typeof data === "undefined"}
-                />}
-            </Rows>
-        </div>
+        <RestrictToLocalStagingContext>
+            <div style={{marginBottom: 20}}>
+                <Rows style={{marginTop: 20}}>
+                    <Button onClick={handleEditClick}
+                            icon={<VscEdit size={20}/>}
+                            label="Edit"
+                            disabled={typeof data === "undefined"}/>
+                    {onDeleteComplete && <Button
+                        icon={<VscTrash size={20}/>}
+                        onClick={handleDelete}
+                        label="Delete"
+                        disabled={typeof data === "undefined"}
+                    />}
+                </Rows>
+            </div>
+        </RestrictToLocalStagingContext>
     </>
 
     return <div className="Box10" style={{height: "100%"}}>
@@ -100,15 +106,15 @@ export function EventValidationCard({data, onDeleteComplete, onEditComplete, dis
         <FormDrawer
             width={800}
             onClose={() => {
-                setDisplayEdit(false)
-            }}
-            open={displayEdit}>
-            {displayEdit && <EventValidationForm
-                onSubmit={handleEditComplete}
-                init={data}
-            />}
-        </FormDrawer>
-    </div>
+                    setDisplayEdit(false)
+                }}
+                open={displayEdit}>
+                {displayEdit && <EventValidationForm
+                    onSubmit={handleEditComplete}
+                    init={data}
+                />}
+            </FormDrawer>
+        </div>
 }
 
 export default function EventValidationDetails({id, onDeleteComplete}) {
@@ -138,10 +144,11 @@ export default function EventValidationDetails({id, onDeleteComplete}) {
         },
         [id])
 
-    if(loading)
+    if (loading)
         return <CenteredCircularProgress/>
 
-    return <EventValidationCard data={data} onDeleteComplete={onDeleteComplete} onEditComplete={(data) => setData(data)}/>
+    return <EventValidationCard data={data} onDeleteComplete={onDeleteComplete}
+                                onEditComplete={(data) => setData(data)}/>
 
 }
 

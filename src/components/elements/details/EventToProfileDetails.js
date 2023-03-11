@@ -14,6 +14,7 @@ import EventToProfileForm from "../forms/EventToProfileForm";
 import EventTypeMetadata from "./EventTypeMetadata";
 import MappingsObjectDetails from "./MappingsObjectDetails";
 import Tag from "../misc/Tag";
+import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
 
 export function EventToProfileCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
@@ -90,20 +91,21 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
             </TuiFormGroup>
 
         </TuiForm>
-        <div style={{marginBottom: 20,marginTop: 20}}>
-            <Rows>
-                <Button onClick={onEditClick}
-                        icon={<VscEdit size={20}/>}
-                        label="Edit" disabled={typeof data === "undefined"}/>
-                <Button
-                    progress={deleteProgress}
-                    icon={<VscTrash size={20}/>}
-                    onClick={onDelete}
-                    label="Delete"
-                    disabled={typeof data === "undefined"}/>
-            </Rows>
-        </div>
-
+        <RestrictToLocalStagingContext>
+            <div style={{marginBottom: 20, marginTop: 20}}>
+                <Rows>
+                    <Button onClick={onEditClick}
+                            icon={<VscEdit size={20}/>}
+                            label="Edit" disabled={typeof data === "undefined"}/>
+                    <Button
+                        progress={deleteProgress}
+                        icon={<VscTrash size={20}/>}
+                        onClick={onDelete}
+                        label="Delete"
+                        disabled={typeof data === "undefined"}/>
+                </Rows>
+            </div>
+        </RestrictToLocalStagingContext>
     </>
 
     return <div className="Box10" style={{height: "100%"}}>

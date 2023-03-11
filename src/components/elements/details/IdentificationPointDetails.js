@@ -11,6 +11,7 @@ import {asyncRemote} from "../../../remote_api/entrypoint";
 import IdentificationPointForm from "../forms/IdentifiactionPointForm";
 import EventTypeMetadata from "./EventTypeMetadata";
 import EventToProfileFieldMapping from "../forms/EventToProfileFieldMapping";
+import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
 
 export function IdentificationPointCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
@@ -62,20 +63,22 @@ export function IdentificationPointCard({data, onDeleteComplete, onEditComplete,
                 </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>
-        <div>
-            <Rows style={{marginTop: 20}}>
-                <Button onClick={handleEdit}
-                        icon={<VscEdit size={20}/>}
-                        label="Edit"
-                        disabled={typeof data === "undefined"}/>
-                {onDeleteComplete && <Button
-                    icon={<VscTrash size={20}/>}
-                    onClick={handleDelete}
-                    label="Delete"
-                    disabled={typeof data === "undefined"}
-                />}
-            </Rows>
-        </div>
+        <RestrictToLocalStagingContext>
+            <div>
+                <Rows style={{marginTop: 20}}>
+                    <Button onClick={handleEdit}
+                            icon={<VscEdit size={20}/>}
+                            label="Edit"
+                            disabled={typeof data === "undefined"}/>
+                    {onDeleteComplete && <Button
+                        icon={<VscTrash size={20}/>}
+                        onClick={handleDelete}
+                        label="Delete"
+                        disabled={typeof data === "undefined"}
+                    />}
+                </Rows>
+            </div>
+        </RestrictToLocalStagingContext>
     </>
 
     return <div className="Box10" style={{height: "100%"}}>

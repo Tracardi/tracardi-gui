@@ -75,6 +75,20 @@ export const ProfileData = ({profile}) => {
             </fieldset>}
 
             <fieldset style={{marginBottom: 20}}>
+                <legend style={{fontSize: 13}}>Profile segments</legend>
+                {isNotEmptyArray(profile?.segments)
+                    ? <div className="flexLine" style={{gap: 5}}><TuiTags tags={profile?.segments}/></div>
+                    : "None"}
+            </fieldset>
+
+            <fieldset style={{marginBottom: 20}}>
+                <legend style={{fontSize: 13}}>Profile interests</legend>
+                {isNotEmptyArray(profile?.interests)
+                    ? <div className="flexLine" style={{gap: 5}}><TuiTags tags={profile?.interests}/></div>
+                    : "None"}
+            </fieldset>
+
+            <fieldset style={{marginBottom: 20}}>
                 <legend style={{fontSize: 13}}>Private traits</legend>
                 {privateTraits && !isEmptyObjectOrNull(privateTraits)
                     ? Object.keys(privateTraits).map(key => <PropertyField key={key}
@@ -89,20 +103,6 @@ export const ProfileData = ({profile}) => {
                     ? publicTraits && Object.keys(publicTraits).map(key => <PropertyField key={key}
                                                                                           name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
                                                                                           content={publicTraits[key]}/>)
-                    : "None"}
-            </fieldset>
-
-            <fieldset style={{marginBottom: 20}}>
-                <legend style={{fontSize: 13}}>Profile segments</legend>
-                {isNotEmptyArray(profile?.segments)
-                    ? <div className="flexLine" style={{gap: 5}}><TuiTags tags={profile?.segments}/></div>
-                    : "None"}
-            </fieldset>
-
-            <fieldset style={{marginBottom: 20}}>
-                <legend style={{fontSize: 13}}>Profile interests</legend>
-                {isNotEmptyArray(profile?.interests)
-                    ? <div className="flexLine" style={{gap: 5}}><TuiTags tags={profile?.interests}/></div>
                     : "None"}
             </fieldset>
 

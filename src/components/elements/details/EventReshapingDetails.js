@@ -16,6 +16,7 @@ import NoData from "../misc/NoData";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import EventTypeMetadata from "./EventTypeMetadata";
 import Tag from "../misc/Tag";
+import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
 
 function Spanner({children}) {
     return <div style={{padding: 20}}>{children}</div>
@@ -104,20 +105,22 @@ export function EventReshapingCard({data, onDeleteComplete, onEditComplete, disp
                 </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>
-        <div style={{marginBottom: 20}}>
-            <Rows style={{marginTop: 20}}>
-                <Button onClick={onEditClick}
-                        icon={<VscEdit size={20}/>}
-                        label="Edit"
-                        disabled={typeof data === "undefined"}/>
-                {onDeleteComplete && <Button
-                    icon={<VscTrash size={20}/>}
-                    onClick={onDelete}
-                    label="Delete"
-                    disabled={typeof data === "undefined"}
-                />}
-            </Rows>
-        </div>
+        <RestrictToLocalStagingContext>
+            <div style={{marginBottom: 20}}>
+                <Rows style={{marginTop: 20}}>
+                    <Button onClick={onEditClick}
+                            icon={<VscEdit size={20}/>}
+                            label="Edit"
+                            disabled={typeof data === "undefined"}/>
+                    {onDeleteComplete && <Button
+                        icon={<VscTrash size={20}/>}
+                        onClick={onDelete}
+                        label="Delete"
+                        disabled={typeof data === "undefined"}
+                    />}
+                </Rows>
+            </div>
+        </RestrictToLocalStagingContext>
 
     </>
 

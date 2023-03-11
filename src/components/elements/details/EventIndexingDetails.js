@@ -17,6 +17,7 @@ import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import ActiveTag from "../misc/ActiveTag";
 import MappingsObjectDetails from "./MappingsObjectDetails";
+import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
 
 export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
@@ -94,17 +95,19 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
                 }
             </TuiFormGroupContent>
         </TuiFormGroup>
-        <Rows style={{marginTop: 20}}>
-            <Button onClick={handleEdit}
-                    icon={<VscEdit size={20}/>}
-                    label="Edit" disabled={typeof data === "undefined"}/>
-            <Button
-                progress={deleteProgress}
-                icon={<VscTrash size={20}/>}
-                onClick={handleDelete}
-                label="Delete"
-                disabled={typeof data === "undefined"}/>
-        </Rows>
+        <RestrictToLocalStagingContext>
+            <Rows style={{marginTop: 20}}>
+                <Button onClick={handleEdit}
+                        icon={<VscEdit size={20}/>}
+                        label="Edit" disabled={typeof data === "undefined"}/>
+                <Button
+                    progress={deleteProgress}
+                    icon={<VscTrash size={20}/>}
+                    onClick={handleDelete}
+                    label="Delete"
+                    disabled={typeof data === "undefined"}/>
+            </Rows>
+        </RestrictToLocalStagingContext>
     </TuiForm>
 
     return <div className="Box10" style={{height: "100%"}}>

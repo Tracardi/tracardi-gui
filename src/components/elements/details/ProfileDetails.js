@@ -26,7 +26,7 @@ export default function ProfileDetails({profile}) {
     return <div style={{height: "inherit", display: "flex", flexDirection: "column"}}>
         {displayPii &&  <PiiDetails data={profile}/>}
         <div className="RightTabScroller">
-            <Tabs tabs={["Personal data & Events", "Sessions & Events", "Segments", "Logs", "Raw"]} tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
+            <Tabs tabs={["Personal data & Events", "Sessions & Events", "Logs", "Raw"]} tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
                 <TabCase id={0}>
                     <ProfileData profile={profile}/>
                 </TabCase>
@@ -34,18 +34,6 @@ export default function ProfileDetails({profile}) {
                     <ProfileSessionsDetails profileId={profile?.id}/>
                 </TabCase>
                 <TabCase id={2}>
-                    <TuiForm style={{margin: 20}}>
-                        <TuiFormGroup>
-                            <TuiFormGroupHeader header="Segments"/>
-                            <TuiFormGroupContent>
-                                <TuiFormGroupField>
-                                    <Properties properties={{segments: profile?.segments}}/>
-                                </TuiFormGroupField>
-                            </TuiFormGroupContent>
-                        </TuiFormGroup>
-                    </TuiForm>
-                </TabCase>
-                <TabCase id={3}>
                     <div className="Box10">
                         {profile?.id
                             ? <ProfileLogDetails profileId={profile.id} />
@@ -54,7 +42,7 @@ export default function ProfileDetails({profile}) {
                             </NoData>}
                     </div>
                 </TabCase>
-                <TabCase id={4}>
+                <TabCase id={3}>
                     <div className="Box10">
                         <JsonBrowser data={profile}/>
                     </div>
