@@ -3,6 +3,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Button from "../elements/forms/Button";
 import {objectMap} from "../../misc/mappers";
+import ToggleButton from "@mui/material/ToggleButton";
 
 
 export default function DropDownMenu({label, icon, options, progress=false, selected=false, width}) {
@@ -22,16 +23,22 @@ export default function DropDownMenu({label, icon, options, progress=false, sele
     };
 
     return (
-        <div>
-
-            <Button
-                icon={icon}
-                label={label}
-                onClick={handleClickListItem}
-                progress={progress}
-                selected={selected}
-                style={width && {width: width}}
-            />
+        <>
+            {label
+                ? <Button
+                    icon={icon}
+                    label={label}
+                    onClick={handleClickListItem}
+                    progress={progress}
+                    selected={selected}
+                    style={width && {width: width}}
+                />
+                : <ToggleButton
+                    value="more"
+                    size="small"
+                    onClick={handleClickListItem}
+                >{icon}</ToggleButton>
+            }
 
             <Menu
                 id="lock-menu"
@@ -52,6 +59,6 @@ export default function DropDownMenu({label, icon, options, progress=false, sele
                     </MenuItem>
                 ))}
             </Menu>
-        </div>
+        </>
     );
 }

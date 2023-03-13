@@ -23,7 +23,8 @@ export default function DataAnalytics({
                                           detailsDrawerWidth,
                                           filterFields,
                                           displayChart = true,
-                                          barChartColors = {}
+                                          barChartColors = {},
+                                          ExtensionDropDown=null
                                       }) {
 
     const [filterNumber, setFilterNumber] = useState(0)
@@ -171,6 +172,7 @@ export default function DataAnalytics({
                             rowDetails={rowDetails}
                             localContext={localProductionContext}
                             onLocalContextChange={handleLocalContextChange}
+                            ExtensionDropDown={ExtensionDropDown}
                         >
                             <BarChartElement
                                 onLoadRequest={onLoadHistogramRequest(query)}

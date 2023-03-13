@@ -4,6 +4,12 @@ export function objectMap(obj, func) {
     return Object.entries(obj).map(([k, v]) => func(k, v));
 }
 
+export function objectMapEntries(node, fn) {
+    const newNode = {};
+    Object.entries(node).forEach(([key, val]) => (newNode[key] = fn(key, val)));
+    return newNode;
+}
+
 export function objectFilter(raw, allowed) {
     return Object.keys(raw)
         .filter(key => allowed.includes(key))

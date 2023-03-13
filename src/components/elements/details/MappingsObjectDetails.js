@@ -1,4 +1,3 @@
-import dot from "dot-object";
 import React from "react";
 import PropTypes from "prop-types";
 import {isString, startsWith} from "../../../misc/typeChecking";
@@ -26,9 +25,25 @@ export default function MappingsObjectDetails({properties, show, exclude, keyPre
         }
     }
 
-    const dotted = typeof properties !== "undefined" && properties!==null ? dot.dot(properties) : {};
-    const keyValues = () => Object.entries(dotted).map(
-        ([label, value]) => {
+    const keyValues = () => properties.map(
+        (item) => {
+
+            const label = item.event.value
+            const value = item.profile.value
+            let op
+            switch (item.op) {
+                case 0:
+                    op = "="
+                    break;
+                case 1:
+                    op = "equals if not exists"
+                    break;
+                case 2:
+                    op = "appends data from"
+                    break;
+                default:
+                    op = "="
+            }
 
             if (exclude) {
                 if (exclude.includes(label) || startsWith(label, exclude)) {
@@ -37,7 +52,9 @@ export default function MappingsObjectDetails({properties, show, exclude, keyPre
                     return <AssignValueToKey
                         key={label}
                         label={keyPrefix ? `${keyPrefix}${label}` : label}
-                        value={valuePrefix ? `${valuePrefix}${getValue(value)}` : getValue(value)}/>
+                        value={valuePrefix ? `${valuePrefix}${getValue(value)}` : getValue(value)}
+                        op={op}
+                    />
                 }
             }
 
@@ -46,7 +63,9 @@ export default function MappingsObjectDetails({properties, show, exclude, keyPre
                     return <AssignValueToKey
                         key={label}
                         label={keyPrefix ? `${keyPrefix}${label}` : label}
-                        value={valuePrefix ? `${valuePrefix}${getValue(value)}` : getValue(value)}/>
+                        value={valuePrefix ? `${valuePrefix}${getValue(value)}` : getValue(value)}
+                        op={op}
+                    />
                 } else {
                     return ""
                 }
@@ -55,7 +74,9 @@ export default function MappingsObjectDetails({properties, show, exclude, keyPre
             return <AssignValueToKey
                 key={label}
                 label={keyPrefix ? `${keyPrefix}${label}` : label}
-                value={valuePrefix ? `${valuePrefix}${getValue(value)}` : getValue(value)}/>
+                value={valuePrefix ? `${valuePrefix}${getValue(value)}` : getValue(value)}
+                op={op}
+            />
         }
     )
     return <>

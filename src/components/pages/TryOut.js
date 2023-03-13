@@ -23,6 +23,7 @@ import StepContent from "@mui/material/StepContent";
 import StepLabel from "@mui/material/StepLabel";
 import Paper from "@mui/material/Paper";
 import NoData from "../elements/misc/NoData";
+import EventToProfileCopy from "../elements/forms/EventToProfileCopy";
 
 export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
@@ -117,7 +118,7 @@ export default function TryOut() {
     }
     //value={{value:"123", ref:true}} autocomplete="profile"
     return (<div style={{padding: 10}}>
-
+            <EventToProfileCopy onChange={v => console.log("fields", v)}/>
             <RefInput label="sss" onChange={(v)=>console.log(v)} errorMessage="ssss" fullWidth/>
             <DotAccessor label="xxx"/>
             <Routing/>

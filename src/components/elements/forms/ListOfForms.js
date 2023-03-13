@@ -5,7 +5,7 @@ import Button from "./Button";
 import {objectMap} from "../../../misc/mappers";
 
 
-const ListOfForms = ({onChange, label="Add", form, details, value: _value, defaultFormValue = {}}) => {
+const ListOfForms = ({onChange, label="Add", form, details, style, value: _value, defaultFormValue = {}}) => {
 
     let initCurrentRow
 
@@ -64,17 +64,20 @@ const ListOfForms = ({onChange, label="Add", form, details, value: _value, defau
         handleChange(_list)
     }
 
+    style = {
+        width: "100%",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: 15,
+        ...style
+    }
+
     return <div style={{width: "100%"}}>
         {
             objectMap(list, (key, formValue) => {
-                return <div key={key} style={{
-                    width: "100%",
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 15
-                }}>
+                return <div key={key} style={style}>
                         <span style={{width: "100%"}} onClick={(e) => handleSetCurrent(e, key)}>
                         {
                             (currentRow !== key && details) ? <span style={{cursor: "pointer"}}>{React.createElement(

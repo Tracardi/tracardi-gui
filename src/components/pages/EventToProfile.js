@@ -91,7 +91,7 @@ export default function EventToProfile() {
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
         drawerAddTitle="New schema"
-        drawerAddWidth={600}
+        drawerAddWidth={950}
         addFunc={addFunc}
     />
 }

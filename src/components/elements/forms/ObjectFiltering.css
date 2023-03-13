@@ -12,5 +12,5 @@
     width: 245px;
 }
 .ObjectFiltering > .Action {
-    width: 115px;
+    display: flex;
 }

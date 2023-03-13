@@ -11,6 +11,7 @@ import Switch from "@mui/material/Switch";
 import DocsLink from "../drawers/DocsLink";
 import RemoteService from "../../../remote_api/endpoints/raw";
 import FetchError from "../../errors/FetchError";
+import EventToProfileCopy from "./EventToProfileCopy";
 
 export default function EventToProfileForm({
                                                id,
@@ -31,7 +32,7 @@ export default function EventToProfileForm({
         name: _eventType
     } : null);
     const [tags, setTags] = useState(_tags || []);
-    const [copingSchema, setCopingSchema] = useState(JSON.stringify(_indexSchema, null, " ") || "{}");
+    const [copingSchema, setCopingSchema] = useState(_indexSchema || []);
     const [enabled, setEnabled] = useState(_indexEnabled || false);
     const [processing, setProcessing] = useState(false);
     const [config, setConfig] = useState(_config);
@@ -72,7 +73,7 @@ export default function EventToProfileForm({
                 name: name,
                 description: description,
                 event_type: eventType.id,
-                event_to_profile: JSON.parse(copingSchema),
+                event_to_profile: copingSchema,
                 config: config,
                 enabled: enabled,
                 tags: tags && Array.isArray(tags) && tags.length > 0 ? tags : ["General"],
@@ -184,17 +185,11 @@ export default function EventToProfileForm({
                     />
                 </TuiFormGroupField>
 
-                <TuiFormGroupField header="What should be copied"
-                                   description='To copy event items to your profile, choose which ones to copy by
-                                   entering a "key, value" pair. For example, if you want to copy an email address
-                                   from the event, type "properties.email" as the key and "pii.email" as the value.
-                                   If the email address does not exist in the event, it will not be copied and you
+                <TuiFormGroupField header="What should be copied to profile"
+                                   description='To copy event items to your profile, choose a profile data e.g. "pii.email" you would like to override and
+                                   a type for example event property, e.g."properties.email". If the email address does not exist in the event, it will not be copied and you
                                    will get a warning.'>
-
-                    <fieldset>
-                        <legend>Coping schema</legend>
-                        <JsonEditor value={copingSchema} onChange={setCopingSchema}/>
-                    </fieldset>
+                    <EventToProfileCopy value={copingSchema} onChange={setCopingSchema}/>
 
                 </TuiFormGroupField>
             </TuiFormGroupContent>

@@ -50,9 +50,7 @@ const Details = ({data}) => <>
                     <PropertyField labelWidth={400} name="Locked" content={<ActiveTag active={data.locked}/>}/>
                     <PropertyField labelWidth={400} name="Synchronize profiles" content={<ActiveTag active={data.synchronize_profiles}/>}/>
                     <PropertyField labelWidth={400} name="Transitional" content={<ActiveTag active={data.transitional}/>}/>
-                    <PropertyField labelWidth={400} name="Return profile" content={<ActiveTag active={data.returns_profile}/>}/>
                     <PropertyField labelWidth={400} name="Make profile id permanent" content={<ActiveTag active={data.permanent_profile_id}/>}/>
-                    <PropertyField labelWidth={400} name="Require consent" content={<ActiveTag active={data.requires_consent}/>}/>
                     <PropertyField labelWidth={400} name="Groups" content={<TuiTags tags={data.groups} size="small"/>}/>
                     <PropertyField labelWidth={400} name="Tags" content={<TuiTags tags={data.tags} size="small"/>}/>
                     {data.locked &&
