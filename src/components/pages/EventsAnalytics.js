@@ -2,12 +2,38 @@ import React, {useContext} from "react";
 import "./DataAnalytics.css";
 import DataAnalytics, {LocalDataContext} from "./DataAnalytics";
 import {EventRow} from "../elements/lists/rows/EventRow";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
+import EventToProfileCopy from "../elements/forms/EventToProfileCopy";
+import Button from "../elements/forms/Button";
 
 function CopyToProfileExtension() {
 
     const localContext = useContext(LocalDataContext)
+
     const query = localStorage.getItem('eventQuery')
-    return `hellssso ${localContext} ${query}`
+    return <div style={{padding: 20}}><TuiForm >
+        <TuiFormGroup>
+            <TuiFormGroupHeader
+                header="Data filtered by query"
+                description="Data will be narrowed down by the query. "
+            />
+            <TuiFormGroupContent>
+                {query} {localContext ? "On production" : "On test environment"}
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Assign data to profile from event. "
+            description="What data should be copied to profile."
+            />
+            <TuiFormGroupContent>
+                <EventToProfileCopy onChange={(v) => console.log(v)}/>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+    </TuiForm>
+        <div>
+            <Button label="Run in background" />
+        </div>
+        </div>
 }
 
 export default function EventsAnalytics({displayChart = true}) {
