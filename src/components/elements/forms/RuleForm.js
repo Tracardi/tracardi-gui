@@ -11,6 +11,8 @@ import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import TuiTagger from "../tui/TuiTagger";
 import ErrorsBox from "../../errors/ErrorsBox";
+import TuiSelectMultiConsentType from "../tui/TuiSelectMultiConsentType";
+import ShowHide from "../misc/ShowHide";
 
 export default function RuleForm({onSubmit, data}) {
 
@@ -19,6 +21,7 @@ export default function RuleForm({onSubmit, data}) {
             source: {},
             event: {},
             flow: {},
+            properties: {},
             name: "",
             description: "",
             tags: []
@@ -28,10 +31,10 @@ export default function RuleForm({onSubmit, data}) {
     const [flow, setFlow] = useState(data?.flow || {});
     const [type, setType] = useState(data?.event?.type ? {name: data.event.type, id: data.event.type} : {});
     const [name, setName] = useState(data?.name || "");
+    const [properties, setProperties] = useState(data?.properties || []);
     const [description, setDescription] = useState(data.description);
     const [source, setSource] = useState(data.source);
     const [error, setError] = useState(null);
-    const [nameErrorMessage, setNameErrorMessage] = useState("");
     const [typeErrorMessage, setTypeErrorMessage] = useState("");
     const [flowErrorMessage, setFlowErrorMessage] = useState("");
     const [sourceErrorMessage, setSourceErrorMessage] = useState("");
@@ -61,18 +64,12 @@ export default function RuleForm({onSubmit, data}) {
     }
 
     const handleSubmit = async () => {
-        if (isEmptyObjectOrNull(type) || isEmptyObjectOrNull(source) || isEmptyObjectOrNull(flow) || !name) {
+        if (isEmptyObjectOrNull(type) || isEmptyObjectOrNull(source) || isEmptyObjectOrNull(flow)) {
 
             if (isEmptyObjectOrNull(source)) {
                 setSourceErrorMessage("Resource can not be empty");
             } else {
                 setSourceErrorMessage("")
-            }
-
-            if (!name || name.length === 0) {
-                setNameErrorMessage("Rule name can not be empty");
-            } else {
-                setNameErrorMessage("");
             }
 
             if (isEmptyObjectOrNull(type)) {
@@ -95,6 +92,7 @@ export default function RuleForm({onSubmit, data}) {
             name: name,
             event: {type: type.name},
             source: (source?.id) ? source : null,
+            properties: properties,
             description: description,
             flow: flow,
             tags: tags
@@ -149,46 +147,56 @@ export default function RuleForm({onSubmit, data}) {
                         />
                     </div>
                 </TuiFormGroupField>
+                <TuiFormGroupField header="Required consents"
+                                   description="Select consents that are required to route selected event type. Leave empty if none is required.">
+                            <TuiSelectMultiConsentType
+                                label="Required consents"
+                                value={properties?.consents}
+                                fullWidth={true}
+                                onSetValue={value=> setProperties({...properties, consents: value})}
+                            />
+                </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Describe rule"/>
-            <TuiFormGroupContent>
-                <TuiFormGroupField header="Name" description="Rule name can be any string that
+        <ShowHide label="Custom description" style={{marginBottom: 10}}>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Describe rule"/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField header="Name" description="Rule name can be any string that
                     identifies rule.">
-                    <TextField
-                        label={"Rule name"}
-                        error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null)}
-                        helperText={nameErrorMessage}
-                        value={name}
-                        onChange={(ev) => {
-                            setName(ev.target.value)
-                        }}
-                        size="small"
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
-                                   description="Description will help you to understand when the rule triggers the flow.">
-                    <TextField
-                        label={"Rule description"}
-                        value={description}
-                        multiline
-                        rows={3}
-                        onChange={(ev) => {
-                            setDescription(ev.target.value)
-                        }}
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Rule tags"
-                                   description="Tag the rules type to group it into meaningful groups.">
-                    <TuiTagger tags={tags} onChange={setTags}/>
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
+                        <TextField
+                            label={"Rule name"}
+                            value={name}
+                            onChange={(ev) => {
+                                setName(ev.target.value)
+                            }}
+                            size="small"
+                            variant="outlined"
+                            fullWidth
+                        />
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="Description"
+                                       description="Description will help you to understand when the rule triggers the flow.">
+                        <TextField
+                            label={"Rule description"}
+                            value={description}
+                            multiline
+                            rows={3}
+                            onChange={(ev) => {
+                                setDescription(ev.target.value)
+                            }}
+                            variant="outlined"
+                            fullWidth
+                        />
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="Rule tags"
+                                       description="Tag the rules type to group it into meaningful groups.">
+                        <TuiTagger tags={tags} onChange={setTags}/>
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </ShowHide>
+
 
         <Button label="Save" onClick={handleSubmit} style={{justifyContent: "center"}} progress={processing} error={error !== null}/>
     </TuiForm>

@@ -66,38 +66,43 @@ export function EventReshapingCard({data, onDeleteComplete, onEditComplete, disp
     const Details = () => <>
         <TuiForm>
             {displayMetadata && <EventTypeMetadata data={data}/>}
-            {data?.reshaping?.condition && <TuiFormGroup>
+            <TuiFormGroup>
                 <TuiFormGroupHeader header="Trigger condition" description="Event reshaping is triggered only when."/>
                 <TuiFormGroupContent>
-                <span style={{fontSize: 24}}>
-                    <Tag backgroundColor="black" color="white">if</Tag>{data.reshaping.condition}
-                </span>
+                    <div style={{fontSize: 18}}><Tag backgroundColor="black" color="white">WHEN</Tag> event type is <Tag>{data?.event_type}</Tag></div>
+                    {data?.reshaping?.condition && <div style={{fontSize: 18}}>
+                    <Tag backgroundColor="black" color="white">AND</Tag>{data.reshaping.condition}
+                </div>}
                 </TuiFormGroupContent>
-            </TuiFormGroup>}
+            </TuiFormGroup>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Reshaping schema" description="How the event is changed."/>
                 <Tabs tabs={["Event Properties", "Event Context", "Session Context"]} defaultTab={tab}
                       onTabSelect={setTab}>
                     <TabCase id={0}>
                         {!isEmptyObject(data?.reshaping?.reshape_schema?.properties)
-                            ? <Spanner><JsonBrowser data={data.reshaping.reshape_schema.properties} tree={false}/></Spanner>
+                            ? <Spanner><JsonBrowser data={data.reshaping.reshape_schema.properties}
+                                                    tree={false}/></Spanner>
                             : <NoData header="No schema defined"/>}
                     </TabCase>
                     <TabCase id={1}>
                         {!isEmptyObject(data?.reshaping?.reshape_schema?.context)
-                            ? <Spanner><JsonBrowser data={data.reshaping.reshape_schema.context} tree={false}/></Spanner>
+                            ?
+                            <Spanner><JsonBrowser data={data.reshaping.reshape_schema.context} tree={false}/></Spanner>
                             : <NoData header="No schema defined"/>}
                     </TabCase>
                     <TabCase id={2}>
                         {!isEmptyObject(data?.reshaping?.reshape_schema?.session)
-                            ? <Spanner><JsonBrowser data={data.reshaping.reshape_schema.session} tree={false}/></Spanner>
+                            ?
+                            <Spanner><JsonBrowser data={data.reshaping.reshape_schema.session} tree={false}/></Spanner>
                             : <NoData header="No schema defined"/>}
                     </TabCase>
                 </Tabs>
             </TuiFormGroup>
 
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Value mappings" description="How the event type, profile, and session values are mapped."/>
+                <TuiFormGroupHeader header="Value mappings"
+                                    description="How the event type, profile, and session values are mapped."/>
                 <TuiFormGroupContent>
                     <TuiFormGroupField>
                         <Properties properties={data.reshaping.mapping}/>

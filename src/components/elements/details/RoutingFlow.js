@@ -31,6 +31,8 @@ import FlowDisplay from "../../flow/FlowDetails";
 import {useFetch} from "../../../remote_api/remoteState";
 import FetchError from "../../errors/FetchError";
 import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
+import {RuleCard} from "./RuleDetails";
+import {TuiForm, TuiFormGroup, TuiFormGroupHeader} from "../tui/TuiForm";
 
 function hasData(data) {
     return Array.isArray(data) && data.length > 0
@@ -200,7 +202,18 @@ const ProcessStep = ({step, label, optional, endpoint, passData, singleValue, no
 }
 
 const PreviewFlow = ({data, onDeleteComplete, onEditComplete}) => {
-    return <div style={{height: 700}}><FlowDisplay id={data.flow.id}/></div>
+    return <>
+        <RuleCard data={data} displayMetadata={false}/>
+
+        <TuiForm style={{margin:20}}>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Workflow"/>
+                <div style={{height: 700}}><FlowDisplay id={data.flow.id}/></div>
+            </TuiFormGroup>
+
+        </TuiForm>
+
+    </>
 }
 
 const RoutingFlow = ({event}) => {

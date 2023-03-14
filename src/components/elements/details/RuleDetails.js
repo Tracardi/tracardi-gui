@@ -2,7 +2,6 @@ import React, {useEffect} from "react";
 import "./Details.css";
 import "./RuleDetails.css";
 import Button from "../forms/Button";
-import UqlDetails from "./UqlDetails";
 import Rows from "../misc/Rows";
 import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
@@ -15,13 +14,20 @@ import RuleForm from "../forms/RuleForm";
 import PropertyField from "./PropertyField";
 import DateValue from "../misc/DateValue";
 import IdLabel from "../misc/IconLabels/IdLabel";
-import IconLabel from "../misc/IconLabels/IconLabel";
-import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import TuiTags from "../tui/TuiTags";
 import ActiveTag from "../misc/ActiveTag";
-import EventSourceDetails from "./EventSourceDetails";
+import Tag from "../misc/Tag";
+import NoData from "../misc/NoData";
+import {isNotEmptyArray} from "../../../misc/typeChecking";
 
-export function RuleCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
+function ConsentsTags({data}) {
+    const tags = Array.isArray(data?.properties?.consents)
+        ? data?.properties?.consents.map(item => item.name)
+        : []
+    return tags.map(consent => <Tag key={consent}>{consent}</Tag>)
+}
+
+export function RuleCard({data, onDeleteComplete, onEditComplete, displayMetadata = true}) {
 
     const [deleteProgress, setDeleteProgress] = React.useState(false);
     const [openEdit, setOpenEdit] = React.useState(false);
@@ -34,7 +40,7 @@ export function RuleCard({data, onDeleteComplete, onEditComplete, displayMetadat
 
     const handleEditComplete = (flowData) => {
         setOpenEdit(false);
-        if(onEditComplete instanceof Function) onEditComplete(flowData);
+        if (onEditComplete instanceof Function) onEditComplete(flowData);
     }
 
     const handleDelete = () => {
@@ -58,56 +64,68 @@ export function RuleCard({data, onDeleteComplete, onEditComplete, displayMetadat
             }
         )
     }
-
-    return <TuiForm style={{margin: 20}}>
-            <TuiFormGroup>
-                <TuiFormGroupHeader header={data?.name} description="Routing rule properties"/>
-                <TuiFormGroupContent>
+    if (!data) {
+        return <NoData header="No routing data"/>
+    }
+    return <>
+        <TuiForm style={{margin: 20}}>
+            {displayMetadata && <TuiFormGroup>
+                <TuiFormGroupContent style={{borderRadius: "inherit"}}>
                     <TuiFormGroupContent>
-                        {data &&
-                        <>
-                            <PropertyField name="Id" content={<IdLabel label={data?.id} />}/>
-                            <PropertyField name="Name" content={data?.name}/>
-                            <PropertyField name="Description" content={data?.description} whiteSpace="normal"/>
-                            <PropertyField name="Created" content={<DateValue date={data?.metadata?.time?.insert} />}/>
-                            <PropertyField name="Source" content={data?.source?.name} drawerSize={750}>
-                                <EventSourceDetails id={data?.source?.id}/>
-                            </PropertyField>
-                            <PropertyField name="Event type" content={<IconLabel value={data?.event?.type} icon={<FlowNodeIcons icon="event"/>}/>}/>
-                            <PropertyField name="Flow" content={<IconLabel value={data?.flow?.name} icon={<FlowNodeIcons icon="flow"/>}/>}/>
-                            <PropertyField name="Properties" content={data?.properties}/>
-                            <PropertyField name="Tags" content={<TuiTags tags={data?.tags} size="small"/>}/>
-                            <PropertyField name="Active" content={<ActiveTag active={data?.enabled}/>}/>
-                            <PropertyField name="Rule" content={<UqlDetails data={data} type="Rule"/>}/>
-                            <Rows style={{marginTop: 20}}>
-                                {handleEdit && <Button onClick={handleEdit}
-                                                       icon={<VscEdit size={20}/>}
-                                                       label="Edit"
-                                                       disabled={typeof data === "undefined"}/>}
-                                {handleDelete && <Button onClick={handleDelete}
-                                                         progress={deleteProgress}
-                                                         label="Delete"
-                                                         icon={<VscTrash size={20} style={{marginRight: 5}}/>}
-                                                         disabled={typeof data === "undefined"}/>}
-                            </Rows>
-                        </>
-                        }
+                        <PropertyField name="Id" content={<IdLabel label={data?.id}/>}/>
+                        <PropertyField name="Name" content={data?.name}/>
+                        <PropertyField name="Description" content={data?.description} whiteSpace="normal"/>
+                        <PropertyField name="Created" content={<DateValue date={data?.metadata?.time?.insert}/>}/>
+                        {/*<PropertyField name="Required consents" content={data?.properties?.consents}/>*/}
+                        <PropertyField name="Tags" content={<TuiTags tags={data?.tags} size="small"/>}/>
+                        <PropertyField name="Active" content={<ActiveTag active={data?.enabled}/>}/>
 
                     </TuiFormGroupContent>
                 </TuiFormGroupContent>
+            </TuiFormGroup>}
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Trigger" description="Routing will complete only if this rule is met."/>
+                <TuiFormGroupContent>
+                    <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black" color="white">IF</Tag>event
+                        type is <Tag>{data?.event?.type}</Tag></div>
+                    <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black"
+                                                                      color="white">AND</Tag> event
+                        comes from source <Tag>{data?.source?.name}</Tag></div>
+                    {isNotEmptyArray(data?.properties?.consents) && <div style={{fontSize: 18, marginBottom: 5}}>
+                        <Tag backgroundColor="black"
+                             color="white">AND</Tag> profile granted the following
+                        consents <ConsentsTags data={data}/></div>}
+                    <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black" color="white">THEN</Tag>run
+                        workflow <Tag>{data?.flow?.name}</Tag></div>
+                </TuiFormGroupContent>
             </TuiFormGroup>
-            <FormDrawer
-                width={700}
-                onClose={() => {
-                    setOpenEdit(false)
-                }}
-                open={openEdit}>
-                {openEdit && <RuleForm
-                    onSubmit={handleEditComplete}
-                    data={data}
-                />}
-            </FormDrawer>
+            <div>
+                <Rows style={{marginTop: 20}}>
+                    {handleEdit && <Button onClick={handleEdit}
+                                           icon={<VscEdit size={20}/>}
+                                           label="Edit"
+                                           disabled={typeof data === "undefined"}/>}
+                    {handleDelete && <Button onClick={handleDelete}
+                                             progress={deleteProgress}
+                                             label="Delete"
+                                             icon={<VscTrash size={20} style={{marginRight: 5}}/>}
+                                             disabled={typeof data === "undefined"}/>}
+                </Rows>
+            </div>
         </TuiForm>
+
+        <FormDrawer
+            width={700}
+            onClose={() => {
+                setOpenEdit(false)
+            }}
+            open={openEdit}>
+            {openEdit && <RuleForm
+                onSubmit={handleEditComplete}
+                data={data}
+            />}
+        </FormDrawer>
+    </>
 
 }
 
