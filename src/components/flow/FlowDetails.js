@@ -79,6 +79,7 @@ export function FlowDisplay({showAlert, id}) {
                 zoomOnScroll={false}
                 nodeTypes={nodeTypes}
                 nodesDraggable={false}
+                preventScrolling={false}
 
                 defaultViewport={{ x: 100, y: 100, zoom: 0.8 }}
             >
