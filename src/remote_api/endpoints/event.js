@@ -36,3 +36,9 @@ export function getEventsToProfileCopy(settings) {
         data: settings
     }
 }
+
+export function getEventsToProfileAffectedRecords(query) {
+    return {
+        url: `/events/count_by_query?query=${query}`
+    }
+}

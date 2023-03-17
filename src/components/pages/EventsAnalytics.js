@@ -6,12 +6,13 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "..
 import EventToProfileCopy from "../elements/forms/EventToProfileCopy";
 import Button from "../elements/forms/Button";
 import RemoteService from "../../remote_api/endpoints/raw";
-import {getEventsToProfileCopy} from "../../remote_api/endpoints/event";
+import {getEventsToProfileAffectedRecords, getEventsToProfileCopy} from "../../remote_api/endpoints/event";
 import FetchError from "../errors/FetchError";
 import {BsDatabaseFillGear} from "react-icons/bs";
 import NoData from "../elements/misc/NoData";
 import Tag from "../elements/misc/Tag";
 import PropertyField from "../elements/details/PropertyField";
+import {useFetch} from "../../remote_api/remoteState";
 
 function CopyToProfileExtension({onClose}) {
 
@@ -24,6 +25,12 @@ function CopyToProfileExtension({onClose}) {
         query,
         mappings: []
     })
+
+    const {isLoading, data: count} = useFetch(
+        ["countAffectedRecords"],
+        getEventsToProfileAffectedRecords(query),
+        data=>data
+    )
 
     const handleRun = async () => {
         try {
@@ -60,7 +67,8 @@ function CopyToProfileExtension({onClose}) {
                 />
                 <TuiFormGroupContent>
                     <PropertyField name="Environment" content={localContext ? <Tag backgroundColor="rgb(173, 20, 87)" color="white">production</Tag> : "Test"}/>
-                    <PropertyField name="Filter" content={query} underline={false}/>
+                    <PropertyField name="Filter" content={query}/>
+                    <PropertyField name="Affected records" content={isLoading ? "counting..." : count } underline={false}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <TuiFormGroup>
