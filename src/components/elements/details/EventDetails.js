@@ -20,7 +20,7 @@ export default function EventDetails({event, metadata}) {
 
     const [tab, setTab] = React.useState(0);
 
-    const tabs = ["Event", "Routing", "Raw", "Flow debug", "Event logs"];
+    const tabs = ["Event", "Routing", "Raw", "Flow debug", "Logs"];
 
     return <>
         <Tabs

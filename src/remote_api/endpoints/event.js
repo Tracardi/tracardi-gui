@@ -21,9 +21,18 @@ export function getEventDebugLogs(eventId) {
 }
 
 export function getEventsCount() {
-    return { url: "event/count" }
+    return { url: "/event/count" }
 }
 
 export function getEventsAvg() {
-    return { url: "event/avg/requests" }
+    return { url: "/event/avg/requests" }
+}
+
+
+export function getEventsToProfileCopy(settings) {
+    return {
+        url: "/events/copy",
+        method: "post",
+        data: settings
+    }
 }

@@ -1,39 +1,79 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import "./DataAnalytics.css";
 import DataAnalytics, {LocalDataContext} from "./DataAnalytics";
 import {EventRow} from "../elements/lists/rows/EventRow";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
 import EventToProfileCopy from "../elements/forms/EventToProfileCopy";
 import Button from "../elements/forms/Button";
+import RemoteService from "../../remote_api/endpoints/raw";
+import {getEventsToProfileCopy} from "../../remote_api/endpoints/event";
+import FetchError from "../errors/FetchError";
+import {BsDatabaseFillGear} from "react-icons/bs";
+import NoData from "../elements/misc/NoData";
 
-function CopyToProfileExtension() {
+function CopyToProfileExtension({onClose}) {
 
     const localContext = useContext(LocalDataContext)
-
     const query = localStorage.getItem('eventQuery')
-    return <div style={{padding: 20}}><TuiForm >
-        <TuiFormGroup>
-            <TuiFormGroupHeader
-                header="Data filtered by query"
-                description="Data will be narrowed down by the query. "
-            />
-            <TuiFormGroupContent>
-                {query} {localContext ? "On production" : "On test environment"}
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Assign data to profile from event. "
-            description="What data should be copied to profile."
-            />
-            <TuiFormGroupContent>
-                <EventToProfileCopy onChange={(v) => console.log(v)}/>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-    </TuiForm>
-        <div>
-            <Button label="Run in background" />
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(false);
+
+    const [settings, setSetting] = useState({
+        query,
+        mappings: []
+    })
+
+    const handleRun = async () => {
+        try {
+            setSuccess(false)
+            setError(null)
+            const response = await RemoteService.fetch(
+                getEventsToProfileCopy(settings)
+            )
+            setSuccess(true)
+        } catch (e) {
+            setError(e)
+        }
+    }
+
+    if (success) {
+        return <NoData
+            style={{margin:30}}
+            icon={<BsDatabaseFillGear size={60}/>}
+            header="Task started"
+        >
+            <p style={{color: "#555"}}>Your file copying has begun. A task is running in the background to copy the data.</p>
+            <Button label="OK" onClick={onClose} style={{margin: 20}}/>
+        </NoData>
+    }
+
+    return <div style={{padding: 20}}>
+        <TuiForm>
+            <TuiFormGroup>
+                <TuiFormGroupHeader
+                    header="Data filtered by query"
+                    description="Data will be narrowed down by the query. "
+                />
+                <TuiFormGroupContent>
+                    {query} {localContext ? "On production" : "On test environment"}
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Assign data to profile from event. "
+                                    description="What data should be copied to profile."
+                />
+                <TuiFormGroupContent>
+                    <EventToProfileCopy onChange={(v) => {
+                        setSetting({...settings, mappings: v})
+                    }}/>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </TuiForm>
+        <div style={{marginBottom: 10}}>
+            <Button label="Run in background" onClick={handleRun}/>
         </div>
-        </div>
+        {error && <FetchError error={error} />}
+    </div>
 }
 
 export default function EventsAnalytics({displayChart = true}) {
@@ -96,7 +136,7 @@ export default function EventsAnalytics({displayChart = true}) {
             'Copy data to profile': CopyToProfileExtension
         }}
     />
-</>
+    </>
 
 
 }

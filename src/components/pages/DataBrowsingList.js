@@ -13,6 +13,10 @@ function Extensions({extensions}) {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [drawerExtension, setDrawerExtension] = useState(null);
 
+    const handleClose = () => {
+        setOpenDrawer(false)
+    }
+
     const extensionOptions = extensions ? objectMapEntries(extensions, (key) => {
         return () => {
             setDrawerExtension(key)
@@ -32,7 +36,7 @@ function Extensions({extensions}) {
                           options={extensionOptions}/>
         </div>}
         <FormDrawer open={openDrawer} onClose={() => setOpenDrawer(false)} width={800}>
-            {drawerExtension in extensions && React.createElement(extensions[drawerExtension])}
+            {drawerExtension in extensions && React.createElement(extensions[drawerExtension], {onClose: handleClose})}
         </FormDrawer>
     </>
 }
@@ -64,7 +68,7 @@ export default function DataBrowsingList(
         <div style={{display: "flex", justifyContent: "center", position: "relative"}}>
             {!globalProductionContext && <ServerContextBar context={localContext}
                                                            onContextChange={onLocalContextChange}/>}
-            {ExtensionDropDown && <Extensions extensions={ExtensionDropDown}/>}
+            {ExtensionDropDown && !localContext && <Extensions extensions={ExtensionDropDown}/>}
         </div>
 
         {displayChart === true && <div className="Chart">

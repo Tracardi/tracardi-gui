@@ -28,8 +28,8 @@ export default function MappingsObjectDetails({properties, show, exclude, keyPre
     const keyValues = () => properties.map(
         (item) => {
 
-            const label = item.event.value
-            const value = item.profile.value
+            const label = item.event?.value
+            const value = item.profile?.value
             let op
             switch (item.op) {
                 case 0:
@@ -80,7 +80,7 @@ export default function MappingsObjectDetails({properties, show, exclude, keyPre
         }
     )
     return <>
-        {keyValues()}
+        {Array.isArray(properties) && keyValues()}
     </>
 }
 
