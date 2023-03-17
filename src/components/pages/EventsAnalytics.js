@@ -10,6 +10,8 @@ import {getEventsToProfileCopy} from "../../remote_api/endpoints/event";
 import FetchError from "../errors/FetchError";
 import {BsDatabaseFillGear} from "react-icons/bs";
 import NoData from "../elements/misc/NoData";
+import Tag from "../elements/misc/Tag";
+import PropertyField from "../elements/details/PropertyField";
 
 function CopyToProfileExtension({onClose}) {
 
@@ -27,9 +29,11 @@ function CopyToProfileExtension({onClose}) {
         try {
             setSuccess(false)
             setError(null)
-            const response = await RemoteService.fetch(
-                getEventsToProfileCopy(settings)
-            )
+            let endpoint = getEventsToProfileCopy(settings)
+            endpoint.headers = {
+                'x-context': localContext === true ? 'production': 'staging'
+            }
+            const response = await RemoteService.fetch(endpoint)
             setSuccess(true)
         } catch (e) {
             setError(e)
@@ -55,7 +59,8 @@ function CopyToProfileExtension({onClose}) {
                     description="Data will be narrowed down by the query. "
                 />
                 <TuiFormGroupContent>
-                    {query} {localContext ? "On production" : "On test environment"}
+                    <PropertyField name="Environment" content={localContext ? <Tag backgroundColor="rgb(173, 20, 87)" color="white">production</Tag> : "Test"}/>
+                    <PropertyField name="Filter" content={query} underline={false}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <TuiFormGroup>
