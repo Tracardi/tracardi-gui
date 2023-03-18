@@ -25,6 +25,7 @@ export const ProfileData = ({profile}) => {
     const stats = object2dot(profile?.stats);
     const privateTraits = object2dot(profile?.traits?.private)
     const publicTraits = object2dot(profile?.traits?.public)
+    const aux = object2dot(profile?.aux)
 
     return <Grid container spacing={2} style={{padding: 20}}>
         <Grid item xs={6}>
@@ -111,6 +112,15 @@ export const ProfileData = ({profile}) => {
                 {Object.keys(stats).map(key => <PropertyField key={key}
                                                               name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
                                                               content={stats[key]}/>)}
+            </fieldset>}
+
+            {aux && <fieldset style={{marginBottom: 20}}>
+                <legend style={{fontSize: 13}}>Auxiliary</legend>
+                {aux && !isEmptyObjectOrNull(aux)
+                    ? aux && Object.keys(aux).map(key => <PropertyField key={key}
+                                                                        name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
+                                                                        content={aux[key]}/>)
+                    : "None"}
             </fieldset>}
 
         </Grid>
