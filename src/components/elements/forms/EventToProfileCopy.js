@@ -49,6 +49,7 @@ const EventToProfileFieldCopy = ({value, onChange}) => {
         </div>
         <RefInput value={data?.event}
                       fullWidth={true}
+                      autocomplete="event"
                       locked={true}
                       defaultType={true}
                       label="Event data"
