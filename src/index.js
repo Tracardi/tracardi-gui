@@ -9,7 +9,6 @@ import App from "./components/App";
 import {stagingTheme} from "./themes";
 import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import {ConfirmProvider} from "material-ui-confirm";
-import Installer from "./components/Installer";
 import ApiUrlSelector from "./components/ApiUrlSelector";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
@@ -36,9 +35,7 @@ root.render(
                     <CssBaseline/>
                     <ConfirmProvider>
                         <ApiUrlSelector>
-                            <Installer>
-                                <App/>
-                            </Installer>
+                            <App/>
                         </ApiUrlSelector>
                     </ConfirmProvider>
                 </ThemeProvider>

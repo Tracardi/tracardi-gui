@@ -22,6 +22,7 @@ import {IdleTimerProvider} from "react-idle-timer";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from 'react-query/devtools'
 import {getToken} from "./authentication/login";
+import Installer from "./Installer";
 
 
 const AppBox = React.lazy(() => import('./AppBox'))
@@ -54,6 +55,7 @@ const App = ({alert, resource, close}) => {
             events={["connect"]}
         >
             <QueryClientProvider client={queryClient}>
+                <Installer>
                     <Router>
                         <Routes>
                             <Route exact path={urlPrefix("/login")} element={<SignIn/>}/>
@@ -88,7 +90,9 @@ const App = ({alert, resource, close}) => {
                         </FormDrawer>
                     </Router>
                     <ReactQueryDevtools initialIsOpen={false}/>
+                </Installer>
             </QueryClientProvider>
+
         </IdleTimerProvider>
     );
 }
