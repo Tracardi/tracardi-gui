@@ -1,6 +1,6 @@
 {
   "name": "tracardi-gui",
-  "version": "0.8.0",
+  "version": "0.8.1-dev",
   "private": true,
   "homepage": ".",
   "devDependencies": {
