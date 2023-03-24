@@ -7,6 +7,7 @@ import {VscTwitter, VscPerson} from "react-icons/vsc";
 import {FaWhatsapp} from "react-icons/fa";
 import useTheme from "@mui/material/styles/useTheme";
 import {LocalDataContext} from "../../pages/DataAnalytics";
+import {profileName} from "../../../misc/formaters";
 
 const PiiDetails = ({data}) => {
 
@@ -22,7 +23,7 @@ const PiiDetails = ({data}) => {
                 </div>
                 <div>
                     <header className="Name">
-                        {data?.pii?.name} {data?.pii?.surname ? data?.pii?.surname : "Anonymous"}
+                        {profileName(data)}
                     </header>
                 </div>
 

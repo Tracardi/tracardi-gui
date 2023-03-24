@@ -6,6 +6,6 @@ export function profileName(profile) {
     } else if (profile?.pii?.email) {
         return profile?.pii?.email
     } else {
-        return "anonymous"
+        return "Anonymous"
     }
 }
