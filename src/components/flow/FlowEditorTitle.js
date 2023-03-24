@@ -175,7 +175,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
         </div>
         <div>
             <ReinstallButton/>
-            <Button label="Rearrange nodes"
+            <Button label="Rearrange"
                     icon={<TiTickOutline size={20}/>}
                     onClick={handleRearrange}
             />
