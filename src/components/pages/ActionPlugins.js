@@ -32,7 +32,7 @@ export function ReinstallButton() {
         }
     }
 
-    return <Button label="Reinstall plugins"
+    return <Button label="Plugins"
                    icon={<IoRefreshCircle size={20}/>}
                    onClick={handlePluginsReinstall}
                    progress={progress}
