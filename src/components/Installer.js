@@ -7,7 +7,7 @@ import FetchError from "./errors/FetchError";
 
 const Installer = ({children}) => {
 
-    const [installed, setInstalled] = useState(false);
+    const [installed, setInstalled] = useState(0);
 
     const {isLoading, data, error} = useFetch(
         ["installStatus", [installed]],
@@ -28,7 +28,7 @@ const Installer = ({children}) => {
     if (data?.schema_ok !== true) {
         return <InstallerForm
             requireAdmin={!data?.admin_ok}
-            onInstalled={() => setInstalled(true)}
+            onInstalled={() => setInstalled(Math.random())}
             errorMessage={error}
         />
     }

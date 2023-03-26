@@ -21,6 +21,7 @@ import {VscJson} from "react-icons/vsc";
 import {SessionDetailsById} from "../../details/SessionDetails";
 import IconLabel from "../../misc/IconLabels/IconLabel";
 import JsonBrowser from "../../misc/JsonBrowser";
+import {displayLocation} from "../../../../misc/location";
 
 export function EventRow({row, filterFields}) {
 
@@ -61,6 +62,11 @@ export function EventRow({row, filterFields}) {
                         icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
                     />}
                 </>}/>
+                {row?.device?.geo?.city && <PropertyField labelWidth={labelWidth} name="Location" content={
+                    <IconLabel
+                        value={displayLocation(row?.device?.geo)}
+                        icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
+                    />}/>}
                 {displayChannel && row?.metadata?.channel && <PropertyField labelWidth={labelWidth} name="Channel" content={row?.metadata.channel}/>}
                 <PropertyField labelWidth={labelWidth}
                                name={window?.CONFIG?.profile?.id || "Profile id"}

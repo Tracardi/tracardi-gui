@@ -9,6 +9,8 @@ import IconLabel from "../misc/IconLabels/IconLabel";
 import PlatformIcon from "../misc/IconLabels/PlatformLabel";
 import BrowserLabel from "../misc/IconLabels/BrowserLabel";
 import ProfileLabel from "../misc/IconLabels/ProfileLabel";
+import {displayLocation} from "../../../misc/location";
+import Chip from "@mui/material/Chip";
 
 export default function SessionCardInfo({session, displayContext=true}) {
 
@@ -33,15 +35,26 @@ export default function SessionCardInfo({session, displayContext=true}) {
                            />}
                        </>
                        }/>
-        {session?.context?.browser?.local?.device?.platform && <PropertyField
+        {session?.device?.geo?.city && <PropertyField labelWidth={labelWidth} name="Location" content={
+            <IconLabel
+                value={displayLocation(session?.device?.geo)}
+                icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
+            />}/>}
+        {session?.os?.name && <PropertyField
             labelWidth={labelWidth}
-            name="Platform"
-            content={<PlatformIcon platform={session.context.browser.local.device.platform}/>}
+            name="OS"
+            content={<PlatformIcon os={session.os.name} platform={session?.context?.browser?.local?.device?.platform}/>}
         />}
-        {session?.context?.browser?.local?.browser?.name && <PropertyField
+        {session?.app?.name && <PropertyField
             labelWidth={labelWidth}
-            name="Browser"
-            content={<BrowserLabel browser={session.context.browser.local.browser.name} />}
+            name="Application"
+            content={<BrowserLabel browser={session.app.name} version={session.app.version} robot={session.app.bot}/>}
+        />}
+
+        {session?.utm?.source && <PropertyField
+            labelWidth={labelWidth}
+            name="UTM"
+            content={<Chip size="small" label={session?.utm?.source}/>}
         />}
 
         {session?.profile?.id && <PropertyField
