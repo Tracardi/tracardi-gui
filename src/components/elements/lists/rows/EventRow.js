@@ -22,6 +22,7 @@ import {SessionDetailsById} from "../../details/SessionDetails";
 import IconLabel from "../../misc/IconLabels/IconLabel";
 import JsonBrowser from "../../misc/JsonBrowser";
 import {displayLocation} from "../../../../misc/location";
+import OsIcon from "../../misc/IconLabels/OsLabel";
 
 export function EventRow({row, filterFields}) {
 
@@ -67,6 +68,11 @@ export function EventRow({row, filterFields}) {
                         value={displayLocation(row?.device?.geo)}
                         icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
                     />}/>}
+                {row?.os?.name && <PropertyField
+                    labelWidth={labelWidth}
+                    name="Device"
+                    content={<OsIcon platform={row.os.name} device={row?.device?.type}/>}
+                />}
                 {displayChannel && row?.metadata?.channel && <PropertyField labelWidth={labelWidth} name="Channel" content={row?.metadata.channel}/>}
                 <PropertyField labelWidth={labelWidth}
                                name={window?.CONFIG?.profile?.id || "Profile id"}
@@ -115,6 +121,7 @@ export function EventRow({row, filterFields}) {
                         <PropertyField underline={false}
                                        drawerSize={1000}
                                        content={<div style={{display: "flex", gap: 5, alignItems: "center"}}>
+                                           {row?.hit?.name && <span title={row?.hit?.url} style={{cursor: "help"}}>{row?.hit?.name}</span>}
                                            <EventTypeTag eventType={row?.type} profile={row?.profile?.id}/>
                                            <EventStatusTag label={row?.metadata?.status}/>
                                            <EventValidation eventMetaData={row?.metadata}/>

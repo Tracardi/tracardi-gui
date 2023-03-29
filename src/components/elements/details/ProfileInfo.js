@@ -21,10 +21,9 @@ export const ProfileData = ({profile}) => {
 
     const displayPii = window?.CONFIG?.profile?.display?.details?.pii
 
-    const pii = object2dot(profile?.pii);
+    const pii = object2dot(profile?.data?.pii);
     const stats = object2dot(profile?.stats);
-    const privateTraits = object2dot(profile?.traits?.private)
-    const publicTraits = object2dot(profile?.traits?.public)
+    const traits = object2dot(profile?.traits)
     const aux = object2dot(profile?.aux)
 
     return <Grid container spacing={2} style={{padding: 20}}>
@@ -90,20 +89,11 @@ export const ProfileData = ({profile}) => {
             </fieldset>
 
             <fieldset style={{marginBottom: 20}}>
-                <legend style={{fontSize: 13}}>Private traits</legend>
-                {privateTraits && !isEmptyObjectOrNull(privateTraits)
-                    ? Object.keys(privateTraits).map(key => <PropertyField key={key}
+                <legend style={{fontSize: 13}}>Traits</legend>
+                {traits && !isEmptyObjectOrNull(traits)
+                    ? Object.keys(traits).map(key => <PropertyField key={key}
                                                                            name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
-                                                                           content={privateTraits[key]}/>)
-                    : "None"}
-            </fieldset>
-
-            <fieldset style={{marginBottom: 20}}>
-                <legend style={{fontSize: 13}}>Public traits</legend>
-                {publicTraits && !isEmptyObjectOrNull(publicTraits)
-                    ? publicTraits && Object.keys(publicTraits).map(key => <PropertyField key={key}
-                                                                                          name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
-                                                                                          content={publicTraits[key]}/>)
+                                                                           content={traits[key]}/>)
                     : "None"}
             </fieldset>
 

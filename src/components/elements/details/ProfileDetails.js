@@ -15,23 +15,33 @@ import JsonBrowser from "../misc/JsonBrowser";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getProfileById} from "../../../remote_api/endpoints/profile";
 import FetchError from "../../errors/FetchError";
+import Properties from "./DetailProperties";
 
 export default function ProfileDetails({profile}) {
     const _theme = useTheme()
-
     const displayPii = window?.CONFIG?.profile?.display?.details?.pii
 
     return <div style={{height: "inherit", display: "flex", flexDirection: "column"}}>
         {displayPii &&  <PiiDetails data={profile}/>}
         <div className="RightTabScroller">
-            <Tabs tabs={["Personal data & Events", "Sessions & Events", "Logs", "Raw"]} tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
+            <Tabs tabs={["Personal Data & Events", "Profile Data", "Sessions & Events", "Logs", "Raw"]} tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
                 <TabCase id={0}>
                     <ProfileData profile={profile}/>
                 </TabCase>
                 <TabCase id={1}>
-                    <ProfileSessionsDetails profileId={profile?.id}/>
+                    <fieldset style={{margin: 20}}>
+                        <legend style={{fontSize: 13}}>Profile personal data</legend>
+                        <Properties properties={profile?.data?.pii}/>
+                    </fieldset>
+                    <fieldset style={{margin: 20}}>
+                        <legend style={{fontSize: 13}}>Profile contacts</legend>
+                        <Properties properties={profile?.data?.contact}/>
+                    </fieldset>
                 </TabCase>
                 <TabCase id={2}>
+                    <ProfileSessionsDetails profileId={profile?.id}/>
+                </TabCase>
+                <TabCase id={3}>
                     <div className="Box10">
                         {profile?.id
                             ? <ProfileLogDetails profileId={profile.id} />
@@ -40,7 +50,7 @@ export default function ProfileDetails({profile}) {
                             </NoData>}
                     </div>
                 </TabCase>
-                <TabCase id={3}>
+                <TabCase id={4}>
                     <div className="Box10">
                         <JsonBrowser data={profile}/>
                     </div>

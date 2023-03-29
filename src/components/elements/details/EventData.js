@@ -17,19 +17,40 @@ import IconLabel from "../misc/IconLabels/IconLabel";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import NoData from "../misc/NoData";
 import TuiWorkflowTags from "../tui/TuiWorkflowTags";
+import Tabs, {TabCase} from "../tabs/Tabs";
+import useTheme from "@mui/material/styles/useTheme";
 
 
 const EventData = ({event, metadata, allowedDetails = []}) => {
 
+    const _theme = useTheme()
+
     const ContextInfo = () => {
         const context = object2dot(event?.context);
-        return <>{Object.keys(context).map(key => <PropertyField key={key} name={key} content={context[key]}/>)}</>
+        return <>{Object.keys(context).map(key => <PropertyField labelWidth={350} key={key} name={key} content={context[key]}/>)}</>
     }
 
     const EventProperties = () => {
         const eventProperties = object2dot(event?.properties);
-        return <>{Object.keys(eventProperties).map(key => <PropertyField key={key} name={key}
+        return <>{Object.keys(eventProperties).map(key => <PropertyField labelWidth={350} key={key} name={key}
                                                                          content={eventProperties[key]}/>)}</>
+    }
+    const EventTraits = () => {
+        const eventTraits = object2dot(event?.traits);
+        return <>{Object.keys(eventTraits).map(key => <PropertyField labelWidth={350} key={key} name={key}
+                                                                         content={eventTraits[key]}/>)}</>
+    }
+
+    const EventOs = () => {
+        const eventOs = object2dot(event?.os);
+        return <>{Object.keys(eventOs).map(key => <PropertyField labelWidth={350} key={key} name={key}
+                                                                     content={eventOs[key]}/>)}</>
+    }
+
+    const EventDevice = () => {
+        const data = object2dot(event?.device);
+        return <>{Object.keys(data).map(key => <PropertyField labelWidth={350} key={key} name={key}
+                                                                 content={data[key]}/>)}</>
     }
 
     return <TuiForm style={{margin: 20}}>
@@ -87,22 +108,54 @@ const EventData = ({event, metadata, allowedDetails = []}) => {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Properties"/>
-            {!isEmptyObjectOrNull(event?.properties) ? <TuiFormGroupContent><EventProperties/></TuiFormGroupContent> :
-                <NoData header="No properties">
-                    This event does not have any properties.
-                </NoData>}
+            <Tabs tabs={["Traits", "Properties", "Operating System", "Device", "Context"]} tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
+                <TabCase id={0}>
+                    <section style={{margin: 20}}>
+                    {!isEmptyObjectOrNull(event?.traits) ? <EventTraits/> :
+                        <NoData header="No traits">
+                            This event does not have any traits.
+                        </NoData>}
+                    </section>
+                </TabCase>
+                <TabCase id={1}>
+                    <section style={{margin: 20}}>
+                        {!isEmptyObjectOrNull(event?.properties) ? <EventProperties/>:
+                            <NoData header="No properties">
+                                This event does not have any properties.
+                            </NoData>}
+                    </section>
+                </TabCase>
+                <TabCase id={2}>
+                    <section style={{margin: 20}}>
+                        {!isEmptyObjectOrNull(event?.os) && event?.os?.name ? <EventOs/> :
+                            <NoData header="No operating system data">
+                                This event does not have any information on OS.
+                            </NoData>}
+                    </section>
+                </TabCase>
+                <TabCase id={3}>
+                    <section style={{margin: 20}}>
+                        {!isEmptyObjectOrNull(event?.device) && event?.device?.name ? <EventDevice/> :
+                            <NoData header="No device data">
+                                This event does not have any information on used device.
+                            </NoData>}
+                    </section>
+                </TabCase>
+                <TabCase id={4}>
+                    <section style={{margin: 20}}>
+                        {!isEmptyObjectOrNull(event?.context) ?<><ContextInfo/>
+                                <div style={{marginTop: 20}}>
+                                    {event?.session?.id && <SessionContextInfo sessionId={event?.session?.id}/>}
+                                </div></>
+                        : <NoData header="No context data">
+                                This event does not have any context data.
+                            </NoData>}
+                    </section>
+                </TabCase>
+            </Tabs>
         </TuiFormGroup>
 
-        {!isEmptyObjectOrNull(event?.context) && <TuiFormGroup>
-            <TuiFormGroupHeader header="Context"/>
-            <TuiFormGroupContent>
-                <ContextInfo/>
-                <div style={{marginTop: 20}}>
-                    {event?.session?.id && <SessionContextInfo sessionId={event?.session?.id}/>}
-                </div>
-            </TuiFormGroupContent>
-        </TuiFormGroup>}
+
     </TuiForm>
 }
 
