@@ -175,11 +175,11 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
         </div>
         <div>
             <ReinstallButton/>
-            <Button label="Rearrange nodes"
+            <Button label="Rearrange"
                     icon={<TiTickOutline size={20}/>}
                     onClick={handleRearrange}
             />
-            <DropDownMenu label="Restore Flow" icon={<BiReset size={20}/>}
+            <DropDownMenu label="Flow" icon={<BiReset size={20}/>}
                           progress={draftRestoreProgress || productionRestoreProgress}
                           options = {{
                 'Restore production flow': () => restoreProduction(flowId),
