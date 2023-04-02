@@ -67,6 +67,7 @@ export function RuleCard({data, onDeleteComplete, onEditComplete, displayMetadat
     if (!data) {
         return <NoData header="No routing data"/>
     }
+
     return <>
         <TuiForm style={{margin: 20}}>
             {displayMetadata && <TuiFormGroup>
@@ -87,7 +88,7 @@ export function RuleCard({data, onDeleteComplete, onEditComplete, displayMetadat
                 <TuiFormGroupHeader header="Trigger" description="Routing will complete only if this rule is met."/>
                 <TuiFormGroupContent>
                     <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black" color="white">IF</Tag>event
-                        type is <Tag>{data?.event?.type}</Tag></div>
+                        type is <Tag>{data?.event_type?.name}</Tag></div>
                     <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black"
                                                                       color="white">AND</Tag> event
                         comes from source <Tag>{data?.source?.name}</Tag></div>

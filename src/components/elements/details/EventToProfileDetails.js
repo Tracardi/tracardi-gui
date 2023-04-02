@@ -64,7 +64,7 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Trigger condition" description="Data will be copied only if the below condition is met."/>
                 <TuiFormGroupContent>
-                    <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black" color="white">when</Tag>event type <Tag>equals</Tag>{data.event_type}</div>
+                    <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black" color="white">when</Tag>event type <Tag>equals</Tag>{data?.event_type?.name}</div>
                     {data?.config?.condition && <div style={{fontSize: 18}}>
                         <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0, marginTop: 8}}>
                             <legend style={{padding: "0 10px"}}>AND</legend>

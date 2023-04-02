@@ -6,7 +6,6 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import PropTypes from 'prop-types';
 import TuiTagger from "../tui/TuiTagger";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
-import JsonEditor from "../editors/JsonEditor";
 import Switch from "@mui/material/Switch";
 import DocsLink from "../drawers/DocsLink";
 import RemoteService from "../../../remote_api/endpoints/raw";
@@ -27,10 +26,7 @@ export default function EventToProfileForm({
 
     const [name, setName] = useState(_name || "");
     const [description, setDescription] = useState(_description || "");
-    const [eventType, setEventType] = useState(_eventType ? {
-        id: _eventType,
-        name: _eventType
-    } : null);
+    const [eventType, setEventType] = useState(_eventType || null);
     const [tags, setTags] = useState(_tags || []);
     const [copingSchema, setCopingSchema] = useState(_indexSchema || []);
     const [enabled, setEnabled] = useState(_indexEnabled || false);
@@ -72,7 +68,7 @@ export default function EventToProfileForm({
                 id: (id) ? id : uuid4(),
                 name: name,
                 description: description,
-                event_type: eventType.id,
+                event_type: eventType,
                 event_to_profile: copingSchema,
                 config: config,
                 enabled: enabled,

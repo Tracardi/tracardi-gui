@@ -22,7 +22,7 @@ export default function ProfileDetails({profile}) {
     const displayPii = window?.CONFIG?.profile?.display?.details?.pii
 
     return <div style={{height: "inherit", display: "flex", flexDirection: "column"}}>
-        {displayPii &&  <PiiDetails data={profile}/>}
+        {displayPii &&  <PiiDetails profile={profile}/>}
         <div className="RightTabScroller">
             <Tabs tabs={["Personal Data & Events", "Profile Data", "Sessions & Events", "Logs", "Raw"]} tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
                 <TabCase id={0}>

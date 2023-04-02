@@ -46,14 +46,14 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
 
         if(selectedEvent === event.id) {
             if (event?.metadata?.valid === false) {
-                return <b>{event.type + " (invalid)"}</b>
+                return <b>{event?.name + " (invalid)"}</b>
             }
-            return <b>{event.type}</b>
+            return <b>{event?.name}</b>
         } else {
             if (event?.metadata?.valid === false) {
-                return event.type + " (invalid)"
+                return event?.name + " (invalid)"
             }
-            return event.type
+            return event.name
         }
     }
 

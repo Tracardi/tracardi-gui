@@ -67,7 +67,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
     const Details = () => <TuiForm>
         {displayMetadata && <TuiFormGroup>
             <TuiFormGroupContent>
-                <PropertyField name="Event type"
+                <PropertyField name="Event type Id"
                                content={<IconLabel value={data.event_type} icon={<FlowNodeIcons icon="event"/>}/>}/>
                 <PropertyField name="Name" content={data.name}/>
                 <PropertyField name="Description" content={data.description}/>

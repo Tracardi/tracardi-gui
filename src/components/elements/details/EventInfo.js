@@ -19,19 +19,25 @@ import NoData from "../misc/NoData";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getEventById} from "../../../remote_api/endpoints/event";
 import FetchError from "../../errors/FetchError";
+import Tabs, {TabCase} from "../tabs/Tabs";
 
 
 const EventDataDetails = ({event, metadata, allowedDetails = []}) => {
 
     const ContextInfo = () => {
         const context = object2dot(event?.context);
-        return <>{Object.keys(context).map(key => <PropertyField key={key} name={key} content={context[key]}/>)}</>
+        return <div style={{margin: 20}}>{Object.keys(context).map(key => <PropertyField key={key} name={key} content={context[key]}/>)}</div>
     }
 
     const EventProperties = () => {
         const eventProperties = object2dot(event?.properties);
-        return <>{Object.keys(eventProperties).map(key => <PropertyField key={key} name={key}
-                                                                         content={eventProperties[key]}/>)}</>
+        return <div style={{margin: 20}}>{Object.keys(eventProperties).map(key => <PropertyField key={key} name={key}
+                                                                         content={eventProperties[key]}/>)}</div>
+    }
+    const EventTraits = () => {
+        const traits = object2dot(event?.traits);
+        return <div style={{margin: 20}}>{Object.keys(traits).map(key => <PropertyField key={key} name={key}
+                                                                content={traits[key]}/>)}</div>
     }
 
     return <TuiForm>
@@ -70,19 +76,27 @@ const EventDataDetails = ({event, metadata, allowedDetails = []}) => {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Properties"/>
-            {!isEmptyObjectOrNull(event?.properties) ? <TuiFormGroupContent><EventProperties/></TuiFormGroupContent> :
-                <NoData header="No properties">
-                    This event does not have any properties.
-                </NoData>}
+            <Tabs tabs={["Traits", "Properties", "Context"]}>
+                <TabCase id={1}>
+                    {!isEmptyObjectOrNull(event?.properties) ? <TuiFormGroupContent><EventProperties/></TuiFormGroupContent> :
+                        <NoData header="No properties">
+                            This event does not have any properties.
+                        </NoData>}
+                </TabCase>
+                <TabCase id={0}>
+                    {!isEmptyObjectOrNull(event?.traits) ? <TuiFormGroupContent><EventTraits/></TuiFormGroupContent> :
+                        <NoData header="No traits">
+                            This event does not have any traits.
+                        </NoData>}
+                </TabCase>
+                <TabCase id={2}>
+                    {!isEmptyObjectOrNull(event?.context) ? <TuiFormGroupContent><ContextInfo/></TuiFormGroupContent> :
+                        <NoData header="No context">
+                            This event does not have any context data.
+                        </NoData>}
+                </TabCase>
+            </Tabs>
         </TuiFormGroup>
-
-        {!isEmptyObjectOrNull(event?.context) && <TuiFormGroup>
-            <TuiFormGroupHeader header="Context"/>
-            <TuiFormGroupContent>
-                <ContextInfo/>
-            </TuiFormGroupContent>
-        </TuiFormGroup>}
     </TuiForm>
 }
 

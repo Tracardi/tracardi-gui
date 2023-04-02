@@ -37,7 +37,7 @@ function EventStream({events}) {
                 <StepLabel
                     StepIconComponent={() => stepIconComponent(event)}
                 >
-                    {event.type}
+                    {event?.name}
                 </StepLabel>
             </Step>
         ))}

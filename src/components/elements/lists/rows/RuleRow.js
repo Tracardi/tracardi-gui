@@ -13,7 +13,7 @@ const RuleRow = ({data, flow, onDelete=null}) => {
             <div className="RuleRow">
                 <span className="RuleBox">{data.source.name}</span>
                 {">>"}
-                <span className="EventBox"><VscSymbolEvent size={20} style={{marginRight:10}}/> {data.event.type}</span>
+                <span className="EventBox"><VscSymbolEvent size={20} style={{marginRight:10}}/> {data.event_type.name}</span>
                 {">>"}
                 <span className="RuleBox">
                     <IoGitNetworkSharp size={20} style={{marginRight: 10}}/>

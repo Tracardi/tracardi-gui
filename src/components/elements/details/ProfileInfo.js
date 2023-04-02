@@ -16,15 +16,20 @@ import {BsGlobe} from "react-icons/bs";
 import {VscLaw} from "react-icons/vsc";
 import {Grid} from "@mui/material";
 import ProfileEvents from "./ProfileEvents";
+import Tabs, {TabCase} from "../tabs/Tabs";
+import useTheme from "@mui/material/styles/useTheme";
+import NoData from "../misc/NoData";
 
 export const ProfileData = ({profile}) => {
+
+    const _theme = useTheme()
 
     const displayPii = window?.CONFIG?.profile?.display?.details?.pii
 
     const pii = object2dot(profile?.data?.pii);
-    const stats = object2dot(profile?.stats);
     const traits = object2dot(profile?.traits)
     const aux = object2dot(profile?.aux)
+    const contact = object2dot(profile?.data?.contact);
 
     return <Grid container spacing={2} style={{padding: 20}}>
         <Grid item xs={6}>
@@ -67,51 +72,62 @@ export const ProfileData = ({profile}) => {
                 />
             </fieldset>
 
-            {displayPii && pii && <fieldset style={{marginBottom: 20}}>
-                <legend style={{fontSize: 13}}>Profile personal data</legend>
-                {Object.keys(pii).map(key => <PropertyField key={key}
-                                                            name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
-                                                            content={pii[key]}/>)}
-            </fieldset>}
+            <div style={{borderRadius: 5, border: "solid 1px #ccc"}}>
+                <Tabs tabs={["PII", "Contacts", "Segments", "Interests", "Traits", "Aux"]} tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
+                    <TabCase id={0}>
+                        <div style={{margin:20}}>
+                            {displayPii && pii ? Object.keys(pii).map(key => <PropertyField key={key}
+                                                                                            name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
+                                                                                            content={pii[key]}/>)
+                                : <NoData header="No Personal Data"/>
+                            }
+                        </div>
 
-            <fieldset style={{marginBottom: 20}}>
-                <legend style={{fontSize: 13}}>Profile segments</legend>
-                {isNotEmptyArray(profile?.segments)
-                    ? <div className="flexLine" style={{gap: 5}}><TuiTags tags={profile?.segments}/></div>
-                    : "None"}
-            </fieldset>
+                    </TabCase>
+                    <TabCase id={1}>
+                        <div style={{margin:20}}>
+                            {displayPii && contact ? Object.keys(contact).map(key => <PropertyField key={key}
+                                                                                                    name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
+                                                                                                    content={contact[key]}/>)
+                                : <NoData header="No Contact Data"/>
+                            }
+                        </div>
+                    </TabCase>
+                    <TabCase id={2}>
+                        <div style={{margin:20}}>
+                            {isNotEmptyArray(profile?.segments)
+                                ? <div className="flexLine" style={{gap: 5}}><TuiTags tags={profile?.segments}/></div>
+                                : <NoData header="No Segments"/>}
+                        </div>
+                    </TabCase>
+                    <TabCase id={3}>
+                        <div style={{margin:20}}>
+                            {isNotEmptyArray(profile?.interests)
+                                ? <div className="flexLine" style={{gap: 5}}><TuiTags tags={profile?.interests}/></div>
+                                : <NoData header="No Interests"/>}
+                        </div>
+                    </TabCase>
+                    <TabCase id={4}>
+                        <div style={{margin:20}}>
+                            {traits && !isEmptyObjectOrNull(traits)
+                                ? Object.keys(traits).map(key => <PropertyField key={key}
+                                                                                name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
+                                                                                content={traits[key]}/>)
+                                : <NoData header="No Traits"/>}
+                        </div>
+                    </TabCase>
+                    <TabCase id={5}>
+                        <div style={{margin:20}}>
+                            {aux && !isEmptyObjectOrNull(aux)
+                                ? aux && Object.keys(aux).map(key => <PropertyField key={key}
+                                                                                    name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
+                                                                                    content={aux[key]}/>)
+                                : <NoData header="No Auxiliary Data"/>}
+                        </div>
+                    </TabCase>
+                </Tabs>
 
-            <fieldset style={{marginBottom: 20}}>
-                <legend style={{fontSize: 13}}>Profile interests</legend>
-                {isNotEmptyArray(profile?.interests)
-                    ? <div className="flexLine" style={{gap: 5}}><TuiTags tags={profile?.interests}/></div>
-                    : "None"}
-            </fieldset>
-
-            <fieldset style={{marginBottom: 20}}>
-                <legend style={{fontSize: 13}}>Traits</legend>
-                {traits && !isEmptyObjectOrNull(traits)
-                    ? Object.keys(traits).map(key => <PropertyField key={key}
-                                                                           name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
-                                                                           content={traits[key]}/>)
-                    : "None"}
-            </fieldset>
-
-            {stats && <fieldset style={{marginBottom: 20}}>
-                <legend style={{fontSize: 13}}>Profile stats</legend>
-                {Object.keys(stats).map(key => <PropertyField key={key}
-                                                              name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
-                                                              content={stats[key]}/>)}
-            </fieldset>}
-
-            {aux && <fieldset style={{marginBottom: 20}}>
-                <legend style={{fontSize: 13}}>Auxiliary</legend>
-                {aux && !isEmptyObjectOrNull(aux)
-                    ? aux && Object.keys(aux).map(key => <PropertyField key={key}
-                                                                        name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
-                                                                        content={aux[key]}/>)
-                    : "None"}
-            </fieldset>}
+            </div>
 
         </Grid>
         <Grid item xs={6}>

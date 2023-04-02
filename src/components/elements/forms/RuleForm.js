@@ -19,7 +19,7 @@ export default function RuleForm({onSubmit, data}) {
     if (!data) {
         data = {
             source: {},
-            event: {},
+            event_type: {},
             flow: {},
             properties: {},
             name: "",
@@ -29,7 +29,7 @@ export default function RuleForm({onSubmit, data}) {
     }
 
     const [flow, setFlow] = useState(data?.flow || {});
-    const [type, setType] = useState(data?.event?.type ? {name: data.event.type, id: data.event.type} : {});
+    const [type, setType] = useState(data?.event_type?.id ? data.event_type : {});
     const [name, setName] = useState(data?.name || "");
     const [properties, setProperties] = useState(data?.properties || []);
     const [description, setDescription] = useState(data.description);
@@ -90,7 +90,7 @@ export default function RuleForm({onSubmit, data}) {
         const payload = {
             id: (!data?.id) ? uuid4() : data.id,
             name: name,
-            event: {type: type.name},
+            event_type: type,
             source: (source?.id) ? source : null,
             properties: properties,
             description: description,
