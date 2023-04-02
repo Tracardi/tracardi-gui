@@ -71,7 +71,9 @@ export function EventRow({row, filterFields}) {
                 {row?.os?.name && <PropertyField
                     labelWidth={labelWidth}
                     name="Device"
-                    content={<OsIcon platform={row.os.name} device={row?.device?.type}/>}
+                    content={<OsIcon platform={row.os.name}
+                                     device={row?.device?.type}
+                                     resolution={row?.device?.resolution}/>}
                 />}
                 {displayChannel && row?.metadata?.channel && <PropertyField labelWidth={labelWidth} name="Channel" content={row?.metadata.channel}/>}
                 <PropertyField labelWidth={labelWidth}
@@ -122,7 +124,7 @@ export function EventRow({row, filterFields}) {
                                        drawerSize={1000}
                                        content={<div style={{display: "flex", gap: 5, alignItems: "center"}}>
                                            {row?.hit?.name && <span title={row?.hit?.url} style={{cursor: "help"}}>{row?.hit?.name}</span>}
-                                           <EventTypeTag eventType={row?.type} profile={row?.profile?.id}/>
+                                           <EventTypeTag eventType={row?.name || row?.type} profile={row?.profile?.id}/>
                                            <EventStatusTag label={row?.metadata?.status}/>
                                            <EventValidation eventMetaData={row?.metadata}/>
                                            <EventWarnings eventMetaData={row?.metadata}/>
@@ -135,12 +137,12 @@ export function EventRow({row, filterFields}) {
                     <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0}}>
                         <legend>Properties</legend>
                         {!isEmptyObject(row?.properties) ?
-                            <JsonStringify data={row?.properties} filterFields={filterFields}/> : "No properties"}
+                            <JsonStringify data={{properties: row?.properties}} filterFields={filterFields}/> : "No properties"}
                     </fieldset>
 
                     {!isEmptyObject(row?.traits) && <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0}}>
                         <legend>Traits</legend>
-                        <JsonStringify data={row?.traits} filterFields={filterFields}/></fieldset>}
+                        <JsonStringify data={{traits:row?.traits}} filterFields={filterFields}/></fieldset>}
                 </div>
                 <div>
                     <Button label="Json" size="small" icon={<VscJson size={20}/>} onClick={() => handleJsonClick(row)}/>

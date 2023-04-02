@@ -42,3 +42,10 @@ export function getEventsToProfileAffectedRecords(query) {
         url: `/events/copy/count_by_query?query=${query}`
     }
 }
+
+
+export function getEventTypePredefinedProps(eventType) {
+    return {
+        url: `/event/type/${eventType}/schema`
+    }
+}

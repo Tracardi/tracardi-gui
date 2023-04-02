@@ -15,6 +15,8 @@ import TuiColumnsFlex from "../elements/tui/TuiColumnsFlex";
 import TuiTopHeaderWrapper from "../elements/tui/TuiTopHeaderWrapper";
 import {TuiSelectEventSource} from "../elements/tui/TuiSelectEventSource";
 import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
+import RemoteService from "../../remote_api/endpoints/raw";
+import {getEventTypePredefinedProps} from "../../remote_api/endpoints/event";
 
 export const RequestForm = ({onError, onRequest, eventType: evType}) => {
 
@@ -70,6 +72,18 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
             onError(e)
         } finally {
             setProgress(false)
+        }
+
+    }
+
+    const handleGetProperties = async (eventType) => {
+        try {
+            const response = await RemoteService.fetch(getEventTypePredefinedProps(eventType))
+            if(response && 'properties' in  response) {
+                setProperties(JSON.stringify(response['properties'], null, " "))
+            }
+        } catch(e) {
+
         }
 
     }
@@ -143,6 +157,7 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
                 </TuiFormGroupField>
 
                 <TuiFormGroupField header="Event properties" description="Event properties is the data data is sent to Tracardi for further processing.">
+                    <Button label="Get predefined properties" onClick={()=>handleGetProperties(eventType)}/>
                     <fieldset>
                         <legend>Properties</legend>
                         <JsonEditor value={properties} onChange={setProperties} height="150px"/>
