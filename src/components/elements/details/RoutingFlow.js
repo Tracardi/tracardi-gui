@@ -153,7 +153,7 @@ const ProcessStep = ({step, label, optional, endpoint, passData, singleValue, no
     const [active, setActive] = useState(false)
     const [refresh, setRefresh] = useState(0)
 
-    const {isLoading: loading, data, error} = useFetch(
+    const {isLoading, data, error} = useFetch(
         [`Routing${step}`, [endpoint, refresh]],
         endpoint,
         (data) => {
@@ -171,16 +171,19 @@ const ProcessStep = ({step, label, optional, endpoint, passData, singleValue, no
     }
 
     if (error) {
-        if (error.status !== 404) {
+        if (error.status === 402) {
+            nodata = "This feature is licensed."
+        } else if (error.status !== 404) {
             return <FetchError error={error}/>
         }
+
     }
 
     return <Step active={active} xs={{width: "100%"}}>
         <BigStepLabel optional={<span style={{fontSize: 13}}>{optional}</span>}
                       onClick={() => setActive(!active)}
                       style={{cursor: "pointer"}}
-                      icon={loading ? <CircularProgress size={24}/> : step}
+                      icon={isLoading ? <CircularProgress size={24}/> : step}
         >
             <div className="flexLine" style={{justifyContent: "space-between"}}>{label} {hasData(data?.result) &&
             <span className="flexLine" style={{fontSize: 13}}>Running<StatusPoint status={true}/></span>}</div>
