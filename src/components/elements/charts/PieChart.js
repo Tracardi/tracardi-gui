@@ -1,6 +1,7 @@
 import React, {PureComponent} from 'react';
 import {PieChart, Pie, Sector, ResponsiveContainer, Cell} from 'recharts';
 import {abbreviateNumber} from "../../../misc/converters";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 
 const renderActiveShape = (props) => {
     const RADIAN = Math.PI / 180;
@@ -49,7 +50,7 @@ const renderActiveShape = (props) => {
 };
 
 
-export default class TuiPieChart extends PureComponent {
+export class TuiPieChart extends PureComponent {
 
     state = {
         activeIndex: 0,
@@ -73,8 +74,6 @@ export default class TuiPieChart extends PureComponent {
                         cy="50%"
                         innerRadius={40}
                         outerRadius={55}
-
-
                         dataKey="value"
                         onMouseEnter={this.onPieEnter}
                     >
@@ -86,4 +85,17 @@ export default class TuiPieChart extends PureComponent {
             </ResponsiveContainer>
         );
     }
+}
+
+export function LoadablePieChart ({loading, data, header, subHeader = null, fill = "#1976d2", colors, paddingTop = 20}) {
+    return <div style={{paddingTop: paddingTop}}>
+        {header && <header style={{display: "flex", justifyContent: "center"}}>{header}</header>}
+        {subHeader &&
+        <header style={{display: "flex", justifyContent: "center", fontSize: "70%"}}>{subHeader}</header>}
+        <div style={{width: "100%", height: 200}}>
+            {!loading && <TuiPieChart data={data} fill={fill} colors={colors}/>}
+            {loading && <CenteredCircularProgress/>}
+        </div>
+    </div>
+
 }

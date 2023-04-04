@@ -14,7 +14,7 @@ import EventSourceForm from "../forms/EventSourceForm";
 import TextField from "@mui/material/TextField";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import Tabs, {TabCase} from "../../elements/tabs/Tabs";
-import TuiPieChart from "../charts/PieChart";
+import {TuiPieChart} from "../charts/PieChart";
 import BarChartElement from "../charts/BarChart";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {SelectInput} from "../forms/JsonFormComponents";

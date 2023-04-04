@@ -20,7 +20,7 @@ export default function SessionDetails({data: session}) {
 
     return <div style={{height: "inherit"}}>
         <div className="RightTabScroller">
-            <Tabs tabs={["Session time-line", "Raw Json"]}>
+            <Tabs tabs={["Session time-line", "Json"]}>
                 <TabCase id={0}>
                     <div style={{display: "flex", width: "100%", height: "inherit", padding: 20, gap: 20}}>
                         <div style={{flex: "1 1 0", height: "inherit"}}>

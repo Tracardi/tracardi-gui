@@ -1,19 +1,28 @@
 import React, {useEffect, useState} from "react";
-import TuiPieChart from "../elements/charts/PieChart";
 import {asyncRemote} from "../../remote_api/entrypoint";
-import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import ProfileCounter from "../elements/metrics/ProfileCounter";
 import SessionCounter from "../elements/metrics/SessionCounter";
 import EventCounter from "../elements/metrics/EventCounter";
-import EventLineChart from "../elements/charts/EventLineChart";
-import ProfileLineChart from "../elements/charts/ProfileLineChart";
 import InstancesCounter from "../elements/metrics/InstancesCounter";
-import MetricTimeLine from "../elements/metrics/MetricTimeLine";
-import SessionLineChart from "../elements/charts/SessionLineChart";
 import AvgEventTime from "../elements/metrics/AvgEventTimeCounter";
 import EventTimeLine from "../elements/charts/EventsTimeLine";
 import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
+import {LoadablePieChart} from "../elements/charts/PieChart";
+import Grid from "@mui/material/Grid";
+import {styled} from '@mui/material/styles';
+import Paper from "@mui/material/Paper";
+
+const Item = styled(Paper)(({theme, style}) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    borderRadius: 10,
+    width: "100%",
+    color: theme.palette.text.secondary,
+    ...style
+}));
 
 export default function Dashboard() {
 
@@ -34,7 +43,7 @@ export default function Dashboard() {
     useEffect(() => {
         setLoadingByType(true);
         asyncRemote({
-            url: "events/by_type"
+            url: "/events/by_type"
         }).then((response) => {
             if (response) {
                 setEventsByType(response.data)
@@ -49,7 +58,7 @@ export default function Dashboard() {
     useEffect(() => {
         setLoadingByTag(true);
         asyncRemote({
-            url: "events/by_tag"
+            url: "/events/by_tag"
         }).then((response) => {
             if (response) {
                 setEventsByTag(response.data)
@@ -64,7 +73,7 @@ export default function Dashboard() {
     useEffect(() => {
         setLoadingByStatus(true);
         asyncRemote({
-            url: "events/by_status"
+            url: "/events/by_status"
         }).then((response) => {
             if (response) {
                 setEventsByStatus(response.data)
@@ -79,7 +88,7 @@ export default function Dashboard() {
     useEffect(() => {
         setLoadingBySource(true);
         asyncRemote({
-            url: "events/by_source"
+            url: "/events/by_source"
         }).then((response) => {
             if (response) {
                 setEventsBySource(response.data);
@@ -91,61 +100,57 @@ export default function Dashboard() {
         })
     }, [])
 
-    const PieChart = ({loading, data, header, subHeader = null, fill = "#1976d2", colors}) => {
-        return <div style={{paddingTop: 20}}>
-            {header && <header style={{display: "flex", justifyContent: "center"}}>{header}</header>}
-            {subHeader &&
-            <header style={{display: "flex", justifyContent: "center", fontSize: "70%"}}>{subHeader}</header>}
-            <div style={{width: 280, height: 200}}>
-                {!loading && <TuiPieChart data={data} fill={fill} colors={colors}/>}
-                {loading && <CenteredCircularProgress/>}
-            </div>
-        </div>
-
-    }
-
     return <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
-        <MetricTimeLine fitContent={false}>
-            <div style={{display: "flex", flexDirection: "column", width: "100%"}}>
-                <div style={{width: "100%", height: 325, padding: 30}}>
-                    <EventTimeLine/>
-                </div>
-            </div>
-        </MetricTimeLine>
-        <div style={{display: "flex", flexWrap: "wrap"}}>
-            <MetricTimeLine>
-                <InstancesCounter/>
-            </MetricTimeLine>
-            <MetricTimeLine>
-                <AvgEventTime/>
-            </MetricTimeLine>
-            <MetricTimeLine onClick={go('/data')}>
-                <EventCounter/>
-                <EventLineChart/>
-            </MetricTimeLine>
-            <MetricTimeLine>
-                <ProfileCounter/>
-                <ProfileLineChart/>
-            </MetricTimeLine>
-            <MetricTimeLine>
-                <SessionCounter/>
-                <SessionLineChart/>
-            </MetricTimeLine>
-        </div>
-        <div style={{display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
+        <Grid container spacing={2} style={{padding: 5}}>
+            <Grid item xs={12}>
+                <Item style={{display: "flex"}}>
+                    <div style={{width: "100%", height: 325, padding: 30}}>
+                        <EventTimeLine/>
+                    </div>
+                </Item>
+            </Grid>
+            <Grid item xs={12} md={12} lg={6}>
+                <Item style={{display: "flex"}}>
+                    <EventCounter/>
+                    <ProfileCounter/>
+                    <SessionCounter/>
+                </Item>
+            </Grid>
+            <Grid item xs={12} md={12} lg={6}>
+                <Item style={{display: "flex"}}>
+                    <InstancesCounter/>
+                    <AvgEventTime/>
+                </Item>
+            </Grid>
+            <Grid item xs={6} md={6} lg={3}>
+                <Item><LoadablePieChart header="No of events" subHeader="by type" loading={loadingByType}
+                                        data={eventsByType}
+                                        colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/></Item>
+            </Grid>
+            <Grid item xs={6} md={6} lg={3}>
+                <Item>
+                    <LoadablePieChart header="No of event" subHeader="by status" loading={loadingByStatus}
+                                      data={eventsByStatus} colors={['#0088FE', '#00C49F', 'red']}/>
+                </Item>
 
-            <MetricTimeLine><PieChart header="No of events" subHeader="by type" loading={loadingByType}
-                                      data={eventsByType}
-                                      colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/></MetricTimeLine>
-            <MetricTimeLine><PieChart header="No of event" subHeader="by status" loading={loadingByStatus}
-                                      data={eventsByStatus} colors={['#0088FE', '#00C49F', 'red']}/></MetricTimeLine>
-            <MetricTimeLine><PieChart header="No of events" subHeader="by tag" loading={loadingByTag}
+            </Grid>
+            <Grid item xs={6} md={6} lg={3}>
+                <Item>
+                    <LoadablePieChart header="No of events" subHeader="by tag" loading={loadingByTag}
                                       data={eventsByTag}
-                                      colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/></MetricTimeLine>
-            <MetricTimeLine><PieChart header="No of events" subHeader="by source" loading={loadingBySource}
-                                      data={eventsBySource}
-                                      colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/></MetricTimeLine>
+                                      colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/>
+                </Item>
 
-        </div>
+            </Grid>
+            <Grid item xs={6} md={6} lg={3}>
+                <Item>
+                    <LoadablePieChart header="No of events" subHeader="by source" loading={loadingBySource}
+                                      data={eventsBySource}
+                                      colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/>
+                </Item>
+
+            </Grid>
+        </Grid>
+
     </div>
 }

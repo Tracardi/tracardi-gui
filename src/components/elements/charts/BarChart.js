@@ -16,6 +16,7 @@ export default function BarChartElement({onLoadRequest: endpoint, refreshInterva
     const [data, setData] = React.useState([]);
 
     const localContext = useContext(LocalDataContext)
+    const barColors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
 
     const {isLoading} = useFetch(
         ["getChartData", [endpoint, refresh, localContext]],
@@ -75,7 +76,7 @@ export default function BarChartElement({onLoadRequest: endpoint, refreshInterva
                         return <Bar key={index}
                                     stackId="stack"
                                     dataKey={column}
-                                    fill={barChartColors[column] ? barChartColors[column] : "#1976d2"}
+                                    fill={barChartColors[column] ? barChartColors[column] : barColors[Math.floor(index%4)]}
 
                         />
                     })}
