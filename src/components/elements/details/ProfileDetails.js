@@ -30,6 +30,9 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import {BsBoxArrowDown} from "react-icons/bs";
 import BarChartElement from "../charts/BarChart";
+import LineChartDisplay from "../charts/LineChart";
+import AreaChartDisplay from "../charts/AreaChart";
+import {TuiForm, TuiFormGroup} from "../tui/TuiForm";
 
 export default function ProfileDetails({profile}) {
     const _theme = useTheme()
@@ -80,7 +83,7 @@ export default function ProfileDetails({profile}) {
     return <div style={{height: "inherit", display: "flex", flexDirection: "column"}}>
         {displayPii && <PiiDetails profile={profile}/>}
         <div className="RightTabScroller">
-            <Tabs tabs={["Personal", "Profile Data", "Sessions", "Analytics", "E-Commerce", "Logs", "Raw"]}
+            <Tabs tabs={["Personal", "Profile Data", "Sessions", "Analytics", "E-Commerce", "Logs", "Json"]}
                   tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
                 <TabCase id={0}>
                     <ProfileData profile={profile}/>
@@ -100,7 +103,7 @@ export default function ProfileDetails({profile}) {
                 </TabCase>
                 <TabCase id={3}>
                     <div style={{backgroundColor: "#f5f5f5", margin: 0, padding: 20}}>
-                        <Accordion expanded={true}>
+                        <Accordion expanded={true} elevation={10}>
                             <AccordionSummary
                                 expandIcon={<BsBoxArrowDown size={24}/>}
                                 aria-controls="panel1a-content"
@@ -111,10 +114,8 @@ export default function ProfileDetails({profile}) {
                             <AccordionDetails>
                                 <Grid container spacing={2}>
                                     <Grid item xs={10}>
-                                        <BarChartElement
-                                            onLoadRequest={getProfileEventsHistogram(profile.id, "month")}
-                                            refreshInterval={0}
-                                            barChartColors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}
+                                        <AreaChartDisplay endpoint={getProfileEventsHistogram(profile.id, "month")}
+                                                          barChartColors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}
                                         />
                                     </Grid>
                                     <Grid item xs={2}>
@@ -128,7 +129,7 @@ export default function ProfileDetails({profile}) {
                             </AccordionDetails>
                         </Accordion>
 
-                        <Accordion>
+                        <Accordion elevation={3}>
                             <AccordionSummary
                                 expandIcon={<BsBoxArrowDown size={24}/>}
                                 aria-controls="panel1a-content"
@@ -174,7 +175,7 @@ export default function ProfileDetails({profile}) {
                             </AccordionDetails>
                         </Accordion>
 
-                        <Accordion>
+                        <Accordion elevation={3}>
                             <AccordionSummary
                                 expandIcon={<BsBoxArrowDown size={24}/>}
                                 aria-controls="panel1a-content"
@@ -217,9 +218,11 @@ export default function ProfileDetails({profile}) {
                     </div>
                 </TabCase>
                 <TabCase id={6}>
-                    <div className="Box10">
-                        <JsonBrowser data={profile}/>
-                    </div>
+                    <TuiForm style={{margin: 20}}>
+                        <TuiFormGroup style={{overflow: "auto"}}>
+                            <JsonBrowser data={profile}/>
+                        </TuiFormGroup>
+                    </TuiForm>
                 </TabCase>
             </Tabs>
         </div>

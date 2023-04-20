@@ -4,11 +4,9 @@ import JsonStringify from "../../misc/JsonStingify";
 import React, {useState} from "react";
 import SessionDetails from "../../details/SessionDetails";
 import SessionCardInfo from "../../details/SessionCardInfo";
-import ResponsiveDialog from "../../dialog/ResponsiveDialog";
 import Button from "../../forms/Button";
-import {BsXCircle} from "react-icons/bs";
 import {VscJson} from "react-icons/vsc";
-import JsonBrowser from "../../misc/JsonBrowser";
+import DataTreeDialog from "../../dialog/DataTreeDialog";
 
 export default function SessionRow({session, filterFields}) {
 
@@ -20,13 +18,9 @@ export default function SessionRow({session, filterFields}) {
     }
 
     return <>
-        {jsonData && <ResponsiveDialog title="Session JSON"
-                                       open={jsonData !== null}
-                                       button={<Button label="Close"
-                                                       icon={<BsXCircle size={20}/>}
-                                                       onClick={() => setJsonData(null)}/>}>
-            <JsonBrowser data={jsonData}/>
-        </ResponsiveDialog>}
+        {jsonData && <DataTreeDialog open={jsonData !== null}
+                                     data={jsonData}
+                                     onClose={() => setJsonData(null)}/>}
         <div style={{display: "flex"}}>
             <div style={{flex: "1 1 0", minWidth: 540, borderRight: "solid 1px #ccc", paddingRight: 17}}>
                 <SessionCardInfo session={session} displayContext={false}/>

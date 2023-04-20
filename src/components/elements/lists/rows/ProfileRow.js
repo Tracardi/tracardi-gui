@@ -8,9 +8,7 @@ import ProfileCardInfo from "../../details/ProfileCardInfo";
 import TuiTags from "../../tui/TuiTags";
 import Button from "../../forms/Button";
 import {VscJson} from "react-icons/vsc";
-import ResponsiveDialog from "../../dialog/ResponsiveDialog";
-import {BsXCircle} from "react-icons/bs";
-import JsonBrowser from "../../misc/JsonBrowser";
+import DataTreeDialog from "../../dialog/DataTreeDialog";
 
 export default function ProfileRow({profile, filterFields}) {
 
@@ -21,13 +19,9 @@ export default function ProfileRow({profile, filterFields}) {
     }
 
     return <>
-        {jsonData && <ResponsiveDialog title="Profile JSON"
-                                       open={jsonData !== null}
-                                       button={<Button label="Close"
-                                                       icon={<BsXCircle size={20}/>}
-                                                       onClick={() => setJsonData(null)}/>}>
-            <JsonBrowser data={jsonData}/>
-        </ResponsiveDialog>}
+        {jsonData && <DataTreeDialog open={jsonData !== null}
+                                     data={jsonData}
+                                     onClose={() => setJsonData(null)}/>}
         <div style={{display: "flex"}}>
         <div style={{flex: "1 1 0", minWidth: 540, borderRight: "solid 1px #ccc", paddingRight: 17}}>
             <ProfileCardInfo profile={profile}/>

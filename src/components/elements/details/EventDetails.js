@@ -16,11 +16,11 @@ import {getEventById} from "../../../remote_api/endpoints/event";
 import FetchError from "../../errors/FetchError";
 import RoutingFlow from "./RoutingFlow";
 
-export default function EventDetails({event, metadata}) {
+export default function EventDetails({event, metadata, routing=true}) {
 
     const [tab, setTab] = React.useState(0);
 
-    const tabs = ["Event", "Routing", "Raw", "Flow debug", "Logs"];
+    const tabs = ["Event", "Routing", "Json", "Flow debug", "Logs"];
 
     return <>
         <Tabs
@@ -42,10 +42,10 @@ export default function EventDetails({event, metadata}) {
             }}
         >
             <TabCase id={0}>
-                <EventData event={event} metadata={metadata} allowedDetails={['profile', 'source', 'session']}/>
+                <EventData event={event} metadata={metadata} routing={routing} allowedDetails={['profile', 'source', 'session']}/>
             </TabCase>
             <TabCase id={1}>
-                <TuiForm style={{margin: 20}}>
+                {routing ? <TuiForm style={{margin: 20}}>
                     <TuiFormGroup>
                         <TuiFormGroupHeader
                             header={`Event routing for event type ${event.type}`}
@@ -66,17 +66,14 @@ export default function EventDetails({event, metadata}) {
                     </TuiFormGroup>
 
                 </TuiForm>
+                : <NoData header="Routing data disabled"/>}
+
 
             </TabCase>
             <TabCase id={2}>
                 <TuiForm style={{margin: 20}}>
-                    <TuiFormGroup>
-                        <TuiFormGroupHeader header="Raw event"/>
-                        <TuiFormGroupContent>
-                            <div style={{margin: 10}}>
-                                <JsonBrowser data={{event: event, _metadata: metadata}}/>
-                            </div>
-                        </TuiFormGroupContent>
+                    <TuiFormGroup style={{overflow: "auto"}}>
+                        <JsonBrowser data={{event: event, _metadata: metadata}}/>
                     </TuiFormGroup>
                 </TuiForm>
             </TabCase>

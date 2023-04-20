@@ -2,7 +2,6 @@ import {object2dot} from "../../../misc/dottedObject";
 import PropertyField from "./PropertyField";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
-import ProfileDetails from "./ProfileDetails";
 import EventSourceDetails from "./EventSourceDetails";
 import EventStatusTag from "../misc/EventStatusTag";
 import EventValidation from "../misc/EventValidation";
@@ -21,7 +20,7 @@ import Tabs, {TabCase} from "../tabs/Tabs";
 import useTheme from "@mui/material/styles/useTheme";
 
 
-const EventData = ({event, metadata, allowedDetails = []}) => {
+const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
 
     const _theme = useTheme()
 
@@ -96,11 +95,11 @@ const EventData = ({event, metadata, allowedDetails = []}) => {
                                content={Array.isArray(event?.tags?.values) &&
                                <TuiTags tags={event.tags.values} size="small"/>}
                 />
-                {Array.isArray(event?.metadata?.processed_by?.rules) && <PropertyField name="Routed by rules"
+                {routing && Array.isArray(event?.metadata?.processed_by?.rules) && <PropertyField name="Routed by rules"
                                                                                        content={<TuiTags
                                                                                            tags={event.metadata?.processed_by?.rules}
                                                                                            size="small"/>}/>}
-                {Array.isArray(event?.metadata?.processed_by?.flows) && <PropertyField
+                {routing && Array.isArray(event?.metadata?.processed_by?.flows) && <PropertyField
                     name="Processed by flow"
                     content={<TuiWorkflowTags tags={event.metadata?.processed_by?.flows} size="small" />}/>}
                 {metadata?.index && <PropertyField name="Index" content={metadata.index}/>}

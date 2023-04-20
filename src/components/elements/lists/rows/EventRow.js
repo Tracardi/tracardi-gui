@@ -14,15 +14,14 @@ import TuiTags from "../../tui/TuiTags";
 import IdLabel from "../../misc/IconLabels/IdLabel";
 import ProfileLabel from "../../misc/IconLabels/ProfileLabel";
 import EventSourceDetails from "../../details/EventSourceDetails";
-import ResponsiveDialog from "../../dialog/ResponsiveDialog";
 import Button from "../../forms/Button";
 import {BsGlobe, BsXCircle} from "react-icons/bs";
 import {VscJson} from "react-icons/vsc";
 import {SessionDetailsById} from "../../details/SessionDetails";
 import IconLabel from "../../misc/IconLabels/IconLabel";
-import JsonBrowser from "../../misc/JsonBrowser";
 import {displayLocation} from "../../../../misc/location";
 import OsIcon from "../../misc/IconLabels/OsLabel";
+import DataTreeDialog from "../../dialog/DataTreeDialog";
 
 export function EventRow({row, filterFields}) {
 
@@ -39,13 +38,9 @@ export function EventRow({row, filterFields}) {
     const displayCreateTime = window?.CONFIG?.event?.display?.row?.createTime
 
     return <>
-        {jsonData && <ResponsiveDialog title="Event JSON"
-                                       open={jsonData !== null}
-                                       button={<Button label="Close"
-                                                       icon={<BsXCircle size={20}/>}
-                                                       onClick={() => setJsonData(null)}/>}>
-            <JsonBrowser data={jsonData} />
-        </ResponsiveDialog>}
+        {jsonData && <DataTreeDialog open={jsonData !== null}
+                                     data={jsonData}
+                                     onClose={() => setJsonData(null)}/>}
         <div style={{display: "flex"}}>
             <div style={{flex: "1 1 0", minWidth: 560, borderRight: "solid 1px #ccc", paddingRight: 17}}>
                 <PropertyField labelWidth={labelWidth} name="id" content={<IdLabel label={row?.id}/>}/>
