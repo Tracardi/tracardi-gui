@@ -12,6 +12,7 @@ import NoData from "../misc/NoData";
 import JsonBrowser from "../misc/JsonBrowser";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getSessionById} from "../../../remote_api/endpoints/session";
+import {TuiForm, TuiFormGroup} from "../tui/TuiForm";
 
 
 export default function SessionDetails({data: session}) {
@@ -40,9 +41,11 @@ export default function SessionDetails({data: session}) {
                     </div>
                 </TabCase>
                 <TabCase id={1}>
-                    <div className="Box10">
-                        <JsonBrowser data={session}/>
-                    </div>
+                    <TuiForm style={{margin: 20}}>
+                        <TuiFormGroup style={{overflow: "auto"}}>
+                            <JsonBrowser data={{event: session}}/>
+                        </TuiFormGroup>
+                    </TuiForm>
                 </TabCase>
             </Tabs>
 
