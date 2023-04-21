@@ -19,7 +19,8 @@ const Item = styled(Paper)(({theme, style}) => ({
     padding: theme.spacing(1),
     textAlign: 'center',
     borderRadius: 10,
-    width: "100%",
+    width: "calc(100% - 20px)",
+    margin: 10,
     color: theme.palette.text.secondary,
     ...style
 }));
@@ -103,39 +104,39 @@ export default function Dashboard() {
     return <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
         <Grid container spacing={2} style={{padding: 5}}>
             <Grid item xs={12}>
-                <Item style={{display: "flex"}}>
+                <Item style={{display: "flex"}} elevation={7}>
                     <div style={{width: "100%", height: 325, padding: 30}}>
                         <EventTimeLine/>
                     </div>
                 </Item>
             </Grid>
-            <Grid item xs={12} md={12} lg={6}>
-                <Item style={{display: "flex"}}>
+            <Grid item xs={12} md={12} lg={6} >
+                <Item style={{display: "flex"}} elevation={5}>
                     <EventCounter/>
                     <ProfileCounter/>
                     <SessionCounter/>
                 </Item>
             </Grid>
             <Grid item xs={12} md={12} lg={6}>
-                <Item style={{display: "flex"}}>
+                <Item style={{display: "flex"}} elevation={5}>
                     <InstancesCounter/>
                     <AvgEventTime/>
                 </Item>
             </Grid>
             <Grid item xs={6} md={6} lg={3}>
-                <Item><LoadablePieChart header="No of events" subHeader="by type" loading={loadingByType}
+                <Item elevation={2}><LoadablePieChart header="No of events" subHeader="by type" loading={loadingByType}
                                         data={eventsByType}
                                         colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/></Item>
             </Grid>
             <Grid item xs={6} md={6} lg={3}>
-                <Item>
+                <Item elevation={2}>
                     <LoadablePieChart header="No of event" subHeader="by status" loading={loadingByStatus}
                                       data={eventsByStatus} colors={['#0088FE', '#00C49F', 'red']}/>
                 </Item>
 
             </Grid>
             <Grid item xs={6} md={6} lg={3}>
-                <Item>
+                <Item elevation={2}>
                     <LoadablePieChart header="No of events" subHeader="by tag" loading={loadingByTag}
                                       data={eventsByTag}
                                       colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/>
@@ -143,7 +144,7 @@ export default function Dashboard() {
 
             </Grid>
             <Grid item xs={6} md={6} lg={3}>
-                <Item>
+                <Item elevation={2}>
                     <LoadablePieChart header="No of events" subHeader="by source" loading={loadingBySource}
                                       data={eventsBySource}
                                       colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/>
