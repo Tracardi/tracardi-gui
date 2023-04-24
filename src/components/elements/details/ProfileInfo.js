@@ -102,8 +102,13 @@ export const ProfileData = ({profile}) => {
                     </TabCase>
                     <TabCase id={3}>
                         <div style={{margin:20}}>
-                            {isNotEmptyArray(profile?.interests)
-                                ? <div className="flexLine" style={{gap: 5}}><TuiTags tags={profile?.interests}/></div>
+                            {!isEmptyObjectOrNull(profile?.interests)
+                                ? <div style={{margin:20}}>
+                                    {Object.keys(profile?.interests).map(key => <PropertyField key={key}
+                                                                                                    name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
+                                                                                                    content={profile?.interests[key]}/>)
+                                    }
+                                </div>
                                 : <NoData header="No Interests"/>}
                         </div>
                     </TabCase>
