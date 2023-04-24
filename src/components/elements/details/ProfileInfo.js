@@ -102,19 +102,21 @@ export const ProfileData = ({profile}) => {
                         </div>
                     </TabCase>
                     <TabCase id={3}>
+                        <div style={{margin: 20}}>
                         {!isEmptyObjectOrNull(profile?.interests)
                             ? Object.keys(profile?.interests).map(key => <PropertyField key={key}
-                                                                                        name={key}
-                                                                                        content={profile?.interests[key]}/>)
-
+                                                                                          name={key}
+                                                                                          content={profile?.interests[key]}/>)
                             : <NoData header="No Interests"/>}
+                        </div>
                     </TabCase>
                     <TabCase id={4}>
                         <div style={{margin: 20}}>
                             {traits && !isEmptyObjectOrNull(traits)
-                                ? <div style={{margin: 20}}>{Object.keys(traits).map(key => <PropertyField key={key}
-                                                                                name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
-                                                                                content={traits[key]}/>)}</div>
+                                ? Object.keys(traits).map(key => <PropertyField key={key}
+                                                                                   name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
+                                                                                   content={traits[key]}/>)
+
                                 : <NoData header="No Traits"/>}
                         </div>
                     </TabCase>
