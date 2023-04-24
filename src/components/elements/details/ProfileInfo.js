@@ -62,7 +62,7 @@ export const ProfileData = ({profile}) => {
                                           value={isEmptyObjectOrNull(profile?.consents) ? "None granted" : <TuiTags
                                               size="small"
                                               style={{marginRight: 2}}
-                                              tags={Object.getOwnPropertyNames(profile?.consents)}/> }
+                                              tags={Object.getOwnPropertyNames(profile?.consents)}/>}
                                           icon={<VscLaw size={20} style={{marginRight: 5}}/>}/>
                                   </div>}/>}
 
@@ -73,9 +73,10 @@ export const ProfileData = ({profile}) => {
             </fieldset>
 
             <div style={{borderRadius: 5, border: "solid 1px #ccc"}}>
-                <Tabs tabs={["PII", "Contacts", "Segments", "Interests", "Traits", "Aux"]} tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
+                <Tabs tabs={["PII", "Contacts", "Segments", "Interests", "Traits", "Aux"]}
+                      tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
                     <TabCase id={0}>
-                        <div style={{margin:20}}>
+                        <div style={{margin: 20}}>
                             {displayPii && pii ? Object.keys(pii).map(key => <PropertyField key={key}
                                                                                             name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
                                                                                             content={pii[key]}/>)
@@ -85,7 +86,7 @@ export const ProfileData = ({profile}) => {
 
                     </TabCase>
                     <TabCase id={1}>
-                        <div style={{margin:20}}>
+                        <div style={{margin: 20}}>
                             {displayPii && contact ? Object.keys(contact).map(key => <PropertyField key={key}
                                                                                                     name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
                                                                                                     content={contact[key]}/>)
@@ -94,35 +95,31 @@ export const ProfileData = ({profile}) => {
                         </div>
                     </TabCase>
                     <TabCase id={2}>
-                        <div style={{margin:20}}>
+                        <div style={{margin: 20}}>
                             {isNotEmptyArray(profile?.segments)
                                 ? <div className="flexLine" style={{gap: 5}}><TuiTags tags={profile?.segments}/></div>
                                 : <NoData header="No Segments"/>}
                         </div>
                     </TabCase>
                     <TabCase id={3}>
-                        <div style={{margin:20}}>
-                            {!isEmptyObjectOrNull(profile?.interests)
-                                ? <div style={{margin:20}}>
-                                    {Object.keys(profile?.interests).map(key => <PropertyField key={key}
-                                                                                                    name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
-                                                                                                    content={profile?.interests[key]}/>)
-                                    }
-                                </div>
-                                : <NoData header="No Interests"/>}
-                        </div>
+                        {!isEmptyObjectOrNull(profile?.interests)
+                            ? Object.keys(profile?.interests).map(key => <PropertyField key={key}
+                                                                                        name={key}
+                                                                                        content={profile?.interests[key]}/>)
+
+                            : <NoData header="No Interests"/>}
                     </TabCase>
                     <TabCase id={4}>
-                        <div style={{margin:20}}>
+                        <div style={{margin: 20}}>
                             {traits && !isEmptyObjectOrNull(traits)
-                                ? Object.keys(traits).map(key => <PropertyField key={key}
+                                ? <div style={{margin: 20}}>{Object.keys(traits).map(key => <PropertyField key={key}
                                                                                 name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
-                                                                                content={traits[key]}/>)
+                                                                                content={traits[key]}/>)}</div>
                                 : <NoData header="No Traits"/>}
                         </div>
                     </TabCase>
                     <TabCase id={5}>
-                        <div style={{margin:20}}>
+                        <div style={{margin: 20}}>
                             {aux && !isEmptyObjectOrNull(aux)
                                 ? aux && Object.keys(aux).map(key => <PropertyField key={key}
                                                                                     name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
