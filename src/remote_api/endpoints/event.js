@@ -37,7 +37,15 @@ export function getEventsToProfileCopy(settings) {
     }
 }
 
-export function getEventsToProfileAffectedRecords(query) {
+export function getEventsIndexingCopy(settings) {
+    return {
+        url: "/events/index",
+        method: "post",
+        data: settings
+    }
+}
+
+export function getEventsTotalRecords(query) {
     return {
         url: `/events/copy/count_by_query?query=${query}`
     }
