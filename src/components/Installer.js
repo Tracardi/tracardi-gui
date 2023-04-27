@@ -14,6 +14,10 @@ const Installer = ({children}) => {
         getInstallStatus(),
         data => {
             return data
+        },
+        {
+            refetchOnWindowFocus: false,
+            staleTime: 60 * 60 * 1000
         }
     )
 
