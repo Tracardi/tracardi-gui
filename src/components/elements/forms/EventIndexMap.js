@@ -1,16 +1,13 @@
 import React, {useState} from "react";
 import ListOfForms from "./ListOfForms";
 import RefInput from "./inputs/RefInput";
-import MenuItem from "@mui/material/MenuItem";
-import TextField from "@mui/material/TextField";
 import Tag from "../misc/Tag";
 
 const EventIndexSetting = ({value, onChange}) => {
 
     const [data, setData] = useState(value || {
-        event: {value:"", ref: true},
-        profile: {value:"", ref: true},
-        op: 0
+        property: {value:"", ref: true},
+        trait: {value:"", ref: true},
     })
 
     const handleDataChange = (key, value) => {
@@ -30,7 +27,7 @@ const EventIndexSetting = ({value, onChange}) => {
                   locked={true}
                   defaultType={true}
                   label="Event trait"
-                  onChange={(value) => handleDataChange("event", value)}
+                  onChange={(value) => handleDataChange("trait", value)}
                   style={{width: "100%"}}/>
 
         <div style={{marginLeft: 5, display: "flex", alignItems: "center"}}><Tag backgroundColor="gray" color="white">=</Tag></div>
@@ -42,7 +39,7 @@ const EventIndexSetting = ({value, onChange}) => {
                   locked={true}
                   defaultType={true}
                   label="Event property"
-                  onChange={(value) => handleDataChange("event", value)}
+                  onChange={(value) => handleDataChange("property", value)}
                   style={{width: "100%"}}/>
 
     </div>
@@ -51,7 +48,7 @@ const EventIndexSetting = ({value, onChange}) => {
 
 const EventIndexMap = ({value, onChange}) => {
     return <ListOfForms form={EventIndexSetting}
-                        defaultFormValue={{event: {value:"", ref: true}, profile: {value:"", ref: true}, op: 0}}
+                        defaultFormValue={{property: {value:"", ref: true}, trait: {value:"", ref: true}}}
                         value={value}
                         onChange={onChange}/>
 }
