@@ -11,7 +11,7 @@ DIV.PropertyRow {
 }
 
 DIV.PropertyRow:hover {
-    background-color: #eeeef5;
+    background-color: rgba(200,200,200, 0.2);
 }
 
 DIV.PropertyRow DIV.FieldName {

@@ -36,7 +36,5 @@ export default function EventCounter() {
         return <CenteredCircularProgress/>
     }
 
-    return <div>
-        <Counter label="Events" value={eventCount} subValue={eventAvg} subValueSuffix="events/s"/>
-    </div>
+    return <Counter label="Events" value={eventCount} subValue={eventAvg} subValueSuffix="events/s" width={180}/>
 }

@@ -18,7 +18,7 @@ const renderActiveShape = (props) => {
 
     return (
         <g>
-            <text x={cx} y={cy} dy={6} textAnchor="middle" fill={fill} style={{fontSize: 10}}>
+            <text x={cx} y={cy} dy={6} textAnchor="middle" fill={fill} style={{fontSize: 9}}>
                 {payload.name}
             </text>
             <Sector
@@ -73,7 +73,7 @@ export class TuiPieChart extends PureComponent {
                         cx="50%"
                         cy="50%"
                         innerRadius={40}
-                        outerRadius={55}
+                        outerRadius={70}
                         dataKey="value"
                         onMouseEnter={this.onPieEnter}
                     >
@@ -89,9 +89,9 @@ export class TuiPieChart extends PureComponent {
 
 export function LoadablePieChart ({loading, data, header, subHeader = null, fill = "#1976d2", colors, paddingTop = 20}) {
     return <div style={{paddingTop: paddingTop}}>
-        {header && <header style={{display: "flex", justifyContent: "center"}}>{header}</header>}
+        {header && <header style={{display: "flex", justifyContent: "center",  fontSize: "130%", fontWeight: 400}}>{header}</header>}
         {subHeader &&
-        <header style={{display: "flex", justifyContent: "center", fontSize: "70%"}}>{subHeader}</header>}
+        <header style={{display: "flex", justifyContent: "center", fontSize: "90%"}}>{subHeader}</header>}
         <div style={{width: "100%", height: 200}}>
             {!loading && <TuiPieChart data={data} fill={fill} colors={colors}/>}
             {loading && <CenteredCircularProgress/>}

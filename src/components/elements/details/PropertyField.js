@@ -4,7 +4,7 @@ import {FiMoreHorizontal} from "react-icons/fi";
 import FormDrawer from "../drawers/FormDrawer";
 import "./PropertyField.css";
 
-const PropertyField = ({name, content, children, drawerSize = 800, underline = true, whiteSpace = 'normal', labelWidth = 250}) => {
+const PropertyField = ({name, content, children, drawerSize = 800, underline = true, whiteSpace = 'normal', valueAlign="flex-start", labelWidth = 250}) => {
 
     const [displayDetails, setDisplayDetails] = useState(false)
     return (
@@ -21,7 +21,9 @@ const PropertyField = ({name, content, children, drawerSize = 800, underline = t
                         whiteSpace: whiteSpace,
                         textOverflow: "ellipsis",
                         overflow: "hidden",
-                        flexWrap: "wrap"
+                        flexWrap: "wrap",
+                        justifyContent: valueAlign,
+                        width: "100%"
                     }}>
                         {
                             typeof content !== "undefined" && React.isValidElement(content)

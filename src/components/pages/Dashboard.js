@@ -1,17 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {asyncRemote} from "../../remote_api/entrypoint";
-import ProfileCounter from "../elements/metrics/ProfileCounter";
-import SessionCounter from "../elements/metrics/SessionCounter";
-import EventCounter from "../elements/metrics/EventCounter";
-import InstancesCounter from "../elements/metrics/InstancesCounter";
-import AvgEventTime from "../elements/metrics/AvgEventTimeCounter";
 import EventTimeLine from "../elements/charts/EventsTimeLine";
-import {useNavigate} from "react-router-dom";
-import urlPrefix from "../../misc/UrlPrefix";
 import {LoadablePieChart} from "../elements/charts/PieChart";
 import Grid from "@mui/material/Grid";
 import {styled} from '@mui/material/styles';
 import Paper from "@mui/material/Paper";
+import OnlineSessionCounter from "../elements/metrics/OnlineSessionsCounter";
+import {EventByTypeTable} from "../elements/tables/EventByType";
+import {getEventByTypeAgg} from "../../remote_api/endpoints/event";
 
 const Item = styled(Paper)(({theme, style}) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -25,27 +21,52 @@ const Item = styled(Paper)(({theme, style}) => ({
     ...style
 }));
 
-export default function Dashboard() {
+const InlineItem = styled(Paper)(({theme, style}) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    borderRadius: 10,
+    margin: 10,
+    width: "fit-content",
+    color: theme.palette.text.secondary,
+    ...style
+}));
+
+const ContainedItem = styled(Paper)(({theme, style}) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#3B82F6',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    borderRadius: 10,
+    width: "calc(100% - 20px)",
+    margin: 10,
+    color: "white",
+    ...style
+}));
+
+function EventsByType() {
+
+    const colorsList = [
+        '#3B82F6',
+        '#3d5afe',
+        '#536dfe',
+        '#0088FE',
+        "#5c6bc0",
+        "#2196f3",
+        "#009688",
+        "#8bc34a",
+        "#4caf50",
+        "#f44336",
+        "#ff9800"
+    ]
 
     const [eventsByType, setEventsByType] = useState([]);
-    const [eventsByTag, setEventsByTag] = useState([]);
-    const [eventsBySource, setEventsBySource] = useState([]);
-    const [eventsByStatus, setEventsByStatus] = useState([]);
     const [loadingByType, setLoadingByType] = useState(false);
-    const [loadingByTag, setLoadingByTag] = useState(false);
-    const [loadingBySource, setLoadingBySource] = useState(false);
-    const [loadingByStatus, setLoadingByStatus] = useState(false);
-
-    const navigate = useNavigate();
-    const go = (url) => {
-        return () => navigate(urlPrefix(url));
-    }
 
     useEffect(() => {
         setLoadingByType(true);
-        asyncRemote({
-            url: "/events/by_type"
-        }).then((response) => {
+        asyncRemote(getEventByTypeAgg(20)).then((response) => {
             if (response) {
                 setEventsByType(response.data)
             }
@@ -55,6 +76,40 @@ export default function Dashboard() {
             setLoadingByType(false)
         })
     }, [])
+
+
+    return <><LoadablePieChart header="No of events" subHeader="by type" loading={loadingByType}
+                               data={eventsByType}
+                               colors={colorsList}/>
+        <div style={{padding: "0 30px 30px 30px"}}>
+            <EventByTypeTable/>
+        </div>
+    </>
+}
+
+function Charts() {
+
+    const colorsList = [
+        '#3B82F6',
+        '#3d5afe',
+        '#536dfe',
+        '#0088FE',
+        "#5c6bc0",
+        "#2196f3",
+        "#009688",
+        "#8bc34a",
+        "#4caf50",
+        "#f44336",
+        "#ff9800"
+    ]
+
+    const [eventsByTag, setEventsByTag] = useState([]);
+    const [eventsBySource, setEventsBySource] = useState([]);
+    const [eventsByStatus, setEventsByStatus] = useState([]);
+    const [loadingByTag, setLoadingByTag] = useState(false);
+    const [loadingBySource, setLoadingBySource] = useState(false);
+    const [loadingByStatus, setLoadingByStatus] = useState(false);
+
 
     useEffect(() => {
         setLoadingByTag(true);
@@ -101,56 +156,66 @@ export default function Dashboard() {
         })
     }, [])
 
+    return <>
+        <Grid item xs={12} md={6} lg={3}>
+            <Item elevation={0}>
+                <LoadablePieChart header="No of event" subHeader="by status" loading={loadingByStatus}
+                                  data={eventsByStatus} colors={colorsList}/>
+            </Item>
+        </Grid>
+        <Grid item xs={12} md={6} lg={3}>
+            <Item elevation={0}>
+                <LoadablePieChart header="No of events" subHeader="by tag" loading={loadingByTag}
+                                  data={eventsByTag}
+                                  colors={colorsList}/>
+            </Item>
+        </Grid>
+        <Grid item xs={12} md={6} lg={3}>
+            <Item elevation={0}>
+                <LoadablePieChart header="No of events" subHeader="by source" loading={loadingBySource}
+                                  data={eventsBySource}
+                                  colors={colorsList}/>
+            </Item>
+        </Grid>
+    </>
+}
+
+export default function Dashboard() {
+
     return <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
-        <Grid container spacing={2} style={{padding: 5}}>
-            <Grid item xs={12}>
-                <Item style={{display: "flex"}} elevation={7}>
-                    <div style={{width: "100%", height: 325, padding: 30}}>
-                        <EventTimeLine/>
-                    </div>
-                </Item>
+        <Grid container spacing={1}>
+            <Grid container item xs={7} md={8} lg={9}>
+                <Grid item xs={3}>
+                    <Item elevation={0}>
+                        <EventsByType />
+                    </Item>
+                </Grid>
+                <Grid item xs={9}>
+                    <Item style={{display: "flex"}} elevation={0}>
+                        <div style={{width: "100%"}}>
+                            <EventTimeLine/>
+                        </div>
+                    </Item>
+                </Grid>
+                <Grid container item spacing={1}>
+                    <Charts/>
+                </Grid>
+                <Grid container item spacing={1}>
+                    <Grid item xs={3}>
+                        <Item style={{padding: 30}}>
+                            xxx
+                        </Item>
+                    </Grid>
+
+                </Grid>
             </Grid>
-            <Grid item xs={12} md={12} lg={6} >
-                <Item style={{display: "flex"}} elevation={5}>
-                    <EventCounter/>
-                    <ProfileCounter/>
-                    <SessionCounter/>
-                </Item>
-            </Grid>
-            <Grid item xs={12} md={12} lg={6}>
-                <Item style={{display: "flex"}} elevation={5}>
-                    <InstancesCounter/>
-                    <AvgEventTime/>
-                </Item>
-            </Grid>
-            <Grid item xs={6} md={6} lg={3}>
-                <Item elevation={2}><LoadablePieChart header="No of events" subHeader="by type" loading={loadingByType}
-                                        data={eventsByType}
-                                        colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/></Item>
-            </Grid>
-            <Grid item xs={6} md={6} lg={3}>
-                <Item elevation={2}>
-                    <LoadablePieChart header="No of event" subHeader="by status" loading={loadingByStatus}
-                                      data={eventsByStatus} colors={['#0088FE', '#00C49F', 'red']}/>
-                </Item>
+            <Grid item xs={5} md={4} lg={3}>
+                <ContainedItem  elevation={0}>
+                    <OnlineSessionCounter/>
+                </ContainedItem>
 
             </Grid>
-            <Grid item xs={6} md={6} lg={3}>
-                <Item elevation={2}>
-                    <LoadablePieChart header="No of events" subHeader="by tag" loading={loadingByTag}
-                                      data={eventsByTag}
-                                      colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/>
-                </Item>
 
-            </Grid>
-            <Grid item xs={6} md={6} lg={3}>
-                <Item elevation={2}>
-                    <LoadablePieChart header="No of events" subHeader="by source" loading={loadingBySource}
-                                      data={eventsBySource}
-                                      colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/>
-                </Item>
-
-            </Grid>
         </Grid>
 
     </div>

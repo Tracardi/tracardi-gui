@@ -57,3 +57,9 @@ export function getEventTypePredefinedProps(eventType) {
         url: `/event/type/${eventType}/schema`
     }
 }
+
+export function  getEventByTypeAgg(size) {
+    return {
+        url: "/events/by_type?size="+size
+    }
+}

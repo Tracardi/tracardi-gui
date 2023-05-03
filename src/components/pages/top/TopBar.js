@@ -20,7 +20,7 @@ export default function TopBar({children}) {
     }
 
     const style = {
-        backgroundColor: theme.palette.primary.light,
+        // backgroundColor: theme.palette.primary.light,
         color: theme.palette.common.black
     }
 

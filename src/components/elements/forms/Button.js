@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {Button as MuiButton} from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export default function Button({label, onClick, className, style, icon, disabled, size="middle", selected = false, progress = false, confirmed = false, error = false}) {
+export default function Button({label, onClick, className, style, icon, disabled, size="middle", selected = false, progress = false, confirmed = false, error = false, variant="outlined"}) {
 
     let color = "primary"
     if (error) {
@@ -12,8 +12,6 @@ export default function Button({label, onClick, className, style, icon, disabled
     } else if (confirmed) {
         color = "success"
     }
-
-    let variant = "outlined"
 
     if (selected) {
         variant = "contained"

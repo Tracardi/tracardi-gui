@@ -29,8 +29,6 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import {BsBoxArrowDown} from "react-icons/bs";
-import BarChartElement from "../charts/BarChart";
-import LineChartDisplay from "../charts/LineChart";
 import AreaChartDisplay from "../charts/AreaChart";
 import {TuiForm, TuiFormGroup} from "../tui/TuiForm";
 
