@@ -21,3 +21,10 @@ export function getOnlineSessionsByLocation() {
         url: '/session/count/online/by_location'
     }
 }
+
+
+export function  getSessionsByApp(size) {
+    return {
+        url: "/sessions/count/by_app?size="+size
+    }
+}

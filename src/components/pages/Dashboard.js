@@ -6,8 +6,11 @@ import Grid from "@mui/material/Grid";
 import {styled} from '@mui/material/styles';
 import Paper from "@mui/material/Paper";
 import OnlineSessionCounter from "../elements/metrics/OnlineSessionsCounter";
-import {EventByTypeTable} from "../elements/tables/EventByType";
+import {AggregationTable} from "../elements/tables/EventByType";
 import {getEventByTypeAgg} from "../../remote_api/endpoints/event";
+import {useFetch} from "../../remote_api/remoteState";
+import {getSessionsByApp} from "../../remote_api/endpoints/session";
+import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 
 const Item = styled(Paper)(({theme, style}) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -45,6 +48,36 @@ const ContainedItem = styled(Paper)(({theme, style}) => ({
     ...style
 }));
 
+function SessionsByApp() {
+
+    const colorsList = [
+        '#3B82F6',
+        '#3d5afe',
+        '#536dfe',
+        '#0088FE',
+        "#5c6bc0",
+        "#2196f3",
+        "#009688",
+        "#8bc34a",
+        "#4caf50",
+        "#f44336",
+        "#ff9800"
+    ]
+
+    const {data, isLoading, error} = useFetch(
+        ["sessionsByApp"],
+        getSessionsByApp(20),
+        data => data.browsers
+    )
+
+
+    return <LoadablePieChart header="No of sessions" subHeader="by app" loading={isLoading}
+                             data={data}
+                             colors={colorsList}/>
+
+}
+
+
 function EventsByType() {
 
     const colorsList = [
@@ -61,28 +94,22 @@ function EventsByType() {
         "#ff9800"
     ]
 
-    const [eventsByType, setEventsByType] = useState([]);
-    const [loadingByType, setLoadingByType] = useState(false);
+    const {data, isLoading, error} = useFetch(
+        ["eventByType"],
+        getEventByTypeAgg(20),
+        data => data
+    )
 
-    useEffect(() => {
-        setLoadingByType(true);
-        asyncRemote(getEventByTypeAgg(20)).then((response) => {
-            if (response) {
-                setEventsByType(response.data)
-            }
-        }).catch(() => {
-
-        }).finally(() => {
-            setLoadingByType(false)
-        })
-    }, [])
+    if(isLoading) {
+        return <CenteredCircularProgress/>
+    }
 
 
-    return <><LoadablePieChart header="No of events" subHeader="by type" loading={loadingByType}
-                               data={eventsByType}
+    return <><LoadablePieChart header="No of events" subHeader="by type" loading={isLoading}
+                               data={data}
                                colors={colorsList}/>
         <div style={{padding: "0 30px 30px 30px"}}>
-            <EventByTypeTable/>
+            <AggregationTable data={data}/>
         </div>
     </>
 }
@@ -159,6 +186,11 @@ function Charts() {
     return <>
         <Grid item xs={12} md={6} lg={3}>
             <Item elevation={0}>
+                <SessionsByApp/>
+            </Item>
+        </Grid>
+        <Grid item xs={12} md={6} lg={3}>
+            <Item elevation={0}>
                 <LoadablePieChart header="No of event" subHeader="by status" loading={loadingByStatus}
                                   data={eventsByStatus} colors={colorsList}/>
             </Item>
@@ -187,7 +219,7 @@ export default function Dashboard() {
             <Grid container item xs={7} md={8} lg={9}>
                 <Grid item xs={3}>
                     <Item elevation={0}>
-                        <EventsByType />
+                        <EventsByType/>
                     </Item>
                 </Grid>
                 <Grid item xs={9}>
@@ -200,17 +232,17 @@ export default function Dashboard() {
                 <Grid container item spacing={1}>
                     <Charts/>
                 </Grid>
-                <Grid container item spacing={1}>
-                    <Grid item xs={3}>
-                        <Item style={{padding: 30}}>
-                            xxx
-                        </Item>
-                    </Grid>
+                {/*<Grid container item spacing={1}>*/}
+                {/*    <Grid item xs={3}>*/}
+                {/*        <Item>*/}
+                {/*            <SessionsByApp/>*/}
+                {/*        </Item>*/}
+                {/*    </Grid>*/}
 
-                </Grid>
+                {/*</Grid>*/}
             </Grid>
             <Grid item xs={5} md={4} lg={3}>
-                <ContainedItem  elevation={0}>
+                <ContainedItem elevation={0}>
                     <OnlineSessionCounter/>
                 </ContainedItem>
 

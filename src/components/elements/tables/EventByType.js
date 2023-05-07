@@ -1,23 +1,19 @@
-import {useFetch} from "../../../remote_api/remoteState";
-import {getEventByTypeAgg} from "../../../remote_api/endpoints/event";
 import PropertyField from "../details/PropertyField";
 import React from "react";
-import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 
-export function EventByTypeTable() {
-    const {data, isLoading, error} = useFetch(
-        ["eventsByTypeAgg", []],
-        getEventByTypeAgg(5),
-        data => data
-    )
-
-    if(isLoading) {
-        return  <CenteredCircularProgress />
-    }
+export function AggregationTable({data}) {
+    const result = data.reduce((acc, curr, index) => {
+        if (index < 5) {
+            acc.push(curr);
+        } else {
+            acc[0].value += curr.value;
+        }
+        return acc;
+    }, [{ name: "other", value: 0 }]);
 
     return <>
         <PropertyField name="Event name" content="No of events" valueAlign="flex-end"/>
-        {data.map((item, index) => {
+        {result.sort((a, b) => b.value - a.value).map((item, index) => {
             return <PropertyField key={`tz-${index}`} name={item.name} content={item.value} valueAlign="flex-end"/>
         })}
         </>
