@@ -59,9 +59,9 @@ const KeyValueForm = ({ value, onChange, values, endpoint, defaultKeySource, def
   return (
     <div className="KeyValueForm">
       <div className="KeyValueInput">
-        <div>Key:</div>
+        <div style={{margin: 10}}>Key:</div>
         {switchInputs()}
-        <div style={{marginTop: 10}}>Value:</div>
+        <div style={{margin: 10}}>Value:</div>
         <DotAccessor label="Value" value={val.current} onChange={handleValueChange} defaultSourceValue={defaultValueSource}/>
 
       </div>

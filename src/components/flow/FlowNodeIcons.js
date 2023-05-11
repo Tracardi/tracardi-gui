@@ -1,13 +1,13 @@
 import {BiGitRepoForked} from "react-icons/bi";
 import React from "react";
-import {FiDatabase, FiMapPin, FiAlertTriangle, FiRss} from "react-icons/fi";
+import {FiMapPin, FiAlertTriangle, FiRss} from "react-icons/fi";
 import {
     BsPerson, BsChatDots,
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
     BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown,
     BsFolderCheck, BsClock, BsBoxArrowRight, BsGithub, BsPersonX, BsClockHistory, BsListCheck,
-    BsTag
+    BsTag, BsDatabase,BsDatabaseX, BsDatabaseCheck,BsDatabaseAdd
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -128,7 +128,10 @@ import {DiReact} from "react-icons/di";
 import {GiPathDistance} from "react-icons/gi";
 
 export const icons = {
-    "store": (size) => <FiDatabase size={size}/>,
+    "store": (size) => <BsDatabase size={size}/>,
+    "db-delete": (size) => <BsDatabaseX size={size}/>,
+    "db-check": (size) => <BsDatabaseCheck size={size}/>,
+    "db-add": (size) => <BsDatabaseAdd size={size}/>,
     "json": (size) => <VscJson size={size}/>,
     "split": (size) => <BiGitRepoForked size={size} style={{transform: "rotateX(180deg)"}}/>,
     "join": (size) => <BiGitRepoForked size={size}/>,

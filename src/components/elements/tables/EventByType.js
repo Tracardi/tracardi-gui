@@ -5,11 +5,9 @@ export function AggregationTable({data}) {
     const result = data.reduce((acc, curr, index) => {
         if (index < 5) {
             acc.push(curr);
-        } else {
-            acc[0].value += curr.value;
         }
         return acc;
-    }, [{ name: "other", value: 0 }]);
+    }, []);
 
     return <>
         <PropertyField name="Event name" content="No of events" valueAlign="flex-end"/>

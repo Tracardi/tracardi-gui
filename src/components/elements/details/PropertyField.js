@@ -26,11 +26,13 @@ const PropertyField = ({name, content, children, drawerSize = 800, underline = t
                         width: "100%"
                     }}>
                         {
-                            typeof content !== "undefined" && React.isValidElement(content)
-                                ? content
-                                : isEmptyObject(content) || content === "" || ((typeof content !== "boolean" && typeof content !== "number") && !content)
-                                    ? '<empty>'
-                                    : typeof content === "boolean" ? content.toString() : content
+                            content === "" || content === null || typeof content === "undefined" || isEmptyObject(content)
+                                ? '<empty>'
+                                : typeof content === "number"
+                                    ? content.toString()
+                                    : typeof content === "boolean"
+                                        ? content.toString()
+                                        : content
                         }
                     </div>
                     {children &&
