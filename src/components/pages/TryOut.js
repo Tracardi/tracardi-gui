@@ -24,6 +24,7 @@ import StepLabel from "@mui/material/StepLabel";
 import Paper from "@mui/material/Paper";
 import NoData from "../elements/misc/NoData";
 import EventToProfileCopy from "../elements/forms/EventToProfileCopy";
+import {EventTypeRulesAC} from "../elements/forms/inputs/EventTypeRulesAC";
 
 export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
@@ -118,6 +119,7 @@ export default function TryOut() {
     }
     //value={{value:"123", ref:true}} autocomplete="profile"
     return (<div style={{padding: 10}}>
+            <EventTypeRulesAC eventType={"page-view"}/>
             <EventToProfileCopy onChange={v => console.log("fields", v)}/>
             <RefInput label="sss" onChange={(v)=>console.log(v)} errorMessage="ssss" fullWidth/>
             <DotAccessor label="xxx"/>

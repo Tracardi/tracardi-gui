@@ -15,8 +15,8 @@ import IdLabel from "../../misc/IconLabels/IdLabel";
 import ProfileLabel from "../../misc/IconLabels/ProfileLabel";
 import EventSourceDetails from "../../details/EventSourceDetails";
 import Button from "../../forms/Button";
-import {BsGlobe, BsXCircle} from "react-icons/bs";
-import {VscJson} from "react-icons/vsc";
+import {BsGlobe} from "react-icons/bs";
+import {VscDebug, VscJson} from "react-icons/vsc";
 import {SessionDetailsById} from "../../details/SessionDetails";
 import IconLabel from "../../misc/IconLabels/IconLabel";
 import {displayLocation} from "../../../../misc/location";
@@ -141,6 +141,7 @@ export function EventRow({row, filterFields}) {
                 </div>
                 <div>
                     <Button label="Json" size="small" icon={<VscJson size={20}/>} onClick={() => handleJsonClick(row)}/>
+                    <Button label="Debug" size="small" icon={<VscDebug size={20}/>} onClick={() => handleJsonClick(row)}/>
                 </div>
             </div>
 
