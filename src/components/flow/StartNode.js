@@ -3,7 +3,7 @@ import {Handle} from 'reactflow';
 import './FlowNode.css';
 import ThresholdIcon from "./ThresholdIcon";
 import {isObject} from "../../misc/typeChecking";
-import {ExecutionSeqNumber} from "./NodeAlerts";
+import {ErrorNumber, ExecutionSeqNumber, WarningNumber} from "./NodeAlerts";
 import FlowNodeIcons from "./FlowNodeIcons";
 
 

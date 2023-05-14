@@ -249,17 +249,17 @@ export default function EventTimeLine() {
                 {dataSourceConfig.groupings}
             </div>
             <div style={{display: "flex", alignItems: "center"}}>
-                <Button label="Last hour" onClick={() => setPeriod("hour")}
+                <Button label="Hour" onClick={() => setPeriod("hour")}
                         selected={period === "hour"} variant="standard"/>
-                <Button label="Last day" onClick={() => setPeriod("day")}
+                <Button label="Day" onClick={() => setPeriod("day")}
                             selected={period === "day"} variant="standard"/>
-                <Button label="Last month" onClick={() => setPeriod("month")}
+                <Button label="Month" onClick={() => setPeriod("month")}
                         selected={period === "month"} variant="standard"/>
-                <Button label="Last year" onClick={() => setPeriod("year")}
+                <Button label="Year" onClick={() => setPeriod("year")}
                         selected={period === "year"} variant="standard"/>
             </div>
         </div>
-        <div style={{display: "flex", justifyContent: "space-between", flexWrap: "wrap", flexDirection: "row", margin: 10}}>
+        <div style={{display: "flex", justifyContent: "space-between", flexWrap: "wrap", flexDirection: "row"}}>
             <EventCounter/>
             <SessionCounter/>
             <ProfileCounter/>

@@ -322,6 +322,13 @@ const AppBox = () => {
                     </Suspense>
                 </ErrorBoundary>
             </PrivateRoute>
+            <PrivateRoute exact path={urlPrefix("/flow/collection/edit/:id/:eventId")} roles={["admin", "developer"]}>
+                <ErrorBoundary>
+                    <Suspense fallback={<CenteredCircularProgress/>}>
+                        <FlowEditor/>
+                    </Suspense>
+                </ErrorBoundary>
+            </PrivateRoute>
             {/*The same only different path*/}
             <PrivateRoute exact path={urlPrefix("/flow/segmentation/edit/:id")} roles={["admin", "developer"]}>
                 <ErrorBoundary>

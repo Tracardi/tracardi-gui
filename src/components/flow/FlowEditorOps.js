@@ -1,5 +1,6 @@
 import {request} from "../../remote_api/uql_api_endpoint";
 import {asyncRemote} from "../../remote_api/entrypoint";
+import {getFlowDebug} from "../../remote_api/endpoints/flow";
 
 export function prepareGraph(reactFlowInstance) {
     const flow = reactFlowInstance.toObject();
@@ -56,12 +57,12 @@ export function save(id, flowMetaData, reactFlowInstance, onError, onReady, prog
     })
 }
 
-export function debug(id, reactFlowInstance, onError, progress, onReady) {
+export function debug(id, eventId, reactFlowInstance, onError, progress, onReady) {
     progress(true);
+    const endpoint = getFlowDebug(eventId)
     request(
         {
-            url: "/flow/debug",
-            method: "POST",
+            ...endpoint,
             data: {
                 id: id,
                 name: "Name is not set in debug mode",

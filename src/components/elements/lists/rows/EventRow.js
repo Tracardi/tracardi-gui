@@ -22,13 +22,29 @@ import IconLabel from "../../misc/IconLabels/IconLabel";
 import {displayLocation} from "../../../../misc/location";
 import OsIcon from "../../misc/IconLabels/OsLabel";
 import DataTreeDialog from "../../dialog/DataTreeDialog";
+import {EventTypeFlowsAC} from "../../forms/inputs/EventTypeFlowsAC";
+import ModalDialog from "../../dialog/ModalDialog";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../../tui/TuiForm";
+import {useNavigate} from "react-router-dom";
+import urlPrefix from "../../../../misc/UrlPrefix";
 
 export function EventRow({row, filterFields}) {
 
     const [jsonData, setJsonData] = useState(null);
+    const [debugModalWindow, setDebugModalWindow] = useState(false);
+
+    const navigate = useNavigate();
+    const go = (url) => {
+        console.log(url)
+        return () => navigate(urlPrefix(url));
+    }
 
     const handleJsonClick = (data) => {
         setJsonData(data)
+    }
+
+    const handleDebugClick = (open) => {
+        setDebugModalWindow(open)
     }
 
     const labelWidth = 180
@@ -41,10 +57,28 @@ export function EventRow({row, filterFields}) {
         {jsonData && <DataTreeDialog open={jsonData !== null}
                                      data={jsonData}
                                      onClose={() => setJsonData(null)}/>}
+        {debugModalWindow && <ModalDialog
+            fullWidth={false}
+            open={debugModalWindow}
+            onClose={() => setDebugModalWindow(false)}>
+            <TuiForm style={{padding: 20}}>
+                <TuiFormGroup>
+                    <TuiFormGroupHeader header="Select workflow"/>
+                    <TuiFormGroupContent>
+                        <TuiFormGroupField header="Select Flow">
+                            <EventTypeFlowsAC eventType={row.type}
+                                              onSelect={(value) => console.log(`/flow/collection/edit/${value.flow.id}/${row.id}`)}/>
+                        </TuiFormGroupField>
+                    </TuiFormGroupContent>
+                </TuiFormGroup>
+            </TuiForm>
+
+        </ModalDialog>}
         <div style={{display: "flex"}}>
             <div style={{flex: "1 1 0", minWidth: 560, borderRight: "solid 1px #ccc", paddingRight: 17}}>
                 <PropertyField labelWidth={labelWidth} name="id" content={<IdLabel label={row?.id}/>}/>
-                {displayCreateTime && row?.metadata?.time?.create && <PropertyField labelWidth={labelWidth} name="Created" content={<>
+                {displayCreateTime && row?.metadata?.time?.create &&
+                <PropertyField labelWidth={labelWidth} name="Created" content={<>
                     <DateValue date={row?.metadata?.time?.create} style={{marginRight: 5}}/>
                     {row?.session?.tz && <IconLabel
                         value={row?.session?.tz}
@@ -70,7 +104,8 @@ export function EventRow({row, filterFields}) {
                                      device={row?.device?.type}
                                      resolution={row?.device?.resolution}/>}
                 />}
-                {displayChannel && row?.metadata?.channel && <PropertyField labelWidth={labelWidth} name="Channel" content={row?.metadata.channel}/>}
+                {displayChannel && row?.metadata?.channel &&
+                <PropertyField labelWidth={labelWidth} name="Channel" content={row?.metadata.channel}/>}
                 <PropertyField labelWidth={labelWidth}
                                name={window?.CONFIG?.profile?.id || "Profile id"}
                                content={<ProfileLabel label={row?.profile?.id}
@@ -81,17 +116,17 @@ export function EventRow({row, filterFields}) {
                     {row?.profile?.id && <ProfileDetailsById id={row?.profile?.id}/>}
                 </PropertyField>
                 {row?.profile?.metadata?.time?.visit?.count && <PropertyField labelWidth={labelWidth}
-                               name="Profile visits"
-                               content={row?.profile?.metadata?.time?.visit?.count}/>}
+                                                                              name="Profile visits"
+                                                                              content={row?.profile?.metadata?.time?.visit?.count}/>}
                 {displaySource && <PropertyField labelWidth={labelWidth}
-                               name="Source id"
-                               content={<IdLabel label={row?.source?.id}/>}>
+                                                 name="Source id"
+                                                 content={<IdLabel label={row?.source?.id}/>}>
                     <EventSourceDetails id={row?.source?.id}/>
                 </PropertyField>}
                 {displaySession && row?.session?.id && <PropertyField labelWidth={labelWidth}
-                                                   name="Session id"
-                                                   content={<IdLabel label={row?.session?.id}/>}
-                                                   drawerSize={1320}
+                                                                      name="Session id"
+                                                                      content={<IdLabel label={row?.session?.id}/>}
+                                                                      drawerSize={1320}
                 >
                     <SessionDetailsById id={row?.session?.id}/>
                 </PropertyField>}
@@ -118,7 +153,8 @@ export function EventRow({row, filterFields}) {
                         <PropertyField underline={false}
                                        drawerSize={1000}
                                        content={<div style={{display: "flex", gap: 5, alignItems: "center"}}>
-                                           {row?.hit?.name && <span title={row?.hit?.url} style={{cursor: "help"}}>{row?.hit?.name}</span>}
+                                           {row?.hit?.name &&
+                                           <span title={row?.hit?.url} style={{cursor: "help"}}>{row?.hit?.name}</span>}
                                            <EventTypeTag eventType={row?.name || row?.type} profile={row?.profile?.id}/>
                                            <EventStatusTag label={row?.metadata?.status}/>
                                            <EventValidation eventMetaData={row?.metadata}/>
@@ -132,16 +168,19 @@ export function EventRow({row, filterFields}) {
                     <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0}}>
                         <legend>Properties</legend>
                         {!isEmptyObject(row?.properties) ?
-                            <JsonStringify data={{properties: row?.properties}} filterFields={filterFields}/> : "No properties"}
+                            <JsonStringify data={{properties: row?.properties}}
+                                           filterFields={filterFields}/> : "No properties"}
                     </fieldset>
 
                     {!isEmptyObject(row?.traits) && <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0}}>
                         <legend>Traits</legend>
-                        <JsonStringify data={{traits:row?.traits}} filterFields={filterFields}/></fieldset>}
+                        <JsonStringify data={{traits: row?.traits}} filterFields={filterFields}/></fieldset>}
                 </div>
-                <div>
+                <div style={{display: "flex"}}>
                     <Button label="Json" size="small" icon={<VscJson size={20}/>} onClick={() => handleJsonClick(row)}/>
-                    <Button label="Debug" size="small" icon={<VscDebug size={20}/>} onClick={() => handleJsonClick(row)}/>
+                    <Button label="Debug" size="small" icon={<VscDebug size={20}/>}
+                                  onClick={() => handleDebugClick(true)}/>
+
                 </div>
             </div>
 

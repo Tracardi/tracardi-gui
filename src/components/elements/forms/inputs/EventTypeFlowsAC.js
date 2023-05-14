@@ -3,7 +3,7 @@ import React from "react";
 import {useFetch} from "../../../../remote_api/remoteState";
 import {getEventTypeRules} from "../../../../remote_api/endpoints/rule";
 
-export function EventTypeRulesAC({label, eventType}) {
+export function EventTypeFlowsAC({label, eventType, onSelect}) {
 
     const {data, isLoading, error} = useFetch(
         ["eventTypeRules"],
@@ -24,7 +24,7 @@ export function EventTypeRulesAC({label, eventType}) {
         getOptionLabel={option => option?.flow?.name || null}
         isOptionEqualToValue={(option, value) => option === null || option.flow.id === value.flow.id}
         onChange={(_, value) => {
-            console.log(value)
+            if(onSelect instanceof Function) onSelect(value)
         }}
         loading={isLoading}
         renderInput={(params) => (

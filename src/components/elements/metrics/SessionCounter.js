@@ -39,5 +39,5 @@ export default function SessionCounter() {
         return <CenteredCircularProgress />
     }
 
-    return <Counter label="Sessions/Visits" value={value} hint="Stored" width={180}/>
+    return <Counter label="Sessions/Visits" value={value} hint="Stored" width={160}/>
 }

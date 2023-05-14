@@ -210,6 +210,7 @@ const nodeTypes = {
 export function FlowEditorPane(
     {
         id,
+        eventId = null,
         flowMetaData,
         reactFlowInstance = null,
         onFlowLoad,
@@ -482,12 +483,13 @@ export function FlowEditorPane(
         setDisplayNodeContextMenu(false);
         debug(
             id,
+            eventId,
             reactFlowInstance,
             (e) => showAlert(e),
             setDebugInProgress,
             ({nodes, edges, logs}) => {
-                setNodes(nodes)
-                setEdges(edges)
+                setNodes(nodes);
+                setEdges(edges);
                 setLogs(logs);
                 setProfilingData(convertNodesToProfilingData(nodes))
                 handleDisplayDebugPane(true);
@@ -761,6 +763,7 @@ export function FlowEditorPane(
 
 FlowEditorPane.propTypes = {
     id: PropTypes.string.isRequired,
+    eventId: PropTypes.string,
     flowMetaData: PropTypes.object,
     onFlowLoad: PropTypes.func.isRequired,
     onEditorReady: PropTypes.func.isRequired,

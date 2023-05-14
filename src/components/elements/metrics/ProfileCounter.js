@@ -27,5 +27,5 @@ export default function ProfileCounter() {
         return <CenteredCircularProgress />
     }
 
-    return <Counter label="Profiles" value={count} hint="Stored" width={180}/>
+    return <Counter label="Profiles" value={count} hint="Stored" width={160}/>
 }
