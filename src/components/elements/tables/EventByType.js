@@ -10,7 +10,7 @@ export function AggregationTable({data}) {
     }, []);
 
     return <>
-        <PropertyField name="Event name" content="No of events" valueAlign="flex-end"/>
+        <PropertyField name="Event name" content="Count" valueAlign="flex-end"/>
         {result.sort((a, b) => b.value - a.value).map((item, index) => {
             return <PropertyField key={`tz-${index}`} name={item.name} content={item.value} valueAlign="flex-end"/>
         })}

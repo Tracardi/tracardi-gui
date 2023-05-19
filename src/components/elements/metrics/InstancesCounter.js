@@ -4,7 +4,7 @@ import Counter from "./Counter";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 
-export default function InstancesCounter({width=160}) {
+export default function InstancesCounter({width=200}) {
 
     const [value,setValue] = useState(null);
     const [loading, setLoading] = useState(true);

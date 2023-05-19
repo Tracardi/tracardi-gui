@@ -259,12 +259,12 @@ export default function EventTimeLine() {
                         selected={period === "year"} variant="standard"/>
             </div>
         </div>
-        <div style={{display: "flex", justifyContent: "space-between", flexWrap: "wrap", flexDirection: "row"}}>
-            <EventCounter/>
-            <SessionCounter/>
-            <ProfileCounter/>
-            <InstancesCounter/>
-            <AvgEventTime/>
+        <div style={{display: "flex", justifyContent: "space-between", flexWrap: "nowrap", flexDirection: "row"}}>
+            <EventCounter width={200}/>
+            <SessionCounter width={200}/>
+            <ProfileCounter width={200}/>
+            <InstancesCounter width={200}/>
+            {/*<AvgEventTime/>*/}
         </div>
         {progress ? <LinearProgress/> : <div style={{height: 4}}></div>}
         <div style={{ padding: "10px 80px 40px 40px"}}>

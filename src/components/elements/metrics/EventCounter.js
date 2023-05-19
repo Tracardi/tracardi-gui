@@ -6,7 +6,7 @@ import {useFetch} from "../../../remote_api/remoteState";
 import {getEventsAvg, getEventsCount} from "../../../remote_api/endpoints/event";
 import storageValue from "../../../misc/localStorageDriver";
 
-export default function EventCounter() {
+export default function EventCounter({width=200}) {
 
     const {data: eventCount, isLoading, error} = useFetch(
         ["eventCount"],
@@ -36,5 +36,5 @@ export default function EventCounter() {
         return <CenteredCircularProgress/>
     }
 
-    return <Counter label="Events" value={eventCount} subValue={eventAvg} subValueSuffix="events/s" width={160}/>
+    return <Counter label="Events" value={eventCount} subValue={eventAvg} subValueSuffix="events/s" width={width}/>
 }

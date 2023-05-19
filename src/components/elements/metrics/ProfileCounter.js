@@ -6,7 +6,7 @@ import {useFetch} from "../../../remote_api/remoteState";
 import {getProfilesCount} from "../../../remote_api/endpoints/profile";
 import storageValue from "../../../misc/localStorageDriver";
 
-export default function ProfileCounter() {
+export default function ProfileCounter({width=200}) {
 
     const {data: count, isLoading, error} = useFetch(
         ["profileCount"],
@@ -27,5 +27,5 @@ export default function ProfileCounter() {
         return <CenteredCircularProgress />
     }
 
-    return <Counter label="Profiles" value={count} hint="Stored" width={160}/>
+    return <Counter label="Profiles" value={count} hint="Stored" width={width}/>
 }
