@@ -32,7 +32,9 @@ const PropertyField = ({name, content, children, drawerSize = 800, underline = t
                                     ? content.toString()
                                     : typeof content === "boolean"
                                         ? content.toString()
-                                        : content
+                                        : Array.isArray(content)
+                                            ? content.join(", ")
+                                            : content
                         }
                     </div>
                     {children &&

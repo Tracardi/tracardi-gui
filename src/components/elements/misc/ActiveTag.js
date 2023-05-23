@@ -1,8 +1,8 @@
-import {BsCheckCircle, BsXSquare} from "react-icons/bs";
 import React from "react";
+import Tag from "./Tag";
 
-export default function ActiveTag({active, style}) {
+export default function ActiveTag({active}) {
     return active
-        ? <BsCheckCircle size={20} color="#00c853" style={style}/> :
-        <BsXSquare size={20} color="#d81b60" style={style}/>
+        ? <Tag backgroundColor="#00c853" color="white">active</Tag> :
+        <Tag backgroundColor="rgb(173, 20, 87)" color="white">inactive</Tag>
 }

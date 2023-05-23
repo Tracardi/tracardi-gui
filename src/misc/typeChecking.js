@@ -30,6 +30,14 @@ export function isNotEmptyArray(value) {
     return Array.isArray(value) && value.length > 0
 }
 
+export function isEmptyArray(arr) {
+    if (Array.isArray(arr)) {
+        return arr.length === 0;
+    } else {
+        return false;
+    }
+}
+
 export function startsWith(text, listOfTexts) {
     for(const item of listOfTexts) {
         if(text.startsWith(item)) {

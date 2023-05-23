@@ -19,6 +19,7 @@ import ProfileEvents from "./ProfileEvents";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import useTheme from "@mui/material/styles/useTheme";
 import NoData from "../misc/NoData";
+import {ProfileImage} from "./ProfileImage";
 
 export const ProfileData = ({profile}) => {
 
@@ -29,31 +30,41 @@ export const ProfileData = ({profile}) => {
     const pii = object2dot(profile?.data?.pii);
     const traits = object2dot(profile?.traits)
     const aux = object2dot(profile?.aux)
+    const media = object2dot(profile?.data?.media)
     const contact = object2dot(profile?.data?.contact);
+    const profileFullName = profileName(profile)
 
     return <Grid container spacing={2} style={{padding: 20}}>
         <Grid item xs={6}>
+            <div style={{display: "flex", gap: 30, padding: 20}}>
+                <ProfileImage profile={profile}/>
+                <div style={{width: "100%"}}>
+                    <PropertyField name="Name" content={<ProfileLabel label={profileFullName}
+                                                                         profileLess={profile === null}/>}/>
+                    <PropertyField name="Visits" content={profile?.metadata?.time?.visit?.count}/>
+                    {profile?.metadata?.time?.visit?.current &&
+                    <PropertyField name="Last visit" content={<DateValue date={profile?.metadata.time.visit.current}/>}/>}
+                </div>
+
+            </div>
             <fieldset style={{marginBottom: 20}}>
                 <legend style={{fontSize: 13}}>Profile metadata</legend>
                 <PropertyField name="Id" content={<IdLabel label={profile.id}/>}/>
                 {profile?._meta?.index && <PropertyField name="Index" content={profile?._meta?.index}/>}
-                <PropertyField name="Profile" content={<ProfileLabel label={profileName(profile)}
-                                                                     profileLess={profile === null}/>}/>
                 {profile?.metadata?.time?.insert &&
                 <PropertyField name="Created" content={<DateValue date={profile?.metadata.time.insert}/>}/>}
                 <PropertyField name="Updated" content={<DateValue date={profile?.metadata?.aux?.update}/>}/>
 
                 {profile?.metadata?.time?.visit?.last &&
                 <PropertyField name="Previous visit" content={<DateValue date={profile?.metadata.time.visit.last}/>}/>}
-                {profile?.metadata?.time?.visit?.current &&
-                <PropertyField name="Last visit" content={<DateValue date={profile?.metadata.time.visit.current}/>}/>}
+
                 {profile?.metadata?.time?.visit?.tz && <PropertyField name="Last visit time zone"
                                                                       content={<IconLabel
                                                                           value={profile?.metadata.time.visit.tz}
                                                                           icon={<BsGlobe size={20}
                                                                                          style={{marginRight: 5}}/>}
                                                                       />}/>}
-                <PropertyField name="Visits" content={profile?.metadata?.time?.visit?.count}/>
+
 
                 {profile?.consents
                 && <PropertyField name="Consents"
@@ -73,7 +84,7 @@ export const ProfileData = ({profile}) => {
             </fieldset>
 
             <div style={{borderRadius: 5, border: "solid 1px #ccc"}}>
-                <Tabs tabs={["PII", "Contacts", "Segments", "Interests", "Traits", "Aux"]}
+                <Tabs tabs={["PII", "Contacts", "Traits", "Media", "Aux"]}
                       tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
                     <TabCase id={0}>
                         <div style={{margin: 20}}>
@@ -96,22 +107,6 @@ export const ProfileData = ({profile}) => {
                     </TabCase>
                     <TabCase id={2}>
                         <div style={{margin: 20}}>
-                            {isNotEmptyArray(profile?.segments)
-                                ? <div className="flexLine" style={{gap: 5}}><TuiTags tags={profile?.segments}/></div>
-                                : <NoData header="No Segments"/>}
-                        </div>
-                    </TabCase>
-                    <TabCase id={3}>
-                        <div style={{margin: 20}}>
-                        {!isEmptyObjectOrNull(profile?.interests)
-                            ? Object.keys(profile?.interests).map(key => <PropertyField key={key}
-                                                                                          name={key}
-                                                                                          content={profile?.interests[key]}/>)
-                            : <NoData header="No Interests"/>}
-                        </div>
-                    </TabCase>
-                    <TabCase id={4}>
-                        <div style={{margin: 20}}>
                             {traits && !isEmptyObjectOrNull(traits)
                                 ? Object.keys(traits).map(key => <PropertyField key={key}
                                                                                    name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
@@ -120,7 +115,16 @@ export const ProfileData = ({profile}) => {
                                 : <NoData header="No Traits"/>}
                         </div>
                     </TabCase>
-                    <TabCase id={5}>
+                    <TabCase id={3}>
+                        <div style={{margin: 20}}>
+                            {media && !isEmptyObjectOrNull(media)
+                                ? media && Object.keys(media).map(key => <PropertyField key={key}
+                                                                                    name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
+                                                                                    content={media[key]}/>)
+                                : <NoData header="No Media"/>}
+                        </div>
+                    </TabCase>
+                    <TabCase id={4}>
                         <div style={{margin: 20}}>
                             {aux && !isEmptyObjectOrNull(aux)
                                 ? aux && Object.keys(aux).map(key => <PropertyField key={key}
@@ -132,7 +136,37 @@ export const ProfileData = ({profile}) => {
                 </Tabs>
 
             </div>
+            <div style={{borderRadius: 5, border: "solid 1px #ccc", marginTop: 20}}>
+                <Tabs tabs={["Segments", "Interests", "Preferences"]}
+                      tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
+                    <TabCase id={0}>
+                        <div style={{margin: 20}}>
+                            {isNotEmptyArray(profile?.segments)
+                                ? <div className="flexLine" style={{gap: 5}}><TuiTags tags={profile?.segments}/></div>
+                                : <NoData header="No Segments"/>}
+                        </div>
+                    </TabCase>
+                    <TabCase id={1}>
+                        <div style={{margin: 20}}>
+                            {!isEmptyObjectOrNull(profile?.interests)
+                                ? Object.keys(profile?.interests).map(key => <PropertyField key={key}
+                                                                                            name={key}
+                                                                                            content={profile?.interests[key]}/>)
+                                : <NoData header="No Interests"/>}
+                        </div>
+                    </TabCase>
+                    <TabCase id={2}>
+                        <div style={{margin: 20}}>
+                            {!isEmptyObjectOrNull(profile?.data?.preferences)
+                                ? Object.keys(profile?.data?.preferences).map(key => <PropertyField key={key}
+                                                                                                    name={key}
+                                                                                                    content={profile?.data?.preferences[key]}/>)
+                                : <NoData header="No Preferences"/>}
 
+                        </div>
+                    </TabCase>
+                </Tabs>
+            </div>
         </Grid>
         <Grid item xs={6}>
             <fieldset style={{marginBottom: 20}}>

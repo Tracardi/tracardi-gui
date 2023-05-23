@@ -2,8 +2,9 @@ import React, {useState} from "react";
 import dot from "dot-object";
 import "./JsonStringify.css";
 import ToggleIcon from "../icons/ToggleIcon";
+import {isEmptyObject, isEmptyArray} from "../../../misc/typeChecking";
 
-export default function JsonStringify({data, toggle: taggleValue=false, filterFields=[], disableToggle=false, style={}}) {
+export default function JsonStringify({data, toggle: taggleValue=false, filterFields=[], disableToggle=false, style={}, disableEmpty=false}) {
 
     const [toggle, setToggle] = useState(taggleValue);
 
@@ -35,8 +36,11 @@ export default function JsonStringify({data, toggle: taggleValue=false, filterFi
     }
 
 
-    const highlight = (data, filter) => Object.entries(dotted(data)).map(
+    const highlight = (data, filter, disableEmpty=false) => Object.entries(dotted(data)).map(
         ([label, value], index) => {
+            if(disableEmpty && (value === null || isEmptyObject(value) || isEmptyArray(value))) {
+                return "";
+            }
             if (typeof filter !== "undefined" && Array.isArray(filter)) {
                 const startsWith = filter.filter((field) => label.startsWith(field));
                 if (startsWith.length === 0) {
@@ -51,7 +55,7 @@ export default function JsonStringify({data, toggle: taggleValue=false, filterFi
 
     return <div style={{display: "flex", justifyContent: "space-between" , width: "100%", ...style}}>
         <div className="JsonStringify">
-            {highlight(data, toggle ? [] : filterFields)}
+            {highlight(data, toggle ? [] : filterFields, disableEmpty)}
         </div>
         {disableToggle === false && <div className="Toggle" onClick={() => setToggle(!toggle)}>
             <ToggleIcon toggle={toggle}/>

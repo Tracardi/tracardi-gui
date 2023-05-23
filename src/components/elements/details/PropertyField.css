@@ -8,6 +8,7 @@ DIV.PropertyRow {
     font-size: 15px;
     font-weight: 400;
     width: 100%;
+    min-height: 40px;
 }
 
 DIV.PropertyRow:hover {
@@ -29,7 +30,8 @@ DIV.PropertyRow DIV.FieldValue {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%
+    width: 100%;
+    padding: 0 10px;
 }
 
 DIV.PropertyRow DIV.FieldName SPAN {
