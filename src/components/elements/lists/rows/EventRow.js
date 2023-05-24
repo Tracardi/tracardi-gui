@@ -24,7 +24,7 @@ import OsIcon from "../../misc/IconLabels/OsLabel";
 import DataTreeDialog from "../../dialog/DataTreeDialog";
 import {EventTypeFlowsAC} from "../../forms/inputs/EventTypeFlowsAC";
 import ModalDialog from "../../dialog/ModalDialog";
-import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../../tui/TuiForm";
+import {TuiForm, TuiFormGroupField} from "../../tui/TuiForm";
 import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../../../misc/UrlPrefix";
 
@@ -34,9 +34,11 @@ export function EventRow({row, filterFields}) {
     const [debugModalWindow, setDebugModalWindow] = useState(false);
 
     const navigate = useNavigate();
-    const go = (url) => {
-        console.log(url)
-        return () => navigate(urlPrefix(url));
+
+    const handleDebugSelect = (value) => {
+        if (value) {
+            navigate(urlPrefix(`/flow/collection/edit/${value.flow.id}/${row.id}`))
+        }
     }
 
     const handleJsonClick = (data) => {
@@ -59,18 +61,19 @@ export function EventRow({row, filterFields}) {
                                      onClose={() => setJsonData(null)}/>}
         {debugModalWindow && <ModalDialog
             fullWidth={false}
+            maxWidth="xs"
             open={debugModalWindow}
             onClose={() => setDebugModalWindow(false)}>
             <TuiForm style={{padding: 20}}>
-                <TuiFormGroup>
-                    <TuiFormGroupHeader header="Select workflow"/>
-                    <TuiFormGroupContent>
-                        <TuiFormGroupField header="Select Flow">
-                            <EventTypeFlowsAC eventType={row.type}
-                                              onSelect={(value) => console.log(`/flow/collection/edit/${value.flow.id}/${row.id}`)}/>
-                        </TuiFormGroupField>
-                    </TuiFormGroupContent>
-                </TuiFormGroup>
+                <TuiFormGroupField header="Select workflow to debug"
+                                   description="Please find all workflows that are bound to this event via
+                                           routing. Select workflow that you would like to debug and click debug
+                                           button in workflow editor.">
+                    <EventTypeFlowsAC eventType={row.type}
+                                      onSelect={handleDebugSelect}
+                                      fullWidth={true}
+                    />
+                </TuiFormGroupField>
             </TuiForm>
 
         </ModalDialog>}
@@ -179,7 +182,7 @@ export function EventRow({row, filterFields}) {
                 <div style={{display: "flex"}}>
                     <Button label="Json" size="small" icon={<VscJson size={20}/>} onClick={() => handleJsonClick(row)}/>
                     <Button label="Debug" size="small" icon={<VscDebug size={20}/>}
-                                  onClick={() => handleDebugClick(true)}/>
+                            onClick={() => handleDebugClick(true)}/>
 
                 </div>
             </div>

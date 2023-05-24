@@ -51,7 +51,7 @@ FORM.TuiForm > .TuiFormGroup > SECTION.TuiFormGroupContent P {
     color: #555;
 }
 
-FORM.TuiForm > .TuiFormGroup > SECTION.TuiFormGroupContent > H3 {
+FORM.TuiForm H3 {
     font-size: 1.3em;
     margin: 15px 0 10px 0;
     font-weight: 400;

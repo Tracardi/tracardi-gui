@@ -3,7 +3,7 @@ import React from "react";
 import {useFetch} from "../../../../remote_api/remoteState";
 import {getEventTypeRules} from "../../../../remote_api/endpoints/rule";
 
-export function EventTypeFlowsAC({label, eventType, onSelect}) {
+export function EventTypeFlowsAC({label, eventType, onSelect, fullWidth=false}) {
 
     const {data, isLoading, error} = useFetch(
         ["eventTypeRules"],
@@ -18,8 +18,7 @@ export function EventTypeFlowsAC({label, eventType, onSelect}) {
     return <Autocomplete
         freeSolo={false}
         multiple={false}
-        fullWidth={false}
-        style={{width: 300}}
+        fullWidth={fullWidth}
         options={data?.result || []}
         getOptionLabel={option => option?.flow?.name || null}
         isOptionEqualToValue={(option, value) => option === null || option.flow.id === value.flow.id}

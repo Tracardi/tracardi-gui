@@ -1,17 +1,16 @@
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import JsonBrowser from "../misc/JsonBrowser";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import React from "react";
 
-const ModalDialog = ({open, onClose, children, fullWidth=true}) => {
+const ModalDialog = ({open, onClose, children, fullWidth=true, maxWidth="lg"}) => {
 
     return (
         <Dialog open={open}
                 onClose={onClose}
                 fullWidth={fullWidth}
-                maxWidth="lg"
+                maxWidth={maxWidth}
         >
             <DialogContent style={{padding:0}} dividers>
                 {children}
