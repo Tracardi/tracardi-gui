@@ -34,6 +34,10 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
     const [error, setError] = useState(null);
     const [hasAdminAccount, setHasAdminAccount] = useState(null);
 
+    const url = new URL(window.location.href);
+    const searchParams = new URLSearchParams(url.search);
+    const loginParam = searchParams.get('login') || "";
+
     const data = useRef({
         username: "",
         password: "",
@@ -129,7 +133,7 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
                     <tr>
                         <td style={{width: "50%"}}><Input
                             label="Valid e-mail"
-                            initValue=""
+                            initValue={loginParam}
                             onChange={(ev) => data.current.username = ev.target.value}/>
                         </td>
                         <td style={{width: "50%"}}><PasswordInput
