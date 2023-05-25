@@ -39,7 +39,7 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
     const loginParam = searchParams.get('login') || "";
 
     const data = useRef({
-        username: "",
+        username: loginParam,
         password: "",
         token: "tracardi",
         needs_admin: requireAdmin,
