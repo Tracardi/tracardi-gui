@@ -4,10 +4,10 @@ import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import "./SessionSlider.css";
 import {Slider} from "@mui/material";
 import NoData from "../misc/NoData";
-import SessionCardInfo from "../details/SessionCardInfo";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getProfileSession} from "../../../remote_api/endpoints/profile";
 import FetchError from "../../errors/FetchError";
+import SessionRowCardInfo from "../details/SessionRowCardInfo";
 
 export default function SessionSlider({profileId, onEventSelect}) {
 
@@ -58,7 +58,7 @@ export default function SessionSlider({profileId, onEventSelect}) {
             {!isLoading && session !== null && <>
                 <fieldset style={{padding: "10px 20px", width: "100%"}}>
                     <legend>Session details</legend>
-                    <SessionCardInfo session={session}/>
+                    <SessionRowCardInfo session={session}/>
                 </fieldset>
                 <SessionStepper
                     profileId={profileId}

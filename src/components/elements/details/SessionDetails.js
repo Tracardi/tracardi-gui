@@ -13,6 +13,7 @@ import JsonBrowser from "../misc/JsonBrowser";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getSessionById} from "../../../remote_api/endpoints/session";
 import {TuiForm, TuiFormGroup} from "../tui/TuiForm";
+import SessionDeviceCard from "./SessionDeviceCard";
 
 
 export default function SessionDetails({data: session}) {
@@ -26,8 +27,13 @@ export default function SessionDetails({data: session}) {
                     <div style={{display: "flex", width: "100%", height: "inherit", padding: 20, gap: 20}}>
                         <div style={{flex: "1 1 0", height: "inherit"}}>
                             <fieldset style={{padding: 10}}>
-                                <legend>Session details</legend>
+                                <legend>Session metadata</legend>
                                 <SessionCardInfo session={session}/>
+                            </fieldset>
+
+                            <fieldset style={{padding: 10, marginTop: 10}}>
+                                <legend>Session device</legend>
+                                <SessionDeviceCard session={session} />
                             </fieldset>
 
                             <SessionStepper profileId={session?.profile?.id}
@@ -43,7 +49,7 @@ export default function SessionDetails({data: session}) {
                 <TabCase id={1}>
                     <TuiForm style={{margin: 20}}>
                         <TuiFormGroup style={{overflow: "auto"}}>
-                            <JsonBrowser data={{event: session}}/>
+                            <JsonBrowser data={{session: session}}/>
                         </TuiFormGroup>
                     </TuiForm>
                 </TabCase>
