@@ -11,6 +11,11 @@ export default function SessionDeviceCard({session}) {
     const labelWidth = 180
 
     return <>
+        {session?.device?.geo?.city && <PropertyField labelWidth={labelWidth} name="Location" content={
+            <IconLabel
+                value={displayLocation(session?.device?.geo)}
+                icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
+            />}/>}
 
         {session?.app?.name && <PropertyField
             labelWidth={labelWidth}
@@ -23,12 +28,6 @@ export default function SessionDeviceCard({session}) {
             name="OS"
             content={<PlatformIcon os={session.os.name} platform={session?.context?.browser?.local?.device?.platform}/>}
         />}
-
-        {session?.device?.geo?.city && <PropertyField labelWidth={labelWidth} name="Location" content={
-            <IconLabel
-                value={displayLocation(session?.device?.geo)}
-                icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
-            />}/>}
 
         {session?.device?.name && <PropertyField labelWidth={labelWidth} name="Device name" content={session?.device?.name}/>}
         {session?.device?.type && <PropertyField labelWidth={labelWidth} name="Device type" content={session?.device?.type}/>}
