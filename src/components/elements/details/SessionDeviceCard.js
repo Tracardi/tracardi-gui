@@ -11,7 +11,7 @@ export default function SessionDeviceCard({session}) {
     const labelWidth = 180
 
     return <>
-        {session?.device?.geo?.city && <PropertyField labelWidth={labelWidth} name="Location" content={
+        {session?.device?.geo?.country && <PropertyField labelWidth={labelWidth} name="Location" content={
             <IconLabel
                 value={displayLocation(session?.device?.geo)}
                 icon={<BsGlobe size={20} style={{marginRight: 5}}/>}

@@ -11,6 +11,7 @@ import DataTreeDialog from "../dialog/DataTreeDialog";
 import Button from "../forms/Button";
 import {VscJson} from "react-icons/vsc";
 import ProfileDetails from "./ProfileDetails";
+import {displayLocation} from "../../../misc/location";
 
 export default function ProfileCardInfo({profile}) {
 
@@ -41,7 +42,7 @@ export default function ProfileCardInfo({profile}) {
                 <Button label="Json" size="small" icon={<VscJson size={20}/>} onClick={() => handleJsonClick(profile)}/>
             </div>
 
-            <div style={{width:"100%"}}>
+            <div style={{width: "100%"}}>
                 {window?.CONFIG?.profile?.display?.row?.id === "name" && <div style={{marginBottom: 20}}><PropertyField
                     content={<span style={{fontSize: "150%", fontWeight: 500, padding: 5}}>{profileFullName}</span>}
                     drawerSize={1320} underline={false}>
@@ -65,6 +66,12 @@ export default function ProfileCardInfo({profile}) {
                         icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
                     />}
                 </>}/>
+                {profile?.data?.devices?.last?.geo?.country && <PropertyField labelWidth={labelWidth}
+                                                                           name="Last Location" content={
+                    <IconLabel
+                        value={displayLocation(profile?.data?.devices?.last?.geo)}
+                        icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
+                    />}/>}
                 <PropertyField labelWidth={labelWidth} name="All visits"
                                content={profile?.metadata?.time?.visit.count}/>
                 {profile?.pii?.telephone && <PropertyField labelWidth={labelWidth} name="Telephone"

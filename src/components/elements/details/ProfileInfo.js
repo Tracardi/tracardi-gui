@@ -20,6 +20,7 @@ import Tabs, {TabCase} from "../tabs/Tabs";
 import useTheme from "@mui/material/styles/useTheme";
 import NoData from "../misc/NoData";
 import {ProfileImage} from "./ProfileImage";
+import {displayLocation} from "../../../misc/location";
 
 export const ProfileData = ({profile}) => {
 
@@ -31,6 +32,7 @@ export const ProfileData = ({profile}) => {
     const traits = object2dot(profile?.traits)
     const aux = object2dot(profile?.aux)
     const media = object2dot(profile?.data?.media)
+    const geo = object2dot(profile?.data?.devices?.last?.geo)
     const contact = object2dot(profile?.data?.contact);
     const profileFullName = profileName(profile)
 
@@ -54,11 +56,15 @@ export const ProfileData = ({profile}) => {
                 {profile?.metadata?.time?.insert &&
                 <PropertyField name="Created" content={<DateValue date={profile?.metadata.time.insert}/>}/>}
                 <PropertyField name="Updated" content={<DateValue date={profile?.metadata?.aux?.update}/>}/>
-
+                {profile?.data?.devices?.last?.geo?.city && <PropertyField name="Last Visit Location" content={
+                    <IconLabel
+                        value={displayLocation(profile?.data?.devices?.last?.geo)}
+                        icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
+                    />}/>}
                 {profile?.metadata?.time?.visit?.last &&
-                <PropertyField name="Previous visit" content={<DateValue date={profile?.metadata.time.visit.last}/>}/>}
+                <PropertyField name="Previous Visit" content={<DateValue date={profile?.metadata.time.visit.last}/>}/>}
 
-                {profile?.metadata?.time?.visit?.tz && <PropertyField name="Last visit time zone"
+                {profile?.metadata?.time?.visit?.tz && <PropertyField name="Last Visit Time Zone"
                                                                       content={<IconLabel
                                                                           value={profile?.metadata.time.visit.tz}
                                                                           icon={<BsGlobe size={20}
@@ -84,7 +90,7 @@ export const ProfileData = ({profile}) => {
             </fieldset>
 
             <div style={{borderRadius: 5, border: "solid 1px #ccc"}}>
-                <Tabs tabs={["PII", "Contacts", "Traits", "Media", "Aux"]}
+                <Tabs tabs={["PII", "Contacts", "Traits", "Last GEO", "Media", "Aux"]}
                       tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
                     <TabCase id={0}>
                         <div style={{margin: 20}}>
@@ -117,6 +123,15 @@ export const ProfileData = ({profile}) => {
                     </TabCase>
                     <TabCase id={3}>
                         <div style={{margin: 20}}>
+                            {geo && !isEmptyObjectOrNull(geo)
+                                ? geo && Object.keys(geo).map(key => <PropertyField key={key}
+                                                                                        name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
+                                                                                        content={geo[key]}/>)
+                                : <NoData header="No Geo Location"/>}
+                        </div>
+                    </TabCase>
+                    <TabCase id={4}>
+                        <div style={{margin: 20}}>
                             {media && !isEmptyObjectOrNull(media)
                                 ? media && Object.keys(media).map(key => <PropertyField key={key}
                                                                                     name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
@@ -124,7 +139,7 @@ export const ProfileData = ({profile}) => {
                                 : <NoData header="No Media"/>}
                         </div>
                     </TabCase>
-                    <TabCase id={4}>
+                    <TabCase id={5}>
                         <div style={{margin: 20}}>
                             {aux && !isEmptyObjectOrNull(aux)
                                 ? aux && Object.keys(aux).map(key => <PropertyField key={key}

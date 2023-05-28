@@ -7,7 +7,9 @@ import NoData from "../misc/NoData";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getProfileSession} from "../../../remote_api/endpoints/profile";
 import FetchError from "../../errors/FetchError";
-import SessionRowCardInfo from "../details/SessionRowCardInfo";
+import SessionDeviceCard from "../details/SessionDeviceCard";
+import SessionCardInfo from "../details/SessionCardInfo";
+import Tabs, {TabCase} from "../tabs/Tabs";
 
 export default function SessionSlider({profileId, onEventSelect}) {
 
@@ -22,7 +24,8 @@ export default function SessionSlider({profileId, onEventSelect}) {
     if (error) {
         return <FetchError error={error} style={{marginTop: 20}}/>
     }
-
+    console.log(session
+    )
     return (
         <div className="SessionSlider">
             <div style={{
@@ -56,10 +59,21 @@ export default function SessionSlider({profileId, onEventSelect}) {
             </div>}
 
             {!isLoading && session !== null && <>
-                <fieldset style={{padding: "10px 20px", width: "100%"}}>
-                    <legend>Session details</legend>
-                    <SessionRowCardInfo session={session}/>
-                </fieldset>
+                <div style={{width: "100%", borderRadius: 10, border: "solid 1px #ccc"}}>
+                    <Tabs tabs={["Metadata", "Location"]}>
+                        <TabCase id={0}>
+                            <div style={{padding: 20}}>
+                                <SessionCardInfo session={session}/>
+                            </div>
+
+                        </TabCase>
+                        <TabCase id={1}>
+                            <div style={{padding: 20}}>
+                                <SessionDeviceCard session={session}/>
+                            </div>
+                        </TabCase>
+                    </Tabs>
+                </div>
                 <SessionStepper
                     profileId={profileId}
                     session={session}
