@@ -111,13 +111,13 @@ export default function Migrations() {
                 <TuiFormGroup>
                     <TuiFormGroupHeader header={`Configure migration from version ${selectedMigration}`}/>
                     <TuiFormGroupContent>
-                        <TuiFormGroupField header="Custom version prefix"
-                                           description="If your previous Tracardi version had custom prefix, please
+                        <TuiFormGroupField header="Tenant name"
+                                           description="If your previous Tracardi version has tenant name, please
                                            provide it here and click CONFIRM button.
-                                           For standard automatic prefix leave it blank.">
+                                           For standard none tenant version leave it blank.">
                             <div style={{display: "flex", flexDirection: "row"}}>
                                 <TextField
-                                    placeholder="Custom prefix"
+                                    placeholder="Tenant name"
                                     size="small"
                                     onChange={e => setCustomPrefix(e.target.value)}
                                     value={customPrefix}
@@ -153,7 +153,7 @@ export default function Migrations() {
                         )
                         }
                         {Array.isArray(schemas) && schemas.length === 0 &&
-                        <NoData header="No previous version found.">Type custom version prefix is you are certain that there is previous version installed.</NoData>}
+                        <NoData header="No previous version found.">Type tenant if you want to find version for certain tenant.</NoData>}
                         {formError && <ErrorsBox errorList={formError}/>}
                         {buttonError && <ErrorsBox errorList={buttonError}/>}
                         {formLoading && !schemas && <div style={{height: "auto"}}><CenteredCircularProgress/></div>}
