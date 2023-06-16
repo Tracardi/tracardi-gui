@@ -29,9 +29,6 @@ const AppBox = React.lazy(() => import('./AppBox'))
 
 const App = ({alert, resource, close}) => {
 
-    console.log(process.env.MULTI_TENANT)
-    console.log(window._env_)
-
     const dispatch = useDispatch()
     const queryClient = new QueryClient()
 
