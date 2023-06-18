@@ -143,7 +143,7 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
                         </td>
                     </tr>
                 </>}
-                <tr>
+                {false && <tr>
                     <td colSpan={2}>
                         <h2 style={{fontWeight: 300, display: "flex", justifyContent: "space-between", marginBottom: 0}}>
                             Update database schema
@@ -155,7 +155,7 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
                         <div style={{color: "gray"}}>If this is your first installation, the database schema does not have to be updated.</div>
 
                     </td>
-                </tr>
+                </tr>}
                 </tbody>
             </table>
 
