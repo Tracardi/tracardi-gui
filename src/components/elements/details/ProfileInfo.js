@@ -56,6 +56,7 @@ export const ProfileData = ({profile}) => {
                 {profile?.metadata?.time?.insert &&
                 <PropertyField name="Created" content={<DateValue date={profile?.metadata?.time?.insert}/>}/>}
                 <PropertyField name="Updated" content={<DateValue date={profile?.metadata?.time?.update}/>}/>
+                {profile?.metadata?.time?.segmentation && <PropertyField name="Segmented" content={<DateValue date={profile?.metadata?.time?.segmentation}/>}/>}
                 {profile?.data?.devices?.last?.geo?.city && <PropertyField name="Last Visit Location" content={
                     <IconLabel
                         value={displayLocation(profile?.data?.devices?.last?.geo)}

@@ -31,10 +31,13 @@ function CopyToProfileExtension({onClose}) {
         mappings: []
     })
 
-    const {isLoading, data: count} = useFetch(
+    const {isLoading, data: count, isError, error: fetchError} = useFetch(
         ["countAffectedRecords"],
         getEventsTotalRecords(query),
-        data=>data
+        data=>data,
+        {
+            retry:false
+        }
     )
 
     const handleRun = async () => {
@@ -73,7 +76,7 @@ function CopyToProfileExtension({onClose}) {
                 <TuiFormGroupContent>
                     <PropertyField name="Environment" content={localContext ? <Tag backgroundColor="rgb(173, 20, 87)" color="white">production</Tag> : "Test"}/>
                     <PropertyField name="Used filter" content={query}/>
-                    <PropertyField name="Total records" content={isLoading ? "counting..." : count } underline={false}/>
+                    <PropertyField name="Total records" content={isLoading ? "counting..." : isError ? fetchError?.data?.detail : count } underline={false}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <TuiFormGroup>
@@ -106,10 +109,13 @@ function IndexEventPropertiesExtension({onClose}) {
         mappings: []
     })
 
-    const {isLoading, data: count} = useFetch(
+    const {isLoading, data: count, isError, error: fetchError} = useFetch(
         ["countAffectedRecords"],
         getEventsTotalRecords(query),
-        data=>data
+        data=>data,
+        {
+            retry:false
+        }
     )
 
     const handleRun = async () => {
@@ -148,7 +154,7 @@ function IndexEventPropertiesExtension({onClose}) {
                 <TuiFormGroupContent>
                     <PropertyField name="Environment" content={localContext ? <Tag backgroundColor="rgb(173, 20, 87)" color="white">production</Tag> : "Test"}/>
                     <PropertyField name="Used filter" content={query}/>
-                    <PropertyField name="Total records" content={isLoading ? "counting..." : count } underline={false}/>
+                    <PropertyField name="Total records" content={isLoading ? "counting..." : isError ? fetchError?.data?.detail : count } underline={false}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <TuiFormGroup>
