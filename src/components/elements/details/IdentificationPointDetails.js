@@ -10,8 +10,8 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "..
 import {asyncRemote} from "../../../remote_api/entrypoint";
 import IdentificationPointForm from "../forms/IdentifiactionPointForm";
 import EventTypeMetadata from "./EventTypeMetadata";
-import EventToProfileFieldMapping from "../forms/EventToProfileFieldMapping";
 import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
+import AssignValueToKey from "./AssignValueToKey";
 
 export function IdentificationPointCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
@@ -59,7 +59,13 @@ export function IdentificationPointCard({data, onDeleteComplete, onEditComplete,
                 the data in profile. Eg. profile trait 'email' is equal to e-mail delivered in event property
                 'mail'. If any of the defined pairs match, the profile will be attached to the event."/>
                 <TuiFormGroupContent>
-                    <EventToProfileFieldMapping value={data?.fields}/>
+                    { data?.fields &&
+                        data?.fields.map((item, index) => {
+                            return <AssignValueToKey key={index}
+                                                     value={`profile@${item.profile_trait?.value}`}
+                                                     label={`event@properties.${item.event_property?.value}`}/>
+                        })
+                    }
                 </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>
