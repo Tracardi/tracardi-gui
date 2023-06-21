@@ -74,9 +74,6 @@ export default function ProfileCardInfo({profile}) {
                     />}/>}
                 <PropertyField labelWidth={labelWidth} name="All visits"
                                content={profile?.metadata?.time?.visit.count}/>
-                {profile?.pii?.telephone && <PropertyField labelWidth={labelWidth} name="Telephone"
-                                                           content={<IconLabel value={profile.pii.telephone}
-                                                                               icon={<BsPhone size={20}/>}/>}/>}
             </div>
 
         </div>

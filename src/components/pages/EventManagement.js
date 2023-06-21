@@ -78,7 +78,7 @@ export default function EventManagement() {
 
     return <CardBrowser
         defaultLayout="rows"
-        label="Event type Prerequisites and Meta-data"
+        label="Event indexing and event metadata"
         description="List of event types."
         urlFunc={urlFunc}
         cardFunc={cards}
