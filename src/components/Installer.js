@@ -32,6 +32,8 @@ const Installer = ({children}) => {
     if (data?.schema_ok !== true) {
         return <InstallerForm
             requireAdmin={!data?.admin_ok}
+            displayForm={data?.form_ok}
+            warning={data?.warning}
             onInstalled={() => setInstalled(Math.random())}
             errorMessage={error}
         />
