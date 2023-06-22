@@ -20,7 +20,7 @@ export default function EventManagement() {
     const confirm = useConfirm();
 
     const handleDelete = async (id) => {
-        confirm({title: "Do you want to delete this event indexing?", description: "This action can not be undone."})
+        confirm({title: "Do you want to delete this event mapping?", description: "This action can not be undone."})
             .then(async () => {
                     try {
                         await asyncRemote({
@@ -78,16 +78,16 @@ export default function EventManagement() {
 
     return <CardBrowser
         defaultLayout="rows"
-        label="Event indexing and event metadata"
+        label="Event mapping and event metadata"
         description="List of event types."
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}
-        buttonLabel="New event type"
+        buttonLabel="New mapping"
         buttonIcon={<BsFolderCheck size={20}/>}
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
-        drawerAddTitle="New event type"
+        drawerAddTitle="New mapping"
         drawerAddWidth={600}
         addFunc={addFunc}
     />

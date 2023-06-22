@@ -36,8 +36,7 @@ FORM.TuiForm > .TuiFormGroup > .TuiFormGroupHeader > H2 {
 
 FORM.TuiForm > .TuiFormGroup > SECTION.TuiFormGroupContent {
     padding: 25px;
-    border-bottom-left-radius: inherit;
-    border-bottom-right-radius: inherit;
+    border-radius: inherit;
 }
 
 FORM.TuiForm > .TuiFormGroup > SECTION.TuiFormGroupContent > H2 {

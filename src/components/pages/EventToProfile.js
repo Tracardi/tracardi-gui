@@ -81,16 +81,16 @@ export default function EventToProfile() {
 
     return <CardBrowser
         defaultLayout="rows"
-        label="Copy event properties to profile"
+        label="Map event properties to profile"
         description="List of schemas that define how you transfer information from events to your profile."
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}
-        buttonLabel="New schema"
+        buttonLabel="New mapping"
         buttonIcon={<VscCopy size={20}/>}
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
-        drawerAddTitle="New schema"
+        drawerAddTitle="New mapping"
         drawerAddWidth={950}
         addFunc={addFunc}
     />

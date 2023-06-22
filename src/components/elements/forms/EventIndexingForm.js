@@ -107,7 +107,7 @@ export default function EventIndexingForm({
         <TuiFormGroup>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Event type"
-                                   description="Type or select the type of event you want to manage.">
+                                   description="Type or select the type of event you want to map.">
                     <TuiSelectEventType initValue={eventType} onSetValue={setEventType} onlyValueWithOptions={false}/>
                 </TuiFormGroupField>
 
@@ -148,21 +148,22 @@ export default function EventIndexingForm({
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Event traits indexing"/>
+            <TuiFormGroupHeader header="Event mapping"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Event data indexing"
-                                   description="Select which properties should be indexed as event traits.
+                <TuiFormGroupField header="Event data mapping"
+                                   description="Event mapping lets you copy data between fields in event.
+                                   This way you can index selected properties as event traits.
                                    Type key, value pair with the key as property name and value as trait name.
-                                   If event was reshaped than index from new reshaped properties.">
+                                   If event was reshaped than use new reshaped properties.">
                     <Switch
                         checked={indexEnabled}
                         onChange={(ev) => setIndexEnabled(ev.target.checked)}
                     />
                     <span>
-                        Enable traits indexing
+                        Enable mapping
                     </span>
                     <fieldset disabled={!indexEnabled}>
-                        <legend>Indexing schema</legend>
+                        <legend>Schema mapping</legend>
                         <JsonEditor value={indexSchema} onChange={setIndexSchema}/>
                     </fieldset>
 

@@ -215,10 +215,10 @@ const AppBox = () => {
                                 </>),
                             new PrivateTab(["admin", "developer"],
                                 <EventManagement/>, "/inbound/event/management", <><BsStar size={20}
-                                                                                           style={{marginRight: 5}}/>{"Event indexing"}</>
+                                                                                           style={{marginRight: 5}}/>{"Event mapping"}</>
                             ),
                             new PrivateTab(["admin", "developer"],
-                                <EventToProfile/>, "/inbound/event-to-profile", "Event to profile coping"
+                                <EventToProfile/>, "/inbound/event-to-profile", "Event to profile mapping"
                             ),
 
                         ]}
