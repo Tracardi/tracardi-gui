@@ -226,7 +226,7 @@ const RoutingFlow = ({event}) => {
             <Stepper orientation="vertical">
                 <ProcessStep step={"1"}
                              label="Data Validation"
-                             optional="How was the data validated"
+                             optional="How was the data validated?"
                              endpoint={{url: `/event-validators/by_type/${event.type}?only_enabled=false`}}
                              passData={true}
                              nodata="No validation"
@@ -235,7 +235,7 @@ const RoutingFlow = ({event}) => {
                 />
                 <ProcessStep step={"2"}
                              label="Event Reshaping"
-                             optional="How was the data changed"
+                             optional="How was the event data transformed?"
                              endpoint={{url: `/event-reshape-schemas/by_type/${event.type}?only_enabled=false`}}
                              passData={true}
                              nodata="No reshaping"
@@ -243,10 +243,10 @@ const RoutingFlow = ({event}) => {
                              add={EventReshapingForm}
                 />
                 <ProcessStep step={"3"}
-                             label="Event Indexing"
-                             optional="How was the data indexed"
+                             label="Event Mapping"
+                             optional="How was the data indexed?"
                              endpoint={{url: `/event-type/management/${event.type}`}}
-                             nodata="No indexing"
+                             nodata="No Mapping"
                              passData={true}
                              singleValue={true}
                              details={EventIndexingCard}
@@ -260,7 +260,7 @@ const RoutingFlow = ({event}) => {
                 />
                 <ProcessStep step={"4"}
                              label="Identification check point"
-                             optional="Is this event used to identify a customer"
+                             optional="Is this event used to identify a customer?"
                              endpoint={{url: `/identification/points/by_type/${event.type}`}}
                              nodata="This event is not an identification point"
                              details={IdentificationPointCard}
@@ -268,8 +268,8 @@ const RoutingFlow = ({event}) => {
                              add={IdentificationPointForm}  // requires onSubmit
                 />
                 <ProcessStep step={"5"}
-                             label="Event to profile"
-                             optional="How the date is transferred form event to profile"
+                             label="Event to profile mapping"
+                             optional="How the data is transferred from event to profile?"
                              endpoint={{url: `/event-to-profiles/type/${event.type}`}}
                              nodata="No data is copied to profile"
                              details={EventToProfileCard}
@@ -278,7 +278,7 @@ const RoutingFlow = ({event}) => {
                 />
                 <ProcessStep step={"6"}
                              label="Workflow"
-                             optional="How the event was routed to the workflow"
+                             optional="How the event was routed to the workflow to be processed?"
                              endpoint={{url: `/rules/by_event_type/${event.type}`}}
                              nodata="This event is not routed any to workflow"
                              passData={true}

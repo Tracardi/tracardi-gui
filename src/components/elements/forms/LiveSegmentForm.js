@@ -8,6 +8,44 @@ import PropTypes from 'prop-types';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import TuiSelectFlow from "../tui/TuiSelectFlow";
 import ErrorsBox from "../../errors/ErrorsBox";
+import MenuItem from "@mui/material/MenuItem";
+import AlertBox from "../../errors/AlertBox";
+import NoData from "../misc/NoData";
+
+
+function LiveWorkflowSegmentation({init, onChange}) {
+
+    const [workflow, setWorkflow] = useState(init.workflow);
+    const [workflowErrorMessage, setWorkflowErrorMessage] = useState(null);
+
+    const handleWorkflowChange = (value) => {
+        setWorkflow(value);
+        onChange({
+            type: 'workflow',
+            workflow: value
+        })
+    }
+
+    return <TuiForm style={{margin: 20}}>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Live Segmentation Workflow"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Segmentation workflow" description="Select segmentation workflow.
+                Segmentation workflows define the logic of segmentation.">
+                    <TuiSelectFlow value={workflow}
+                                   onSetValue={handleWorkflowChange}
+                                   type="segmentation"
+                                   errorMessage={workflowErrorMessage}
+                    />
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+
+    </TuiForm>
+
+
+}
+
 
 export default function LiveSegmentForm({onSubmit, init}) {
 
@@ -17,6 +55,11 @@ export default function LiveSegmentForm({onSubmit, init}) {
             name: "",
             description: "",
             enabled: false,
+            type: "workflow",
+            condition: null,
+            operation: null,
+            segment: null,
+            code: null,
             workflow: {
                 id: "",
                 name: ""
@@ -24,15 +67,15 @@ export default function LiveSegmentForm({onSubmit, init}) {
         }
     }
 
-    const [name, setName] = useState(init.name);
-    const [description, setDescription] = useState(init.description);
-    const [enabled, setEnabled] = useState(init.enabled);
+    const [segmentationType, setSegmentationType] = useState(init.type)
+
+    const [data, setData] = useState(init);
     const [processing, setProcessing] = useState(false);
-    const [workflow, setWorkflow] = useState(init.workflow);
 
     const [nameErrorMessage, setNameErrorMessage] = useState(null);
-    const [workflowErrorMessage, setWorkflowErrorMessage] = useState(null);
     const [error, setError] = useState(null);
+    const [alert, setAlert] = useState(null);
+    const [buttonError, setButtonError] = useState(false);
 
     const mounted = React.useRef(false);
 
@@ -43,55 +86,67 @@ export default function LiveSegmentForm({onSubmit, init}) {
 
     const handleSubmit = async () => {
 
-        if (!name || name.length === 0 || !workflow?.id || workflow?.id === "") {
-            if (!name || name.length === 0) {
-                setNameErrorMessage("Segment name can not be empty");
-            } else {
-                setNameErrorMessage(null);
-            }
+        if (!data.name || data.name.length === 0) {
+            setNameErrorMessage("Segmentation name can not be empty");
+            setButtonError(true)
+            return
+        } else {
+            setNameErrorMessage(null);
+            setButtonError(false);
+        }
 
-            if (!workflow?.id || workflow?.id === "") {
-                setWorkflowErrorMessage("Please select workflow. It can not be empty");
+        if(data.type === 'workflow') {
+            if (!data.workflow.id || data.workflow.name.length === 0) {
+                setAlert("Workflow name can not be empty. Please select workflow name.");
+                setButtonError(true)
+                return
             } else {
-                setWorkflowErrorMessage(null);
+                setAlert(null);
+                setButtonError(false);
             }
-
-            return;
         }
 
         const payload = {
+            ...data,
             id: (!init?.id) ? uuid4() : init.id,
-            name: name,
-            description: description,
-            workflow:workflow,
-            enabled: enabled,
+            type: segmentationType
         }
 
-            try {
-                setProcessing(true);
-                setError(null);
-                const response = await asyncRemote(
-                    {
-                        url: '/segment/live',
-                        method: 'post',
-                        data: payload
-                    }
-                )
-                if (response) {
-                    if (onSubmit) {
-                        onSubmit(payload)
-                    }
+        console.log(payload)
+        try {
+            setProcessing(true);
+            setError(null);
+            const response = await asyncRemote(
+                {
+                    url: '/segment/live',
+                    method: 'post',
+                    data: payload
                 }
-            } catch (e) {
-                if (e) {
-                    if (mounted.current) setError(getError(e));
+            )
+            if (response) {
+                if (onSubmit) {
+                    onSubmit(payload)
                 }
-            } finally {
-                if (mounted.current) setProcessing(false);
             }
+        } catch (e) {
+            if (e) {
+                if (mounted.current) setError(getError(e));
+            }
+        } finally {
+            if (mounted.current) setProcessing(false);
+        }
     }
 
-    return <TuiForm style={{margin: 20}}>
+    function handleSegmentationTypeChange(e) {
+        setSegmentationType(e.target.value)
+    }
+
+    const handleChange = (values) => {
+        setData({...data, ...values})
+    }
+
+    return <>
+        <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Describe live segment"/>
             <TuiFormGroupContent>
@@ -100,9 +155,9 @@ export default function LiveSegmentForm({onSubmit, init}) {
                         label={"Live segment name"}
                         error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null)}
                         helperText={nameErrorMessage}
-                        value={name}
+                        value={data.name}
                         onChange={(ev) => {
-                            setName(ev.target.value)
+                            setData({...data, name: ev.target.value})
                         }}
                         size="small"
                         variant="outlined"
@@ -113,11 +168,11 @@ export default function LiveSegmentForm({onSubmit, init}) {
                                    description="Description will help you to understand when the live segmentation is applied.">
                     <TextField
                         label={"Live segment description"}
-                        value={description}
+                        value={data.description}
                         multiline
                         rows={3}
                         onChange={(ev) => {
-                            setDescription(ev.target.value)
+                            setData({...data, description: ev.target.value})
                         }}
                         variant="outlined"
                         fullWidth
@@ -126,21 +181,29 @@ export default function LiveSegmentForm({onSubmit, init}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Live Segmentation Logic"/>
+            <TuiFormGroupHeader header="Live Segmentation Type"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Segmentation workflow" description="Select segmentation workflow.
-                Segmentation workflows define the logic of segmentation.">
-                    <TuiSelectFlow value={workflow}
-                                   onSetValue={setWorkflow}
-                                   errorMessage={workflowErrorMessage}
-                                   type="segmentation"
-                    />
+                <TuiFormGroupField header="Segmentation type"
+                                   description="Select segmentation type that you would like to perform.">
+                    <TextField
+                        style={{width: 300}}
+                        select
+                        size="small"
+                        variant="outlined"
+                        label='Type'
+                        value={segmentationType}
+                        onChange={handleSegmentationTypeChange}
+                    >
+                        <MenuItem value="workflow">Segmentation by Workflow</MenuItem>
+                        <MenuItem value="condition">Segmentation by Condition</MenuItem>
+                        <MenuItem value="code">Segmentation by Code</MenuItem>
+                    </TextField>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Activation" description="Set if this segment is active. ">
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Switch
-                            checked={enabled}
-                            onChange={() => setEnabled(!enabled)}
+                            checked={data.enabled}
+                            onChange={() => setData({...data, enabled: !data.enabled})}
                             name="enabledSegment"
                         />
                         <span>Enable/Disable segment</span>
@@ -149,9 +212,20 @@ export default function LiveSegmentForm({onSubmit, init}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
 
-        {error && <ErrorsBox errorList={error}/>}
-        <Button label="Save" onClick={handleSubmit} progress={processing} style={{justifyContent: "center"}}/>
     </TuiForm>
+        {segmentationType === 'workflow' && <LiveWorkflowSegmentation init={init} onChange={handleChange}/>}
+        {segmentationType === 'condition' && <NoData header="Not implemented"/>}
+        {segmentationType === 'code' && <NoData header="Not implemented"/>}
+        {error && <ErrorsBox errorList={error}/>}
+        {alert && <AlertBox>{alert}</AlertBox>}
+        <div className="Box10">
+            <Button label="Save" onClick={handleSubmit}
+                    progress={processing}
+                    error={buttonError}
+                    style={{justifyContent: "center"}}/>
+        </div>
+
+    </>
 }
 
 LiveSegmentForm.propTypes = {onSubmit: PropTypes.func, init: PropTypes.object}

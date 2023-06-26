@@ -61,11 +61,12 @@ export default function LiveSegments() {
                     {plugs.map((row, subIndex) => {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
+                                           tags={[row.type]}
                                            status={row.enabled}
                                            data={{...row, icon: "segment"}}
                                            onClick={() => onClick(row?.id)}
                                            onDelete={handleDelete}
-                        />
+                        >{row.description}</BrowserRow>
                     })}
                 </div>
             </div>

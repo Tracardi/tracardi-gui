@@ -12,7 +12,7 @@ export default function TuiSelectFlow({value, disabled=false, errorMessage=null,
     return <AutoComplete
         onlyValueWithOptions={true}
         disabled={disabled}
-        placeholder="Flow name"
+        placeholder="Workflow name"
         endpoint={{url:type ? "/flows/entity?type="+type : "/flows/entity"}}
         error={errorMessage}
         initValue={value}
