@@ -290,7 +290,7 @@ const AppBox = () => {
                             new PrivateTab(["admin", "developer", "marketer"],
                                 <LiveSegments/>, "/processing/live/segments", <>
                                     <BsStar size={20}
-                                            style={{marginRight: 5}}/>{"Live segmentation"}</>),
+                                            style={{marginRight: 5}}/>{"Segmentation Jobs"}</>),
                             new PrivateTab(["admin", "developer", "marketer"],
                                 <Segments/>, "/processing/segments", "Post event segmentation"),
                         ]}

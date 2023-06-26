@@ -11,12 +11,56 @@ import ErrorsBox from "../../errors/ErrorsBox";
 import MenuItem from "@mui/material/MenuItem";
 import AlertBox from "../../errors/AlertBox";
 import NoData from "../misc/NoData";
+import KqlAutoComplete from "./KqlAutoComplete";
 
 
-function LiveWorkflowSegmentation({init, onChange}) {
+function ConditionSegmentationJob({init, onChange}) {
+
+    const [data, setData] = useState({ segment: init.segment, condition: init.condition});
+
+    const handleChange = (key, value) => {
+        const newValue = {
+            ...data,
+            [key]: value
+        }
+        setData(newValue)
+        if(onChange instanceof  Function) {
+            onChange(newValue)
+        }
+    }
+
+    return <TuiForm style={{margin: 20}}>
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Conditional Segmentation Job"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Segment"
+                                   description="Please enter the name of the segment where the profile should be added when the condition is met.">
+                    <TextField
+                        label="Segment name"
+                        value={data.segment}
+                        onChange={(ev) => {
+                            handleChange("segment", ev.target.value)
+                        }}
+                        size="small"
+                        variant="outlined"
+                        fullWidth
+                    />
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Condition"
+                                   description="What condition needs to be met in order to add a profile to the segment?">
+                    <KqlAutoComplete index="profile"
+                                     value={data.condition}
+                                     onChange={(value) => handleChange("condition", value)}/>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+
+    </TuiForm>
+}
+
+function WorkflowSegmentationJob({init, onChange}) {
 
     const [workflow, setWorkflow] = useState(init.workflow);
-    const [workflowErrorMessage, setWorkflowErrorMessage] = useState(null);
 
     const handleWorkflowChange = (value) => {
         setWorkflow(value);
@@ -28,22 +72,19 @@ function LiveWorkflowSegmentation({init, onChange}) {
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Live Segmentation Workflow"/>
+            <TuiFormGroupHeader header="Segmentation Workflow Job"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Segmentation workflow" description="Select segmentation workflow.
                 Segmentation workflows define the logic of segmentation.">
                     <TuiSelectFlow value={workflow}
                                    onSetValue={handleWorkflowChange}
                                    type="segmentation"
-                                   errorMessage={workflowErrorMessage}
                     />
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
 
     </TuiForm>
-
-
 }
 
 
@@ -66,8 +107,6 @@ export default function LiveSegmentForm({onSubmit, init}) {
             }
         }
     }
-
-    const [segmentationType, setSegmentationType] = useState(init.type)
 
     const [data, setData] = useState(init);
     const [processing, setProcessing] = useState(false);
@@ -109,10 +148,8 @@ export default function LiveSegmentForm({onSubmit, init}) {
         const payload = {
             ...data,
             id: (!init?.id) ? uuid4() : init.id,
-            type: segmentationType
         }
 
-        console.log(payload)
         try {
             setProcessing(true);
             setError(null);
@@ -137,10 +174,6 @@ export default function LiveSegmentForm({onSubmit, init}) {
         }
     }
 
-    function handleSegmentationTypeChange(e) {
-        setSegmentationType(e.target.value)
-    }
-
     const handleChange = (values) => {
         setData({...data, ...values})
     }
@@ -148,11 +181,11 @@ export default function LiveSegmentForm({onSubmit, init}) {
     return <>
         <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Describe live segment"/>
+            <TuiFormGroupHeader header="Describe Segment"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Name">
                     <TextField
-                        label={"Live segment name"}
+                        label={"Segment name"}
                         error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null)}
                         helperText={nameErrorMessage}
                         value={data.name}
@@ -165,9 +198,9 @@ export default function LiveSegmentForm({onSubmit, init}) {
                     />
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Description"
-                                   description="Description will help you to understand when the live segmentation is applied.">
+                                   description="Description will help you to understand when the segmentation is applied.">
                     <TextField
-                        label={"Live segment description"}
+                        label={"Segment description"}
                         value={data.description}
                         multiline
                         rows={3}
@@ -181,7 +214,7 @@ export default function LiveSegmentForm({onSubmit, init}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Live Segmentation Type"/>
+            <TuiFormGroupHeader header="Segmentation Type"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Segmentation type"
                                    description="Select segmentation type that you would like to perform.">
@@ -191,8 +224,8 @@ export default function LiveSegmentForm({onSubmit, init}) {
                         size="small"
                         variant="outlined"
                         label='Type'
-                        value={segmentationType}
-                        onChange={handleSegmentationTypeChange}
+                        value={data.type}
+                        onChange={(e) => setData({...data, type: e.target.value})}
                     >
                         <MenuItem value="workflow">Segmentation by Workflow</MenuItem>
                         <MenuItem value="condition">Segmentation by Condition</MenuItem>
@@ -213,9 +246,9 @@ export default function LiveSegmentForm({onSubmit, init}) {
         </TuiFormGroup>
 
     </TuiForm>
-        {segmentationType === 'workflow' && <LiveWorkflowSegmentation init={init} onChange={handleChange}/>}
-        {segmentationType === 'condition' && <NoData header="Not implemented"/>}
-        {segmentationType === 'code' && <NoData header="Not implemented"/>}
+        {data.type === 'workflow' && <WorkflowSegmentationJob init={init} onChange={handleChange}/>}
+        {data.type === 'condition' && <ConditionSegmentationJob init={init} onChange={handleChange}/>}
+        {data.type === 'code' && <NoData header="Not implemented"/>}
         {error && <ErrorsBox errorList={error}/>}
         {alert && <AlertBox>{alert}</AlertBox>}
         <div className="Box10">

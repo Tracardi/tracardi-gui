@@ -53,7 +53,7 @@ export default function LiveSegmentDetails({id, onDeleteComplete}) {
     }
 
     const onDelete = () => {
-        confirm({title: "Do you want to delete this live segment?", description: "This action can not be undone."})
+        confirm({title: "Do you want to delete this segment?", description: "This action can not be undone."})
             .then(async () => {
                     try {
                         await asyncRemote({
@@ -74,7 +74,7 @@ export default function LiveSegmentDetails({id, onDeleteComplete}) {
 
     const Details = () => <TuiForm>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Live Segment" description="Information on live segment."/>
+            <TuiFormGroupHeader header="Segment" description="Information on segment."/>
             <TuiFormGroupContent>
                 <TuiFormGroupField>
                     <Properties properties={data}/>
