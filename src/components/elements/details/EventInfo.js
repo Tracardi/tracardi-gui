@@ -20,6 +20,7 @@ import {useFetch} from "../../../remote_api/remoteState";
 import {getEventById} from "../../../remote_api/endpoints/event";
 import FetchError from "../../errors/FetchError";
 import Tabs, {TabCase} from "../tabs/Tabs";
+import {EventDataTable} from "./EventData";
 
 
 const EventDataDetails = ({event, metadata, allowedDetails = []}) => {
@@ -76,20 +77,28 @@ const EventDataDetails = ({event, metadata, allowedDetails = []}) => {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <Tabs tabs={["Traits", "Properties", "Context"]}>
-                <TabCase id={1}>
-                    {!isEmptyObjectOrNull(event?.properties) ? <TuiFormGroupContent><EventProperties/></TuiFormGroupContent> :
-                        <NoData header="No properties">
-                            This event does not have any properties.
-                        </NoData>}
-                </TabCase>
+            <Tabs tabs={["Data", "Traits", "Properties", "Context"]}>
                 <TabCase id={0}>
+                    <section style={{margin: 20}}>
+                        {!isEmptyObjectOrNull(event?.data) ? <EventDataTable event={event}/> :
+                            <NoData header="No indexed data">
+                                This event does not have any indexed data.
+                            </NoData>}
+                    </section>
+                </TabCase>
+                <TabCase id={1}>
                     {!isEmptyObjectOrNull(event?.traits) ? <TuiFormGroupContent><EventTraits/></TuiFormGroupContent> :
                         <NoData header="No traits">
                             This event does not have any traits.
                         </NoData>}
                 </TabCase>
                 <TabCase id={2}>
+                    {!isEmptyObjectOrNull(event?.properties) ? <TuiFormGroupContent><EventProperties/></TuiFormGroupContent> :
+                        <NoData header="No properties">
+                            This event does not have any properties.
+                        </NoData>}
+                </TabCase>
+                <TabCase id={3}>
                     {!isEmptyObjectOrNull(event?.context) ? <TuiFormGroupContent><ContextInfo/></TuiFormGroupContent> :
                         <NoData header="No context">
                             This event does not have any context data.

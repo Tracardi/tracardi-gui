@@ -20,38 +20,45 @@ import Tabs, {TabCase} from "../tabs/Tabs";
 import useTheme from "@mui/material/styles/useTheme";
 import Tag from "../misc/Tag";
 
+const ContextInfo = ({event}) => {
+    const context = object2dot(event?.context);
+    return <>{Object.keys(context).map(key => <PropertyField labelWidth={350} key={key} name={key} content={context[key]}/>)}</>
+}
+
+const EventProperties = ({event}) => {
+    const eventProperties = object2dot(event?.properties);
+    return <>{Object.keys(eventProperties).map(key => <PropertyField labelWidth={350} key={key} name={key}
+                                                                     content={eventProperties[key]}/>)}</>
+}
+const EventTraits = ({event}) => {
+    const eventTraits = object2dot(event?.traits);
+    return <>{Object.keys(eventTraits).map(key => <PropertyField labelWidth={350} key={key} name={key}
+                                                                 content={eventTraits[key]}/>)}</>
+}
+
+export const EventDataTable = ({event}) => {
+    const eventTraits = object2dot(event?.data);
+    return <>{Object.keys(eventTraits).map(key => <PropertyField labelWidth={350} key={key} name={key}
+                                                                 content={eventTraits[key]}/>)}</>
+}
+
+const EventOs = ({event}) => {
+    const eventOs = object2dot(event?.os);
+    return <>{Object.keys(eventOs).map(key => <PropertyField labelWidth={350} key={key} name={key}
+                                                             content={eventOs[key]}/>)}</>
+}
+
+const EventDevice = ({event}) => {
+    const data = object2dot(event?.device);
+    return <>{Object.keys(data).map(key => <PropertyField labelWidth={350} key={key} name={key}
+                                                          content={data[key]}/>)}</>
+}
 
 const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
 
     const _theme = useTheme()
 
-    const ContextInfo = () => {
-        const context = object2dot(event?.context);
-        return <>{Object.keys(context).map(key => <PropertyField labelWidth={350} key={key} name={key} content={context[key]}/>)}</>
-    }
 
-    const EventProperties = () => {
-        const eventProperties = object2dot(event?.properties);
-        return <>{Object.keys(eventProperties).map(key => <PropertyField labelWidth={350} key={key} name={key}
-                                                                         content={eventProperties[key]}/>)}</>
-    }
-    const EventTraits = () => {
-        const eventTraits = object2dot(event?.traits);
-        return <>{Object.keys(eventTraits).map(key => <PropertyField labelWidth={350} key={key} name={key}
-                                                                         content={eventTraits[key]}/>)}</>
-    }
-
-    const EventOs = () => {
-        const eventOs = object2dot(event?.os);
-        return <>{Object.keys(eventOs).map(key => <PropertyField labelWidth={350} key={key} name={key}
-                                                                     content={eventOs[key]}/>)}</>
-    }
-
-    const EventDevice = () => {
-        const data = object2dot(event?.device);
-        return <>{Object.keys(data).map(key => <PropertyField labelWidth={350} key={key} name={key}
-                                                                 content={data[key]}/>)}</>
-    }
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
@@ -110,42 +117,50 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <Tabs tabs={["Traits", "Properties", "Operating System", "Device", "Context"]} tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
+            <Tabs tabs={["Data", "Traits", "Properties", "OS", "Device", "Context"]} tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
                 <TabCase id={0}>
                     <section style={{margin: 20}}>
-                    {!isEmptyObjectOrNull(event?.traits) ? <EventTraits/> :
+                        {!isEmptyObjectOrNull(event?.data) ? <EventDataTable event={event}/> :
+                            <NoData header="No indexed data">
+                                This event does not have any indexed data.
+                            </NoData>}
+                    </section>
+                </TabCase>
+                <TabCase id={1}>
+                    <section style={{margin: 20}}>
+                    {!isEmptyObjectOrNull(event?.traits) ? <EventTraits event={event}/> :
                         <NoData header="No traits">
                             This event does not have any traits.
                         </NoData>}
                     </section>
                 </TabCase>
-                <TabCase id={1}>
+                <TabCase id={2}>
                     <section style={{margin: 20}}>
-                        {!isEmptyObjectOrNull(event?.properties) ? <EventProperties/>:
+                        {!isEmptyObjectOrNull(event?.properties) ? <EventProperties event={event}/>:
                             <NoData header="No properties">
                                 This event does not have any properties.
                             </NoData>}
                     </section>
                 </TabCase>
-                <TabCase id={2}>
+                <TabCase id={3}>
                     <section style={{margin: 20}}>
-                        {!isEmptyObjectOrNull(event?.os) && event?.os?.name ? <EventOs/> :
+                        {!isEmptyObjectOrNull(event?.os) && event?.os?.name ? <EventOs event={event}/> :
                             <NoData header="No operating system data">
                                 This event does not have any information on OS.
                             </NoData>}
                     </section>
                 </TabCase>
-                <TabCase id={3}>
+                <TabCase id={4}>
                     <section style={{margin: 20}}>
-                        {!isEmptyObjectOrNull(event?.device) && event?.device?.name ? <EventDevice/> :
+                        {!isEmptyObjectOrNull(event?.device) && event?.device?.name ? <EventDevice event={event}/> :
                             <NoData header="No device data">
                                 This event does not have any information on used device.
                             </NoData>}
                     </section>
                 </TabCase>
-                <TabCase id={4}>
+                <TabCase id={5}>
                     <section style={{margin: 20}}>
-                        {!isEmptyObjectOrNull(event?.context) ?<><ContextInfo/>
+                        {!isEmptyObjectOrNull(event?.context) ?<><ContextInfo event={event}/>
                                 <div style={{marginTop: 20}}>
                                     {event?.session?.id && <SessionContextInfo sessionId={event?.session?.id}/>}
                                 </div></>

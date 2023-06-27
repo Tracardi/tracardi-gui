@@ -110,7 +110,7 @@ function ConditionSegmentationJob({init, onChange}) {
                 style={{justifyContent: "center"}}/>
 
     </TuiForm>
-        <ModalDialog open={preview} onClose={() => setPreview(false)}>
+        <ModalDialog open={preview} onClose={() => setPreview(false)} maxWidth="xl">
             <ProfilePreview segmentQuery={data.condition}/>
         </ModalDialog>
     </>
