@@ -45,7 +45,7 @@ export default function ProfilesAnalytics({displayChart=true}) {
         detailsDrawerWidth={1320}
         displayChart={displayChart}
         rowDetails={(profile, filterFields) => {
-            return <ProfileRow profile={profile} filterFields={filterFields}/>
+            return <ProfileRow profile={profile} filterFields={filterFields} displayDetails={true}/>
         }}
     />
 

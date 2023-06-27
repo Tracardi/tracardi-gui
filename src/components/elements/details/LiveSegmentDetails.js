@@ -9,7 +9,7 @@ import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote} from "../../../remote_api/entrypoint";
-import LiveSegmentForm from "../forms/LiveSegmentForm";
+import SegmentationJobForm from "../forms/SegmentationJobForm";
 
 export default function LiveSegmentDetails({id, onDeleteComplete}) {
 
@@ -104,7 +104,7 @@ export default function LiveSegmentDetails({id, onDeleteComplete}) {
                 setDisplayEdit(false)
             }}
             open={displayEdit}>
-            {displayEdit && <LiveSegmentForm
+            {displayEdit && <SegmentationJobForm
                 onSubmit={onEditComplete}
                 init={data}
             />}

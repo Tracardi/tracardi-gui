@@ -13,7 +13,7 @@ import {VscJson} from "react-icons/vsc";
 import ProfileDetails from "./ProfileDetails";
 import {displayLocation} from "../../../misc/location";
 
-export default function ProfileCardInfo({profile}) {
+export default function ProfileCardInfo({profile, displayDetails=false}) {
 
     const labelWidth = 180
     const profileFullName = profileName(profile)
@@ -46,7 +46,7 @@ export default function ProfileCardInfo({profile}) {
                 {window?.CONFIG?.profile?.display?.row?.id === "name" && <div style={{marginBottom: 20}}><PropertyField
                     content={<span style={{fontSize: "150%", fontWeight: 500, padding: 5}}>{profileFullName}</span>}
                     drawerSize={1320} underline={false}>
-                    <ProfileDetails profile={profile}/>
+                    {displayDetails && <ProfileDetails profile={profile}/>}
                 </PropertyField></div>}
                 <PropertyField labelWidth={labelWidth} name="Id" content={<IdLabel label={profile.id}/>}/>
                 {window?.CONFIG?.profile?.display?.row?.id === "id" &&

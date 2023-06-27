@@ -12,11 +12,62 @@ import MenuItem from "@mui/material/MenuItem";
 import AlertBox from "../../errors/AlertBox";
 import NoData from "../misc/NoData";
 import KqlAutoComplete from "./KqlAutoComplete";
+import ModalDialog from "../dialog/ModalDialog";
+import DetailsObjectList from "../lists/DetailsObjectList";
+import {makeUtcStringTzAware} from "../../../misc/converters";
+import ProfileRow from "../lists/rows/ProfileRow";
+
+
+function ProfilePreview({segmentQuery}) {
+
+    const onLoadDataRequest = (query) => {
+        return {
+            url: '/profile/select/range',
+            method: "post",
+            data: query,
+            limit: 30
+        }
+    }
+
+    const onLoadDetails = (id) => {
+        return {
+            url: "/profile/" + id, method: "get"
+        }
+    }
+
+    const query = {
+        "minDate": {
+            "absolute": null,
+            "delta": {"type": "minus", "value": -5, "entity": "year"},
+            "now": null
+        },
+        "maxDate": {"absolute": null, "delta": null, "now": null},
+        "where": segmentQuery || "",
+        "limit": 10,
+        "timeZone": Intl.DateTimeFormat().resolvedOptions().timeZone,
+        "rand": Math.random().toString(),
+    }
+
+    return <DetailsObjectList
+        label="Profiles"
+        onLoadRequest={onLoadDataRequest(query)}
+        onLoadDetails={onLoadDetails}
+        detailsDrawerWidth={1000}
+        refreshInterval={0}
+        rowDetails={(profile, filterFields) => {
+            return <ProfileRow profile={profile} filterFields={filterFields} displayDetails={false}/>
+        }}
+        timeFieldLabel="Max 5 Year Period"
+        timeField={(row) => [makeUtcStringTzAware(row.metadata.time.insert)]}
+        filterFields={['metadata.time.insert', 'metadata.time.update']}
+    />
+}
 
 
 function ConditionSegmentationJob({init, onChange}) {
 
-    const [data, setData] = useState({ segment: init.segment, condition: init.condition});
+    const [data, setData] = useState({segment: init.segment, condition: init.condition});
+    const [preview, setPreview] = useState(false);
 
     const handleChange = (key, value) => {
         const newValue = {
@@ -24,12 +75,12 @@ function ConditionSegmentationJob({init, onChange}) {
             [key]: value
         }
         setData(newValue)
-        if(onChange instanceof  Function) {
+        if (onChange instanceof Function) {
             onChange(newValue)
         }
     }
 
-    return <TuiForm style={{margin: 20}}>
+    return <><TuiForm style={{margin: 20}}>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Conditional Segmentation Job"/>
             <TuiFormGroupContent>
@@ -54,8 +105,15 @@ function ConditionSegmentationJob({init, onChange}) {
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
+        <Button label="Preview Data"
+                onClick={() => setPreview(true)}
+                style={{justifyContent: "center"}}/>
 
     </TuiForm>
+        <ModalDialog open={preview} onClose={() => setPreview(false)}>
+            <ProfilePreview segmentQuery={data.condition}/>
+        </ModalDialog>
+    </>
 }
 
 function WorkflowSegmentationJob({init, onChange}) {
@@ -88,7 +146,7 @@ function WorkflowSegmentationJob({init, onChange}) {
 }
 
 
-export default function LiveSegmentForm({onSubmit, init}) {
+export default function SegmentationJobForm({onSubmit, init}) {
 
     if (!init) {
         init = {
@@ -134,7 +192,7 @@ export default function LiveSegmentForm({onSubmit, init}) {
             setButtonError(false);
         }
 
-        if(data.type === 'workflow') {
+        if (data.type === 'workflow') {
             if (!data.workflow.id || data.workflow.name.length === 0) {
                 setAlert("Workflow name can not be empty. Please select workflow name.");
                 setButtonError(true)
@@ -180,72 +238,72 @@ export default function LiveSegmentForm({onSubmit, init}) {
 
     return <>
         <TuiForm style={{margin: 20}}>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Describe Segment"/>
-            <TuiFormGroupContent>
-                <TuiFormGroupField header="Name">
-                    <TextField
-                        label={"Segment name"}
-                        error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null)}
-                        helperText={nameErrorMessage}
-                        value={data.name}
-                        onChange={(ev) => {
-                            setData({...data, name: ev.target.value})
-                        }}
-                        size="small"
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
-                                   description="Description will help you to understand when the segmentation is applied.">
-                    <TextField
-                        label={"Segment description"}
-                        value={data.description}
-                        multiline
-                        rows={3}
-                        onChange={(ev) => {
-                            setData({...data, description: ev.target.value})
-                        }}
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Segmentation Type"/>
-            <TuiFormGroupContent>
-                <TuiFormGroupField header="Segmentation type"
-                                   description="Select segmentation type that you would like to perform.">
-                    <TextField
-                        style={{width: 300}}
-                        select
-                        size="small"
-                        variant="outlined"
-                        label='Type'
-                        value={data.type}
-                        onChange={(e) => setData({...data, type: e.target.value})}
-                    >
-                        <MenuItem value="workflow">Segmentation by Workflow</MenuItem>
-                        <MenuItem value="condition">Segmentation by Condition</MenuItem>
-                        <MenuItem value="code">Segmentation by Code</MenuItem>
-                    </TextField>
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Activation" description="Set if this segment is active. ">
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Switch
-                            checked={data.enabled}
-                            onChange={() => setData({...data, enabled: !data.enabled})}
-                            name="enabledSegment"
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Describe Segment"/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField header="Name">
+                        <TextField
+                            label={"Segment name"}
+                            error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null)}
+                            helperText={nameErrorMessage}
+                            value={data.name}
+                            onChange={(ev) => {
+                                setData({...data, name: ev.target.value})
+                            }}
+                            size="small"
+                            variant="outlined"
+                            fullWidth
                         />
-                        <span>Enable/Disable segment</span>
-                    </div>
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="Description"
+                                       description="Description will help you to understand when the segmentation is applied.">
+                        <TextField
+                            label={"Segment description"}
+                            value={data.description}
+                            multiline
+                            rows={3}
+                            onChange={(ev) => {
+                                setData({...data, description: ev.target.value})
+                            }}
+                            variant="outlined"
+                            fullWidth
+                        />
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Segmentation Type"/>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField header="Segmentation type"
+                                       description="Select segmentation type that you would like to perform.">
+                        <TextField
+                            style={{width: 300}}
+                            select
+                            size="small"
+                            variant="outlined"
+                            label='Type'
+                            value={data.type}
+                            onChange={(e) => setData({...data, type: e.target.value})}
+                        >
+                            <MenuItem value="workflow">Segmentation by Workflow</MenuItem>
+                            <MenuItem value="condition">Segmentation by Condition</MenuItem>
+                            <MenuItem value="code">Segmentation by Code</MenuItem>
+                        </TextField>
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="Activation" description="Set if this segment is active. ">
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <Switch
+                                checked={data.enabled}
+                                onChange={() => setData({...data, enabled: !data.enabled})}
+                                name="enabledSegment"
+                            />
+                            <span>Enable/Disable segment</span>
+                        </div>
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
 
-    </TuiForm>
+        </TuiForm>
         {data.type === 'workflow' && <WorkflowSegmentationJob init={init} onChange={handleChange}/>}
         {data.type === 'condition' && <ConditionSegmentationJob init={init} onChange={handleChange}/>}
         {data.type === 'code' && <NoData header="Not implemented"/>}
@@ -261,4 +319,4 @@ export default function LiveSegmentForm({onSubmit, init}) {
     </>
 }
 
-LiveSegmentForm.propTypes = {onSubmit: PropTypes.func, init: PropTypes.object}
+SegmentationJobForm.propTypes = {onSubmit: PropTypes.func, init: PropTypes.object}

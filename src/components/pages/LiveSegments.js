@@ -3,7 +3,7 @@ import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {VscOrganization} from "react-icons/vsc";
 import LiveSegmentDetails from "../elements/details/LiveSegmentDetails";
-import LiveSegmentForm from "../elements/forms/LiveSegmentForm";
+import SegmentationJobForm from "../elements/forms/SegmentationJobForm";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote} from "../../remote_api/entrypoint";
@@ -13,7 +13,7 @@ export default function LiveSegments() {
     const [refresh, setRefresh] = useState(0);
 
     const urlFunc = useCallback((query) => ('/segments/live' + ((query) ? "?query=" + query : "")), [])
-    const addFunc = useCallback((close) => <LiveSegmentForm onSubmit={close}/>, [])
+    const addFunc = useCallback((close) => <SegmentationJobForm onSubmit={close}/>, [])
     const detailsFunc = useCallback((id, close) => <LiveSegmentDetails id={id} onDeleteComplete={close}/>, []);
 
     const confirm = useConfirm();

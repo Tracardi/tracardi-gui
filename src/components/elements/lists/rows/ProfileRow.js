@@ -4,13 +4,13 @@ import React from "react";
 import ProfileCardInfo from "../../details/ProfileCardInfo";
 import TuiTags from "../../tui/TuiTags";
 
-export default function ProfileRow({profile, filterFields}) {
+export default function ProfileRow({profile, filterFields, displayDetails=true}) {
 
 
     return <>
         <div style={{display: "flex"}}>
             <div style={{flex: "1 1 0", minWidth:760, borderRight: "solid 1px #ccc", paddingRight: 17}}>
-                <ProfileCardInfo profile={profile}/>
+                <ProfileCardInfo profile={profile} displayDetails={displayDetails}/>
             </div>
             <div style={{
                 flex: "2 1 0",
