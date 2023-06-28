@@ -5,7 +5,13 @@
 .JsonStringify SPAN.JsonItem {
     margin-right: 7px;
     padding-left: 2px;
+    line-height: 25px;
 }
+.JsonStringify SPAN.JsonItem:hover {
+    background: aliceblue;
+    border-radius: 3px;
+}
+
 .JsonStringify SPAN.JsonItem:hover SPAN.JsonValue {
     text-decoration: underline;
 }
@@ -26,7 +32,8 @@
 .JsonStringify SPAN.JsonItem > SPAN.JsonKey {
     background-color: #f0f0f0;
     color: #333;
-    padding: 1px 4px;
+    padding: 2px 4px;
+
     border-radius: 3px;
     margin:0 2px 0 0px;
 }
