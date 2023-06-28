@@ -287,7 +287,7 @@ export default function SegmentationJobForm({onSubmit, init}) {
                         >
                             <MenuItem value="workflow">Segmentation by Workflow</MenuItem>
                             <MenuItem value="condition">Segmentation by Condition</MenuItem>
-                            <MenuItem value="code">Segmentation by Code</MenuItem>
+                            {/*<MenuItem value="code">Segmentation by Code</MenuItem>*/}
                         </TextField>
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Activation" description="Set if this segment is active. ">
