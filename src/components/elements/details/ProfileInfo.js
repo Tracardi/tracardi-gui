@@ -28,12 +28,12 @@ export const ProfileData = ({profile}) => {
 
     const displayPii = window?.CONFIG?.profile?.display?.details?.pii
 
-    const pii = object2dot(profile?.data?.pii);
-    const traits = object2dot(profile?.traits)
-    const aux = object2dot(profile?.aux)
-    const media = object2dot(profile?.data?.media)
-    const geo = object2dot(profile?.data?.devices?.last?.geo)
-    const contact = object2dot(profile?.data?.contact);
+    const pii = object2dot(profile?.data?.pii, true);
+    const traits = object2dot(profile?.traits, true)
+    const aux = object2dot(profile?.aux, true)
+    const media = object2dot(profile?.data?.media, true)
+    const geo = object2dot(profile?.data?.devices?.last?.geo, true)
+    const contact = object2dot(profile?.data?.contact, true);
     const profileFullName = profileName(profile)
 
     return <Grid container spacing={2} style={{padding: 20}}>

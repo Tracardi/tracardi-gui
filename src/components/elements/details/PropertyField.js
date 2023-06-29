@@ -3,6 +3,7 @@ import {isEmptyObject} from "../../../misc/typeChecking";
 import {FiMoreHorizontal} from "react-icons/fi";
 import FormDrawer from "../drawers/FormDrawer";
 import "./PropertyField.css";
+import TuiTags from "../tui/TuiTags";
 
 const PropertyField = ({name, content, children, drawerSize = 800, underline = true, whiteSpace = 'normal', valueAlign="flex-start", labelWidth = 250}) => {
 
@@ -33,7 +34,7 @@ const PropertyField = ({name, content, children, drawerSize = 800, underline = t
                                     : typeof content === "boolean"
                                         ? content.toString()
                                         : Array.isArray(content)
-                                            ? content.join(", ")
+                                            ? <TuiTags tags={content} size="small"/>
                                             : content
                         }
                     </div>

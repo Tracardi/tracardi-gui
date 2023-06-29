@@ -156,27 +156,29 @@ export function EventRow({row, filterFields}) {
                         <PropertyField underline={false}
                                        drawerSize={1000}
                                        content={<div style={{display: "flex", gap: 5, alignItems: "center"}}>
-                                           {row?.hit?.name &&
-                                           <span title={row?.hit?.url} style={{cursor: "help"}}>{row?.hit?.name}</span>}
                                            <EventTypeTag eventType={row?.name || row?.type} profile={row?.profile?.id}/>
                                            <EventStatusTag label={row?.metadata?.status}/>
                                            <EventValidation eventMetaData={row?.metadata}/>
                                            <EventWarnings eventMetaData={row?.metadata}/>
                                            <EventErrorTag eventMetaData={row?.metadata}/>
+                                           {row?.hit?.name &&
+                                           <span title={row?.hit?.url} style={{cursor: "help"}}>{row?.hit?.name}</span>}
                                        </div>}>
                             <EventDetailsById id={row?.id}/>
                         </PropertyField>
                     </div>
 
-                    <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0}}>
+                    {!isEmptyObject(row?.properties) && <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0}}>
                         <legend>Properties</legend>
-                        {!isEmptyObject(row?.properties) ?
-                            <JsonStringify data={{properties: row?.properties}}
-                                           filterFields={filterFields}/> : "No properties"}
-                    </fieldset>
+                        <JsonStringify data={{properties: row?.properties}}
+                                       filterFields={filterFields}/>
+                    </fieldset>}
+                    {!isEmptyObject(row?.data) && <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0}}>
+                        <legend>Indexed Data</legend>
+                        <JsonStringify data={{data: row?.data}}/></fieldset>}
 
                     {!isEmptyObject(row?.traits) && <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0}}>
-                        <legend>Traits</legend>
+                        <legend>Indexed Custom Traits</legend>
                         <JsonStringify data={{traits: row?.traits}} filterFields={filterFields}/></fieldset>}
                 </div>
                 <div style={{display: "flex"}}>
