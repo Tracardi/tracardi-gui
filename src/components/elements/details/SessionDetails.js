@@ -32,7 +32,7 @@ export default function SessionDetails({data: session}) {
                             </fieldset>
 
                             <fieldset style={{padding: 10, marginTop: 10}}>
-                                <legend>Device and system</legend>aaa
+                                <legend>Device and system</legend>
                                 <SessionDeviceCard session={session} />
                             </fieldset>
 

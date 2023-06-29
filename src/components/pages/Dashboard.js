@@ -51,17 +51,17 @@ const ContainedItem = styled(Paper)(({theme, style}) => ({
 function SessionsByApp() {
 
     const colorsList = [
-        '#3B82F6',
+        "#7795FF",'#3B82F6',
         '#3d5afe',
-        '#536dfe',
-        '#0088FE',
-        "#5c6bc0",
-        "#2196f3",
-        "#009688",
         "#8bc34a",
         "#4caf50",
         "#f44336",
-        "#ff9800"
+        "#ff9800",
+        "#FFB178",
+        "#FF78B1",
+        "#FF3C8E",
+        "#A0BBFF", "#EC77FF",
+        "#A0F9FF",
     ]
 
     const {data, isLoading, error} = useFetch(
@@ -81,17 +81,17 @@ function SessionsByApp() {
 function EventsByType() {
 
     const colorsList = [
-        '#3B82F6',
+        "#7795FF", '#3B82F6',
         '#3d5afe',
-        '#536dfe',
-        '#0088FE',
-        "#5c6bc0",
-        "#2196f3",
-        "#009688",
         "#8bc34a",
         "#4caf50",
         "#f44336",
-        "#ff9800"
+        "#ff9800",
+        "#FFB178",
+        "#FF78B1",
+        "#FF3C8E",
+        "#A0BBFF", "#EC77FF",
+        "#A0F9FF",
     ]
 
     const {data, isLoading, error} = useFetch(
@@ -117,17 +117,17 @@ function EventsByType() {
 function Charts() {
 
     const colorsList = [
-        '#3B82F6',
-        '#3d5afe',
-        '#536dfe',
-        '#0088FE',
-        "#5c6bc0",
-        "#2196f3",
-        "#009688",
+
+        '#3d5afe', "#A0F9FF",
         "#8bc34a",
         "#4caf50",
         "#f44336",
-        "#ff9800"
+        "#ff9800",
+        "#FFB178",
+        "#FF78B1",
+        "#FF3C8E",
+        "#A0BBFF", "#EC77FF", "#7795FF",'#3B82F6',
+
     ]
 
     const [eventsByTag, setEventsByTag] = useState([]);
@@ -245,7 +245,6 @@ export default function Dashboard() {
                 <ContainedItem elevation={0}>
                     <OnlineSessionCounter/>
                 </ContainedItem>
-
             </Grid>
 
         </Grid>

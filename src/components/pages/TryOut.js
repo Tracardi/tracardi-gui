@@ -25,6 +25,52 @@ import Paper from "@mui/material/Paper";
 import NoData from "../elements/misc/NoData";
 import EventToProfileCopy from "../elements/forms/EventToProfileCopy";
 import {EventTypeFlowsAC} from "../elements/forms/inputs/EventTypeFlowsAC";
+import Funnel from "../elements/charts/Funnel";
+
+
+function Journey({width, height}) {
+    return <div style={{padding: 10}}>
+        <div style={{display: "flex"}}>
+            <Funnel width={width} height={height}/>
+            <div style={{display: "flex",
+                flexDirection: "column",
+                alignItems: "start",
+                flex: "1 1",
+                justifyContent: "space-evenly",
+                paddingLeft: 10,
+                height: height
+            }}>
+                <div style={{display: "flex", width: "100%", height: "100%", borderBottom: "1px dashed #999"}}>
+                    <div style={{color: "gray", display: "flex", width:200, textAlign: "center", fontSize: 12}}>Customers become aware of your company and its offerings as they seek solutions to their problems or needs.</div>
+                    <div></div>
+                </div>
+                <div style={{display: "flex", width: "100%", height: "100%", borderBottom: "1px dashed #999"}}>
+                    <div style={{color: "gray", display: "flex", width:200, textAlign: "center", fontSize: 12}}>Customers evaluate your company against competitors, seeking deeper understanding and proof points to determine the best choice.</div>
+                    <div></div>
+                </div>
+                <div style={{display: "flex", width: "100%", height: "100%", borderBottom: "1px dashed #999"}}>
+                    <div style={{color: "gray", display: "flex", width:200, textAlign: "center", fontSize: 12}}>Customers decide to purchase your product or service, and you must simplify the process for them with a user-friendly website, clear pricing, and multiple payment options.</div>
+                    <div>
+
+                    </div>
+                </div>
+                <div style={{display: "flex", width: "100%", height: "100%", borderBottom: "1px dashed #999"}}>
+                    <div style={{color: "gray", display: "flex", width:200, textAlign: "center", fontSize: 12}}>
+                        Nurture strong relationships with customers through exceptional service, personalized offers, and ongoing engagement for repeat business.
+                    </div>
+                    <div>
+
+                    </div>
+
+                </div>
+                <div style={{display: "flex", width: "100%", height: "100%"}}>
+                    <div style={{color: "gray", width:200, textAlign: "center", fontSize: 12}}>Loyalty turns into advocacy as satisfied customers become brand advocates, spreading positive word-of-mouth and attracting new customers.</div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
@@ -118,7 +164,9 @@ export default function TryOut() {
             </Box>)
     }
     //value={{value:"123", ref:true}} autocomplete="profile"
-    return (<div style={{padding: 10}}>
+    return (
+        <div>
+        <Journey width={300} height={600}/>
             <EventTypeFlowsAC eventType={"page-view"}/>
             <EventToProfileCopy onChange={v => console.log("fields", v)}/>
             <RefInput label="sss" onChange={(v)=>console.log(v)} errorMessage="ssss" fullWidth/>
