@@ -127,11 +127,7 @@ const AppBox = () => {
                             new PrivateTab(["admin", "developer"],
                                 <EventRedirect/>, "/inbound/event/redirect", <>
                                     <BsStar size={20} style={{marginRight: 5}}/>{"Event redirects"}
-                                </>),
-                            new PrivateTab(["admin", "developer"],
-                                <EventValidation/>, "/inbound/event/validation", <>
-                                    <BsStar size={20} style={{marginRight: 5}}/>{"Event validation"}
-                                </>),
+                                </>)
                         ]}
                         />
                     </Suspense>
@@ -195,7 +191,7 @@ const AppBox = () => {
                             new PrivateTab(["admin", "developer"],
                                 <EventTypesToRules/>, "/event/routing", "Event Routing"),
                             new PrivateTab(["admin", "developer"],
-                                <Rules/>, "/processing/routing", "Routing Rules"),
+                                <Rules/>, "/processing/routing", "Workflow Routing Rules"),
                         ]}
                         />
                     </Suspense>
@@ -207,8 +203,12 @@ const AppBox = () => {
             <PrivateRoute path={urlPrefix("/transformations")} roles={["admin", "developer"]}>
                 <ErrorBoundary>
                     <Suspense fallback={<CenteredCircularProgress/>}>
-                        <TopBar>Event Collection and Transformation</TopBar>
+                        <TopBar>Data Mapping and Transformation</TopBar>
                         <PageTabs tabs={[
+                            new PrivateTab(["admin", "developer"],
+                                <EventValidation/>, "/inbound/event/validation", <>
+                                    <BsStar size={20} style={{marginRight: 5}}/>{"Event validation"}
+                                </>),
                             new PrivateTab(["admin", "developer"],
                                 <EventReshaping/>, "/inbound/event/reshaping", <>
                                     <BsStar size={20} style={{marginRight: 5}}/>{"Event reshaping"}
@@ -278,19 +278,31 @@ const AppBox = () => {
             <PrivateRoute path={urlPrefix("/processing")} roles={["admin", "developer", "marketer"]}>
                 <ErrorBoundary>
                     <Suspense fallback={<CenteredCircularProgress/>}>
-                        <TopBar>Data Processing and Segmentation</TopBar>
+                        <TopBar>Automation</TopBar>
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
                                 <Flows type="collection"
-                                       label="Processing Workflows"/>, "/processing/workflows", "Processing Workflows"),
-                            new PrivateTab(["admin", "developer"],
-                                <Flows type="segmentation" label="Segmentation Workflows"/>, "/processing/workflows", <>
-                                    <BsStar size={20}
-                                            style={{marginRight: 5}}/>{"Segmentation workflows"}</>),
+                                       label="Automation Workflows"/>, "/processing/workflows", "Automation Workflows")
+                        ]}
+                        />
+                    </Suspense>
+                </ErrorBoundary>
+            </PrivateRoute>
+
+
+            <PrivateRoute path={urlPrefix("/segmentation")} roles={["admin", "developer", "marketer"]}>
+                <ErrorBoundary>
+                    <Suspense fallback={<CenteredCircularProgress/>}>
+                        <TopBar>Profile Segmentation</TopBar>
+                        <PageTabs tabs={[
                             new PrivateTab(["admin", "developer", "marketer"],
                                 <LiveSegments/>, "/processing/live/segments", <>
                                     <BsStar size={20}
                                             style={{marginRight: 5}}/>{"Segmentation Jobs"}</>),
+                            new PrivateTab(["admin", "developer"],
+                                <Flows type="segmentation" label="Segmentation Workflows"/>, "/processing/workflows", <>
+                                    <BsStar size={20}
+                                            style={{marginRight: 5}}/>{"Segmentation workflows"}</>),
                             new PrivateTab(["admin", "developer", "marketer"],
                                 <Segments/>, "/processing/segments", "Post event segmentation"),
                         ]}
