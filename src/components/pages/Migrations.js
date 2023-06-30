@@ -46,7 +46,7 @@ export default function Migrations() {
             setFormLoading(true);
             setFormError(null);
             asyncRemote({
-                url: `/migration/${selectedMigration}${selectedCustomPrefix ? `?from_prefix=${selectedCustomPrefix}` : ""}`,
+                url: `/migration/${selectedMigration}${selectedCustomPrefix ? `?from_tenant_name=${selectedCustomPrefix}` : ""}`,
                 method: "GET"
             })
                 .then(response => {
@@ -81,7 +81,7 @@ export default function Migrations() {
                     method: "POST",
                     data: {
                         from_version: selectedMigration,
-                        from_prefix: selectedCustomPrefix ? selectedCustomPrefix : null,
+                        name: selectedCustomPrefix ? selectedCustomPrefix : null,
                         ids: selectedSchemas
                     }
                 })
@@ -129,8 +129,8 @@ export default function Migrations() {
                                 />
                             </div>
                         </TuiFormGroupField>
-                        <TuiFormGroupField header="List of indices"
-                                           description="List of data indices that will be upgraded to new version. Uncheck the index to ignore it during upgrade."/>
+                        <TuiFormGroupField header={`List of indices from previous version ${selectedMigration}`}
+                                           description="List of data indices that will be copied to new version. Uncheck the index to ignore it during upgrade."/>
                         {Array.isArray(schemas) && schemas.length > 0 &&
                         schemas.map((schema, index) =>
                                 <FormControlLabel
@@ -148,7 +148,7 @@ export default function Migrations() {
                                             }}
                                         />
                                     }
-                                    label={`${schema.copy_index.from_index} to ${schema.copy_index.to_index}`}
+                                    label={`${schema.copy_index.from_index} --> ${schema.copy_index.to_index}`}
                                 />
                         )
                         }
