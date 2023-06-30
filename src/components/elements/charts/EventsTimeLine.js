@@ -5,12 +5,10 @@ import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 import Button from "../forms/Button";
 import LinearProgress from "@mui/material/LinearProgress";
-import DropDownMenu from "../../menu/DropDownMenu";
 import EventCounter from "../metrics/EventCounter";
 import SessionCounter from "../metrics/SessionCounter";
 import ProfileCounter from "../metrics/ProfileCounter";
-import InstancesCounter from "../metrics/InstancesCounter";
-import AvgEventTime from "../metrics/AvgEventTimeCounter";
+import EntityCounter from "../metrics/EntityCounter";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
@@ -263,8 +261,7 @@ export default function EventTimeLine() {
             <EventCounter width={200}/>
             <SessionCounter width={200}/>
             <ProfileCounter width={200}/>
-            <InstancesCounter width={200}/>
-            {/*<AvgEventTime/>*/}
+            <EntityCounter width={200}/>
         </div>
         {progress ? <LinearProgress/> : <div style={{height: 4}}></div>}
         <div style={{ padding: "10px 80px 40px 40px"}}>

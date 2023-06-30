@@ -7,3 +7,9 @@ export function getInstallStatus() {
         url: "/install",
     }
 }
+
+export function getBuildInEventType(id) {
+    return {
+        url: `/event-type/build-in/${id}`,
+    }
+}

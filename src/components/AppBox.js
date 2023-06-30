@@ -48,7 +48,7 @@ const Segments = React.lazy(() => import("./pages/Segments"))
 const Rules = React.lazy(() => import("./pages/Rules"))
 const FlowReader = React.lazy(() => import("./flow/FlowReader"))
 const ActionPlugins = React.lazy(() => import("./pages/ActionPlugins"))
-const Instances = React.lazy(() => import("./pages/Instances"))
+const PredefinedEventTypes = React.lazy(() => import("./pages/PredefinedEventTypes"))
 const Deployment = React.lazy(() => import("./pages/Deployment"))
 const Settings = React.lazy(() => import("./pages/Settings"))
 const TestEditor = React.lazy(() => import("./pages/TestEditor"))
@@ -366,8 +366,6 @@ const AppBox = () => {
                         <TopBar>Monitoring</TopBar>
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "maintainer"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
-                            new PrivateTab(["admin", "maintainer"],
-                                <Instances/>, "/monitoring/instances", "Running instances"),
                             new PrivateTab(["admin", "developer"],
                                 <BackgroundTasks/>, "/monitoring/background/tasks", "Background tasks"),
                             new PrivateTab(["admin", "maintainer"],
@@ -406,6 +404,8 @@ const AppBox = () => {
                             new PrivateTab(["admin"], <Users/>, "/maintenance/users", "Users"),
                             new PrivateTab(["admin", "developer"],
                                 <ActionPlugins/>, "/settings/plugins", "Action plug-ins"),
+                            new PrivateTab(["admin", "developer"],
+                                <PredefinedEventTypes/>, "/event-type/predefined", "Build-in Event Types"),
                             new PrivateTab(["admin", "developer"],
                                 <Settings/>, "/settings/system", "System settings"),
                         ]}
