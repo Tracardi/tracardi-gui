@@ -196,7 +196,9 @@ export default function Migrations() {
         <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Available migrations"
-                                    description="Here you can find migrations that are available for current version."/>
+                                    description="Here, you can access the available migrations for the current version.
+                                    Migrations are required only when there have been modifications to the
+                                    underlying data schema of the system."/>
                 <TuiFormGroupContent>
                     <TuiFormGroupField>
                         <div style={{margin: 15, display: "flex", flexDirection: "row", flexWrap: "wrap"}}>
