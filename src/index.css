@@ -71,10 +71,19 @@ H2.subHeader {
 }
 
 .tipBox {
-  background-color: #e1f5fe;
+  background-color: #E1F5FE;
   border-radius: 5px;
+  border: solid #81D4FA 1px
+}
+
+.tipBox .tipBody {
+  padding: 20px;
+  color: #222;
+}
+
+.tipBox .tipHeader {
+  background-color: #81D4FA;
   padding: 10px;
-  border: solid #555 1px
 }
 
 .keyButton {

@@ -27,10 +27,10 @@ export function abbreviateNumber(value) {
         let suffixes = ["", "k", "m", "b", "t"];
         let suffixNum = Math.floor(("" + value).length / 3);
         let shortValue = '';
-        for (let precision = 2; precision >= 1; precision--) {
+        for (let precision = 3; precision >= 1; precision--) {
             shortValue = parseFloat((suffixNum !== 0 ? (value / Math.pow(1000, suffixNum)) : value).toPrecision(precision));
-            var dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g, '');
-            if (dotLessShortValue.length <= 2) {
+            let dotLessShortValue = (shortValue + '').replace(/[^a-zA-Z 0-9]+/g, '');
+            if (dotLessShortValue.length <= 4) {
                 break;
             }
         }
