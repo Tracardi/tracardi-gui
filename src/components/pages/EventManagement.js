@@ -4,7 +4,7 @@ import CardBrowser from "../elements/lists/CardBrowser";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import EventIndexingForm from "../elements/forms/EventIndexingForm";
 import {BsFolderCheck} from "react-icons/bs";
-import EventIndexingDetails from "../elements/details/EventIndexingDetails";
+import EventMappingDetails from "../elements/details/EventMappingDetails";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote} from "../../remote_api/entrypoint";
@@ -15,7 +15,7 @@ export default function EventManagement() {
 
     const urlFunc= useCallback((query) => ('/event-type/management/search/by_tag'+ ((query) ? "?query=" + query : "")),[]);
     const addFunc = useCallback((close) => <EventIndexingForm onSubmit={close}/>,[]);
-    const detailsFunc= useCallback((id, close) => <EventIndexingDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
+    const detailsFunc= useCallback((id, close) => <EventMappingDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
 
     const confirm = useConfirm();
 

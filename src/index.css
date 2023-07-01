@@ -66,6 +66,17 @@ H2.subHeader {
   flex-wrap: wrap;
 }
 
+.highlightLine:hover {
+  background-color: #e1f5fe;
+}
+
+.tipBox {
+  background-color: #e1f5fe;
+  border-radius: 5px;
+  padding: 10px;
+  border: solid #555 1px
+}
+
 .keyButton {
   font-size:11px;
   padding: 2px 5px;

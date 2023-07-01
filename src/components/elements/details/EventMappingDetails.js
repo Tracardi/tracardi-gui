@@ -125,7 +125,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
 }
 
 
-export default function EventIndexingDetails({id, onDeleteComplete, onEditComplete}) {
+export default function EventMappingDetails({id, onDeleteComplete, onEditComplete}) {
 
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -164,7 +164,7 @@ export default function EventIndexingDetails({id, onDeleteComplete, onEditComple
     return <EventIndexingCard data={data} onDeleteComplete={onDeleteComplete} onEditComplete={handleEditComplete}/>
 }
 
-EventIndexingDetails.propTypes = {
+EventMappingDetails.propTypes = {
     id: PropTypes.string,
     onDeleteComplete: PropTypes.func,
     onEditComplete: PropTypes.func

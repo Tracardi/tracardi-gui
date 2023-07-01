@@ -14,7 +14,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import {BsXCircle, BsBoxArrowDown} from "react-icons/bs";
 import {EventValidationCard} from "./EventValidationDetails";
 import {EventReshapingCard} from "./EventReshapingDetails";
-import {EventIndexingCard} from "./EventIndexingDetails";
+import {EventIndexingCard} from "./EventMappingDetails";
 import {IdentificationPointCard} from "./IdentificationPointDetails";
 import {EventToProfileCard} from "./EventToProfileDetails";
 import Button from "../forms/Button";
