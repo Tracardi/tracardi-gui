@@ -86,7 +86,7 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
 
                 </PropertyField>}
 
-                {event?.profile && <PropertyField name="Profile id" content={event.profile.id} drawerSize={1320}/>}
+                {event?.profile && <PropertyField name="Profile id" content={event.profile.id} drawerSize={1200}/>}
                 {event?.source && <PropertyField name="Event source" content={event.source.id} drawerSize={820}>
                     {allowedDetails.includes("source") && <EventSourceDetails id={event.source.id}/>}
                 </PropertyField>}

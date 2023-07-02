@@ -127,7 +127,6 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
                 {!window?.CONFIG?.menu?.inbound?.disable && <MenuRow icon={<BsBoxArrowInRight size={20}/>} label="Inbound Traffic" collapsed={collapsed} onClick={go("/inbound")} route="/inbound" roles={["admin", "developer"]}/>}
                 {!window?.CONFIG?.menu?.transformations?.disable && <MenuRow icon={<FlowNodeIcons icon="map-properties"  size={20}/>} label="Mapping" collapsed={collapsed} onClick={go("/transformations")} route="/transformations" roles={["admin", "developer"]}/>}
                 {!window?.CONFIG?.menu?.triggers?.disable && <MenuRow icon={<BsGear size={20}/>} label="Triggers" collapsed={collapsed} onClick={go("/triggers")} route="/triggers" roles={["admin", "developer"]}/>}
-                {!window?.CONFIG?.menu?.routing?.disable && <MenuRow icon={<FaUncharted size={20}/>} label="Routing" collapsed={collapsed} onClick={go("/routing")} route="/routing" roles={["admin", "developer"]}/>}
 
                 {!window?.CONFIG?.menu?.identification?.disable && <MenuRow icon={<FlowNodeIcons icon="identity"  size={20}/>} label="Identification" collapsed={collapsed} onClick={go("/identification")} route="/identification" roles={["admin", "developer"]}/>}
 
@@ -137,7 +136,8 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
 
                 {!window?.CONFIG?.menu?.outbound?.disable && <MenuRow icon={<BsBoxArrowRight size={20}/>} label="Outbound Traffic" collapsed={collapsed} onClick={go("/outbound")} route="/outbound" roles={["admin", "developer"]}/>}
 
-                {!window?.CONFIG?.menu?.reporting?.disable && <MenuRow icon={<BsBarChartFill size={20}/>} label="Reporting" collapsed={collapsed} onClick={go("/reporting")} route="/reporting" roles={["admin", "developer", "marketer"]} style={{marginTop: 20}}/>}
+                {!window?.CONFIG?.menu?.routing?.disable && <MenuRow icon={<FaUncharted size={20}/>} label="Routing" collapsed={collapsed} onClick={go("/routing")} route="/routing" roles={["admin", "developer"]} style={{marginTop: 20}}/>}
+                {!window?.CONFIG?.menu?.reporting?.disable && <MenuRow icon={<BsBarChartFill size={20}/>} label="Reporting" collapsed={collapsed} onClick={go("/reporting")} route="/reporting" roles={["admin", "developer", "marketer"]} />}
                 {!window?.CONFIG?.menu?.resources?.disable && <MenuRow icon={<IoServerOutline size={20}/>} label="Resources" collapsed={collapsed} onClick={go("/resources")} route="/resources" roles={["admin", "developer"]} />}
 
                 {!window?.CONFIG?.menu?.test?.disable && <MenuRow icon={<BsClipboardCheck size={20}/>} label="Test" collapsed={collapsed} onClick={go("/test/form")} route="/test/form" roles={["admin", "developer"]} style={{marginTop: 20}}/>}

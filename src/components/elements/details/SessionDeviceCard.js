@@ -16,6 +16,12 @@ export default function SessionDeviceCard({session}) {
                 value={displayLocation(session?.device?.geo)}
                 icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
             />}/>}
+        {session?.context?.time?.tz && <PropertyField labelWidth={labelWidth} name="Time zone"
+                                                      content={<IconLabel
+                                                          value={session?.context?.time?.tz}
+                                                          icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
+                                                      />}/>
+        }
 
         {session?.app?.name && <PropertyField
             labelWidth={labelWidth}

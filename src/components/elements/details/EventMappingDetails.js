@@ -18,8 +18,10 @@ import NoData from "../misc/NoData";
 import ActiveTag from "../misc/ActiveTag";
 import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
 import JsonBrowser from "../misc/JsonBrowser";
+import {objectMap} from "../../../misc/mappers";
+import AssignValueToKey from "./AssignValueToKey";
 
-export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
+export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displayMetadata = true}) {
 
     const [displayEdit, setDisplayEdit] = React.useState(false);
     const [deleteProgress, setDeleteProgress] = React.useState(false);
@@ -34,7 +36,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
 
     const handleEditComplete = (flowData) => {
         setDisplayEdit(false);
-        if(onEditComplete instanceof Function) onEditComplete(flowData);
+        if (onEditComplete instanceof Function) onEditComplete(flowData);
     }
 
     const handleDelete = () => {
@@ -78,22 +80,22 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
             </TuiFormGroupContent>
         </TuiFormGroup>}
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Property to Trait Indexing Schema"
-            description="This is the schema describing how properties are indexed as traits. Indexed property is removed from
-                    properties."
+            <TuiFormGroupHeader header="Event Property Mapping"
+                                description="The schema outlines how properties are transferred to data or traits.
+                                Properties are not mandatory, and if a property is not set, it will not be
+                                transferred, and no error will occur."
             />
             <TuiFormGroupContent>
-                {!isEmptyObjectOrNull(data?.index_schema)
-                    ? <JsonBrowser
-                        data={data.index_schema}
-                    />
-                    : <NoData header="No data indexing">
+                {!isEmptyObjectOrNull(data?.index_schema) ?
+                    objectMap(data?.index_schema, (key, value) => {
+                        return <AssignValueToKey key={key} value={`event@${value}`} label={`event@${key}`} op="moves to"/>
+                    }) : <NoData header="No data indexing">
                         <span style={{textAlign: "center"}}>Data is stored in event properties, it can be searched but it will not be visible as event traits, and no reporting will be possible.</span>
                     </NoData>
                 }
             </TuiFormGroupContent>
         </TuiFormGroup>
-        <RestrictToLocalStagingContext>
+        {!data.build_in && <RestrictToLocalStagingContext>
             <Rows style={{marginTop: 20}}>
                 <Button onClick={handleEdit}
                         icon={<VscEdit size={20}/>}
@@ -105,7 +107,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
                     label="Delete"
                     disabled={typeof data === "undefined"}/>
             </Rows>
-        </RestrictToLocalStagingContext>
+        </RestrictToLocalStagingContext>}
     </TuiForm>
 
     return <div className="Box10" style={{height: "100%"}}>
@@ -123,7 +125,6 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
         </FormDrawer>
     </div>
 }
-
 
 export default function EventMappingDetails({id, onDeleteComplete, onEditComplete}) {
 

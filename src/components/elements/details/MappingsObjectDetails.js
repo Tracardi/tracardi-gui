@@ -42,7 +42,7 @@ export default function MappingsObjectDetails({properties, show, exclude, keyPre
                     op = "appends data from"
                     break;
                 default:
-                    op = "="
+                    op = item.op
             }
 
             if (exclude) {

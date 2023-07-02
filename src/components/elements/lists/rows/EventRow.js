@@ -115,7 +115,7 @@ export function EventRow({row, filterFields}) {
                                                       profileIcon={window?.CONFIG?.profile?.icon1 || "profile"}
                                                       profileLessIcon={window?.CONFIG?.profile?.icon2 || "profile-less"}
                                                       profileLess={row?.profile === null}/>}
-                               drawerSize={1320}>
+                               drawerSize={1200}>
                     {row?.profile?.id && <ProfileDetailsById id={row?.profile?.id}/>}
                 </PropertyField>
                 {row?.profile?.metadata?.time?.visit?.count && <PropertyField labelWidth={labelWidth}
@@ -129,7 +129,7 @@ export function EventRow({row, filterFields}) {
                 {displaySession && row?.session?.id && <PropertyField labelWidth={labelWidth}
                                                                       name="Session id"
                                                                       content={<IdLabel label={row?.session?.id}/>}
-                                                                      drawerSize={1320}
+                                                                      drawerSize={1200}
                 >
                     <SessionDetailsById id={row?.session?.id}/>
                 </PropertyField>}

@@ -14,7 +14,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import {BsXCircle, BsBoxArrowDown} from "react-icons/bs";
 import {EventValidationCard} from "./EventValidationDetails";
 import {EventReshapingCard} from "./EventReshapingDetails";
-import {EventIndexingCard} from "./EventMappingDetails";
+import {EventIndexingCard, EventIndexingCards} from "./EventMappingDetails";
 import {IdentificationPointCard} from "./IdentificationPointDetails";
 import {EventToProfileCard} from "./EventToProfileDetails";
 import Button from "../forms/Button";
@@ -33,6 +33,7 @@ import FetchError from "../../errors/FetchError";
 import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
 import {RuleCard} from "./RuleDetails";
 import {TuiForm, TuiFormGroup, TuiFormGroupHeader} from "../tui/TuiForm";
+import Tag from "../misc/Tag";
 
 function hasData(data) {
     return Array.isArray(data) && data.length > 0
@@ -78,23 +79,25 @@ const AccordionCard = ({items, nodata, details, passData, singleValue = false, d
     };
 
     function displayAccordion() {
-        return Array.isArray(items) && items.map(item => <Accordion
+        return Array.isArray(items) && items.map((item, index) => <Accordion
             expanded={expanded === item.id}
-            key={item?.id}
+            key={`${item?.id}-${index}`}
             onChange={handleChange(item.id)}
             elevation={6}
         >
             <AccordionSummary
                 expandIcon={<BsBoxArrowDown size={24}/>}
+                style={{backgroundColor: item.build_in ? "aliceblue" : "#fff"}}
             >
                 <div className="flexLine">
                     <EnabledChip item={item}/>
                     <Typography
                         sx={{color: 'text.secondary', marginLeft: 1, marginRight: 1}}>{item?.description}</Typography>
+                    {item.build_in && <Tag backgroundColor="#5C6BC0" color="white">Read Only</Tag>}
                 </div>
 
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails style={{backgroundColor: item.build_in ? "aliceblue" : "#fff"}}>
                 {details && React.createElement(
                     details,
                     passData ? {
@@ -248,15 +251,8 @@ const RoutingFlow = ({event}) => {
                              endpoint={{url: `/event-type/management/${event.type}`}}
                              nodata="No Mapping"
                              passData={true}
-                             singleValue={true}
                              details={EventIndexingCard}
                              add={EventIndexingForm}  // requires onSubmit
-                             onLoad={(data) => {
-                                 return {
-                                     result: [data],
-                                     total: 1
-                                 }
-                             }}
                 />
                 <ProcessStep step={"4"}
                              label="Identification check point"

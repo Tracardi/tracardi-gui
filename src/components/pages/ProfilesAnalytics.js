@@ -42,7 +42,7 @@ export default function ProfilesAnalytics({displayChart=true}) {
         onLoadHistogramRequest={onLoadHistogramRequest}
         onLoadDataRequest={onLoadDataRequest}
         onLoadDetails={onLoadDetails}
-        detailsDrawerWidth={1320}
+        detailsDrawerWidth={1200}
         displayChart={displayChart}
         rowDetails={(profile, filterFields) => {
             return <ProfileRow profile={profile} filterFields={filterFields} displayDetails={true}/>

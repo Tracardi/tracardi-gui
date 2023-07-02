@@ -24,8 +24,7 @@ export default function SessionSlider({profileId, onEventSelect}) {
     if (error) {
         return <FetchError error={error} style={{marginTop: 20}}/>
     }
-    console.log(session
-    )
+
     return (
         <div className="SessionSlider">
             <div style={{
@@ -60,7 +59,7 @@ export default function SessionSlider({profileId, onEventSelect}) {
 
             {!isLoading && session !== null && <>
                 <div style={{width: "100%", borderRadius: 10, border: "solid 1px #ccc"}}>
-                    <Tabs tabs={["Metadata", "Location"]}>
+                    <Tabs tabs={["Metadata", "Location & Device"]}>
                         <TabCase id={0}>
                             <div style={{padding: 20}}>
                                 <SessionCardInfo session={session}/>

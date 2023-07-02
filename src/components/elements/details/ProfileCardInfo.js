@@ -45,7 +45,7 @@ export default function ProfileCardInfo({profile, displayDetails=false}) {
             <div style={{width: "100%"}}>
                 {window?.CONFIG?.profile?.display?.row?.id === "name" && <div style={{marginBottom: 20}}><PropertyField
                     content={<span style={{fontSize: "150%", fontWeight: 500, padding: 5}}>{profileFullName}</span>}
-                    drawerSize={1320} underline={false}>
+                    drawerSize={1200} underline={false}>
                     {displayDetails && <ProfileDetails profile={profile}/>}
                 </PropertyField></div>}
                 <PropertyField labelWidth={labelWidth} name="Id" content={<IdLabel label={profile.id}/>}/>

@@ -26,14 +26,7 @@ export default function SessionCardInfo({session, displayContext=true}) {
             content={session?.metadata?.channel}/>}
 
         <PropertyField labelWidth={labelWidth} name="Started"
-                       content={<>
-                           <DateValue date={session?.metadata?.time?.insert}/>
-                           {session?.context?.time?.tz && <IconLabel
-                               value={session?.context?.time?.tz}
-                               style={{marginLeft: 5}}
-                               icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
-                           />}
-                       </>
+                       content={<DateValue date={session?.metadata?.time?.insert}/>
                        }/>
 
         {session?.utm?.source && <PropertyField

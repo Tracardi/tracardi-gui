@@ -5,7 +5,7 @@ import FormDrawer from "../drawers/FormDrawer";
 import "./PropertyField.css";
 import TuiTags from "../tui/TuiTags";
 
-const PropertyField = ({name, content, children, drawerSize = 800, underline = true, whiteSpace = 'normal', valueAlign="flex-start", labelWidth = 250}) => {
+const PropertyField = ({name, content, children, drawerSize = 800, underline = true, whiteSpace = 'normal', valueAlign="flex-start", labelWidth = 200}) => {
 
     const [displayDetails, setDisplayDetails] = useState(false)
     return (

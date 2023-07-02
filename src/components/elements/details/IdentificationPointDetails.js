@@ -54,10 +54,12 @@ export function IdentificationPointCard({data, onDeleteComplete, onEditComplete,
         <TuiForm>
             {displayMetadata && <EventTypeMetadata data={data}/>}
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Identification data fields"
-                                    description="Customer will data will be merged and loaded if the data from event matches
-                the data in profile. Eg. profile trait 'email' is equal to e-mail delivered in event property
-                'mail'. If any of the defined pairs match, the profile will be attached to the event."/>
+                <TuiFormGroupHeader header="Identification Data Fields"
+                                    description="If the data in an event matches the data in a customer's profile,
+                                    specifically when certain predefined pairs of data match (for example, when
+                                    the email in the customer's profile matches the email property in the event),
+                                    then the customer's profile will be merged with other profiles that share
+                                    the same email."/>
                 <TuiFormGroupContent>
                     { data?.fields &&
                         data?.fields.map((item, index) => {
