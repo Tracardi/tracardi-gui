@@ -33,5 +33,5 @@ export function ProfileImage({profile}) {
         return <div style={style}>{initials}</div>
     }
 
-    return <img src={profile?.data?.media?.image} style={style}/>
+    return <img alt="Profile Image" src={profile?.data?.media?.image} style={style}/>
 }

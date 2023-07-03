@@ -5,7 +5,6 @@ import DateValue from "../misc/DateValue";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getProfileEvents} from "../../../remote_api/endpoints/profile";
-import DataTreeDialog from "../dialog/DataTreeDialog";
 import EventDetailsDialog from "../dialog/EventDetailsDialog";
 
 const stepIconComponent = event => {

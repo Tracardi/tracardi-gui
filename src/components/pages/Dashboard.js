@@ -70,6 +70,9 @@ function SessionsByApp() {
         data => data.browsers
     )
 
+    if(error) {
+        return "Error"
+    }
 
     return <LoadablePieChart header="No of sessions" subHeader="by app" loading={isLoading}
                              data={data}

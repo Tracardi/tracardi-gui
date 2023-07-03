@@ -1,15 +1,10 @@
 import PropertyField from "./PropertyField";
 import DateValue from "../misc/DateValue";
-import {BsGlobe} from "react-icons/bs";
 import React from "react";
 import IdLabel from "../misc/IconLabels/IdLabel";
 import {ProfileDetailsById} from "./ProfileDetails";
 import SessionContextInfo from "./SessionContextInfo";
-import IconLabel from "../misc/IconLabels/IconLabel";
-import PlatformIcon from "../misc/IconLabels/PlatformLabel";
-import BrowserLabel from "../misc/IconLabels/BrowserLabel";
 import ProfileLabel from "../misc/IconLabels/ProfileLabel";
-import {displayLocation} from "../../../misc/location";
 import Chip from "@mui/material/Chip";
 
 export default function SessionCardInfo({session, displayContext=true}) {

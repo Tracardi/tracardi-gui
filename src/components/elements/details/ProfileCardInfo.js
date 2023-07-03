@@ -3,7 +3,7 @@ import DateValue from "../misc/DateValue";
 import React, {useState} from "react";
 import IdLabel from "../misc/IconLabels/IdLabel";
 import {profileName} from "../../../misc/formaters";
-import {BsGlobe, BsPhone} from "react-icons/bs";
+import {BsGlobe} from "react-icons/bs";
 import IconLabel from "../misc/IconLabels/IconLabel";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import {ProfileImage} from "./ProfileImage";
