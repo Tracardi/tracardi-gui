@@ -17,7 +17,6 @@ import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import ActiveTag from "../misc/ActiveTag";
 import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
-import JsonBrowser from "../misc/JsonBrowser";
 import {objectMap} from "../../../misc/mappers";
 import AssignValueToKey from "./AssignValueToKey";
 
@@ -65,7 +64,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
                 setDeleteProgress(false);
             })
     }
-    console.log(data)
+
     const Details = () => <TuiForm>
         {displayMetadata && <TuiFormGroup>
             <TuiFormGroupContent>

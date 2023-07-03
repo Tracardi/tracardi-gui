@@ -66,7 +66,10 @@ const EventTypesToRules = () => {
     const {isLoading, data} = useFetch(
         ["routingByType", [refresh, context]],
         getEventsAndSources(),
-        data => { return data }
+        data => { return data },
+        {
+            refetchOnWindowFocus: false
+        }
         )
 
 

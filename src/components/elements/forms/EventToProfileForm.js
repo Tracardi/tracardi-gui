@@ -207,6 +207,7 @@ EventToProfileForm.propTypes = {
     id: PropTypes.string,
     name: PropTypes.string,
     description: PropTypes.string,
+    event_type: PropTypes.string,
     enabled: PropTypes.bool,
     tags: PropTypes.array,
     onSaveComplete: PropTypes.func

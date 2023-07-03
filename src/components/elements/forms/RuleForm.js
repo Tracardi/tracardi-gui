@@ -16,16 +16,19 @@ import ShowHide from "../misc/ShowHide";
 
 export default function RuleForm({onSubmit, data}) {
 
-    if (!data) {
-        data = {
-            source: {},
-            event_type: {},
-            flow: {},
-            properties: {},
-            name: "",
-            description: "",
-            tags: []
-        }
+    const defaultData = {
+        source: {},
+        event_type: {},
+        flow: {},
+        properties: {},
+        name: "",
+        description: "",
+        tags: []
+    }
+
+    data = {
+        ...defaultData,
+        ...data
     }
 
     const [flow, setFlow] = useState(data?.flow || {});

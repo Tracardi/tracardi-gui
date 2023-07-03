@@ -17,29 +17,32 @@ import FetchError from "../../errors/FetchError";
 
 export default function EventReshapingForm({onSubmit, init}) {
 
-    if (!init) {
-        init = {
-            id: uuid4(),
-            name: "",
-            description: "",
-            event_type: "",
-            event_source: {name: "", id: ""},
-            tags: [],
-            enabled: false,
-            reshaping: {
-                reshape_schema: {
-                    properties: null,
-                    context: null,
-                    session: null
-                },
-                condition: "",
-                mapping: {
-                    profile: {value: "", ref: true},
-                    session: {value: "", ref: true},
-                    event_type: {value: "", ref: true}
-                }
+    const defaultData = {
+        id: uuid4(),
+        name: "",
+        description: "",
+        event_type: "",
+        event_source: {name: "", id: ""},
+        tags: [],
+        enabled: false,
+        reshaping: {
+            reshape_schema: {
+                properties: null,
+                context: null,
+                session: null
+            },
+            condition: "",
+            mapping: {
+                profile: {value: "", ref: true},
+                session: {value: "", ref: true},
+                event_type: {value: "", ref: true}
             }
         }
+    }
+
+    init = {
+        ...defaultData,
+        ...init
     }
 
     const [tab, setTab] = useState(0);

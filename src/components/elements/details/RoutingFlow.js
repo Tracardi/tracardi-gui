@@ -70,7 +70,7 @@ const EnabledChip = ({item}) => {
     </span>
 }
 
-const AccordionCard = ({items, nodata, details, passData, singleValue = false, displayMetadata, add, onDeleteComplete, onEditComplete, onAddComplete}) => {
+const AccordionCard = ({addFormProps = {}, items, nodata, details, passData, singleValue = false, displayMetadata, add, onDeleteComplete, onEditComplete, onAddComplete}) => {
     const [expanded, setExpanded] = React.useState(false);
     const [openAddDrawer, setOpenAddDrawer] = React.useState(false);
 
@@ -91,9 +91,9 @@ const AccordionCard = ({items, nodata, details, passData, singleValue = false, d
             >
                 <div className="flexLine">
                     <EnabledChip item={item}/>
+                    {item.build_in && <Tag backgroundColor="#5C6BC0" color="white">Read Only</Tag>}
                     <Typography
                         sx={{color: 'text.secondary', marginLeft: 1, marginRight: 1}}>{item?.description}</Typography>
-                    {item.build_in && <Tag backgroundColor="#5C6BC0" color="white">Read Only</Tag>}
                 </div>
 
             </AccordionSummary>
@@ -101,7 +101,8 @@ const AccordionCard = ({items, nodata, details, passData, singleValue = false, d
                 {details && React.createElement(
                     details,
                     passData ? {
-                        data: item, displayMetadata,
+                        data: item,
+                        displayMetadata,
                         onDeleteComplete: onDeleteComplete,
                         onEditComplete: onEditComplete,
                     } : {
@@ -140,6 +141,7 @@ const AccordionCard = ({items, nodata, details, passData, singleValue = false, d
             {openAddDrawer && React.createElement(
                 add,
                 {
+                    ...addFormProps,
                     onSubmit: () => {
                         setOpenAddDrawer(false);
                         if (onAddComplete instanceof Function) onAddComplete()
@@ -151,7 +153,7 @@ const AccordionCard = ({items, nodata, details, passData, singleValue = false, d
     </>
 }
 
-const ProcessStep = ({step, label, optional, endpoint, passData, singleValue, nodata, details, add, onLoad}) => {
+const ProcessStep = ({step, label, optional, endpoint, passData, singleValue, nodata, details, add, onLoad, addFormProps}) => {
 
     const [active, setActive] = useState(false)
     const [refresh, setRefresh] = useState(0)
@@ -193,6 +195,7 @@ const ProcessStep = ({step, label, optional, endpoint, passData, singleValue, no
         </BigStepLabel>
         <BigStepContent>
             <AccordionCard items={data?.result}
+                           addFormProps={addFormProps}
                            nodata={nodata}
                            details={details}
                            add={add}
@@ -235,6 +238,8 @@ const RoutingFlow = ({event}) => {
                              nodata="No validation"
                              details={EventValidationCard}
                              add={EventValidationForm}
+                             addFormProps={{init: {event_type: event.type}}}
+
                 />
                 <ProcessStep step={"2"}
                              label="Event Reshaping"
@@ -244,6 +249,7 @@ const RoutingFlow = ({event}) => {
                              nodata="No reshaping"
                              details={EventReshapingCard}
                              add={EventReshapingForm}
+                             addFormProps={{init: {event_type: event.type}}}
                 />
                 <ProcessStep step={"3"}
                              label="Event Mapping"
@@ -253,15 +259,19 @@ const RoutingFlow = ({event}) => {
                              passData={true}
                              details={EventIndexingCard}
                              add={EventIndexingForm}  // requires onSubmit
+                             addFormProps={{event_type: event.type}}
                 />
                 <ProcessStep step={"4"}
                              label="Identification check point"
                              optional="Is this event used to identify a customer?"
                              endpoint={{url: `/identification/points/by_type/${event.type}`}}
                              nodata="This event is not an identification point"
+                             eventType={event.type}
                              details={IdentificationPointCard}
                              passData={true}
                              add={IdentificationPointForm}  // requires onSubmit
+                             addFormProps={{data:{event_type: {id: event.type, name: event.type}}}}
+
                 />
                 <ProcessStep step={"5"}
                              label="Event to profile mapping"
@@ -270,6 +280,7 @@ const RoutingFlow = ({event}) => {
                              nodata="No data is copied to profile"
                              details={EventToProfileCard}
                              add={EventToProfileForm}
+                             addFormProps={{event_type: event.type}}
                              passData={true}
                 />
                 <ProcessStep step={"6"}
@@ -280,6 +291,8 @@ const RoutingFlow = ({event}) => {
                              passData={true}
                              details={PreviewFlow}
                              add={RuleForm}
+                             addFormProps={{data:{event_type: {id: event.type, name: event.type}}}}
+
                 />
             </Stepper>
         </Box>)
