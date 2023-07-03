@@ -81,7 +81,7 @@ export default function Migrations() {
                     method: "POST",
                     data: {
                         from_version: selectedMigration,
-                        name: selectedCustomPrefix ? selectedCustomPrefix : null,
+                        from_tenant_name: selectedCustomPrefix ? selectedCustomPrefix : null,
                         ids: selectedSchemas
                     }
                 })
