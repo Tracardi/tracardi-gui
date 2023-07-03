@@ -48,7 +48,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
                     setDeleteProgress(true);
                     try {
                         await asyncRemote({
-                            url: '/event-type/management/' + data?.id,
+                            url: '/event-type/mapping/' + data?.id,
                             method: "delete"
                         })
                         if (onDeleteComplete) {
@@ -65,7 +65,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
                 setDeleteProgress(false);
             })
     }
-
+    console.log(data)
     const Details = () => <TuiForm>
         {displayMetadata && <TuiFormGroup>
             <TuiFormGroupContent>
@@ -76,7 +76,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
                 <PropertyField name="Tags"
                                content={<TuiTags tags={data.tags} size="small"/>}/>
                 <PropertyField name="Indexing enabled" underline={false}
-                               content={<ActiveTag active={data.index_enabled}/>}/>
+                               content={<ActiveTag active={data.enabled}/>}/>
             </TuiFormGroupContent>
         </TuiFormGroup>}
         <TuiFormGroup>
@@ -135,7 +135,7 @@ export default function EventMappingDetails({id, onDeleteComplete, onEditComplet
             let isSubscribed = true;
             setLoading(true);
             asyncRemote({
-                url: '/event-type/management/' + id,
+                url: '/event-type/mapping/' + id,
                 method: "get"
             })
                 .then((result) => {

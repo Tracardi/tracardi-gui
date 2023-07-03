@@ -49,7 +49,7 @@ export default function EventToProfile() {
                                            id={row?.id}
                                            icon={<VscCopy size={45}/>}
                                            name={row?.name}
-                                           status={row?.index_enabled}
+                                           status={row?.enabled}
                                            description={row?.description}
                                            onClick={() => onClick(row?.id)}
                         />

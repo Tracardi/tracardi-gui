@@ -17,7 +17,7 @@ export default function EventIndexingForm({
                                               description: _description,
                                               event_type: _eventType,
                                               index_schema: _indexSchema,
-                                              index_enabled: _indexEnabled,
+                                              enabled: _indexEnabled,
                                               tags: _tags,
                                               onSubmit
                                           }) {
@@ -70,14 +70,14 @@ export default function EventIndexingForm({
                 description: description,
                 event_type: eventType.id,
                 index_schema: JSON.parse(indexSchema),
-                index_enabled: indexEnabled,
+                enabled: indexEnabled,
                 tags: tags && Array.isArray(tags) && tags.length > 0 ? tags : ["General"],
             }
 
             setProcessing(true);
 
             const response = await asyncRemote({
-                url: '/event-type/management',
+                url: '/event-type/mapping',
                 method: 'post',
                 data: payload
             })

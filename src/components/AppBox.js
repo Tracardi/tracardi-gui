@@ -189,7 +189,7 @@ const AppBox = () => {
                         <TopBar>Traffic routing</TopBar>
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
-                                <EventTypesToRules/>, "/event/routing", "Event Routing"),
+                                <EventTypesToRules/>, "/event/routing", "Event Routing Summary"),
                             new PrivateTab(["admin", "developer"],
                                 <Rules/>, "/processing/routing", "Workflow Routing Rules"),
                         ]}

@@ -13,7 +13,7 @@ export default function EventManagement() {
 
     const [refresh, setRefresh] = useState(0);
 
-    const urlFunc= useCallback((query) => ('/event-type/management/search/by_tag'+ ((query) ? "?query=" + query : "")),[]);
+    const urlFunc= useCallback((query) => ('/event-type/search/mappings'+ ((query) ? "?query=" + query : "")),[]);
     const addFunc = useCallback((close) => <EventIndexingForm onSubmit={close}/>,[]);
     const detailsFunc= useCallback((id, close) => <EventMappingDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
 
@@ -24,7 +24,7 @@ export default function EventManagement() {
             .then(async () => {
                     try {
                         await asyncRemote({
-                            url: '/event-type/management/' + id,
+                            url: '/event-type/mapping/' + id,
                             method: "delete"
                         })
                         setRefresh(refresh+1)
@@ -46,7 +46,7 @@ export default function EventManagement() {
                                            icon={<BsFolderCheck size={45}/>}
                                            tags={[(row.enabled && "Validated")]}
                                            name={row?.name}
-                                           status={row?.index_enabled}
+                                           status={row?.enabled}
                                            description={row?.description}
                                            onClick={() => onClick(row?.id)}
                         />
@@ -66,7 +66,7 @@ export default function EventManagement() {
                                            id={row?.id}
                                            data={{...row, icon: "validator"}}
                                            tags={row.tags}
-                                           status={row?.index_enabled}
+                                           status={row?.enabled}
                                            onClick={() => onClick(row?.id)}
                                             onDelete={handleDelete}
                         />

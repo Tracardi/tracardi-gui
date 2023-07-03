@@ -14,7 +14,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import {BsXCircle, BsBoxArrowDown} from "react-icons/bs";
 import {EventValidationCard} from "./EventValidationDetails";
 import {EventReshapingCard} from "./EventReshapingDetails";
-import {EventIndexingCard, EventIndexingCards} from "./EventMappingDetails";
+import {EventIndexingCard} from "./EventMappingDetails";
 import {IdentificationPointCard} from "./IdentificationPointDetails";
 import {EventToProfileCard} from "./EventToProfileDetails";
 import Button from "../forms/Button";
@@ -248,7 +248,7 @@ const RoutingFlow = ({event}) => {
                 <ProcessStep step={"3"}
                              label="Event Mapping"
                              optional="How was the data indexed?"
-                             endpoint={{url: `/event-type/management/${event.type}`}}
+                             endpoint={{url: `/event-type/mappings/${event.type}`}}
                              nodata="No Mapping"
                              passData={true}
                              details={EventIndexingCard}
