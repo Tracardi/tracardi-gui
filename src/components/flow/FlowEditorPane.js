@@ -687,8 +687,8 @@ export function FlowEditorPane(
                                             <aside>v.{currentNode?.data?.spec?.version}</aside>
                                             {currentNode?.data?.metadata?.desc}
                                             <div style={{marginTop: 10}}>To <u>delete a node</u>: select the node and press
-                                                <span className="keyButton">DELETE</span>
-                                                key.
+                                                <span className="keyButton">DELETE</span>, or
+                                                <span className="keyButton">Fn</span> + <span className="keyButton">DELETE</span> on Mac.
                                             </div>
                                             <div>To <u>open node properties</u>: <MdAdsClick size={18}/>double click on the
                                                 node.
