@@ -63,7 +63,8 @@ import {
     VscExclude,
     VscSymbolArray,
     VscLaw,
-    VscLock
+    VscLock,
+    VscGear
 } from "react-icons/vsc";
 import {
     MdLibraryAdd,
@@ -273,7 +274,8 @@ export const icons = {
     "wait": (size) => <BsClockHistory size={size}/>,
     "list-check": (size) => <BsListCheck size={size}/>,
     "tag": (size) => <BsTag size={size}/>,
-    "openai": (size) => <SiOpenai size={size}/>
+    "openai": (size) => <SiOpenai size={size}/>,
+    "gear": (size) => <VscGear size={size}/>
 
 }
 

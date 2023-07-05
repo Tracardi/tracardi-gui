@@ -26,7 +26,8 @@ const CardBrowser = ({
                          addFunc = () => {},
                          className,
                          refresh: forceRefresh,
-                         defaultLayout="cards"
+                         defaultLayout="cards",
+                         noDataInfo,
                      }) => {
 
     const Content = ({query, onClick, urlFunc, refresh, forceRefresh}) => {
@@ -80,7 +81,7 @@ const CardBrowser = ({
                 </NoData>
             }
             return <NoData header="There is no data here.">
-                <p>Please click create button in the upper right corner.</p>
+                <p>{noDataInfo ? noDataInfo : "Please click create button in the upper right corner."}</p>
             </NoData>
         }
 

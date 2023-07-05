@@ -5,7 +5,7 @@ import IconButton from "../../misc/IconButton";
 import TuiTags from "../../tui/TuiTags";
 import {StatusPoint} from "../../misc/StatusPoint";
 
-const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, children, status, lock}) => {
+const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, children, status, lock, nameWidth=200}) => {
 
     return (
         <div style={{display: "flex", flexDirection: "row", width: "100%", alignItems: "center", borderBottom: "solid 1px #ccc", padding: "0 10px"}}>
@@ -28,7 +28,7 @@ const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, childre
                 <div style={{display: "flex", alignItems: "center", width: "auto"}}>
                     <span style={{color: "#555", display: "flex"}}><FlowNodeIcons icon={data?.icon} size={22}/></span>
                     <div style={{display: "flex", alignItems: "baseline", marginLeft: 10, gap: 5}}>
-                        <div className="flexLine" style={{fontSize: 16, marginRight: 5, fontWeight: 500, width: 200}}>{data.name}</div>
+                        <div className="flexLine" style={{fontSize: 16, marginRight: 5, fontWeight: 500, width: nameWidth}}>{data.name}</div>
                         <div className="flexLine" style={{fontSize: 13}}>{children ? children : data.description}</div>
 
                     </div>

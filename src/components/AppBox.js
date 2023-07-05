@@ -368,6 +368,9 @@ const AppBox = () => {
                             new PrivateTab(["admin", "maintainer"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
                             new PrivateTab(["admin", "developer"],
                                 <BackgroundTasks/>, "/monitoring/background/tasks", "Background tasks"),
+                            new PrivateTab(["admin", "developer"],
+                                <Scheduler/>, "/triggers/scheduler", <><BsStar size={20}
+                                                                               style={{marginRight: 5}}/>{"Scheduler tasks"}</>),
                             new PrivateTab(["admin", "maintainer"],
                                 <UserLogs/>, "/monitoring/user-log", "User logs")
                         ]}

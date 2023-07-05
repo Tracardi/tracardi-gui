@@ -6,14 +6,14 @@ import FlowNodeIcons from "../flow/FlowNodeIcons";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import {useConfirm} from "material-ui-confirm";
 import SchedulerJobDetails from "../elements/details/SchedulerJobDetails";
-import SchedulerJobForm from "../elements/forms/SchedulerJobForm";
+// import SchedulerJobForm from "../elements/forms/SchedulerJobForm";
 
 export default function Scheduler() {
 
     const [refresh, setRefresh] = useState(0);
 
     const urlFunc = useCallback((query) => ('/scheduler/jobs' + ((query) ? "?query=" + query : "")), [])
-    const addFunc = useCallback((close) => <SchedulerJobForm onSubmit={close}/>, [])
+    // const addFunc = useCallback((close) => <SchedulerJobForm onSubmit={close}/>, [])
     const detailsFunc = useCallback((id, close) => <SchedulerJobDetails id={id} onDeleteComplete={close}/>, []);
 
     const confirm = useConfirm();
@@ -64,7 +64,9 @@ export default function Scheduler() {
                                            data={{...row, icon: "calendar"}}
                                            onDelete={handleDelete}
                                            status={row?.enabled}
-                                           onClick={() => onClick(row?.id)}/>
+                                           onClick={() => onClick(row?.id)}
+                                           nameWidth="auto"
+                        />
                     })}
                 </div>
             </div>
@@ -78,14 +80,15 @@ export default function Scheduler() {
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}
-        buttonLabel="New schedule"
-        buttonIcon={<FlowNodeIcons icon="calendar"/>}
+        // buttonLabel="New schedule"
+        // buttonIcon={<FlowNodeIcons icon="calendar"/>}
         drawerDetailsWidth={800}
-        drawerAddTitle="New schedule"
+        // drawerAddTitle="New schedule"
         drawerAddWidth={800}
         detailsFunc={detailsFunc}
-        addFunc={addFunc}
+        // addFunc={addFunc}
         className="Pad10"
+        noDataInfo="Currently there are no tasks scheduled."
     />
 
 }
