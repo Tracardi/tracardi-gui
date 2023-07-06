@@ -165,22 +165,6 @@ const AppBox = () => {
                 </ErrorBoundary>
             </PrivateRoute>
 
-            {/*Triggers*/}
-
-            <PrivateRoute path={urlPrefix("/triggers")} roles={["admin", "developer"]}>
-                <ErrorBoundary>
-                    <Suspense fallback={<CenteredCircularProgress/>}>
-                        <TopBar>Triggers</TopBar>
-                        <PageTabs tabs={[
-                            new PrivateTab(["admin", "developer"],
-                                <Scheduler/>, "/triggers/scheduler", <><BsStar size={20}
-                                                                               style={{marginRight: 5}}/>{"Scheduler"}</>),
-                        ]}
-                        />
-                    </Suspense>
-                </ErrorBoundary>
-            </PrivateRoute>
-
             {/*Routing*/}
 
             <PrivateRoute path={urlPrefix("/routing")} roles={["admin", "developer"]}>
@@ -368,9 +352,9 @@ const AppBox = () => {
                             new PrivateTab(["admin", "maintainer"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
                             new PrivateTab(["admin", "developer"],
                                 <BackgroundTasks/>, "/monitoring/background/tasks", "Background tasks"),
-                            new PrivateTab(["admin", "developer"],
-                                <Scheduler/>, "/triggers/scheduler", <><BsStar size={20}
-                                                                               style={{marginRight: 5}}/>{"Scheduler tasks"}</>),
+                            // new PrivateTab(["admin", "developer"],
+                            //     <Scheduler/>, "/scheduler/tasks", <><BsStar size={20}
+                            //                                                    style={{marginRight: 5}}/>{"Scheduler tasks"}</>),
                             new PrivateTab(["admin", "maintainer"],
                                 <UserLogs/>, "/monitoring/user-log", "User logs")
                         ]}
