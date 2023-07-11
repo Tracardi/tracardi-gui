@@ -13,14 +13,13 @@ import IdLabel from "../misc/IconLabels/IdLabel";
 import EventDetails from "./EventDetails";
 import EventWarnings from "../misc/EventWarnings";
 import EventErrorTag from "../misc/EventErrorTag";
-import FlowNodeIcons from "../../flow/FlowNodeIcons";
-import IconLabel from "../misc/IconLabels/IconLabel";
 import NoData from "../misc/NoData";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getEventById} from "../../../remote_api/endpoints/event";
 import FetchError from "../../errors/FetchError";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import {EventDataTable} from "./EventData";
+import EventTypeTag from "../misc/EventTypeTag";
 
 
 const EventDataDetails = ({event, metadata, allowedDetails = []}) => {
@@ -50,7 +49,7 @@ const EventDataDetails = ({event, metadata, allowedDetails = []}) => {
                 </PropertyField>
                 {metadata?.index && <PropertyField name="Index" content={metadata.index}/>}
                 <PropertyField name="Type"
-                               content={<IconLabel icon={<FlowNodeIcons icon="event"/>} value={event?.type}/>}/>
+                               content={<EventTypeTag event={event} />}/>
                 <PropertyField name="Insert time"
                                content={<DateValue date={event?.metadata?.time?.insert}/>}
                 />

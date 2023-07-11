@@ -6,6 +6,7 @@ import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getProfileEvents} from "../../../remote_api/endpoints/profile";
 import EventDetailsDialog from "../dialog/EventDetailsDialog";
+import {capitalizeString} from "../misc/EventTypeTag";
 
 const stepIconComponent = event => {
     return <div className="EventIcon" style={{
@@ -53,7 +54,7 @@ function EventStream({events}) {
                             StepIconComponent={() => stepIconComponent(event)}
                             onClick={() => handleDetails(event)}
                         >
-                            {event?.name}
+                            {event?.name || capitalizeString(event?.type)}
                         </StepLabel>
                     </Step>
                 ))}

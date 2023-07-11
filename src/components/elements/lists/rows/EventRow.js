@@ -156,7 +156,7 @@ export function EventRow({row, filterFields}) {
                         <PropertyField underline={false}
                                        drawerSize={1000}
                                        content={<div style={{display: "flex", gap: 5, alignItems: "center"}}>
-                                           <EventTypeTag eventType={row?.name || row?.type} profile={row?.profile?.id}/>
+                                           <EventTypeTag event={row} />
                                            <EventStatusTag label={row?.metadata?.status}/>
                                            <EventValidation eventMetaData={row?.metadata}/>
                                            <EventWarnings eventMetaData={row?.metadata}/>

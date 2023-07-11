@@ -12,13 +12,12 @@ import TuiTags from "../tui/TuiTags";
 import DateValue from "../misc/DateValue";
 import EventWarnings from "../misc/EventWarnings";
 import EventErrorTag from "../misc/EventErrorTag";
-import IconLabel from "../misc/IconLabels/IconLabel";
-import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import NoData from "../misc/NoData";
 import TuiWorkflowTags from "../tui/TuiWorkflowTags";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import useTheme from "@mui/material/styles/useTheme";
 import Tag from "../misc/Tag";
+import EventTypeTag from "../misc/EventTypeTag";
 
 const ContextInfo = ({event}) => {
     const context = object2dot(event?.context);
@@ -65,7 +64,7 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
             <TuiFormGroupHeader header="Event details"/>
             <TuiFormGroupContent style={{display: "flex", flexDirection: "column"}}>
                 <PropertyField name="Type"
-                               content={<IconLabel icon={<FlowNodeIcons icon="event"/>} value={event?.type}/>}/>
+                               content={<EventTypeTag event={event}/>}/>
                 <PropertyField name="Insert time"
                                content={<DateValue date={event?.metadata?.time?.insert}/>}
                 />

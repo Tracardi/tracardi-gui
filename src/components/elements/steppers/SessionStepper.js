@@ -8,6 +8,7 @@ import DateValue from "../misc/DateValue";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getSessionEvents} from "../../../remote_api/endpoints/session";
 import FetchError from "../../errors/FetchError";
+import {capitalizeString} from "../misc/EventTypeTag";
 
 export default function SessionStepper({session, profileId, onEventSelect}) {
 
@@ -44,16 +45,18 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
 
     const eventLabel= (selectedEvent, event) => {
 
+        const eventType =  event?.name || capitalizeString(event?.type)
+
         if(selectedEvent === event.id) {
             if (event?.metadata?.valid === false) {
-                return <b>{event?.name + " (invalid)"}</b>
+                return <b>{eventType + " (invalid)"}</b>
             }
-            return <b>{event?.name}</b>
+            return <b>{eventType}</b>
         } else {
             if (event?.metadata?.valid === false) {
-                return event?.name + " (invalid)"
+                return eventType + " (invalid)"
             }
-            return event.name
+            return eventType
         }
     }
 
