@@ -33,7 +33,6 @@ export default function EventDetails({event, metadata, routing=true}) {
             tabsStyle={{
                 margin: 20,
                 display: "flex",
-                flexDirection: "row",
                 marginTop: 0,
                 marginBottom: 0,
                 position: "sticky",

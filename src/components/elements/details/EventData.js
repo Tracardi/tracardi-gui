@@ -57,8 +57,6 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
 
     const _theme = useTheme()
 
-
-
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Event details"/>
@@ -108,7 +106,7 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
                                                                                        content={<TuiTags
                                                                                            tags={event.metadata?.processed_by?.rules}
                                                                                            size="small"/>}/>}
-                {routing && Array.isArray(event?.metadata?.processed_by?.flows) && <PropertyField
+                {Array.isArray(event?.metadata?.processed_by?.flows) && <PropertyField
                     name="Processed by flow"
                     content={<TuiWorkflowTags tags={event.metadata?.processed_by?.flows} size="small" />}/>}
                 {metadata?.index && <PropertyField name="Index" content={metadata.index}/>}
