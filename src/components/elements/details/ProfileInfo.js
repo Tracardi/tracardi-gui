@@ -92,7 +92,7 @@ export const ProfileData = ({profile}) => {
 
             <div style={{borderRadius: 5, border: "solid 1px #ccc"}}>
                 <Tabs tabs={["PII", "Contacts", "Traits", "Last GEO", "Media", "Aux"]}
-                      tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
+                      tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
                     <TabCase id={0}>
                         <div style={{margin: 20}}>
                             {displayPii && pii ? Object.keys(pii).map(key => <PropertyField key={key}
@@ -154,7 +154,7 @@ export const ProfileData = ({profile}) => {
             </div>
             <div style={{borderRadius: 5, border: "solid 1px #ccc", marginTop: 20}}>
                 <Tabs tabs={["Segments", "Interests", "Preferences"]}
-                      tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
+                      tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
                     <TabCase id={0}>
                         <div style={{margin: 20}}>
                             {isNotEmptyArray(profile?.segments)

@@ -14,11 +14,16 @@ import {useFetch} from "../../../remote_api/remoteState";
 import {getSessionById} from "../../../remote_api/endpoints/session";
 import {TuiForm, TuiFormGroup} from "../tui/TuiForm";
 import SessionDeviceCard from "./SessionDeviceCard";
+import {ProfileData} from "./ProfileInfo";
+import useTheme from "@mui/material/styles/useTheme";
+import DeviceLocationCard from "./DeviceLocationCard";
 
 
 export default function SessionDetails({data: session}) {
 
     const [eventId, setEventId] = useState(null);
+
+    const _theme = useTheme()
 
     return <div style={{height: "inherit"}}>
         <div className="RightTabScroller">
@@ -30,12 +35,21 @@ export default function SessionDetails({data: session}) {
                                 <legend>Session metadata</legend>
                                 <SessionCardInfo session={session}/>
                             </fieldset>
+                            <Tabs tabs={["Device", "Geo Location"]}
+                                  tabsStyle={{backgroundColor: _theme.palette.background.paper, height: "auto"}}
+                            >
+                                <TabCase id={0}>
+                                    <div className="Box10">
+                                        <SessionDeviceCard session={session}/>
+                                    </div>
 
-                            <fieldset style={{padding: 10, marginTop: 10}}>
-                                <legend>Device and system</legend>
-                                <SessionDeviceCard session={session} />
-                            </fieldset>
-
+                                </TabCase>
+                                <TabCase id={1}>
+                                    <div className="Box10">
+                                        <DeviceLocationCard geo={session?.device?.geo} timezone={session?.context?.time?.tz} />
+                                    </div>
+                                </TabCase>
+                            </Tabs>
                             <SessionStepper profileId={session?.profile?.id}
                                             session={session}
                                             onEventSelect={setEventId}

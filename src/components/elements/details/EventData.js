@@ -116,7 +116,7 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <Tabs tabs={["Data", "Traits", "Properties", "OS", "Device", "Context"]} tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
+            <Tabs tabs={["Data", "Traits", "Properties", "OS", "Device", "Context"]} tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
                 <TabCase id={0}>
                     <section style={{margin: 20}}>
                         {!isEmptyObjectOrNull(event?.data) ? <EventDataTable event={event}/> :

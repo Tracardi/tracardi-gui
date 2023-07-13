@@ -95,7 +95,7 @@ export const signInTheme = createTheme({
             contrastText: '#ffcc00',
         },
         background: {
-            default: '#fff',
+            default: 'white',
         },
         text: {
             primary: '#000'

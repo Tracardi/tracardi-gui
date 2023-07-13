@@ -11,29 +11,17 @@ export default function SessionDeviceCard({session}) {
     const labelWidth = 180
 
     return <>
-        {session?.device?.geo?.country && <PropertyField labelWidth={labelWidth} name="Location" content={
-            <IconLabel
-                value={displayLocation(session?.device?.geo)}
-                icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
-            />}/>}
-        {session?.context?.time?.tz && <PropertyField labelWidth={labelWidth} name="Time zone"
-                                                      content={<IconLabel
-                                                          value={session?.context?.time?.tz}
-                                                          icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
-                                                      />}/>
-        }
-
-        {session?.app?.name && <PropertyField
+        <PropertyField
             labelWidth={labelWidth}
             name="Application"
-            content={<BrowserLabel browser={session.app.name} version={session.app.version} robot={session.app.bot}/>}
-        />}
+            content={<BrowserLabel browser={session?.app?.name || "Unknown"} version={session?.app?.version || ""} robot={session?.app?.bot || ""}/>}
+        />
 
-        {session?.os?.name && <PropertyField
+        <PropertyField
             labelWidth={labelWidth}
             name="OS"
-            content={<PlatformIcon os={session.os.name} platform={session?.context?.browser?.local?.device?.platform}/>}
-        />}
+            content={<PlatformIcon os={session?.os?.name || "Unknown"} platform={session?.context?.browser?.local?.device?.platform || ""}/>}
+        />
 
         {session?.device?.name && <PropertyField labelWidth={labelWidth} name="Device name" content={session?.device?.name}/>}
         {session?.device?.type && <PropertyField labelWidth={labelWidth} name="Device type" content={session?.device?.type}/>}

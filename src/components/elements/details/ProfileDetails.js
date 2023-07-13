@@ -82,7 +82,7 @@ export default function ProfileDetails({profile}) {
         {displayPii && <PiiDetails profile={profile}/>}
         <div className="RightTabScroller">
             <Tabs tabs={["Personal", "Sessions", "Analytics", "E-Commerce", "Logs", "Json"]}
-                  tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
+                  tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
                 <TabCase id={0}>
                     <ProfileData profile={profile}/>
                 </TabCase>

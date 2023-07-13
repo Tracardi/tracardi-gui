@@ -17,7 +17,7 @@ export function displayLocation(geo) {
     } else if(geo?.country?.name) {
         return `${geo.country.name}`
     } else {
-        return "n/a"
+        return "Unknown"
     }
 }
 
