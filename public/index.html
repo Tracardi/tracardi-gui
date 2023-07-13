@@ -20,14 +20,21 @@
       var options = {
         tracker: {
           url: {
-            // This is url to tracardi backend. Please mind the correct port.
             script: '//track.tracardi.com/tracker',
             api: '//track.tracardi.com'
           },
           source: {
             id: "9d9230c3-def2-451a-9b52-c554686f3e27"
+          },
+          context: {
+            browser: true,
+            page: true,
+            session: true,
+            storage:true,
+            screen: true,
+            performance: false,
+            location: true
           }
-          // Please see the documentation for more settings: http://docs.tracardi.com/integration/js-integration/
         }
       }
 
