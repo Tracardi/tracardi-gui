@@ -7,6 +7,8 @@ import Button from "../../forms/Button";
 import {VscJson} from "react-icons/vsc";
 import DataTreeDialog from "../../dialog/DataTreeDialog";
 import SessionRowCardInfo from "../../details/SessionRowCardInfo";
+import Tag from "../../misc/Tag";
+import {capitalizeString} from "../../misc/EventTypeTag";
 
 export default function SessionRow({session, filterFields}) {
 
@@ -28,7 +30,7 @@ export default function SessionRow({session, filterFields}) {
             <div style={{flex: "2 1 0", width: "100%", paddingLeft: 15, display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
                 <div>
                     <div style={{paddingRight: 15, marginBottom: 10}}>
-                        <PropertyField content={<span style={{fontSize: "110%", fontWeight: 500}}>{session.id}</span>}
+                        <PropertyField content={<><span style={{fontSize: "110%", fontWeight: 500}}>{session.id}</span> {session.metadata.status && <Tag style={{fontSize: 13, marginLeft: 10}}>{capitalizeString(session.metadata.status)}</Tag>}</>}
                                        drawerSize={1300} underline={false}>
                             <SessionDetails data={session}/>
                         </PropertyField>
