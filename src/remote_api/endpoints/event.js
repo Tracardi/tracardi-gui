@@ -21,13 +21,12 @@ export function getEventDebugLogs(eventId) {
 }
 
 export function getEventsCount() {
-    return { url: "/event/count" }
+    return {url: "/event/count"}
 }
 
 export function getEventsAvg() {
-    return { url: "/event/avg/requests" }
+    return {url: "/event/avg/requests"}
 }
-
 
 export function getEventsToProfileCopy(settings) {
     return {
@@ -58,8 +57,32 @@ export function getEventTypePredefinedProps(eventType) {
     }
 }
 
-export function  getEventByTypeAgg(size) {
+export function getEventByTypeAgg() {
     return {
-        url: "/events/by_type?size="+size
+        url: "/events/by_type"
+    }
+}
+
+export function getEventByOsName() {
+    return {
+        url: "/events/by_os_name"
+    }
+}
+
+export function getEventByDeviceGeo() {
+    return {
+        url: "/events/by_device_geo"
+    }
+}
+
+export function getEventByChannel() {
+    return {
+        url: "/events/by_channel"
+    }
+}
+
+export function getEventByResolution() {
+    return {
+        url: "/events/by_resolution"
     }
 }

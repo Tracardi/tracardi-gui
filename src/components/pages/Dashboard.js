@@ -7,9 +7,19 @@ import {styled} from '@mui/material/styles';
 import Paper from "@mui/material/Paper";
 import OnlineSessionCounter from "../elements/metrics/OnlineSessionsCounter";
 import {AggregationTable} from "../elements/tables/EventByType";
-import {getEventByTypeAgg} from "../../remote_api/endpoints/event";
+import {
+    getEventByChannel,
+    getEventByDeviceGeo,
+    getEventByOsName, getEventByResolution,
+    getEventByTypeAgg
+} from "../../remote_api/endpoints/event";
 import {useFetch} from "../../remote_api/remoteState";
-import {getSessionsByApp} from "../../remote_api/endpoints/session";
+import {
+    getSessionsByApp,
+    getSessionsByChannel,
+    getSessionsByDeviceGeo,
+    getSessionsByOsName, getSessionsByResolution
+} from "../../remote_api/endpoints/session";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 
 const Item = styled(Paper)(({theme, style}) => ({
@@ -67,7 +77,7 @@ function SessionsByApp() {
     const {data, isLoading, error} = useFetch(
         ["sessionsByApp"],
         getSessionsByApp(20),
-        data => data.browsers
+        data => data
     )
 
     if(error) {
@@ -99,7 +109,7 @@ function EventsByType() {
 
     const {data, isLoading, error} = useFetch(
         ["eventByType"],
-        getEventByTypeAgg(20),
+        getEventByTypeAgg(),
         data => data
     )
 
@@ -117,11 +127,11 @@ function EventsByType() {
     </>
 }
 
-function Charts() {
+function Charts1() {
 
     const colorsList = [
 
-        '#3d5afe', "#A0F9FF",
+        '#3d5afe',
         "#8bc34a",
         "#4caf50",
         "#f44336",
@@ -129,6 +139,7 @@ function Charts() {
         "#FFB178",
         "#FF78B1",
         "#FF3C8E",
+        "#A0F9FF",
         "#A0BBFF", "#EC77FF", "#7795FF",'#3B82F6',
 
     ]
@@ -215,6 +226,79 @@ function Charts() {
     </>
 }
 
+function Charts2() {
+
+    const colorsList = [
+
+        '#3d5afe',
+        "#8bc34a",
+        "#4caf50",
+        "#f44336",
+        "#ff9800",
+        "#FFB178",
+        "#FF78B1",
+        "#FF3C8E",
+        "#A0F9FF",
+        "#A0BBFF", "#EC77FF", "#7795FF",'#3B82F6',
+
+    ]
+
+
+    const {data: byGeoLocation, isLoading: loadingByGeoLocation} = useFetch(
+        ["byGeoLocation"],
+        getSessionsByDeviceGeo(),
+        data => data
+    )
+
+    const {data: byOsName, isLoading: loadingByOsName} = useFetch(
+        ["byOsName"],
+        getSessionsByOsName(),
+        data => data
+    )
+
+    const {data: byChannel, isLoading: loadingByChannel} = useFetch(
+        ["byChannel"],
+        getSessionsByChannel(),
+        data => data
+    )
+
+    const {data: byResolution, isLoading: loadingByResolution} = useFetch(
+        ["byResolution"],
+        getSessionsByResolution(),
+        data => data
+    )
+
+    return <>
+        <Grid item xs={12} md={6} lg={3}>
+            <Item elevation={0}>
+                <LoadablePieChart header="No of session" subHeader="by system name" loading={loadingByOsName}
+                                  data={byOsName} colors={colorsList}/>
+            </Item>
+        </Grid>
+        <Grid item xs={12} md={6} lg={3}>
+            <Item elevation={0}>
+                <LoadablePieChart header="No of sessions" subHeader="by device location" loading={loadingByGeoLocation}
+                                  data={byGeoLocation}
+                                  colors={colorsList}/>
+            </Item>
+        </Grid>
+        <Grid item xs={12} md={6} lg={3}>
+            <Item elevation={0}>
+                <LoadablePieChart header="No of sessions" subHeader="by channel" loading={loadingByChannel}
+                                  data={byChannel}
+                                  colors={colorsList}/>
+            </Item>
+        </Grid>
+        <Grid item xs={12} md={6} lg={3}>
+            <Item elevation={0}>
+                <LoadablePieChart header="No of sessions" subHeader="by screen resolution" loading={loadingByResolution}
+                                  data={byResolution}
+                                  colors={colorsList}/>
+            </Item>
+        </Grid>
+    </>
+}
+
 export default function Dashboard() {
 
     return <div style={{display: "flex", flexDirection: "column", height: "100%"}}>
@@ -233,7 +317,10 @@ export default function Dashboard() {
                     </Item>
                 </Grid>
                 <Grid container item spacing={1}>
-                    <Charts/>
+                    <Charts1/>
+                </Grid>
+                <Grid container item spacing={1}>
+                    <Charts2/>
                 </Grid>
                 {/*<Grid container item spacing={1}>*/}
                 {/*    <Grid item xs={3}>*/}

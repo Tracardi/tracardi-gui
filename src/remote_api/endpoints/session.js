@@ -28,3 +28,27 @@ export function  getSessionsByApp(size) {
         url: "/sessions/count/by_app?size="+size
     }
 }
+
+export function getSessionsByOsName() {
+    return {
+        url: "/sessions/count/by_os_name"
+    }
+}
+
+export function getSessionsByDeviceGeo() {
+    return {
+        url: "/sessions/count/by_device_geo"
+    }
+}
+
+export function getSessionsByChannel() {
+    return {
+        url: "/sessions/count/by_channel"
+    }
+}
+
+export function getSessionsByResolution() {
+    return {
+        url: "/sessions/count/by_resolution"
+    }
+}
