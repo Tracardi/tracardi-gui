@@ -57,31 +57,49 @@ export function getEventTypePredefinedProps(eventType) {
     }
 }
 
-export function getEventByTypeAgg() {
+export function getEventsByTag() {
+    return {
+        url: "/events/by_tag"
+    }
+}
+
+export function getEventsByType() {
     return {
         url: "/events/by_type"
     }
 }
 
-export function getEventByOsName() {
+export function getEventsByStatus() {
+    return {
+        url: "/events/by_status"
+    }
+}
+
+export function getEventsBySource() {
+    return {
+        url: "/events/by_source"
+    }
+}
+
+export function getEventsByOsName() {
     return {
         url: "/events/by_os_name"
     }
 }
 
-export function getEventByDeviceGeo() {
+export function getEventsByDeviceGeo() {
     return {
         url: "/events/by_device_geo"
     }
 }
 
-export function getEventByChannel() {
+export function getEventsByChannel() {
     return {
         url: "/events/by_channel"
     }
 }
 
-export function getEventByResolution() {
+export function getEventsByResolution() {
     return {
         url: "/events/by_resolution"
     }

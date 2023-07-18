@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from "react";
-import {asyncRemote} from "../../remote_api/entrypoint";
+import React from "react";
 import EventTimeLine from "../elements/charts/EventsTimeLine";
 import {LoadablePieChart} from "../elements/charts/PieChart";
 import Grid from "@mui/material/Grid";
@@ -8,10 +7,9 @@ import Paper from "@mui/material/Paper";
 import OnlineSessionCounter from "../elements/metrics/OnlineSessionsCounter";
 import {AggregationTable} from "../elements/tables/EventByType";
 import {
-    getEventByChannel,
-    getEventByDeviceGeo,
-    getEventByOsName, getEventByResolution,
-    getEventByTypeAgg
+    getEventsBySource,
+    getEventsByStatus,
+    getEventsByTag, getEventsByType
 } from "../../remote_api/endpoints/event";
 import {useFetch} from "../../remote_api/remoteState";
 import {
@@ -109,7 +107,7 @@ function EventsByType() {
 
     const {data, isLoading, error} = useFetch(
         ["eventByType"],
-        getEventByTypeAgg(),
+        getEventsByType(),
         data => data
     )
 
@@ -144,82 +142,54 @@ function Charts1() {
 
     ]
 
-    const [eventsByTag, setEventsByTag] = useState([]);
-    const [eventsBySource, setEventsBySource] = useState([]);
-    const [eventsByStatus, setEventsByStatus] = useState([]);
-    const [loadingByTag, setLoadingByTag] = useState(false);
-    const [loadingBySource, setLoadingBySource] = useState(false);
-    const [loadingByStatus, setLoadingByStatus] = useState(false);
+    const {data: byApp, isLoading: loadingByApp} = useFetch(
+        ["sessionsByApp"],
+        getSessionsByApp(20),
+        data => data
+    )
 
+    const {data: byTag, isLoading: loadingByTag} = useFetch(
+        ["eventsByTag"],
+        getEventsByTag(),
+        data => data
+    )
 
-    useEffect(() => {
-        setLoadingByTag(true);
-        asyncRemote({
-            url: "/events/by_tag"
-        }).then((response) => {
-            if (response) {
-                setEventsByTag(response.data)
-            }
-        }).catch(() => {
+    const {data: byStatus, isLoading: loadingByStatus} = useFetch(
+        ["eventsByStatus"],
+        getEventsByStatus(),
+        data => data
+    )
 
-        }).finally(() => {
-            setLoadingByTag(false)
-        })
-    }, [])
-
-    useEffect(() => {
-        setLoadingByStatus(true);
-        asyncRemote({
-            url: "/events/by_status"
-        }).then((response) => {
-            if (response) {
-                setEventsByStatus(response.data)
-            }
-        }).catch(() => {
-
-        }).finally(() => {
-            setLoadingByStatus(false)
-        })
-    }, [])
-
-    useEffect(() => {
-        setLoadingBySource(true);
-        asyncRemote({
-            url: "/events/by_source"
-        }).then((response) => {
-            if (response) {
-                setEventsBySource(response.data);
-            }
-        }).catch(() => {
-
-        }).finally(() => {
-            setLoadingBySource(false)
-        })
-    }, [])
+    const {data: bySource, isLoading: loadingBySource} = useFetch(
+        ["eventsByStatus"],
+        getEventsBySource(),
+        data => data
+    )
 
     return <>
         <Grid item xs={12} md={6} lg={3}>
             <Item elevation={0}>
-                <SessionsByApp/>
+                <LoadablePieChart header="No of sessions" subHeader="by application" loading={loadingByApp}
+                                  data={byApp || []} colors={colorsList}/>
             </Item>
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
             <Item elevation={0}>
-                <LoadablePieChart header="No of event" subHeader="by status" loading={loadingByStatus}
-                                  data={eventsByStatus} colors={colorsList}/>
+                <LoadablePieChart header="No of events" subHeader="by status" loading={loadingByStatus}
+                                  data={byStatus || []} colors={colorsList}/>
             </Item>
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
             <Item elevation={0}>
                 <LoadablePieChart header="No of events" subHeader="by tag" loading={loadingByTag}
-                                  data={eventsByTag}
+                                  data={byTag || []}
                                   colors={colorsList}/>
             </Item>
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
             <Item elevation={0}>
                 <LoadablePieChart header="No of events" subHeader="by source" loading={loadingBySource}
-                                  data={eventsBySource}
+                                  data={bySource || []}
                                   colors={colorsList}/>
             </Item>
         </Grid>
@@ -245,25 +215,25 @@ function Charts2() {
 
 
     const {data: byGeoLocation, isLoading: loadingByGeoLocation} = useFetch(
-        ["byGeoLocation"],
+        ["sessionsByGeoLocation"],
         getSessionsByDeviceGeo(),
         data => data
     )
 
     const {data: byOsName, isLoading: loadingByOsName} = useFetch(
-        ["byOsName"],
+        ["sessionsByOsName"],
         getSessionsByOsName(),
         data => data
     )
 
     const {data: byChannel, isLoading: loadingByChannel} = useFetch(
-        ["byChannel"],
+        ["sessionsByChannel"],
         getSessionsByChannel(),
         data => data
     )
 
     const {data: byResolution, isLoading: loadingByResolution} = useFetch(
-        ["byResolution"],
+        ["sessionsByResolution"],
         getSessionsByResolution(),
         data => data
     )
@@ -272,27 +242,27 @@ function Charts2() {
         <Grid item xs={12} md={6} lg={3}>
             <Item elevation={0}>
                 <LoadablePieChart header="No of session" subHeader="by system name" loading={loadingByOsName}
-                                  data={byOsName} colors={colorsList}/>
+                                  data={byOsName || []} colors={colorsList}/>
             </Item>
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
             <Item elevation={0}>
                 <LoadablePieChart header="No of sessions" subHeader="by device location" loading={loadingByGeoLocation}
-                                  data={byGeoLocation}
+                                  data={byGeoLocation || []}
                                   colors={colorsList}/>
             </Item>
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
             <Item elevation={0}>
                 <LoadablePieChart header="No of sessions" subHeader="by channel" loading={loadingByChannel}
-                                  data={byChannel}
+                                  data={byChannel || []}
                                   colors={colorsList}/>
             </Item>
         </Grid>
         <Grid item xs={12} md={6} lg={3}>
             <Item elevation={0}>
                 <LoadablePieChart header="No of sessions" subHeader="by screen resolution" loading={loadingByResolution}
-                                  data={byResolution}
+                                  data={byResolution || []}
                                   colors={colorsList}/>
             </Item>
         </Grid>
