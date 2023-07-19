@@ -97,8 +97,9 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
                         <div style={{
                             alignSelf: "center",
                             paddingLeft: 8,
-                            paddingRight: 8
-                        }}>{event?.metadata?.time?.insert?.substring(11, 19)}</div>
+                            paddingRight: 8,
+                            width: 300
+                        }}><DateValue date={event?.metadata?.time?.insert}/></div>
                         <StepLabel
                             StepIconComponent={() => stepIconComponent(event)}
                         >
