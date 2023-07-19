@@ -161,7 +161,7 @@ function Charts1() {
     )
 
     const {data: bySource, isLoading: loadingBySource} = useFetch(
-        ["eventsByStatus"],
+        ["eventsBySource"],
         getEventsBySource(),
         data => data
     )
