@@ -89,7 +89,7 @@ export default function FlowDetails({id, onDeleteComplete}) {
             <TuiFormGroupHeader header="Workflow" description="Information on workflow"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Data">
-                    <Properties properties={data} show={["id", "timestamp", "name", "description", "type"]}/>
+                    <Properties properties={data} show={["id", "timestamp", "deploy_timestamp", "name", "description", "type"]}/>
                     <Rows style={{marginTop: 20}}>
                         <Button onClick={onEditClick}
                                 icon={<VscEdit size={20}/>}

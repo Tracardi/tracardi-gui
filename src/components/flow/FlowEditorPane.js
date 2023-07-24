@@ -269,6 +269,8 @@ export function FlowEditorPane(
                         version: data?.wf_schema?.version,
                         server_version: data?.wf_schema?.server_version
                     },
+                    timestamp: data?.timestamp || null,
+                    deploy_timestamp: data?.deploy_timestamp || null,
                     name: data?.name,
                     description: data?.description,
                     projects: data?.projects,

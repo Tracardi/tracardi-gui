@@ -27,6 +27,8 @@ export function prepareFlowPayload(id, flowMetaData, reactFlowInstance) {
             uri: flowMetaData?.wf_schema?.uri,
             version: flowMetaData?.wf_schema?.version
         },
+        timestamp:flowMetaData?.timestamp || null,
+        deploy_timestamp:flowMetaData?.deploy_timestamp || null,
         name: flowMetaData?.name,
         description: flowMetaData?.description,
         flowGraph: prepareGraph(reactFlowInstance),
@@ -36,6 +38,7 @@ export function prepareFlowPayload(id, flowMetaData, reactFlowInstance) {
 }
 
 export function save(id, flowMetaData, reactFlowInstance, onError, onReady, progress, deploy = false) {
+
     const payload = prepareFlowPayload(id, flowMetaData, reactFlowInstance)
     progress(true);
     asyncRemote({
