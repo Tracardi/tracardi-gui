@@ -1,7 +1,6 @@
 import React from "react";
 import {Stepper, Step, StepLabel} from "@mui/material";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import "./SessionStepper.css";
 import Button from "../forms/Button";
 import {FiMoreHorizontal} from "react-icons/fi";
 import DateValue from "../misc/DateValue";
@@ -9,6 +8,8 @@ import {useFetch} from "../../../remote_api/remoteState";
 import {getSessionEvents} from "../../../remote_api/endpoints/session";
 import FetchError from "../../errors/FetchError";
 import {capitalizeString} from "../misc/EventTypeTag";
+import "./SessionStepper.css";
+import {BsGear} from "react-icons/bs";
 
 export default function SessionStepper({session, profileId, onEventSelect}) {
 
@@ -61,6 +62,9 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
     }
 
     const stepIconComponent = event => {
+        if(event?.source?.id.startsWith("@internal")) {
+            return <BsGear size={12} style={{marginRight: 10}}/>
+        }
         return <div className="StepIcon" style={{
             backgroundColor: {
                 collected: "#006db3",

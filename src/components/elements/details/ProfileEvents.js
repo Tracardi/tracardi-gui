@@ -7,8 +7,12 @@ import {useFetch} from "../../../remote_api/remoteState";
 import {getProfileEvents} from "../../../remote_api/endpoints/profile";
 import EventDetailsDialog from "../dialog/EventDetailsDialog";
 import {capitalizeString} from "../misc/EventTypeTag";
+import {BsGear} from "react-icons/bs";
 
 const stepIconComponent = event => {
+    if(event?.source?.id.startsWith("@internal")) {
+        return <BsGear size={12} style={{marginRight: 10}}/>
+    }
     return <div className="EventIcon" style={{
         backgroundColor: {
             collected: "#006db3",

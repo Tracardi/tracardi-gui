@@ -127,9 +127,9 @@ export default function EventToProfileForm({
                     />
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Description"
-                                   description="Be as descriptive as possible. E.g. Copies: name, price and quantity.">
+                                   description="Be as descriptive as possible. E.g. Copies: name, email to profile.">
                     <TextField variant="outlined"
-                               label="Schema description"
+                               label="Description"
                                multiline
                                rows={5}
                                value={description}
