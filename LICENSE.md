@@ -30,6 +30,6 @@ For purposes of the foregoing, “Sell” means practicing any or all of the rig
 
 Software: Tracardi
 
-License: MIT
+License: MIT + CC
 
 Licensor: Risto Kowaczewski
