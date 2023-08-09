@@ -99,7 +99,7 @@ const EventTypesToRules = () => {
 
         </TuiForm>}
 
-    return <NoData header="No routing rules defined"/>
+    return <NoData header="No triggers defined"/>
 }
 
 export default EventTypesToRules;

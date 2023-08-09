@@ -285,9 +285,9 @@ const RoutingFlow = ({event}) => {
                 />
                 <ProcessStep step={"6"}
                              label="Workflow"
-                             optional="How the event was routed to the workflow to be processed?"
+                             optional="Does the event trigger any workflow?"
                              endpoint={{url: `/rules/by_event_type/${event.type}`}}
-                             nodata="This event is not routed any to workflow"
+                             nodata="This event does not trigger any to workflow"
                              passData={true}
                              details={PreviewFlow}
                              add={RuleForm}

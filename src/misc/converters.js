@@ -1,6 +1,18 @@
 import {isObject} from "./typeChecking";
 import {objectMap} from "./mappers";
 
+export function convertNamedEntityToIdName(entities) {
+    const obj = {};
+
+    entities.forEach(item => {
+        const { id, name } = item;
+        obj[id] = name;
+    });
+
+    return obj;
+}
+
+
 export function convertResponseToAutoCompleteOptions(response) {
     if (Array.isArray(response.data?.result)) {
         return response.data?.result.map((key) => {

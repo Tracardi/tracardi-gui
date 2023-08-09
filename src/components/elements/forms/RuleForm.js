@@ -16,11 +16,18 @@ import ShowHide from "../misc/ShowHide";
 import MenuItem from "@mui/material/MenuItem";
 import * as yup from 'yup';
 import {getValueIfExists} from "../../../misc/values";
+import {
+    getRequiredEntityNameSchema,
+    getRequiredStringSchema,
+    validateYupSchema
+} from "../../../misc/validators";
+import AutoComplete from "./AutoComplete";
+import {BsStar} from "react-icons/bs";
 
 function SegmentTriggerForm({
                                 data: _data,
                                 properties: _properties,
-                                flowErrorMessage,
+                                errors,
                                 onChange
                             }) {
 
@@ -40,12 +47,18 @@ function SegmentTriggerForm({
     return <TuiFormGroupContent>
         <TuiFormGroupField header="Segment name"
                            description="Type segment name which will trigger the workflow when added.">
-            <TextField
-                variant="outlined"
-                size="small"
-                fullWidth
-                value={data?.segment}
-                onChange={(ev) => setValue('segment', ev.target.value)}
+
+            <AutoComplete
+                endpoint={{
+                    url: '/segments/metadata'
+                }}
+                placeholder="Segment"
+                value={data?.segment || {}}
+                onlyValueWithOptions={false}
+                initValue={data?.segment || {}}
+                onSetValue={(value) => setValue('segment', value)}
+                onChange={(value) => setValue('segment', value)}
+                error={getValueIfExists(errors, 'segment.name')}
             />
 
         </TuiFormGroupField>
@@ -53,7 +66,7 @@ function SegmentTriggerForm({
                            description="Select existing workflow. If there is none create it on workflow page.">
             <div className="SearchInput">
                 <TuiSelectFlow value={data?.flow}
-                               errorMessage={flowErrorMessage}
+                               errorMessage={getValueIfExists(errors, 'flow.name')}
                                onSetValue={value => setValue('flow', value)}
                                type="collection"
                 />
@@ -71,7 +84,6 @@ function EventTriggerForm({
                               onChange
                           }) {
 
-    console.log("EventTriggerForm render", errors)
     const [data, setData] = useState(_data)
     const [properties, setProperties] = useState(_properties)
 
@@ -126,7 +138,7 @@ function EventTriggerForm({
                            description="Select consents that are required to route selected event type. Leave empty if none is required.">
             <TuiSelectMultiConsentType
                 label="Required consents"
-                value={properties?.consents}
+                value={properties?.consents || []}
                 fullWidth={true}
                 onSetValue={value => setConsents(value)}
             />
@@ -137,15 +149,13 @@ function EventTriggerForm({
 
 export default function RuleForm({onSubmit, data: _data}) {
 
-
-
     const defaultData = {
-        type: "event",
+        type: "event-collect",
         event_type: {},
         source: {},
         flow: {},
         properties: [],
-        segment: "",
+        segment: {},
         name: "",
         description: "",
         tags: []
@@ -158,10 +168,8 @@ export default function RuleForm({onSubmit, data: _data}) {
 
     const [trigger, setTrigger] = useState(_data)
     const [processing, setProcessing] = useState(false);
-    const [errors, setErrors] = useState({})
+    const [errors, setErrors] = useState(null)
     const [responseError, setResponseError] = useState(null)
-
-    console.log("RuleForm render", trigger)
 
     const mounted = useRef(false);
 
@@ -174,94 +182,119 @@ export default function RuleForm({onSubmit, data: _data}) {
     }, []);
 
     const handleTypeChange = (value) => {
+        setErrors(null)
+        setResponseError(null)
         setTrigger({...trigger, type: value})
     }
 
-    function convertErrorsToKeyValue(errorsArray) {
-        const errorsObject = {};
+    const handleSave = async (url, payload) => {
+        try {
+            setProcessing(true);
+            const response = await asyncRemote({
+                url: url,
+                method: "post",
+                data: payload
+            })
 
-        errorsArray.forEach(error => {
-            const { field, message } = error;
-            errorsObject[field] = message;
-        });
-
-        return errorsObject;
+            if (response.data && mounted.current && onSubmit instanceof Function) {
+                onSubmit(response.data)
+            }
+        } catch (e) {
+            if (e && mounted.current) {
+                setResponseError(getError(e));
+            }
+        } finally {
+            if(mounted.current) {
+                setProcessing(false)
+            }
+        }
     }
 
     const handleSubmit = async () => {
 
-        const entitySchema = yup.object().shape({
-            name: yup.string().required('Can not be empty'),
-        });
+        const entitySchema = getRequiredEntityNameSchema()
+        const requiredString = getRequiredStringSchema()
 
-        const schema = yup.object().shape({
-            flow: entitySchema,
-            event_type: entitySchema,
-            source: entitySchema,
-            type: yup.string().required('Type is required'),
-        });
+        if(trigger.type === 'event-collect') {
 
-        const _errors = await schema.validate(trigger, { abortEarly: false })
-            .then(() => null)
-            .catch(validationError => {
-                const errors = validationError.inner.map(error => {
-                    return {
-                        field: error.path,
-                        message: error.message,
-                    };
-                });
-
-                return convertErrorsToKeyValue(errors)
-
+            const schema = yup.object().shape({
+                flow: entitySchema,
+                event_type: entitySchema,
+                source: entitySchema,
+                type: requiredString,
             });
 
-        if (!isEmptyObjectOrNull(_errors)) {
-            setErrors(_errors)
-        } else {
-            setErrors({})
+            const _errors = await validateYupSchema(schema, trigger)
 
-            const payload = {
-                ...trigger,
-                id: (!trigger?.id) ? uuid4() : trigger.id,
-                source: (trigger?.source?.id) ? trigger.source : null,
-            };
+            if (!isEmptyObjectOrNull(_errors)) {
+                setErrors(_errors)
+            } else {
+                setErrors(null)
 
-            console.log(payload)
+                const payload = {
+                    type: trigger.type,
+                    event_type: trigger.event_type,
+                    source: (trigger?.source?.id) ? trigger.source : null,
+                    flow: trigger.flow,
+                    properties: trigger.properties || [],
+                    name: trigger.name,
+                    description: trigger.description,
+                    tags: trigger.tags,
+                    id: (!trigger?.id) ? uuid4() : trigger.id,
 
-            try {
-                setProcessing(true);
-                const response = await asyncRemote({
-                    url: "/rule",
-                    method: "post",
-                    data: payload
-                })
+                    segment: {id: "", name: ""},
+                };
 
-                if (response.data && mounted.current && onSubmit instanceof Function) {
-                    onSubmit(response.data)
-                }
-            } catch (e) {
-                if (e && mounted.current) {
-                    setResponseError(getError(e));
-                }
-            } finally {
-                if(mounted.current) {
-                    setProcessing(false)
-                }
+                await handleSave('/rule', payload)
+
+            }
+        } else if (trigger.type === 'segment-add') {
+
+            const schema = yup.object().shape({
+                flow: entitySchema,
+                segment: entitySchema,
+                type: requiredString,
+            });
+
+            const _errors = await validateYupSchema(schema, trigger)
+
+            if (!isEmptyObjectOrNull(_errors)) {
+                setErrors(_errors)
+            } else {
+                setErrors(null)
+
+                const payload = {
+                    type: trigger.type,
+                    segment: trigger.segment,
+                    flow: trigger.flow,
+                    name: trigger.name,
+                    description: trigger.description,
+                    tags: trigger.tags,
+                    id: (!trigger?.id) ? uuid4() : trigger.id,
+
+                    event_type:  {id: "", name: ""},
+                    source:  {id: "", name: ""},
+                    properties: [],
+                };
+
+                await handleSave('/rule', payload)
+
             }
         }
 
 
+
+
     }
 
-    const handleEventTriggerChange = (value) => {
+    const handleDataChange = (value) => {
         setTrigger({...trigger, ...value})
     }
 
     return <TuiForm style={{margin: 20}}>
 
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Trigger settings" description="Workflow engine will trigger selected flow
-            only if incoming event type and resource are equal to the values set in this form. "/>
+            <TuiFormGroupHeader header="Trigger settings"/>
             {responseError && <ErrorsBox errorList={responseError} style={{borderRadius: 0}}/>}
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Trigger type" description="What should trigger the workflow.">
@@ -273,12 +306,16 @@ export default function RuleForm({onSubmit, data: _data}) {
                         style={{width: 250}}
                         onChange={(ev) => handleTypeChange(ev.target.value)}
                     >
-                        <MenuItem value={"event"} selected>Collected Event</MenuItem>
-                        <MenuItem value={"segment-add"}>Added Segment</MenuItem>
+                        <MenuItem value="event-collect" selected>Collected Event</MenuItem>
+                        <MenuItem value="segment-add"><span className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Added Segment</span></MenuItem>
                     </TextField>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
-            {trigger.type == "event"
+
+
+        </TuiFormGroup>
+        <TuiFormGroup>
+            {trigger.type === "event-collect"
                 ? <EventTriggerForm
                     data={{
                         flow: trigger?.flow,
@@ -287,16 +324,13 @@ export default function RuleForm({onSubmit, data: _data}) {
                     }}
                     properties={trigger?.properties || []}
                     errors={errors}
-                    onChange={handleEventTriggerChange}
+                    onChange={handleDataChange}
                 />
-                : <SegmentTriggerForm date={{
-                    flow: trigger?.flow,
-                    segment: trigger?.segment || ""
-                }}
-                                      errors={errors}
-                                      segmentErrorMessage={""}
+                : <SegmentTriggerForm
+                    data={{flow: trigger?.flow || {}, segment: trigger?.segment || {}}}
+                    errors={errors}
+                    onChange={handleDataChange}
                 />}
-
         </TuiFormGroup>
         <ShowHide label="Custom description" style={{marginBottom: 10}}>
             <TuiFormGroup>

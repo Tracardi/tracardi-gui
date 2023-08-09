@@ -250,7 +250,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
             open={rulesOpened}>
             {rulesOpened && <div style={{padding: 15}}>
                 <div style={{padding: "10px 0", display: "flex", justifyContent: "flex-end"}}>
-                    <Button label="Add routing rule"
+                    <Button label="Add trigger"
                             onClick={() => {
                                 setOpenRuleForm(true)
                             }}
@@ -258,7 +258,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                 </div>
                 <TuiForm>
                     <TuiFormGroup>
-                        <TuiFormGroupHeader header="Routing Rules" description="Information on rules connected to workflow"/>
+                        <TuiFormGroupHeader header="Trigger Rules" description="Information on workflow triggers"/>
                         <TuiFormGroupContent>
                             <TuiFormGroupField header="Active rules" description="Rules that trigger this flow">
                                 <FlowRules flowName={flowMetaData?.name} id={flowId} refresh={refresh}/>

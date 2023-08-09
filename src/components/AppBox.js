@@ -52,7 +52,7 @@ const PredefinedEventTypes = React.lazy(() => import("./pages/PredefinedEventTyp
 const Deployment = React.lazy(() => import("./pages/Deployment"))
 const Settings = React.lazy(() => import("./pages/Settings"))
 const TestEditor = React.lazy(() => import("./pages/TestEditor"))
-const Scheduler = React.lazy(() => import("./pages/Scheduler"))
+// const Scheduler = React.lazy(() => import("./pages/Scheduler"))
 const ConsentsDataCompliance = React.lazy(() => import("./pages/ConsentsCompliance"))
 
 export const DataContext = createContext(null);
@@ -174,8 +174,21 @@ const AppBox = () => {
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
                                 <EventTypesToRules/>, "/event/routing", "Event Routing Summary"),
+                        ]}
+                        />
+                    </Suspense>
+                </ErrorBoundary>
+            </PrivateRoute>
+
+            {/*Triggers*/}
+
+            <PrivateRoute path={urlPrefix("/triggers")} roles={["admin", "developer"]}>
+                <ErrorBoundary>
+                    <Suspense fallback={<CenteredCircularProgress/>}>
+                        <TopBar>Triggers</TopBar>
+                        <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
-                                <Rules/>, "/processing/routing", "Workflow Routing Rules"),
+                                <Rules/>, "/processing/routing", "Workflow Trigger Rules"),
                         ]}
                         />
                     </Suspense>

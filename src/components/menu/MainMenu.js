@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import "./MainMenu.css";
-import {BsBarChartFill, BsFolder, BsGear} from "react-icons/bs";
+import {BsBarChartFill, BsFolder} from "react-icons/bs";
 import { useNavigate, useLocation } from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import version from '../../misc/version';
@@ -9,7 +9,7 @@ import {BsPersonCircle, BsFileEarmarkArrowUp} from "react-icons/bs";
 import {VscPulse, VscTools, VscOrganization} from "react-icons/vsc";
 import {IoGitNetworkSharp, IoServerOutline} from "react-icons/io5";
 import {VscDashboard} from "react-icons/vsc";
-import {BsClipboardCheck, BsBoxArrowRight, BsBoxArrowInRight} from "react-icons/bs";
+import {BsClipboardCheck, BsBoxArrowRight, BsBoxArrowInRight, BsPlayCircle} from "react-icons/bs";
 import { getRoles } from "../authentication/login";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote, getError} from "../../remote_api/entrypoint";
@@ -128,12 +128,12 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
                 {!window?.CONFIG?.menu?.transformations?.disable && <MenuRow icon={<FlowNodeIcons icon="map-properties"  size={20}/>} label="Mapping" collapsed={collapsed} onClick={go("/transformations")} route="/transformations" roles={["admin", "developer"]}/>}
 
                 {!window?.CONFIG?.menu?.identification?.disable && <MenuRow icon={<FlowNodeIcons icon="identity"  size={20}/>} label="Identification" collapsed={collapsed} onClick={go("/identification")} route="/identification" roles={["admin", "developer"]}/>}
-
                 {!window?.CONFIG?.menu?.data?.disable && <MenuRow icon={<BsFolder size={20}/>} label="Data" collapsed={collapsed} onClick={go("/data")} route="/data" roles={["admin", "developer", "marketer"]}/>}
-                {!window?.CONFIG?.menu?.integration?.disable && <MenuRow icon={<VscOrganization size={20}/>} label="Segmentation" collapsed={collapsed} onClick={go("/segmentation")} route="/segmentation" roles={["admin", "developer"]}/>}
+                {!window?.CONFIG?.menu?.triggers?.disable && <MenuRow icon={<BsPlayCircle size={20}/>} label="Triggers" collapsed={collapsed} onClick={go("/triggers")} route="/triggers" roles={["admin", "developer"]} />}
+                {!window?.CONFIG?.menu?.integration?.disable && <MenuRow icon={<VscOrganization size={20}/>} label="Segmentation" collapsed={collapsed} onClick={go("/segmentation")} route="/segmentation" roles={["admin", "developer"]} />}
                 {!window?.CONFIG?.menu?.integration?.disable && <MenuRow icon={<IoGitNetworkSharp size={20}/>} label="Automation" collapsed={collapsed} onClick={go("/processing")} route="/processing" roles={["admin", "developer"]}/>}
-
                 {!window?.CONFIG?.menu?.outbound?.disable && <MenuRow icon={<BsBoxArrowRight size={20}/>} label="Outbound Traffic" collapsed={collapsed} onClick={go("/outbound")} route="/outbound" roles={["admin", "developer"]}/>}
+
 
                 {!window?.CONFIG?.menu?.routing?.disable && <MenuRow icon={<FaUncharted size={20}/>} label="Routing" collapsed={collapsed} onClick={go("/routing")} route="/routing" roles={["admin", "developer"]} style={{marginTop: 20}}/>}
                 {!window?.CONFIG?.menu?.reporting?.disable && <MenuRow icon={<BsBarChartFill size={20}/>} label="Reporting" collapsed={collapsed} onClick={go("/reporting")} route="/reporting" roles={["admin", "developer", "marketer"]} />}

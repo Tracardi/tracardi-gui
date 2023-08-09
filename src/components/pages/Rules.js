@@ -19,7 +19,7 @@ export default function Rules() {
     const confirm = useConfirm();
 
     const handleDelete = async (id) => {
-        confirm({title: "Do you want to delete this rule?", description: "This action can not be undone."})
+        confirm({title: "Do you want to delete this trigger rule?", description: "This action can not be undone."})
             .then(async () => {
                     try {
                         await asyncRemote({
@@ -65,6 +65,7 @@ export default function Rules() {
                                            status={row?.enabled}
                                            onClick={() => onClick(row?.id)}
                                            onDelete={handleDelete}
+                                           tags={[row.type]}
                         />
                     })}
                 </div>
@@ -73,19 +74,19 @@ export default function Rules() {
     }
 
     return <CardBrowser
-        label="Routing Rules"
-        description="Routing rules connect incoming events with the workflows. Routing defines which workflow is to be
-        executed when an event reaches the system. It consist of a condition and a workflow name.
-        If a condition is met then the flow is triggered. "
+        label="Trigger Rules"
+        description="Triggers prompt workflows when special things happen, deciding which one to run based on
+        conditions like specific events or added segments. Each trigger has two parts: one decides when to start,
+        and the other specifies the workflow. If the starting condition is met, the workflow begins."
         urlFunc={urlFunc}
         defaultLayout="rows"
         cardFunc={ruleCards}
         rowFunc={ruleRows}
-        buttonLabel="New routing rule"
+        buttonLabel="New trigger"
         buttonIcon={<FaUncharted size={20}/>}
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
-        drawerAddTitle="New routing rule"
+        drawerAddTitle="New trigger"
         drawerAddWidth={800}
         addFunc={addFunc}
         className="Pad10"
