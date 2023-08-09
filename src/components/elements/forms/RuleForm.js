@@ -15,6 +15,7 @@ import TuiSelectMultiConsentType from "../tui/TuiSelectMultiConsentType";
 import ShowHide from "../misc/ShowHide";
 import MenuItem from "@mui/material/MenuItem";
 import * as yup from 'yup';
+import {getValueIfExists} from "../../../misc/values";
 
 function SegmentTriggerForm({
                                 data: _data,
@@ -61,15 +62,16 @@ function SegmentTriggerForm({
     </TuiFormGroupContent>
 }
 
+
+
 function EventTriggerForm({
                               data: _data,
                               properties: _properties,
-                              typeErrorMessage,
-                              flowErrorMessage,
-                              sourceErrorMessage,
+                              errors,
                               onChange
                           }) {
 
+    console.log("EventTriggerForm render", errors)
     const [data, setData] = useState(_data)
     const [properties, setProperties] = useState(_properties)
 
@@ -100,7 +102,7 @@ function EventTriggerForm({
         <TuiFormGroupField header="Event type" description="Type event type to filter incoming events. If there
                 are no events please start collecting data first.">
             <TuiSelectEventType initValue={data?.event_type?.id ? data?.event_type : {}}
-                                errorMessage={typeErrorMessage}
+                                errorMessage={getValueIfExists(errors, 'event_type.name')}
                                 onSetValue={(value) => setValue('event_type', value)}
                                 onlyValueWithOptions={false}/>
         </TuiFormGroupField>
@@ -108,13 +110,13 @@ function EventTriggerForm({
                     discarded.">
             <TuiSelectEventSource value={data?.source}
                                   onSetValue={(value) => setValue('source', value)}
-                                  errorMessage={sourceErrorMessage}/>
+                                  errorMessage={getValueIfExists(errors, 'source.name')}/>
         </TuiFormGroupField>
         <TuiFormGroupField header="Workflow"
                            description="Select existing workflow. If there is none create it on workflow page.">
             <div className="SearchInput">
                 <TuiSelectFlow value={data?.flow}
-                               errorMessage={flowErrorMessage}
+                               errorMessage={getValueIfExists(errors, 'flow.name')}
                                onSetValue={value => setValue('flow', value)}
                                type="collection"
                 />
@@ -135,6 +137,8 @@ function EventTriggerForm({
 
 export default function RuleForm({onSubmit, data: _data}) {
 
+
+
     const defaultData = {
         type: "event",
         event_type: {},
@@ -152,14 +156,12 @@ export default function RuleForm({onSubmit, data: _data}) {
         ..._data
     }
 
-    console.log(_data)
-
-    const [data, setData] = useState(_data)
-    const [error, setError] = useState(null);
-    const [typeErrorMessage, setTypeErrorMessage] = useState("");
-    const [flowErrorMessage, setFlowErrorMessage] = useState("");
-    const [sourceErrorMessage, setSourceErrorMessage] = useState("");
+    const [trigger, setTrigger] = useState(_data)
     const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState({})
+    const [responseError, setResponseError] = useState(null)
+
+    console.log("RuleForm render", trigger)
 
     const mounted = useRef(false);
 
@@ -172,7 +174,7 @@ export default function RuleForm({onSubmit, data: _data}) {
     }, []);
 
     const handleTypeChange = (value) => {
-        setData({...data, type: value})
+        setTrigger({...trigger, type: value})
     }
 
     function convertErrorsToKeyValue(errorsArray) {
@@ -199,7 +201,8 @@ export default function RuleForm({onSubmit, data: _data}) {
             type: yup.string().required('Type is required'),
         });
 
-        schema.validate(data, { abortEarly: false })
+        const _errors = await schema.validate(trigger, { abortEarly: false })
+            .then(() => null)
             .catch(validationError => {
                 const errors = validationError.inner.map(error => {
                     return {
@@ -208,61 +211,50 @@ export default function RuleForm({onSubmit, data: _data}) {
                     };
                 });
 
-                console.error('Validation errors:', convertErrorsToKeyValue(errors));
+                return convertErrorsToKeyValue(errors)
+
             });
 
+        if (!isEmptyObjectOrNull(_errors)) {
+            setErrors(_errors)
+        } else {
+            setErrors({})
 
-        if (isEmptyObjectOrNull(data.event_type) || isEmptyObjectOrNull(data.source) || isEmptyObjectOrNull(data.flow)) {
+            const payload = {
+                ...trigger,
+                id: (!trigger?.id) ? uuid4() : trigger.id,
+                source: (trigger?.source?.id) ? trigger.source : null,
+            };
 
-            if (isEmptyObjectOrNull(data.source)) {
-                setSourceErrorMessage("Resource can not be empty");
-            } else {
-                setSourceErrorMessage("")
+            console.log(payload)
+
+            try {
+                setProcessing(true);
+                const response = await asyncRemote({
+                    url: "/rule",
+                    method: "post",
+                    data: payload
+                })
+
+                if (response.data && mounted.current && onSubmit instanceof Function) {
+                    onSubmit(response.data)
+                }
+            } catch (e) {
+                if (e && mounted.current) {
+                    setResponseError(getError(e));
+                }
+            } finally {
+                if(mounted.current) {
+                    setProcessing(false)
+                }
             }
-
-            if (isEmptyObjectOrNull(data.event_type)) {
-                setTypeErrorMessage("Event type can not be empty");
-            } else {
-                setTypeErrorMessage("");
-            }
-
-            if (isEmptyObjectOrNull(data.flow)) {
-                setFlowErrorMessage("Flow name can not be empty");
-            } else {
-                setFlowErrorMessage("");
-            }
-
-            return;
         }
 
-        const payload = {
-            ...data,
-            id: (!data?.id) ? uuid4() : data.id,
-            source: (data?.source?.id) ? data.source : null,
-        };
 
-        console.log(payload)
+    }
 
-        // try {
-        //     setProcessing(true);
-        //     const response = await asyncRemote({
-        //         url: "/rule",
-        //         method: "post",
-        //         data: payload
-        //     })
-        //
-        //     if (response.data && mounted.current && onSubmit instanceof Function) {
-        //         onSubmit(response.data)
-        //     }
-        // } catch (e) {
-        //     if (e && mounted.current) {
-        //         setError(getError(e));
-        //     }
-        // } finally {
-        //     if(mounted.current) {
-        //         setProcessing(false)
-        //     }
-        // }
+    const handleEventTriggerChange = (value) => {
+        setTrigger({...trigger, ...value})
     }
 
     return <TuiForm style={{margin: 20}}>
@@ -270,40 +262,38 @@ export default function RuleForm({onSubmit, data: _data}) {
         <TuiFormGroup>
             <TuiFormGroupHeader header="Trigger settings" description="Workflow engine will trigger selected flow
             only if incoming event type and resource are equal to the values set in this form. "/>
-            {error && <ErrorsBox errorList={error} style={{borderRadius: 0}}/>}
+            {responseError && <ErrorsBox errorList={responseError} style={{borderRadius: 0}}/>}
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Trigger type" description="What should trigger the workflow.">
                     <TextField
                         select
                         variant="outlined"
                         size="small"
-                        value={data?.type}
+                        value={trigger?.type}
                         style={{width: 250}}
                         onChange={(ev) => handleTypeChange(ev.target.value)}
                     >
-                        <MenuItem value={"event"} selected>Event</MenuItem>
+                        <MenuItem value={"event"} selected>Collected Event</MenuItem>
                         <MenuItem value={"segment-add"}>Added Segment</MenuItem>
                     </TextField>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
-            {data.type == "event"
+            {trigger.type == "event"
                 ? <EventTriggerForm
                     data={{
-                        flow: data?.flow,
-                        event_type: data.event_type,
-                        source: data.source
+                        flow: trigger?.flow,
+                        event_type: trigger.event_type,
+                        source: trigger.source
                     }}
-                    properties={data?.properties || []}
-                    typeErrorMessage={typeErrorMessage}
-                    flowErrorMessage={flowErrorMessage}
-                    sourceErrorMessage={sourceErrorMessage}
-                    onChange={value => setData({...data, value})}
+                    properties={trigger?.properties || []}
+                    errors={errors}
+                    onChange={handleEventTriggerChange}
                 />
                 : <SegmentTriggerForm date={{
-                    flow: data?.flow,
-                    segment: data?.segment || ""
+                    flow: trigger?.flow,
+                    segment: trigger?.segment || ""
                 }}
-                                      flowErrorMessage={flowErrorMessage}
+                                      errors={errors}
                                       segmentErrorMessage={""}
                 />}
 
@@ -316,9 +306,9 @@ export default function RuleForm({onSubmit, data: _data}) {
                     identifies the trigger.">
                         <TextField
                             label={"Trigger name"}
-                            value={data?.name}
+                            value={trigger?.name}
                             onChange={(ev) => {
-                                setData({...data, name: ev.target.value})
+                                setTrigger({...trigger, name: ev.target.value})
                             }}
                             size="small"
                             variant="outlined"
@@ -329,11 +319,11 @@ export default function RuleForm({onSubmit, data: _data}) {
                                        description="Description will help you to understand when the trigger starts the workflow.">
                         <TextField
                             label={"Trigger description"}
-                            value={data?.description}
+                            value={trigger?.description}
                             multiline
                             rows={3}
                             onChange={(ev) => {
-                                setData({...data, description: ev.target.value})
+                                setTrigger({...trigger, description: ev.target.value})
                             }}
                             variant="outlined"
                             fullWidth
@@ -341,7 +331,7 @@ export default function RuleForm({onSubmit, data: _data}) {
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Trigger tags"
                                        description="Tag the rules type to group it into meaningful groups.">
-                        <TuiTagger tags={data?.tags} onChange={value => setData({...data, tags: value})}/>
+                        <TuiTagger tags={trigger?.tags} onChange={value => setTrigger({...trigger, tags: value})}/>
                     </TuiFormGroupField>
                 </TuiFormGroupContent>
             </TuiFormGroup>
@@ -349,7 +339,7 @@ export default function RuleForm({onSubmit, data: _data}) {
 
 
         <Button label="Save" onClick={handleSubmit} style={{justifyContent: "center"}} progress={processing}
-                error={error !== null}/>
+                error={responseError}/>
     </TuiForm>
 }
 
