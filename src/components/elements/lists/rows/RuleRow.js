@@ -1,33 +1,25 @@
 import React from 'react';
-import './RuleRow.css';
-import {VscSymbolEvent} from "react-icons/vsc";
-import {IoGitNetworkSharp} from "react-icons/io5";
 import { IconButton } from '@mui/material';
 import { BsTrash } from 'react-icons/bs';
+import Tag from "../../misc/Tag";
 
 const RuleRow = ({data, flow, onDelete=null}) => {
 
     return (
-        <section>
-            <div style={{margin: 5}}>{data.name}</div>
-            <div className="RuleRow">
-                <span className="RuleBox">{data.source.name}</span>
-                {">>"}
-                <span className="EventBox"><VscSymbolEvent size={20} style={{marginRight:10}}/> {data.event_type.name}</span>
-                {">>"}
-                <span className="RuleBox">
-                    <IoGitNetworkSharp size={20} style={{marginRight: 10}}/>
-                        {flow}
-                </span>
+        <div style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between", padding: "20px 10px"}}>
+            <div>
+                {data.type==='event-collect' && <div style={{fontSize: "110%"}}>Event <Tag backgroundColor="#444" color="white">{data?.event_type?.name}</Tag> from <Tag>{data?.source?.name}</Tag></div>}
+                {data.type==='segment-add' && <div style={{fontSize: "110%"}}>Segment <Tag backgroundColor="#444" color="white">{data?.segment?.name}</Tag> added to profile</div>}
+                <div style={{marginTop: 10, color:" #666"}}>{data.description}</div>
+            </div>
+            <div style={{width: 40, alignItems: "center", display: "flex"}}>
                 {onDelete instanceof Function &&
-                    <span className="DeleteButtonBox"> 
                         <IconButton onClick={() => onDelete(data.id, data.name)}>
                             <BsTrash color="#1565c0"/>
                         </IconButton>
-                    </span>
                 }
             </div>
-        </section>
+        </div>
     );
 }
 

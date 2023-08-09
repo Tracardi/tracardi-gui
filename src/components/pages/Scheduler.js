@@ -65,7 +65,6 @@ export default function Scheduler() {
                                            onDelete={handleDelete}
                                            status={row?.enabled}
                                            onClick={() => onClick(row?.id)}
-                                           nameWidth="auto"
                         />
                     })}
                 </div>

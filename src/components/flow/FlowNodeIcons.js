@@ -7,7 +7,7 @@ import {
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
     BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown,
     BsFolderCheck, BsClock, BsBoxArrowRight, BsGithub, BsPersonX, BsClockHistory, BsListCheck,
-    BsTag, BsDatabase,BsDatabaseX, BsDatabaseCheck,BsDatabaseAdd
+    BsTag, BsDatabase,BsDatabaseX, BsDatabaseCheck,BsDatabaseAdd, BsPlayCircle, BsGear
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -30,7 +30,6 @@ import {
     IoLanguageOutline,
     IoTextOutline,
     IoCalendarOutline,
-    IoGitNetworkSharp,
     IoHandLeftOutline, IoArrowRedoOutline
 } from "react-icons/io5";
 import {
@@ -236,7 +235,7 @@ export const icons = {
     'mixpanel': (size) => <Mixpanel style={{width: size, height: size}}/>,
     'array': (size) => <VscSymbolArray size={size}/>,
     'resource': (size) => <BsHddNetwork size={size}/>,
-    'flow': (size) => <IoGitNetworkSharp size={size}/>,
+    'flow': (size) => <BsGear size={size}/>,
     'route': (size) => <FaUncharted size={size}/>,
     'exists': (size) => <BsQuestionDiamond size={size}/>,
     'matomo': (size) => <SiMatomo size={size}/>,
@@ -275,7 +274,8 @@ export const icons = {
     "list-check": (size) => <BsListCheck size={size}/>,
     "tag": (size) => <BsTag size={size}/>,
     "openai": (size) => <SiOpenai size={size}/>,
-    "gear": (size) => <VscGear size={size}/>
+    "gear": (size) => <VscGear size={size}/>,
+    "trigger": (size) => <BsPlayCircle size={size} />
 
 }
 

@@ -61,7 +61,7 @@ export default function Rules() {
                     {plugs.map((row, subIndex) => {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
-                                           data={{...row, icon: "route"}}
+                                           data={{...row, icon: "trigger"}}
                                            status={row?.enabled}
                                            onClick={() => onClick(row?.id)}
                                            onDelete={handleDelete}

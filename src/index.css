@@ -66,6 +66,18 @@ H2.subHeader {
   flex-wrap: wrap;
 }
 
+.boxRowUnderlines > DIV {
+  border-bottom: solid #ccc 1px;
+}
+
+.boxRowUnderlines > DIV:hover {
+  background-color: #f5f5f5;
+}
+
+.boxRowUnderlines >DIV:last-child {
+  border-bottom: 0;
+}
+
 .highlightLine:hover {
   background-color: #e1f5fe;
 }
