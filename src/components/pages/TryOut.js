@@ -26,6 +26,7 @@ import NoData from "../elements/misc/NoData";
 import EventToProfileCopy from "../elements/forms/EventToProfileCopy";
 import {EventTypeFlowsAC} from "../elements/forms/inputs/EventTypeFlowsAC";
 import Funnel from "../elements/charts/Funnel";
+import TimeTextInput from "../elements/forms/inputs/TimeTextInput";
 
 
 function Journey({width, height}) {
@@ -76,6 +77,7 @@ export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
     const [value, setValue] = React.useState("test");
     const [token, setToken] = useState(null)
+    const [sec, setSec] = useState(0)
 
     const ComplianceRuleDetails = ({value}) => {
 
@@ -166,6 +168,7 @@ export default function TryOut() {
     //value={{value:"123", ref:true}} autocomplete="profile"
     return (
         <div>
+            <TimeTextInput onChange={setSec} value={sec}/>
         <Journey width={300} height={600}/>
             <EventTypeFlowsAC eventType={"page-view"}/>
             <EventToProfileCopy onChange={v => console.log("fields", v)}/>
