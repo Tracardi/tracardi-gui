@@ -27,6 +27,97 @@ import EventToProfileCopy from "../elements/forms/EventToProfileCopy";
 import {EventTypeFlowsAC} from "../elements/forms/inputs/EventTypeFlowsAC";
 import Funnel from "../elements/charts/Funnel";
 import TimeTextInput from "../elements/forms/inputs/TimeTextInput";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
+import QueryRuleGroup from "../elements/forms/QueryRuleGroup";
+import {FieldBox} from "../elements/forms/FieldBox";
+
+
+function AggregationOperation({value, label}) {
+    return  <TextField
+        select
+        variant="outlined"
+        size="small"
+        label={label || "Aggregation"}
+        value={value || "sum"}
+        style={{width: 150}}
+        onChange={(ev) => console.log(ev.target.value)}
+    >
+        <MenuItem value={"sum"} selected>Sum of</MenuItem>
+        <MenuItem value={"avg"}>Average of</MenuItem>
+        <MenuItem value={"max"}>Maximum value of</MenuItem>
+        <MenuItem value={"min"}>Minimum value of</MenuItem>
+    </TextField>
+}
+
+function ComparisonOperation({value, label}) {
+    return  <TextField
+        select
+        variant="outlined"
+        size="small"
+        label={label || "Operation"}
+        value={value || "equal"}
+        style={{width: 150}}
+        onChange={(ev) => console.log(ev.target.value)}
+    >
+        <MenuItem value={"equal"} selected>Is Equal</MenuItem>
+        <MenuItem value={"bigger"}>Is Bigger Then</MenuItem>
+        <MenuItem value={"bigger or equal"}> Is Equal or Bigger Then</MenuItem>
+        <MenuItem value={"less"}>Is Less Then</MenuItem>
+        <MenuItem value={"less or equal"}>Is Equal or Less Then</MenuItem>
+        <MenuItem value={"not equal"}>Is Not Equal</MenuItem>
+    </TextField>
+}
+
+function IntervalOperation({value, label}) {
+    return  <TextField
+        select
+        variant="outlined"
+        size="small"
+        label={label || "Interval"}
+        value={value}
+        style={{width: 150}}
+        onChange={(ev) => console.log(ev.target.value)}
+    >
+        <MenuItem value={30} selected>30 minutes</MenuItem>
+        <MenuItem value={60}>1 hour</MenuItem>
+        <MenuItem value={60*6}>6 hours</MenuItem>
+        <MenuItem value={60*12}>12 hours</MenuItem>
+        <MenuItem value={60*24}>1 day</MenuItem>
+        <MenuItem value={60*24*3}>3 days</MenuItem>
+        <MenuItem value={60*24*7}>7 days</MenuItem>
+        <MenuItem value={60*24*14}>14 days</MenuItem>
+        <MenuItem value={60*24*30}>30 days</MenuItem>
+    </TextField>
+}
+
+
+export function FieldRule() {
+    return <div className="flexLine">
+        <FieldBox><RefInput
+            fullWidth={false}
+            autocomplete="event"
+            locked={true}
+            defaultType={true}
+            label="Event data"
+            onChange={console.log}
+            style={{width: "100%"}}/></FieldBox>
+        <FieldBox>
+            <ComparisonOperation/>
+        </FieldBox>
+        <FieldBox>
+            <TextField size="small" variant="outlined" label="Value"/>
+        </FieldBox>
+    </div>
+}
+
+function QueryBuilderRules({onChange, value}) {
+    return <QueryRuleGroup form={FieldRule}
+                        defaultFormValue={{field: {value:"", ref: true}, value: "", op: "equals"}}
+                        value={value}
+                        onChange={onChange}/>
+}
 
 
 function Journey({width, height}) {
@@ -165,10 +256,32 @@ export default function TryOut() {
                 </Stepper>
             </Box>)
     }
+
+
+
+
+
+
     //value={{value:"123", ref:true}} autocomplete="profile"
     return (
         <div>
-            <TimeTextInput onChange={setSec} value={sec}/>
+            <QueryBuilderRules onChange={v => console.log("rules", v)}/>
+
+            <div className="flexLine">Filter event type <FieldBox><TuiSelectEventType /></FieldBox> that occurred within last <TimeTextInput onChange={setSec} value={sec} label="Time"/></div>
+            <div className="flexLine">
+                AND <FieldBox><AggregationOperation /></FieldBox> event's <FieldBox>  <RefInput
+                                                                                          fullWidth={false}
+                                                                                          autocomplete="event"
+                                                                                          locked={true}
+                                                                                          defaultType={true}
+                                                                                          label="Event data"
+                                                                                          onChange={console.log}
+                                                                                          style={{width: "100%"}}/></FieldBox>
+                <ComparisonOperation /> <TextField size="small" variant="outlined" label="Value"/></div>
+            <div className="flexLine">Mertic must be evaulated every <FieldBox>
+                <IntervalOperation />
+
+            </FieldBox></div>
         <Journey width={300} height={600}/>
             <EventTypeFlowsAC eventType={"page-view"}/>
             <EventToProfileCopy onChange={v => console.log("fields", v)}/>

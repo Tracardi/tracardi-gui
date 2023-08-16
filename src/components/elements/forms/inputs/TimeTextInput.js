@@ -27,7 +27,7 @@ TimeMaskCustom.propTypes = {
 };
 
 export default function TimeTextField(props) {
-    const { onChange, value, style, ...other } = props;
+    const { onChange, value, style, label, ...other } = props;
 
     const timeToSeconds = (timeString) => {
         const [hours, minutes, seconds] = timeString.split(':').map(Number);
@@ -59,7 +59,7 @@ export default function TimeTextField(props) {
                 variant="outlined"
                 size="small"
                 value={secondsToTime(value || 0)}
-                label="hh:mm:ss"
+                label={label || "hh:mm:ss"}
                 placeholder="00:00:00"
                 onChange={handleTimeChange}
                 name="timeInSeconds"
