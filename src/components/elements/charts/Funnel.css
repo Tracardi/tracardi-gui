@@ -147,7 +147,7 @@ li
     padding-top: 10px;
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
 }
 .svg-funnel-js.svg-funnel-js--vertical .svg-funnel-js__label:hover {
     background-color: rgba(225, 245, 254, .4);

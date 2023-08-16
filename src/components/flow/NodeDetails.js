@@ -2,15 +2,13 @@ import React, {useEffect, useState} from "react";
 import './NodeDetails.css';
 import {BsInfoCircle, BsBook} from "react-icons/bs";
 import IconButton from "../elements/misc/IconButton";
-import {GoSettings} from "react-icons/go";
 import ConsoleView from "../elements/misc/ConsoleView";
 import NodeInfo from "./NodeInfo";
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
 import {VscJson} from "react-icons/vsc";
 import "../elements/forms/JsonForm"
-import {VscDebugConsole} from "react-icons/vsc";
+import {VscDebugConsole, VscSettings, VscRunErrors, VscGear} from "react-icons/vsc";
 import {MemoNodeInitForm, NodeInitJsonForm, NodeRuntimeConfigForm} from "../elements/forms/NodeInitForm";
-import {VscRunErrors, VscGear} from "react-icons/vsc";
 import NodeMicroserviceForm from "./NodeMicroserviceForm";
 import MdManual from "./actions/MdManual";
 import NodeLogDetails from "../elements/details/NodeLogDetails";
@@ -62,7 +60,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                             onClick={() => setTab(3)}
                             selected={tab === 3}
                             size="large">
-                            <GoSettings size={22}/>
+                            <VscSettings size={22}/>
                         </IconButton>}
                         {node?.data?.spec?.init && <IconButton
                             label="Advanced JSON Configuration"
