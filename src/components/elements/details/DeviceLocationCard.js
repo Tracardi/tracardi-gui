@@ -2,8 +2,6 @@ import PropertyField from "./PropertyField";
 import IconLabel from "../misc/IconLabels/IconLabel";
 import {BsGlobe} from "react-icons/bs";
 import {displayLocation} from "../../../misc/location";
-import PlatformIcon from "../misc/IconLabels/PlatformLabel";
-import BrowserLabel from "../misc/IconLabels/BrowserLabel";
 import React from "react";
 
 export default function DeviceLocationCard({geo, timezone}) {

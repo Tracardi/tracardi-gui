@@ -14,7 +14,6 @@ import {useFetch} from "../../../remote_api/remoteState";
 import {getSessionById} from "../../../remote_api/endpoints/session";
 import {TuiForm, TuiFormGroup} from "../tui/TuiForm";
 import SessionDeviceCard from "./SessionDeviceCard";
-import {ProfileData} from "./ProfileInfo";
 import useTheme from "@mui/material/styles/useTheme";
 import DeviceLocationCard from "./DeviceLocationCard";
 

@@ -32,17 +32,17 @@ const Item = styled(Paper)(({theme, style}) => ({
     ...style
 }));
 
-const InlineItem = styled(Paper)(({theme, style}) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    borderRadius: 10,
-    margin: 10,
-    width: "fit-content",
-    color: theme.palette.text.secondary,
-    ...style
-}));
+// const InlineItem = styled(Paper)(({theme, style}) => ({
+//     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+//     ...theme.typography.body2,
+//     padding: theme.spacing(1),
+//     textAlign: 'center',
+//     borderRadius: 10,
+//     margin: 10,
+//     width: "fit-content",
+//     color: theme.palette.text.secondary,
+//     ...style
+// }));
 
 const ContainedItem = styled(Paper)(({theme, style}) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#3B82F6',
@@ -56,37 +56,37 @@ const ContainedItem = styled(Paper)(({theme, style}) => ({
     ...style
 }));
 
-function SessionsByApp() {
-
-    const colorsList = [
-        "#7795FF",'#3B82F6',
-        '#3d5afe',
-        "#8bc34a",
-        "#4caf50",
-        "#f44336",
-        "#ff9800",
-        "#FFB178",
-        "#FF78B1",
-        "#FF3C8E",
-        "#A0BBFF", "#EC77FF",
-        "#A0F9FF",
-    ]
-
-    const {data, isLoading, error} = useFetch(
-        ["sessionsByApp"],
-        getSessionsByApp(20),
-        data => data
-    )
-
-    if(error) {
-        return "Error"
-    }
-
-    return <LoadablePieChart header="No of sessions" subHeader="by app" loading={isLoading}
-                             data={data}
-                             colors={colorsList}/>
-
-}
+// function SessionsByApp() {
+//
+//     const colorsList = [
+//         "#7795FF",'#3B82F6',
+//         '#3d5afe',
+//         "#8bc34a",
+//         "#4caf50",
+//         "#f44336",
+//         "#ff9800",
+//         "#FFB178",
+//         "#FF78B1",
+//         "#FF3C8E",
+//         "#A0BBFF", "#EC77FF",
+//         "#A0F9FF",
+//     ]
+//
+//     const {data, isLoading, error} = useFetch(
+//         ["sessionsByApp"],
+//         getSessionsByApp(20),
+//         data => data
+//     )
+//
+//     if(error) {
+//         return "Error"
+//     }
+//
+//     return <LoadablePieChart header="No of sessions" subHeader="by app" loading={isLoading}
+//                              data={data}
+//                              colors={colorsList}/>
+//
+// }
 
 
 function EventsByType() {
