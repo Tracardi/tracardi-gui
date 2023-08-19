@@ -6,7 +6,7 @@ function InnerFunnelGraph({width, height}) {
 
     const data = {
         labels: [
-            "Awarness",
+            "Awareness",
             "Consideration",
             "Purchase",
             "Loyalty",

@@ -63,7 +63,8 @@ import {
     VscSymbolArray,
     VscLaw,
     VscLock,
-    VscGear
+    VscGear,
+    VscDashboard
 } from "react-icons/vsc";
 import {
     MdLibraryAdd,
@@ -275,7 +276,8 @@ export const icons = {
     "tag": (size) => <BsTag size={size}/>,
     "openai": (size) => <SiOpenai size={size}/>,
     "gear": (size) => <VscGear size={size}/>,
-    "trigger": (size) => <BsPlayCircle size={size} />
+    "trigger": (size) => <BsPlayCircle size={size} />,
+    "metric": (size) => <VscDashboard size={size}/>
 
 }
 

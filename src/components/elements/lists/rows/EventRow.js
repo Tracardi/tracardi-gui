@@ -27,6 +27,7 @@ import ModalDialog from "../../dialog/ModalDialog";
 import {TuiForm, TuiFormGroupField} from "../../tui/TuiForm";
 import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../../../misc/UrlPrefix";
+import EventJourneyTag from "../../misc/EventJourneyTag";
 
 export function EventRow({row, filterFields}) {
 
@@ -158,6 +159,7 @@ export function EventRow({row, filterFields}) {
                                        content={<div style={{display: "flex", gap: 5, alignItems: "center"}}>
                                            <EventTypeTag event={row} />
                                            <EventStatusTag label={row?.metadata?.status}/>
+                                           {row.journey?.state && <EventJourneyTag>{row.journey.state}</EventJourneyTag>}
                                            <EventValidation eventMetaData={row?.metadata}/>
                                            <EventWarnings eventMetaData={row?.metadata}/>
                                            <EventErrorTag eventMetaData={row?.metadata}/>

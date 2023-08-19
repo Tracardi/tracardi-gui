@@ -16,8 +16,8 @@ import NoData from "../misc/NoData";
 import TuiWorkflowTags from "../tui/TuiWorkflowTags";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import useTheme from "@mui/material/styles/useTheme";
-import Tag from "../misc/Tag";
 import EventTypeTag from "../misc/EventTypeTag";
+import EventJourneyTag from "../misc/EventJourneyTag";
 
 const ContextInfo = ({event}) => {
     const context = object2dot(event?.context);
@@ -101,7 +101,7 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
                                <TuiTags tags={event.tags.values} size="small"/>}
                 />
                 {event?.journey?.state &&
-                <PropertyField name="Journey state" content={<Tag backgroundColor="#009688"color="white">{event.journey.state.toUpperCase()}</Tag>} size="small"/>}
+                <PropertyField name="Journey state" content={<EventJourneyTag>{event.journey.state}</EventJourneyTag>} size="small"/>}
                 {routing && Array.isArray(event?.metadata?.processed_by?.rules) && <PropertyField name="Routed by rules"
                                                                                        content={<TuiTags
                                                                                            tags={event.metadata?.processed_by?.rules}

@@ -1,30 +1,29 @@
 import React, {useCallback, useState} from "react";
-import "../elements/lists/CardBrowser.css";
-import CardBrowser from "../elements/lists/CardBrowser";
 import SquareCard from "../elements/lists/cards/SquareCard";
-import EventMappingForm from "../elements/forms/EventMappingForm";
-import {BsFolderCheck} from "react-icons/bs";
-import EventMappingDetails from "../elements/details/EventMappingDetails";
+import CardBrowser from "../elements/lists/CardBrowser";
+import {VscDashboard} from "react-icons/vsc";
+import RuleForm from "../elements/forms/RuleForm";
+import RuleDetails from "../elements/details/RuleDetails";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote} from "../../remote_api/entrypoint";
 
-export default function EventManagement() {
+export default function Metrics() {
 
     const [refresh, setRefresh] = useState(0);
 
-    const urlFunc= useCallback((query) => ('/event-type/search/mappings'+ ((query) ? "?query=" + query : "")),[]);
-    const addFunc = useCallback((close) => <EventMappingForm onSubmit={close}/>,[]);
-    const detailsFunc= useCallback((id, close) => <EventMappingDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
+    const urlFunc = useCallback((query) => ('/metrics/by_tag' + ((query) ? "?query=" + query : "")), [])
+    const addFunc = useCallback((close) => <RuleForm onSubmit={close}/>, [])
+    const detailsFunc = useCallback((id, close) => <RuleDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, []);
 
     const confirm = useConfirm();
 
     const handleDelete = async (id) => {
-        confirm({title: "Do you want to delete this event mapping?", description: "This action can not be undone."})
+        confirm({title: "Do you want to delete this metric?", description: "This action can not be undone."})
             .then(async () => {
                     try {
                         await asyncRemote({
-                            url: '/event-type/mapping/' + id,
+                            url: '/metric/' + id,
                             method: "delete"
                         })
                         setRefresh(refresh+1)
@@ -35,7 +34,7 @@ export default function EventManagement() {
             )
     }
 
-    const cards = (data, onClick) => {
+    const ruleCards = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="CardGroup" key={index}>
                 <header>{category}</header>
@@ -43,32 +42,30 @@ export default function EventManagement() {
                     {plugs.map((row, subIndex) => {
                         return <SquareCard key={index + "-" + subIndex}
                                            id={row?.id}
-                                           icon={<BsFolderCheck size={45}/>}
-                                           tags={[(row.enabled && "Validated")]}
-                                           name={row?.name}
+                                           icon={<VscDashboard size={45}/>}
                                            status={row?.enabled}
+                                           name={row?.name}
                                            description={row?.description}
-                                           onClick={() => onClick(row?.id)}
-                        />
+                                           onClick={() => onClick(row?.id)}/>
                     })}
                 </div>
             </div>
         })
     }
 
-    const rows = (data, onClick) => {
+    const ruleRows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="RowGroup" style={{width:"100%"}} key={index}>
+            return <div className="RowGroup" style={{width: "100%"}} key={index}>
                 <header>{category}</header>
                 <div>
                     {plugs.map((row, subIndex) => {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
-                                           data={{...row, icon: "validator"}}
-                                           tags={row.tags}
+                                           data={{...row, icon: "metric"}}
                                            status={row?.enabled}
                                            onClick={() => onClick(row?.id)}
-                                            onDelete={handleDelete}
+                                           onDelete={handleDelete}
+                                           tags={[row.type]}
                         />
                     })}
                 </div>
@@ -77,18 +74,20 @@ export default function EventManagement() {
     }
 
     return <CardBrowser
-        defaultLayout="rows"
-        label="Event mapping and event metadata"
-        description="List of event types."
+        label="Profile Metrics"
+        description="Profile metrics are calculated every time the profile is changed."
         urlFunc={urlFunc}
-        cardFunc={cards}
-        rowFunc={rows}
-        buttonLabel="New mapping"
-        buttonIcon={<BsFolderCheck size={20}/>}
-        drawerDetailsWidth={900}
+        defaultLayout="rows"
+        cardFunc={ruleCards}
+        rowFunc={ruleRows}
+        buttonLabel="New metric"
+        buttonIcon={<VscDashboard size={20}/>}
+        drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
-        drawerAddTitle="New mapping"
-        drawerAddWidth={600}
+        drawerAddTitle="New metric"
+        drawerAddWidth={800}
         addFunc={addFunc}
+        className="Pad10"
     />
+
 }

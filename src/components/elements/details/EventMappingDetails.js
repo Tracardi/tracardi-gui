@@ -8,7 +8,7 @@ import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote} from "../../../remote_api/entrypoint";
-import EventIndexingForm from "../forms/EventIndexingForm";
+import EventMappingForm from "../forms/EventMappingForm";
 import TuiTags from "../tui/TuiTags";
 import PropertyField from "./PropertyField";
 import IconLabel from "../misc/IconLabels/IconLabel";
@@ -20,7 +20,7 @@ import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
 import {objectMap} from "../../../misc/mappers";
 import AssignValueToKey from "./AssignValueToKey";
 
-export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displayMetadata = true}) {
+export function EventMappingCard({data, onDeleteComplete, onEditComplete, displayMetadata = true}) {
 
     const [displayEdit, setDisplayEdit] = React.useState(false);
     const [deleteProgress, setDeleteProgress] = React.useState(false);
@@ -72,6 +72,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
                                content={<IconLabel value={data.event_type} icon={<FlowNodeIcons icon="event"/>}/>}/>
                 <PropertyField name="Name" content={data.name}/>
                 <PropertyField name="Description" content={data.description}/>
+
                 <PropertyField name="Tags"
                                content={<TuiTags tags={data.tags} size="small"/>}/>
                 <PropertyField name="Indexing enabled" underline={false}
@@ -79,7 +80,18 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
             </TuiFormGroupContent>
         </TuiFormGroup>}
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Event Property Mapping"
+
+            <TuiFormGroupHeader header="Event Journey Mapping"/>
+            <TuiFormGroupContent>
+                {data.journey ? <PropertyField name="Journey stage" content={data.journey} underline={false}/>
+                : <NoData header="No journey mapping">
+                        <span style={{textAlign: "center"}}>This event type is not mapped to any customer journey state.</span>
+                    </NoData>}
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <TuiFormGroup>
+
+            <TuiFormGroupHeader header="Event Properties Mapping"
                                 description="The schema outlines how properties are transferred to data or traits.
                                 Properties are not mandatory, and if a property is not set, it will not be
                                 transferred, and no error will occur."
@@ -88,14 +100,14 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
                 {!isEmptyObjectOrNull(data?.index_schema) ?
                     objectMap(data?.index_schema, (key, value) => {
                         return <AssignValueToKey key={key} value={`event@${value}`} label={`event@${key}`} op="moves to"/>
-                    }) : <NoData header="No data indexing">
+                    }) : <NoData header="No data mapping">
                         <span style={{textAlign: "center"}}>Data is stored in event properties, it can be searched but it will not be visible as event traits, and no reporting will be possible.</span>
                     </NoData>
                 }
             </TuiFormGroupContent>
         </TuiFormGroup>
         {!data.build_in && <RestrictToLocalStagingContext>
-            <Rows style={{marginTop: 20}}>
+            <Rows style={{marginTop: 20, marginBottom: 20}}>
                 <Button onClick={handleEdit}
                         icon={<VscEdit size={20}/>}
                         label="Edit" disabled={typeof data === "undefined"}/>
@@ -117,7 +129,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
                 setDisplayEdit(false)
             }}
             open={displayEdit}>
-            {displayEdit && <EventIndexingForm
+            {displayEdit && <EventMappingForm
                 onSubmit={handleEditComplete}
                 {...data}
             />}
@@ -161,7 +173,7 @@ export default function EventMappingDetails({id, onDeleteComplete, onEditComplet
 
     if (loading) return <CenteredCircularProgress/>
 
-    return <EventIndexingCard data={data} onDeleteComplete={onDeleteComplete} onEditComplete={handleEditComplete}/>
+    return <EventMappingCard data={data} onDeleteComplete={onDeleteComplete} onEditComplete={handleEditComplete}/>
 }
 
 EventMappingDetails.propTypes = {

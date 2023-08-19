@@ -46,6 +46,7 @@ const Resources = React.lazy(() => import("./pages/Resources"))
 const Flows = React.lazy(() => import("./pages/Flows"))
 const Segments = React.lazy(() => import("./pages/Segments"))
 const Rules = React.lazy(() => import("./pages/Rules"))
+const Metrics = React.lazy(() => import("./pages/Metrics"))
 const FlowReader = React.lazy(() => import("./flow/FlowReader"))
 const ActionPlugins = React.lazy(() => import("./pages/ActionPlugins"))
 const PredefinedEventTypes = React.lazy(() => import("./pages/PredefinedEventTypes"))
@@ -189,6 +190,21 @@ const AppBox = () => {
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
                                 <Rules/>, "/processing/routing", "Workflow Trigger Rules"),
+                        ]}
+                        />
+                    </Suspense>
+                </ErrorBoundary>
+            </PrivateRoute>
+
+            {/*Metrics*/}
+
+            <PrivateRoute path={urlPrefix("/metrics")} roles={["admin", "developer"]}>
+                <ErrorBoundary>
+                    <Suspense fallback={<CenteredCircularProgress/>}>
+                        <TopBar>Metrics</TopBar>
+                        <PageTabs tabs={[
+                            new PrivateTab(["admin", "developer"],
+                                <Metrics/>, "/metrics/profile", "Profile metrics"),
                         ]}
                         />
                     </Suspense>

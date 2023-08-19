@@ -14,7 +14,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import {BsXCircle, BsBoxArrowDown} from "react-icons/bs";
 import {EventValidationCard} from "./EventValidationDetails";
 import {EventReshapingCard} from "./EventReshapingDetails";
-import {EventIndexingCard} from "./EventMappingDetails";
+import {EventMappingCard} from "./EventMappingDetails";
 import {IdentificationPointCard} from "./IdentificationPointDetails";
 import {EventToProfileCard} from "./EventToProfileDetails";
 import Button from "../forms/Button";
@@ -22,7 +22,7 @@ import FormDrawer from "../drawers/FormDrawer";
 import EventValidationForm from "../forms/EventValidationForm";
 import {BsPlusCircleDotted} from "react-icons/bs";
 import EventReshapingForm from "../forms/EventReshapingForm";
-import EventIndexingForm from "../forms/EventIndexingForm";
+import EventMappingForm from "../forms/EventMappingForm";
 import IdentificationPointForm from "../forms/IdentifiactionPointForm";
 import RuleForm from "../forms/RuleForm";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -257,8 +257,8 @@ const RoutingFlow = ({event}) => {
                              endpoint={{url: `/event-type/mappings/${event.type}`}}
                              nodata="No Mapping"
                              passData={true}
-                             details={EventIndexingCard}
-                             add={EventIndexingForm}  // requires onSubmit
+                             details={EventMappingCard}
+                             add={EventMappingForm}  // requires onSubmit
                              addFormProps={{event_type: event.type}}
                 />
                 <ProcessStep step={"4"}
