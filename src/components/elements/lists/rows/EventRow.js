@@ -96,7 +96,7 @@ export function EventRow({row, filterFields}) {
                         icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
                     />}
                 </>}/>
-                {row?.device?.geo?.country && <PropertyField labelWidth={labelWidth} name="Location" content={
+                {row?.device?.geo?.country?.name && <PropertyField labelWidth={labelWidth} name="Location" content={
                     <IconLabel
                         value={displayLocation(row?.device?.geo)}
                         icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
