@@ -23,7 +23,7 @@ export default function EventTypeTag({event}) {
 
     const eventType =  event?.name || capitalizeString(event?.type)
 
-    return <span className="HighlightTag" style={{backgroundColor: "rgba(0, 0, 0, 0.08)"}}>
+    return <span className="HighlightTag" style={{backgroundColor: "rgba(0, 0, 0, 0.08)"}} title="Event type">
         {(!event.profile?.id || event.profile?.id === null) && <BsPersonX size={18} style={{marginRight: 8}}/>}
         {eventType} ({event?.type})
     </span>
