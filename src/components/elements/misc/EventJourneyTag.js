@@ -1,6 +1,7 @@
 import Tag from "./Tag";
 import React from "react";
+import {capitalizeString} from "./EventTypeTag";
 
 export default function EventJourneyTag({children}) {
-    return <Tag backgroundColor="#009688" color="white" tip="Customer Journey State">{children}</Tag>
+    return <Tag backgroundColor="#663dff" color="white" tip="Customer Journey State">{capitalizeString(children)}</Tag>
 }
