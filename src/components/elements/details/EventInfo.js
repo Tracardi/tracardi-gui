@@ -20,6 +20,7 @@ import FetchError from "../../errors/FetchError";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import {EventDataTable} from "./EventData";
 import EventTypeTag from "../misc/EventTypeTag";
+import EventJourneyTag from "../misc/EventJourneyTag";
 
 
 const EventDataDetails = ({event, metadata, allowedDetails = []}) => {
@@ -59,6 +60,8 @@ const EventDataDetails = ({event, metadata, allowedDetails = []}) => {
                                    <EventWarnings eventMetaData={event?.metadata}/>
                                    <EventErrorTag eventMetaData={event?.metadata}/>
                                </>}/>
+                {event.journey.state && <PropertyField name="Journey state"
+                               content={<EventJourneyTag>{event.journey.state}</EventJourneyTag>}/>}
                 {event?.session && <PropertyField name="Session id" content={event.session?.id}>
 
                 </PropertyField>}

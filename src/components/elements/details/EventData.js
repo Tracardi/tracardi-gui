@@ -74,6 +74,7 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
                                    <EventWarnings eventMetaData={event?.metadata}/>
                                    <EventErrorTag eventMetaData={event?.metadata}/>
                                </>}/>
+                {event.journey.state && <PropertyField name="Journey state" content={<EventJourneyTag>{event.journey.state}</EventJourneyTag>} size="small"/>}
 
                 {event?.session && <PropertyField name="Session duration"
                                                   content={Math.floor(event.session.duration / 60).toString() + "m"}>
@@ -100,8 +101,6 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
                                content={Array.isArray(event?.tags?.values) &&
                                <TuiTags tags={event.tags.values} size="small"/>}
                 />
-                {event?.journey?.state &&
-                <PropertyField name="Journey state" content={<EventJourneyTag>{event.journey.state}</EventJourneyTag>} size="small"/>}
                 {routing && Array.isArray(event?.metadata?.processed_by?.rules) && <PropertyField name="Routed by rules"
                                                                                        content={<TuiTags
                                                                                            tags={event.metadata?.processed_by?.rules}
