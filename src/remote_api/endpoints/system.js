@@ -13,3 +13,10 @@ export function getBuildInEventType(id) {
         url: `/event-type/build-in/${id}`,
     }
 }
+
+export function getSystemSettings() {
+    return {
+        method: "get",
+        url: `/system/settings`,
+    }
+}

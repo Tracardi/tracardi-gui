@@ -5,6 +5,7 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "..
 import ErrorsBox from "../errors/ErrorsBox";
 import {asyncRemote, getError} from "../../remote_api/entrypoint";
 import Button from "../elements/forms/Button";
+import {getSystemSettings} from "../../remote_api/endpoints/system";
 
 
 function TestingButtons() {
@@ -111,10 +112,7 @@ export default function Settings() {
     useEffect(() => {
         setLoading(true);
         asyncRemote(
-            {
-                method: "get",
-                url: "/settings"
-            }
+            getSystemSettings()
         ).then((response) => {
             setLoading(false);
             if (response) {

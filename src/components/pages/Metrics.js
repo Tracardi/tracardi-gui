@@ -2,19 +2,19 @@ import React, {useCallback, useState} from "react";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {VscDashboard} from "react-icons/vsc";
-import RuleForm from "../elements/forms/RuleForm";
-import RuleDetails from "../elements/details/RuleDetails";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote} from "../../remote_api/entrypoint";
+import MetricForm from "../elements/forms/MetricsForm";
+import {MetricDetailsById} from "../elements/details/MetricDetails";
 
 export default function Metrics() {
 
     const [refresh, setRefresh] = useState(0);
 
-    const urlFunc = useCallback((query) => ('/metrics/by_tag' + ((query) ? "?query=" + query : "")), [])
-    const addFunc = useCallback((close) => <RuleForm onSubmit={close}/>, [])
-    const detailsFunc = useCallback((id, close) => <RuleDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, []);
+    const urlFunc = useCallback((query) => ('/settings/metric' + ((query) ? "?query=" + query : "")), [])
+    const addFunc = useCallback((close) => <MetricForm onSubmit={close}/>, [])
+    const detailsFunc = useCallback((id, close) => <MetricDetailsById id={id} onDeleteComplete={close} onEditComplete={close}/>, []);
 
     const confirm = useConfirm();
 
@@ -23,7 +23,7 @@ export default function Metrics() {
             .then(async () => {
                     try {
                         await asyncRemote({
-                            url: '/metric/' + id,
+                            url: '/setting/metric/' + id,
                             method: "delete"
                         })
                         setRefresh(refresh+1)
