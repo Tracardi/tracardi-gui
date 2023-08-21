@@ -8,6 +8,7 @@ import EventMappingDetails from "../elements/details/EventMappingDetails";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote} from "../../remote_api/entrypoint";
+import EventJourneyTag from "../elements/misc/EventJourneyTag";
 
 export default function EventManagement() {
 
@@ -68,8 +69,11 @@ export default function EventManagement() {
                                            tags={row.tags}
                                            status={row?.enabled}
                                            onClick={() => onClick(row?.id)}
-                                            onDelete={handleDelete}
-                        />
+                                           onDelete={handleDelete}
+                        >
+                            {row.journey && <EventJourneyTag>{row.journey}
+                            </EventJourneyTag>} {row.description && <span style={{marginRight: 5}}>{row.description}</span>}
+                        </BrowserRow>
                     })}
                 </div>
             </div>
