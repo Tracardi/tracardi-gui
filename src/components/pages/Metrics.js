@@ -65,7 +65,6 @@ export default function Metrics() {
                                            status={row?.enabled}
                                            onClick={() => onClick(row?.id)}
                                            onDelete={handleDelete}
-                                           tags={[row.type]}
                         />
                     })}
                 </div>
