@@ -13,34 +13,30 @@ import * as yup from "yup";
 import {getRequiredStringSchema, validateYupSchema} from "../../../misc/validators";
 import {getValueIfExists} from "../../../misc/values";
 import {IntervalSelect} from "./IntervalsSelect";
+import TuiSelectEventType from "../tui/TuiSelectEventType";
+import RefInput from "./inputs/RefInput";
+
 
 export default function MetricForm({onSubmit, init}) {
 
     const schemes = {
         "event-aggregation-metric": {
             "time-change-trigger": {
-                "event-type": "e.g. order-completed",
-                "aggregation": "sum || count || average",
                 "time": {
-                    "span": "30",
+                    "span": 30,
                     "type": "minute || day || month"
                 }
             },
-            "data-change-trigger": {
-                "event-type": "e.g. order-completed",
-                "aggregation": "sum || count || average"
-            },
+            "data-change-trigger": {},
         },
         "event-type-exists": {
             "time-change-trigger": {
-                "event-type": "e.g. order-completed",
                 "time": {
-                    "span": "30",
+                    "span": 30,
                     "type": "minute || day || month"
                 }
             },
             "data-change-trigger": {
-                "event-type": "e.g. order-completed"
             }
         },
         "custom": {
@@ -65,7 +61,17 @@ export default function MetricForm({onSubmit, init}) {
         content: {
             metric: {
                 type: "event-aggregation-metric",
-                schema: "{}",
+                settings: "{}",
+                aggregation: {
+                    type: "count",
+                    field: "type"
+                },
+                event: {
+                    type: {
+                        id: "",
+                        name: ""
+                    }
+                },
                 interval: 1440
             }
         },
@@ -76,11 +82,13 @@ export default function MetricForm({onSubmit, init}) {
             }
         }
     }
-
+    // console.log("param", init)
     init = {
         ...defaultData,
         ...init
     }
+
+    // console.log("props", init)
 
     const [setting, setSetting] = useState(init)
     const [errors, setErrors] = useState({})
@@ -88,13 +96,9 @@ export default function MetricForm({onSubmit, init}) {
     const [apiError, setApiError] = useState(false)
     const requiredString = getRequiredStringSchema()
 
-    // const setData = (key, value) => {
-    //     setSetting({...setting, [key]: value})
-    // }
-
-    function setData(key, value, obj=null) {
+    function setData(key, value, obj = null) {
         const props = key.split('.');
-        const newObj = { ...obj || setting };
+        const newObj = {...obj || setting};
         let currentObj = newObj;
 
         for (let i = 0; i < props.length - 1; i++) {
@@ -105,10 +109,12 @@ export default function MetricForm({onSubmit, init}) {
             currentObj = currentObj[prop];
         }
 
-        currentObj[props[props.length - 1]] = value;
+        const finalProp = props[props.length - 1];
+        currentObj[finalProp] = value;
+
         setSetting(newObj);
 
-        return newObj
+        return newObj;
     }
 
     const handleSubmit = async () => {
@@ -127,16 +133,16 @@ export default function MetricForm({onSubmit, init}) {
 
             let schema;
             try {
-                schema = JSON.parse(setting.content.metric.schema)
+                schema = JSON.parse(setting.content.metric.settings)
             } catch (e) {
                 schema = null
             }
 
-            if(schema === null) {
-                _errors= {..._errors, "content.metric.schema": "Incorrect JSON"}
+            if (schema === null) {
+                _errors = {..._errors, "content.metric.settings": "Incorrect JSON"}
             }
-
-            if(_errors) {
+            console.log("_errors",_errors)
+            if (_errors) {
                 setErrors(_errors)
                 setApiError(true)
             } else {
@@ -150,6 +156,8 @@ export default function MetricForm({onSubmit, init}) {
                     content: setting.content,
                     config: setting.config
                 };
+                // const response = null;
+                // console.log("payload", payload)
                 const response = await asyncRemote(
                     setMetrics(payload)
                 )
@@ -173,12 +181,16 @@ export default function MetricForm({onSubmit, init}) {
 
     const handleMetricChange = (value) => {
         const s = setData("content.metric.type", value)
-        setData("content.metric.schema", JSON.stringify(schemes[value][s.config.metric.trigger], null, " "), s)
+        setData("content.metric.settings", JSON.stringify(schemes[value][s.config.metric.trigger], null, " "), s)
     }
 
     const handleTriggerChange = (value) => {
         const s = setData("config.metric.trigger", value)
-        setData("content.metric.schema", JSON.stringify(schemes[s.content.metric.type][value], null, " "), s)
+        setData("content.metric.settings", JSON.stringify(schemes[s.content.metric.type][value], null, " "), s)
+    }
+
+    const handleEventTypeChange = (value) => {
+        setData("content.metric.event.type", value)
     }
 
     return <TuiForm style={{margin: 20}}>
@@ -224,8 +236,16 @@ export default function MetricForm({onSubmit, init}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Metric configuration"/>
+            <TuiFormGroupHeader header="Metric Computation Configuration"/>
+
             <TuiFormGroupContent>
+                <TuiFormGroupField header="Event type" description="Please choose the event type for which you'd like
+            to create a metric. If you want to aggregate values regardless of the event type, leave this field empty.">
+                    <TuiSelectEventType
+                        value={setting.content?.metric?.event?.type}
+                        onSetValue={handleEventTypeChange}
+                    />
+                </TuiFormGroupField>
                 <TuiFormGroupField header="Metric type" description={helpers[setting.content.metric.type]}>
                     <TextField
                         select
@@ -238,11 +258,48 @@ export default function MetricForm({onSubmit, init}) {
                     >
                         <MenuItem value="event-aggregation-metric" selected>Event Aggregation Metric</MenuItem>
                         <MenuItem value="event-type-exists">Event Type Existence Metric</MenuItem>
-                        <MenuItem value="custom">Custom Metric</MenuItem>
+                        {/*<MenuItem value="custom">Custom Metric</MenuItem>*/}
                     </TextField>
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Trigger type" description="Please define a trigger type.
-                If the metric depends on time select [time based trigger] if it depends on data change select [data change trigger].">
+
+
+                <TuiFormGroupField>
+                    {setting.content.metric.type !== 'custom' && <div style={{marginLeft: 40}}>
+
+                        <TuiFormGroupField header="Additional Configuration" description="Aggregation requires further
+                details regarding the aggregation type, such as 'sum', and the specific field on which it needs to be executed."/>
+                        {(setting.content.metric.type === 'event-aggregation-metric') && <><div style={{padding: "10px 0"}}>What is the expected output of aggregation. e.g sum of purchased items, or count of event types</div>
+                            <TextField
+                                select
+                                variant="outlined"
+                                size="small"
+                                label="Aggregation type"
+                                value={setting.content?.metric?.aggregation?.type}
+                                style={{width: 250}}
+                                onChange={(ev) => setData("content.metric.aggregation.type", ev.target.value)}
+                            >
+                                <MenuItem value="count" selected>Count</MenuItem>
+                                <MenuItem value="sum">Sum</MenuItem>
+                                <MenuItem value="avg">Average</MenuItem>
+                            </TextField></>}
+
+                        {(setting.content.metric.type === 'event-aggregation-metric' || setting.content.metric.type === 'event-type-exists') && <><div style={{padding: "10px 0"}}>Which event field should be computed.</div>
+                            <RefInput value={{value:setting.content.metric.aggregation.field}}
+                                      autocomplete="event"
+                                      fullWidth={true}
+                                      locked={true}
+                                      defaultType={true}
+                                      label="Event field"
+                                      onChange={(value) => setData("content.metric.aggregation.field", value.value)}
+                                      style={{width: "100%"}}/></>}
+                    </div>}
+
+                </TuiFormGroupField>
+
+                <TuiFormGroupField header="Metric Computation Trigger" description="Please define when to calculate
+                the metric. If it's related to time, pick [time change trigger]. If it's about data changes,
+                choose [data change trigger].  Time-related metrics are usually calculated over a set time period,
+                while data-related metrics are computed whenever the data changes.">
                     <div className="flexLine">
                         <TextField
                             select
@@ -253,27 +310,31 @@ export default function MetricForm({onSubmit, init}) {
                             style={{width: 250}}
                             onChange={(ev) => handleTriggerChange(ev.target.value)}
                         >
-                            <MenuItem value="time-change-trigger">Time Based Trigger</MenuItem>
-                            <MenuItem value="data-change-trigger" selected>Data Based Trigger</MenuItem>
-                        </TextField> {setting.config.metric.trigger === 'time-change-trigger' && <><span style={{padding: "0 5px"}}>Every</span> <IntervalSelect value={setting.content.metric.interval}/></>}
+                            <MenuItem value="time-change-trigger">Time Trigger</MenuItem>
+                            <MenuItem value="data-change-trigger" selected>Data Change Trigger</MenuItem>
+                        </TextField> {setting.config.metric.trigger === 'time-change-trigger' && <><span
+                        style={{padding: "0 5px"}}>Every</span> <IntervalSelect
+                        value={setting.content.metric.interval}/></>}
                     </div>
 
                 </TuiFormGroupField>
 
-                <TuiFormGroupField header="Configuration schema" description="Fill configuration schema">
-                        <JsonEditorField
-                            label="Configuration Schema"
-                            value={setting.content.metric.schema}
-                                         onChange={(value) => setData("content.metric.schema", value)}
-                                         autocomplete={true}
-                                         errorMessage={getValueIfExists(errors, "content.metric.schema")}
-                        />
+
+                <TuiFormGroupField header="Configuration" description="Fill configuration settings">
+                    <JsonEditorField
+                        label="Configuration"
+                        value={setting.content.metric.settings}
+                        onChange={(value) => setData("content.metric.settings", value)}
+                        autocomplete={true}
+                        errorMessage={getValueIfExists(errors, "content.metric.settings")}
+                    />
                 </TuiFormGroupField>
 
             </TuiFormGroupContent>
         </TuiFormGroup>
 
-        <Button label="Save" error={apiError} onClick={handleSubmit} progress={processing} style={{justifyContent: "center"}}/>
+        <Button label="Save" error={apiError} onClick={handleSubmit} progress={processing}
+                style={{justifyContent: "center"}}/>
     </TuiForm>
 }
 

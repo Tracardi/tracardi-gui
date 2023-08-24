@@ -8,6 +8,14 @@ import TuiTags from "../tui/TuiTags";
 const PropertyField = ({name, content, children, drawerSize = 800, underline = true, whiteSpace = 'normal', valueAlign="flex-start", labelWidth = 200}) => {
 
     const [displayDetails, setDisplayDetails] = useState(false)
+
+    function isEmpty(value) {
+        return value === "" || value === null || typeof value === "undefined" ||
+            (typeof value === "object" && Object.keys(value).length === 0) ||
+            (typeof value === "number" && isNaN(value));
+    }
+
+
     return (
         <>
             <div className="PropertyRow" style={{borderBottom: underline ? "1px dashed #bbb" : 0}}>
@@ -27,7 +35,7 @@ const PropertyField = ({name, content, children, drawerSize = 800, underline = t
                         width: "100%"
                     }}>
                         {
-                            content === "" || content === null || typeof content === "undefined" || isEmptyObject(content)
+                            isEmpty(content)
                                 ? '<empty>'
                                 : typeof content === "number"
                                     ? content.toString()

@@ -73,8 +73,8 @@ export default function Metrics() {
     }
 
     return <CardBrowser
-        label="Profile Metrics"
-        description="Profile metrics are calculated every time the profile is changed."
+        label="Profile Metrics Computations"
+        description="Profile metrics are calculated from event data whenever new events are added or changes are made to the profile, or on a regular basis."
         urlFunc={urlFunc}
         defaultLayout="rows"
         cardFunc={ruleCards}

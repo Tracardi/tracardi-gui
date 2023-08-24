@@ -204,7 +204,9 @@ const AppBox = () => {
                         <TopBar>Metrics</TopBar>
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
-                                <Metrics/>, "/metrics/profile", "Profile metrics"),
+                                <Metrics/>, "/metrics/profile",  <>
+                                <BsStar size={20}
+                                        style={{marginRight: 5}}/>{"Profile metrics"}</>),
                         ]}
                         />
                     </Suspense>
