@@ -32,6 +32,7 @@ import MenuItem from "@mui/material/MenuItem";
 import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
 import QueryRuleGroup from "../elements/forms/QueryRuleGroup";
 import {FieldBox} from "../elements/forms/FieldBox";
+import {TimeSpanField} from "../elements/forms/TimeSpanField";
 
 
 function AggregationOperation({value, label}) {
@@ -265,6 +266,7 @@ export default function TryOut() {
     //value={{value:"123", ref:true}} autocomplete="profile"
     return (
         <div>
+            <TimeSpanField onChange={console.log}/>
             <QueryBuilderRules onChange={v => console.log("rules", v)}/>
 
             <div className="flexLine">Filter event type <FieldBox><TuiSelectEventType /></FieldBox> that occurred within last <TimeTextInput onChange={setSec} value={sec} label="Time"/></div>
