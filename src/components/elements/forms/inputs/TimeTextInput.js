@@ -26,8 +26,7 @@ TimeMaskCustom.propTypes = {
     onChange: PropTypes.func.isRequired,
 };
 
-export default function TimeTextField(props) {
-    const { onChange, value, style, label, ...other } = props;
+export default function TimeTextField({ onChange, value, style, label, ...other }) {
 
     const timeToSeconds = (timeString) => {
         const [hours, minutes, seconds] = timeString.split(':').map(Number);
@@ -43,7 +42,9 @@ export default function TimeTextField(props) {
 
     const handleTimeChange = (event) => {
         const timeInSeconds = timeToSeconds(event.target.value);
-        onChange(timeInSeconds);
+        if(onChange instanceof Function) {
+            onChange(timeInSeconds);
+        }
     };
 
     return (

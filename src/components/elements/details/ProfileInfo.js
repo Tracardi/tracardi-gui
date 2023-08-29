@@ -21,6 +21,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import NoData from "../misc/NoData";
 import {ProfileImage} from "./ProfileImage";
 import {displayLocation} from "../../../misc/location";
+import Properties from "./DetailProperties";
 
 export const ProfileData = ({profile}) => {
 
@@ -153,7 +154,7 @@ export const ProfileData = ({profile}) => {
 
             </div>
             <div style={{borderRadius: 5, border: "solid 1px #ccc", marginTop: 20}}>
-                <Tabs tabs={["Segments", "Interests", "Preferences"]}
+                <Tabs tabs={["Segments", "Interests", "Preferences", "Metrics"]}
                       tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
                     <TabCase id={0}>
                         <div style={{margin: 20}}>
@@ -179,6 +180,11 @@ export const ProfileData = ({profile}) => {
                                                                                                     content={profile?.data?.preferences[key]}/>)
                                 : <NoData header="No Preferences"/>}
 
+                        </div>
+                    </TabCase>
+                    <TabCase id={3}>
+                        <div style={{margin: 20}}>
+                            <Properties properties={profile?.data?.metrics}/>
                         </div>
                     </TabCase>
                 </Tabs>

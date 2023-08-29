@@ -80,7 +80,7 @@ const getConfig = () => {
             },
             metrics: {
                 name: "Metrics",
-                disable: true
+                disable: false
             },
             transformations: {
                 name: "Collection",
