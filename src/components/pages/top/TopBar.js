@@ -20,7 +20,7 @@ export default function TopBar({children}) {
     }
 
     const style = {
-        backgroundColor: theme.palette.primary.light,
+        // backgroundColor: theme.palette.primary.light,
         color: theme.palette.common.black
     }
 
@@ -32,7 +32,7 @@ export default function TopBar({children}) {
                     label="Tracardi API"
                     value={getApiUrl()}
                     onReset={handleEndpointReset}/>
-                <span onMouseEnter={() => {
+                <span onClick={() => {
                     track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-need-help', {
                         version: version()
                     }).then(() => {

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import ListOfDottedInputs from "../elements/forms/ListOfDottedInputs";
 import TimeInput from "../elements/forms/inputs/TimeInput";
 import IconSelector from "../elements/IconSelector";
@@ -24,11 +24,152 @@ import StepLabel from "@mui/material/StepLabel";
 import Paper from "@mui/material/Paper";
 import NoData from "../elements/misc/NoData";
 import EventToProfileCopy from "../elements/forms/EventToProfileCopy";
+import {EventTypeFlowsAC} from "../elements/forms/inputs/EventTypeFlowsAC";
+import Funnel from "../elements/charts/Funnel";
+import TimeTextInput from "../elements/forms/inputs/TimeTextInput";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
+import QueryRuleGroup from "../elements/forms/QueryRuleGroup";
+import {FieldBox} from "../elements/forms/FieldBox";
+import {TimeSpanField} from "../elements/forms/TimeSpanField";
+
+
+function AggregationOperation({value, label}) {
+    return  <TextField
+        select
+        variant="outlined"
+        size="small"
+        label={label || "Aggregation"}
+        value={value || "sum"}
+        style={{width: 150}}
+        onChange={(ev) => console.log(ev.target.value)}
+    >
+        <MenuItem value={"sum"} selected>Sum of</MenuItem>
+        <MenuItem value={"avg"}>Average of</MenuItem>
+        <MenuItem value={"max"}>Maximum value of</MenuItem>
+        <MenuItem value={"min"}>Minimum value of</MenuItem>
+    </TextField>
+}
+
+function ComparisonOperation({value, label}) {
+    return  <TextField
+        select
+        variant="outlined"
+        size="small"
+        label={label || "Operation"}
+        value={value || "equal"}
+        style={{width: 150}}
+        onChange={(ev) => console.log(ev.target.value)}
+    >
+        <MenuItem value={"equal"} selected>Is Equal</MenuItem>
+        <MenuItem value={"bigger"}>Is Bigger Then</MenuItem>
+        <MenuItem value={"bigger or equal"}> Is Equal or Bigger Then</MenuItem>
+        <MenuItem value={"less"}>Is Less Then</MenuItem>
+        <MenuItem value={"less or equal"}>Is Equal or Less Then</MenuItem>
+        <MenuItem value={"not equal"}>Is Not Equal</MenuItem>
+    </TextField>
+}
+
+function IntervalOperation({value, label}) {
+    return  <TextField
+        select
+        variant="outlined"
+        size="small"
+        label={label || "Interval"}
+        value={value}
+        style={{width: 150}}
+        onChange={(ev) => console.log(ev.target.value)}
+    >
+        <MenuItem value={30} selected>30 minutes</MenuItem>
+        <MenuItem value={60}>1 hour</MenuItem>
+        <MenuItem value={60*6}>6 hours</MenuItem>
+        <MenuItem value={60*12}>12 hours</MenuItem>
+        <MenuItem value={60*24}>1 day</MenuItem>
+        <MenuItem value={60*24*3}>3 days</MenuItem>
+        <MenuItem value={60*24*7}>7 days</MenuItem>
+        <MenuItem value={60*24*14}>14 days</MenuItem>
+        <MenuItem value={60*24*30}>30 days</MenuItem>
+    </TextField>
+}
+
+
+export function FieldRule() {
+    return <div className="flexLine">
+        <FieldBox><RefInput
+            fullWidth={false}
+            autocomplete="event"
+            locked={true}
+            defaultType={true}
+            label="Event data"
+            onChange={console.log}
+            style={{width: "100%"}}/></FieldBox>
+        <FieldBox>
+            <ComparisonOperation/>
+        </FieldBox>
+        <FieldBox>
+            <TextField size="small" variant="outlined" label="Value"/>
+        </FieldBox>
+    </div>
+}
+
+function QueryBuilderRules({onChange, value}) {
+    return <QueryRuleGroup form={FieldRule}
+                        defaultFormValue={{field: {value:"", ref: true}, value: "", op: "equals"}}
+                        value={value}
+                        onChange={onChange}/>
+}
+
+
+function Journey({width, height}) {
+    return <div style={{padding: 10}}>
+        <div style={{display: "flex"}}>
+            <Funnel width={width} height={height}/>
+            <div style={{display: "flex",
+                flexDirection: "column",
+                alignItems: "start",
+                flex: "1 1",
+                justifyContent: "space-evenly",
+                paddingLeft: 10,
+                height: height
+            }}>
+                <div style={{display: "flex", width: "100%", height: "100%", borderBottom: "1px dashed #999"}}>
+                    <div style={{color: "gray", display: "flex", width:200, textAlign: "center", fontSize: 12}}>Customers become aware of your company and its offerings as they seek solutions to their problems or needs.</div>
+                    <div></div>
+                </div>
+                <div style={{display: "flex", width: "100%", height: "100%", borderBottom: "1px dashed #999"}}>
+                    <div style={{color: "gray", display: "flex", width:200, textAlign: "center", fontSize: 12}}>Customers evaluate your company against competitors, seeking deeper understanding and proof points to determine the best choice.</div>
+                    <div></div>
+                </div>
+                <div style={{display: "flex", width: "100%", height: "100%", borderBottom: "1px dashed #999"}}>
+                    <div style={{color: "gray", display: "flex", width:200, textAlign: "center", fontSize: 12}}>Customers decide to purchase your product or service, and you must simplify the process for them with a user-friendly website, clear pricing, and multiple payment options.</div>
+                    <div>
+
+                    </div>
+                </div>
+                <div style={{display: "flex", width: "100%", height: "100%", borderBottom: "1px dashed #999"}}>
+                    <div style={{color: "gray", display: "flex", width:200, textAlign: "center", fontSize: 12}}>
+                        Nurture strong relationships with customers through exceptional service, personalized offers, and ongoing engagement for repeat business.
+                    </div>
+                    <div>
+
+                    </div>
+
+                </div>
+                <div style={{display: "flex", width: "100%", height: "100%"}}>
+                    <div style={{color: "gray", width:200, textAlign: "center", fontSize: 12}}>Loyalty turns into advocacy as satisfied customers become brand advocates, spreading positive word-of-mouth and attracting new customers.</div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 export default function TryOut() {
     const [v, setV] = React.useState("`profile@`");
     const [value, setValue] = React.useState("test");
     const [token, setToken] = useState(null)
+    const [sec, setSec] = useState(0)
 
     const ComplianceRuleDetails = ({value}) => {
 
@@ -116,8 +257,35 @@ export default function TryOut() {
                 </Stepper>
             </Box>)
     }
+
+
+
+
+
+
     //value={{value:"123", ref:true}} autocomplete="profile"
-    return (<div style={{padding: 10}}>
+    return (
+        <div>
+            <TimeSpanField onChange={console.log}/>
+            <QueryBuilderRules onChange={v => console.log("rules", v)}/>
+
+            <div className="flexLine">Filter event type <FieldBox><TuiSelectEventType /></FieldBox> that occurred within last <TimeTextInput onChange={setSec} value={sec} label="Time"/></div>
+            <div className="flexLine">
+                AND <FieldBox><AggregationOperation /></FieldBox> event's <FieldBox>  <RefInput
+                                                                                          fullWidth={false}
+                                                                                          autocomplete="event"
+                                                                                          locked={true}
+                                                                                          defaultType={true}
+                                                                                          label="Event data"
+                                                                                          onChange={console.log}
+                                                                                          style={{width: "100%"}}/></FieldBox>
+                <ComparisonOperation /> <TextField size="small" variant="outlined" label="Value"/></div>
+            <div className="flexLine">Mertic must be evaulated every <FieldBox>
+                <IntervalOperation />
+
+            </FieldBox></div>
+        <Journey width={300} height={600}/>
+            <EventTypeFlowsAC eventType={"page-view"}/>
             <EventToProfileCopy onChange={v => console.log("fields", v)}/>
             <RefInput label="sss" onChange={(v)=>console.log(v)} errorMessage="ssss" fullWidth/>
             <DotAccessor label="xxx"/>

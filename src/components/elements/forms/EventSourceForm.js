@@ -1,5 +1,5 @@
 import {v4 as uuid4} from "uuid";
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import DisabledInput from "./inputs/DisabledInput";
@@ -15,26 +15,40 @@ import DocsLink from "../drawers/DocsLink";
 import JsonForm from "./JsonForm";
 import ShowHide from "../misc/ShowHide";
 import {TuiSelectBridge} from "../tui/TuiSelectBridge";
+import {useFetch} from "../../../remote_api/remoteState";
+import {getBridge} from "../../../remote_api/endpoints/bridge";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import FetchError from "../../errors/FetchError";
 
 const BridgeForm = ({id, value = null, onChange}) => {
-
-    const [bridge, setBridge] = useState(null)
 
     const handleConfigChange = (value) => {
         if (onChange instanceof Function) {
             onChange(value)
         }
     }
-
-    useEffect(() => {
-        asyncRemote({
-            url: `/bridge/${id}`
-        }).then((response) => {
-            if (response.data) {
-                setBridge(response.data)
+    const {isLoading, data: bridge, error} = useFetch(
+        ["getBridge", [id]],
+        getBridge(id),
+        data => {
+            if(onChange instanceof Function) {
+                onChange(data.config)
             }
-        })
-    }, [id]);
+            return data
+        },
+        {
+            refetchOnWindowFocus: false
+        }
+    )
+
+
+    if (isLoading === true) {
+        return <CenteredCircularProgress/>
+    }
+
+    if (error) {
+        return <FetchError error={error}/>
+    }
 
     if (bridge?.form) {
         return <JsonForm schema={bridge.form} values={value || bridge.config} onChange={handleConfigChange}/>

@@ -3,10 +3,19 @@ import {isEmptyObject} from "../../../misc/typeChecking";
 import {FiMoreHorizontal} from "react-icons/fi";
 import FormDrawer from "../drawers/FormDrawer";
 import "./PropertyField.css";
+import TuiTags from "../tui/TuiTags";
 
-const PropertyField = ({name, content, children, drawerSize = 800, underline = true, whiteSpace = 'normal', labelWidth = 250}) => {
+const PropertyField = ({name, content, children, drawerSize = 800, underline = true, whiteSpace = 'normal', valueAlign="flex-start", labelWidth = 200}) => {
 
     const [displayDetails, setDisplayDetails] = useState(false)
+
+    function isEmpty(value) {
+        return value === "" || value === null || typeof value === "undefined" ||
+            (typeof value === "object" && Object.keys(value).length === 0) ||
+            (typeof value === "number" && isNaN(value));
+    }
+
+
     return (
         <>
             <div className="PropertyRow" style={{borderBottom: underline ? "1px dashed #bbb" : 0}}>
@@ -21,14 +30,20 @@ const PropertyField = ({name, content, children, drawerSize = 800, underline = t
                         whiteSpace: whiteSpace,
                         textOverflow: "ellipsis",
                         overflow: "hidden",
-                        flexWrap: "wrap"
+                        flexWrap: "wrap",
+                        justifyContent: valueAlign,
+                        width: "100%"
                     }}>
                         {
-                            typeof content !== "undefined" && React.isValidElement(content)
-                                ? content
-                                : isEmptyObject(content) || content === "" || ((typeof content !== "boolean" && typeof content !== "number") && !content)
-                                    ? '<empty>'
-                                    : typeof content === "boolean" ? content.toString() : content
+                            isEmpty(content)
+                                ? '<empty>'
+                                : typeof content === "number"
+                                    ? content.toString()
+                                    : typeof content === "boolean"
+                                        ? content.toString()
+                                        : Array.isArray(content)
+                                            ? <TuiTags tags={content} size="small"/>
+                                            : content
                         }
                     </div>
                     {children &&

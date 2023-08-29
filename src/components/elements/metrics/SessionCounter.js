@@ -4,7 +4,7 @@ import Counter from "./Counter";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 
-export default function SessionCounter() {
+export default function SessionCounter({width=200}) {
 
     const [value,setValue] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -39,7 +39,5 @@ export default function SessionCounter() {
         return <CenteredCircularProgress />
     }
 
-    return <div>
-        <Counter label="Sessions/Visits" value={value}/>
-    </div>
+    return <Counter label="Sessions/Visits" value={value} hint="Stored" width={width}/>
 }

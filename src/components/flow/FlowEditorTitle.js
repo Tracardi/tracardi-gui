@@ -4,7 +4,7 @@ import {VscRocket} from "react-icons/vsc";
 import "./FlowEditorTitle.css";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import Button from "../elements/forms/Button";
-import {BsFolder} from "react-icons/bs";
+import {BsFolder, BsPlayCircle, BsClipboardCheck} from "react-icons/bs";
 import EventsAnalytics from "../pages/EventsAnalytics";
 import Tabs, {TabCase} from "../elements/tabs/Tabs";
 import ProfilesAnalytics from "../pages/ProfilesAnalytics";
@@ -14,18 +14,15 @@ import {
     TuiForm,
     TuiFormGroup,
     TuiFormGroupContent,
-    TuiFormGroupField,
     TuiFormGroupHeader
 } from "../elements/tui/TuiForm";
 import RuleForm from "../elements/forms/RuleForm";
 import Drawer from "@mui/material/Drawer";
-import {FaUncharted} from "react-icons/fa";
 import {BiReset} from "react-icons/bi";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import {prepareFlowPayload, save} from "./FlowEditorOps";
 import {useConfirm} from "material-ui-confirm";
 import TestEditor from "../test/TestEditor";
-import {BsClipboardCheck} from "react-icons/bs";
 import DropDownMenu from "../menu/DropDownMenu";
 import {ReinstallButton} from "../pages/ActionPlugins";
 import EntityAnalytics from "../pages/EntityAnalytics";
@@ -204,8 +201,8 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                     onClick={() => setEventsOpened(true)}
             />
             {flowMetaData?.type !== 'segment' &&
-            <Button label="Rules"
-                    icon={<FaUncharted size={20}/>}
+            <Button label="Triggers"
+                    icon={<BsPlayCircle size={20}/>}
                     onClick={() => setRulesOpened(true)}
             />}
         </div>
@@ -250,19 +247,17 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
             open={rulesOpened}>
             {rulesOpened && <div style={{padding: 15}}>
                 <div style={{padding: "10px 0", display: "flex", justifyContent: "flex-end"}}>
-                    <Button label="Add routing rule"
+                    <Button label="Add trigger"
                             onClick={() => {
                                 setOpenRuleForm(true)
                             }}
-                            icon={<FaUncharted size={20}/>}/>
+                            icon={<BsPlayCircle size={20}/>}/>
                 </div>
                 <TuiForm>
                     <TuiFormGroup>
-                        <TuiFormGroupHeader header="Routing Rules" description="Information on rules connected to workflow"/>
+                        <TuiFormGroupHeader header="Trigger Rules" description="Information on this workflow triggers"/>
                         <TuiFormGroupContent>
-                            <TuiFormGroupField header="Active rules" description="Rules that trigger this flow">
-                                <FlowRules flowName={flowMetaData?.name} id={flowId} refresh={refresh}/>
-                            </TuiFormGroupField>
+                            <FlowRules flowName={flowMetaData?.name} id={flowId} refresh={refresh}/>
                         </TuiFormGroupContent>
                     </TuiFormGroup>
                 </TuiForm>

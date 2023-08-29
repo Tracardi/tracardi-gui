@@ -9,7 +9,7 @@ import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote} from "../../../remote_api/entrypoint";
-import LiveSegmentForm from "../forms/LiveSegmentForm";
+import SegmentationJobForm from "../forms/SegmentationJobForm";
 
 export default function LiveSegmentDetails({id, onDeleteComplete}) {
 
@@ -53,7 +53,7 @@ export default function LiveSegmentDetails({id, onDeleteComplete}) {
     }
 
     const onDelete = () => {
-        confirm({title: "Do you want to delete this live segment?", description: "This action can not be undone."})
+        confirm({title: "Do you want to delete this segment?", description: "This action can not be undone."})
             .then(async () => {
                     try {
                         await asyncRemote({
@@ -74,7 +74,7 @@ export default function LiveSegmentDetails({id, onDeleteComplete}) {
 
     const Details = () => <TuiForm>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Live Segment" description="Information on live segment."/>
+            <TuiFormGroupHeader header="Segment" description="Information on segment."/>
             <TuiFormGroupContent>
                 <TuiFormGroupField>
                     <Properties properties={data}/>
@@ -104,7 +104,7 @@ export default function LiveSegmentDetails({id, onDeleteComplete}) {
                 setDisplayEdit(false)
             }}
             open={displayEdit}>
-            {displayEdit && <LiveSegmentForm
+            {displayEdit && <SegmentationJobForm
                 onSubmit={onEditComplete}
                 init={data}
             />}

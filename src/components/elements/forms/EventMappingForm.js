@@ -10,17 +10,19 @@ import TuiTagger from "../tui/TuiTagger";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import JsonEditor from "../editors/JsonEditor";
 import Switch from "@mui/material/Switch";
+import {MenuItem} from "@mui/material";
 
-export default function EventIndexingForm({
-                                              id,
-                                              name: _name,
-                                              description: _description,
-                                              event_type: _eventType,
-                                              index_schema: _indexSchema,
-                                              index_enabled: _indexEnabled,
-                                              tags: _tags,
-                                              onSubmit
-                                          }) {
+export default function EventMappingForm({
+                                             id,
+                                             name: _name,
+                                             description: _description,
+                                             event_type: _eventType,
+                                             index_schema: _indexSchema,
+                                             enabled: _indexEnabled,
+                                             journey: _journey,
+                                             tags: _tags,
+                                             onSubmit
+                                         }) {
 
     const [name, setName] = useState(_name || "");
     const [description, setDescription] = useState(_description || "");
@@ -28,6 +30,7 @@ export default function EventIndexingForm({
         id: _eventType,
         name: _eventType
     } : null);
+    const [journey, setJourney] = useState(_journey || "");
     const [tags, setTags] = useState(_tags || []);
     const [indexSchema, setIndexSchema] = useState(JSON.stringify(_indexSchema, null, " ") || "{}");
     const [indexEnabled, setIndexEnabled] = useState(_indexEnabled || false);
@@ -70,14 +73,15 @@ export default function EventIndexingForm({
                 description: description,
                 event_type: eventType.id,
                 index_schema: JSON.parse(indexSchema),
-                index_enabled: indexEnabled,
+                enabled: indexEnabled,
+                journey: journey,
                 tags: tags && Array.isArray(tags) && tags.length > 0 ? tags : ["General"],
             }
 
             setProcessing(true);
 
             const response = await asyncRemote({
-                url: '/event-type/management',
+                url: '/event-type/mapping',
                 method: 'post',
                 data: payload
             })
@@ -107,7 +111,7 @@ export default function EventIndexingForm({
         <TuiFormGroup>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Event type"
-                                   description="Type or select the type of event you want to manage.">
+                                   description="Type or select the type of event you want to map.">
                     <TuiSelectEventType initValue={eventType} onSetValue={setEventType} onlyValueWithOptions={false}/>
                 </TuiFormGroupField>
 
@@ -148,21 +152,39 @@ export default function EventIndexingForm({
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Event traits indexing"/>
+            <TuiFormGroupHeader header="Event mapping"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Event data indexing"
-                                   description="Select which properties should be indexed as event traits.
-                                   Type key, value pair with the key as property name and value as trait name.
-                                   If event was reshaped than index from new reshaped properties.">
+                <TuiFormGroupField header=" Enable event mapping" description="Only enabled mappings will be executed.">
                     <Switch
                         checked={indexEnabled}
                         onChange={(ev) => setIndexEnabled(ev.target.checked)}
                     />
-                    <span>
-                        Enable traits indexing
-                    </span>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Event journey mapping" description="Map event type to customer journey.">
+                    <TextField select
+                               variant="outlined"
+                               size="small"
+                               label="Journey state"
+                               value={journey}
+                               style={{width: 150}}
+                               onChange={(ev) => setJourney(ev.target.value)}
+                    >
+                        <MenuItem value="awareness">Awareness</MenuItem>
+                        <MenuItem value="consideration">Consideration</MenuItem>
+                        <MenuItem value="purchase">Purchase</MenuItem>
+                        <MenuItem value="loyalty">Loyalty</MenuItem>
+                        <MenuItem value="advocacy">Advocacy</MenuItem>
+                    </TextField>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Event data mapping"
+                                   description="Event mapping lets you copy data between fields in event.
+                                   This way you can index selected properties as event traits.
+                                   Type key, value pair with the key as property name and value as trait name.
+                                   If event was reshaped than use new reshaped properties.">
+
+
                     <fieldset disabled={!indexEnabled}>
-                        <legend>Indexing schema</legend>
+                        <legend>Schema mapping</legend>
                         <JsonEditor value={indexSchema} onChange={setIndexSchema}/>
                     </fieldset>
 
@@ -175,7 +197,7 @@ export default function EventIndexingForm({
     </TuiForm>
 }
 
-EventIndexingForm.propTypes = {
+EventMappingForm.propTypes = {
     id: PropTypes.string,
     name: PropTypes.string,
     description: PropTypes.string,

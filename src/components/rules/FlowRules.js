@@ -60,6 +60,6 @@ export default function FlowRules({flowName, id, refresh}) {
 
     return <div>
         {loading && <CircularProgress/>}
-        {!loading && <RulesList flow={flowName} rules={rules}/>}
+        {!loading && <div className="boxRowUnderlines"><RulesList flow={flowName} rules={rules}/></div>}
     </div>
 }

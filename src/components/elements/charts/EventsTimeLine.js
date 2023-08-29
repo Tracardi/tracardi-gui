@@ -1,12 +1,16 @@
 import React, {useEffect, useState} from "react";
 import {asyncRemote} from "../../../remote_api/entrypoint";
-import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis} from "recharts";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
-import {BsCalendarDay, BsCalendarMonth, BsCalendar3} from "react-icons/bs";
 import Button from "../forms/Button";
 import LinearProgress from "@mui/material/LinearProgress";
-import DropDownMenu from "../../menu/DropDownMenu";
+import EventCounter from "../metrics/EventCounter";
+import SessionCounter from "../metrics/SessionCounter";
+import ProfileCounter from "../metrics/ProfileCounter";
+import EntityCounter from "../metrics/EntityCounter";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function EventTimeLine() {
 
@@ -17,14 +21,11 @@ export default function EventTimeLine() {
     const [error, setError] = useState(false);
     const [progress, setProgress] = useState(false);
     const [dataSource, setDataSource] = useState("event")
+    const [dataSelect, setDataSelect] = useState(1)
 
     const colorsList = [
         '#0088FE',
-        '#00C49F',
-        '#FFBB28',
-        '#FF8042',
-        "#00bcd4",
-        "#03a9f4",
+        '#1D4ED8',
         "#009688",
         "#8bc34a",
         "#4caf50",
@@ -126,12 +127,12 @@ export default function EventTimeLine() {
                 return {
                     source: getUrl('/session/select/histogram', groupConfig.group),
                     groupings: <>
-                        <Button style={{width: 120}} label="time zone" onClick={() => setGrouping("timezone")}
-                                selected={grouping === 'timezone'}/>
-                        <Button style={{width: 120}} label="browser" onClick={() => setGrouping("browser")}
-                                selected={grouping === 'browser'}/>
-                        <Button style={{width: 120}} label="platform" onClick={() => setGrouping("platform")}
-                                selected={grouping === 'platform'}/>
+                        <Button style={{width: 80}} label="zone" onClick={() => setGrouping("timezone")}
+                                selected={grouping === 'timezone'} variant="standard"/>
+                        <Button style={{width: 80}} label="browser" onClick={() => setGrouping("browser")}
+                                selected={grouping === 'browser'} variant="standard"/>
+                        <Button style={{width: 80}} label="platform" onClick={() => setGrouping("platform")}
+                                selected={grouping === 'platform'} variant="standard"/>
 
                     </>,
                     colors: groupConfig.colors
@@ -141,16 +142,14 @@ export default function EventTimeLine() {
                 return {
                     source: getUrl('/event/select/histogram', groupConfig.group),
                     groupings: <>
-                        <Button style={{width: 100}} label="type" onClick={() => setGrouping("type")}
-                                selected={grouping === 'type'}/>
-                        <Button style={{width: 100}} label="status" onClick={() => setGrouping("status")}
-                                selected={grouping === 'status'}/>
-                        <Button style={{width: 100}} label="source" onClick={() => setGrouping("source")}
-                                selected={grouping === 'source'}/>
-                        <Button style={{width: 100}} label="route" onClick={() => setGrouping("rule")}
-                                selected={grouping === 'rule'}/>
-                        <Button style={{width: 100}} label="tag" onClick={() => setGrouping("tag")}
-                                selected={grouping === 'tag'}/>
+                        <Button style={{width: 80}} label="type" onClick={() => setGrouping("type")}
+                                selected={grouping === 'type'} variant="standard"/>
+                        <Button style={{width: 80}} label="status" onClick={() => setGrouping("status")}
+                                selected={grouping === 'status'} variant="standard"/>
+                        <Button style={{width: 80}} label="source" onClick={() => setGrouping("source")}
+                                selected={grouping === 'source'} variant="standard"/>
+                        <Button style={{width: 80}} label="tag" onClick={() => setGrouping("tag")}
+                                selected={grouping === 'tag'} variant="standard"/>
                     </>,
                     colors: groupConfig.colors
                 }
@@ -209,55 +208,94 @@ export default function EventTimeLine() {
     const dataSourceConfig = getDataSource(dataSource, grouping)
 
     return <div style={{display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%"}}>
-        <div style={{padding: "0 10px 8px", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap"}}>
+
+        <div style={{padding: "10px 20px 20px 20px", marginBottom: 10, display: "flex", justifyContent: "space-between",
+            alignItems: "center", flexWrap: "wrap", boxShadow: "0px 8px 14px -15px rgba(66, 68, 90, 1)"}}>
             <div style={{display: "flex", alignItems: "center"}}>
-                <DropDownMenu label={dataSource}
-                              selected={true}
-                              width={150}
-                              options={{
-                                  "Events time-line": () => {
-                                      setDataSource('event');
-                                      setGrouping('type');  // Default grouping
-                                  },
-                                  "Profiles time-line": () => {
-                                      setDataSource('profile');
-                                      setGrouping(null);
-                                  },
-                                  "Sessions time-line": () => {
-                                      setDataSource('session');
-                                      setGrouping('browser');
-                                  },
-                              }}/>
+                <Select
+                    disableUnderline
+                    label="Type"
+                    size="small"
+                    variant="standard"
+                    value={dataSelect}
+                    style={{marginRight: 10}}
+                    onChange={(ev) => {
+                        switch (ev.target.value) {
+                            case 1:
+                                setDataSelect(1);
+                                setDataSource('event');
+                                setGrouping('type');  // Default grouping
+                                break;
+                            case 2:
+                                setDataSelect(2);
+                                setDataSource('profile');
+                                setGrouping(null);
+                                break;
+                            case 3:
+                                setDataSelect(3);
+                                setDataSource('session');
+                                setGrouping('browser');
+                                break;
+                        }
+                    }}
+                >
+                    <MenuItem value={1}>Events time-line</MenuItem>
+                    <MenuItem value={2}>Profiles time-line</MenuItem>
+                    {/*<MenuItem value={3}>Session time-line</MenuItem>*/}
+                </Select>
+
                 {dataSourceConfig.groupings}
             </div>
             <div style={{display: "flex", alignItems: "center"}}>
-                <Button label="Last day" onClick={() => setPeriod("day")}
-                            selected={period === "day"} icon={<BsCalendarDay size={20}/>}/>
-                <Button label="Last month" onClick={() => setPeriod("month")}
-                        selected={period === "month"} icon={<BsCalendarMonth size={20}/>}/>
-                <Button label="Last year" onClick={() => setPeriod("year")}
-                        selected={period === "year"} icon={<BsCalendar3 size={20}/>}/>
+                <Button label="Hour" onClick={() => setPeriod("hour")}
+                        selected={period === "hour"} variant="standard"/>
+                <Button label="Day" onClick={() => setPeriod("day")}
+                            selected={period === "day"} variant="standard"/>
+                <Button label="Month" onClick={() => setPeriod("month")}
+                        selected={period === "month"} variant="standard"/>
+                <Button label="Year" onClick={() => setPeriod("year")}
+                        selected={period === "year"} variant="standard"/>
             </div>
         </div>
-        <ResponsiveContainer height={200}>
-            <AreaChart data={data?.result}>
-                <CartesianGrid strokeDasharray="2 1" vertical={false}/>
-                <Tooltip isAnimationActive={false}/>
-                {data?.buckets?.map((column, index) => {
-                    return <Area key={index}
-                                 type="monotone"
-                                 stackId="stack"
-                                 dataKey={column}
-                                 strokeWidth={0}
-                                 stroke={dataSourceConfig.colors(index, column)}
-                                 fillOpacity={.6}
-                                 fill={dataSourceConfig.colors(index, column)}
-                    />
-                })}
-                <XAxis dataKey="date" style={{fontSize: "80%"}}/>
-                <YAxis style={{fontSize: "90%"}}/>
-            </AreaChart>
-        </ResponsiveContainer>
-        {progress && <LinearProgress/>}
+        <div style={{display: "flex", justifyContent: "space-between", flexWrap: "nowrap", flexDirection: "row"}}>
+            <EventCounter width={200}/>
+            <SessionCounter width={200}/>
+            <ProfileCounter width={200}/>
+            <EntityCounter width={200}/>
+        </div>
+        {progress ? <LinearProgress/> : <div style={{height: 4}}></div>}
+        <div style={{ padding: "10px 80px 40px 40px"}}>
+                <ResponsiveContainer height={240}>
+                    <AreaChart data={data?.result}>
+                        <defs>
+                            {colorsList.map((item, idx) => {
+                                return <linearGradient key={idx} id={item.replace("#","c")} x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor={item} stopOpacity={0.8}/>
+                                    <stop offset="95%" stopColor="#fff" stopOpacity={0}/>
+                                </linearGradient>
+                            })}
+
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" vertical={true} color="#ccc"/>
+                        <Tooltip isAnimationActive={false}/>
+                        {data?.buckets?.map((column, index) => {
+                            return <Area key={index}
+                                         type="monotone"
+                                         stackId="stack"
+                                         dataKey={column}
+                                         strokeWidth={3}
+                                         stroke={dataSourceConfig.colors(index, column)}
+                                         fillOpacity={.2}
+                                         fill={`url(#${dataSourceConfig.colors(index, column).replace("#","c")})`}
+                            />
+                        })}
+                        <XAxis dataKey="date" style={{fontSize: "100%"}}/>
+                        {/*<YAxis style={{fontSize: "100%"}}/>*/}
+                    </AreaChart>
+                </ResponsiveContainer>
+        </div>
+
+
+
     </div>
 }

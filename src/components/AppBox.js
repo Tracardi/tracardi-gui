@@ -46,13 +46,14 @@ const Resources = React.lazy(() => import("./pages/Resources"))
 const Flows = React.lazy(() => import("./pages/Flows"))
 const Segments = React.lazy(() => import("./pages/Segments"))
 const Rules = React.lazy(() => import("./pages/Rules"))
+const Metrics = React.lazy(() => import("./pages/Metrics"))
 const FlowReader = React.lazy(() => import("./flow/FlowReader"))
 const ActionPlugins = React.lazy(() => import("./pages/ActionPlugins"))
-const Instances = React.lazy(() => import("./pages/Instances"))
+const PredefinedEventTypes = React.lazy(() => import("./pages/PredefinedEventTypes"))
 const Deployment = React.lazy(() => import("./pages/Deployment"))
 const Settings = React.lazy(() => import("./pages/Settings"))
 const TestEditor = React.lazy(() => import("./pages/TestEditor"))
-const Scheduler = React.lazy(() => import("./pages/Scheduler"))
+// const Scheduler = React.lazy(() => import("./pages/Scheduler"))
 const ConsentsDataCompliance = React.lazy(() => import("./pages/ConsentsCompliance"))
 
 export const DataContext = createContext(null);
@@ -127,11 +128,7 @@ const AppBox = () => {
                             new PrivateTab(["admin", "developer"],
                                 <EventRedirect/>, "/inbound/event/redirect", <>
                                     <BsStar size={20} style={{marginRight: 5}}/>{"Event redirects"}
-                                </>),
-                            new PrivateTab(["admin", "developer"],
-                                <EventValidation/>, "/inbound/event/validation", <>
-                                    <BsStar size={20} style={{marginRight: 5}}/>{"Event validation"}
-                                </>),
+                                </>)
                         ]}
                         />
                     </Suspense>
@@ -169,22 +166,6 @@ const AppBox = () => {
                 </ErrorBoundary>
             </PrivateRoute>
 
-            {/*Triggers*/}
-
-            <PrivateRoute path={urlPrefix("/triggers")} roles={["admin", "developer"]}>
-                <ErrorBoundary>
-                    <Suspense fallback={<CenteredCircularProgress/>}>
-                        <TopBar>Triggers</TopBar>
-                        <PageTabs tabs={[
-                            new PrivateTab(["admin", "developer"],
-                                <Scheduler/>, "/triggers/scheduler", <><BsStar size={20}
-                                                                               style={{marginRight: 5}}/>{"Scheduler"}</>),
-                        ]}
-                        />
-                    </Suspense>
-                </ErrorBoundary>
-            </PrivateRoute>
-
             {/*Routing*/}
 
             <PrivateRoute path={urlPrefix("/routing")} roles={["admin", "developer"]}>
@@ -193,9 +174,39 @@ const AppBox = () => {
                         <TopBar>Traffic routing</TopBar>
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
-                                <EventTypesToRules/>, "/event/routing", "Event Routing"),
+                                <EventTypesToRules/>, "/event/routing", "Event Routing Summary"),
+                        ]}
+                        />
+                    </Suspense>
+                </ErrorBoundary>
+            </PrivateRoute>
+
+            {/*Triggers*/}
+
+            <PrivateRoute path={urlPrefix("/triggers")} roles={["admin", "developer"]}>
+                <ErrorBoundary>
+                    <Suspense fallback={<CenteredCircularProgress/>}>
+                        <TopBar>Triggers</TopBar>
+                        <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
-                                <Rules/>, "/processing/routing", "Routing Rules"),
+                                <Rules/>, "/processing/routing", "Workflow Trigger Rules"),
+                        ]}
+                        />
+                    </Suspense>
+                </ErrorBoundary>
+            </PrivateRoute>
+
+            {/*Metrics*/}
+
+            <PrivateRoute path={urlPrefix("/metrics")} roles={["admin", "developer"]}>
+                <ErrorBoundary>
+                    <Suspense fallback={<CenteredCircularProgress/>}>
+                        <TopBar>Metrics</TopBar>
+                        <PageTabs tabs={[
+                            new PrivateTab(["admin", "developer"],
+                                <Metrics/>, "/metrics/profile",  <>
+                                <BsStar size={20}
+                                        style={{marginRight: 5}}/>{"Profile metrics"}</>),
                         ]}
                         />
                     </Suspense>
@@ -207,18 +218,22 @@ const AppBox = () => {
             <PrivateRoute path={urlPrefix("/transformations")} roles={["admin", "developer"]}>
                 <ErrorBoundary>
                     <Suspense fallback={<CenteredCircularProgress/>}>
-                        <TopBar>Event Collection and Transformation</TopBar>
+                        <TopBar>Data Mapping and Transformation</TopBar>
                         <PageTabs tabs={[
+                            new PrivateTab(["admin", "developer"],
+                                <EventValidation/>, "/inbound/event/validation", <>
+                                    <BsStar size={20} style={{marginRight: 5}}/>{"Event validation"}
+                                </>),
                             new PrivateTab(["admin", "developer"],
                                 <EventReshaping/>, "/inbound/event/reshaping", <>
                                     <BsStar size={20} style={{marginRight: 5}}/>{"Event reshaping"}
                                 </>),
                             new PrivateTab(["admin", "developer"],
                                 <EventManagement/>, "/inbound/event/management", <><BsStar size={20}
-                                                                                           style={{marginRight: 5}}/>{"Event indexing"}</>
+                                                                                           style={{marginRight: 5}}/>{"Event mapping"}</>
                             ),
                             new PrivateTab(["admin", "developer"],
-                                <EventToProfile/>, "/inbound/event-to-profile", "Event to profile coping"
+                                <EventToProfile/>, "/inbound/event-to-profile", "Event to profile mapping"
                             ),
 
                         ]}
@@ -278,19 +293,31 @@ const AppBox = () => {
             <PrivateRoute path={urlPrefix("/processing")} roles={["admin", "developer", "marketer"]}>
                 <ErrorBoundary>
                     <Suspense fallback={<CenteredCircularProgress/>}>
-                        <TopBar>Data Processing and Segmentation</TopBar>
+                        <TopBar>Automation</TopBar>
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
                                 <Flows type="collection"
-                                       label="Processing Workflows"/>, "/processing/workflows", "Processing Workflows"),
+                                       label="Automation Workflows"/>, "/processing/workflows", "Automation Workflows")
+                        ]}
+                        />
+                    </Suspense>
+                </ErrorBoundary>
+            </PrivateRoute>
+
+
+            <PrivateRoute path={urlPrefix("/segmentation")} roles={["admin", "developer", "marketer"]}>
+                <ErrorBoundary>
+                    <Suspense fallback={<CenteredCircularProgress/>}>
+                        <TopBar>Profile Segmentation</TopBar>
+                        <PageTabs tabs={[
+                            new PrivateTab(["admin", "developer", "marketer"],
+                                <LiveSegments/>, "/processing/live/segments", <>
+                                    <BsStar size={20}
+                                            style={{marginRight: 5}}/>{"Segmentation Jobs"}</>),
                             new PrivateTab(["admin", "developer"],
                                 <Flows type="segmentation" label="Segmentation Workflows"/>, "/processing/workflows", <>
                                     <BsStar size={20}
                                             style={{marginRight: 5}}/>{"Segmentation workflows"}</>),
-                            new PrivateTab(["admin", "developer", "marketer"],
-                                <LiveSegments/>, "/processing/live/segments", <>
-                                    <BsStar size={20}
-                                            style={{marginRight: 5}}/>{"Live segmentation"}</>),
                             new PrivateTab(["admin", "developer", "marketer"],
                                 <Segments/>, "/processing/segments", "Post event segmentation"),
                         ]}
@@ -322,6 +349,13 @@ const AppBox = () => {
                     </Suspense>
                 </ErrorBoundary>
             </PrivateRoute>
+            <PrivateRoute exact path={urlPrefix("/flow/collection/edit/:id/:eventId")} roles={["admin", "developer"]}>
+                <ErrorBoundary>
+                    <Suspense fallback={<CenteredCircularProgress/>}>
+                        <FlowEditor/>
+                    </Suspense>
+                </ErrorBoundary>
+            </PrivateRoute>
             {/*The same only different path*/}
             <PrivateRoute exact path={urlPrefix("/flow/segmentation/edit/:id")} roles={["admin", "developer"]}>
                 <ErrorBoundary>
@@ -347,10 +381,11 @@ const AppBox = () => {
                         <TopBar>Monitoring</TopBar>
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "maintainer"], <LogsAnalytics/>, "/monitoring/log", "Logs"),
-                            new PrivateTab(["admin", "maintainer"],
-                                <Instances/>, "/monitoring/instances", "Running instances"),
                             new PrivateTab(["admin", "developer"],
                                 <BackgroundTasks/>, "/monitoring/background/tasks", "Background tasks"),
+                            // new PrivateTab(["admin", "developer"],
+                            //     <Scheduler/>, "/scheduler/tasks", <><BsStar size={20}
+                            //                                                    style={{marginRight: 5}}/>{"Scheduler tasks"}</>),
                             new PrivateTab(["admin", "maintainer"],
                                 <UserLogs/>, "/monitoring/user-log", "User logs")
                         ]}
@@ -379,7 +414,7 @@ const AppBox = () => {
                         <PageTabs tabs={[
                             new PrivateTab(["maintainer"],
                                 <ElasticClusterHealthInfo/>, "/maintenance/elastic-cluster", "Cluster"),
-                            new PrivateTab(["maintainer"],
+                            window._env_?.MULTI_TENANT !== "true" && new PrivateTab(["maintainer"],
                                 <ElasticIndicesInfo/>, "/maintenance/elastic-indices", "Indices"),
                             new PrivateTab(["maintainer"], <Migrations/>, "/maintenance/migration", "Migration"),
                             new PrivateTab(["admin"],
@@ -387,6 +422,8 @@ const AppBox = () => {
                             new PrivateTab(["admin"], <Users/>, "/maintenance/users", "Users"),
                             new PrivateTab(["admin", "developer"],
                                 <ActionPlugins/>, "/settings/plugins", "Action plug-ins"),
+                            new PrivateTab(["admin", "developer"],
+                                <PredefinedEventTypes/>, "/event-type/predefined", "Build-in Event Types"),
                             new PrivateTab(["admin", "developer"],
                                 <Settings/>, "/settings/system", "System settings"),
                         ]}

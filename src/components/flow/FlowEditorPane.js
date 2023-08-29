@@ -210,6 +210,7 @@ const nodeTypes = {
 export function FlowEditorPane(
     {
         id,
+        eventId = null,
         flowMetaData,
         reactFlowInstance = null,
         onFlowLoad,
@@ -268,6 +269,8 @@ export function FlowEditorPane(
                         version: data?.wf_schema?.version,
                         server_version: data?.wf_schema?.server_version
                     },
+                    timestamp: data?.timestamp || null,
+                    deploy_timestamp: data?.deploy_timestamp || null,
                     name: data?.name,
                     description: data?.description,
                     projects: data?.projects,
@@ -482,12 +485,13 @@ export function FlowEditorPane(
         setDisplayNodeContextMenu(false);
         debug(
             id,
+            eventId,
             reactFlowInstance,
             (e) => showAlert(e),
             setDebugInProgress,
             ({nodes, edges, logs}) => {
-                setNodes(nodes)
-                setEdges(edges)
+                setNodes(nodes);
+                setEdges(edges);
                 setLogs(logs);
                 setProfilingData(convertNodesToProfilingData(nodes))
                 handleDisplayDebugPane(true);
@@ -685,8 +689,8 @@ export function FlowEditorPane(
                                             <aside>v.{currentNode?.data?.spec?.version}</aside>
                                             {currentNode?.data?.metadata?.desc}
                                             <div style={{marginTop: 10}}>To <u>delete a node</u>: select the node and press
-                                                <span className="keyButton">DELETE</span>
-                                                key.
+                                                <span className="keyButton">DELETE</span>, or
+                                                <span className="keyButton">Fn</span> + <span className="keyButton">DELETE</span> on Mac.
                                             </div>
                                             <div>To <u>open node properties</u>: <MdAdsClick size={18}/>double click on the
                                                 node.
@@ -761,6 +765,7 @@ export function FlowEditorPane(
 
 FlowEditorPane.propTypes = {
     id: PropTypes.string.isRequired,
+    eventId: PropTypes.string,
     flowMetaData: PropTypes.object,
     onFlowLoad: PropTypes.func.isRequired,
     onEditorReady: PropTypes.func.isRequired,

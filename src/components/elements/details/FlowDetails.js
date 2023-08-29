@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import Properties from "./DetailProperties";
 import Button from "../forms/Button";
 import Rows from "../misc/Rows";
-import {IoGitNetworkSharp} from "react-icons/io5";
+import {BsGear} from "react-icons/bs";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
 import urlPrefix from "../../../misc/UrlPrefix";
@@ -89,17 +89,17 @@ export default function FlowDetails({id, onDeleteComplete}) {
             <TuiFormGroupHeader header="Workflow" description="Information on workflow"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Data">
-                    <Properties properties={data} show={["id", "name", "description", "type"]}/>
+                    <Properties properties={data} show={["id", "timestamp", "deploy_timestamp", "name", "description", "type"]}/>
                     <Rows style={{marginTop: 20}}>
                         <Button onClick={onEditClick}
                                 icon={<VscEdit size={20}/>}
                                 label="Edit" disabled={typeof data === "undefined"}/>
                         <Button onClick={() => onGoToEditFlow(data.id, data.type)}
-                                icon={<IoGitNetworkSharp size={20} style={{marginRight: 5}}/>}
+                                icon={<BsGear size={20} style={{marginRight: 5}}/>}
                                 label="Edit FLOW"
                                 disabled={typeof data === "undefined"}/>
                         <Button onClick={() => onGoToDeployedFlow(data.id)}
-                                icon={<IoGitNetworkSharp size={20} style={{marginRight: 5}}/>}
+                                icon={<BsGear size={20} style={{marginRight: 5}}/>}
                                 label="View Deployed FLOW"
                                 disabled={typeof data === "undefined"}/>
                         {onDeleteComplete && <Button
@@ -114,11 +114,9 @@ export default function FlowDetails({id, onDeleteComplete}) {
         </TuiFormGroup>
 
         {data.type === 'collection' && <TuiFormGroup>
-            <TuiFormGroupHeader header="Rules" description="List of rules connected with the workflow."/>
+            <TuiFormGroupHeader header="Triggers" description="List of this workflow triggers."/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Active rules" description="Rules that trigger this workflow">
-                    <FlowRules flowName={data.name} id={id}/>
-                </TuiFormGroupField>
+                <FlowRules flowName={data.name} id={id}/>
             </TuiFormGroupContent>
         </TuiFormGroup>}
 

@@ -11,10 +11,17 @@ import {getFetchError} from "../remote_api/remoteState";
 
 const ApiUrlSelector = ({children}) => {
 
-    const [endpoint, setEndpoint] = useState(apiUrlStorage().read());
+    const url = new URL(window.location.href);
+    const searchParams = new URLSearchParams(url.search);
+    const apiUrlParam = searchParams.get('api');
+
+    const defaultEndpoint = apiUrlStorage().read() || apiUrlParam || ""
+
+    const [endpoint, setEndpoint] = useState(defaultEndpoint);
     const [apiLocation, setApiLocation] = useState(apiUrlStorage().read());
     const [errorMessage, setErrorMessage] = useState(null);
     const [progress, setProgress] = useState(false);
+
 
     const isValidUrl = (string) => {
         let url;
@@ -68,6 +75,11 @@ const ApiUrlSelector = ({children}) => {
         }
     }
 
+    let apiUrls = new storageValue('tracardi-api-urls').read([])
+    if(apiUrlParam) {
+        if(!apiUrls.includes(apiUrlParam)) apiUrls.push(apiUrlParam)
+    }
+
     if (isValidAPIUrl() === false) {
         return <PaperBox>
             <BsHddNetwork size={50} style={{color: "#666"}}/>
@@ -77,8 +89,8 @@ const ApiUrlSelector = ({children}) => {
                 <Grid item xs={8} style={{display: "flex", justifyContent: "right", flexDirection: "column"}}>
                     <TuiApiUrlInput
                         label="API Endpoint URL"
-                        value={apiLocation || apiUrlStorage().read() || ""}
-                        options={new storageValue('tracardi-api-urls').read([])}
+                        value={apiLocation || apiUrlStorage().read() || apiUrlParam || ""}
+                        options={apiUrls}
                         onChange={(v) => setEndpoint(v)}
                         errorMessage={errorMessage}
                     />

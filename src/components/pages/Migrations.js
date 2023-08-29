@@ -46,7 +46,7 @@ export default function Migrations() {
             setFormLoading(true);
             setFormError(null);
             asyncRemote({
-                url: `/migration/${selectedMigration}${selectedCustomPrefix ? `?from_prefix=${selectedCustomPrefix}` : ""}`,
+                url: `/migration/${selectedMigration}${selectedCustomPrefix ? `?from_tenant_name=${selectedCustomPrefix}` : ""}`,
                 method: "GET"
             })
                 .then(response => {
@@ -81,7 +81,7 @@ export default function Migrations() {
                     method: "POST",
                     data: {
                         from_version: selectedMigration,
-                        from_prefix: selectedCustomPrefix ? selectedCustomPrefix : null,
+                        from_tenant_name: selectedCustomPrefix ? selectedCustomPrefix : null,
                         ids: selectedSchemas
                     }
                 })
@@ -111,13 +111,13 @@ export default function Migrations() {
                 <TuiFormGroup>
                     <TuiFormGroupHeader header={`Configure migration from version ${selectedMigration}`}/>
                     <TuiFormGroupContent>
-                        <TuiFormGroupField header="Custom version prefix"
-                                           description="If your previous Tracardi version had custom prefix, please
+                        <TuiFormGroupField header="Tenant name"
+                                           description="If your previous Tracardi version has tenant name, please
                                            provide it here and click CONFIRM button.
-                                           For standard automatic prefix leave it blank.">
+                                           For standard none tenant version leave it blank.">
                             <div style={{display: "flex", flexDirection: "row"}}>
                                 <TextField
-                                    placeholder="Custom prefix"
+                                    placeholder="Tenant name"
                                     size="small"
                                     onChange={e => setCustomPrefix(e.target.value)}
                                     value={customPrefix}
@@ -129,8 +129,8 @@ export default function Migrations() {
                                 />
                             </div>
                         </TuiFormGroupField>
-                        <TuiFormGroupField header="List of indices"
-                                           description="List of data indices that will be upgraded to new version. Uncheck the index to ignore it during upgrade."/>
+                        <TuiFormGroupField header={`List of indices from previous version ${selectedMigration}`}
+                                           description="List of data indices that will be copied to new version. Uncheck the index to ignore it during upgrade."/>
                         {Array.isArray(schemas) && schemas.length > 0 &&
                         schemas.map((schema, index) =>
                                 <FormControlLabel
@@ -148,12 +148,12 @@ export default function Migrations() {
                                             }}
                                         />
                                     }
-                                    label={`${schema.copy_index.from_index} to ${schema.copy_index.to_index}`}
+                                    label={`${schema.copy_index.from_index} --> ${schema.copy_index.to_index}`}
                                 />
                         )
                         }
                         {Array.isArray(schemas) && schemas.length === 0 &&
-                        <NoData header="No previous version found.">Type custom version prefix is you are certain that there is previous version installed.</NoData>}
+                        <NoData header="No previous version found.">Type tenant if you want to find version for certain tenant.</NoData>}
                         {formError && <ErrorsBox errorList={formError}/>}
                         {buttonError && <ErrorsBox errorList={buttonError}/>}
                         {formLoading && !schemas && <div style={{height: "auto"}}><CenteredCircularProgress/></div>}
@@ -196,7 +196,9 @@ export default function Migrations() {
         <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Available migrations"
-                                    description="Here you can find migrations that are available for current version."/>
+                                    description="Here, you can access the available migrations for the current version.
+                                    Migrations are required only when there have been modifications to the
+                                    underlying data schema of the system."/>
                 <TuiFormGroupContent>
                     <TuiFormGroupField>
                         <div style={{margin: 15, display: "flex", flexDirection: "row", flexWrap: "wrap"}}>

@@ -9,6 +9,13 @@ import {useFetch} from "../../remote_api/remoteState";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {DataContext} from "../AppBox";
 import {getEventsAndSources} from "../../remote_api/endpoints/event";
+import {
+    TuiForm,
+    TuiFormGroup,
+    TuiFormGroupContent,
+    TuiFormGroupField,
+    TuiFormGroupHeader
+} from "../elements/tui/TuiForm";
 
 
 const PlusMinusIcon = ({expand, onChange}) => {
@@ -59,7 +66,10 @@ const EventTypesToRules = () => {
     const {isLoading, data} = useFetch(
         ["routingByType", [refresh, context]],
         getEventsAndSources(),
-        data => { return data }
+        data => { return data },
+        {
+            refetchOnWindowFocus: false
+        }
         )
 
 
@@ -68,19 +78,28 @@ const EventTypesToRules = () => {
     }
 
     if (Array.isArray(data)) {
-        return <div style={{
-            margin: 15,
-            padding: "40px 30px 30px 30px",
-            backgroundColor: "#eee",
-            backgroundImage: "radial-gradient(#ddd 1px, transparent 0)",
-            backgroundSize: "20px 20px",
-            borderRadius: 15
-        }}>{data.map((event, index) => <EventTypeTree
-            key={index} event={event}
-            onChange={() => setRefresh(refresh + 1)}/>)}</div>
-    }
+        return <TuiForm style={{margin: 20}}>
+            <TuiFormGroup fitHeight={true}>
+            <TuiFormGroupHeader header="Routing for existing events"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField description="If any of the routing is missing on this list that means no routing was performed because the was no event of defined type.">
+                    <div style={{
+                        margin: 15,
+                        padding: "40px 30px 30px 30px",
+                        backgroundColor: "#eee",
+                        backgroundImage: "radial-gradient(#ddd 1px, transparent 0)",
+                        backgroundSize: "20px 20px",
+                        borderRadius: 15
+                    }}>{data.map((event, index) => <EventTypeTree
+                        key={index} event={event}
+                        onChange={() => setRefresh(refresh + 1)}/>)}</div>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+            </TuiFormGroup>
 
-    return <NoData header="No routing rules defined"/>
+        </TuiForm>}
+
+    return <NoData header="No triggers defined"/>
 }
 
 export default EventTypesToRules;

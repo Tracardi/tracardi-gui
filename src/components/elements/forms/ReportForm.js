@@ -9,6 +9,7 @@ import TuiTagger from "../tui/TuiTagger";
 import Button from "./Button";
 import {JsonInput, SelectInput} from "./JsonFormComponents";
 import JsonBrowser from "../misc/JsonBrowser";
+import PropertyField from "../details/PropertyField";
 
 
 export default function ReportForm({reportId, onComplete}) {
@@ -119,6 +120,15 @@ export default function ReportForm({reportId, onComplete}) {
         <CenteredCircularProgress />
         :
         <TuiForm style={{margin: 20}}>
+            {reportId && <TuiFormGroup>
+                <TuiFormGroupHeader header="Report metadata"/>
+                <TuiFormGroupContent>
+                    <PropertyField name="Id" content={reportId}/>
+                    <p>This report can be accessed via API at: <div style={{padding: "5px 10px",
+                        border: "solid 1px #ccc",
+                        borderRadius: 5}}><span style={{backgroundColor: "gray", color: "white", padding: "2px 6px", borderRadius: 4}}>POST</span> /report/{reportId}/run</div></p>
+                </TuiFormGroupContent>
+            </TuiFormGroup>}
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Report configuration" description="Add template for custom report, that you can use later in workflow or internal reporting."/>
                 <TuiFormGroupContent>

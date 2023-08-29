@@ -66,6 +66,38 @@ H2.subHeader {
   flex-wrap: wrap;
 }
 
+.boxRowUnderlines > DIV {
+  border-bottom: solid #ccc 1px;
+}
+
+.boxRowUnderlines > DIV:hover {
+  background-color: #f5f5f5;
+}
+
+.boxRowUnderlines >DIV:last-child {
+  border-bottom: 0;
+}
+
+.highlightLine:hover {
+  background-color: #e1f5fe;
+}
+
+.tipBox {
+  background-color: #E1F5FE;
+  border-radius: 5px;
+  border: solid #81D4FA 1px
+}
+
+.tipBox .tipBody {
+  padding: 20px;
+  color: #222;
+}
+
+.tipBox .tipHeader {
+  background-color: #81D4FA;
+  padding: 10px;
+}
+
 .keyButton {
   font-size:11px;
   padding: 2px 5px;

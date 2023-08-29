@@ -14,19 +14,22 @@ import DocsLink from "../drawers/DocsLink";
 
 export default function EventValidationForm({onSubmit, init}) {
 
-    if (!init) {
-        init = {
-            id: uuid4(),
-            name: "",
-            description: "",
-            event_type: "",
-            tags: [],
-            enabled: false,
-            validation: {
-                json_schema: {},
-                condition: ""
-            }
+    const defaultData = {
+        id: uuid4(),
+        name: "",
+        description: "",
+        event_type: "",
+        tags: [],
+        enabled: false,
+        validation: {
+            json_schema: {},
+            condition: ""
         }
+    }
+
+    init = {
+        ...defaultData,
+        ...init
     }
 
     const [name, setName] = useState(init.name);

@@ -74,6 +74,7 @@ export function RuleCard({data, onDeleteComplete, onEditComplete, displayMetadat
                 <TuiFormGroupContent style={{borderRadius: "inherit"}}>
                     <TuiFormGroupContent>
                         <PropertyField name="Id" content={<IdLabel label={data?.id}/>}/>
+                        <PropertyField name="Trigger type" content={data?.type}/>
                         <PropertyField name="Name" content={data?.name}/>
                         <PropertyField name="Description" content={data?.description} whiteSpace="normal"/>
                         <PropertyField name="Created" content={<DateValue date={data?.metadata?.time?.insert}/>}/>
@@ -85,8 +86,8 @@ export function RuleCard({data, onDeleteComplete, onEditComplete, displayMetadat
                 </TuiFormGroupContent>
             </TuiFormGroup>}
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Trigger" description="Routing will complete only if this rule is met."/>
-                <TuiFormGroupContent>
+                <TuiFormGroupHeader header="Trigger" description="Workflow will trigger only if this rule is met."/>
+                {data?.type === 'event-collect' && <TuiFormGroupContent>
                     <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black" color="white">IF</Tag>event
                         type is <Tag>{data?.event_type?.name}</Tag></div>
                     <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black"
@@ -96,9 +97,16 @@ export function RuleCard({data, onDeleteComplete, onEditComplete, displayMetadat
                         <Tag backgroundColor="black"
                              color="white">AND</Tag> profile granted the following
                         consents <ConsentsTags data={data}/></div>}
-                    <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black" color="white">THEN</Tag>run
-                        workflow <Tag>{data?.flow?.name}</Tag></div>
-                </TuiFormGroupContent>
+                    <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black" color="white">THEN</Tag>
+                        workflow <Tag>{data?.flow?.name}</Tag> will be triggered</div>
+                </TuiFormGroupContent>}
+                {data?.type === 'segment-add' && <TuiFormGroupContent>
+                    <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black" color="white">IF</Tag>
+                        segment <Tag>{data?.segment?.name}</Tag> is added to a profile</div>
+                    <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black" color="white">THEN</Tag>
+                        workflow <Tag>{data?.flow?.name}</Tag> will be triggered</div>
+                </TuiFormGroupContent>}
+
             </TuiFormGroup>
             <div>
                 <Rows style={{marginTop: 20}}>

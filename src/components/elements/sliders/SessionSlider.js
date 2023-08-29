@@ -4,10 +4,12 @@ import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import "./SessionSlider.css";
 import {Slider} from "@mui/material";
 import NoData from "../misc/NoData";
-import SessionCardInfo from "../details/SessionCardInfo";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getProfileSession} from "../../../remote_api/endpoints/profile";
 import FetchError from "../../errors/FetchError";
+import SessionDeviceCard from "../details/SessionDeviceCard";
+import SessionCardInfo from "../details/SessionCardInfo";
+import Tabs, {TabCase} from "../tabs/Tabs";
 
 export default function SessionSlider({profileId, onEventSelect}) {
 
@@ -56,10 +58,21 @@ export default function SessionSlider({profileId, onEventSelect}) {
             </div>}
 
             {!isLoading && session !== null && <>
-                <fieldset style={{padding: "10px 20px", width: "100%"}}>
-                    <legend>Session details</legend>
-                    <SessionCardInfo session={session}/>
-                </fieldset>
+                <div style={{width: "100%", borderRadius: 10, border: "solid 1px #ccc"}}>
+                    <Tabs tabs={["Metadata", "Location & Device"]}>
+                        <TabCase id={0}>
+                            <div style={{padding: 20}}>
+                                <SessionCardInfo session={session}/>
+                            </div>
+
+                        </TabCase>
+                        <TabCase id={1}>
+                            <div style={{padding: 20}}>
+                                <SessionDeviceCard session={session}/>
+                            </div>
+                        </TabCase>
+                    </Tabs>
+                </div>
                 <SessionStepper
                     profileId={profileId}
                     session={session}

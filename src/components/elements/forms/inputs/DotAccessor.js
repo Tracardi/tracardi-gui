@@ -5,7 +5,7 @@ import {isString} from "../../../../misc/typeChecking";
 
 export function ValueInput({
                                source, value: initValue, cast: initCast, onChange, disableCast = false,
-                               fullWidth = false
+                               fullWidth = false, filter=null
                            }) {
 
     const [value, setValue] = React.useState(initValue || "");
@@ -40,7 +40,9 @@ export function ValueInput({
             autoCastValue={cast}
             onChange={(value, castValue) => handleChange(value, castValue)}/>
     } else {
-        const url = `/storage/mapping/${source}/metadata`
+        let url = `/storage/mapping/${source}/metadata`
+        if(filter)
+            url = url + "?filter="+filter
         return <EvalAutoComplete
             solo={true}
             autoCastValue={cast}

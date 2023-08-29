@@ -5,10 +5,14 @@ import DateValue from "../misc/DateValue";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getProfileEvents} from "../../../remote_api/endpoints/profile";
-import DataTreeDialog from "../dialog/DataTreeDialog";
 import EventDetailsDialog from "../dialog/EventDetailsDialog";
+import {capitalizeString} from "../misc/EventTypeTag";
+import {BsGear} from "react-icons/bs";
 
 const stepIconComponent = event => {
+    if(event?.source?.id.startsWith("@internal")) {
+        return <BsGear size={12} style={{marginRight: 10}}/>
+    }
     return <div className="EventIcon" style={{
         backgroundColor: {
             collected: "#006db3",
@@ -54,7 +58,7 @@ function EventStream({events}) {
                             StepIconComponent={() => stepIconComponent(event)}
                             onClick={() => handleDetails(event)}
                         >
-                            {event?.name}
+                            {event?.name || capitalizeString(event?.type)}
                         </StepLabel>
                     </Step>
                 ))}

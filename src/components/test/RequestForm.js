@@ -160,7 +160,7 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
                     <Button label="Get predefined properties" onClick={()=>handleGetProperties(eventType)}/>
                     <fieldset>
                         <legend>Properties</legend>
-                        <JsonEditor value={properties} onChange={setProperties} height="150px"/>
+                        <JsonEditor value={properties} onChange={setProperties} height="350px"/>
                     </fieldset>
                 </TuiFormGroupField>
             </TuiFormGroupContent>

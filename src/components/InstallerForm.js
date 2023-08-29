@@ -10,6 +10,7 @@ import ErrorBox from "./errors/ErrorBox";
 import Switch from "@mui/material/Switch";
 import RemoteService from "../remote_api/endpoints/raw";
 import FetchError from "./errors/FetchError";
+import Warning from "./elements/misc/Warning";
 
 const InstallerError = ({error, errorMessage, hasAdminAccount}) => {
 
@@ -28,14 +29,18 @@ const InstallerError = ({error, errorMessage, hasAdminAccount}) => {
     return ""
 }
 
-const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
+const InstallerForm = ({requireAdmin, onInstalled, displayForm, warning, errorMessage}) => {
 
     const [progress, setProgress] = useState(false);
     const [error, setError] = useState(null);
     const [hasAdminAccount, setHasAdminAccount] = useState(null);
 
+    const url = new URL(window.location.href);
+    const searchParams = new URLSearchParams(url.search);
+    const loginParam = searchParams.get('login') || "";
+
     const data = useRef({
-        username: "",
+        username: loginParam,
         password: "",
         token: "tracardi",
         needs_admin: requireAdmin,
@@ -90,72 +95,77 @@ const InstallerForm = ({requireAdmin, onInstalled, errorMessage}) => {
                 <p style={{textAlign: "center", color: "gray"}}>Some parts of the system are missing. Please click
                     install to install required components</p>
             </>}
-            <table>
-                <tbody>
-                <tr>
-                    <td colSpan={2}>
-                        <ReadOnlyInput label="Tracardi API"
-                                       value={getApiUrl()}
-                                       onReset={handleEndpointReset}
-                        />
-                    </td>
-                </tr>
-                <tr>
-                    <td colSpan={2}>
-                        <h2 style={{fontWeight: 300}}>
-                            Installation token
-                        </h2>
-                        <p style={{color: "gray"}}>Input installation token. This is protection from unauthorized
-                            installation. If this is a demo environment administrator most probably set the token to
-                            default value <b>tracardi</b>. If not ask your admin for an installation token.
-                        </p>
-                        <PasswordInput label="Installation token"
-                                       fullWidth={true}
-                                       value={data.current.token}
-                                       onChange={(ev) => data.current.token = ev.target.value}
-                        />
-                    </td>
-                </tr>
-                {requireAdmin && <>
+            <div style={{width: "100%"}}>
+                    <ReadOnlyInput label="Tracardi API"
+                                   value={getApiUrl()}
+                                   onReset={handleEndpointReset}
+                    />
+            </div>
+
+            {displayForm && <>
+                <table>
+                    <tbody>
+
                     <tr>
-                        <td colSpan={2} style={{textAlign: "center"}}>
+                        <td colSpan={2}>
                             <h2 style={{fontWeight: 300}}>
-                                {requireAdmin && "Please set-up missing system administrator account"}
-                                {!requireAdmin && "Please complete installation"}
+                                Installation token
                             </h2>
-                            <span style={{color: "gray"}}>Please use valid e-mail to open an Admin account.<br/>
-                        Otherwise account may not have access to all system features.</span><br/><br/></td>
-                    </tr>
-                    <tr>
-                        <td style={{width: "50%"}}><Input
-                            label="Valid e-mail"
-                            initValue=""
-                            onChange={(ev) => data.current.username = ev.target.value}/>
-                        </td>
-                        <td style={{width: "50%"}}><PasswordInput
-                            value={data.current.password}
-                            onChange={(ev) => data.current.password = ev.target.value}
-                            fullWidth={true}/>
-                        </td>
-                    </tr>
-                </>}
-                <tr>
-                    <td colSpan={2}>
-                        <h2 style={{fontWeight: 300, display: "flex", justifyContent: "space-between", marginBottom: 0}}>
-                            Update database schema
-                            <Switch label="Installation token"
-                                    value={data.current.update_mapping}
-                                    onChange={(ev) => data.current.update_mapping = ev.target.checked}
+                            <p style={{color: "gray"}}>Input installation token. This is protection from unauthorized
+                                installation. If this is a demo environment administrator most probably set the token to
+                                default value <b>tracardi</b>. If not ask your admin for an installation token.
+                            </p>
+                            <PasswordInput label="Installation token"
+                                           fullWidth={true}
+                                           value={data.current.token}
+                                           onChange={(ev) => data.current.token = ev.target.value}
                             />
-                        </h2>
-                        <div style={{color: "gray"}}>If this is your first installation, the database schema does not have to be updated.</div>
+                        </td>
+                    </tr>
+                    {requireAdmin && <>
+                        <tr>
+                            <td colSpan={2} style={{textAlign: "center"}}>
+                                <h2 style={{fontWeight: 300}}>
+                                    {requireAdmin && "Please set-up missing system administrator account"}
+                                    {!requireAdmin && "Please complete installation"}
+                                </h2>
+                                <span style={{color: "gray"}}>Please use valid e-mail to open an Admin account.<br/>
+                        Otherwise account may not have access to all system features.</span><br/><br/></td>
+                        </tr>
+                        <tr>
+                            <td style={{width: "50%"}}><Input
+                                label="Valid e-mail"
+                                initValue={loginParam}
+                                onChange={(ev) => data.current.username = ev.target.value}/>
+                            </td>
+                            <td style={{width: "50%"}}><PasswordInput
+                                value={data.current.password}
+                                onChange={(ev) => data.current.password = ev.target.value}
+                                fullWidth={true}/>
+                            </td>
+                        </tr>
+                    </>}
+                    {false && <tr>
+                        <td colSpan={2}>
+                            <h2 style={{fontWeight: 300, display: "flex", justifyContent: "space-between", marginBottom: 0}}>
+                                Update database schema
+                                <Switch label="Installation token"
+                                        value={data.current.update_mapping}
+                                        onChange={(ev) => data.current.update_mapping = ev.target.checked}
+                                />
+                            </h2>
+                            <div style={{color: "gray"}}>If this is your first installation, the database schema does not have to be updated.</div>
 
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                        </td>
+                    </tr>}
+                    </tbody>
+                </table>
+                <Button label="Install" onClick={handleClick} progress={progress} style={{marginTop: 30}} error={error}/>
+            </>}
 
-            <Button label="Install" onClick={handleClick} progress={progress} style={{marginTop: 30}} error={error}/>
+            {warning && <div style={{width: "100%", textAlign:"center"}} className="flexLine"><Warning message={warning}/></div>}
+
+
         </div>
     </div>
 }

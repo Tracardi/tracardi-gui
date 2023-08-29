@@ -1,8 +1,13 @@
 import React from "react";
 
-export default function Tag({children, backgroundColor="#ccc", color="#000"}) {
+export default function Tag({children, style, tip, backgroundColor="#ccc", color="#000"}) {
+    style = {...style, backgroundColor, color, display: "inline-flex", alignItems: "center", padding: "2px 10px", fontSize:"90%", borderRadius: 5, marginRight: 5, marginTop: 2}
+    if(tip) {
+        style = {...style, cursor: "help"}
+    }
     return <span
-        style={{backgroundColor, color, display: "inline-flex", alignItems: "center", padding: "0 10px", borderRadius: 7, marginRight: 5, marginTop: 2}}>
+        title={tip}
+        style={style}>
         {children}
 </span>
 }

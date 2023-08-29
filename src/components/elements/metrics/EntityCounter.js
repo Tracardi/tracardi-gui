@@ -4,7 +4,7 @@ import Counter from "./Counter";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 
-export default function InstancesCounter({width=200}) {
+export default function EntityCounter({width=200}) {
 
     const [value,setValue] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ export default function InstancesCounter({width=200}) {
         setLoading(true);
         setError(false);
         asyncRemote({
-            url: "instances/count"
+            url: "entity/count"
         }).then((response) => {
             if(response) {
                 if(isSubscribed) setValue(response?.data?.count)
@@ -40,6 +40,6 @@ export default function InstancesCounter({width=200}) {
     }
 
     return <div>
-        <Counter label="Running instances" value={value} width={width}/>
+        <Counter label="Entities" value={value} width={width} hint="Stored"/>
     </div>
 }

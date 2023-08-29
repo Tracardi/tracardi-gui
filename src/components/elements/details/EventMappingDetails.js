@@ -8,7 +8,7 @@ import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import {asyncRemote} from "../../../remote_api/entrypoint";
-import EventIndexingForm from "../forms/EventIndexingForm";
+import EventMappingForm from "../forms/EventMappingForm";
 import TuiTags from "../tui/TuiTags";
 import PropertyField from "./PropertyField";
 import IconLabel from "../misc/IconLabels/IconLabel";
@@ -17,9 +17,10 @@ import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import ActiveTag from "../misc/ActiveTag";
 import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
-import JsonBrowser from "../misc/JsonBrowser";
+import {objectMap} from "../../../misc/mappers";
+import AssignValueToKey from "./AssignValueToKey";
 
-export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
+export function EventMappingCard({data, onDeleteComplete, onEditComplete, displayMetadata = true}) {
 
     const [displayEdit, setDisplayEdit] = React.useState(false);
     const [deleteProgress, setDeleteProgress] = React.useState(false);
@@ -34,7 +35,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
 
     const handleEditComplete = (flowData) => {
         setDisplayEdit(false);
-        if(onEditComplete instanceof Function) onEditComplete(flowData);
+        if (onEditComplete instanceof Function) onEditComplete(flowData);
     }
 
     const handleDelete = () => {
@@ -46,7 +47,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
                     setDeleteProgress(true);
                     try {
                         await asyncRemote({
-                            url: '/event-type/management/' + data?.id,
+                            url: '/event-type/mapping/' + data?.id,
                             method: "delete"
                         })
                         if (onDeleteComplete) {
@@ -71,30 +72,42 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
                                content={<IconLabel value={data.event_type} icon={<FlowNodeIcons icon="event"/>}/>}/>
                 <PropertyField name="Name" content={data.name}/>
                 <PropertyField name="Description" content={data.description}/>
+
                 <PropertyField name="Tags"
                                content={<TuiTags tags={data.tags} size="small"/>}/>
                 <PropertyField name="Indexing enabled" underline={false}
-                               content={<ActiveTag active={data.index_enabled}/>}/>
+                               content={<ActiveTag active={data.enabled}/>}/>
             </TuiFormGroupContent>
         </TuiFormGroup>}
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Property to Trait Indexing Schema"
-            description="This is the schema describing how properties are indexed as traits. Indexed property is removed from
-                    properties."
+
+            <TuiFormGroupHeader header="Event Journey Mapping"/>
+            <TuiFormGroupContent>
+                {data.journey ? <PropertyField name="Journey stage" content={data.journey} underline={false}/>
+                : <NoData header="No journey mapping">
+                        <span style={{textAlign: "center"}}>This event type is not mapped to any customer journey state.</span>
+                    </NoData>}
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+        <TuiFormGroup>
+
+            <TuiFormGroupHeader header="Event Properties Mapping"
+                                description="The schema outlines how properties are transferred to data or traits.
+                                Properties are not mandatory, and if a property is not set, it will not be
+                                transferred, and no error will occur."
             />
             <TuiFormGroupContent>
-                {!isEmptyObjectOrNull(data?.index_schema)
-                    ? <JsonBrowser
-                        data={data.index_schema}
-                    />
-                    : <NoData header="No data indexing">
+                {!isEmptyObjectOrNull(data?.index_schema) ?
+                    objectMap(data?.index_schema, (key, value) => {
+                        return <AssignValueToKey key={key} value={`event@${value}`} label={`event@${key}`} op="moves to"/>
+                    }) : <NoData header="No data mapping">
                         <span style={{textAlign: "center"}}>Data is stored in event properties, it can be searched but it will not be visible as event traits, and no reporting will be possible.</span>
                     </NoData>
                 }
             </TuiFormGroupContent>
         </TuiFormGroup>
-        <RestrictToLocalStagingContext>
-            <Rows style={{marginTop: 20}}>
+        {!data.build_in && <RestrictToLocalStagingContext>
+            <Rows style={{marginTop: 20, marginBottom: 20}}>
                 <Button onClick={handleEdit}
                         icon={<VscEdit size={20}/>}
                         label="Edit" disabled={typeof data === "undefined"}/>
@@ -105,7 +118,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
                     label="Delete"
                     disabled={typeof data === "undefined"}/>
             </Rows>
-        </RestrictToLocalStagingContext>
+        </RestrictToLocalStagingContext>}
     </TuiForm>
 
     return <div className="Box10" style={{height: "100%"}}>
@@ -116,7 +129,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
                 setDisplayEdit(false)
             }}
             open={displayEdit}>
-            {displayEdit && <EventIndexingForm
+            {displayEdit && <EventMappingForm
                 onSubmit={handleEditComplete}
                 {...data}
             />}
@@ -124,8 +137,7 @@ export function EventIndexingCard({data, onDeleteComplete, onEditComplete, displ
     </div>
 }
 
-
-export default function EventIndexingDetails({id, onDeleteComplete, onEditComplete}) {
+export default function EventMappingDetails({id, onDeleteComplete, onEditComplete}) {
 
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
@@ -134,7 +146,7 @@ export default function EventIndexingDetails({id, onDeleteComplete, onEditComple
             let isSubscribed = true;
             setLoading(true);
             asyncRemote({
-                url: '/event-type/management/' + id,
+                url: '/event-type/mapping/' + id,
                 method: "get"
             })
                 .then((result) => {
@@ -161,10 +173,10 @@ export default function EventIndexingDetails({id, onDeleteComplete, onEditComple
 
     if (loading) return <CenteredCircularProgress/>
 
-    return <EventIndexingCard data={data} onDeleteComplete={onDeleteComplete} onEditComplete={handleEditComplete}/>
+    return <EventMappingCard data={data} onDeleteComplete={onDeleteComplete} onEditComplete={handleEditComplete}/>
 }
 
-EventIndexingDetails.propTypes = {
+EventMappingDetails.propTypes = {
     id: PropTypes.string,
     onDeleteComplete: PropTypes.func,
     onEditComplete: PropTypes.func

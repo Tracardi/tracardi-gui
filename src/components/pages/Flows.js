@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {IoGitNetworkSharp} from "react-icons/io5";
+import {BsGear} from "react-icons/bs";
 import FlowForm from "../elements/forms/FlowForm";
 import FlowDetails from "../elements/details/FlowDetails";
 import "../elements/lists/CardBrowser.css";
@@ -62,7 +62,7 @@ export default function Flows({defaultLayout="rows", type="collection", label}) 
                     {plugs.map((row, subIndex) => {
                         return <AdvancedSquareCard key={index + "-" + subIndex}
                                                    id={row?.id}
-                                                   icon={<IoGitNetworkSharp size={45}/>}
+                                                   icon={<BsGear size={45}/>}
                                                    name={row?.name}
                                                    onClick={() => onClick(row?.id)}
                                                    onEdit={handleFlowEdit}
@@ -86,10 +86,10 @@ export default function Flows({defaultLayout="rows", type="collection", label}) 
                                            onClick={handleFlowEdit}
                                            onDelete={handleDelete}
                                            onSettingsClick={onClick}
+                                           tags={[row.type]}
                         >
-                            {`${row.description} (${row.type})`} {row.deployed && <Chip
+                            {row.description && <span style={{marginRight: 5}}>{row.description}</span>} {row.deployed && <Chip
                             label="Deployed"
-                            style={{marginLeft: 5}}
                             size="small"/>}
                         </BrowserRow>
                     })}
@@ -106,7 +106,7 @@ export default function Flows({defaultLayout="rows", type="collection", label}) 
         cardFunc={flowCards}
         rowFunc={flowRows}
         buttonLabel="New workflow"
-        buttonIcon={<IoGitNetworkSharp size={20}/>}
+        buttonIcon={<BsGear size={20}/>}
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
         drawerAddTitle="New workflow"

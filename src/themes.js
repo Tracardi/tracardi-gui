@@ -10,7 +10,7 @@ export const stagingTheme = createTheme({
     },
     palette: {
         primary: {
-            main: '#1976d2',  // #1976d2
+            main: '#3B82F6',  // #1976d2
             light: '#e1f5fe'  // e1f5fe
         },
         secondary: {
@@ -95,7 +95,7 @@ export const signInTheme = createTheme({
             contrastText: '#ffcc00',
         },
         background: {
-            default: '#fff',
+            default: 'white',
         },
         text: {
             primary: '#000'

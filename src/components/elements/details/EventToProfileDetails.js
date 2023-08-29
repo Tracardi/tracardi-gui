@@ -62,9 +62,9 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
         <TuiForm>
             {displayMetadata && <EventTypeMetadata data={data}/>}
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Trigger condition" description="Data will be copied only if the below condition is met."/>
+                <TuiFormGroupHeader header="Trigger condition" description="Event data will be copied only if the below condition is met."/>
                 <TuiFormGroupContent>
-                    <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black" color="white">when</Tag>event type <Tag>equals</Tag>{data?.event_type?.name}</div>
+                    <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black" color="white">when</Tag>event type <Tag>equals</Tag>{data?.event_type?.id}</div>
                     {data?.config?.condition && <div style={{fontSize: 18}}>
                         <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0, marginTop: 8}}>
                             <legend style={{padding: "0 10px"}}>AND</legend>
@@ -74,9 +74,9 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <TuiFormGroup>
-                <TuiFormGroupHeader header="What data will be copied"
+                <TuiFormGroupHeader header="Event to profile mapping"
                                     description="This schema outlines which data from an event are copied to which profile data. e.g.
-                    (profile) pii.email equals (event) properties.email."/>
+                    (profile) data.contact.email equals (event) properties.email."/>
 
                 <TuiFormGroupContent>
                     {!isEmptyObjectOrNull(data?.event_to_profile)
@@ -91,7 +91,7 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
             </TuiFormGroup>
 
         </TuiForm>
-        <RestrictToLocalStagingContext>
+        {!data.build_in && <RestrictToLocalStagingContext>
             <div style={{marginBottom: 20, marginTop: 20}}>
                 <Rows>
                     <Button onClick={onEditClick}
@@ -105,7 +105,7 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
                         disabled={typeof data === "undefined"}/>
                 </Rows>
             </div>
-        </RestrictToLocalStagingContext>
+        </RestrictToLocalStagingContext>}
     </>
 
     return <div className="Box10" style={{height: "100%"}}>

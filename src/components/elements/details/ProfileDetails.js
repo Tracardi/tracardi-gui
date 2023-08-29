@@ -29,8 +29,6 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import {BsBoxArrowDown} from "react-icons/bs";
-import BarChartElement from "../charts/BarChart";
-import LineChartDisplay from "../charts/LineChart";
 import AreaChartDisplay from "../charts/AreaChart";
 import {TuiForm, TuiFormGroup} from "../tui/TuiForm";
 
@@ -83,25 +81,15 @@ export default function ProfileDetails({profile}) {
     return <div style={{height: "inherit", display: "flex", flexDirection: "column"}}>
         {displayPii && <PiiDetails profile={profile}/>}
         <div className="RightTabScroller">
-            <Tabs tabs={["Personal", "Profile Data", "Sessions", "Analytics", "E-Commerce", "Logs", "Json"]}
-                  tabsStyle={{backgroundColor: _theme.palette.primary.light}}>
+            <Tabs tabs={["Personal", "Sessions", "Analytics", "E-Commerce", "Logs", "Json"]}
+                  tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
                 <TabCase id={0}>
                     <ProfileData profile={profile}/>
                 </TabCase>
                 <TabCase id={1}>
-                    <fieldset style={{margin: 20}}>
-                        <legend style={{fontSize: 13}}>Profile personal data</legend>
-                        <Properties properties={profile?.data?.pii}/>
-                    </fieldset>
-                    <fieldset style={{margin: 20}}>
-                        <legend style={{fontSize: 13}}>Profile contacts</legend>
-                        <Properties properties={profile?.data?.contact}/>
-                    </fieldset>
-                </TabCase>
-                <TabCase id={2}>
                     <ProfileSessionsDetails profileId={profile?.id}/>
                 </TabCase>
-                <TabCase id={3}>
+                <TabCase id={2}>
                     <div style={{backgroundColor: "#f5f5f5", margin: 0, padding: 20}}>
                         <Accordion expanded={true} elevation={10}>
                             <AccordionSummary
@@ -206,9 +194,14 @@ export default function ProfileDetails({profile}) {
 
 
                 </TabCase>
-                <TabCase id={4}>
+                <TabCase id={3}>
+                    <div className="Box10">
+                        <NoData header="This feature will be implemented soon">
+                           This is a placeholder for the feature that will be implemented in minor version of 0.8.1.x.
+                        </NoData>
+                    </div>
                 </TabCase>
-                <TabCase id={5}>
+                <TabCase id={4}>
                     <div className="Box10">
                         {profile?.id
                             ? <ProfileLogDetails profileId={profile.id}/>
@@ -217,7 +210,7 @@ export default function ProfileDetails({profile}) {
                             </NoData>}
                     </div>
                 </TabCase>
-                <TabCase id={6}>
+                <TabCase id={5}>
                     <TuiForm style={{margin: 20}}>
                         <TuiFormGroup style={{overflow: "auto"}}>
                             <JsonBrowser data={profile}/>

@@ -70,13 +70,17 @@ const getConfig = () => {
                 name: "Segmentation",
                 disable: false
             },
-            triggers: {
-                name: "Triggers",
-                disable: true
-            },
             routing: {
                 name: "Routing",
                 disable: false
+            },
+            triggers: {
+                name: "Triggers",
+                disable: false
+            },
+            metrics: {
+                name: "Metrics",
+                disable: true
             },
             transformations: {
                 name: "Collection",

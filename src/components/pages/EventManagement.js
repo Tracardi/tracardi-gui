@@ -2,29 +2,30 @@ import React, {useCallback, useState} from "react";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
 import SquareCard from "../elements/lists/cards/SquareCard";
-import EventIndexingForm from "../elements/forms/EventIndexingForm";
+import EventMappingForm from "../elements/forms/EventMappingForm";
 import {BsFolderCheck} from "react-icons/bs";
-import EventIndexingDetails from "../elements/details/EventIndexingDetails";
+import EventMappingDetails from "../elements/details/EventMappingDetails";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {useConfirm} from "material-ui-confirm";
 import {asyncRemote} from "../../remote_api/entrypoint";
+import EventJourneyTag from "../elements/misc/EventJourneyTag";
 
 export default function EventManagement() {
 
     const [refresh, setRefresh] = useState(0);
 
-    const urlFunc= useCallback((query) => ('/event-type/management/search/by_tag'+ ((query) ? "?query=" + query : "")),[]);
-    const addFunc = useCallback((close) => <EventIndexingForm onSubmit={close}/>,[]);
-    const detailsFunc= useCallback((id, close) => <EventIndexingDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
+    const urlFunc= useCallback((query) => ('/event-type/search/mappings'+ ((query) ? "?query=" + query : "")),[]);
+    const addFunc = useCallback((close) => <EventMappingForm onSubmit={close}/>,[]);
+    const detailsFunc= useCallback((id, close) => <EventMappingDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
 
     const confirm = useConfirm();
 
     const handleDelete = async (id) => {
-        confirm({title: "Do you want to delete this event indexing?", description: "This action can not be undone."})
+        confirm({title: "Do you want to delete this event mapping?", description: "This action can not be undone."})
             .then(async () => {
                     try {
                         await asyncRemote({
-                            url: '/event-type/management/' + id,
+                            url: '/event-type/mapping/' + id,
                             method: "delete"
                         })
                         setRefresh(refresh+1)
@@ -46,7 +47,7 @@ export default function EventManagement() {
                                            icon={<BsFolderCheck size={45}/>}
                                            tags={[(row.enabled && "Validated")]}
                                            name={row?.name}
-                                           status={row?.index_enabled}
+                                           status={row?.enabled}
                                            description={row?.description}
                                            onClick={() => onClick(row?.id)}
                         />
@@ -66,10 +67,13 @@ export default function EventManagement() {
                                            id={row?.id}
                                            data={{...row, icon: "validator"}}
                                            tags={row.tags}
-                                           status={row?.index_enabled}
+                                           status={row?.enabled}
                                            onClick={() => onClick(row?.id)}
-                                            onDelete={handleDelete}
-                        />
+                                           onDelete={handleDelete}
+                        >
+                            {row.journey && <EventJourneyTag>{row.journey}
+                            </EventJourneyTag>} {row.description && <span style={{marginRight: 5}}>{row.description}</span>}
+                        </BrowserRow>
                     })}
                 </div>
             </div>
@@ -78,16 +82,16 @@ export default function EventManagement() {
 
     return <CardBrowser
         defaultLayout="rows"
-        label="Event type Prerequisites and Meta-data"
+        label="Event mapping and event metadata"
         description="List of event types."
         urlFunc={urlFunc}
         cardFunc={cards}
         rowFunc={rows}
-        buttonLabel="New event type"
+        buttonLabel="New mapping"
         buttonIcon={<BsFolderCheck size={20}/>}
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
-        drawerAddTitle="New event type"
+        drawerAddTitle="New mapping"
         drawerAddWidth={600}
         addFunc={addFunc}
     />

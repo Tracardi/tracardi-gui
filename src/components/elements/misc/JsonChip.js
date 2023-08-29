@@ -1,5 +1,5 @@
 import {Chip} from "@mui/material";
-import React, {useState} from "react";
+import React from "react";
 import Popover from "@mui/material/Popover";
 import {ObjectInspector} from "react-inspector";
 import theme from "../../../themes/inspector_light_theme";

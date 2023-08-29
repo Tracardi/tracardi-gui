@@ -14,6 +14,10 @@ const Installer = ({children}) => {
         getInstallStatus(),
         data => {
             return data
+        },
+        {
+            refetchOnWindowFocus: false,
+            staleTime: 60 * 60 * 1000
         }
     )
 
@@ -28,6 +32,8 @@ const Installer = ({children}) => {
     if (data?.schema_ok !== true) {
         return <InstallerForm
             requireAdmin={!data?.admin_ok}
+            displayForm={data?.form_ok || true}
+            warning={data?.warning}
             onInstalled={() => setInstalled(Math.random())}
             errorMessage={error}
         />

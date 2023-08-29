@@ -1,13 +1,15 @@
 import React from "react";
 import {Stepper, Step, StepLabel} from "@mui/material";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import "./SessionStepper.css";
 import Button from "../forms/Button";
 import {FiMoreHorizontal} from "react-icons/fi";
 import DateValue from "../misc/DateValue";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getSessionEvents} from "../../../remote_api/endpoints/session";
 import FetchError from "../../errors/FetchError";
+import {capitalizeString} from "../misc/EventTypeTag";
+import "./SessionStepper.css";
+import {BsGear} from "react-icons/bs";
 
 export default function SessionStepper({session, profileId, onEventSelect}) {
 
@@ -44,20 +46,25 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
 
     const eventLabel= (selectedEvent, event) => {
 
+        const eventType =  event?.name || capitalizeString(event?.type)
+
         if(selectedEvent === event.id) {
             if (event?.metadata?.valid === false) {
-                return <b>{event?.name + " (invalid)"}</b>
+                return <b>{eventType + " (invalid)"}</b>
             }
-            return <b>{event?.name}</b>
+            return <b>{eventType}</b>
         } else {
             if (event?.metadata?.valid === false) {
-                return event?.name + " (invalid)"
+                return eventType + " (invalid)"
             }
-            return event.name
+            return eventType
         }
     }
 
     const stepIconComponent = event => {
+        if(event?.source?.id.startsWith("@internal")) {
+            return <BsGear size={12} style={{marginRight: 10}}/>
+        }
         return <div className="StepIcon" style={{
             backgroundColor: {
                 collected: "#006db3",
@@ -94,8 +101,9 @@ export default function SessionStepper({session, profileId, onEventSelect}) {
                         <div style={{
                             alignSelf: "center",
                             paddingLeft: 8,
-                            paddingRight: 8
-                        }}>{event?.metadata?.time?.insert?.substring(11, 19)}</div>
+                            paddingRight: 8,
+                            width: 300
+                        }}><DateValue date={event?.metadata?.time?.insert}/></div>
                         <StepLabel
                             StepIconComponent={() => stepIconComponent(event)}
                         >

@@ -7,6 +7,8 @@ import {StatusPoint} from "../../misc/StatusPoint";
 
 const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, children, status, lock}) => {
 
+    const description = children ? children : data.description
+
     return (
         <div style={{display: "flex", flexDirection: "row", width: "100%", alignItems: "center", borderBottom: "solid 1px #ccc", padding: "0 10px"}}>
             <div 
@@ -26,11 +28,10 @@ const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, childre
             >
 
                 <div style={{display: "flex", alignItems: "center", width: "auto"}}>
-                    <span style={{color: "#555", display: "flex"}}><FlowNodeIcons icon={data?.icon} size={22}/></span>
-                    <div style={{display: "flex", alignItems: "baseline", marginLeft: 10, gap: 5}}>
-                        <div className="flexLine" style={{fontSize: 16, marginRight: 5, fontWeight: 500, width: 200}}>{data.name}</div>
-                        <div className="flexLine" style={{fontSize: 13}}>{children ? children : data.description}</div>
-
+                    <span style={{color: "#555", display: "flex", width: 30}}><FlowNodeIcons icon={data?.icon} size={22}/></span>
+                    <div style={{display: "flex", flexDirection:"column", marginLeft: 10, gap: 5}}>
+                        <div className="flexLine" style={{fontSize: 18, marginRight: 5, fontWeight: 500}}>{data.name}</div>
+                        {description && <div className="flexLine">{description}</div>}
                     </div>
                 </div>
                 <div className="flexLine" style={{gap: 3}}>

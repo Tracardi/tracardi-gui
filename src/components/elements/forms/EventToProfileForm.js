@@ -127,9 +127,9 @@ export default function EventToProfileForm({
                     />
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Description"
-                                   description="Be as descriptive as possible. E.g. Copies: name, price and quantity.">
+                                   description="Be as descriptive as possible. E.g. Copies: name, email to profile.">
                     <TextField variant="outlined"
-                               label="Schema description"
+                               label="Description"
                                multiline
                                rows={5}
                                value={description}
@@ -140,20 +140,21 @@ export default function EventToProfileForm({
                                size="small"
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Schema tags"
-                                   description="Tag the schema to group it into meaningful groups.">
+                <TuiFormGroupField header="Mapping tags"
+                                   description="Tag the mapping to group it into meaningful groups.">
                     <TuiTagger tags={tags} onChange={handleTagChange}/>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Copy data from event to profile"/>
+            <TuiFormGroupHeader header="Profile mapping" description="Profile data mapping to event properties.
+            This setting will let you copy data from event to profile"/>
             <TuiFormGroupContent>
                 <Switch
                     checked={enabled}
                     onChange={(ev) => setEnabled(ev.target.checked)}
                 />
-                <span>Enable event to profile coping</span>
+                <span>Enable mapping</span>
                 <TuiFormGroupField header="Event type"
                                    description="Type or select the type of event you want to copy data from.">
                     <TuiSelectEventType initValue={eventType}
@@ -206,6 +207,7 @@ EventToProfileForm.propTypes = {
     id: PropTypes.string,
     name: PropTypes.string,
     description: PropTypes.string,
+    event_type: PropTypes.string,
     enabled: PropTypes.bool,
     tags: PropTypes.array,
     onSaveComplete: PropTypes.func

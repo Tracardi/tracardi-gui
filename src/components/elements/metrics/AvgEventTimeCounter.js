@@ -4,7 +4,7 @@ import Counter from "./Counter";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 
-export default function AvgEventTime({width=200}) {
+export default function AvgEventTime({width=160}) {
 
     const [value,setValue] = useState(0);
     const [total,setTotal] = useState(0);

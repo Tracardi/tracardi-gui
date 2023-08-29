@@ -6,7 +6,7 @@ import {ValueInput} from "./DotAccessor";
 
 export default function RefInput({
                                      fullWidth, style, value: _value = null, disabled, errorMessage = null, label,
-                                     onChange, defaultType = false, locked = false, autocomplete = null
+                                     onChange, defaultType = false, locked = false, autocomplete = null, filter=null
                                  }) {
 
     if (autocomplete) {
@@ -67,6 +67,7 @@ export default function RefInput({
                 {autocomplete
                     ? <ValueInput
                         source={autocomplete}
+                        filter={filter}
                         value={value.value}
                         fullWidth={fullWidth}
                         cast={false}

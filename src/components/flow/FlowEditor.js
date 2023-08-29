@@ -9,7 +9,7 @@ import {useDispatch} from "react-redux"
 import {changeRoute} from "../../redux/reducers/appSlice"
 
 const FlowEditor = () => {
-    let {id} = useParams();
+    let {id, eventId} = useParams();
     const dispatch = useDispatch();
 
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
@@ -40,6 +40,7 @@ const FlowEditor = () => {
         <div style={{height: "100%"}}>
             <ReactFlowProvider>
                 <FlowEditorPane id={id}
+                                eventId={eventId}
                                 flowMetaData={flowMetaData}
                                 onEdit={() => setFlowFormOpened(true)}
                                 reactFlowInstance={reactFlowInstance}

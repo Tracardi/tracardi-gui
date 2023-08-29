@@ -13,25 +13,28 @@ import Switch from "@mui/material/Switch";
 
 export default function IdentificationPointForm({data: _data, onSubmit}) {
 
-    if (!_data) {
-        _data = {
-            id: uuid4(),
-            name: "",
-            description: "",
-            source: {
-                id: "",
-                name: ""
-            },
-            event_type: {
-                id: "",
-                name: ""
-            },
-            fields:[ {event_property: {value:"", ref: true}, profile_trait: {value:"", ref: true}} ],
-            settings: {
-                conflict_aux_field: "conflict"
-            },
-            enabled: false
-        }
+    const defaultData = {
+        id: uuid4(),
+        name: "",
+        description: "",
+        source: {
+            id: "",
+            name: ""
+        },
+        event_type: {
+            id: "",
+            name: ""
+        },
+        fields:[ {event_property: {value:"", ref: true}, profile_trait: {value:"", ref: true}} ],
+        settings: {
+            conflict_aux_field: "conflict"
+        },
+        enabled: false
+    }
+
+    _data = {
+        ...defaultData,
+        ..._data
     }
 
     const [data, setData] = useState(_data);
@@ -159,8 +162,8 @@ export default function IdentificationPointForm({data: _data, onSubmit}) {
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Identification data fields" description="Type the location of the data that
                 will be used to identify customer. Customer will data will be loaded if the data from event matches
-                the data in profile. Eg. profile 'pii.email' is equal to e-mail delivered in event property
-                'mail'. If any of the set pairs match the profile will be attached to the event.">
+                the data in profile. Eg. profile 'data.contact.email' is equal to e-mail delivered in event property
+                'mail' (skip properties key). If any of the set pairs match the profile will be attached to the event.">
                     <EventToProfileFieldMapping value={data?.fields} onChange={v => handleChange("fields", v)}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Enable">

@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import Tag from "../misc/Tag";
 
 const AssignValueToKey = ({label, value, op="="}) => {
-    return <div className="flexLine" style={{fontSize: 20}}>
-        <div title={value} style={{padding: 5}}>{value}</div>
+    return <div className="flexLine highlightLine" style={{fontSize: 18, lineHeight: "28px", padding: "0 5px", borderRadius: 4}}>
+        <div title={value} style={{padding: 3, marginRight: 10}}>{value}</div>
         <Tag backgroundColor="black" color="white">{op}</Tag>
-        <div title={label} style={{padding: "5px 2px"}}>{label}</div>
+        <div title={label} style={{padding: "3px 2px", marginLeft: 10}}>{label}</div>
     </div>
 }
 

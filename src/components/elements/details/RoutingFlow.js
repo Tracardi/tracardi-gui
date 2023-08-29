@@ -14,7 +14,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import {BsXCircle, BsBoxArrowDown} from "react-icons/bs";
 import {EventValidationCard} from "./EventValidationDetails";
 import {EventReshapingCard} from "./EventReshapingDetails";
-import {EventIndexingCard} from "./EventIndexingDetails";
+import {EventMappingCard} from "./EventMappingDetails";
 import {IdentificationPointCard} from "./IdentificationPointDetails";
 import {EventToProfileCard} from "./EventToProfileDetails";
 import Button from "../forms/Button";
@@ -22,7 +22,7 @@ import FormDrawer from "../drawers/FormDrawer";
 import EventValidationForm from "../forms/EventValidationForm";
 import {BsPlusCircleDotted} from "react-icons/bs";
 import EventReshapingForm from "../forms/EventReshapingForm";
-import EventIndexingForm from "../forms/EventIndexingForm";
+import EventMappingForm from "../forms/EventMappingForm";
 import IdentificationPointForm from "../forms/IdentifiactionPointForm";
 import RuleForm from "../forms/RuleForm";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -33,6 +33,7 @@ import FetchError from "../../errors/FetchError";
 import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
 import {RuleCard} from "./RuleDetails";
 import {TuiForm, TuiFormGroup, TuiFormGroupHeader} from "../tui/TuiForm";
+import Tag from "../misc/Tag";
 
 function hasData(data) {
     return Array.isArray(data) && data.length > 0
@@ -69,7 +70,7 @@ const EnabledChip = ({item}) => {
     </span>
 }
 
-const AccordionCard = ({items, nodata, details, passData, singleValue = false, displayMetadata, add, onDeleteComplete, onEditComplete, onAddComplete}) => {
+const AccordionCard = ({addFormProps = {}, items, nodata, details, passData, singleValue = false, displayMetadata, add, onDeleteComplete, onEditComplete, onAddComplete}) => {
     const [expanded, setExpanded] = React.useState(false);
     const [openAddDrawer, setOpenAddDrawer] = React.useState(false);
 
@@ -78,27 +79,30 @@ const AccordionCard = ({items, nodata, details, passData, singleValue = false, d
     };
 
     function displayAccordion() {
-        return Array.isArray(items) && items.map(item => <Accordion
+        return Array.isArray(items) && items.map((item, index) => <Accordion
             expanded={expanded === item.id}
-            key={item?.id}
+            key={`${item?.id}-${index}`}
             onChange={handleChange(item.id)}
             elevation={6}
         >
             <AccordionSummary
                 expandIcon={<BsBoxArrowDown size={24}/>}
+                style={{backgroundColor: item.build_in ? "aliceblue" : "#fff"}}
             >
                 <div className="flexLine">
                     <EnabledChip item={item}/>
+                    {item.build_in && <Tag backgroundColor="#5C6BC0" color="white">Read Only</Tag>}
                     <Typography
                         sx={{color: 'text.secondary', marginLeft: 1, marginRight: 1}}>{item?.description}</Typography>
                 </div>
 
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails style={{backgroundColor: item.build_in ? "aliceblue" : "#fff"}}>
                 {details && React.createElement(
                     details,
                     passData ? {
-                        data: item, displayMetadata,
+                        data: item,
+                        displayMetadata,
                         onDeleteComplete: onDeleteComplete,
                         onEditComplete: onEditComplete,
                     } : {
@@ -137,6 +141,7 @@ const AccordionCard = ({items, nodata, details, passData, singleValue = false, d
             {openAddDrawer && React.createElement(
                 add,
                 {
+                    ...addFormProps,
                     onSubmit: () => {
                         setOpenAddDrawer(false);
                         if (onAddComplete instanceof Function) onAddComplete()
@@ -148,7 +153,7 @@ const AccordionCard = ({items, nodata, details, passData, singleValue = false, d
     </>
 }
 
-const ProcessStep = ({step, label, optional, endpoint, passData, singleValue, nodata, details, add, onLoad}) => {
+const ProcessStep = ({step, label, optional, endpoint, passData, singleValue, nodata, details, add, onLoad, addFormProps}) => {
 
     const [active, setActive] = useState(false)
     const [refresh, setRefresh] = useState(0)
@@ -190,6 +195,7 @@ const ProcessStep = ({step, label, optional, endpoint, passData, singleValue, no
         </BigStepLabel>
         <BigStepContent>
             <AccordionCard items={data?.result}
+                           addFormProps={addFormProps}
                            nodata={nodata}
                            details={details}
                            add={add}
@@ -226,64 +232,67 @@ const RoutingFlow = ({event}) => {
             <Stepper orientation="vertical">
                 <ProcessStep step={"1"}
                              label="Data Validation"
-                             optional="How was the data validated"
+                             optional="How was the data validated?"
                              endpoint={{url: `/event-validators/by_type/${event.type}?only_enabled=false`}}
                              passData={true}
                              nodata="No validation"
                              details={EventValidationCard}
                              add={EventValidationForm}
+                             addFormProps={{init: {event_type: event.type}}}
+
                 />
                 <ProcessStep step={"2"}
                              label="Event Reshaping"
-                             optional="How was the data changed"
+                             optional="How was the event data transformed?"
                              endpoint={{url: `/event-reshape-schemas/by_type/${event.type}?only_enabled=false`}}
                              passData={true}
                              nodata="No reshaping"
                              details={EventReshapingCard}
                              add={EventReshapingForm}
+                             addFormProps={{init: {event_type: event.type}}}
                 />
                 <ProcessStep step={"3"}
-                             label="Event Indexing"
-                             optional="How was the data indexed"
-                             endpoint={{url: `/event-type/management/${event.type}`}}
-                             nodata="No indexing"
+                             label="Event Mapping"
+                             optional="How was the data indexed?"
+                             endpoint={{url: `/event-type/mappings/${event.type}`}}
+                             nodata="No Mapping"
                              passData={true}
-                             singleValue={true}
-                             details={EventIndexingCard}
-                             add={EventIndexingForm}  // requires onSubmit
-                             onLoad={(data) => {
-                                 return {
-                                     result: [data],
-                                     total: 1
-                                 }
-                             }}
+                             details={EventMappingCard}
+                             add={EventMappingForm}  // requires onSubmit
+                             addFormProps={{event_type: event.type}}
                 />
                 <ProcessStep step={"4"}
                              label="Identification check point"
-                             optional="Is this event used to identify a customer"
+                             optional="Is this event used to identify a customer?"
                              endpoint={{url: `/identification/points/by_type/${event.type}`}}
                              nodata="This event is not an identification point"
+                             eventType={event.type}
                              details={IdentificationPointCard}
                              passData={true}
                              add={IdentificationPointForm}  // requires onSubmit
+                             addFormProps={{data:{event_type: {id: event.type, name: event.type}}}}
+
                 />
                 <ProcessStep step={"5"}
-                             label="Event to profile"
-                             optional="How the date is transferred form event to profile"
+                             label="Event to profile mapping"
+                             optional="How the data is transferred from event to profile?"
                              endpoint={{url: `/event-to-profiles/type/${event.type}`}}
                              nodata="No data is copied to profile"
                              details={EventToProfileCard}
                              add={EventToProfileForm}
+                             addFormProps={{event_type: event.type}}
                              passData={true}
                 />
                 <ProcessStep step={"6"}
                              label="Workflow"
-                             optional="How the event was routed to the workflow"
+                             optional="Does the event trigger any workflow?"
                              endpoint={{url: `/rules/by_event_type/${event.type}`}}
-                             nodata="This event is not routed any to workflow"
+                             nodata="This event does not trigger any to workflow"
                              passData={true}
                              details={PreviewFlow}
                              add={RuleForm}
+                             addFormProps={{data:{event_type: {id: event.type, name: event.type}}}}
+
                 />
             </Stepper>
         </Box>)
