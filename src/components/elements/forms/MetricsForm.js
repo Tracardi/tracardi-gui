@@ -39,7 +39,7 @@ export default function MetricForm({onSubmit, init}) {
                     }
                 },
                 field: "",
-                interval: 1440
+                interval: 60*60*24  // 24h
             }
         },
         // This is indexed
