@@ -106,14 +106,14 @@ export function EventValidationCard({data, onDeleteComplete, onEditComplete, dis
         <FormDrawer
             width={800}
             onClose={() => {
-                    setDisplayEdit(false)
-                }}
-                open={displayEdit}>
-                {displayEdit && <EventValidationForm
-                    onSubmit={handleEditComplete}
-                    init={data}
-                />}
-            </FormDrawer>
+                setDisplayEdit(false)
+            }}
+            open={displayEdit}>
+            {displayEdit && <EventValidationForm
+                onSubmit={handleEditComplete}
+                init={data}
+            />}
+        </FormDrawer>
         </div>
 }
 
