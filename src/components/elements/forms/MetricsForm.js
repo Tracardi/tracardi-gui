@@ -15,6 +15,7 @@ import {IntervalSelect} from "./IntervalsSelect";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import RefInput from "./inputs/RefInput";
 import TimeTextField from "./inputs/TimeTextInput";
+import {BsXCircle, BsCheckCircle} from "react-icons/bs";
 
 
 export default function MetricForm({onSubmit, init}) {
@@ -256,6 +257,7 @@ export default function MetricForm({onSubmit, init}) {
                 for the selected type of aggregation. To do so click button below."
                 >
                     <Button label="Test Metric Computation"
+                            icon={testError.error ? <BsXCircle size={20}/> : <BsCheckCircle size={20}/>}
                             error={testError.error || false}
                             confirmed={testOk}
                             onClick={handleTest}/>
