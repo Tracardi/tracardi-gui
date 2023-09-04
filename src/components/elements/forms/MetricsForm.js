@@ -7,7 +7,7 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import Switch from "@mui/material/Switch";
 import MenuItem from "@mui/material/MenuItem";
 import {asyncRemote} from "../../../remote_api/entrypoint";
-import {setMetrics} from "../../../remote_api/endpoints/metrics";
+import {setMetrics, testProfileMetric} from "../../../remote_api/endpoints/metrics";
 import * as yup from "yup";
 import {getRequiredStringSchema, validateYupSchema} from "../../../misc/validators";
 import {checkValueIfExists, getValueIfExists} from "../../../misc/values";
@@ -60,6 +60,11 @@ export default function MetricForm({onSubmit, init}) {
     const [processing, setProcessing] = useState(false)
     const [apiError, setApiError] = useState(false)
     const requiredString = getRequiredStringSchema()
+    const [testError, setTestError] = useState({
+        error: false
+    })
+    const [testOk, setTestOk] = useState(false)
+
 
     function setData(key, value, obj = null) {
         const props = key.split('.');
@@ -80,6 +85,29 @@ export default function MetricForm({onSubmit, init}) {
         setSetting(newObj);
 
         return newObj;
+    }
+
+    const handleTest = async () => {
+        try {
+            setTestOk(false)
+            setTestError({error:false})
+            const response = await asyncRemote(testProfileMetric({
+                agg: setting.content.metric.aggregation.type,
+                field: setting.content.metric.aggregation.field,
+                event_type: setting.content.metric.event.type.id,
+                span: setting.config.metric.span
+            }))
+
+            if (response.data) {
+                if(response.data?.error === true) {
+                    setTestError(response.data)
+                } else {
+                    setTestOk(true)
+                }
+            }
+        } catch (e) {
+
+        }
     }
 
     const handleSubmit = async () => {
@@ -189,25 +217,6 @@ export default function MetricForm({onSubmit, init}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
 
-        {setting.config?.metric?.span > 0 && <TuiFormGroup>
-            <TuiFormGroupHeader header="Define Metric Updates"/>
-            <TuiFormGroupContent>
-                <TuiFormGroupField header="How often should the metric be updated?"
-                                   description="Time-dependent metric should be updated regularly to
-                                   ensure its accuracy. Specify how often you'd like to refresh this metric.">
-                    <div className="flexLine">
-                        <span style={{padding: "0 5px"}}>Every</span>
-                        <IntervalSelect value={setting.content.metric.interval}
-                                        onChange={ev => setData("content.metric.interval", ev.target.value)}/>
-                    </div>
-
-                </TuiFormGroupField>
-
-
-
-            </TuiFormGroupContent>
-        </TuiFormGroup>}
-
         <TuiFormGroup>
             <TuiFormGroupHeader header="Define Metric Computation"/>
 
@@ -246,7 +255,10 @@ export default function MetricForm({onSubmit, init}) {
                 <TuiFormGroupField description="The system can assess whether the chosen field is suitable
                 for the selected type of aggregation. To do so click button below."
                 >
-                    <Button label="Test Metric Computation"/>
+                    <Button label="Test Metric Computation"
+                            error={testError.error || false}
+                            confirmed={testOk}
+                            onClick={handleTest}/>
                 </TuiFormGroupField>
 
             </TuiFormGroupContent>
@@ -277,6 +289,22 @@ export default function MetricForm({onSubmit, init}) {
 
             </TuiFormGroupContent>
         </TuiFormGroup>
+
+        {setting.config?.metric?.span > 0 && <TuiFormGroup>
+            <TuiFormGroupHeader header="Define Metric Updates"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="How often should the metric be updated?"
+                                   description="Time-dependent metric should be updated regularly to
+                                   ensure its accuracy. Specify how often you'd like to refresh this metric.">
+                    <div className="flexLine">
+                        <span style={{padding: "0 5px"}}>Every</span>
+                        <IntervalSelect value={setting.content.metric.interval}
+                                        onChange={ev => setData("content.metric.interval", ev.target.value)}/>
+                    </div>
+
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
+        </TuiFormGroup>}
 
         <Button label="Save" error={apiError} onClick={handleSubmit} progress={processing}
                 style={{justifyContent: "center"}}/>

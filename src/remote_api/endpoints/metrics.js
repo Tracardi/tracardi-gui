@@ -11,3 +11,11 @@ export function getMetricById(id) {
         url: "/setting/metric/" + id
     }
 }
+
+export function testProfileMetric(payload) {
+    return {
+        url: "/metric/profile/test",
+        method: "POST",
+        data: payload
+    }
+}
