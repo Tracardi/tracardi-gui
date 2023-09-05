@@ -33,23 +33,23 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
         onRefreshChange(rate);
     }
 
-    function setQueryChange(value) {
+    function handleQueryChange(value) {
         setQuery(value);
     }
 
-    function onEnterPressed(ev) {
+    function handleEnterPressed(ev) {
         if (ev.key === 'Enter') {
-            onReady()
+            handleReady()
         }
     }
 
-    function onReady() {
+    function handleReady() {
         localStorage.setItem(type + "Query", query);
         dispatch(resetPage());
         onFilterClick({
             from: fromDate,
             to: toDate,
-            where: query
+            where: query,
         })
     }
 
@@ -71,7 +71,7 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
             </TextField>
         </div>
         <div className="Input">
-            <KqlAutoComplete index={type} value={query} onChange={setQueryChange} onKeyPressCapture={onEnterPressed}/>
+            <KqlAutoComplete index={type} value={query} onChange={handleQueryChange} onKeyPressCapture={handleEnterPressed}/>
             <div style={{fontSize: 11}}>Do not know how to filter. Click <span style={{textDecoration: "underline", cursor: "pointer"}} onClick={external("http://docs.tracardi.com/running/filtering/", true)}>here</span> for information.</div>
         </div>
         <div className="Date">
@@ -83,7 +83,7 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
         <div className="Action">
             <Button label="Filter"
                     style={{margin:"0 0 0 5px", height: 39}}
-                    onClick={onReady}
+                    onClick={handleReady}
                     icon={<AiOutlineFilter size={20} style={{marginRight: 5, height: 27}}/>}/>
 
         </div>

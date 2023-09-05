@@ -10,7 +10,7 @@ export default function DataBrowsingList(
     {
         label,
         children,
-        onLoadDataRequest,
+        onLoadRequest,
         onLoadDetails,
         timeField,
         timeFieldLabel,
@@ -43,7 +43,7 @@ export default function DataBrowsingList(
         <div className="Data">
             <DetailsObjectList
                 label={label}
-                onLoadRequest={onLoadDataRequest(initQuery)}
+                onLoadRequest={onLoadRequest(initQuery)}
                 onLoadDetails={onLoadDetails}
                 filterFields={filterFields}
                 timeField={timeField}

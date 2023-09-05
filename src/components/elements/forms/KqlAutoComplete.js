@@ -7,12 +7,12 @@ import {useDebounce} from "use-debounce";
 
 export default function KqlAutoComplete({index, label, value, onChange, onKeyPressCapture}) {
 
-    const [kql, setKql] = useState({value: value || "", token: null})
+    const [query, setQuery] = useState({value: value || "", token: null})
     const [options, setOptions] = React.useState([]);
     const [progress, setProgress] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [current, setCurrent] = React.useState(false);
-    const [debouncedQuery] = useDebounce(kql, 500);
+    const [debouncedQuery] = useDebounce(query, 500);
 
     const isFocused = useRef(false);
 
@@ -23,7 +23,7 @@ export default function KqlAutoComplete({index, label, value, onChange, onKeyPre
             return
         }
 
-        if(typeof kql?.value !== "undefined") {
+        if(typeof query?.value !== "undefined") {
             setProgress(true);
             asyncRemote({
                 url: `/${index}/query/autocomplete?query=${debouncedQuery?.value}`,
@@ -63,7 +63,7 @@ export default function KqlAutoComplete({index, label, value, onChange, onKeyPre
     }
 
     const handleTyping = (ev, v, reason) => {
-        setKql({...kql, value: v})
+        setQuery({...query, value: v})
         handleChange(v)
     }
 
@@ -71,9 +71,9 @@ export default function KqlAutoComplete({index, label, value, onChange, onKeyPre
         if (v?.value) {
             let base
             if (current?.value !== "" && current?.token === v.token) {
-                base = kql.value.substring(0, kql.value.length - current.value.length)
+                base = query.value.substring(0, query.value.length - current.value.length)
             } else {
-                base = kql.value
+                base = query.value
             }
 
 
@@ -93,7 +93,7 @@ export default function KqlAutoComplete({index, label, value, onChange, onKeyPre
                 v = base + v.value
             }
 
-            setKql({...kql, value: v})
+            setQuery({...query, value: v})
             handleChange(v)
         }
     }
@@ -150,10 +150,11 @@ export default function KqlAutoComplete({index, label, value, onChange, onKeyPre
                             }}>{option.token}</span>
                     </span>
                     <span style={{display: "table-cell", marginRight: 10}}>{option.value}</span>
-                    {option.desc && <span style={{display: "table-cell", fontSize: 12, color: "gray"}}>{option.desc}</span>}
+                    {option.desc &&
+                    <span style={{display: "table-cell", fontSize: 12, color: "gray"}}>{option.desc}</span>}
                 </div>
             }}
-            value={kql}
+            value={query}
             options={options}
             renderInput={(params) => <TextField {...params}
                                                 label={label}

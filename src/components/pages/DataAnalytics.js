@@ -13,7 +13,7 @@ export const LocalDataContext = createContext(null);
 export default function DataAnalytics({
                                           type,
                                           label,
-                                          onLoadDataRequest,
+                                          onLoadDataRequest: onLoadRequest,
                                           onLoadHistogramRequest,
                                           onLoadDetails,
                                           timeField,
@@ -116,7 +116,7 @@ export default function DataAnalytics({
         })
     );
 
-    const onFilter = ({to, from, where}) => {
+    const handleFilter = ({to, from, where}) => {
         const _query = encodeParams({
             minDate: from,
             maxDate: to,
@@ -152,13 +152,13 @@ export default function DataAnalytics({
                         type={type}
                         initDate={query}
                         initRefresh={refresh}
-                        onFilterClick={onFilter}
+                        onFilterClick={handleFilter}
                         onRefreshChange={handleRefreshChange}
                     />
                     <div className="Data">
                         <DataBrowsingList
                             label={label}
-                            onLoadDataRequest={onLoadDataRequest}
+                            onLoadRequest={onLoadRequest}
                             onLoadHistogramRequest={onLoadHistogramRequest}
                             onLoadDetails={onLoadDetails}
                             timeFieldLabel={timeFieldLabel}
