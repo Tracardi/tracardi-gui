@@ -29,8 +29,7 @@ export default function EventReshapingForm({onSubmit, init}) {
                 properties: null,
                 context: null,
                 session: null
-            },
-            condition: ""
+            }
         }
     }
 
@@ -49,7 +48,6 @@ export default function EventReshapingForm({onSubmit, init}) {
     const [eventPropertiesSchema, setEventPropertiesSchema] = useState(init.reshaping?.reshape_schema.properties ? JSON.stringify(init.reshaping?.reshape_schema.properties, null, '  ') : "");
     const [eventContextSchema, setEventContextSchema] = useState(init.reshaping?.reshape_schema.context ? JSON.stringify(init.reshaping?.reshape_schema.context, null, '  ') : "");
     const [sessionContextSchema, setSessionContextSchema] = useState(init.reshaping?.reshape_schema.session ? JSON.stringify(init.reshaping?.reshape_schema.session, null, '  ') : "");
-    const [condition, setCondition] = useState(init.reshaping?.condition);
 
     const [error, setError] = useState(null);
     const [nameErrorMessage, setNameErrorMessage] = useState(null);
@@ -94,9 +92,7 @@ export default function EventReshapingForm({onSubmit, init}) {
                         properties: (eventPropertiesSchema === "") ? null : JSON.parse(eventPropertiesSchema),
                         context: (eventContextSchema === "") ? null : JSON.parse(eventContextSchema),
                         session: (sessionContextSchema === "") ? null : JSON.parse(sessionContextSchema)
-                    },
-                    condition: condition,
-                    // mapping: mapping
+                    }
                 }
             }
 
@@ -179,23 +175,6 @@ export default function EventReshapingForm({onSubmit, init}) {
                         label={"Event source"}
                         value={eventSource}
                         onSetValue={setEventSource}
-                    />
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Trigger condition" description={
-                    <span>Set the condition that must be met to start reshaping. You may leave this field empty if all the events must be reshaped.
-                    <DocsLink src="http://docs.tracardi.com/notations/logic_notation/"> How to write a
-                        condition </DocsLink></span>
-                }>
-                    <TextField
-                        label={"Condition"}
-                        value={condition || ""}
-                        multiline
-                        rows={3}
-                        onChange={(ev) => {
-                            setCondition(ev.target.value)
-                        }}
-                        variant="outlined"
-                        fullWidth
                     />
                 </TuiFormGroupField>
             </TuiFormGroupContent>
