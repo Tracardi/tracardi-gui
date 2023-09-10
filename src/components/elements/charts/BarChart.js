@@ -23,7 +23,9 @@ export default function BarChartElement({onLoadRequest: endpoint, refreshInterva
         endpoint,
         data => {
             setData(data)
-        })
+        },
+        { retry: 1}
+        )
 
     useEffect(() => {
         let timer;

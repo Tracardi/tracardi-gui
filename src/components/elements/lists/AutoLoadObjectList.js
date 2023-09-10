@@ -56,7 +56,7 @@ const AutoLoadObjectList = ({
         };
     }, [refreshInterval]);
 
-     const {isLoading: loading} = useFetch(
+     const {isLoading: loading, error} = useFetch(
         ["getData", [refresh, filter, context, localContext]],
         () => {
             if(filter !== lastFilter.current) {
@@ -78,7 +78,10 @@ const AutoLoadObjectList = ({
             setTotal(data.total)
             setRows(page.current === 0 ? [...data.result] : [...rows, ...data.result])
             return data
-        })
+        },
+         {
+             retry: 1
+         })
 
     const widthStyle =
         typeof timeFieldWidth !== "undefined"
@@ -120,6 +123,12 @@ const AutoLoadObjectList = ({
             });
         }
     };
+
+    if (error) {
+        return <NoData header="Query error">
+            <p>Your query is incorrect. Server returned: <b>{error.data?.detail}</b></p>
+        </NoData>
+    }
 
     if (Array.isArray(rows) && rows.length > 0) {
         return (

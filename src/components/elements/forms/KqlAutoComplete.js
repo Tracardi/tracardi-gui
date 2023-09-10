@@ -88,7 +88,7 @@ export default function KqlAutoComplete({index, label, value, onChange, onKeyPre
                 v = base + " " + v.value
             } else if (v.space === 1) {
                 // APPEND_AFTER
-                v = base + v.value + " "
+                v = base + v.value
             } else {
                 v = base + v.value
             }
