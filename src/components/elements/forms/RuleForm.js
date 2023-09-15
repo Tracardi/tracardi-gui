@@ -154,7 +154,7 @@ export default function RuleForm({onSubmit, data: _data}) {
         event_type: {},
         source: {},
         flow: {},
-        properties: [],
+        properties: {},
         segment: {},
         name: "",
         description: "",
@@ -236,7 +236,7 @@ export default function RuleForm({onSubmit, data: _data}) {
                     event_type: trigger.event_type,
                     source: (trigger?.source?.id) ? trigger.source : null,
                     flow: trigger.flow,
-                    properties: trigger.properties || [],
+                    properties: trigger.properties || {},
                     name: trigger.name,
                     description: trigger.description,
                     tags: trigger.tags,
@@ -274,7 +274,7 @@ export default function RuleForm({onSubmit, data: _data}) {
 
                     event_type:  {id: "", name: ""},
                     source:  {id: "", name: ""},
-                    properties: [],
+                    properties: {},
                 };
 
                 await handleSave('/rule', payload)
@@ -322,7 +322,7 @@ export default function RuleForm({onSubmit, data: _data}) {
                         event_type: trigger.event_type,
                         source: trigger.source
                     }}
-                    properties={trigger?.properties || []}
+                    properties={trigger?.properties || {}}
                     errors={errors}
                     onChange={handleDataChange}
                 />
