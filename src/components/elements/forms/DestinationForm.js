@@ -197,7 +197,7 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                     </div>
                 </TuiFormGroupField>
                 {!data?.on_profile_change_only && <>
-                    <TuiFormGroupField header="Send only when event comes form event source"
+                    <TuiFormGroupField header="Send only when event comes from event source"
                                        description="This destination will be triggered only for selected event source.">
                         <TuiSelectEventSource
                             label="Event source"

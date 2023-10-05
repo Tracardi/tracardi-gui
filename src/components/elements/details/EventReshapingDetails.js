@@ -99,16 +99,6 @@ export function EventReshapingCard({data, onDeleteComplete, onEditComplete, disp
                     </TabCase>
                 </Tabs>
             </TuiFormGroup>
-
-            <TuiFormGroup>
-                <TuiFormGroupHeader header="Value mappings"
-                                    description="How the event type, profile, and session values are mapped."/>
-                <TuiFormGroupContent>
-                    <TuiFormGroupField>
-                        <Properties properties={data.reshaping.mapping}/>
-                    </TuiFormGroupField>
-                </TuiFormGroupContent>
-            </TuiFormGroup>
         </TuiForm>
         <RestrictToLocalStagingContext>
             <div style={{marginBottom: 20}}>
