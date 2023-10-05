@@ -142,7 +142,8 @@ const AppBox = () => {
                         <TopBar>Outbound Traffic</TopBar>
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
-                                <Destinations/>, "/outbound/destinations", "Destinations"),
+                                <Destinations/>, "/outbound/destinations", <><BsStar size={20}
+                                                                                     style={{marginRight: 5}}/>{"Destinations"}</>),
                         ]}
                         />
                     </Suspense>
