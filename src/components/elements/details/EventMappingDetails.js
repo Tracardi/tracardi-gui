@@ -99,7 +99,7 @@ export function EventMappingCard({data, onDeleteComplete, onEditComplete, displa
             <TuiFormGroupContent>
                 {!isEmptyObjectOrNull(data?.index_schema) ?
                     objectMap(data?.index_schema, (key, value) => {
-                        return <AssignValueToKey key={key} value={`event@${value}`} label={`event@${key}`} op="moves to"/>
+                        return <AssignValueToKey key={key} value={`event@properties.${key}`} label={`event@traits.${value}`} op="moves to"/>
                     }) : <NoData header="No data mapping">
                         <span style={{textAlign: "center"}}>Data is stored in event properties, it can be searched but it will not be visible as event traits, and no reporting will be possible.</span>
                     </NoData>

@@ -177,12 +177,8 @@ export default function EventMappingForm({
                     </TextField>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Event data mapping"
-                                   description="Event mapping lets you copy data between fields in event.
-                                   This way you can index selected properties as event traits.
-                                   Type key, value pair with the key as property name and value as trait name.
-                                   If event was reshaped than use new reshaped properties.">
-
-
+                                   description='Event mapping lets you index selected data by moving it from properties to traits.
+                                   Type key as property, and value as trait. Example "property-name":"trait-name". If event was reshaped than use new reshaped properties.'>
                     <fieldset disabled={!indexEnabled}>
                         <legend>Schema mapping</legend>
                         <JsonEditor value={indexSchema} onChange={setIndexSchema}/>
