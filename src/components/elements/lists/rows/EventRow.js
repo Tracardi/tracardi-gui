@@ -28,6 +28,7 @@ import {TuiForm, TuiFormGroupField} from "../../tui/TuiForm";
 import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../../../misc/UrlPrefix";
 import EventJourneyTag from "../../misc/EventJourneyTag";
+import MergingAlert from "../../misc/MergingAlert";
 
 export function EventRow({row, filterFields}) {
 
@@ -159,10 +160,11 @@ export function EventRow({row, filterFields}) {
                                        content={<div style={{display: "flex", gap: 5, alignItems: "center"}}>
                                            <EventTypeTag event={row} />
                                            <EventStatusTag label={row?.metadata?.status}/>
-                                           {row.journey?.state && <EventJourneyTag>{row.journey.state}</EventJourneyTag>}
                                            <EventValidation eventMetaData={row?.metadata}/>
+                                           <MergingAlert eventMetaData={row?.metadata}/>
                                            <EventWarnings eventMetaData={row?.metadata}/>
                                            <EventErrorTag eventMetaData={row?.metadata}/>
+                                           {row.journey?.state && <EventJourneyTag>{row.journey.state}</EventJourneyTag>}
                                            {row?.hit?.name &&
                                            <span title={row?.hit?.url} style={{cursor: "help"}}>{row?.hit?.name}</span>}
                                        </div>}>

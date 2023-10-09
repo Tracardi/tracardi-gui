@@ -341,7 +341,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                                             entity: {w: "week", y: "year", d: "day", M: "month"}[timeRange]
                                         }
                                     },
-                                    where: "source.id:" + id
+                                    where: `source.id="${id}"`
                                 },
                                 limit: 30,
                                 page: 0

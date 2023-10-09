@@ -21,6 +21,7 @@ import Tabs, {TabCase} from "../tabs/Tabs";
 import {EventDataTable} from "./EventData";
 import EventTypeTag from "../misc/EventTypeTag";
 import EventJourneyTag from "../misc/EventJourneyTag";
+import MergingAlert from "../misc/MergingAlert";
 
 
 const EventDataDetails = ({event, metadata, allowedDetails = []}) => {
@@ -56,6 +57,7 @@ const EventDataDetails = ({event, metadata, allowedDetails = []}) => {
                 />
                 <PropertyField name="Status"
                                content={<><EventStatusTag label={event?.metadata?.status}/>
+                                   <MergingAlert eventMetaData={event?.metadata}/>
                                    <EventValidation eventMetaData={event?.metadata}/>
                                    <EventWarnings eventMetaData={event?.metadata}/>
                                    <EventErrorTag eventMetaData={event?.metadata}/>

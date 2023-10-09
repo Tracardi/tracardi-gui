@@ -65,7 +65,7 @@ export function IdentificationPointCard({data, onDeleteComplete, onEditComplete,
                         data?.fields.map((item, index) => {
                             return <AssignValueToKey key={index}
                                                      value={`profile@${item.profile_trait?.value}`}
-                                                     label={`event@properties.${item.event_property?.value}`}/>
+                                                     label={`event@${item.event_property?.value}`}/>
                         })
                     }
                 </TuiFormGroupContent>

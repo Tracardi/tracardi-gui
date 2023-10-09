@@ -28,10 +28,12 @@ const EventToProfileField = ({value, onChange}) => {
                   style={{width: "100%"}}/>
         <span style={{margin: "0px 5px 0 5px", padding: "10px 15px", backgroundColor: "#999", color: "white", borderRadius: 10}}>=</span>
         <RefInput value={data?.event_property}
+                  autocomplete="event"
+                  filter="properties"
                   fullWidth={true}
                   locked={true}
                   defaultType={true}
-                  label="Event property"
+                  label="Event data"
                   onChange={(value) => handleDataChange("event_property", value)}
                   style={{width: "100%"}}/>
     </div>

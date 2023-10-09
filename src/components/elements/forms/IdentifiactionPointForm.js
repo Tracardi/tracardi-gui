@@ -160,10 +160,11 @@ export default function IdentificationPointForm({data: _data, onSubmit}) {
                                         errorMessage={eventTypeErrorMessage}
                                         onSetValue={v => handleChange("event_type", v)}/>
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Identification data fields" description="Type the location of the data that
-                will be used to identify customer. Customer will data will be loaded if the data from event matches
-                the data in profile. Eg. profile 'data.contact.email' is equal to e-mail delivered in event property
-                'mail' (skip properties key). If any of the set pairs match the profile will be attached to the event.">
+                <TuiFormGroupField header="Identification data fields" description="Type the location of the event property that
+                will be used to identify customer. Customer will data will be loaded if the property from event matches
+                the data in profile. Eg. profile 'data.contact.email' is equal to e-mail delivered in event data
+                'properties.mail'. Notice that at this stage events are reshaped by no remapped.
+                If any of the set pairs match the profile will be attached to the event.">
                     <EventToProfileFieldMapping value={data?.fields} onChange={v => handleChange("fields", v)}/>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Enable">

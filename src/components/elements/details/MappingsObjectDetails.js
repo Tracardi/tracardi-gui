@@ -85,6 +85,6 @@ export default function MappingsObjectDetails({properties, show, exclude, keyPre
 }
 
 MappingsObjectDetails.propTypes = {
-    properties: PropTypes.object,
+    properties: PropTypes.array,
     show: PropTypes.array,
   };

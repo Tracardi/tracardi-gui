@@ -69,7 +69,7 @@ export function getProfileEventsHistogram(profileId, period) {
         data: {
             "minDate": {"absolute": null, "delta": {"type": "minus", "value": -1, "entity": period}, "now": null},
             "maxDate": {"absolute": null, "delta": null, "now": null},
-            "where": `profile.id:"${profileId}"`,
+            "where": `profile.id="${profileId}"`,
             "limit": 100,
             "random": Math.random()
         }

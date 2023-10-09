@@ -18,6 +18,7 @@ import Tabs, {TabCase} from "../tabs/Tabs";
 import useTheme from "@mui/material/styles/useTheme";
 import EventTypeTag from "../misc/EventTypeTag";
 import EventJourneyTag from "../misc/EventJourneyTag";
+import MergingAlert from "../misc/MergingAlert";
 
 const ContextInfo = ({event}) => {
     const context = object2dot(event?.context);
@@ -67,10 +68,11 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
                                content={<DateValue date={event?.metadata?.time?.insert}/>}
                 />
                 <PropertyField name="Process time"
-                               content={event?.metadata?.time?.process_time} underline={false}/>
+                               content={<div>Workflow: {event?.metadata?.time?.process_time}, Total: {event?.metadata?.time?.total_time}</div>}/>
                 <PropertyField name="Status"
                                content={<><EventStatusTag label={event?.metadata?.status}/>
                                    <EventValidation eventMetaData={event?.metadata}/>
+                                   <MergingAlert eventMetaData={event?.metadata}/>
                                    <EventWarnings eventMetaData={event?.metadata}/>
                                    <EventErrorTag eventMetaData={event?.metadata}/>
                                </>}/>
