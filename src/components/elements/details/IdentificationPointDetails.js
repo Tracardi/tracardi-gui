@@ -12,6 +12,7 @@ import IdentificationPointForm from "../forms/IdentifiactionPointForm";
 import EventTypeMetadata from "./EventTypeMetadata";
 import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
 import AssignValueToKey from "./AssignValueToKey";
+import Tag from "../misc/Tag";
 
 export function IdentificationPointCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
@@ -61,6 +62,7 @@ export function IdentificationPointCard({data, onDeleteComplete, onEditComplete,
                                     then the customer's profile will be merged with other profiles that share
                                     the same email."/>
                 <TuiFormGroupContent>
+                    {data.source.name && <div style={{fontSize: 18}}><Tag backgroundColor="black" color="white">WHEN</Tag>event source is <Tag>{data.source.name}</Tag> AND:</div>}
                     { data?.fields &&
                         data?.fields.map((item, index) => {
                             return <AssignValueToKey key={index}
