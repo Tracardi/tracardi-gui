@@ -28,6 +28,7 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
     const [context, setContext] = useState(JSON.stringify({}));
     const [progress, setProgress] = useState(false);
     const [debug, setDebug] = useState(true);
+    const [asyncTrack, setAsyncTrack] = useState(true);
 
     const handleSubmit = async () => {
         setProgress(true);
@@ -52,7 +53,11 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
                     source: resource,
                     events: [
                         {
-                            type: eventType, properties: props
+                            type: eventType,
+                            properties: props,
+                            options: {
+                                async: asyncTrack
+                            }
                         }
                     ],
                     options: {
@@ -118,6 +123,7 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
 
                 <TuiFormGroupField header="Options">
                     <BoolInput label="Return debugger data, TRACK_DEBUG env must be set to yes" value={debug} onChange={setDebug}/>
+                    <BoolInput label="Async tracking" value={asyncTrack} onChange={setAsyncTrack}/>
                 </TuiFormGroupField>
 
                 <TuiFormGroupField header="Context" description="Context is the additional data describing event context.">
