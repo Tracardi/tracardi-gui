@@ -123,7 +123,7 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
 
                 <TuiFormGroupField header="Options">
                     <BoolInput label="Return debugger data, TRACK_DEBUG env must be set to yes" value={debug} onChange={setDebug}/>
-                    <BoolInput label="Async tracking" value={asyncTrack} onChange={setAsyncTrack}/>
+                    <BoolInput label="Async event storing" value={asyncTrack} onChange={setAsyncTrack}/>
                 </TuiFormGroupField>
 
                 <TuiFormGroupField header="Context" description="Context is the additional data describing event context.">
