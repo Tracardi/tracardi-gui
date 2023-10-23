@@ -122,7 +122,6 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
                 </TuiFormGroupField>
 
                 <TuiFormGroupField header="Options">
-                    <BoolInput label="Return debugger data, TRACK_DEBUG env must be set to yes" value={debug} onChange={setDebug}/>
                     <BoolInput label="Async event storing" value={asyncTrack} onChange={setAsyncTrack}/>
                 </TuiFormGroupField>
 
