@@ -281,10 +281,6 @@ export default function RuleForm({onSubmit, data: _data}) {
 
             }
         }
-
-
-
-
     }
 
     const handleDataChange = (value) => {
@@ -307,7 +303,7 @@ export default function RuleForm({onSubmit, data: _data}) {
                         onChange={(ev) => handleTypeChange(ev.target.value)}
                     >
                         <MenuItem value="event-collect" selected>Collected Event</MenuItem>
-                        {/*Disabled*/}
+                        {/*Temporary Disabled, also depends on ENABLE_SEGMENTATION_WF_TRIGGERS */}
                         {/*<MenuItem value="segment-add"><span className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Added Segment</span></MenuItem>*/}
                     </TextField>
                 </TuiFormGroupField>
