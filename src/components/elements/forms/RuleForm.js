@@ -307,7 +307,8 @@ export default function RuleForm({onSubmit, data: _data}) {
                         onChange={(ev) => handleTypeChange(ev.target.value)}
                     >
                         <MenuItem value="event-collect" selected>Collected Event</MenuItem>
-                        <MenuItem value="segment-add"><span className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Added Segment</span></MenuItem>
+                        {/*Disabled*/}
+                        {/*<MenuItem value="segment-add"><span className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Added Segment</span></MenuItem>*/}
                     </TextField>
                 </TuiFormGroupField>
             </TuiFormGroupContent>
