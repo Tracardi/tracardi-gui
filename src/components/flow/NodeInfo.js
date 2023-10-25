@@ -14,7 +14,6 @@ const NodeInfo = ({node}) => {
                 <Properties properties={{
                     "Name": node?.data?.metadata?.name,
                     "Author":node?.data?.spec?.author,
-                    "License":node?.data?.spec?.license,
                     "Version": node?.data?.spec?.version,
                 }}/>
             </TuiFormGroupContent>
