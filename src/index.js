@@ -12,6 +12,7 @@ import {ConfirmProvider} from "material-ui-confirm";
 import ApiUrlSelector from "./components/ApiUrlSelector";
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
+import KeyCloakAuthProvider from "./components/context/KeyCloakContext";
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'development') {
     Sentry.init({
@@ -36,16 +37,18 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
         <Provider store={store}>
-            <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={stagingTheme}>
-                    <CssBaseline/>
-                    <ConfirmProvider>
-                        <ApiUrlSelector>
-                            <App/>
-                        </ApiUrlSelector>
-                    </ConfirmProvider>
-                </ThemeProvider>
-            </StyledEngineProvider>
+            <KeyCloakAuthProvider enabled={true}>
+                <StyledEngineProvider injectFirst>
+                    <ThemeProvider theme={stagingTheme}>
+                        <CssBaseline/>
+                        <ConfirmProvider>
+                            <ApiUrlSelector>
+                                <App/>
+                            </ApiUrlSelector>
+                        </ConfirmProvider>
+                    </ThemeProvider>
+                </StyledEngineProvider>
+            </KeyCloakAuthProvider>
         </Provider>
     </React.StrictMode>
 );

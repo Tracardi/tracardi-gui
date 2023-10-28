@@ -44,6 +44,7 @@
     "dot-object": "^2.1.4",
     "funnel-graph-js": "^1.4.2",
     "history": "^4.10.1",
+    "keycloak-js": "^22.0.5",
     "lodash": "^4.17.21",
     "material-ui-confirm": "3.0.7",
     "material-ui-popup-state": "5.0.4",
