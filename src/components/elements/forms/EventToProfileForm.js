@@ -8,9 +8,9 @@ import TuiTagger from "../tui/TuiTagger";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import Switch from "@mui/material/Switch";
 import DocsLink from "../drawers/DocsLink";
-import RemoteService from "../../../remote_api/endpoints/raw";
 import FetchError from "../../errors/FetchError";
 import EventToProfileCopy from "./EventToProfileCopy";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function EventToProfileForm({
                                                id,
@@ -36,6 +36,8 @@ export default function EventToProfileForm({
     const [nameErrorMessage, setNameErrorMessage] = useState("");
     const [typeErrorMessage, setTypeErrorMessage] = useState("");
     const [error, setError] = useState(null);
+
+    const {request} = useRequest()
 
     const mounted = useRef(false);
 
@@ -77,7 +79,7 @@ export default function EventToProfileForm({
 
             setProcessing(true);
 
-            await RemoteService.fetch({
+            await request({
                 url: '/event-to-profile',
                 method: 'post',
                 data: payload

@@ -11,8 +11,8 @@ import Switch from "@mui/material/Switch";
 import DocsLink from "../drawers/DocsLink";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
-import RemoteService from "../../../remote_api/endpoints/raw";
 import FetchError from "../../errors/FetchError";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function EventReshapingForm({onSubmit, init}) {
 
@@ -55,6 +55,7 @@ export default function EventReshapingForm({onSubmit, init}) {
     const [processing, setProcessing] = useState(false);
 
     const mounted = React.useRef(false);
+    const {request} = useRequest()
 
     React.useEffect(() => {
         mounted.current = true;
@@ -96,7 +97,7 @@ export default function EventReshapingForm({onSubmit, init}) {
                 }
             }
 
-            await RemoteService.fetch(
+            await request(
                 {
                     url: '/event-reshape-schema',
                     method: 'post',

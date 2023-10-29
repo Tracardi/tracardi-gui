@@ -15,8 +15,8 @@ import TuiColumnsFlex from "../elements/tui/TuiColumnsFlex";
 import TuiTopHeaderWrapper from "../elements/tui/TuiTopHeaderWrapper";
 import {TuiSelectEventSource} from "../elements/tui/TuiSelectEventSource";
 import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
-import RemoteService from "../../remote_api/endpoints/raw";
 import {getEventTypePredefinedProps} from "../../remote_api/endpoints/event";
+import {useRequest} from "../../remote_api/requestClient";
 
 export const RequestForm = ({onError, onRequest, eventType: evType}) => {
 
@@ -29,6 +29,8 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
     const [progress, setProgress] = useState(false);
     const [debug, setDebug] = useState(true);
     const [asyncTrack, setAsyncTrack] = useState(true);
+
+    const {request} = useRequest()
 
     const handleSubmit = async () => {
         setProgress(true);
@@ -83,7 +85,7 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
 
     const handleGetProperties = async (eventType) => {
         try {
-            const response = await RemoteService.fetch(getEventTypePredefinedProps(eventType))
+            const response = await request(getEventTypePredefinedProps(eventType))
             if(response && 'properties' in  response) {
                 setProperties(JSON.stringify(response['properties'], null, " "))
             }

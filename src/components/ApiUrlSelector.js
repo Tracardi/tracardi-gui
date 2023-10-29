@@ -6,8 +6,8 @@ import TuiApiUrlInput from "./elements/tui/TuiApiUrlInput";
 import Button from "./elements/forms/Button";
 import Grid from "@mui/material/Grid";
 import PaperBox from "./elements/misc/PaperBox";
-import RemoteService from "../remote_api/endpoints/raw";
 import {getFetchError} from "../remote_api/remoteState";
+import {useRequest} from "../remote_api/requestClient";
 
 const ApiUrlSelector = ({children}) => {
 
@@ -22,6 +22,7 @@ const ApiUrlSelector = ({children}) => {
     const [errorMessage, setErrorMessage] = useState(null);
     const [progress, setProgress] = useState(false);
 
+    const {request} = useRequest()
 
     const isValidUrl = (string) => {
         let url;
@@ -50,10 +51,12 @@ const ApiUrlSelector = ({children}) => {
             try {
                 setProgress(true)
                 setErrorMessage(null)
-                const data = await RemoteService.fetch({
+
+                const data = await request({
                     url: "/info/version/details",
                     baseURL: endpoint
                 })
+
                 new storageValue('version').save(data)
                 apiUrlStorage().save(endpoint)
                 const storedUrls = new storageValue('tracardi-api-urls')

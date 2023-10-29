@@ -2,9 +2,12 @@ import {useQuery} from "react-query";
 import {useContext} from "react";
 import {LocalDataContext} from "../components/pages/DataAnalytics";
 import {publish} from "../misc/events";
-import RemoteService from "./endpoints/raw";
+import {useRequest} from "./requestClient";
 
 export const useFetch = (name, endpoint, resolveFn, options={}) => {
+
+    const {request} = useRequest()
+
     publish('connect');
 
     const localContext = useContext(LocalDataContext)
@@ -17,7 +20,7 @@ export const useFetch = (name, endpoint, resolveFn, options={}) => {
         endpoint = {...endpoint, headers: {"x-context": "production"}}
     }
 
-    const closure = () => RemoteService.fetch(endpoint).then(data => {return resolveFn(data)})
+    const closure = () => request(endpoint).then(data => {return resolveFn(data)})
 
     return useQuery(name, closure, options)
 }

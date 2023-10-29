@@ -25,7 +25,7 @@ import {useIdleTimerContext} from "react-idle-timer";
 import {useFetch} from "../../remote_api/remoteState";
 import {getSystemInfo} from "../../remote_api/endpoints/system";
 import {userLogIn} from "../../remote_api/endpoints/user";
-import RemoteService from "../../remote_api/endpoints/raw";
+import {useRequest} from "../../remote_api/requestClient";
 
 function Copyright() {
     return (
@@ -80,6 +80,7 @@ const SignInForm = ({showAlert}) => {
     const [redirectToReferrer, setRedirectToReferrer] = useState(false);
 
     const idleTimer = useIdleTimerContext()
+    const {request} = useRequest()
 
     const {isLoading, data: installedVersion, error} = useFetch(
         ["systemInfo"],
@@ -121,7 +122,7 @@ const SignInForm = ({showAlert}) => {
         })
 
         setProgress(true)
-        RemoteService.fetch(userLogIn(email, password)).then((data => {
+        request(userLogIn(email, password)).then((data => {
             setToken(data['access_token']);
             setRoles(data['roles']);
             setStoredApiUrl(apiUrl);

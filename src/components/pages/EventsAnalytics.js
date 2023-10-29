@@ -5,7 +5,6 @@ import {EventRow} from "../elements/lists/rows/EventRow";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
 import EventToProfileCopy from "../elements/forms/EventToProfileCopy";
 import Button from "../elements/forms/Button";
-import RemoteService from "../../remote_api/endpoints/raw";
 import {
     getEventsIndexingCopy,
     getEventsToProfileCopy,
@@ -18,6 +17,7 @@ import Tag from "../elements/misc/Tag";
 import PropertyField from "../elements/details/PropertyField";
 import {useFetch} from "../../remote_api/remoteState";
 import EventIndexMap from "../elements/forms/EventIndexMap";
+import {useRequest} from "../../remote_api/requestClient";
 
 function CopyToProfileExtension({onClose}) {
 
@@ -30,6 +30,8 @@ function CopyToProfileExtension({onClose}) {
         query,
         mappings: []
     })
+
+    const {request} = useRequest()
 
     const {isLoading, data: count, isError, error: fetchError} = useFetch(
         ["countAffectedRecords"],
@@ -48,7 +50,7 @@ function CopyToProfileExtension({onClose}) {
             endpoint.headers = {
                 'x-context': localContext === true ? 'production': 'staging'
             }
-            const response = await RemoteService.fetch(endpoint)
+            const response = await request(endpoint)
             setSuccess(true)
         } catch (e) {
             setError(e)
@@ -109,6 +111,8 @@ function IndexEventPropertiesExtension({onClose}) {
         mappings: []
     })
 
+    const {request} = useRequest()
+
     const {isLoading, data: count, isError, error: fetchError} = useFetch(
         ["countAffectedRecords"],
         getEventsTotalRecords(query),
@@ -126,7 +130,7 @@ function IndexEventPropertiesExtension({onClose}) {
             endpoint.headers = {
                 'x-context': localContext === true ? 'production': 'staging'
             }
-            const response = await RemoteService.fetch(endpoint)
+            const response = await request(endpoint)
             setSuccess(true)
         } catch (e) {
             setError(e)

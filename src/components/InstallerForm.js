@@ -8,9 +8,9 @@ import Input from "./elements/forms/inputs/Input";
 import Button from "./elements/forms/Button";
 import ErrorBox from "./errors/ErrorBox";
 import Switch from "@mui/material/Switch";
-import RemoteService from "../remote_api/endpoints/raw";
 import FetchError from "./errors/FetchError";
 import Warning from "./elements/misc/Warning";
+import {useRequest} from "../remote_api/requestClient";
 
 const InstallerError = ({error, errorMessage, hasAdminAccount}) => {
 
@@ -39,6 +39,8 @@ const InstallerForm = ({requireAdmin, onInstalled, displayForm, warning, errorMe
     const searchParams = new URLSearchParams(url.search);
     const loginParam = searchParams.get('login') || "";
 
+    const {request} = useRequest()
+
     const data = useRef({
         username: loginParam,
         password: "",
@@ -58,7 +60,7 @@ const InstallerForm = ({requireAdmin, onInstalled, displayForm, warning, errorMe
             setError(null);
             setProgress(true);
             setHasAdminAccount(null);
-            const responseData = await RemoteService.fetch({
+            const responseData = await request({
                 url: "/install",
                 method: "POST",
                 data: data.current
