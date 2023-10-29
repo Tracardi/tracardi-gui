@@ -28,8 +28,8 @@ export default function EntityAnalytics({displayChart=true}) {
         label="List of Entities"
         enableFiltering={true}
         timeFieldLabel = "last update"
-        timeField={(row) => [makeUtcStringTzAware(row.timestamp)]}
-        filterFields={['timestamp']}
+        timeField={(row) => [makeUtcStringTzAware(row.metadata.time.insert)]}
+        filterFields={['metadata.time.insert']}
         onLoadHistogramRequest={onLoadHistogramRequest}
         onLoadDataRequest={onLoadDataRequest}
         detailsDrawerWidth={1250}
