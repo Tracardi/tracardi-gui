@@ -23,6 +23,7 @@ import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from 'react-query/devtools'
 import {getToken} from "./authentication/login";
 import Installer from "./Installer";
+import KeyCloakAuthProvider from "./context/KeyCloakContext";
 
 
 const AppBox = React.lazy(() => import('./AppBox'))
@@ -31,11 +32,6 @@ const App = ({alert, resource, close}) => {
 
     const dispatch = useDispatch()
     const queryClient = new QueryClient()
-
-    if(!getToken() && window.location.pathname !== "/login") {
-        window.location.replace("/login");
-        return <CenteredCircularProgress label="Redirecting"/>
-    }
 
     const onIdle = () => {
         window.location.replace("/logout");
@@ -65,7 +61,9 @@ const App = ({alert, resource, close}) => {
                                 element={
                                     <PrivateRoute path="*" roles={["admin", "marketer", "developer", "maintainer"]}>
                                         <Suspense fallback={<CenteredCircularProgress/>}>
-                                            <AppBox/>
+                                            <KeyCloakAuthProvider enabled={false}>
+                                                <AppBox/>
+                                            </KeyCloakAuthProvider>
                                         </Suspense>
                                     </PrivateRoute>
                                 }

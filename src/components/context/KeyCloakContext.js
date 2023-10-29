@@ -1,6 +1,7 @@
 import React, {createContext, useEffect, useRef, useState} from 'react';
 import Keycloak from "keycloak-js";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
+import {getToken} from "../authentication/login";
 
 export const KeyCloakContext = createContext({token: null, isAuthenticated: false});
 
@@ -10,7 +11,7 @@ const client = new Keycloak({
     clientId: "tracardi"
 })
 
-export default function KeyCloakAuthProvider({children, enabled=false}) {
+export default function KeyCloakAuthProvider({children, enabled = false}) {
 
     const isRun = useRef(false)
     const [logged, setLogged] = useState(false);
@@ -18,9 +19,20 @@ export default function KeyCloakAuthProvider({children, enabled=false}) {
 
     useEffect(() => {
 
-        if(!enabled) {
-            setLogged(true);
-            setToken(null);
+        if (!enabled) {
+
+            const _token = getToken();
+
+            if (!_token) {
+                setLogged(false)
+                setToken(null);
+                if (window.location.pathname !== "/login") {
+                    window.location.replace("/login");
+                }
+            } else {
+                setLogged(true)
+                setToken(_token);
+            }
             return
         }
 
@@ -28,11 +40,12 @@ export default function KeyCloakAuthProvider({children, enabled=false}) {
         window._env_.KC_REALM = "tracardi"
         window._env_.KC_CLIENT_ID = "tracardi"
 
-        if(isRun.current) return;
+        if (isRun.current) return;
 
         isRun.current = true;
 
-        client.init({onLoad: "login-required",
+        client.init({
+            onLoad: "login-required",
             // must match to the configured value in keycloak
             // redirectUri: 'http://localhost:3000/test/',
             // checkLoginIframe: false

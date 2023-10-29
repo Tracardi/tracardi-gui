@@ -1,18 +1,17 @@
 import React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
-import { createRoot } from 'react-dom/client';
+import {createRoot} from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import store from './redux/store'
 import {Provider} from "react-redux";
 import App from "./components/App";
 import {stagingTheme} from "./themes";
-import { ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
+import {ThemeProvider, StyledEngineProvider} from "@mui/material/styles";
 import {ConfirmProvider} from "material-ui-confirm";
 import ApiUrlSelector from "./components/ApiUrlSelector";
 import * as Sentry from "@sentry/react";
-import { Integrations } from "@sentry/tracing";
-import KeyCloakAuthProvider from "./components/context/KeyCloakContext";
+import {Integrations} from "@sentry/tracing";
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'development') {
     Sentry.init({
@@ -35,20 +34,18 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'development') {
 const container = document.getElementById('root');
 const root = createRoot(container);
 root.render(
-  <React.StrictMode>
+    <React.StrictMode>
         <Provider store={store}>
-            <KeyCloakAuthProvider enabled={true}>
-                <StyledEngineProvider injectFirst>
-                    <ThemeProvider theme={stagingTheme}>
-                        <CssBaseline/>
-                        <ConfirmProvider>
-                            <ApiUrlSelector>
-                                <App/>
-                            </ApiUrlSelector>
-                        </ConfirmProvider>
-                    </ThemeProvider>
-                </StyledEngineProvider>
-            </KeyCloakAuthProvider>
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={stagingTheme}>
+                    <CssBaseline/>
+                    <ConfirmProvider>
+                        <ApiUrlSelector>
+                            <App/>
+                        </ApiUrlSelector>
+                    </ConfirmProvider>
+                </ThemeProvider>
+            </StyledEngineProvider>
         </Provider>
     </React.StrictMode>
 );
