@@ -28,7 +28,7 @@ const Installer = ({children}) => {
     if (error) {
         return <FetchError error={error}/>
     }
-    console.log(data)
+
     if (data?.schema_ok !== true) {
         return <InstallerForm
             requireAdmin={!data?.admin_ok}

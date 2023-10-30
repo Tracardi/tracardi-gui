@@ -181,7 +181,6 @@ const ProcessStep = ({step, label, optional, endpoint, passData, singleValue, no
         } else if (error.status !== 404) {
             return <FetchError error={error}/>
         }
-
     }
 
     return <Step active={active} xs={{width: "100%"}}>
