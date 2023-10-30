@@ -52,7 +52,7 @@ export const useRequest = () => {
                 if (e?.response?.status === 401) {
                     window.location.replace("/logout");
                 }
-                return Promise.reject(e?.response ? e.response : {status: e.status, data: {detail: e.toString()}})
+                return Promise.reject(e?.response ? e : {status: e.status, data: {detail: e.toString()}})
             }
 
             return axios(config).then(onSuccess).catch(onError)

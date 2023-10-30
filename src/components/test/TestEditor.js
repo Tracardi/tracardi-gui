@@ -22,15 +22,15 @@ export default function TestEditor({eventType = 'page-view', sxOnly=false}) {
         setErrors(null)
         try {
 
-            const data = await request({
+            const _data = await request({
                 url: '/track',
                 method: 'post',
                 data: data
             },
                 true)
 
-            if (data) {
-                setResponseData(data)
+            if (_data) {
+                setResponseData(_data)
             }
         } catch (e) {
             setErrors(getError(e))
