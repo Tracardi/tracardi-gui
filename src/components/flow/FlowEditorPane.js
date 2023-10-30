@@ -30,7 +30,7 @@ import {FlowEditorBottomLine} from "./FlowEditorBottomLine";
 import FlowEditorTitle from "./FlowEditorTitle";
 import FlowNodeWithEvents from "./FlowNodeWithEvents";
 import StartNode from "./StartNode";
-import {asyncRemote, getError} from "../../remote_api/entrypoint";
+import {getError} from "../../remote_api/entrypoint";
 import NoData from "../elements/misc/NoData";
 import Button from "../elements/forms/Button";
 import ErrorsBox from "../errors/ErrorsBox";
@@ -40,6 +40,7 @@ import EdgeDetails from "./EdgeDetails";
 import CondNode from "./CondNode";
 import {MdAdsClick} from "react-icons/md";
 import useTheme from "@mui/material/styles/useTheme";
+import {useRequest} from "../../remote_api/requestClient";
 
 const ReactFlow = React.lazy(() => import('reactflow'))
 
@@ -90,6 +91,8 @@ const NodeDetailsHandler = React.memo(({node, onLabelSet, onConfig, onRuntimeCon
         return () => navigate(urlPrefix(url));
     }
 
+    const {request} = useRequest()
+
     useEffect(() => {
         let isSubscribed = true;
 
@@ -99,7 +102,7 @@ const NodeDetailsHandler = React.memo(({node, onLabelSet, onConfig, onRuntimeCon
             setLoading(true);
             setError(null);
 
-            asyncRemote({
+            request({
                 url: "/tpro/plugin/" + node?.data?.spec?.module
             }).then(response => {
                 if (isSubscribed) {
@@ -256,6 +259,7 @@ export function FlowEditorPane(
     // const nodePasted = useRef(false);
 
     const theme = useTheme()
+    const {request} = useRequest()
 
     const [modified, setModified] = useState(false);
     const [deployed, setDeployed] = useState(false);
@@ -337,7 +341,7 @@ export function FlowEditorPane(
         setFlowLoading(true);
         let isSubscribed = true;
 
-        asyncRemote({
+        request({
             url: ((draft) ? "/flow/draft/" : "/flow/production/") + id,
         }).then((response) => {
             if (response && isSubscribed === true) {

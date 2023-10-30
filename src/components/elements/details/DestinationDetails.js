@@ -4,13 +4,13 @@ import "./RuleDetails.css";
 import Button from "../forms/Button";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import {useConfirm} from "material-ui-confirm";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import FormDrawer from "../drawers/FormDrawer";
 import Properties from "./DetailProperties";
 import DestinationForm from "../forms/DestinationForm";
 import { VscEdit, VscTrash } from "react-icons/vsc";
+import {useRequest} from "../../../remote_api/requestClient";
 
 
 function DestinationDetails({id, onDelete, onEdit}) {
@@ -22,6 +22,7 @@ function DestinationDetails({id, onDelete, onEdit}) {
 
     const mounted = useRef(false);
     const confirm = useConfirm()
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -32,7 +33,7 @@ function DestinationDetails({id, onDelete, onEdit}) {
 
     useEffect(() => {
         setLoading(true);
-        asyncRemote({
+        request({
                 url: '/destination/' + id,
                 method: "get"
             }
@@ -61,7 +62,7 @@ function DestinationDetails({id, onDelete, onEdit}) {
         confirm({title: "Do you want to delete this destination?", description: "This action can not be undone."})
             .then(async () => {
                     setDeleteProgress(true);
-                    await asyncRemote({
+                    await request({
                         url: '/destination/' + id,
                         method: "delete"
                     })

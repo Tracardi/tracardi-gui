@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import Button from "./Button";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import PropTypes from 'prop-types';
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {v4 as uuid4} from 'uuid';
@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import DataComplianceSettings from "./DataComplianceSettings";
 import ErrorBox from "../../errors/ErrorBox";
 import Switch from "@mui/material/Switch";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function DataComplianceForm({data: _data, onSaveComplete}) {
 
@@ -33,6 +34,7 @@ export default function DataComplianceForm({data: _data, onSaveComplete}) {
     const [settingsErrorMessage, setSettingsErrorMessage] = useState(null);
 
     const mounted = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -58,7 +60,7 @@ export default function DataComplianceForm({data: _data, onSaveComplete}) {
             setProcessing(true);
 
             try {
-                const response = await asyncRemote({
+                const response = await request({
                     url: '/consent/compliance/field',
                     method: 'post',
                     data: data

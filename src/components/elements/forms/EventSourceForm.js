@@ -1,6 +1,6 @@
 import {v4 as uuid4} from "uuid";
 import React, {useRef, useState} from "react";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import DisabledInput from "./inputs/DisabledInput";
 import TextField from "@mui/material/TextField";
@@ -19,6 +19,7 @@ import {useFetch} from "../../../remote_api/remoteState";
 import {getBridge} from "../../../remote_api/endpoints/bridge";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import FetchError from "../../errors/FetchError";
+import {useRequest} from "../../../remote_api/requestClient";
 
 const BridgeForm = ({id, value = null, onChange}) => {
 
@@ -304,6 +305,8 @@ const EventSourceForm = ({value, style, onClose}) => {
     const [processing, setProcessing] = useState(false);
     const [errors, setError] = useState(null);
 
+    const {request} = useRequest()
+
     const handleSubmit = async () => {
 
         if (!metadata.current.name || metadata.current.name.length === 0) {
@@ -316,7 +319,7 @@ const EventSourceForm = ({value, style, onClose}) => {
         setProcessing(true);
 
         try {
-            const response = await asyncRemote({
+            const response = await request({
                 url: '/event-source',
                 method: "POST",
                 data: {

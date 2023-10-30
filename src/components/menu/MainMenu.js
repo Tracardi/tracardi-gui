@@ -12,7 +12,7 @@ import {VscDashboard} from "react-icons/vsc";
 import {BsClipboardCheck, BsBoxArrowRight, BsBoxArrowInRight, BsPlayCircle} from "react-icons/bs";
 import { getRoles } from "../authentication/login";
 import {useConfirm} from "material-ui-confirm";
-import {asyncRemote, getError} from "../../remote_api/entrypoint";
+import {getError} from "../../remote_api/entrypoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import {changeRoute} from "../../redux/reducers/appSlice"
@@ -23,6 +23,7 @@ import {getDataContextHeader} from "../../config";
 import useTheme from "@mui/material/styles/useTheme";
 import {FaUncharted} from "react-icons/fa";
 import {DataContext} from "../AppBox";
+import {useRequest} from "../../remote_api/requestClient";
 
 
 function MainMenu({app, showAlert, changeRoute, onContextChange}) {
@@ -36,6 +37,7 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
     const navigate = useNavigate();
 
     const context = useContext(DataContext)
+    const {request} = useRequest()
 
     useEffect(() => {
         changeRoute({route: pathname})
@@ -67,7 +69,7 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
     const handleVersionWindow = async () => {
         try {
 
-            const response = await asyncRemote({
+            const response = await request({
                 url: '/info/version/details',
                 method: "get"
             })

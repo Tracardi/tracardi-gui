@@ -10,15 +10,17 @@ import FormDrawer from "../drawers/FormDrawer";
 import Rows from "../misc/Rows";
 import Button from "../forms/Button";
 import {VscEdit, VscTrash} from "react-icons/vsc";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import MetricsForm from "../forms/MetricsForm";
 import {useConfirm} from "material-ui-confirm";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export function MetricDetails({data:_data, onDeleteComplete, onEditComplete}) {
 
     const [data, setData] = useState(_data)
     const [displayEdit, setDisplayEdit] = useState(false)
+
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const handleEditComplete = (data) => {
         setData(data)
@@ -41,7 +43,7 @@ export function MetricDetails({data:_data, onDeleteComplete, onEditComplete}) {
         })
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/setting/metric/' + data.id,
                             method: "delete"
                         })

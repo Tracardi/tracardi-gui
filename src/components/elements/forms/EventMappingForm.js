@@ -4,13 +4,14 @@ import Button from "./Button";
 import {v4 as uuid4} from 'uuid';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import PropTypes from 'prop-types';
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import TuiTagger from "../tui/TuiTagger";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import JsonEditor from "../editors/JsonEditor";
 import Switch from "@mui/material/Switch";
 import {MenuItem} from "@mui/material";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function EventMappingForm({
                                              id,
@@ -41,6 +42,7 @@ export default function EventMappingForm({
     const [error, setError] = useState(null);
 
     const mounted = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -80,7 +82,7 @@ export default function EventMappingForm({
 
             setProcessing(true);
 
-            const response = await asyncRemote({
+            const response = await request({
                 url: '/event-type/mapping',
                 method: 'post',
                 data: payload

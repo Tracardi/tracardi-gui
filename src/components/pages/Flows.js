@@ -8,9 +8,9 @@ import AdvancedSquareCard from "../elements/lists/cards/AdvancedSquareCard";
 import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import {useConfirm} from "material-ui-confirm";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {Chip} from "@mui/material";
+import {useRequest} from "../../remote_api/requestClient";
 
 
 export default function Flows({defaultLayout="rows", type="collection", label}) {
@@ -29,6 +29,7 @@ export default function Flows({defaultLayout="rows", type="collection", label}) 
     }
 
     const mounted = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -42,7 +43,7 @@ export default function Flows({defaultLayout="rows", type="collection", label}) 
         confirm({title: "Do you want to delete this workflow?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/flow/' + id,
                             method: "delete"
                         })

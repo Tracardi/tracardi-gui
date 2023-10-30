@@ -5,8 +5,8 @@ import BrowserRow from "../elements/lists/rows/BrowserRow";
 import FlowNodeIcons from "../flow/FlowNodeIcons";
 import EventValidationDetails from "../elements/details/EventValidationDetails";
 import EventValidationForm from "../elements/forms/EventValidationForm";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import {useConfirm} from "material-ui-confirm";
+import {useRequest} from "../../remote_api/requestClient";
 
 export default function EventValidation() {
 
@@ -17,12 +17,13 @@ export default function EventValidation() {
     const detailsFunc = useCallback((id, close) => <EventValidationDetails id={id} onDeleteComplete={close}/>, []);
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const handleDelete = async (id) => {
         confirm({title: "Do you want to delete this validation?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/event-validator/' + id,
                             method: "delete"
                         })

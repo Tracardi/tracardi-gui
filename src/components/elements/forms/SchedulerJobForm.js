@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import TuiTagger from "../tui/TuiTagger";
 import TrackerPayloadForm from "./TrackerPayloadForm";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function SchedulerJobForm({onSubmit, init: value}) {
 
@@ -35,6 +36,7 @@ export default function SchedulerJobForm({onSubmit, init: value}) {
     const [error, setError] = useState(null);
 
     const mounted = React.useRef(false);
+    const {request} = useRequest()
 
     React.useEffect(() => {
         mounted.current = true;
@@ -45,7 +47,7 @@ export default function SchedulerJobForm({onSubmit, init: value}) {
         try {
             setError(false)
             setProgress(true)
-            const response = await asyncRemote({
+            const response = await request({
                 url: "/scheduler/job",
                 method: "POST",
                 data: data

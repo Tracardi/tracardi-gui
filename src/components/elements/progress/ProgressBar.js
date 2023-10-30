@@ -1,5 +1,6 @@
 import React from "react";
-import { asyncRemote, getError } from "../../../remote_api/entrypoint";
+import { getError } from "../../../remote_api/entrypoint";
+import {useRequest} from "../../../remote_api/requestClient";
 
 
 export default function ProgressBar({ taskId, setTaskIdNull = null }) {
@@ -8,11 +9,13 @@ export default function ProgressBar({ taskId, setTaskIdNull = null }) {
     const [error, setError] = React.useState(null);
     const mounted = React.useRef(false);
 
+    const {request} = useRequest()
+
     React.useEffect(() => {
         mounted.current = true;
         if (taskId) {
             const interval = setInterval(() => {
-                asyncRemote({url: "/task/" + taskId + "/progress"})
+                request({url: "/task/" + taskId + "/progress"})
                 .then(response => {if (mounted.current) {
                     setProgress(response.data);
                     if (response.data >= 1) {

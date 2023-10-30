@@ -85,12 +85,12 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
 
     const handleGetProperties = async (eventType) => {
         try {
-            const response = await request(getEventTypePredefinedProps(eventType))
-            if(response && 'properties' in  response) {
-                setProperties(JSON.stringify(response['properties'], null, " "))
+            const data = await request(getEventTypePredefinedProps(eventType), true)
+            if(data && 'properties' in  data) {
+                setProperties(JSON.stringify(data['properties'], null, " "))
             }
         } catch(e) {
-
+            console.error(e)
         }
 
     }

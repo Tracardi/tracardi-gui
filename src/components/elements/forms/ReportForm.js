@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import React from "react";
 import {v4 as uuid} from 'uuid';
-import { asyncRemote, getError} from "../../../remote_api/entrypoint";
+import { getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import { TuiForm, TuiFormGroupHeader, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField } from "../tui/TuiForm";
@@ -10,6 +10,7 @@ import Button from "./Button";
 import {JsonInput, SelectInput} from "./JsonFormComponents";
 import JsonBrowser from "../misc/JsonBrowser";
 import PropertyField from "../details/PropertyField";
+import {useRequest} from "../../../remote_api/requestClient";
 
 
 export default function ReportForm({reportId, onComplete}) {
@@ -29,12 +30,14 @@ export default function ReportForm({reportId, onComplete}) {
     const [saveLoading, setSaveLoading] = React.useState(false);
     const mounted = React.useRef(false);
 
+    const {request} = useRequest()
+
     React.useEffect(() => {
         mounted.current = true;
         if (reportId) {
             setLoading(true);
             setError(null);
-            asyncRemote({
+            request({
                 url: `/report/${reportId}`,
                 method: "GET"
             })
@@ -60,7 +63,7 @@ export default function ReportForm({reportId, onComplete}) {
             setTestLoading(true);
             setTestError(null);
         }
-        asyncRemote({
+        request({
             url: "/report/test",
             method: "POST",
             data: {
@@ -90,7 +93,7 @@ export default function ReportForm({reportId, onComplete}) {
                 setError(null);
                 setSaveLoading(true);
             }
-            asyncRemote({
+            request({
                 url: "/report",
                 method: "POST",
                 data: {

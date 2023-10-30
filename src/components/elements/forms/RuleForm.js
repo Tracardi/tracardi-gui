@@ -8,7 +8,7 @@ import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import TuiTagger from "../tui/TuiTagger";
 import ErrorsBox from "../../errors/ErrorsBox";
 import TuiSelectMultiConsentType from "../tui/TuiSelectMultiConsentType";
@@ -23,6 +23,7 @@ import {
 } from "../../../misc/validators";
 import AutoComplete from "./AutoComplete";
 import {BsStar} from "react-icons/bs";
+import {useRequest} from "../../../remote_api/requestClient";
 
 function SegmentTriggerForm({
                                 data: _data,
@@ -172,6 +173,7 @@ export default function RuleForm({onSubmit, data: _data}) {
     const [responseError, setResponseError] = useState(null)
 
     const mounted = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -190,7 +192,7 @@ export default function RuleForm({onSubmit, data: _data}) {
     const handleSave = async (url, payload) => {
         try {
             setProcessing(true);
-            const response = await asyncRemote({
+            const response = await request({
                 url: url,
                 method: "post",
                 data: payload

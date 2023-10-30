@@ -5,12 +5,13 @@ import FormDrawer from "../../elements/drawers/FormDrawer";
 import FilterAddForm from "../../elements/forms/inputs/FilterAddForm";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import ErrorsBox from "../../errors/ErrorsBox";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import {BsGrid, BsList} from "react-icons/bs";
 import IconButton from "../misc/IconButton";
 import {BsStar} from "react-icons/bs";
+import {useRequest} from "../../../remote_api/requestClient";
 
 const CardBrowser = ({
                          label,
@@ -38,13 +39,15 @@ const CardBrowser = ({
         const [layoutVert, setLayoutVert] = useState(defaultLayout!=="cards");
         const [noLicense, setNotLicense] = useState(false)
 
+        const {request} = useRequest()
+
         useEffect(() => {
                 setData(null);
                 const url = urlFunc(query)
                 setLoading(true);
                 setNotLicense(false)
                 let isSubscribed = true
-                asyncRemote({url})
+                request({url})
                     .then((response) => {
                         if (response && isSubscribed) {
                             setData(response.data);

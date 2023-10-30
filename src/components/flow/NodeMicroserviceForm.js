@@ -1,9 +1,10 @@
 import NodeMicroserviceInfo from "./NodeMicroserviceInfo";
 import {MemoNodeInitForm} from "../elements/forms/NodeInitForm";
 import React, {useRef, useState} from "react";
-import {asyncRemote, getError} from "../../remote_api/entrypoint";
+import {getError} from "../../remote_api/entrypoint";
 import HorizontalCircularProgress from "../elements/progress/HorizontalCircularProgress";
 import ErrorsBox from "../errors/ErrorsBox";
+import {useRequest} from "../../remote_api/requestClient";
 
 
 export default function NodeMicroserviceForm({node, onMicroserviceChange, onSubmit}) {
@@ -13,6 +14,7 @@ export default function NodeMicroserviceForm({node, onMicroserviceChange, onSubm
     const [error, setError] = useState(null)
 
     const mounted = useRef(true);
+    const {request} = useRequest()
 
     const handleInitSubmit = (init) => {
         if(onSubmit instanceof Function) {
@@ -25,7 +27,7 @@ export default function NodeMicroserviceForm({node, onMicroserviceChange, onSubm
         try {
             setError(null)
             setLoading(true)
-            const response = await asyncRemote({
+            const response = await request({
                     baseURL: endpoint.baseURL,
                     url: `/plugin/form?service_id=${serviceId}&action_id=${actionId}`
                 },

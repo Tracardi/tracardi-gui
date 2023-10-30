@@ -1,17 +1,19 @@
 import LinearProgress from "@mui/material/LinearProgress";
 import React, {useEffect, useState} from "react";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function BackgroundTaskProgress({taskId, refreshInterval = 5}) {
 
     const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
 
+    const {request} = useRequest()
 
     useEffect(() => {
         let timer;
 
-        asyncRemote({url: `/import/task/${taskId}/status`})
+        request({url: `/import/task/${taskId}/status`})
             .then(response => {
                 setStatus(response.data);
                 setError(null);
@@ -19,7 +21,7 @@ export default function BackgroundTaskProgress({taskId, refreshInterval = 5}) {
                     clearInterval(timer);
                 } else {
                     timer = setInterval(() => {
-                        asyncRemote({url: `/import/task/${taskId}/status`})
+                        request({url: `/import/task/${taskId}/status`})
                             .then(response => {
                                 setStatus(response.data);
                                 setError(null);

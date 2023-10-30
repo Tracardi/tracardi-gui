@@ -6,8 +6,8 @@ import ResourceForm from "../elements/forms/ResourceForm";
 import {AiOutlineCloudServer} from "react-icons/ai";
 import FlowNodeIcons from "../flow/FlowNodeIcons";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import {useConfirm} from "material-ui-confirm";
+import {useRequest} from "../../remote_api/requestClient";
 
 
 export default function Resources({defaultLayout="rows"}) {
@@ -17,12 +17,13 @@ export default function Resources({defaultLayout="rows"}) {
     const detailsFunc = useCallback((id, close) => <ResourceDetails id={id} onDeleteComplete={close}/>, []);
     const [refresh, setRefresh] = useState(0);
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const handleDelete = async (id) => {
         confirm({title: "Do you want to delete this resource?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/resource/' + id,
                             method: "delete"
                         })

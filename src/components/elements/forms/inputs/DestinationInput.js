@@ -2,7 +2,7 @@ import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useState} from "react";
 import FlowNodeIcons from "../../../flow/FlowNodeIcons";
-import {asyncRemote} from "../../../../remote_api/entrypoint";
+import {useRequest} from "../../../../remote_api/requestClient";
 
 export default function DestinationInput({value: initValue, onChange, fullWidth=false}) {
 
@@ -10,9 +10,11 @@ export default function DestinationInput({value: initValue, onChange, fullWidth=
     const [destinationsDb, setDestionationsDb] = useState({})
     const [value, setValue] = useState(initValue)
 
+    const {request} = useRequest()
+
     useEffect(()=> {
         let isSubscribed = true
-        asyncRemote({
+        request({
             url: '/destinations/entity'
         }).then((response) => {
             if(isSubscribed) {

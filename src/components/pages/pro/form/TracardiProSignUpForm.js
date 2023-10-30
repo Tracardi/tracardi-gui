@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {asyncRemote, covertErrorIntoObject, getError} from "../../../../remote_api/entrypoint";
+import {covertErrorIntoObject, getError} from "../../../../remote_api/entrypoint";
 import TextField from "@mui/material/TextField";
 import Button from "../../../elements/forms/Button";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../../../elements/tui/TuiForm";
@@ -8,6 +8,7 @@ import TuiTopHeaderWrapper from "../../../elements/tui/TuiTopHeaderWrapper";
 import ErrorsBox from "../../../errors/ErrorsBox";
 import {MenuItem} from "@mui/material";
 import {BsXCircle, BsArrowRightCircle, BsArrowLeftCircle} from "react-icons/bs";
+import {useRequest} from "../../../../remote_api/requestClient";
 
 export default function TracardiProSignUpForm({onSubmit, onCancel}) {
 
@@ -23,12 +24,14 @@ export default function TracardiProSignUpForm({onSubmit, onCancel}) {
     const [loading, setLoading] = useState(false)
     const [fieldErrors, setFieldErrors] = useState({})
 
+    const {request} = useRequest()
+
     const handleRegisterTracardiPro = async () => {
         try {
             setFieldErrors({});
             setError(false);
             setLoading(true);
-            const response = await asyncRemote({
+            const response = await request({
                 url: '/tpro/sign_up',
                 method: "POST",
                 data: data

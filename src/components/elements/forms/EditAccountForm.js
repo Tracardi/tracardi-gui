@@ -1,11 +1,11 @@
 import React from "react";
 import { TuiForm, TuiFormGroup, TuiFormGroupField, TuiFormGroupHeader, TuiFormGroupContent } from "../tui/TuiForm";
 import { TextField } from "@mui/material";
-import { asyncRemote } from "../../../remote_api/entrypoint";
 import { getError } from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import Button from "./Button";
 import PasswordInput from "./inputs/PasswordInput";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function EditAccountForm ({ user, closeForm, forceRefresh }) {
 
@@ -15,6 +15,7 @@ export default function EditAccountForm ({ user, closeForm, forceRefresh }) {
     const [error, setError] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const mounted = React.useRef(false);
+    const {request} = useRequest()
 
     React.useEffect(() => {
         mounted.current = true;
@@ -27,7 +28,7 @@ export default function EditAccountForm ({ user, closeForm, forceRefresh }) {
             setErrors(null);
             setError(false);
             try {
-                await asyncRemote({
+                await request({
                     url: "/user-account",
                     method: "POST",
                     data: {

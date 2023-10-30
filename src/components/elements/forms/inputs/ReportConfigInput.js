@@ -1,10 +1,11 @@
 import React from "react";
-import { asyncRemote, getError } from "../../../../remote_api/entrypoint";
+import { getError } from "../../../../remote_api/entrypoint";
 import AutoComplete from "../AutoComplete";
 import { JsonInput } from "../JsonFormComponents";
 import CenteredCircularProgress from "../../progress/CenteredCircularProgress";
 import ErrorLine from "../../../errors/ErrorLine";
 import ErrorsBox from "../../../errors/ErrorsBox";
+import {useRequest} from "../../../../remote_api/requestClient";
 
 
 export default function ReportConfigInput({value, onChange, errorMessage, endpoint}) {
@@ -14,6 +15,7 @@ export default function ReportConfigInput({value, onChange, errorMessage, endpoi
     const [error, setError] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const mounted = React.useRef(false);
+    const {request} = useRequest()
 
     React.useEffect(() => {
         mounted.current = true;
@@ -23,7 +25,7 @@ export default function ReportConfigInput({value, onChange, errorMessage, endpoi
             if (endpoint && report?.id) {
                 setLoading(true);
                 setError(null);
-                asyncRemote({
+                request({
                     ...endpoint,
                     data: report
                 })

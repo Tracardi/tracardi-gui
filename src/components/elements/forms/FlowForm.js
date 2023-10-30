@@ -6,12 +6,12 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from 'prop-types';
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import TuiTagger from "../tui/TuiTagger";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import {useRequest} from "../../../remote_api/requestClient";
 
 function FlowForm({
                       id,
@@ -34,6 +34,7 @@ function FlowForm({
     const [nameErrorMessage, setNameErrorMessage] = useState("");
 
     const mounted = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -65,7 +66,7 @@ function FlowForm({
                 type: flowType
             }
 
-            const response = await asyncRemote({
+            const response = await request({
                 url: (draft) ? '/flow/draft/metadata' : '/flow/metadata',
                 method: 'post',
                 data: payload
@@ -74,7 +75,7 @@ function FlowForm({
             if (response) {
                 if (refreshMetaData === true) {
                     // Refresh index in elastic so we can see it in the list.
-                    await asyncRemote({
+                    await request({
                         url: '/flows/refresh'
                     })
                     if (onFlowSaveComplete) {

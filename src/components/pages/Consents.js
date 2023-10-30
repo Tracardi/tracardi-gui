@@ -6,8 +6,8 @@ import {VscLaw} from "react-icons/vsc";
 import ConsentDetails from "../elements/details/ConsentDetails";
 import ConsentForm from "../elements/forms/ConsentForm";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import {useConfirm} from "material-ui-confirm";
+import {useRequest} from "../../remote_api/requestClient";
 
 
 export default function  Consents() {
@@ -17,12 +17,13 @@ export default function  Consents() {
     const detailsFunc= useCallback((id, close) => <ConsentDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
     const [refresh, setRefresh] = useState(0);
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const handleDelete = async (id) => {
         confirm({title: "Do you want to delete this consent?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/consent/type/' + id,
                             method: "delete"
                         })

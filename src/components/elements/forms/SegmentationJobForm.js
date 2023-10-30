@@ -3,7 +3,7 @@ import Button from "./Button";
 import TextField from "@mui/material/TextField";
 import Switch from "@mui/material/Switch";
 import {v4 as uuid4} from "uuid";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import PropTypes from 'prop-types';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import TuiSelectFlow from "../tui/TuiSelectFlow";
@@ -16,6 +16,7 @@ import ModalDialog from "../dialog/ModalDialog";
 import DetailsObjectList from "../lists/DetailsObjectList";
 import {makeUtcStringTzAware} from "../../../misc/converters";
 import ProfileRow from "../lists/rows/ProfileRow";
+import {useRequest} from "../../../remote_api/requestClient";
 
 
 function ProfilePreview({segmentQuery}) {
@@ -175,6 +176,7 @@ export default function SegmentationJobForm({onSubmit, init}) {
     const [buttonError, setButtonError] = useState(false);
 
     const mounted = React.useRef(false);
+    const {request} = useRequest()
 
     React.useEffect(() => {
         mounted.current = true;
@@ -211,7 +213,7 @@ export default function SegmentationJobForm({onSubmit, init}) {
         try {
             setProcessing(true);
             setError(null);
-            const response = await asyncRemote(
+            const response = await request(
                 {
                     url: '/segment/live',
                     method: 'post',

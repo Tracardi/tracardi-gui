@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import Switch from "@mui/material/Switch";
 import MenuItem from "@mui/material/MenuItem";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import {setMetrics, testProfileMetric} from "../../../remote_api/endpoints/metrics";
 import * as yup from "yup";
 import {getRequiredStringSchema, validateYupSchema} from "../../../misc/validators";
@@ -16,6 +15,7 @@ import TuiSelectEventType from "../tui/TuiSelectEventType";
 import RefInput from "./inputs/RefInput";
 import TimeTextField from "./inputs/TimeTextInput";
 import {BsXCircle, BsCheckCircle} from "react-icons/bs";
+import {useRequest} from "../../../remote_api/requestClient";
 
 
 export default function MetricForm({onSubmit, init}) {
@@ -66,6 +66,8 @@ export default function MetricForm({onSubmit, init}) {
     })
     const [testOk, setTestOk] = useState(false)
 
+    const {request} = useRequest()
+
 
     function setData(key, value, obj = null) {
         const props = key.split('.');
@@ -92,7 +94,7 @@ export default function MetricForm({onSubmit, init}) {
         try {
             setTestOk(false)
             setTestError({error:false})
-            const response = await asyncRemote(testProfileMetric({
+            const response = await request(testProfileMetric({
                 agg: setting.content.metric.aggregation.type,
                 field: setting.content.metric.aggregation.field,
                 event_type: setting.content.metric.event.type.id,
@@ -130,7 +132,7 @@ export default function MetricForm({onSubmit, init}) {
                 setProcessing(true)
                 const payload = setting;
 
-                const response = await asyncRemote(
+                const response = await request(
                     setMetrics(payload)
                 )
 

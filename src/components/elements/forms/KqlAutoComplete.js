@@ -2,8 +2,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import {useDebounce} from "use-debounce";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function KqlAutoComplete({index, label, value, onChange, onKeyPressCapture}) {
 
@@ -15,6 +15,7 @@ export default function KqlAutoComplete({index, label, value, onChange, onKeyPre
     const [debouncedQuery] = useDebounce(query, 500);
 
     const isFocused = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         let isSubscribed = true;
@@ -25,7 +26,7 @@ export default function KqlAutoComplete({index, label, value, onChange, onKeyPre
 
         if(typeof query?.value !== "undefined") {
             setProgress(true);
-            asyncRemote({
+            request({
                 url: `/${index}/query/autocomplete?query=${debouncedQuery?.value}`,
                 method: "get",
             }).then((response) => {

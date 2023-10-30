@@ -13,10 +13,10 @@ import ResourceForm from "../forms/ResourceForm";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import CredentialsVault from "../misc/CredentialsVault";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import TuiTags from "../tui/TuiTags";
 import TimeDifference from "../datepickers/TimeDifference";
+import {useRequest} from "../../../remote_api/requestClient";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -29,10 +29,12 @@ export default function ResourceDetails({id, onDeleteComplete}) {
     const [loading, setLoading] = React.useState(false);
     const [editData, setEditData] = React.useState(null);
 
+    const {request} = useRequest()
+
     useEffect(() => {
         setLoading(true);
         let isSubscribed = true;
-        asyncRemote(
+        request(
             {
                 url: '/resource/' + id,
                 method: "GET"
@@ -68,7 +70,7 @@ export default function ResourceDetails({id, onDeleteComplete}) {
             description: "This action can not be undone."
         }).then(async () => {
             try {
-                const response = await asyncRemote(
+                const response = await request(
                     {
                         url: '/resource/' + data.id,
                         method: "DELETE"

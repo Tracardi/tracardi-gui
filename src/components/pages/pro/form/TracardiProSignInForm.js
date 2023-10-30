@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {asyncRemote, covertErrorIntoObject, getError} from "../../../../remote_api/entrypoint";
+import {covertErrorIntoObject, getError} from "../../../../remote_api/entrypoint";
 import TextField from "@mui/material/TextField";
 import Button from "../../../elements/forms/Button";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../../../elements/tui/TuiForm";
@@ -10,6 +10,7 @@ import {BsArrowLeftCircle} from "react-icons/bs";
 import AlertBox from "../../../errors/AlertBox";
 import {VscSignIn} from "react-icons/vsc";
 import PasswordInput from "../../../elements/forms/inputs/PasswordInput";
+import {useRequest} from "../../../../remote_api/requestClient";
 
 export default function TracardiProSignInForm({onSubmit, onCancel}) {
 
@@ -24,6 +25,7 @@ export default function TracardiProSignInForm({onSubmit, onCancel}) {
     const [accessDenied, setAccessDenied] = useState(false);
 
     const mounted = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -37,7 +39,7 @@ export default function TracardiProSignInForm({onSubmit, onCancel}) {
             setFieldErrors({});
             setError(false);
             setLoading(true);
-            const response = await asyncRemote({
+            const response = await request({
                 url: '/tpro/sign_in',
                 method: "POST",
                 data: data

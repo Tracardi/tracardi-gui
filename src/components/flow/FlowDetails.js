@@ -3,7 +3,7 @@ import FlowNodeWithEvents from "./FlowNodeWithEvents";
 import StartNode from "./StartNode";
 import CondNode from "./CondNode";
 import React, {Suspense, useCallback, useEffect, useState} from "react";
-import {asyncRemote, getError} from "../../remote_api/entrypoint";
+import {getError} from "../../remote_api/entrypoint";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {Background, useEdgesState, useNodesState} from 'reactflow';
 import {connect} from "react-redux";
@@ -11,6 +11,7 @@ import {showAlert} from "../../redux/reducers/alertSlice";
 import "reactflow/dist/style.css"
 import {MiniMap} from "@reactflow/minimap";
 import {Controls} from "@reactflow/controls";
+import {useRequest} from "../../remote_api/requestClient";
 
 const nodeTypes = {
     flowNode: FlowNode,
@@ -27,6 +28,8 @@ export function FlowDisplay({showAlert, id}) {
     const [flowLoading, setFlowLoading] = useState(false);
     const [nodes, setNodes, handleNodesChange] = useNodesState([]);
     const [edges, setEdges, handleEdgesChange] = useEdgesState([]);
+
+    const {request} = useRequest()
 
     const updateFlow = useCallback((data) => {
         if (data) {
@@ -47,7 +50,7 @@ export function FlowDisplay({showAlert, id}) {
     useEffect(() => {
         setFlowLoading(true);
         let isSubscribed = true;
-        asyncRemote({
+        request({
             url: "/flow/production/" + id,
         }).then(response => {
             if (response && isSubscribed === true) {

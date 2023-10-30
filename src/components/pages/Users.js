@@ -2,7 +2,7 @@ import React from "react";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import {AiOutlineUserAdd} from "react-icons/ai";
 import FilterAddForm from "../elements/forms/inputs/FilterAddForm";
-import {asyncRemote, getError} from "../../remote_api/entrypoint";
+import {getError} from "../../remote_api/entrypoint";
 import ErrorsBox from "../errors/ErrorsBox";
 import {useConfirm} from "material-ui-confirm";
 import NewUserForm from "../elements/forms/NewUserForm";
@@ -19,16 +19,18 @@ import {BsPersonCircle} from "react-icons/bs";
 import AdvancedSquareCard from "../elements/lists/cards/AdvancedSquareCard";
 import {isEmptyObjectOrNull} from "../../misc/typeChecking";
 import NoData from "../elements/misc/NoData";
+import {useRequest} from "../../remote_api/requestClient";
 
 function UserCards({users, setUserToEdit, onDelete}) {
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const handleUserDelete = user => {
         confirm({title: `Do you want to delete user ${user.fullName}?`, description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/user/' + user.id,
                             method: "delete"
                         })
@@ -69,10 +71,12 @@ export default function Users() {
     const [errorMessage, setErrorMessage] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
 
+    const {request} = useRequest()
+
     React.useEffect(() => {
         let isSubscribed = true
         setLoading(true)
-        asyncRemote(
+        request(
             {
                 url: filter ? `/users/0/100?query=${filter}` : "users/0/100",
                 method: "GET"

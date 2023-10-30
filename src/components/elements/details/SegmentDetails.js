@@ -9,7 +9,7 @@ import SegmentForm from "../forms/SegmentForm";
 import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import {asyncRemote} from "../../../remote_api/entrypoint";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function SegmentDetails({id, onDeleteComplete}) {
 
@@ -18,12 +18,13 @@ export default function SegmentDetails({id, onDeleteComplete}) {
     const [displayEdit, setDisplayEdit] = React.useState(false);
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     useEffect(() => {
             let isSubscribed = true;
             setLoading(true);
 
-            asyncRemote({
+            request({
                 url: '/segment/' + id,
                 method: "get"
             }).then(response => {
@@ -56,7 +57,7 @@ export default function SegmentDetails({id, onDeleteComplete}) {
         confirm({title: "Do you want to delete this segment?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/segment/' + id,
                             method: "delete"
                         })

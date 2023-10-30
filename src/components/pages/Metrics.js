@@ -4,13 +4,14 @@ import CardBrowser from "../elements/lists/CardBrowser";
 import {VscDashboard} from "react-icons/vsc";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {useConfirm} from "material-ui-confirm";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import MetricForm from "../elements/forms/MetricsForm";
 import {MetricDetailsById} from "../elements/details/MetricDetails";
+import {useRequest} from "../../remote_api/requestClient";
 
 export default function Metrics() {
 
     const [refresh, setRefresh] = useState(0);
+    const {request} = useRequest()
 
     const urlFunc = useCallback((query) => ('/settings/metric' + ((query) ? "?query=" + query : "")), [])
     const addFunc = useCallback((close) => <MetricForm onSubmit={close}/>, [])
@@ -22,7 +23,7 @@ export default function Metrics() {
         confirm({title: "Do you want to delete this metric?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/setting/metric/' + id,
                             method: "delete"
                         })

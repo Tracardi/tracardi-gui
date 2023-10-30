@@ -5,7 +5,8 @@ import {VscLock, VscUnlock} from "react-icons/vsc";
 import TextField from "@mui/material/TextField";
 import Button from "../Button";
 import CircularProgress from "@mui/material/CircularProgress";
-import {asyncRemote, getError} from "../../../../remote_api/entrypoint";
+import {getError} from "../../../../remote_api/entrypoint";
+import {useRequest} from "../../../../remote_api/requestClient";
 
 export default function TokenInput({label = "Api Key", apiKey = "", token = "", getTokenUrl, onTokenChange,fullWidth = false, error, style, required}) {
 
@@ -24,11 +25,13 @@ export default function TokenInput({label = "Api Key", apiKey = "", token = "", 
     const [inputLabel, setInputLabel] =  useState(label)
     const [errorMessage, setErrorMessage] =  useState(error)
 
+    const {request} = useRequest()
+
     const handleGetToken = async () => {
         try {
             setErrorMessage(null)
             setLoading(true)
-            const response = await asyncRemote(getTokenUrl(apiKeyValue))
+            const response = await request(getTokenUrl(apiKeyValue))
             if(response.data) {
                 const generatedToken = response?.data?.access_token
 

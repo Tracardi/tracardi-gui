@@ -7,7 +7,6 @@ import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import EventMappingForm from "../forms/EventMappingForm";
 import TuiTags from "../tui/TuiTags";
 import PropertyField from "./PropertyField";
@@ -19,6 +18,7 @@ import ActiveTag from "../misc/ActiveTag";
 import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
 import {objectMap} from "../../../misc/mappers";
 import AssignValueToKey from "./AssignValueToKey";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export function EventMappingCard({data, onDeleteComplete, onEditComplete, displayMetadata = true}) {
 
@@ -26,6 +26,7 @@ export function EventMappingCard({data, onDeleteComplete, onEditComplete, displa
     const [deleteProgress, setDeleteProgress] = React.useState(false);
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const handleEdit = () => {
         if (data) {
@@ -46,7 +47,7 @@ export function EventMappingCard({data, onDeleteComplete, onEditComplete, displa
             .then(async () => {
                     setDeleteProgress(true);
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/event-type/mapping/' + data?.id,
                             method: "delete"
                         })
@@ -142,10 +143,12 @@ export default function EventMappingDetails({id, onDeleteComplete, onEditComplet
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
 
+    const {request} = useRequest()
+
     useEffect(() => {
             let isSubscribed = true;
             setLoading(true);
-            asyncRemote({
+            request({
                 url: '/event-type/mapping/' + id,
                 method: "get"
             })

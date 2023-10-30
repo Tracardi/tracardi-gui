@@ -1,5 +1,5 @@
 import React from "react";
-import {asyncRemote, getError} from "../../remote_api/entrypoint";
+import {getError} from "../../remote_api/entrypoint";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {
     TuiForm,
@@ -16,6 +16,7 @@ import FormDrawer from "../elements/drawers/FormDrawer";
 import {TextField, Checkbox, FormControlLabel} from "@mui/material";
 import Button from "../elements/forms/Button";
 import BackgroundTasks from "./BackgroundTasks";
+import {useRequest} from "../../remote_api/requestClient";
 
 
 export default function Migrations() {
@@ -27,6 +28,8 @@ export default function Migrations() {
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const mounted = React.useRef(false);
+
+    const {request} = useRequest()
 
     const MigrationForm = ({selectedMigration, onConfirm}) => {
 
@@ -41,11 +44,13 @@ export default function Migrations() {
         const [buttonError, setButtonError] = React.useState(null);
         const [warn, setWarn] = React.useState(false);
 
+        const {request} = useRequest()
+
         React.useEffect(() => {
             formMounted.current = true;
             setFormLoading(true);
             setFormError(null);
-            asyncRemote({
+            request({
                 url: `/migration/${selectedMigration}${selectedCustomPrefix ? `?from_tenant_name=${selectedCustomPrefix}` : ""}`,
                 method: "GET"
             })
@@ -76,7 +81,7 @@ export default function Migrations() {
             }
 
             try {
-                await asyncRemote({
+                await request({
                     url: "/migration",
                     method: "POST",
                     data: {
@@ -176,7 +181,7 @@ export default function Migrations() {
         mounted.current = true;
         setLoading(true);
         setError(null);
-        asyncRemote({
+        request({
             url: "/migrations",
             method: "GET"
         })

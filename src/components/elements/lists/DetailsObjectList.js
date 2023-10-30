@@ -4,8 +4,9 @@ import Drawer from "@mui/material/Drawer";
 import { makeStyles } from "tss-react/mui";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import AutoLoadObjectList from "./AutoLoadObjectList";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
+import {useRequest} from "../../../remote_api/requestClient";
 
 function DetailsObjectList({
                                label,
@@ -27,6 +28,7 @@ function DetailsObjectList({
     const [detailsData, setDetailsData] = React.useState(null);
 
     const mounted = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -58,7 +60,7 @@ function DetailsObjectList({
             }
 
             try {
-                const response = await asyncRemote(onLoadDetails(id))
+                const response = await request(onLoadDetails(id))
                 if (mounted.current) {
                     setDetailsData(response?.data);
                     setError(null);

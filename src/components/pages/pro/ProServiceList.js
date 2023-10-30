@@ -9,10 +9,11 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import {useDebounce} from "use-debounce";
 import './ProServiceList.css';
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import LinearProgress from "@mui/material/LinearProgress";
 import MdManual from "../../flow/actions/MdManual";
+import {useRequest} from "../../../remote_api/requestClient";
 
 
 function ServiceCreatedConfirmation({onConfirmed}) {
@@ -61,10 +62,12 @@ export default function ProServiceList() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const {request} = useRequest()
+
     useEffect(() => {
         setLoading(true);
         setError(null);
-        asyncRemote({
+        request({
             url: `/tpro/available_services?query=${debouncedSearchTerm}&category=${category}`,
             method: "GET",
         }).then((response) => {

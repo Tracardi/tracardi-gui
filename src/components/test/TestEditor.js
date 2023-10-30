@@ -10,7 +10,7 @@ import {useRequest} from "../../remote_api/requestClient";
 export default function TestEditor({eventType = 'page-view', sxOnly=false}) {
 
     const [requestPayload, setRequestPayload] = useState({});
-    const [response, setResponse] = useState({});
+    const [responseData, setResponseData] = useState({});
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState(null);
 
@@ -22,25 +22,26 @@ export default function TestEditor({eventType = 'page-view', sxOnly=false}) {
         setErrors(null)
         try {
 
-            const resp = await request({
+            const data = await request({
                 url: '/track',
                 method: 'post',
                 data: data
-            })
+            },
+                true)
 
-            if (resp) {
-                setResponse(resp)
+            if (data) {
+                setResponseData(data)
             }
         } catch (e) {
             setErrors(getError(e))
-            setResponse({})
+            setResponseData({})
         } finally {
             setLoading(false)
         }
     }
 
     const handlerError = (e) => {
-        setResponse({});
+        setResponseData({});
         setErrors(getError(e))
     }
 
@@ -49,7 +50,7 @@ export default function TestEditor({eventType = 'page-view', sxOnly=false}) {
             <RequestForm onRequest={handleRequest} onError={handlerError} eventType={eventType}/>
         </Grid>
         <Grid item xs={12} lg={sxOnly ? 12 : 6}>
-            <ResponseForm loading={loading} response={response} request={requestPayload}/>
+            <ResponseForm loading={loading} response={responseData} request={requestPayload}/>
         </Grid>
     </Grid>
 }

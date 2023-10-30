@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import Counter from "./Counter";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function AvgEventTime({width=160}) {
 
@@ -11,11 +11,13 @@ export default function AvgEventTime({width=160}) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
 
+    const {request} = useRequest()
+
     useEffect(() => {
         let isSubscribed = true;
         setLoading(true);
         setError(false);
-        asyncRemote({
+        request({
             url: "/event/avg/process-time"
         }).then((response) => {
             if(response) {

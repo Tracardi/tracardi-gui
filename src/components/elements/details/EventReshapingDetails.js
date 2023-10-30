@@ -7,8 +7,7 @@ import {useConfirm} from "material-ui-confirm";
 import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
-import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import {asyncRemote} from "../../../remote_api/entrypoint";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import EventReshapingForm from "../forms/EventReshapingForm";
 import {isEmptyObject} from "../../../misc/typeChecking";
 import JsonBrowser from "../misc/JsonBrowser";
@@ -17,6 +16,7 @@ import Tabs, {TabCase} from "../tabs/Tabs";
 import EventTypeMetadata from "./EventTypeMetadata";
 import Tag from "../misc/Tag";
 import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
+import {useRequest} from "../../../remote_api/requestClient";
 
 function Spanner({children}) {
     return <div style={{padding: 20}}>{children}</div>
@@ -28,6 +28,7 @@ export function EventReshapingCard({data, onDeleteComplete, onEditComplete, disp
     const [tab, setTab] = React.useState(0);
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const onEditClick = () => {
         if (data) {
@@ -47,7 +48,7 @@ export function EventReshapingCard({data, onDeleteComplete, onEditComplete, disp
         })
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/event-reshape-schema/' + data.id,
                             method: "delete"
                         })
@@ -140,12 +141,13 @@ export default function EventReshapingDetails({id, onDeleteComplete}) {
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
 
+    const {request} = useRequest()
 
     useEffect(() => {
             let isSubscribed = true;
             setLoading(true);
 
-            asyncRemote({
+            request({
                 url: '/event-reshape-schema/' + id,
                 method: "get"
             }).then(response => {

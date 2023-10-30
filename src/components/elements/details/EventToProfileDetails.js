@@ -7,7 +7,6 @@ import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import EventToProfileForm from "../forms/EventToProfileForm";
@@ -15,6 +14,7 @@ import EventTypeMetadata from "./EventTypeMetadata";
 import MappingsObjectDetails from "./MappingsObjectDetails";
 import Tag from "../misc/Tag";
 import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export function EventToProfileCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
@@ -22,6 +22,7 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
     const [deleteProgress, setDeleteProgress] = React.useState(false);
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const onEditClick = () => {
         if (data) {
@@ -42,7 +43,7 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
             .then(async () => {
                     setDeleteProgress(true);
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/event-to-profile/' + data?.id,
                             method: "delete"
                         })
@@ -130,10 +131,12 @@ export default function EventToProfileDetails({id, onDeleteComplete, onEditCompl
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
 
+    const {request} = useRequest()
+
     useEffect(() => {
             let isSubscribed = true;
             setLoading(true);
-            asyncRemote({
+            request({
                 url: '/event-to-profile/' + id,
                 method: "get"
             })

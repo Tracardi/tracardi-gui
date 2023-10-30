@@ -5,8 +5,8 @@ import {BsBoxArrowRight} from "react-icons/bs";
 import DestinationForm from "../elements/forms/DestinationForm";
 import DestinationDetails from "../elements/details/DestinationDetails";
 import {useConfirm} from "material-ui-confirm";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
+import {useRequest} from "../../remote_api/requestClient";
 
 export default function Destinations() {
 
@@ -15,12 +15,13 @@ export default function Destinations() {
     const detailsFunc = useCallback((id, close) => <DestinationDetails id={id} onDelete={close} onEdit={close}/>, []);
     const [refresh, setRefresh] = useState(0);
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const handleDelete = async (id) => {
         confirm({title: "Do you want to delete this destination?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/destination/' + id,
                             method: "delete"
                         })

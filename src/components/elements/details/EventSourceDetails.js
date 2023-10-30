@@ -12,7 +12,6 @@ import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import EventSourceForm from "../forms/EventSourceForm";
 import TextField from "@mui/material/TextField";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
 import Tabs, {TabCase} from "../../elements/tabs/Tabs";
 import {TuiPieChart} from "../charts/PieChart";
 import BarChartElement from "../charts/BarChart";
@@ -30,6 +29,8 @@ import DocsLink from "../drawers/DocsLink";
 import {BsStar} from "react-icons/bs";
 import Properties from "./DetailProperties";
 import JsonBrowser from "../misc/JsonBrowser";
+import {useRequest} from "../../../remote_api/requestClient";
+import {getError} from "../../../remote_api/entrypoint";
 
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
@@ -172,6 +173,8 @@ const JavascriptDetails = ({data}) => {
 export default function EventSourceDetails({id, onDeleteComplete}) {
 
     const confirm = useConfirm();
+    const {request} = useRequest()
+
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [editData, setEditData] = React.useState(null);
@@ -180,7 +183,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
 
     useEffect(() => {
         setLoading(true);
-        asyncRemote({
+        request({
             url: '/event-source/' + id,
             method: "GET"
         }).then((response) => {
@@ -198,7 +201,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
 
     // Loads data without loading indicator
     useEffect(() => {
-        asyncRemote({
+        request({
             url: '/event-source/' + id,
             method: "GET"
         }).then((response) => {
@@ -222,7 +225,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             description: "This action can not be undone."
         }).then(async () => {
             try {
-                const response = await asyncRemote({
+                const response = await request({
                     url: '/event-source/' + data.id,
                     method: "DELETE"
                 })
@@ -251,7 +254,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
             mounted.current = true;
             if (mounted.current === true) setError(null);
 
-            asyncRemote({
+            request({
                 url: `/event/for-source/${id}/by-type/${timeRange}`
             })
                 .then(response => {
@@ -261,7 +264,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                     if (mounted.current === true) setError(getError(error))
                 })
 
-            asyncRemote({
+            request({
                 url: `/event/for-source/${id}/by-tag/${timeRange}`
             })
                 .then(response => {

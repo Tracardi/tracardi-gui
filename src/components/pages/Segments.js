@@ -6,7 +6,7 @@ import SegmentForm from "../elements/forms/SegmentForm";
 import SegmentDetails from "../elements/details/SegmentDetails";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {useConfirm} from "material-ui-confirm";
-import {asyncRemote} from "../../remote_api/entrypoint";
+import {useRequest} from "../../remote_api/requestClient";
 
 export default function Segments() {
 
@@ -17,12 +17,13 @@ export default function Segments() {
     const detailsFunc = useCallback((id, close) => <SegmentDetails id={id} onDeleteComplete={close}/>, []);
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const handleDelete = async (id) => {
         confirm({title: "Do you want to delete this segmentation?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/segment/' + id,
                             method: "delete"
                         })

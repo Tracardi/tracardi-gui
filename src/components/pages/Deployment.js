@@ -8,17 +8,20 @@ import {
 import React, {useState} from "react";
 import Button from "../elements/forms/Button";
 import {useConfirm} from "material-ui-confirm";
-import {asyncRemote, getError} from "../../remote_api/entrypoint";
+import {getError} from "../../remote_api/entrypoint";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import {connect} from "react-redux";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import {useRequest} from "../../remote_api/requestClient";
 
 
 function Deployment({showAlert}) {
 
     const confirm = useConfirm();
     const [progress, setProgress] = useState(false)
+
+    const {request} = useRequest()
 
     const handleDeploy = () => {
         confirm({
@@ -28,7 +31,7 @@ function Deployment({showAlert}) {
             .then(async () => {
                     setProgress(true)
                     try {
-                        const response = await asyncRemote({
+                        const response = await request({
                             url: '/production/deploy',
                             method: "get"
                         })
@@ -58,7 +61,7 @@ function Deployment({showAlert}) {
             .then(async () => {
                     setProgress(true)
                     try {
-                        const response = await asyncRemote({
+                        const response = await request({
                             url: '/production/dry-run',
                             method: "get"
                         })
@@ -83,7 +86,7 @@ function Deployment({showAlert}) {
             .then(async () => {
                     setProgress(true)
                     try {
-                        const response = await asyncRemote({
+                        const response = await request({
                             url: '/production/dry-run/revert',
                             method: "get"
                         })

@@ -20,7 +20,7 @@ export const useFetch = (name, endpoint, resolveFn, options={}) => {
         endpoint = {...endpoint, headers: {"x-context": "production"}}
     }
 
-    const closure = () => request(endpoint).then(data => {return resolveFn(data)})
+    const closure = () => request(endpoint, true).then(data => {return resolveFn(data)})
 
     return useQuery(name, closure, options)
 }

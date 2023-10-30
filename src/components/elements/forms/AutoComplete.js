@@ -3,9 +3,10 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import PropTypes from "prop-types";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import {convertResponseToAutoCompleteOptions} from "../../../misc/converters";
 import {isObject, isString} from "../../../misc/typeChecking";
+import {useRequest} from "../../../remote_api/requestClient";
 
 const AutoComplete = ({
                           placeholder, error: _error = null, endpoint, token=null, defaultValueSet, initValue, value = null, onSetValue,
@@ -30,6 +31,7 @@ const AutoComplete = ({
     const [selectedValue, setSelectedValue] = React.useState(getValue(initValue));
 
     const mounted = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -49,7 +51,7 @@ const AutoComplete = ({
                 try {
                     setOpen(true)
                     setLoading(true)
-                    const response = await asyncRemote(endpoint, token)
+                    const response = await request(endpoint, token)
                     if (response && mounted.current) {
                         let options = convertResponseToAutoCompleteOptions(response)
 

@@ -1,5 +1,5 @@
 import React from "react";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import {object2dot} from "../../../misc/dottedObject";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
@@ -22,6 +22,7 @@ import NoData from "../misc/NoData";
 import {ProfileImage} from "./ProfileImage";
 import {displayLocation} from "../../../misc/location";
 import Properties from "./DetailProperties";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export const ProfileData = ({profile}) => {
 
@@ -205,13 +206,14 @@ const ProfileInfo = ({id}) => {
     const [loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState(null);
 
+    const {request} = useRequest()
 
     React.useEffect(() => {
         let isSubscribed = true;
         setError(null);
         setLoading(true);
         if (id) {
-            asyncRemote({
+            request({
                 url: "/profile/" + id
             })
                 .then(response => {

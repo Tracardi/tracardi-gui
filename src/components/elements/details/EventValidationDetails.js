@@ -7,7 +7,6 @@ import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import EventValidationForm from "../forms/EventValidationForm";
 import JsonBrowser from "../misc/JsonBrowser";
 import {isEmptyObject} from "../../../misc/typeChecking";
@@ -15,12 +14,14 @@ import NoData from "../misc/NoData";
 import EventTypeMetadata from "./EventTypeMetadata";
 import Tag from "../misc/Tag";
 import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export function EventValidationCard({data, onDeleteComplete, onEditComplete, displayMetadata = true}) {
 
     const [displayEdit, setDisplayEdit] = React.useState(false);
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const handleEditClick = () => {
         if (data) {
@@ -42,7 +43,7 @@ export function EventValidationCard({data, onDeleteComplete, onEditComplete, dis
         })
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/event-validator/' + data.id,
                             method: "delete"
                         })
@@ -122,11 +123,13 @@ export default function EventValidationDetails({id, onDeleteComplete}) {
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
 
+    const {request} = useRequest()
+
     useEffect(() => {
             let isSubscribed = true;
             setLoading(true);
 
-            asyncRemote({
+            request({
                 url: '/event-validator/' + id,
                 method: "get"
             }).then(response => {

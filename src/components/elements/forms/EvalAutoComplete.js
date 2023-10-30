@@ -5,11 +5,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import {convertResponseToAutoCompleteOptions} from "../../../misc/converters";
 import {isString} from "../../../misc/typeChecking";
 import EvalAdornment from "./inputs/EvalAdornment";
 import {InputAdornment} from "@mui/material";
+import {useRequest} from "../../../remote_api/requestClient";
 
 const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChange, solo = true,
                               disabled, fullWidth = false, autoCastValue: initCast, disableCast=false}) => {
@@ -34,6 +35,8 @@ const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChang
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
 
     const mounted = useRef(false);
+    const {request} = useRequest()
+
 
     useEffect(() => {
         mounted.current = true;
@@ -47,7 +50,7 @@ const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChang
             setProgress(true);
             try {
                 setOpen(true);
-                const response = await asyncRemote({url})
+                const response = await request({url})
                 if (response && mounted.current) {
                     const options = convertResponseToAutoCompleteOptions(response)
 

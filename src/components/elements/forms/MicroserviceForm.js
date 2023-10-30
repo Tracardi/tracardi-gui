@@ -1,10 +1,11 @@
 import React, {useState} from "react";
 import AutoComplete from "./AutoComplete";
 import {TextInput} from "./JsonFormComponents";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import ErrorsBox from "../../errors/ErrorsBox";
 import TokenInput from "./inputs/TokenInput";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function MicroserviceForm({value, onServiceChange, onServiceClear}) {
 
@@ -21,6 +22,8 @@ export default function MicroserviceForm({value, onServiceChange, onServiceClear
             id: ""
         }
     })
+
+    const {request} = useRequest()
 
     const handleUrlChange = (value) => {
         const state = {
@@ -71,7 +74,7 @@ export default function MicroserviceForm({value, onServiceChange, onServiceClear
                 try {
                     setLoading(true)
                     setError(null)
-                    const response = await asyncRemote({
+                    const response = await request({
                         baseURL: state?.credentials?.url,
                         url: `/service/resource?service_id=${value.id}`
                     },

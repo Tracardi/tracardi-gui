@@ -7,18 +7,19 @@ import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import IdentificationPointForm from "../forms/IdentifiactionPointForm";
 import EventTypeMetadata from "./EventTypeMetadata";
 import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
 import AssignValueToKey from "./AssignValueToKey";
 import Tag from "../misc/Tag";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export function IdentificationPointCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
     const [displayEdit, setDisplayEdit] = React.useState(false);
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const handleEdit = () => {
         if (data) {
@@ -35,7 +36,7 @@ export function IdentificationPointCard({data, onDeleteComplete, onEditComplete,
         confirm({title: "Do you want to delete this event identification point?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/identification/point/' + data?.id,
                             method: "delete"
                         })
@@ -113,11 +114,13 @@ export default function IdentificationPointDetails({id, onDeleteComplete, onEdit
     const [data, setData] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
 
+    const {request} = useRequest()
+
     useEffect(() => {
             let isSubscribed = true;
             setLoading(true);
 
-            asyncRemote({
+            request({
                 url: '/identification/point/' + id,
                 method: "get"
             }).then(response => {

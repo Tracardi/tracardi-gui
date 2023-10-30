@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../../elements/progress/CenteredCircularProgress";
 import ProEntryPoint from "./ProEntryPoint";
@@ -7,6 +7,7 @@ import TracardiProSignUpForm from "./form/TracardiProSignUpForm";
 import TracardiProSignInForm from "./form/TracardiProSignInForm";
 import ProServiceList from "./ProServiceList";
 import './ProRouter.css';
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function ProRouter() {
 
@@ -14,10 +15,12 @@ export default function ProRouter() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const {request} = useRequest()
+
     useEffect(() => {
         setLoading(true);
         let isSubscribed = true;
-        asyncRemote({
+        request({
             url: "/tpro/validate"
         }).then(
             (response) => {

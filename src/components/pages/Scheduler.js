@@ -3,9 +3,9 @@ import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import FlowNodeIcons from "../flow/FlowNodeIcons";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import {useConfirm} from "material-ui-confirm";
 import SchedulerJobDetails from "../elements/details/SchedulerJobDetails";
+import {useRequest} from "../../remote_api/requestClient";
 // import SchedulerJobForm from "../elements/forms/SchedulerJobForm";
 
 export default function Scheduler() {
@@ -17,12 +17,13 @@ export default function Scheduler() {
     const detailsFunc = useCallback((id, close) => <SchedulerJobDetails id={id} onDeleteComplete={close}/>, []);
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const handleDelete = async (id) => {
         confirm({title: "Do you want to delete this scheduled event?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/scheduler/job/' + id,
                             method: "delete"
                         })

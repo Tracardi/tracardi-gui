@@ -5,7 +5,6 @@ import Switch from "@mui/material/Switch";
 import {BsXSquare, BsCheckCircle} from "react-icons/bs";
 import PropTypes from 'prop-types';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import Tabs, {TabCase} from "../../elements/tabs/Tabs";
 import "./PluginForm.css";
@@ -20,6 +19,7 @@ import TuiTags from "../tui/TuiTags";
 import {isNotEmptyArray} from "../../../misc/typeChecking";
 import IdLabel from "../misc/IconLabels/IdLabel";
 import theme from "../../../themes/inspector_light_theme";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function PluginForm({id}) {
 
@@ -31,11 +31,13 @@ export default function PluginForm({id}) {
     const [loading, setLoading] = useState(false);
     const [tab, setTab] = useState(0);
 
+    const {request} = useRequest()
+
     useEffect(() => {
             let isSubscribed = true;
             setLoading(true)
             if (id) {
-                asyncRemote({
+                request({
                     url: "/flow/action/plugin/" + id
                 }).then(response => {
                     if (response && isSubscribed === true) {
@@ -57,7 +59,7 @@ export default function PluginForm({id}) {
         [id])
 
     const handleEnabled = async () => {
-        await asyncRemote(
+        await request(
             {
                 url: '/flow/action/plugin/' + plugin.id + '/enable/' + ((!enabled) ? 'yes' : 'no')
             }
@@ -66,7 +68,7 @@ export default function PluginForm({id}) {
     }
 
     const handleHidden = async () => {
-        await asyncRemote(
+        await request(
             {
                 url: '/flow/action/plugin/' + plugin.id + '/hide/' + ((!hidden) ? 'yes' : 'no')
             })
@@ -74,14 +76,14 @@ export default function PluginForm({id}) {
     }
 
     const handleIcon = async icon => {
-        await asyncRemote({
+        await request({
             url: '/flow/action/plugin/' + plugin.id + '/icon/' + icon,
             method: "PUT" 
         })
     }
 
     const handleSaveName = async () => {
-        await asyncRemote({
+        await request({
             url: '/flow/action/plugin/' + plugin.id + "/name/" + newName,
             method: "PUT" 
         })

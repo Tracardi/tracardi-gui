@@ -5,11 +5,12 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import {v4 as uuid4} from 'uuid';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import PropTypes from 'prop-types';
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import TuiTagger from "../tui/TuiTagger";
 import MenuItem from "@mui/material/MenuItem";
 import Switch from "@mui/material/Switch";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function ConsentForm({
                                         id,
@@ -38,6 +39,7 @@ export default function ConsentForm({
     const [error, setError] = useState(false);
 
     const mounted = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -78,7 +80,7 @@ export default function ConsentForm({
         setProcessing(true);
 
         try {
-            const response = await asyncRemote({
+            const response = await request({
                 url: '/consent/type',
                 method: 'post',
                 data: payload

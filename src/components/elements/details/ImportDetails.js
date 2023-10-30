@@ -1,5 +1,5 @@
 import React from "react";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField} from "../tui/TuiForm";
 import ErrorsBox from "../../errors/ErrorsBox";
@@ -9,6 +9,7 @@ import Tabs, {TabCase} from "../tabs/Tabs";
 import NamedActionButton from "../forms/inputs/NamedActionButton";
 import {BsPlayFill} from "react-icons/bs";
 import {VscDebugAlt} from "react-icons/vsc";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function ImportDetails({onClose, id}) {
 
@@ -21,12 +22,14 @@ export default function ImportDetails({onClose, id}) {
     const [debugRunProgress, setDebugRunProgress] = React.useState(false);
     const [runSuccessful, setRunSuccessful] = React.useState(false);
     const [runDebugSuccessul, setRunDebugSuccessful] = React.useState(false);
+
     const mounted = React.useRef(false);
+    const {request} = useRequest()
 
     React.useEffect(() => {
         mounted.current = true;
         if (mounted.current) setLoading(true);
-        asyncRemote({url: "/import/" + id})
+        request({url: "/import/" + id})
             .then(response => {
                 if (mounted.current) setBatch(response.data)
             })
@@ -44,7 +47,7 @@ export default function ImportDetails({onClose, id}) {
             setError(null);
             setDeleteProgress(true);
         }
-        asyncRemote({url: "/import/" + id, method: "DELETE"})
+        request({url: "/import/" + id, method: "DELETE"})
             .then(onClose)
             .catch(e => {
                 if (mounted.current) setError(getError(e));
@@ -66,7 +69,7 @@ export default function ImportDetails({onClose, id}) {
             }
         }
 
-        asyncRemote({
+        request({
             url: `/import/${id}/run?name=` + encodeURIComponent(name) + "&debug=" + encodeURIComponent(debug),
             method: "GET"
         })

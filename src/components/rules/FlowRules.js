@@ -1,8 +1,8 @@
 import React, {useEffect} from "react";
 import RuleRow from "../elements/lists/rows/RuleRow";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useConfirm } from "material-ui-confirm";
+import {useRequest} from "../../remote_api/requestClient";
 
 export default function FlowRules({flowName, id, refresh}) {
 
@@ -10,10 +10,12 @@ export default function FlowRules({flowName, id, refresh}) {
     const [loading, setLoading] = React.useState(false);
     const confirm = useConfirm();
 
+    const {request} = useRequest()
+
     useEffect(() => {
             setLoading(true);
             let isSubscribed = true
-            asyncRemote({
+            request({
                 url: '/rules/by_flow/' + id
             }).then((response) => {
                 if (response && isSubscribed) {
@@ -40,7 +42,7 @@ export default function FlowRules({flowName, id, refresh}) {
             description: "This action cannot be undone."
         })
         .then(() => {
-            asyncRemote({
+            request({
                 method: "DELETE",
                 url: `/rule/${id}`
             })

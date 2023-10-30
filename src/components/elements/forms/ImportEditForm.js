@@ -1,5 +1,5 @@
 import React from "react";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import {TextField, Autocomplete} from "@mui/material";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import BoolInput from "./BoolInput";
@@ -11,6 +11,7 @@ import {isObject} from "../../../misc/typeChecking";
 import TuiApiUrlInput from "../tui/TuiApiUrlInput";
 import storageValue from "../../../misc/localStorageDriver";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function ImportEditForm({onSubmit, importConfig}) {
 
@@ -29,11 +30,12 @@ export default function ImportEditForm({onSubmit, importConfig}) {
     const mounted = React.useRef(false)
 
     const [formError, setFormError] = React.useState(null);
+    const {request} = useRequest()
 
     React.useEffect(() => {
         mounted.current = true;
         setLoadingOptions(true)
-        asyncRemote({url: "/import/types"})
+        request({url: "/import/types"})
             .then(response => {
                 if (mounted.current) {
                     setOptions(Object.keys(response.data).map(key => {
@@ -73,7 +75,7 @@ export default function ImportEditForm({onSubmit, importConfig}) {
                     setServerError(null);
                     setForm(null);
                 }
-                asyncRemote({url: "/import/form/" + module.value})
+                request({url: "/import/form/" + module.value})
                     .then(response => {
                         if (mounted.current) setForm(response.data.form);
                     })
@@ -97,7 +99,7 @@ export default function ImportEditForm({onSubmit, importConfig}) {
                 setFormError(null);
                 setServerError(null);
             }
-            asyncRemote({
+            request({
                 url: "/import",
                 method: "POST",
                 data: {

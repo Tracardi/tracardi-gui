@@ -7,8 +7,8 @@ import {BsFolderCheck} from "react-icons/bs";
 import EventMappingDetails from "../elements/details/EventMappingDetails";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {useConfirm} from "material-ui-confirm";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import EventJourneyTag from "../elements/misc/EventJourneyTag";
+import {useRequest} from "../../remote_api/requestClient";
 
 export default function EventManagement() {
 
@@ -19,12 +19,13 @@ export default function EventManagement() {
     const detailsFunc= useCallback((id, close) => <EventMappingDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const handleDelete = async (id) => {
         confirm({title: "Do you want to delete this event mapping?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/event-type/mapping/' + id,
                             method: "delete"
                         })

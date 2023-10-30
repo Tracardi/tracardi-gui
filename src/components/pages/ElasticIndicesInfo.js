@@ -1,7 +1,7 @@
 import React from "react";
 import { TuiForm, TuiFormGroup, TuiFormGroupHeader, TuiFormGroupContent } from "../elements/tui/TuiForm";
 import ErrorsBox from "../errors/ErrorsBox";
-import { asyncRemote, getError } from "../../remote_api/entrypoint";
+import { getError } from "../../remote_api/entrypoint";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import IconButton from "../elements/misc/IconButton";
 import {AiOutlineInfoCircle} from "react-icons/ai";
@@ -17,6 +17,7 @@ import {showAlert} from "../../redux/reducers/alertSlice";
 import theme from "../../themes/inspector_light_theme";
 import JsonChip from "../elements/misc/JsonChip";
 import {objectMap} from "../../misc/mappers";
+import {useRequest} from "../../remote_api/requestClient";
 
 function InconsistentMappingChips({mappingCheck}) {
     if(mappingCheck) {
@@ -37,13 +38,14 @@ function ElasticIndicesInfo({showAlert}) {
     const [refresh, setRefresh] = React.useState(0);
     const mounted = React.useRef(false);
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     React.useEffect(() => {
         mounted.current = true;
         setLoading(true);
         setError(null);
 
-        asyncRemote({url: "/test/elasticsearch/indices"})
+        request({url: "/test/elasticsearch/indices"})
         .then(response => {
             if (mounted.current) {
                 setData(response.data);
@@ -60,7 +62,7 @@ function ElasticIndicesInfo({showAlert}) {
             }
         })
 
-        asyncRemote({url: "/storage/mapping/check"})
+        request({url: "/storage/mapping/check"})
             .then(response => {
                 if (mounted.current) {
                     setMappingCheck(response.data);
@@ -84,7 +86,7 @@ function ElasticIndicesInfo({showAlert}) {
         confirm({title: "Do you want to delete this index?", description: "This action can not be undone."})
         .then(async () => {
                 try {
-                    const response = await asyncRemote({
+                    const response = await request({
                             url: '/storage/index/' + name,
                             method: "delete"
                     })

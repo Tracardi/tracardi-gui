@@ -1,11 +1,12 @@
 import React from "react";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import ErrorsBox from "../../errors/ErrorsBox";
 import {Checkbox, FormControlLabel, Switch, TextField} from "@mui/material";
 import Button from "./Button";
 import PasswordInput from "./inputs/PasswordInput";
 import ErrorLine from "../../errors/ErrorLine";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function NewUserForm({ onSubmit}) {
 
@@ -23,6 +24,7 @@ export default function NewUserForm({ onSubmit}) {
     const [errorMessage, setErrorMessage] = React.useState(null);
     const [expirationDate, setExpirationDate] = React.useState("");
     const mounted = React.useRef(false);
+    const {request} = useRequest()
 
     const handleSave = async () => {
         if (password && confirmPassword === password && fullName && email) {
@@ -35,7 +37,7 @@ export default function NewUserForm({ onSubmit}) {
                 if (marketer) rolesToSend.push("marketer");
                 if (developer) rolesToSend.push("developer");
                 if (dataAdmin) rolesToSend.push("maintainer");
-                await asyncRemote({
+                await request({
                     url: "/user",
                     method: "POST",
                     data: {

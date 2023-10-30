@@ -6,8 +6,8 @@ import {IoArrowRedoOutline} from "react-icons/io5";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import EventRedirectForm from "../elements/forms/EventRedirectForm";
 import {useConfirm} from "material-ui-confirm";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import EventRedirectDetails from "../elements/details/EventRedirectDetails";
+import {useRequest} from "../../remote_api/requestClient";
 
 export default function EventRedirect() {
 
@@ -21,12 +21,13 @@ export default function EventRedirect() {
         onDeleteComplete={close}
         onEditComplete={close}/>, [])
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const handleDelete = async (id) => {
         confirm({title: "Do you want to delete this event redirect?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/event-redirect/' + id,
                             method: "delete"
                         })

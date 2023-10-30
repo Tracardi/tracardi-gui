@@ -5,13 +5,13 @@ import {connect} from "react-redux";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import FilterTextField from "../elements/forms/inputs/FilterTextField";
 import {FlowEditorIcons} from "./FlowEditorButtons";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import ResponsiveDialog from "../elements/dialog/ResponsiveDialog";
 import Button from "../elements/forms/Button";
 import {BsXCircle} from "react-icons/bs";
 import MdManual from "./actions/MdManual";
 import {useDebounce} from "use-debounce";
 import HorizontalCircularProgress from "../elements/progress/HorizontalCircularProgress";
+import {useRequest} from "../../remote_api/requestClient";
 
 function SidebarLeft({showAlert, onDebug, debugInProgress, flowType}) {
 
@@ -21,11 +21,13 @@ function SidebarLeft({showAlert, onDebug, debugInProgress, flowType}) {
     const [pluginsLoading, setPluginsLoading] = useState(false);
     const [manual, setManual] = useState(null);
 
+    const {request} = useRequest()
+
     useEffect(() => {
         let isSubscribed = true
 
         setPluginsLoading(true);
-        asyncRemote({
+        request({
                 url: `/flow/action/plugins?flow_type=${flowType}&query=${debouncedFiltering}&rnd=${Math.random()}`
             }
         ).then(

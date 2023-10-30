@@ -55,7 +55,7 @@ const ApiUrlSelector = ({children}) => {
                 const data = await request({
                     url: "/info/version/details",
                     baseURL: endpoint
-                })
+                }, true)
 
                 new storageValue('version').save(data)
                 apiUrlStorage().save(endpoint)

@@ -4,14 +4,15 @@ import CardBrowser from "../elements/lists/CardBrowser";
 import SquareCard from "../elements/lists/cards/SquareCard";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {useConfirm} from "material-ui-confirm";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import {VscCopy} from "react-icons/vsc";
 import EventToProfileForm from "../elements/forms/EventToProfileForm";
 import EventToProfileDetails from "../elements/details/EventToProfileDetails";
+import {useRequest} from "../../remote_api/requestClient";
 
 export default function EventToProfile() {
 
     const [refresh, setRefresh] = useState(0);
+    const {request} = useRequest()
 
     const urlFunc = useCallback((query) => ('/events-to-profiles/by_tag' + ((query) ? "?query=" + query : "")), []);
     const addFunc = useCallback((close) => <EventToProfileForm onSubmit={close}/>, []);
@@ -27,7 +28,7 @@ export default function EventToProfile() {
         })
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/event-to-profile/' + id,
                             method: "delete"
                         })

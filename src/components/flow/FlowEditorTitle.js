@@ -19,7 +19,6 @@ import {
 import RuleForm from "../elements/forms/RuleForm";
 import Drawer from "@mui/material/Drawer";
 import {BiReset} from "react-icons/bi";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import {prepareFlowPayload, save} from "./FlowEditorOps";
 import {useConfirm} from "material-ui-confirm";
 import TestEditor from "../test/TestEditor";
@@ -27,6 +26,7 @@ import DropDownMenu from "../menu/DropDownMenu";
 import {ReinstallButton} from "../pages/ActionPlugins";
 import EntityAnalytics from "../pages/EntityAnalytics";
 import useTheme from "@mui/material/styles/useTheme";
+import {useRequest} from "../../remote_api/requestClient";
 
 export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onDraftRestore, onDeploy, onSaveDraft}) {
 
@@ -42,6 +42,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
 
     const confirm = useConfirm();
     const theme = useTheme();
+    const {request} = useRequest()
 
     const handleDraftSave = useCallback((progress, deploy = false) => {
 
@@ -82,7 +83,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                 flowMetaData,
                 reactFlowInstance
             )
-            const response = await asyncRemote({
+            const response = await request({
                 url: `/flow/draft/nodes/rearrange`,
                 method: "POST",
                 data: payload
@@ -122,7 +123,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
             async () => {
                 setProductionRestoreProgress(true);
                 try {
-                    await asyncRemote({
+                    await request({
                         url: `/flow/production/${id}/restore`
                     })
 
@@ -145,7 +146,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
         }).then(async () => {
             setDraftRestoreProgress(true);
             try {
-                const response = await asyncRemote({
+                const response = await request({
                     url: `/flow/draft/${id}/restore`
                 })
 
@@ -155,6 +156,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
             } catch (e) {
                 if (e) {
                     // todo error
+                    console.error(e)
                 }
             } finally {
                 setDraftRestoreProgress(false);

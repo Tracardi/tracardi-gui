@@ -1,11 +1,12 @@
 import React from "react";
 import { TuiForm, TuiFormGroup, TuiFormGroupHeader, TuiFormGroupContent } from "../elements/tui/TuiForm";
 import PropertyField from "../elements/details/PropertyField";
-import { asyncRemote, getError } from "../../remote_api/entrypoint";
+import { getError } from "../../remote_api/entrypoint";
 import ErrorsBox from "../errors/ErrorsBox";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {BsCheckCircle, BsXSquare} from "react-icons/bs";
 import Tag from "../elements/misc/Tag";
+import {useRequest} from "../../remote_api/requestClient";
 
 
 export default function ElasticClusterHealthInfo() {
@@ -14,6 +15,8 @@ export default function ElasticClusterHealthInfo() {
     const [error, setError] = React.useState(null);
     const [loading, setLoading] = React.useState(null);
 
+    const {request} = useRequest()
+
     React.useEffect(() => {
         let isSubscribed = true;
         if (isSubscribed) {
@@ -21,7 +24,7 @@ export default function ElasticClusterHealthInfo() {
             setLoading(true);
         }
         
-        asyncRemote({url: "/test/elasticsearch"})
+        request({url: "/test/elasticsearch"})
         .then(response => {
             if (isSubscribed) setHealthInfo(response.data);
         })

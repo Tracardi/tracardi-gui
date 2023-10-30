@@ -122,13 +122,14 @@ const SignInForm = ({showAlert}) => {
         })
 
         setProgress(true)
-        request(userLogIn(email, password)).then((data => {
+        try {
+            const data = await request(userLogIn(email, password), true)
             setToken(data['access_token']);
             setRoles(data['roles']);
             setStoredApiUrl(apiUrl);
             idleTimer.start()
             setRedirectToReferrer(true);
-        })).catch(error => {
+        } catch (error) {
             if (error.status === 404) {
                 showAlert({type: "error", message: 'Api unavailable.', hideAfter: 3000})
             } else if (error.status === 422) {
@@ -136,8 +137,9 @@ const SignInForm = ({showAlert}) => {
             } else if (error?.data?.detail) {
                 showAlert({type: "error", message: error.data.detail, hideAfter: 3000})
             }
-        }).finally(()=> setProgress(false))
-
+        } finally {
+            setProgress(false)
+        }
     };
 
 

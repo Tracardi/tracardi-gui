@@ -3,10 +3,10 @@ import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
 import AdvancedSquareCard from "../elements/lists/cards/AdvancedSquareCard";
 import {useConfirm} from "material-ui-confirm";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import ReportForm from "../elements/forms/ReportForm";
 import {BsBarChartFill} from "react-icons/bs";
+import {useRequest} from "../../remote_api/requestClient";
 
 
 export default function Reports() {
@@ -18,6 +18,7 @@ export default function Reports() {
     const detailsFunc = useCallback((id, close) => <ReportForm reportId={id} onComplete={close}/>, [])
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const mounted = useRef(false);
 
@@ -33,7 +34,7 @@ export default function Reports() {
         confirm({title: "Do you want to delete this report?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        const response = await asyncRemote({
+                        const response = await request({
                             url: `/report/${id}`,
                             method: "delete"
                         })

@@ -7,7 +7,6 @@ import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import TuiTags from "../tui/TuiTags";
 import PropertyField from "./PropertyField";
 import IconLabel from "../misc/IconLabels/IconLabel";
@@ -17,6 +16,7 @@ import IdLabel from "../misc/IconLabels/IdLabel";
 import {BsStar} from "react-icons/bs";
 import TextField from "@mui/material/TextField";
 import JsonBrowser from "../misc/JsonBrowser";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function EventRedirectDetails({id, onDeleteComplete, onEditComplete}) {
 
@@ -26,13 +26,14 @@ export default function EventRedirectDetails({id, onDeleteComplete, onEditComple
     const [deleteProgress, setDeleteProgress] = React.useState(false);
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const mounted = useRef(false);
 
     useEffect(() => {
             mounted.current = true;
             setLoading(true);
-            asyncRemote({
+            request({
                 url: '/event-redirect/' + id,
                 method: "get"
             })
@@ -65,7 +66,7 @@ export default function EventRedirectDetails({id, onDeleteComplete, onEditComple
             .then(async () => {
                     if (mounted.current) setDeleteProgress(true);
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/event-redirect/' + id,
                             method: "delete"
                         })

@@ -4,12 +4,12 @@ import TextField from "@mui/material/TextField";
 import Switch from "@mui/material/Switch";
 import {v4 as uuid4} from "uuid";
 import {request} from "../../../remote_api/uql_api_endpoint";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import PropTypes from 'prop-types';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import TuiFormError from "../tui/TuiFormError";
 import {isString, isObject} from "../../../misc/typeChecking";
 import TuiSelectMultiEventType from "../tui/TuiSelectMultiEventType";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function SegmentForm({onSubmit, init}) {
 
@@ -52,10 +52,11 @@ export default function SegmentForm({onSubmit, init}) {
     const [enabled, setEnabled] = useState(init.enabled);
     const [processing, setProcessing] = useState(false);
     const [type, setType] = useState(eventTypes);
+    const {request} = useRequest()
 
     const onTqlValidate = async () => {
         try {
-            const response = await asyncRemote({
+            const response = await request({
                     url: '/tql/validate',
                     method: 'post',
                     data: condition

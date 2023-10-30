@@ -7,7 +7,7 @@ import {useConfirm} from "material-ui-confirm";
 import {VscTrash} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import {asyncRemote} from "../../../remote_api/entrypoint";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function SchedulerJobDetails({id, onDeleteComplete}) {
 
@@ -15,12 +15,13 @@ export default function SchedulerJobDetails({id, onDeleteComplete}) {
     const [loading, setLoading] = React.useState(false);
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     useEffect(() => {
             let isSubscribed = true;
             setLoading(true);
 
-            asyncRemote({
+            request({
                 url: '/scheduler/job/' + id,
                 method: "get"
             }).then(response => {
@@ -42,7 +43,7 @@ export default function SchedulerJobDetails({id, onDeleteComplete}) {
         confirm({title: "Do you want to delete this scheduled event?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/scheduler/job/' + id,
                             method: "delete"
                         })

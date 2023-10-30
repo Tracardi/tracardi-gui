@@ -7,10 +7,11 @@ import TuiTagger from "../tui/TuiTagger";
 import ErrorsBox from "../../errors/ErrorsBox";
 import JsonEditor from "../editors/JsonEditor";
 import DestinationInput from "./inputs/DestinationInput";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import Switch from "@mui/material/Switch";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function DestinationForm({onSubmit, value: initValue}) {
 
@@ -54,6 +55,7 @@ export default function DestinationForm({onSubmit, value: initValue}) {
     const [data, setData] = useState(initValue);
 
     const mounted = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -66,7 +68,7 @@ export default function DestinationForm({onSubmit, value: initValue}) {
     const handleSubmit = async () => {
         setProcessing(true);
         try {
-            const response = await asyncRemote({
+            const response = await request({
                 url: "destination",
                 method: "POST",
                 data: {

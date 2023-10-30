@@ -2,7 +2,6 @@ import React from "react";
 import { isEmptyObjectOrNull } from "../../misc/typeChecking";
 import { TuiForm, TuiFormGroup, TuiFormGroupField, TuiFormGroupHeader} from "../elements/tui/TuiForm";
 import { CircularProgress } from "@mui/material";
-import { asyncRemote } from "../../remote_api/entrypoint";
 import { getError } from "../../remote_api/entrypoint";
 import ErrorsBox from "../errors/ErrorsBox";
 import { BsPersonCircle } from "react-icons/bs";
@@ -14,6 +13,7 @@ import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import EditAccountForm from "../elements/forms/EditAccountForm";
+import {useRequest} from "../../remote_api/requestClient";
 
 export default function UserAccount () {
 
@@ -25,6 +25,8 @@ export default function UserAccount () {
     const [logoutError, setLogoutError] = React.useState(null);
     const mounted = React.useRef(false);
     const navigate = useNavigate();
+
+    const {request} = useRequest()
     
     const go = (url) => {
         return () => navigate(urlPrefix(url));
@@ -36,7 +38,7 @@ export default function UserAccount () {
             setLogoutProgress(true);
         }
         try {
-            await asyncRemote({method: "post", url: "/user/logout"});
+            await request({method: "post", url: "/user/logout"});
             go("/logout")();
         }
         catch (e) {
@@ -52,7 +54,7 @@ export default function UserAccount () {
         mounted.current = true;
         setError(null);
 
-        asyncRemote({
+        request({
             url: "/user-account",
             method: "GET"
         })

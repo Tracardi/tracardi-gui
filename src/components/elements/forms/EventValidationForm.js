@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import Button from "./Button";
 import TextField from "@mui/material/TextField";
 import {v4 as uuid4} from "uuid";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import PropTypes from 'prop-types';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import ErrorsBox from "../../errors/ErrorsBox";
@@ -11,6 +11,7 @@ import JsonEditor from "../editors/JsonEditor";
 import TuiTagger from "../tui/TuiTagger";
 import Switch from "@mui/material/Switch";
 import DocsLink from "../drawers/DocsLink";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function EventValidationForm({onSubmit, init}) {
 
@@ -46,6 +47,7 @@ export default function EventValidationForm({onSubmit, init}) {
     const [processing, setProcessing] = useState(false);
 
     const mounted = React.useRef(false);
+    const {request} = useRequest()
 
     React.useEffect(() => {
         mounted.current = true;
@@ -81,7 +83,7 @@ export default function EventValidationForm({onSubmit, init}) {
                 }
             }
 
-            const response = await asyncRemote(
+            const response = await request(
                 {
                     url: '/event-validator',
                     method: 'post',

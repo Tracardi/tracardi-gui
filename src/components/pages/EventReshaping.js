@@ -6,7 +6,7 @@ import EventReshapingDetails from "../elements/details/EventReshapingDetails";
 import FlowNodeIcons from "../flow/FlowNodeIcons";
 import EventReshapingForm from "../elements/forms/EventReshapingForm";
 import {useConfirm} from "material-ui-confirm";
-import {asyncRemote} from "../../remote_api/entrypoint";
+import {useRequest} from "../../remote_api/requestClient";
 
 export default function EventReshaping() {
 
@@ -17,12 +17,13 @@ export default function EventReshaping() {
     const detailsFunc = useCallback((id, close) => <EventReshapingDetails id={id} onDeleteComplete={close}/>, []);
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const handleDelete = async (id) => {
         confirm({title: "Do you want to delete this event reshaping?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/event-reshape-schema/' + id,
                             method: "delete"
                         })

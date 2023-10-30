@@ -8,8 +8,8 @@ import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import ConsentForm from "../forms/ConsentForm";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
 
@@ -19,6 +19,7 @@ export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
     const [deleteProgress, setDeleteProgress] = React.useState(false);
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const mounted = useRef(false);
 
@@ -31,7 +32,7 @@ export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
 
     useEffect(() => {
             setLoading(true);
-            asyncRemote({
+            request({
                 url: '/consent/type/' + id,
                 method: "get"
             })
@@ -56,7 +57,7 @@ export default function ConsentDetails({id, onDeleteComplete, onEditComplete}) {
             .then(async () => {
                     setDeleteProgress(true);
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/consent/type/' + id,
                             method: "delete"
                         })

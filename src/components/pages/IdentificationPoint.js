@@ -4,13 +4,14 @@ import CardBrowser from "../elements/lists/CardBrowser";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import FlowNodeIcons from "../flow/FlowNodeIcons";
 import {useConfirm} from "material-ui-confirm";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import IdentificationPointForm from "../elements/forms/IdentifiactionPointForm";
 import IdentificationPointDetails from "../elements/details/IdentificationPointDetails";
+import {useRequest} from "../../remote_api/requestClient";
 
 export default function IdentificationPoint() {
 
     const [refresh, setRefresh] = useState(0);
+    const {request} = useRequest()
 
     const urlFunc = useCallback((query) => ('/identification/points' + ((query) ? "?query=" + query : "")), [])
     const addFunc = useCallback((close) => <IdentificationPointForm onSubmit={close}/>, [])
@@ -22,7 +23,7 @@ export default function IdentificationPoint() {
         confirm({title: "Do you want to delete this identification point?", description: "This action can not be undone."})
             .then(async () => {
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/identification/point/' + id,
                             method: "delete"
                         })

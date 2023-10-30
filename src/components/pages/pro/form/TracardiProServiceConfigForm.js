@@ -1,6 +1,6 @@
 import JsonForm from "../../../elements/forms/JsonForm";
 import React, {useRef, useState} from "react";
-import {asyncRemote, getError} from "../../../../remote_api/entrypoint";
+import {getError} from "../../../../remote_api/entrypoint";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../../../elements/tui/TuiForm";
 import TextField from "@mui/material/TextField";
 import TuiTags from "../../../elements/tui/TuiTags";
@@ -8,6 +8,7 @@ import {isEmptyObject} from "../../../../misc/typeChecking";
 import MicroserviceForm from "../../../elements/forms/MicroserviceForm";
 import Button from "../../../elements/forms/Button";
 import ErrorsBox from "../../../errors/ErrorsBox";
+import {useRequest} from "../../../../remote_api/requestClient";
 
 function MicroserviceAndResourceForm({onSubmit}) {
 
@@ -18,12 +19,14 @@ function MicroserviceAndResourceForm({onSubmit}) {
     const [error, setError] = useState(null)
     const [formErrors, setFormErrors] = useState(null)
 
+    const {request} = useRequest()
+
     const handleSubmit = async (resource) => {
         setLoading(true)
         setError(null)
         setFormErrors(null)
         try {
-            await asyncRemote({
+            await request({
                 baseURL:service?.credentials?.url,
                 url: '/service/resource/validate?service_id='+service?.service?.id,
                 method: "POST",
@@ -147,6 +150,8 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
     const [errorMessages, setErrorMessages] = useState(null)
     const [error, setError] = useState(null)
 
+    const {request} = useRequest()
+
     const handleChange = (values) => {
         init.current = values
     }
@@ -177,7 +182,7 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
         try {
             setError(null)
             setErrorMessages(null)
-            const response = await asyncRemote({
+            const response = await request({
                 url: '/tpro/install/microservice',
                 method: "POST",
                 data: {
@@ -208,7 +213,7 @@ export default function TracardiProServiceConfigForm({service, onSubmit}) {
         try {
             setError(null)
             setErrorMessages(null)
-            const response = await asyncRemote({
+            const response = await request({
                 url: '/tpro/install',
                 method: "POST",
                 data: {

@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from "react";
 import Button from "./Button";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import PropTypes from 'prop-types';
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {v4 as uuid4} from 'uuid';
@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 import EventToProfileFieldMapping from "./EventToProfileFieldMapping";
 import Switch from "@mui/material/Switch";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function IdentificationPointForm({data: _data, onSubmit}) {
 
@@ -45,6 +46,7 @@ export default function IdentificationPointForm({data: _data, onSubmit}) {
     const [eventTypeErrorMessage, setEventTypeErrorMessage] = useState(null);
 
     const mounted = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -71,7 +73,7 @@ export default function IdentificationPointForm({data: _data, onSubmit}) {
             setProcessing(true);
 
             try {
-                const response = await asyncRemote({
+                const response = await request({
                     url: '/identification/point',
                     method: 'post',
                     data: data

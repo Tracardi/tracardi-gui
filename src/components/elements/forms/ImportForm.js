@@ -1,6 +1,6 @@
 import {TextField, Autocomplete} from "@mui/material";
 import React from "react";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import {TuiForm, TuiFormGroupContent, TuiFormGroupField, TuiFormGroup, TuiFormGroupHeader} from "../tui/TuiForm";
 import JsonForm from "./JsonForm";
 import {v4 as uuid4} from 'uuid';
@@ -11,6 +11,7 @@ import NoData from "../misc/NoData";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 import storageValue from "../../../misc/localStorageDriver";
 import TuiApiUrlInput from "../tui/TuiApiUrlInput";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function ImportForm({onSubmit}) {
 
@@ -32,6 +33,8 @@ export default function ImportForm({onSubmit}) {
     const [formError, setFormError] = React.useState(null);
     const [serverError, setServerError] = React.useState(null);
 
+    const {request} = useRequest()
+
     React.useEffect(() => {
         mounted.current = true;
         if (module) {
@@ -43,7 +46,7 @@ export default function ImportForm({onSubmit}) {
                 setForm(null);
             }
 
-            asyncRemote({url: "/import/form/" + module})
+            request({url: "/import/form/" + module})
                 .then(response => {
                     if (mounted.current) {
                         setForm(response.data.form);
@@ -62,7 +65,7 @@ export default function ImportForm({onSubmit}) {
 
     React.useEffect(() => {
         mounted.current = true;
-        asyncRemote({url: "/import/types"})
+        request({url: "/import/types"})
             .then(response => {
                 if (mounted.current) {
                     setOptions(Object.keys(response.data).map(key => {
@@ -88,7 +91,7 @@ export default function ImportForm({onSubmit}) {
             setServerError(null);
         }
 
-        asyncRemote({
+        request({
             url: "/import",
             method: "POST",
             data: {

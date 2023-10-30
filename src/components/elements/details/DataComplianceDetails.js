@@ -7,8 +7,8 @@ import FormDrawer from "../drawers/FormDrawer";
 import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import DataComplianceForm from "../forms/DataComplianceForm";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function DataComplianceDetails({id, onDeleteComplete, onEditComplete}) {
 
@@ -18,6 +18,7 @@ export default function DataComplianceDetails({id, onDeleteComplete, onEditCompl
     const [deleteProgress, setDeleteProgress] = React.useState(false);
 
     const confirm = useConfirm();
+    const {request} = useRequest()
 
     const mounted = useRef(false);
 
@@ -30,7 +31,7 @@ export default function DataComplianceDetails({id, onDeleteComplete, onEditCompl
 
     useEffect(() => {
             setLoading(true);
-            asyncRemote({
+            request({
                 url: '/consent/compliance/field/' + id,
                 method: "get"
             })
@@ -55,7 +56,7 @@ export default function DataComplianceDetails({id, onDeleteComplete, onEditCompl
             .then(async () => {
                     setDeleteProgress(true);
                     try {
-                        await asyncRemote({
+                        await request({
                             url: '/consent/compliance/field/' + id,
                             method: "delete"
                         })

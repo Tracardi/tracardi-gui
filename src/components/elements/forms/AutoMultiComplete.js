@@ -6,8 +6,9 @@ import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from "prop-types";
 import {isString} from "../../../misc/typeChecking";
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import {convertResponseToAutoCompleteOptions} from "../../../misc/converters";
+import {useRequest} from "../../../remote_api/requestClient";
 
 const AutoMultiComplete = ({showAlert, placeholder, error, url, initValue, onSetValue, solo = true, disabled, fullWidth = false}) => {
 
@@ -17,6 +18,7 @@ const AutoMultiComplete = ({showAlert, placeholder, error, url, initValue, onSet
     const loading = open && typeof options !== "undefined" && options?.length >= 0;
 
     const mounted = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -30,7 +32,7 @@ const AutoMultiComplete = ({showAlert, placeholder, error, url, initValue, onSet
             setProgress(true);
             try {
                 setOpen(true);
-                const response = await asyncRemote({url})
+                const response = await request({url})
                 if (response && mounted.current) {
                     const options = convertResponseToAutoCompleteOptions(response)
 

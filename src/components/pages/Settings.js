@@ -3,9 +3,10 @@ import KeyValueDesc from "../elements/misc/KeyValueDesc";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
 import ErrorsBox from "../errors/ErrorsBox";
-import {asyncRemote, getError} from "../../remote_api/entrypoint";
+import {getError} from "../../remote_api/entrypoint";
 import Button from "../elements/forms/Button";
 import {getSystemSettings} from "../../remote_api/endpoints/system";
+import {useRequest} from "../../remote_api/requestClient";
 
 
 function TestingButtons() {
@@ -16,13 +17,15 @@ function TestingButtons() {
     const [esLoading, setEsLoading] = useState(false);
     const mounted = useRef(false);
 
+    const {request} = useRequest()
+
     useEffect(() => {
         mounted.current = true;
-        asyncRemote({
+        request({
             url: "/test/elasticsearch"
         })
         .catch(e => setEsError(e.response.data.detail));
-        asyncRemote({
+        request({
             url: "/test/redis"
         })
         .catch(e => setRedisError(e.response.data.detail));
@@ -32,7 +35,7 @@ function TestingButtons() {
     const handleCheckEs = async () => {
         try {
             if (mounted.current === true) setEsLoading(true);
-            const response = await asyncRemote({
+            const response = await request({
                 url: "/test/elasticsearch"
             })
             if (response.status === 200 && mounted.current === true) {
@@ -50,7 +53,7 @@ function TestingButtons() {
     const handleCheckRedis = async () => {
         try {
             if (mounted.current === true) setRedisLoading(true);
-            const response = await asyncRemote({
+            const response = await request({
                 url: "/test/redis"
             })
             if (response.status === 200 && mounted.current === true) {
@@ -109,9 +112,11 @@ export default function Settings() {
     const [setting, setSettings] = useState([false]);
     const [error, setError] = useState(null);
 
+    const {request} = useRequest()
+
     useEffect(() => {
         setLoading(true);
-        asyncRemote(
+        request(
             getSystemSettings()
         ).then((response) => {
             setLoading(false);

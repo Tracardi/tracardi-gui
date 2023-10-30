@@ -50,7 +50,7 @@ function CopyToProfileExtension({onClose}) {
             endpoint.headers = {
                 'x-context': localContext === true ? 'production': 'staging'
             }
-            const response = await request(endpoint)
+            await request(endpoint)
             setSuccess(true)
         } catch (e) {
             setError(e)
@@ -130,7 +130,7 @@ function IndexEventPropertiesExtension({onClose}) {
             endpoint.headers = {
                 'x-context': localContext === true ? 'production': 'staging'
             }
-            const response = await request(endpoint)
+            await request(endpoint)
             setSuccess(true)
         } catch (e) {
             setError(e)

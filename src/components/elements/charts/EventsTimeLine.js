@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {asyncRemote} from "../../../remote_api/entrypoint";
 import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis} from "recharts";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
@@ -11,6 +10,7 @@ import ProfileCounter from "../metrics/ProfileCounter";
 import EntityCounter from "../metrics/EntityCounter";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function EventTimeLine() {
 
@@ -22,6 +22,8 @@ export default function EventTimeLine() {
     const [progress, setProgress] = useState(false);
     const [dataSource, setDataSource] = useState("event")
     const [dataSelect, setDataSelect] = useState(1)
+
+    const {request} = useRequest()
 
     const colorsList = [
         '#0088FE',
@@ -163,7 +165,7 @@ export default function EventTimeLine() {
         } else setProgress(true);
         setError(false);
         const dataSourceConfig = getDataSource(dataSource, grouping)
-        asyncRemote({
+        request({
             url: dataSourceConfig.source,
             method: "post",
             data: {

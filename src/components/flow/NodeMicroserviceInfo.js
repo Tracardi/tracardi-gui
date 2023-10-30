@@ -7,11 +7,11 @@ import {
     TuiFormGroupHeader
 } from "../elements/tui/TuiForm";
 import TuiSelectResource from "../elements/tui/TuiSelectResource";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import AutoComplete from "../elements/forms/AutoComplete";
 import Properties from "../elements/details/DetailProperties";
 import {ReactComponent as Connected} from "../../svg/connected.svg";
 import HorizontalCircularProgress from "../elements/progress/HorizontalCircularProgress";
+import {useRequest} from "../../remote_api/requestClient";
 
 function ConnectionStatus({microservice}) {
 
@@ -45,11 +45,12 @@ export default function NodeMicroserviceInfo({nodeId, microservice, onServiceSel
     const [serviceId, setServiceId] = useState("")
 
     const mounted = useRef(true);
+    const {request} = useRequest()
 
     const fetchResource = (resourceId, onResponse) => {
         setError(null)
         setLoading(true)
-        asyncRemote({
+        request({
             url: `/resource/${resourceId}`
         }).then((response) => {
 

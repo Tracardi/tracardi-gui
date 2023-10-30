@@ -14,7 +14,7 @@ export const useRequest = () => {
     }
 
     return {
-        request: async (config, token = null) => {
+        request: async (config, returnDataOnly=false, token = null) => {
 
             if (!config?.baseURL) {
                 const apiUrl = getApiUrl();
@@ -41,7 +41,10 @@ export const useRequest = () => {
 
             // Success handler
             const onSuccess = (response) => {
-                return response?.data
+                if(returnDataOnly === true) {
+                    return response?.data
+                }
+                return response
             }
 
             // Error handler

@@ -3,17 +3,18 @@ import CardBrowser from "../elements/lists/CardBrowser";
 import DataRow from "../elements/lists/rows/DataRow";
 import BackgroundTaskProgress from "../elements/misc/BackgroundTaskProgress";
 import IconText from "../elements/misc/IconText";
-import {asyncRemote} from "../../remote_api/entrypoint";
 import {IoCloseCircle, IoPlayCircleOutline, IoRefreshCircle, IoCloseCircleOutline} from "react-icons/io5";
 import Button from "../elements/forms/Button";
+import {useRequest} from "../../remote_api/requestClient";
 
 function DeleteButton({id}) {
 
     const [clicked, setClicked] = useState(false)
+    const {request} = useRequest()
 
     const handleDelete = async (taskId) => {
         try {
-            await asyncRemote({
+            await request({
                 url: `/import/task/${taskId}`,
                 method: "delete"
             })

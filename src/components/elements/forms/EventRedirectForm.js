@@ -4,13 +4,14 @@ import Button from "./Button";
 import {v4 as uuid4} from 'uuid';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import PropTypes from 'prop-types';
-import {asyncRemote, getError} from "../../../remote_api/entrypoint";
+import {getError} from "../../../remote_api/entrypoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import TuiTagger from "../tui/TuiTagger";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import DocsLink from "../drawers/DocsLink";
 import JsonEditor from "../editors/JsonEditor";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export default function EventRedirectForm({
                                               id,
@@ -46,6 +47,7 @@ export default function EventRedirectForm({
     const [error, setError] = useState(null);
 
     const mounted = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -93,7 +95,7 @@ export default function EventRedirectForm({
 
             setProcessing(true);
 
-            const response = await asyncRemote({
+            const response = await request({
                 url: '/event-redirect',
                 method: 'post',
                 data: payload
