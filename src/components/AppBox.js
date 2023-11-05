@@ -314,7 +314,7 @@ const AppBox = () => {
                             new PrivateTab(["admin", "developer", "marketer"],
                                 <LiveSegments/>, "/processing/live/segments", <>
                                     <BsStar size={20}
-                                            style={{marginRight: 5}}/>{"Segmentation Jobs"}</>),
+                                            style={{marginRight: 5}}/>{"Segmentation"}</>),
                             new PrivateTab(["admin", "developer"],
                                 <Flows type="segmentation" label="Segmentation Workflows"/>, "/processing/workflows", <>
                                     <BsStar size={20}
