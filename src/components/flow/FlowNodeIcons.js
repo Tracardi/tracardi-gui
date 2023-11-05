@@ -2,7 +2,7 @@ import {BiGitRepoForked} from "react-icons/bi";
 import React from "react";
 import {FiMapPin, FiAlertTriangle, FiRss} from "react-icons/fi";
 import {
-    BsPerson, BsChatDots,
+    BsPerson, BsChatDots, BsChatSquare,
     BsCalculator, BsBoxArrowInUpRight, BsShuffle, BsFillGeoFill,
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
     BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown,
@@ -277,7 +277,8 @@ export const icons = {
     "openai": (size) => <SiOpenai size={size}/>,
     "gear": (size) => <VscGear size={size}/>,
     "trigger": (size) => <BsPlayCircle size={size} />,
-    "metric": (size) => <VscDashboard size={size}/>
+    "metric": (size) => <VscDashboard size={size}/>,
+    "chat": size => <BsChatSquare size={size}/>
 
 }
 

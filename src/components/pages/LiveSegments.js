@@ -74,9 +74,9 @@ export default function LiveSegments() {
     }
 
     return <CardBrowser
-        label="Segmentation Jobs"
-        description="Segmentation job is triggered periodically to keep the profile up-to-date with segmentation logic.
-        It requires the separate segmentation worker process to run in the background."
+        label="Segmentation"
+        description="Segmentation is a scheduled task that updates the profile regularly by following defined segmentation rules.
+        To make this happen, a separate worker process for segmentation needs to run in the background."
         urlFunc={urlFunc}
         defaultLayout="rows"
         cardFunc={segmentsCards}
