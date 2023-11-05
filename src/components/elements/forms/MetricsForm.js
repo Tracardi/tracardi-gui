@@ -46,7 +46,8 @@ export default function MetricForm({onSubmit, init}) {
         // This is indexed
         config: {
             metric: {
-                span: 0
+                span: 0,
+                new: true
             }
         }
     }
@@ -130,6 +131,9 @@ export default function MetricForm({onSubmit, init}) {
                 setApiError(true)
             } else {
                 setProcessing(true)
+
+                setData("config.metric.new", true)
+
                 const payload = setting;
 
                 const response = await request(
