@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useCallback, useRef} from "react";
-import {request} from "../../../remote_api/uql_api_endpoint";
 import ErrorsBox from "../../errors/ErrorsBox";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CircularProgress from "@mui/material/CircularProgress";
 import "./AutoLoadList.css";
+import {useRequest} from "../../../remote_api/requestClient";
 
 const AutoLoadList = ({
                              label,
@@ -21,6 +21,7 @@ const AutoLoadList = ({
     const [lastQuery, setLastQuery] = useState("")
 
     const mounted = useRef(false);
+    const {request} = useRequest()
 
     useEffect(() => {
         mounted.current = true;
@@ -42,16 +43,7 @@ const AutoLoadList = ({
             endpoint = {...onLoadRequest, url: `${onLoadRequest.url}/page/${page}?` + Object.keys(requestParams).map(key => `${key}=${requestParams[key]}`).join("&")};
         }
 
-        request(
-            endpoint,
-            () => {
-            },
-            (e) => {
-                if (mounted.current === true) {
-                    setError(e)
-                }
-            },
-            (response) => {
+            request(endpoint).then(response => {
                 if (response) {
                     if (mounted.current === true) {
                         if (response.data.result.length === response.data.total) { // case of the first page being the only one, prevents from infinite loading
@@ -63,8 +55,11 @@ const AutoLoadList = ({
                         setRows((page === 0 || fresh === true) ? [...response.data.result] : [...rows, ...response.data.result]);
                     }
                 }
-            }
-        );
+            }).catch(e => {
+                if (mounted.current === true) {
+                    setError(e)
+                }
+            })
     },
          // eslint-disable-next-line react-hooks/exhaustive-deps
         [page, onLoadRequest, requestParams]);

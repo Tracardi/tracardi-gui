@@ -4,7 +4,6 @@ import TextField from "@mui/material/TextField";
 import Switch from "@mui/material/Switch";
 import {v4 as uuid4} from 'uuid';
 import JsonEditor from "../editors/JsonEditor";
-import {request} from "../../../remote_api/uql_api_endpoint";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import PropTypes from 'prop-types';
@@ -15,7 +14,7 @@ import Tabs, {TabCase} from "../tabs/Tabs";
 import TuiTagger from "../tui/TuiTagger";
 import TuiTags from "../tui/TuiTags";
 import MdManual from "../../flow/actions/MdManual";
-
+import {useRequest} from "../../../remote_api/requestClient";
 
 function ResourceForm({init, onClose, showAlert}) {
 
@@ -61,6 +60,8 @@ function ResourceForm({init, onClose, showAlert}) {
     const [selectedTab, setSelectedTab] = useState(0);
     const [docPath, setDocPath] = useState(null);
 
+    const {request} = useRequest()
+
     const getIdNameFromType = (type, types) => {
         if (type in types) {
             return {id: type, name: types[type].name}
@@ -76,13 +77,7 @@ function ResourceForm({init, onClose, showAlert}) {
 
     useEffect(() => {
 
-        request(
-            {url: "/resources/type/configuration"},
-            () => {
-            },
-            () => {
-            },
-            (response) => {
+            request({url: "/resources/type/configuration"}).then(response => {
                 if (response) {
                     setCredentialTypes(response.data.result);
                     // Original type value is an id  e.g "aws", but "type" state is and object with id and name,
@@ -91,42 +86,36 @@ function ResourceForm({init, onClose, showAlert}) {
                     setType(getIdNameFromType(init?.type, response.data.result));
                     setDocPath(getDocPathFromType(init?.type, response.data.result));
                 }
-            }
-        )
-    },
+            })
+        },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [])  // setting init here make infinite request
 
-    const onSubmit = (payload) => {
+    const onSubmit = async (payload) => {
         setProcessing(true);
-        request({
-                url: "/resource",
-                method: "post",
-                data: payload
-            },
-            setProcessing,
-            (e) => {
-                if (e) {
-                    showAlert({message: e[0].msg, type: "error", hideAfter: 5000});
+
+        try {
+            const response1 = await request(
+                {
+                    url: "/resource",
+                    method: "post",
+                    data: payload
                 }
-            },
-            (data) => {
-                if (data) {
-                    request({
-                            url: '/resources/refresh'
-                        },
-                        setProcessing,
-                        () => {
-                        },
-                        () => {
-                            if (onClose) {
-                                onClose(data)
-                            }
-                        }
-                    )
+            )
+
+            if (response1) {
+                if (onClose) {
+                    onClose(response1.data)
                 }
             }
-        )
+
+        } catch (e) {
+            if (e) {
+                showAlert({message: e[0].msg, type: "error", hideAfter: 5000});
+            }
+        } finally {
+            setProcessing(false)
+        }
     }
 
     const setTypeAndDefineCredentialsTemplate = (type) => {

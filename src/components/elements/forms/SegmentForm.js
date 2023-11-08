@@ -3,7 +3,6 @@ import Button from "./Button";
 import TextField from "@mui/material/TextField";
 import Switch from "@mui/material/Switch";
 import {v4 as uuid4} from "uuid";
-import {request} from "../../../remote_api/uql_api_endpoint";
 import PropTypes from 'prop-types';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import TuiFormError from "../tui/TuiFormError";

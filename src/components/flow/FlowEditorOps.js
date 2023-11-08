@@ -1,4 +1,3 @@
-import {request} from "../../remote_api/uql_api_endpoint";
 import {asyncRemote} from "../../remote_api/entrypoint";
 import {getFlowDebug} from "../../remote_api/endpoints/flow";
 
@@ -61,10 +60,11 @@ export function save(id, flowMetaData, reactFlowInstance, onError, onReady, prog
 }
 
 export function debug(id, eventId, reactFlowInstance, onError, progress, onReady) {
-    progress(true);
     const endpoint = getFlowDebug(eventId)
-    request(
-        {
+
+    progress(true);
+
+    asyncRemote({
             ...endpoint,
             data: {
                 id: id,
@@ -73,95 +73,93 @@ export function debug(id, eventId, reactFlowInstance, onError, progress, onReady
                 flowGraph: prepareGraph(reactFlowInstance),
                 projects: []
             }
-        },
-        progress,
-        (e) => {
-            if (e) {
-                onError({message: e[0].msg, type: "error", hideAfter: 5000});
-            }
-        },
-        (data) => {
-            if (data) {
-                const flow = reactFlowInstance.toObject();
+    }).then((response) => {
 
-                flow.nodes.map((node) => {
-                    node.data = {
-                        ...node.data,
-                        debugging: {
-                            node: {},
-                            edge: {}
-                        }
+        if (response) {
+            const flow = reactFlowInstance.toObject();
+
+            flow.nodes.map((node) => {
+                node.data = {
+                    ...node.data,
+                    debugging: {
+                        node: {},
+                        edge: {}
                     }
+                }
 
-                    if (data?.data?.debugInfo?.nodes[node.id]) {
-                        node.data.debugging = {
-                            ...node.data.debugging,
-                            node: data.data.debugInfo.nodes[node.id]
+                if (response?.data?.debugInfo?.nodes[node.id]) {
+                    node.data.debugging = {
+                        ...node.data.debugging,
+                        node: response.data.debugInfo.nodes[node.id]
+                    }
+                } else {
+                    delete node.data.debugging
+                }
+
+                return node
+            })
+
+            flow.edges.map((edge) => {
+                edge.data = {
+                    ...edge.data,
+                    debugging: {
+                        node: {},
+                        edge: {}
+                    }
+                }
+
+                if (response?.data?.debugInfo?.edges) {
+                    const edge_info = response.data?.debugInfo?.edges[edge.id]
+                    if (edge_info) {
+                        edge.data.debugging = {
+                            ...edge.data.debugging,
+                            edge: edge_info
+                        }
+                        if (edge_info.active.includes(false) && !edge_info.active.includes(true)) {
+                            edge.label = null
+                            edge.type = "stop";
+                            edge.animated = false;
+                            edge.style = {...edge.style, stroke: '#aaa', strokeWidth: 2}
+                        } else if (edge_info.active.includes(true) && !edge_info.active.includes(false)) {
+                            edge.label = null
+                            edge.animated = true
+                            edge.style = {...edge.style, stroke: 'green', strokeWidth: 2};
+                            edge.type = "info";
+                        } else {
+                            edge.label = null
+                            edge.animated = true
+                            edge.style = {...edge.style, stroke: '#aaa', strokeWidth: 2}
+                            edge.type = null;
                         }
                     } else {
-                        delete node.data.debugging
+                        // no debug info
+                        edge.label = null
+                        edge.animated = false
+                        edge.style = {
+                            ...edge.style,
+                            stroke: '#ddd',
+                            strokeWidth: 1
+                        };
+                        edge.type = "cancel";
                     }
+                } else {
+                    console.error("DebugInfo.edges missing in server response.")
+                }
 
-                    return node
-                })
+                return edge
+            })
 
-                flow.edges.map((edge) => {
-                    edge.data = {
-                        ...edge.data,
-                        debugging: {
-                            node: {},
-                            edge: {}
-                        }
-                    }
-
-                    if(data?.data?.debugInfo?.edges) {
-                        const edge_info = data.data?.debugInfo?.edges[edge.id]
-                        if (edge_info) {
-                            edge.data.debugging = {
-                                ...edge.data.debugging,
-                                edge: edge_info
-                            }
-                            if(edge_info.active.includes(false) && !edge_info.active.includes(true)) {
-                                edge.label = null
-                                edge.type="stop";
-                                edge.animated = false;
-                                edge.style = {...edge.style, stroke: '#aaa', strokeWidth: 2}
-                            } else if (edge_info.active.includes(true) && !edge_info.active.includes(false)) {
-                                edge.label = null
-                                edge.animated = true
-                                edge.style = {...edge.style,  stroke: 'green', strokeWidth: 2};
-                                edge.type="info";
-                            } else {
-                                edge.label = null
-                                edge.animated = true
-                                edge.style = {...edge.style, stroke: '#aaa', strokeWidth: 2 }
-                                edge.type=null;
-                            }
-                        } else {
-                            // no debug info
-                            edge.label = null
-                            edge.animated = false
-                            edge.style = {
-                                ...edge.style,
-                                stroke: '#ddd',
-                                strokeWidth: 1
-                            };
-                            edge.type="cancel";
-                        }
-                    }
-                    else {
-                        console.error("DebugInfo.edges missing in server response.")
-                    }
-
-                    return edge
-                })
-
-                onReady({
-                    nodes: flow.nodes || [],
-                    edges: flow.edges || [],
-                    logs: data?.data?.logs
-                });
-            }
+            onReady({
+                nodes: flow.nodes || [],
+                edges: flow.edges || [],
+                logs: response?.data?.logs
+            });
         }
+    }).catch(e => {
+        if (e) {
+            onError({message: e[0].msg, type: "error", hideAfter: 5000});
+        }
+    }).finally(
+        progress(false)
     )
 }
