@@ -1,4 +1,4 @@
-import {asyncRemote} from "../remote_api/entrypoint";
+// import {asyncRemote} from "../remote_api/entrypoint";
 
 export default class FormSchema {
 
@@ -6,7 +6,7 @@ export default class FormSchema {
         this.schema = schema
     }
 
-    async validate(pluginId, microservice, formValues) {
+    async validate(pluginId, microservice, formValues, request) {
 
         const _serverValidation = async (pluginId, microservice, values) => {
             try {
@@ -19,7 +19,16 @@ export default class FormSchema {
                     ? microservice.plugin.id
                     : ""
 
-                const response = await asyncRemote({
+                // const response = await asyncRemote({
+                //     url: `/plugin/${pluginId}/config/validate?service_id=${serviceId}&action_id=${actionId}`,
+                //     method: "POST",
+                //     data: {
+                //         config: values,
+                //         credentials: microservice?.plugin?.resource ? microservice.plugin.resource : null
+                //     }
+                // })
+
+                const response = await request({
                     url: `/plugin/${pluginId}/config/validate?service_id=${serviceId}&action_id=${actionId}`,
                     method: "POST",
                     data: {

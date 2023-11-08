@@ -11,6 +11,7 @@ import {MenuItem} from "@mui/material";
 import JsonForm from "./JsonForm";
 import {isEmptyObject} from "../../../misc/typeChecking";
 import useAfterMountEffect from "../../../effects/AfterMountEffect";
+import {useRequest} from "../../../remote_api/requestClient";
 
 export function NodeInitJsonForm({spec, onSubmit}) {
 
@@ -23,6 +24,8 @@ export function NodeInitJsonForm({spec, onSubmit}) {
     const [data, setData] = useState(init)
     const [formErrorMessages, setFormErrorMessages] = useState({});
     const [saveOk, setSaveOk] = useState(false);
+
+    const {request} = useRequest()
 
     useEffect(() => {
         // Reset to default values
@@ -53,7 +56,7 @@ export function NodeInitJsonForm({spec, onSubmit}) {
 
     const handleSubmit = (config) => {
         const form = new FormSchema(formSchema)
-        form.validate(pluginId, microservice, config).then(handleValidationData)
+        form.validate(pluginId, microservice, config, request).then(handleValidationData)
     }
 
     return <ConfigEditor
@@ -296,6 +299,8 @@ export const NodeInitForm = ({nodeId, spec, onSubmit}) => {
     const [saveOK, setSaveOk] = useState(false);
     const [serverSideError, setServerSideError] = useState(null)
 
+    const {request} = useRequest()
+
     // tego uzywam aby zresetowac stan gdy mamy dwa takie same nody i klikamy pomiędzy nimi.
     useAfterMountEffect(() => {
         // Reset to default values if node changes
@@ -332,7 +337,7 @@ export const NodeInitForm = ({nodeId, spec, onSubmit}) => {
 
     const handleFormSubmit = (values) => {
         const form = new FormSchema(formSchema)
-        form.validate(pluginId, microservice, values).then(handleValidationData)
+        form.validate(pluginId, microservice, values, request).then(handleValidationData)
     }
 
     const handleFormChange = (values) => {

@@ -1,14 +1,11 @@
 import {useQuery} from "react-query";
 import {useContext} from "react";
 import {LocalDataContext} from "../components/pages/DataAnalytics";
-import {publish} from "../misc/events";
 import {useRequest} from "./requestClient";
 
 export const useFetch = (name, endpoint, resolveFn, options={}) => {
 
     const {request} = useRequest()
-
-    publish('connect');
 
     const localContext = useContext(LocalDataContext)
 

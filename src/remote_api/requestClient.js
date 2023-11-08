@@ -3,6 +3,7 @@ import axios from "axios";
 import {getDataContextHeader} from "../config";
 import {useContext} from "react";
 import {KeyCloakContext} from "../components/context/KeyCloakContext";
+import {publish} from "../misc/events";
 
 export const useRequest = () => {
 
@@ -38,6 +39,8 @@ export const useRequest = () => {
             }
 
             config.timeout = 1000 * 60
+
+            publish('connect');
 
             // Success handler
             const onSuccess = (response) => {
