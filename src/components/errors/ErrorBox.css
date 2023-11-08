@@ -10,6 +10,7 @@
     animation-iteration-count: 1;
     animation-timing-function: ease-out;
     animation-duration: 0.4s;
+    align-items: center;
 }
 
 .ErrorBox > .ErrorDetails {

@@ -6,8 +6,6 @@ import Typography from '@mui/material/Typography';
 import {ThemeProvider, StyledEngineProvider} from '@mui/material/styles';
 import {makeStyles} from "tss-react/mui";
 import {signInTheme} from "../../themes";
-import {showAlert} from "../../redux/reducers/alertSlice";
-import {connect} from "react-redux";
 import version from '../../misc/version';
 import {getApiUrl, resetApiUrlConfig, setApiUrl as setStoredApiUrl} from "../../remote_api/entrypoint";
 import Button from "../elements/forms/Button";
@@ -24,6 +22,7 @@ import {getSystemInfo} from "../../remote_api/endpoints/system";
 import {userLogIn} from "../../remote_api/endpoints/user";
 import {useRequest} from "../../remote_api/requestClient";
 import {KeyCloakContext} from "../context/KeyCloakContext";
+import ErrorBox from "../errors/ErrorBox";
 
 function Copyright() {
     return (
@@ -63,7 +62,7 @@ const useStyles = makeStyles()((theme) => ({
     }
 }));
 
-const SignInForm = ({showAlert}) => {
+const SignInForm = () => {
     const guiVersion = version()
     const apiUrl = getApiUrl();
 
@@ -72,6 +71,7 @@ const SignInForm = ({showAlert}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [progress, setProgress] = useState(false);
+    const [authError, setAuthError] = useState(null);
 
     const idleTimer = useIdleTimerContext()
     const {request} = useRequest()
@@ -117,10 +117,10 @@ const SignInForm = ({showAlert}) => {
         })
 
         setProgress(true)
+        setAuthError(null)
         try {
+
             const data = await request(userLogIn(email, password), true)
-            // setToken(data['access_token']);
-            // setRoles(data['roles']);
 
             setStoredApiUrl(apiUrl);
             idleTimer.start()
@@ -134,11 +134,11 @@ const SignInForm = ({showAlert}) => {
         } catch (error) {
 
             if (error.status === 404) {
-                showAlert({type: "error", message: 'Api unavailable.', hideAfter: 3000})
+                setAuthError( 'Api unavailable.')
             } else if (error.status === 422) {
-                showAlert({type: "error", message: 'Bad request. Fill all fields.', hideAfter: 3000})
+                setAuthError( 'Bad request. Fill all fields.')
             } else if (error?.response?.data?.detail) {
-                showAlert({type: "error", message: error.response.data.detail, hideAfter: 3000})
+                setAuthError(error.response.data.detail)
             }
 
         } finally {
@@ -205,6 +205,7 @@ const SignInForm = ({showAlert}) => {
                                     required={true}
                                     value={password || ""}
                                 />
+
                                 <Button
                                     style={{justifyContent: "center", marginTop: 20}}
                                     label="Sign In"
@@ -215,7 +216,9 @@ const SignInForm = ({showAlert}) => {
                             <Box mt={1}>
                                 <Copyright/>
                             </Box>
+
                         </Paper>
+                        {authError && <ErrorBox style={{borderRadius: 10}}>{authError}</ErrorBox>}
                     </Grid>
 
                 </Grid>
@@ -224,7 +227,4 @@ const SignInForm = ({showAlert}) => {
     );
 }
 
-export default connect(
-    null,
-    {showAlert}
-)(SignInForm)
+export default SignInForm;
