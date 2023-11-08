@@ -1,13 +1,16 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import Tabs, {TabCase} from "../../elements/tabs/Tabs";
 import "./PageTabs.css";
 import PrivateTab from "../../authentication/PrivateTab";
 import useTheme from "@mui/material/styles/useTheme";
 import {useLocation} from "react-router";
+import {KeyCloakContext} from "../../context/KeyCloakContext";
 
 export default function PageTabs({tabs = {}}) {
 
-    const filteredTabs = tabs.filter((tab) => tab instanceof PrivateTab && tab.isAuth())
+    const authContext = useContext(KeyCloakContext)
+
+    const filteredTabs = tabs.filter((tab) => tab instanceof PrivateTab && tab.isAuth(authContext?.state?.roles))
     const theme = useTheme()
     const location = useLocation();
 

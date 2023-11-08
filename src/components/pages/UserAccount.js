@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import { isEmptyObjectOrNull } from "../../misc/typeChecking";
 import { TuiForm, TuiFormGroup, TuiFormGroupField, TuiFormGroupHeader} from "../elements/tui/TuiForm";
 import { CircularProgress } from "@mui/material";
@@ -14,6 +14,7 @@ import urlPrefix from "../../misc/UrlPrefix";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import EditAccountForm from "../elements/forms/EditAccountForm";
 import {useRequest} from "../../remote_api/requestClient";
+import {KeyCloakContext} from "../context/KeyCloakContext";
 
 export default function UserAccount () {
 
@@ -25,6 +26,7 @@ export default function UserAccount () {
     const [logoutError, setLogoutError] = React.useState(null);
     const mounted = React.useRef(false);
     const navigate = useNavigate();
+    const authContext = useContext(KeyCloakContext)
 
     const {request} = useRequest()
     
@@ -39,7 +41,8 @@ export default function UserAccount () {
         }
         try {
             await request({method: "post", url: "/user/logout"});
-            go("/logout")();
+            authContext.logout()
+            go("/")();
         }
         catch (e) {
             if (mounted.current) setLogoutError(getError(e));

@@ -1,4 +1,4 @@
-import React, {Suspense} from "react";
+import React, {Suspense, useContext} from "react";
 import {
     BrowserRouter as Router,
     Routes,
@@ -8,7 +8,6 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import {connect, useDispatch} from "react-redux";
 import {hideAlert} from "../redux/reducers/alertSlice";
-import Logout from "./authentication/Logout";
 import SignIn from "./authentication/SignIn";
 import PrivateRoute from "./authentication/PrivateRoute";
 import "./App.css";
@@ -21,9 +20,8 @@ import CenteredCircularProgress from "./elements/progress/CenteredCircularProgre
 import {IdleTimerProvider} from "react-idle-timer";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from 'react-query/devtools'
-import {getToken} from "./authentication/login";
 import Installer from "./Installer";
-import KeyCloakAuthProvider from "./context/KeyCloakContext";
+import KeyCloakAuthProvider, {KeyCloakContext} from "./context/KeyCloakContext";
 
 
 const AppBox = React.lazy(() => import('./AppBox'))
@@ -32,9 +30,12 @@ const App = ({alert, resource, close}) => {
 
     const dispatch = useDispatch()
     const queryClient = new QueryClient()
+    const authContext = useContext(KeyCloakContext)
 
     const onIdle = () => {
-        window.location.replace("/logout");
+        if(authContext.logout) {
+            authContext.logout()
+        }
     }
 
     const handleClose = () => {
@@ -52,18 +53,16 @@ const App = ({alert, resource, close}) => {
         >
             <QueryClientProvider client={queryClient}>
                 <Installer>
+
                     <Router>
+                        <KeyCloakAuthProvider enabled={false}>
                         <Routes>
-                            <Route exact path={urlPrefix("/login")} element={<SignIn/>}/>
-                            <Route exact path={urlPrefix("/logout")} element={<Logout/>}/>
                             <Route
                                 path="*"
                                 element={
                                     <PrivateRoute path="*" roles={["admin", "marketer", "developer", "maintainer"]}>
                                         <Suspense fallback={<CenteredCircularProgress/>}>
-                                            <KeyCloakAuthProvider enabled={false}>
-                                                <AppBox/>
-                                            </KeyCloakAuthProvider>
+                                            <AppBox/>
                                         </Suspense>
                                     </PrivateRoute>
                                 }
@@ -86,7 +85,9 @@ const App = ({alert, resource, close}) => {
                                 close()
                             }}/>
                         </FormDrawer>
+                        </KeyCloakAuthProvider>
                     </Router>
+
                     <ReactQueryDevtools initialIsOpen={false}/>
                 </Installer>
             </QueryClientProvider>

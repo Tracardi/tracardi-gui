@@ -9,11 +9,6 @@ export const useRequest = () => {
 
     const authContext = useContext(KeyCloakContext)
 
-    const authToken = (token = null) => {
-        token = token || authContext.token;
-        return 'Bearer ' + (token == null ? 'None' : token)
-    }
-
     return {
         request: async (config, returnDataOnly=false, token = null) => {
 
@@ -25,11 +20,20 @@ export const useRequest = () => {
                 }
             }
 
-            config.headers = {
-                ...config?.headers,
-                'Authorization': token === null ? authToken() : authToken(token),
-                'X-Request': 'use-request'
+            token = token || authContext?.state?.token;
+
+            config.headers ={
+                ...config.headers,
+                'x-client': 'tracardi-gui'
             }
+
+            if(token) {
+                config.headers = {
+                    ...config?.headers,
+                    'Authorization': 'Bearer ' + token
+                }
+            }
+
 
             if (!('x-context' in config.headers)) {
                 config.headers = {
@@ -53,7 +57,7 @@ export const useRequest = () => {
             // Error handler
             const onError = (e) => {
                 if (e?.response?.status === 401) {
-                    window.location.replace("/logout");
+                    authContext.logout()
                 }
                 return Promise.reject(e?.response
                     ? {status: e.response.status, response: e.response}

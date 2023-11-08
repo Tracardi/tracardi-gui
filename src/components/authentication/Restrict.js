@@ -1,6 +1,9 @@
-import {getRoles} from "./login";
+import {useContext} from "react";
+import {KeyCloakContext} from "../context/KeyCloakContext";
 
 export function Restrict({roles, children}) {
+
+    const authContext = useContext(KeyCloakContext)
 
     function intersect(a, b) {
         let setB = new Set(b);
@@ -8,7 +11,7 @@ export function Restrict({roles, children}) {
     }
 
     const isAllowed = () => {
-        if (intersect(getRoles(), roles).length > 0) {
+        if (intersect(authContext?.state?.roles, roles).length > 0) {
             return true
         }
         return false

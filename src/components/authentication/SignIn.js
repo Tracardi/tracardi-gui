@@ -1,16 +1,13 @@
-import React, {useState} from 'react';
-import {Navigate, useLocation} from "react-router-dom";
+import React, {useContext, useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import {ThemeProvider, StyledEngineProvider} from '@mui/material/styles';
 import {makeStyles} from "tss-react/mui";
-import {logout, setRoles, setToken} from "./login";
 import {signInTheme} from "../../themes";
 import {showAlert} from "../../redux/reducers/alertSlice";
 import {connect} from "react-redux";
-import urlPrefix from "../../misc/UrlPrefix";
 import version from '../../misc/version';
 import {getApiUrl, resetApiUrlConfig, setApiUrl as setStoredApiUrl} from "../../remote_api/entrypoint";
 import Button from "../elements/forms/Button";
@@ -26,6 +23,7 @@ import {useFetch} from "../../remote_api/remoteState";
 import {getSystemInfo} from "../../remote_api/endpoints/system";
 import {userLogIn} from "../../remote_api/endpoints/user";
 import {useRequest} from "../../remote_api/requestClient";
+import {KeyCloakContext} from "../context/KeyCloakContext";
 
 function Copyright() {
     return (
@@ -75,12 +73,9 @@ const SignInForm = ({showAlert}) => {
     const [password, setPassword] = useState('');
     const [progress, setProgress] = useState(false);
 
-    const {state} = useLocation();
-    const {from} = state || {from: {pathname: urlPrefix("/")}};
-    const [redirectToReferrer, setRedirectToReferrer] = useState(false);
-
     const idleTimer = useIdleTimerContext()
     const {request} = useRequest()
+    const authContext = useContext(KeyCloakContext)
 
     const {isLoading, data: installedVersion, error} = useFetch(
         ["systemInfo"],
@@ -105,8 +100,8 @@ const SignInForm = ({showAlert}) => {
 
     const handleEndpointReset = () => {
         resetApiUrlConfig();
-        logout();
-        window.location.replace("/login");
+        authContext.logout()
+        window.location.replace("/");
     }
 
     const handleSubmit = async (event) => {
@@ -124,28 +119,32 @@ const SignInForm = ({showAlert}) => {
         setProgress(true)
         try {
             const data = await request(userLogIn(email, password), true)
-            setToken(data['access_token']);
-            setRoles(data['roles']);
+            // setToken(data['access_token']);
+            // setRoles(data['roles']);
+
             setStoredApiUrl(apiUrl);
             idleTimer.start()
-            setRedirectToReferrer(true);
+
+            authContext.setState({
+                isAuthenticated: true,
+                token: data['access_token'],
+                roles: data['roles']
+            })
+
         } catch (error) {
+
             if (error.status === 404) {
                 showAlert({type: "error", message: 'Api unavailable.', hideAfter: 3000})
             } else if (error.status === 422) {
                 showAlert({type: "error", message: 'Bad request. Fill all fields.', hideAfter: 3000})
-            } else if (error?.data?.detail) {
-                showAlert({type: "error", message: error.data.detail, hideAfter: 3000})
+            } else if (error?.response?.data?.detail) {
+                showAlert({type: "error", message: error.response.data.detail, hideAfter: 3000})
             }
+
         } finally {
             setProgress(false)
         }
     };
-
-
-    if (redirectToReferrer) {
-        return <Navigate to={from}/>;
-    }
 
     return (
         <StyledEngineProvider injectFirst>

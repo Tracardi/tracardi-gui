@@ -1,6 +1,5 @@
-import React, {useRef, useState} from "react";
+import React, {useContext, useRef, useState} from "react";
 import {getApiUrl, resetApiUrlConfig} from "../remote_api/entrypoint";
-import {logout} from "./authentication/login";
 import {BsCloudUpload} from "react-icons/bs";
 import ReadOnlyInput from "./elements/forms/ReadOnlyInput";
 import PasswordInput from "./elements/forms/inputs/PasswordInput";
@@ -11,6 +10,7 @@ import Switch from "@mui/material/Switch";
 import FetchError from "./errors/FetchError";
 import Warning from "./elements/misc/Warning";
 import {useRequest} from "../remote_api/requestClient";
+import {KeyCloakContext} from "./context/KeyCloakContext";
 
 const InstallerError = ({error, errorMessage, hasAdminAccount}) => {
 
@@ -35,6 +35,8 @@ const InstallerForm = ({requireAdmin, onInstalled, displayForm, warning, errorMe
     const [error, setError] = useState(null);
     const [hasAdminAccount, setHasAdminAccount] = useState(null);
 
+    const authContext = useContext(KeyCloakContext)
+
     const url = new URL(window.location.href);
     const searchParams = new URLSearchParams(url.search);
     const loginParam = searchParams.get('login') || "";
@@ -51,8 +53,8 @@ const InstallerForm = ({requireAdmin, onInstalled, displayForm, warning, errorMe
 
     const handleEndpointReset = () => {
         resetApiUrlConfig();
-        logout();
-        window.location.reload()
+        authContext.logout();
+        window.location.replace("/");
     }
 
     const handleClick = async () => {

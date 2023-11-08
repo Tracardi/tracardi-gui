@@ -1,62 +1,75 @@
 import React, {createContext, useEffect, useRef, useState} from 'react';
 import Keycloak from "keycloak-js";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
-import {getToken} from "../authentication/login";
+import SignIn from "../authentication/SignIn";
 
-export const KeyCloakContext = createContext({token: null, isAuthenticated: false});
+window._env_.KC_URL = "http://localhost:8081/auth/"
+window._env_.KC_REALM = "tracardi"
+window._env_.KC_CLIENT_ID = "tracardi"
 
-const client = new Keycloak({
-    url: "http://localhost:8081/auth/",
-    realm: "tracardi",
-    clientId: "tracardi"
+const keycloak = new Keycloak({
+    url: window._env_.KC_URL,
+    realm: window._env_.KC_REALM,
+    clientId: window._env_.KC_CLIENT_ID
 })
+
+export const KeyCloakContext = createContext({state: null, setState: null, logout: null, keyClock: null});
+
 
 export default function KeyCloakAuthProvider({children, enabled = false}) {
 
     const isRun = useRef(false)
-    const [logged, setLogged] = useState(false);
-    const [token, setToken] = useState(null);
+
+    const [state, setState] = useState({token: null, isAuthenticated: false, roles: [], keyClock: enabled})
+
+    const isLogged = state.isAuthenticated && state.token;
 
     useEffect(() => {
 
         if (!enabled) {
 
-            const _token = getToken();
-
-            if (!_token) {
-                setLogged(false)
-                setToken(null);
-                if (window.location.pathname !== "/login") {
-                    window.location.replace("/login");
-                }
-            } else {
-                setLogged(true)
-                setToken(_token);
+            if (!isLogged) {
+                logout()
             }
             return
         }
-
-        window._env_.KC_URL = "http://localhost:8081/auth/"
-        window._env_.KC_REALM = "tracardi"
-        window._env_.KC_CLIENT_ID = "tracardi"
 
         if (isRun.current) return;
 
         isRun.current = true;
 
-        client.init({
+        keycloak.init({
             onLoad: "login-required",
             // must match to the configured value in keycloak
             // redirectUri: 'http://localhost:3000/test/',
             // checkLoginIframe: false
         }).then((res) => {
-            setLogged(res);
-            setToken(client.token)
+            setState({token: keycloak.token,
+                isAuthenticated: res,
+                roles: [],
+                keyClock: enabled
+            })
         })
 
     }, [])
 
-    return <KeyCloakContext.Provider value={{token: token, isAuthenticated: logged}}>
-        {logged ? children : <CenteredCircularProgress/>}
+    const logout = () => {
+        if(enabled) {
+            try {
+                keycloak.logout().then(
+                    () => console.log("Logged out from keycloak")
+                )
+            } catch (e) {
+                console.error(e)
+            }
+        }
+        setState({token: null, isAuthenticated: false, roles: [], keyClock: enabled})
+    }
+
+    return <KeyCloakContext.Provider value={{state, setState, logout, keyClock: enabled}}>
+        {isLogged ? children : (enabled
+            ? <CenteredCircularProgress/>  // Waits for redirect
+            : <SignIn/>  // Shows Form
+            )}
     </KeyCloakContext.Provider>
 }

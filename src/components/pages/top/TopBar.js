@@ -4,19 +4,20 @@ import {getApiUrl, resetApiUrlConfig} from "../../../remote_api/entrypoint";
 import {track} from "../../../remote_api/track";
 import version from "../../../misc/version";
 import NeedHelpButton from "../../elements/misc/NeedHelpButton";
-import React from "react";
-import {logout} from "../../authentication/login";
+import React, {useContext} from "react";
 import "./TopBar.css";
 import useTheme from "@mui/material/styles/useTheme";
+import {KeyCloakContext} from "../../context/KeyCloakContext";
 
 export default function TopBar({children}) {
 
     const theme = useTheme();
+    const authContext = useContext(KeyCloakContext)
 
     const handleEndpointReset = () => {
         resetApiUrlConfig();
-        logout()
-        window.location.reload()
+        authContext.logout()
+        window.location.replace("/");
     }
 
     const style = {

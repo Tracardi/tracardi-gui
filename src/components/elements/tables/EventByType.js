@@ -2,6 +2,9 @@ import PropertyField from "../details/PropertyField";
 import React from "react";
 
 export function AggregationTable({data}) {
+    if(!data) {
+        return "No data"
+    }
     const result = data.reduce((acc, curr, index) => {
         if (index < 5) {
             acc.push(curr);

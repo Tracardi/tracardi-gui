@@ -10,7 +10,6 @@ import {VscPulse, VscTools, VscOrganization} from "react-icons/vsc";
 import {IoServerOutline} from "react-icons/io5";
 import {VscDashboard} from "react-icons/vsc";
 import {BsClipboardCheck, BsBoxArrowRight, BsBoxArrowInRight, BsPlayCircle} from "react-icons/bs";
-import { getRoles } from "../authentication/login";
 import {useConfirm} from "material-ui-confirm";
 import {getError} from "../../remote_api/entrypoint";
 import {connect} from "react-redux";
@@ -24,6 +23,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import {FaUncharted} from "react-icons/fa";
 import {DataContext} from "../AppBox";
 import {useRequest} from "../../remote_api/requestClient";
+import {KeyCloakContext} from "../context/KeyCloakContext";
 
 
 function MainMenu({app, showAlert, changeRoute, onContextChange}) {
@@ -37,6 +37,7 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
     const navigate = useNavigate();
 
     const context = useContext(DataContext)
+    const authContext = useContext(KeyCloakContext)
     const {request} = useRequest()
 
     useEffect(() => {
@@ -55,7 +56,7 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
         }
 
         const isAllowed = () => {
-            return intersect(getRoles(), roles).length > 0;
+            return intersect(authContext?.state?.roles, roles).length > 0;
         }
 
         return (

@@ -1,4 +1,3 @@
-import {logout} from "../components/authentication/login";
 import storageValue from "../misc/localStorageDriver";
 import {isObject} from "../misc/typeChecking";
 import {objectMap} from "../misc/mappers";
@@ -25,7 +24,7 @@ export const getError = (e) => {
     if (e?.response) {
 
         if (e.request && e.request.status === 401) {
-            logout();
+            return [{msg:"Unauthorized Access", type: "Exception"}];
         }
 
         if( Array.isArray(e.response?.data?.detail)) {

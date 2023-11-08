@@ -1,6 +1,5 @@
-import {getRoles} from "./login";
-
 export default class PrivateTab {
+
     constructor(roles, component, path, label, hash) {
         this.roles = roles;
         this.component = component;
@@ -14,8 +13,8 @@ export default class PrivateTab {
         return [...new Set(a)].filter(x => setB.has(x));
     }
 
-    isAuth() {
-        if(this.intersect(getRoles(), this.roles).length > 0) {
+    isAuth(roles) {
+        if(this.intersect(roles, this.roles).length > 0) {
             return true
         }
         return false
