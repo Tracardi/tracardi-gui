@@ -77,7 +77,7 @@ export class TuiPieChart extends PureComponent {
                         dataKey="value"
                         onMouseEnter={this.onPieEnter}
                     >
-                        {this.props.data.map((entry, index) => (
+                        {this.props?.data && this.props.data.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={(!this.props?.colors) ? "#0088FE" : this.props.colors[index % this.props.colors.length]} />
                         ))}
                     </Pie>
