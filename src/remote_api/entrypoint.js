@@ -1,18 +1,12 @@
-import axios from 'axios'
-import {getToken, logout} from "../components/authentication/login";
+import {logout} from "../components/authentication/login";
 import storageValue from "../misc/localStorageDriver";
 import {isObject} from "../misc/typeChecking";
 import {objectMap} from "../misc/mappers";
-import {getDataContextHeader} from "../config";
-import {publish} from "../misc/events";
+
 
 export const apiUrlStorage = () => {
     return new storageValue('tracardi-api-url')
 }
-
-// export const hasApiUrlConfig = () => {
-//     return apiUrlStorage().read() !== null
-// }
 
 export const resetApiUrlConfig = () => {
     return apiUrlStorage().remove()
@@ -25,45 +19,6 @@ export const getApiUrl = () => {
 export const setApiUrl = apiUrl => {
     apiUrlStorage().save(apiUrl);
 }
-
-// const authToken = (token=null) => {
-//     token = token || getToken();
-//     return 'Bearer ' + (token == null ? 'None' : token)
-// }
-
-// export const asyncRemote = async (config, token=null) => {
-//
-//     if(!config?.baseURL) {
-//         const apiUrl = getApiUrl();
-//         config = {
-//             ...config,
-//             baseURL: apiUrl
-//         }
-//
-//     }
-//
-//     config.headers = {
-//         ...config?.headers,
-//         'Authorization': token === null ? authToken() : authToken(token)
-//     }
-//
-//     if (!('x-context' in config.headers)) {
-//         config.headers = {
-//             ...config?.headers,
-//             'x-context': getDataContextHeader()
-//         }
-//     }
-//     publish('connect');
-//     config.timeout = 1000 * 60
-//     return axios(config).catch(e => {
-//         if (e?.response?.status === 401) {
-//             window.location.replace("/logout");
-//         } else {
-//             throw e;
-//         }
-//     })
-// }
-
 
 export const getError = (e) => {
 

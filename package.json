@@ -40,7 +40,7 @@
     "@sentry/react": "^7.27.0",
     "@sentry/tracing": "^7.27.0",
     "ace-builds": "^1.11.1",
-    "axios": "^0.21.2",
+    "axios": "1.6.0",
     "dot-object": "^2.1.4",
     "funnel-graph-js": "^1.4.2",
     "history": "^4.10.1",
