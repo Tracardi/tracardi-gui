@@ -65,7 +65,8 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                     }
                 },
                 progress,
-                deploy);
+                deploy,
+                request);
         } else {
             // todo error
             console.error("Can not save Editor not ready.");

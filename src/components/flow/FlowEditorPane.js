@@ -313,7 +313,8 @@ export function FlowEditorPane(
                 },
                 () => {
                 },
-                deploy);
+                deploy,
+                request);
         } else {
             showAlert({message: "Can not save Editor not ready.", type: "warning", hideAfter: 2000});
         }
@@ -499,7 +500,8 @@ export function FlowEditorPane(
                 setLogs(logs);
                 setProfilingData(convertNodesToProfilingData(nodes))
                 handleDisplayDebugPane(true);
-            }
+            },
+            request
         )
     }, [id, reactFlowInstance, setEdges, setNodes, showAlert])
 

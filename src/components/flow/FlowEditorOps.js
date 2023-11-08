@@ -1,4 +1,3 @@
-import {asyncRemote} from "../../remote_api/entrypoint";
 import {getFlowDebug} from "../../remote_api/endpoints/flow";
 
 export function prepareGraph(reactFlowInstance) {
@@ -36,11 +35,11 @@ export function prepareFlowPayload(id, flowMetaData, reactFlowInstance) {
     }
 }
 
-export function save(id, flowMetaData, reactFlowInstance, onError, onReady, progress, deploy = false) {
+export function save(id, flowMetaData, reactFlowInstance, onError, onReady, progress, deploy = false, request) {
 
     const payload = prepareFlowPayload(id, flowMetaData, reactFlowInstance)
     progress(true);
-    asyncRemote({
+    request({
         url: (deploy === false) ? "/flow/draft" : "/flow/production",
         method: "POST",
         data: payload
@@ -59,19 +58,19 @@ export function save(id, flowMetaData, reactFlowInstance, onError, onReady, prog
     })
 }
 
-export function debug(id, eventId, reactFlowInstance, onError, progress, onReady) {
+export function debug(id, eventId, reactFlowInstance, onError, progress, onReady, request) {
     const endpoint = getFlowDebug(eventId)
 
     progress(true);
 
-    asyncRemote({
+    request({
             ...endpoint,
             data: {
                 id: id,
                 name: "Name is not set in debug mode",
                 description: "Description is not set in debug mode",
                 flowGraph: prepareGraph(reactFlowInstance),
-                projects: []
+                projects: [],
             }
     }).then((response) => {
 
