@@ -1,36 +1,32 @@
 import React, {useEffect, useState} from "react";
 import MarkdownElement from "../../elements/misc/MarkdownElement";
 import "./MdManual.css";
-import { asyncRemote } from "../../../remote_api/entrypoint";
 import CenteredCircularProgress from "../../elements/progress/CenteredCircularProgress";
-
-export async function loadMdFile(fileName, basePath, baseURL=null) {
-    try {
-        const response = await asyncRemote({
-            baseURL: baseURL,
-            url: `${basePath}${fileName}.md?${Math.random()}`
-        })
-        return await response.data;
-    } catch (e) {
-        return e.toString()
-    }
-}
+import {useRequest} from "../../../remote_api/requestClient";
 
 const MdManual = ({mdFile, basePath='/manual/en/docs/flow/actions/', baseURL = null, style=null}) => {
 
     const [page,setPage] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const {request} = useRequest()
+
     useEffect(()=> {
         let isMounted = true
         if(mdFile) {
             setLoading(true)
-            loadMdFile(mdFile, basePath, baseURL).then((text) => {
+
+            request({
+                baseURL: baseURL,
+                url: `${basePath}${mdFile}.md?${Math.random()}`
+            }).then((response) => {
                 if(isMounted) {
-                    setPage( text )
+                    setPage( response.data )
                 }
             }).finally(() => {
-                setLoading(false)
+                if(isMounted) {
+                    setLoading(false)
+                }
             })
         }
         return () => { isMounted = false };
