@@ -110,7 +110,7 @@ export default function SegmentForm({onSubmit, init}) {
                 data: payload
             })
 
-            if (response !== false) {
+            if (response) {
                 if (onSubmit) {
                     onSubmit(payload)
                 }
