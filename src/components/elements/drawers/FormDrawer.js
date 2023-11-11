@@ -16,7 +16,7 @@ export default function FormDrawer(
 
     const localContext = useContext(LocalDataContext)
 
-    let style={width: (width) ? width : 1200, overflowX: "hidden", height:"100%"}
+    let style={width: (width) ? width : 1200, overflowX: "hidden"}
 
     if(localContext) {
         // Production

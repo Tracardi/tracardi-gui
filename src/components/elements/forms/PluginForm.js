@@ -94,7 +94,7 @@ export default function PluginForm({id}) {
 
     return <>
         {loading && <CenteredCircularProgress/>}
-        {!loading && <> 
+        {!loading && <>
                         <Tabs
                             className="PluginTabs"
                             tabs={["Overview", "Config", "Docs", "Raw"]}
@@ -102,13 +102,10 @@ export default function PluginForm({id}) {
                             onTabSelect={setTab}
                             tabContentStyle={{overflow: "initial"}}
                             tabsStyle={{
-                                display: "flex", 
-                                flexDirection: "row",
+                                display: "flex",
                                 backgroundColor: "white",
                                 marginTop: 0,
                                 marginBottom: 0,
-                                position: "sticky",
-                                top: 0,
                                 zIndex: 2
                             }}
                         >
