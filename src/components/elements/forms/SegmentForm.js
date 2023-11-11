@@ -103,25 +103,26 @@ export default function SegmentForm({onSubmit, init}) {
         }
 
         setProcessing(true);
-        request({
+        try {
+            const response = request({
                 url: '/segment',
                 method: 'post',
                 data: payload
-            },
-            setProcessing,
-            (e) => {
-                if (e) {
-                    setErrorMessage(e[0].msg);
-                }
-            },
-            (response) => {
-                if (response !== false) {
-                    if (onSubmit) {
-                        onSubmit(payload)
-                    }
+            })
+
+            if (response !== false) {
+                if (onSubmit) {
+                    onSubmit(payload)
                 }
             }
-        )
+
+        } catch (e) {
+            if (e) {
+                setErrorMessage(e[0].msg);
+            }
+        } finally {
+            setProcessing(false)
+        }
     }
 
     return <TuiForm style={{margin: 20}}>
