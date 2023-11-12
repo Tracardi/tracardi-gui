@@ -185,7 +185,7 @@ export default function EventToProfileForm({
                 </TuiFormGroupField>
 
                 <TuiFormGroupField header="What should be copied to profile"
-                                   description='To copy event items to your profile, choose a profile data e.g. "pii.email" you would like to override and
+                                   description='To copy event items to your profile, choose a profile data e.g. "pii.contact.email.main" you would like to override and
                                    a type for example event property, e.g."properties.email". If the email address does not exist in the event, it will not be copied and you
                                    will get a warning.'>
                     <EventToProfileCopy value={copingSchema} onChange={setCopingSchema}/>

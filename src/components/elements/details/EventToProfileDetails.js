@@ -77,7 +77,7 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Event to profile mapping"
                                     description="This schema outlines which data from an event are copied to which profile data. e.g.
-                    (profile) data.contact.email equals (event) properties.email."/>
+                    (profile) data.contact.email.private equals (event) properties.email."/>
 
                 <TuiFormGroupContent>
                     {!isEmptyObjectOrNull(data?.event_to_profile)
