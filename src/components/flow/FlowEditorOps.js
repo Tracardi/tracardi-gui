@@ -1,4 +1,5 @@
 import {getFlowDebug} from "../../remote_api/endpoints/flow";
+import {getError} from "../../remote_api/entrypoint";
 
 export function prepareGraph(reactFlowInstance) {
     const flow = reactFlowInstance.toObject();
@@ -49,6 +50,7 @@ export function save(id, flowMetaData, reactFlowInstance, onError, onReady, prog
         }
     }).catch((e) => {
         if (e) {
+            e = getError(e)
             if(e.length > 0) {
                 onError({message: e[0].msg, type: "error", hideAfter: 2000});
             }
@@ -156,6 +158,7 @@ export function debug(id, eventId, reactFlowInstance, onError, progress, onReady
         }
     }).catch(e => {
         if (e) {
+            e = getError(e)
             onError({message: e[0].msg, type: "error", hideAfter: 5000});
         }
     }).finally(
