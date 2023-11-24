@@ -4,6 +4,7 @@ import "./FetchError.css";
 
 function ErrorDetails({error}) {
     return <table className="ErrorList">
+        <tbody>
         {error?.status && <tr>
             <td>Status</td>
             <td>{error.status}</td>
@@ -16,8 +17,8 @@ function ErrorDetails({error}) {
             <td>Url</td>
             <td>{error.config.url}</td>
         </tr>}
-        {Array.isArray(error?.data?.detail)
-            ? error?.data?.detail.map((e, index) => {
+        {Array.isArray(error?.response?.data?.detail)
+            ? error?.response?.data?.detail.map((e, index) => {
                 return <tr key={index}>
                     <td valign="top">Details</td>
                     <td>
@@ -29,9 +30,10 @@ function ErrorDetails({error}) {
             })
             : <tr>
                 <td valign="top">Details</td>
-                <td>{error?.data?.detail}</td>
+                <td>{error?.response?.data?.detail}</td>
             </tr>
         }
+        </tbody>
     </table>
 }
 

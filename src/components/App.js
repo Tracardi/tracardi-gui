@@ -17,7 +17,7 @@ import ResourceForm from "./elements/forms/ResourceForm";
 import CenteredCircularProgress from "./elements/progress/CenteredCircularProgress";
 import {IdleTimerProvider} from "react-idle-timer";
 import {QueryClient, QueryClientProvider} from "react-query";
-import {ReactQueryDevtools} from 'react-query/devtools'
+// import {ReactQueryDevtools} from 'react-query/devtools'
 import Installer from "./Installer";
 import KeyCloakAuthProvider, {KeyCloakContext} from "./context/KeyCloakContext";
 
@@ -86,7 +86,7 @@ const App = ({alert, resource, close}) => {
                         </KeyCloakAuthProvider>
                     </Router>
 
-                    <ReactQueryDevtools initialIsOpen={false}/>
+                    {/*<ReactQueryDevtools initialIsOpen={false}/>*/}
                 </Installer>
             </QueryClientProvider>
 
