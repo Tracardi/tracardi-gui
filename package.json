@@ -68,7 +68,7 @@
     "react-router-dom": "6.7.0",
     "react-scripts": "^5.0.1",
     "react-transition-group": "^4.4.2",
-    "reactflow": "11.5.0",
+    "reactflow": "11.10.1",
     "recharts": "2.3.2",
     "safe-marked": "^5.0.0",
     "tss-react": "^4.5.2",
