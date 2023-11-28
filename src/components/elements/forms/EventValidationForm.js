@@ -12,6 +12,7 @@ import TuiTagger from "../tui/TuiTagger";
 import Switch from "@mui/material/Switch";
 import DocsLink from "../drawers/DocsLink";
 import {useRequest} from "../../../remote_api/requestClient";
+import ShowHide from "../misc/ShowHide";
 
 export default function EventValidationForm({onSubmit, init}) {
 
@@ -121,7 +122,7 @@ export default function EventValidationForm({onSubmit, init}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
+                <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
                                    description="Description will help you to understand when the event validation is applied.">
                     <TextField
                         label={"Description"}
@@ -135,9 +136,6 @@ export default function EventValidationForm({onSubmit, init}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Tags" description="Tags help with data organisation.">
-                    <TuiTagger tags={tags} onChange={setTags}/>
-                </TuiFormGroupField>
                 <TuiFormGroupField header="Active" description="Enable/disable validation.">
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Switch
@@ -146,6 +144,12 @@ export default function EventValidationForm({onSubmit, init}) {
                         />
                     </div>
                 </TuiFormGroupField>
+                <ShowHide label="Tags">
+                    <TuiFormGroupField header="Tags" description="Tags help with data organisation.">
+                        <TuiTagger tags={tags} onChange={setTags}/>
+                    </TuiFormGroupField>
+                </ShowHide>
+
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
@@ -158,20 +162,6 @@ export default function EventValidationForm({onSubmit, init}) {
                         onSetValue={(event) => setEventType(event.id)}
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Trigger condition" description="Set the condition that must be met to
-                start validation. Empty condition means validate defined event type.">
-                    <TextField
-                        label={"Condition"}
-                        value={condition || ""}
-                        multiline
-                        rows={3}
-                        onChange={(ev) => {
-                            setCondition(ev.target.value)
-                        }}
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
                 <TuiFormGroupField header="Validation schema" description={<>
                     {"Set validation schema. More on JsonSchema validation"} <DocsLink label="label" src="http://docs.tracardi.com/events/event_validation/"> in documentation </DocsLink> </>}>
                     <fieldset style={{marginTop: 10}}>
@@ -179,6 +169,24 @@ export default function EventValidationForm({onSubmit, init}) {
                         <JsonEditor value={jsonSchema} onChange={(value) => setJsonSchema(value)} autocomplete={true}/>
                     </fieldset>
                 </TuiFormGroupField>
+
+                <ShowHide label="Advanced Trigger Condition" style={{marginTop:20}}>
+                    <TuiFormGroupField header="Trigger condition" description="Set the condition that must be met to
+                start validation. Empty condition means validate defined event type.">
+                        <TextField
+                            label={"Condition"}
+                            value={condition || ""}
+                            multiline
+                            rows={3}
+                            onChange={(ev) => {
+                                setCondition(ev.target.value)
+                            }}
+                            variant="outlined"
+                            fullWidth
+                        />
+                    </TuiFormGroupField>
+                </ShowHide>
+
 
             </TuiFormGroupContent>
         </TuiFormGroup>

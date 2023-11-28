@@ -13,6 +13,7 @@ import Tabs, {TabCase} from "../tabs/Tabs";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 import FetchError from "../../errors/FetchError";
 import {useRequest} from "../../../remote_api/requestClient";
+import ShowHide from "../misc/ShowHide";
 
 export default function EventReshapingForm({onSubmit, init}) {
 
@@ -132,7 +133,7 @@ export default function EventReshapingForm({onSubmit, init}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
+                <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
                                    description="Description will help you to understand when the event reshaping is applied.">
                     <TextField
                         label={"Description"}
@@ -146,9 +147,6 @@ export default function EventReshapingForm({onSubmit, init}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Tags" description="Tags help with data organisation.">
-                    <TuiTagger tags={tags} onChange={setTags}/>
-                </TuiFormGroupField>
                 <TuiFormGroupField header="Active" description="Enable/disable reshaping.">
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Switch
@@ -157,19 +155,19 @@ export default function EventReshapingForm({onSubmit, init}) {
                         />
                     </div>
                 </TuiFormGroupField>
+
+                <ShowHide label="Tags">
+                    <TuiFormGroupField header="Tags" description="Tags help with data organisation.">
+                        <TuiTagger tags={tags} onChange={setTags}/>
+                    </TuiFormGroupField>
+                </ShowHide>
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Condition" description="If conditions set beneath are met then the reshaping
+            <TuiFormGroupHeader header="Reshaping Trigger" description="If conditions set beneath are met then the reshaping
             process will start."/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Event type" description="Set the event type that should be reshaped.">
-                    <TuiSelectEventType
-                        label={"Event type"}
-                        initValue={eventType}
-                        onSetValue={(event) => setEventType(event.id)}
-                    />
-                </TuiFormGroupField>
+
                 <TuiFormGroupField header="Event source" description="If the event must only come from a specific
                 source, select it here. If left empty, all events will be reshaped regardless of their source.">
                     <TuiSelectEventSource
@@ -178,6 +176,15 @@ export default function EventReshapingForm({onSubmit, init}) {
                         onSetValue={setEventSource}
                     />
                 </TuiFormGroupField>
+
+                <TuiFormGroupField header="Event type" description="Set the event type that should be reshaped.">
+                    <TuiSelectEventType
+                        label={"Event type"}
+                        initValue={eventType}
+                        onSetValue={(event) => setEventType(event.id)}
+                    />
+                </TuiFormGroupField>
+
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>

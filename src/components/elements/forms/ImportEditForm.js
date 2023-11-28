@@ -169,7 +169,7 @@ export default function ImportEditForm({onSubmit, importConfig}) {
                             onChange={(e => name.current = e.target.value)}
                         />
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Description"
+                    <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
                                        description="Please enter the optional description for this import. Clear
                                        description will allow you to understand what is being imported into the system.">
                         <TextField

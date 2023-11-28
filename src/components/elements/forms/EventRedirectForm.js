@@ -139,7 +139,7 @@ export default function EventRedirectForm({
                                size="small"
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
+                <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
                                    description="Redirection description. Be as descriptive as possible.">
                     <TextField variant="outlined"
                                label="Description"

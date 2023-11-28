@@ -144,7 +144,7 @@ export default function ReportForm({reportId, onComplete}) {
                             label="Name"
                         />
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Description" description="Type a short description for your report. (Optional)">
+                    <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>} description="Type a short description for your report. (Optional)">
                         <TextField
                             value={description}
                             onChange={e => setDescription(e.target.value)}

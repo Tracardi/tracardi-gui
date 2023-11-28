@@ -128,7 +128,7 @@ export default function EventToProfileForm({
                                size="small"
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
+                <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
                                    description="Be as descriptive as possible. E.g. Copies: name, email to profile.">
                     <TextField variant="outlined"
                                label="Description"

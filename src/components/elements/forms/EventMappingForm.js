@@ -131,7 +131,7 @@ export default function EventMappingForm({
                                size="small"
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
+                <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
                                    description="Event type description. Be as descriptive as possible. E.g. Fires when user visits a web page.">
                     <TextField variant="outlined"
                                label="Event type description"

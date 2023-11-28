@@ -112,7 +112,7 @@ export default function DataComplianceForm({data: _data, onSaveComplete}) {
                                size="small"
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
+                <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
                                    description="Compliance description. Be as descriptive as possible.">
                     <TextField variant="outlined"
                                label="Description"

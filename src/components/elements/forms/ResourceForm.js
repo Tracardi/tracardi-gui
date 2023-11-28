@@ -209,7 +209,7 @@ function ResourceForm({init, onClose, showAlert}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
+                <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
                                    description="Description will help you understand what kind of resource it is.">
                     <TextField
                         label={"Resource description"}

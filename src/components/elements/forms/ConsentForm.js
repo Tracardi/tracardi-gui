@@ -124,7 +124,7 @@ export default function ConsentForm({
                                size="small"
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description" description="Consent type description. Be as descriptive as possible.">
+                <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>} description="Consent type description. Be as descriptive as possible.">
                     <TextField variant="outlined"
                                label="Consent description"
                                multiline

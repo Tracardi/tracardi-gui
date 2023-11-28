@@ -118,7 +118,7 @@ function FlowForm({
                                size="small"
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description" description="Flow description. Be as descriptive as possible.">
+                <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>} description="Flow description. Be as descriptive as possible.">
                     <TextField id="flow-description"
                                variant="outlined"
                                label="Flow description"

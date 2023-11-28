@@ -143,7 +143,7 @@ export default function ImportForm({onSubmit}) {
                             onChange={(e => name.current = e.target.value)}
                         />
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Description" description="Please enter the optional description.">
+                    <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>} description="Please enter the optional description.">
                         <TextField
                             defaultValue={desc.current}
                             fullWidth

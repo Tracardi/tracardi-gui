@@ -123,7 +123,7 @@ export default function IdentificationPointForm({data: _data, onSubmit}) {
                                size="small"
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
+                <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
                                    description="Identification point description. Be as descriptive as possible.">
                     <TextField variant="outlined"
                                label="Description"

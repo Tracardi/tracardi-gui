@@ -12,6 +12,7 @@ import Switch from "@mui/material/Switch";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 import {useRequest} from "../../../remote_api/requestClient";
+import ShowHide from "../misc/ShowHide";
 
 export default function DestinationForm({onSubmit, value: initValue}) {
 
@@ -139,7 +140,7 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
+                <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
                                    description="Description will help you to understand when where the profile data we be send.">
                     <TextField
                         label={"Destination description"}
@@ -153,10 +154,13 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Destination tags"
-                                   description="Tag the destination to group it into meaningful groups.">
-                    <TuiTagger tags={data?.tags} onChange={(value) => setData({...data, tags: value})}/>
-                </TuiFormGroupField>
+                <ShowHide label="Tags Configuration" style={{marginTop: 20}}>
+                    <TuiFormGroupField header="Destination tags"
+                                       description="Tag the destination to group it into meaningful groups.">
+                        <TuiTagger tags={data?.tags} onChange={(value) => setData({...data, tags: value})}/>
+                    </TuiFormGroupField>
+                </ShowHide>
+
             </TuiFormGroupContent>
         </TuiFormGroup>
 
@@ -186,7 +190,7 @@ export default function DestinationForm({onSubmit, value: initValue}) {
 
 
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Prerequisites"/>
+            <TuiFormGroupHeader header="Destination Trigger"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Send only on profile change"
                                    description="This destination will be triggered only if profile changes.">
@@ -218,8 +222,8 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                     </TuiFormGroupField>
                 </>
                 }
-
-                <TuiFormGroupField header="Data prerequisites" description="Type a condition that has to be met
+                <ShowHide label="Pre-Conditions" style={{marginTop: 20}}>
+                <TuiFormGroupField header={<span>Data pre-condition <sup>(Optional)</sup></span>} description="Type a condition that has to be met
                 before the data is sent to the destination. E.g. Some destinations may require not empty e-mail field.
                 Leave the prerequisites blank if the destination does not have any pre-condition to be checked.">
                     <TextField
@@ -232,6 +236,7 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
+                </ShowHide>
             </TuiFormGroupContent>
         </TuiFormGroup>
 
@@ -248,7 +253,7 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
-
+        <ShowHide label="Advanced Configuration" style={{marginTop: 20, marginBottom: 20}}>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Destination settings"/>
             <TuiFormGroupContent>
@@ -264,6 +269,7 @@ export default function DestinationForm({onSubmit, value: initValue}) {
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
+        </ShowHide>
         {error && <ErrorsBox errorList={error} style={{borderRadius: 0}}/>}
         <Button label="Save"
                 onClick={handleSubmit}

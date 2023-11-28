@@ -174,7 +174,7 @@ export default function MetricForm({onSubmit, init}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
+                <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
                                    description="Description will help you to understand how the metric is calculated.">
                     <TextField
                         label={"Description"}

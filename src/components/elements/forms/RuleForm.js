@@ -348,7 +348,7 @@ export default function RuleForm({onSubmit, data: _data}) {
                             fullWidth
                         />
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Description"
+                    <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
                                        description="Description will help you to understand when the trigger starts the workflow.">
                         <TextField
                             label={"Trigger description"}

@@ -71,22 +71,7 @@ const EventSourceAdvancedForm = ({value: _value, onChange}) => {
     }
 
     return <TuiForm>
-        <TuiFormGroup>
-            <TuiFormGroupContent>
-                <TuiFormGroupField header="Event source access"
-                                   description="Disabled event sources will not be accessible. ">
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Switch
-                            checked={value.enabled}
-                            onChange={(ev) => handleChange('enabled', ev.target.checked)}
-                            name="enabledSource"
-                        />
-                        <span>This event source is enabled</span>
-                    </div>
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-        <ShowHide label="Advanced settings" style={{marginBottom: 10}}>
+         <ShowHide label="Advanced settings" style={{marginBottom: 10}}>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Event source advanced configuration"/>
                 <TuiFormGroupContent>
@@ -192,15 +177,7 @@ const EventSourceDescriptionForm = ({value: _value, style, errorNameMessage, onC
         <TuiFormGroup>
             <TuiFormGroupHeader header="Event source description"/>
             <TuiFormGroupContent>
-                <TuiFormGroupField header="Event source id"
-                                   description="Event source id is auto-generated. In most cases you do not have to change it.
-                                   just leave it like it is. In rare cases when you would like to create a event source
-                                   with user defined value, then unlock the field and type your event source id. If you change
-                                   the id of existing event source new event source will be created.">
-                    <DisabledInput label={"Event source id"}
-                                   value={value.id}
-                                   onChange={(v) => handleChange('id', v)}/>
-                </TuiFormGroupField>
+
 
                 <TuiFormGroupField header="Name" description={<>
                     <span>Event source name can be any string that identifies Event source. </span>
@@ -218,7 +195,7 @@ const EventSourceDescriptionForm = ({value: _value, style, errorNameMessage, onC
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Channel"
+                <TuiFormGroupField header={<span>Channel <sup>(Optional)</sup></span>}
                                    description="Data channel describes from where the data comes from, e.g. web,
                                    mobile, email, database, machine-1, etc. It is away of grouping data streams.">
                     <TextField
@@ -230,7 +207,7 @@ const EventSourceDescriptionForm = ({value: _value, style, errorNameMessage, onC
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Description"
+                <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
                                    description="Description will help you understand what kind of event source it is.">
                     <TextField
                         label={"Event source description"}
@@ -242,7 +219,29 @@ const EventSourceDescriptionForm = ({value: _value, style, errorNameMessage, onC
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <ShowHide label="Grouping & Tags" style={{marginTop: 20}}>
+
+                <TuiFormGroupField header="Event source access"
+                                   description="Disabled event sources will not be accessible. ">
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <Switch
+                            checked={value.enabled}
+                            onChange={(ev) => handleChange('enabled', ev.target.checked)}
+                            name="enabledSource"
+                        />
+                        <span>This event source is enabled</span>
+                    </div>
+                </TuiFormGroupField>
+
+                <ShowHide label="Id & Tags" style={{marginTop: 20}}>
+                    <TuiFormGroupField header="Event source id"
+                                       description="Event source id is auto-generated. In most cases you do not have to change it.
+                                   just leave it like it is. In rare cases when you would like to create a event source
+                                   with user defined value, then unlock the field and type your event source id. If you change
+                                   the id of existing event source new event source will be created.">
+                        <DisabledInput label={"Event source id"}
+                                       value={value.id}
+                                       onChange={(v) => handleChange('id', v)}/>
+                    </TuiFormGroupField>
                     <TuiFormGroupField header="Grouping"
                                        description="Sources can be grouped with tags that are typed here.">
                         <TuiTagger tags={value.groups}
@@ -390,7 +389,7 @@ const EventSourceForm = ({value, style, onClose}) => {
                                         onChange={handleMetadataChange}/>
             <BridgeForm id={bridge?.id} value={config.current} onChange={handleConfigChange}/>
 
-                <EventSourceAdvancedForm value={advanced.current} onChange={handleAdvancedChange}/>
+            <EventSourceAdvancedForm value={advanced.current} onChange={handleAdvancedChange}/>
 
             <div>
                 {errors && <ErrorsBox errorList={errors}/>}

@@ -257,7 +257,7 @@ export default function SegmentationJobForm({onSubmit, init}) {
                             fullWidth
                         />
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Description"
+                    <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
                                        description="Description will help you to understand when the segmentation is applied.">
                         <TextField
                             label={"Segment description"}
