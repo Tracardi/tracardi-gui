@@ -292,28 +292,6 @@ export default function RuleForm({onSubmit, data: _data}) {
     return <TuiForm style={{margin: 20}}>
 
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Trigger settings"/>
-            {responseError && <ErrorsBox errorList={responseError} style={{borderRadius: 0}}/>}
-            <TuiFormGroupContent>
-                <TuiFormGroupField header="Trigger type" description="What should trigger the workflow.">
-                    <TextField
-                        select
-                        variant="outlined"
-                        size="small"
-                        value={trigger?.type}
-                        style={{width: 250}}
-                        onChange={(ev) => handleTypeChange(ev.target.value)}
-                    >
-                        <MenuItem value="event-collect" selected>Collected Event</MenuItem>
-                        {/*Temporary Disabled, also depends on ENABLE_SEGMENTATION_WF_TRIGGERS */}
-                        {/*<MenuItem value="segment-add"><span className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Added Segment</span></MenuItem>*/}
-                    </TextField>
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-
-
-        </TuiFormGroup>
-        <TuiFormGroup>
             {trigger.type === "event-collect"
                 ? <EventTriggerForm
                     data={{
@@ -331,6 +309,28 @@ export default function RuleForm({onSubmit, data: _data}) {
                     onChange={handleDataChange}
                 />}
         </TuiFormGroup>
+        <ShowHide label="Advanced Settings" style={{marginBottom:20}}>
+            <TuiFormGroup>
+                <TuiFormGroupHeader header="Trigger settings"/>
+                {responseError && <ErrorsBox errorList={responseError} style={{borderRadius: 0}}/>}
+                <TuiFormGroupContent>
+                    <TuiFormGroupField header="Trigger type" description="What should trigger the workflow.">
+                        <TextField
+                            select
+                            variant="outlined"
+                            size="small"
+                            value={trigger?.type}
+                            style={{width: 250}}
+                            onChange={(ev) => handleTypeChange(ev.target.value)}
+                        >
+                            <MenuItem value="event-collect" selected>Collected Event</MenuItem>
+                            {/*Temporary Disabled, also depends on ENABLE_SEGMENTATION_WF_TRIGGERS */}
+                            {/*<MenuItem value="segment-add"><span className="flexLine"><BsStar size={20} style={{marginRight: 5}}/> Added Segment</span></MenuItem>*/}
+                        </TextField>
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+            </TuiFormGroup>
+        </ShowHide>
         <ShowHide label="Custom description" style={{marginBottom: 10}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Describe trigger"/>

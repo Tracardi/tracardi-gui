@@ -241,7 +241,6 @@ export default function SegmentationJobForm({onSubmit, init}) {
     return <>
         <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Describe Segment"/>
                 <TuiFormGroupContent>
                     <TuiFormGroupField header="Name">
                         <TextField
@@ -271,6 +270,16 @@ export default function SegmentationJobForm({onSubmit, init}) {
                             fullWidth
                         />
                     </TuiFormGroupField>
+                    <TuiFormGroupField header="Enable">
+                        <div style={{display: "flex", alignItems: "center"}}>
+                            <Switch
+                                checked={data.enabled}
+                                onChange={() => setData({...data, enabled: !data.enabled})}
+                                name="enabledSegment"
+                            />
+                            <span>Enable/Disable segment</span>
+                        </div>
+                    </TuiFormGroupField>
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <TuiFormGroup>
@@ -292,16 +301,7 @@ export default function SegmentationJobForm({onSubmit, init}) {
                             {/*<MenuItem value="code">Segmentation by Code</MenuItem>*/}
                         </TextField>
                     </TuiFormGroupField>
-                    <TuiFormGroupField header="Activation" description="Set if this segment is active. ">
-                        <div style={{display: "flex", alignItems: "center"}}>
-                            <Switch
-                                checked={data.enabled}
-                                onChange={() => setData({...data, enabled: !data.enabled})}
-                                name="enabledSegment"
-                            />
-                            <span>Enable/Disable segment</span>
-                        </div>
-                    </TuiFormGroupField>
+
                 </TuiFormGroupContent>
             </TuiFormGroup>
 

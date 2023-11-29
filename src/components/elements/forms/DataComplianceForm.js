@@ -126,6 +126,15 @@ export default function DataComplianceForm({data: _data, onSaveComplete}) {
                                size="small"
                     />
                 </TuiFormGroupField>
+                <TuiFormGroupField header="Enable">
+                    <Switch
+                        checked={data?.enabled}
+                        onChange={(ev) => handleChange('enabled', ev.target.checked)}
+                    />
+                    <span>
+                        Enable Compliance Rules
+                    </span>
+                </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
@@ -148,15 +157,7 @@ export default function DataComplianceForm({data: _data, onSaveComplete}) {
                         onChange={(v) => handleChange("settings", v)}
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Enable">
-                    <Switch
-                        checked={data?.enabled}
-                        onChange={(ev) => handleChange('enabled', ev.target.checked)}
-                    />
-                    <span>
-                        Enable Compliance Rules
-                    </span>
-                </TuiFormGroupField>
+
             </TuiFormGroupContent>
         </TuiFormGroup>
         {error && <ErrorsBox errorList={error}/>}

@@ -127,44 +127,6 @@ export default function SegmentForm({onSubmit, init}) {
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Segmentation"/>
-            <TuiFormGroupContent>
-                <TuiFormGroupField header="Event type" description="Bind this segment event type. You can select
-                None then segment will be checked at every event. against all events.">
-                    <TuiSelectMultiEventType value={type} onSetValue={setType}/>
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Condition" description="Segments are created after the event is processed.
-                    Then Profile properties are evaluated against the condition you type below.
-                    If profile meets the requirements then it will be assigned to the segment. ">
-                    <TextField
-                        label={"Set segment condition"}
-                        value={condition}
-                        multiline
-                        rows={3}
-                        error={(typeof conditionErrorMessage !== "undefined" && conditionErrorMessage !== '' && conditionErrorMessage !== null)}
-                        helperText={conditionErrorMessage ? conditionErrorMessage : "Condition example: profile@stats.visits>10 AND profile@traits.public.boughtProducts>1"}
-                        onChange={(ev) => {
-                            setCondition(ev.target.value)
-                        }}
-                        onBlurCapture={onTqlValidate}
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Activation" description="Set if this segment is active. ">
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Switch
-                            checked={enabled}
-                            onChange={() => setEnabled(!enabled)}
-                            name="enabledSegment"
-                        />
-                        <span>Enable/Disable segment</span>
-                    </div>
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Describe segment"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Name" description="The segment name will be its id, after spaces are
                 replaced with dashes and letters lowercased">
@@ -195,8 +157,48 @@ export default function SegmentForm({onSubmit, init}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
+                <TuiFormGroupField header="Enable">
+                    <div style={{display: "flex", alignItems: "center"}}>
+                        <Switch
+                            checked={enabled}
+                            onChange={() => setEnabled(!enabled)}
+                            name="enabledSegment"
+                        />
+                        <span>Enable/Disable segment</span>
+                    </div>
+                </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
+
+        <TuiFormGroup>
+            <TuiFormGroupHeader header="Segmentation"/>
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Event type" description="Bind this segment event type. You can select
+                None then segment will be checked at every event. against all events.">
+                    <TuiSelectMultiEventType value={type} onSetValue={setType}/>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Condition" description="Segments are created after the event is processed.
+                    Then Profile properties are evaluated against the condition you type below.
+                    If profile meets the requirements then it will be assigned to the segment. ">
+                    <TextField
+                        label={"Set segment condition"}
+                        value={condition}
+                        multiline
+                        rows={3}
+                        error={(typeof conditionErrorMessage !== "undefined" && conditionErrorMessage !== '' && conditionErrorMessage !== null)}
+                        helperText={conditionErrorMessage ? conditionErrorMessage : "Condition example: profile@stats.visits>10 AND profile@traits.public.boughtProducts>1"}
+                        onChange={(ev) => {
+                            setCondition(ev.target.value)
+                        }}
+                        onBlurCapture={onTqlValidate}
+                        variant="outlined"
+                        fullWidth
+                    />
+                </TuiFormGroupField>
+
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+
         {errorMessage && <TuiFormError message={errorMessage}/>}
         <Button label="Save" onClick={handleSubmit} progress={processing} style={{justifyContent: "center"}}/>
     </TuiForm>

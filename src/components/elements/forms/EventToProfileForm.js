@@ -11,6 +11,7 @@ import DocsLink from "../drawers/DocsLink";
 import FetchError from "../../errors/FetchError";
 import EventToProfileCopy from "./EventToProfileCopy";
 import {useRequest} from "../../../remote_api/requestClient";
+import ShowHide from "../misc/ShowHide";
 
 export default function EventToProfileForm({
                                                id,
@@ -141,47 +142,38 @@ export default function EventToProfileForm({
                                fullWidth
                                size="small"
                     />
+
+
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Mapping tags"
-                                   description="Tag the mapping to group it into meaningful groups.">
-                    <TuiTagger tags={tags} onChange={handleTagChange}/>
+
+                <TuiFormGroupField header="Enable event to profile mapping">
+                    <Switch
+                        checked={enabled}
+                        onChange={(ev) => setEnabled(ev.target.checked)}
+                    />
+                    <span>Enable mapping</span>
                 </TuiFormGroupField>
+
+                <ShowHide label="Tags">
+                    <TuiFormGroupField header="Mapping tags"
+                                       description="Tag the mapping to group it into meaningful groups.">
+                        <TuiTagger tags={tags} onChange={handleTagChange}/>
+                    </TuiFormGroupField>
+                </ShowHide>
+
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Profile mapping" description="Profile data mapping to event properties.
             This setting will let you copy data from event to profile"/>
             <TuiFormGroupContent>
-                <Switch
-                    checked={enabled}
-                    onChange={(ev) => setEnabled(ev.target.checked)}
-                />
-                <span>Enable mapping</span>
+
                 <TuiFormGroupField header="Event type"
                                    description="Type or select the type of event you want to copy data from.">
                     <TuiSelectEventType initValue={eventType}
                                         onSetValue={setEventType}
                                         onlyValueWithOptions={false}
                                         errorMessage={typeErrorMessage}/>
-                </TuiFormGroupField>
-
-                <TuiFormGroupField header="Trigger condition" description={
-                    <span>Set the condition that must be met to start data coping. You may leave this field empty
-                        if all the events must be processed.
-                    <DocsLink src="http://docs.tracardi.com/notations/logic_notation/"> How to write a
-                        condition </DocsLink></span>
-                }>
-                    <TextField
-                        label={"Condition"}
-                        value={config?.condition || ""}
-                        multiline
-                        rows={3}
-                        onChange={(ev) => {
-                            setConfig({...config, condition: ev.target.value})
-                        }}
-                        variant="outlined"
-                        fullWidth
-                    />
                 </TuiFormGroupField>
 
                 <TuiFormGroupField header="What should be copied to profile"
@@ -191,6 +183,27 @@ export default function EventToProfileForm({
                     <EventToProfileCopy value={copingSchema} onChange={setCopingSchema}/>
 
                 </TuiFormGroupField>
+
+                <ShowHide label="Trigger condition">
+                    <TuiFormGroupField header="Trigger condition" description={
+                        <span>Set additional condition that must be met to start data coping. You may leave this field empty
+                            if all the events must be processed.
+                        <DocsLink src="http://docs.tracardi.com/notations/logic_notation/"> How to write a
+                            condition </DocsLink></span>
+                    }>
+                        <TextField
+                            label={"Condition"}
+                            value={config?.condition || ""}
+                            multiline
+                            rows={3}
+                            onChange={(ev) => {
+                                setConfig({...config, condition: ev.target.value})
+                            }}
+                            variant="outlined"
+                            fullWidth
+                        />
+                    </TuiFormGroupField>
+                </ShowHide>
             </TuiFormGroupContent>
         </TuiFormGroup>
 

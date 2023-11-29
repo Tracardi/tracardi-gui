@@ -137,6 +137,15 @@ export default function IdentificationPointForm({data: _data, onSubmit}) {
                                size="small"
                     />
                 </TuiFormGroupField>
+                <TuiFormGroupField header="Enable">
+                    <Switch
+                        checked={data?.enabled}
+                        onChange={(ev) => handleChange('enabled', ev.target.checked)}
+                    />
+                    <span>
+                        Enable identification point
+                    </span>
+                </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
@@ -169,15 +178,7 @@ export default function IdentificationPointForm({data: _data, onSubmit}) {
                 If any of the set pairs match the profile will be attached to the event.">
                     <EventToProfileFieldMapping value={data?.fields} onChange={v => handleChange("fields", v)}/>
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Enable">
-                    <Switch
-                        checked={data?.enabled}
-                        onChange={(ev) => handleChange('enabled', ev.target.checked)}
-                    />
-                    <span>
-                        Enable identification point
-                    </span>
-                </TuiFormGroupField>
+
             </TuiFormGroupContent>
         </TuiFormGroup>
         {error && <ErrorsBox errorList={error}/>}
