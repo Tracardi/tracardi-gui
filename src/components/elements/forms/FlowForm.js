@@ -73,20 +73,9 @@ function FlowForm({
             })
 
             if (response) {
-                if (refreshMetaData === true) {
-                    // Refresh index in elastic so we can see it in the list.
-                    await request({
-                        url: '/flows/refresh'
-                    })
-                    if (onFlowSaveComplete) {
-                        onFlowSaveComplete(payload)
-                    }
-                } else {
-                    if (onFlowSaveComplete) {
-                        onFlowSaveComplete(payload)
-                    }
+                if (onFlowSaveComplete) {
+                    onFlowSaveComplete(payload)
                 }
-
             }
 
         } catch (e) {
