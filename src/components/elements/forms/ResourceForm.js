@@ -15,6 +15,8 @@ import TuiTagger from "../tui/TuiTagger";
 import TuiTags from "../tui/TuiTags";
 import MdManual from "../../flow/actions/MdManual";
 import {useRequest} from "../../../remote_api/requestClient";
+import ShowHide from "../misc/ShowHide";
+import {getError} from "../../../remote_api/entrypoint";
 
 function ResourceForm({init, onClose, showAlert}) {
 
@@ -111,6 +113,7 @@ function ResourceForm({init, onClose, showAlert}) {
 
         } catch (e) {
             if (e) {
+                e = getError(e)
                 showAlert({message: e[0].msg, type: "error", hideAfter: 5000});
             }
         } finally {
@@ -131,7 +134,7 @@ function ResourceForm({init, onClose, showAlert}) {
         }
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
 
         if (!name || name.length === 0 || !type?.name) {
             if (!name || name.length === 0) {
@@ -164,7 +167,7 @@ function ResourceForm({init, onClose, showAlert}) {
                 tags: tags,
                 groups: groups
             };
-            onSubmit(payload)
+            await onSubmit(payload)
         } catch (e) {
             alert("Invalid JSON in field CONFIG.")
         }
@@ -178,22 +181,7 @@ function ResourceForm({init, onClose, showAlert}) {
         <TuiFormGroup>
             <TuiFormGroupHeader header="Resource"/>
             <TuiFormGroupContent>
-                {inEditMode && <><TuiFormGroupField header="Resource id"
-                                                    description="Resource id is auto-generated. In most cases you do not have to do nothing
-                                   just leave it like it is. In rare cases when you would like to create a resource
-                                   with user defined value, then unlock the field and type your resource id. If you change
-                                   the id of existing resource new resource will be created.">
-                    <DisabledInput label={"Resource id"}
-                                   value={id}
-                                   onChange={setId}/>
-                </TuiFormGroupField>
-                    <TuiFormGroupField header="Resource type"
-                                       description="Resource type defines storage or endpoint type. If any resource type
-                                       is missing check 'Resource/Premium Services' for more resources.">
-                        <TuiSelectResourceTypeMemo initValue={type}
-                                                   onSetValue={setTypeAndDefineCredentialsTemplate}
-                                                   errorMessage={errorTypeMessage}/>
-                    </TuiFormGroupField></>}
+
                 <TuiFormGroupField header="Name" description="Resource name can be any string that
                     identifies resource.">
                     <TextField
@@ -223,20 +211,7 @@ function ResourceForm({init, onClose, showAlert}) {
                         fullWidth
                     />
                 </TuiFormGroupField>
-                <TuiFormGroupField header="Grouping"
-                                   description="Resources can be grouped with tags that are typed here.">
-                    <TuiTagger tags={groups} onChange={setGroups}/>
-                </TuiFormGroupField>
-                <TuiFormGroupField header="System tags" description="System tags are auto-tagged. This is only information on
-                resource type. It is used internally by the system.">
-                    <TuiTags tags={tags} style={{marginLeft: 5, marginTop: 10}}/>
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Enabled" description="If you want to be able to use this resource, then you need to enable it before."/>
-            <TuiFormGroupContent>
-                <TuiFormGroupField>
+                <TuiFormGroupField header="Enable" >
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Switch
                             checked={enabledSource}
@@ -248,11 +223,40 @@ function ResourceForm({init, onClose, showAlert}) {
                     </span>
                     </div>
                 </TuiFormGroupField>
+                <ShowHide label="Advanced">
+                    {inEditMode && <TuiFormGroupField header="Resource id"
+                                                      description="Resource id is auto-generated. In most cases you do not have to do nothing
+                                   just leave it like it is. In rare cases when you would like to create a resource
+                                   with user defined value, then unlock the field and type your resource id. If you change
+                                   the id of existing resource new resource will be created.">
+                        <DisabledInput label={"Resource id"}
+                                       value={id}
+                                       onChange={setId}/>
+                    </TuiFormGroupField>}
+
+                    <TuiFormGroupField header="Grouping"
+                                       description="Resources can be grouped with tags that are typed here.">
+                        <TuiTagger tags={groups} onChange={setGroups}/>
+                    </TuiFormGroupField>
+                    <TuiFormGroupField header="System tags" description="System tags are auto-tagged. This is only information on
+                resource type. It is used internally by the system.">
+                        <TuiTags tags={tags} style={{marginLeft: 5, marginTop: 10}}/>
+                    </TuiFormGroupField>
+                </ShowHide>
+
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Configuration"/>
             <TuiFormGroupContent>
+                {inEditMode &&
+                <TuiFormGroupField header="Resource type"
+                                   description="Resource type defines storage or endpoint type. If any resource type
+                                       is missing check 'Resource/Premium Services' for more resources.">
+                    <TuiSelectResourceTypeMemo initValue={type}
+                                               onSetValue={setTypeAndDefineCredentialsTemplate}
+                                               errorMessage={errorTypeMessage}/>
+                </TuiFormGroupField>}
                 <TuiFormGroupField header="Credentials or Access tokens" description="This json data will be an
                 encrypted part of resource. Please pass here all the credentials or access configuration information,
                 such as hostname, port, username and password, etc.">

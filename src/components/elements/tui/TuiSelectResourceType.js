@@ -15,5 +15,5 @@ function TuiSelectResourceType({initValue, onSetValue, errorMessage=""}) {
 
 export const TuiSelectResourceTypeMemo = React.memo(TuiSelectResourceType,
     (prev,next) => {
-        return prev.initValue === next.initValue
+        return prev.initValue === next.initValue && prev.errorMessage == next.errorMessage
     })
