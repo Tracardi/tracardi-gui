@@ -125,7 +125,9 @@ export function EventRow({row, filterFields}) {
                                                                               content={row?.profile?.metadata?.time?.visit?.count}/>}
                 {displaySource && <PropertyField labelWidth={labelWidth}
                                                  name="Source id"
-                                                 content={<IdLabel label={row?.source?.id}/>}>
+                                                 content={<IdLabel label={row?.source?.id}/>}
+                detailsRoles={['admin', 'maintainer', 'developer']}
+                >
                     <EventSourceDetails id={row?.source?.id}/>
                 </PropertyField>}
                 {displaySession && row?.session?.id && <PropertyField labelWidth={labelWidth}

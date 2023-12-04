@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {object2dot} from "../../../misc/dottedObject";
 import PropertyField from "./PropertyField";
@@ -22,9 +22,13 @@ import {EventDataTable} from "./EventData";
 import EventTypeTag from "../misc/EventTypeTag";
 import EventJourneyTag from "../misc/EventJourneyTag";
 import MergingAlert from "../misc/MergingAlert";
+import hasRoles from "../../authentication/hasRoles";
+import {KeyCloakContext} from "../../context/KeyCloakContext";
 
 
 const EventDataDetails = ({event, metadata, allowedDetails = []}) => {
+
+    const authContext = useContext(KeyCloakContext)
 
     const ContextInfo = () => {
         const context = object2dot(event?.context);
@@ -47,7 +51,8 @@ const EventDataDetails = ({event, metadata, allowedDetails = []}) => {
             <TuiFormGroupHeader header="Event details"/>
             <TuiFormGroupContent style={{display: "flex", flexDirection: "column"}}>
                 <PropertyField name="Id" content={<IdLabel label={event?.id}/>}>
-                    <EventDetails event={event}/>
+                    <EventDetails event={event}
+                                  routing={hasRoles(authContext?.state?.roles, ['admin', 'developer'])}/>
                 </PropertyField>
                 {metadata?.index && <PropertyField name="Index" content={metadata.index}/>}
                 <PropertyField name="Type"

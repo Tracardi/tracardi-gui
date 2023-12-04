@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import "../lists/cards/SourceCard.css";
 import "./RuleDetails.css";
 import "./Details.css";
@@ -15,6 +15,8 @@ import {useFetch} from "../../../remote_api/remoteState";
 import {getEventById} from "../../../remote_api/endpoints/event";
 import FetchError from "../../errors/FetchError";
 import RoutingFlow from "./RoutingFlow";
+import {KeyCloakContext} from "../../context/KeyCloakContext";
+import hasRoles from "../../authentication/hasRoles";
 
 export default function EventDetails({event, metadata, routing=true}) {
 
@@ -104,6 +106,7 @@ export default function EventDetails({event, metadata, routing=true}) {
 
 export function EventDetailsById({id}) {
 
+    const authContext = useContext(KeyCloakContext)
     const query = useFetch(
         ["getEvent", [id]],
         getEventById(id),
@@ -124,7 +127,8 @@ export function EventDetailsById({id}) {
     }
 
     return <>
-        {query.data && <EventDetails event={query.data.event} metadata={query.data._metadata}/>}
+        {query.data && <EventDetails event={query.data.event} metadata={query.data._metadata}
+                                     routing={hasRoles(authContext?.state?.roles, ['admin', 'developer'])}/>}
     </>
 }
 

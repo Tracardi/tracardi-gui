@@ -1,6 +1,5 @@
 import React, {useContext} from "react";
 import Link from "@mui/material/Link";
-import urlPrefix from "../../misc/UrlPrefix";
 import NoData from "../elements/misc/NoData";
 import {BsFillShieldLockFill} from "react-icons/bs";
 import {KeyCloakContext} from "../context/KeyCloakContext";

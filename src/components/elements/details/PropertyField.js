@@ -1,12 +1,25 @@
-import React, {useState} from "react";
-import {isEmptyObject} from "../../../misc/typeChecking";
+import React, {useContext, useState} from "react";
 import {FiMoreHorizontal} from "react-icons/fi";
 import FormDrawer from "../drawers/FormDrawer";
 import "./PropertyField.css";
 import TuiTags from "../tui/TuiTags";
+import {KeyCloakContext} from "../../context/KeyCloakContext";
+import hasRoles from "../../authentication/hasRoles";
 
-const PropertyField = ({name, content, children, drawerSize = 800, underline = true, whiteSpace = 'normal', valueAlign="flex-start", labelWidth = 200}) => {
+const PropertyField = ({
+                           name,
+                           content,
+                           children,
+                           drawerSize = 800,
+                           underline = true,
+                           whiteSpace = 'normal',
+                           valueAlign = "flex-start",
+                           labelWidth = 200,
+                           detailsRoles = null
+                       }
+) => {
 
+    const authContext = useContext(KeyCloakContext)
     const [displayDetails, setDisplayDetails] = useState(false)
 
     function isEmpty(value) {
@@ -46,8 +59,9 @@ const PropertyField = ({name, content, children, drawerSize = 800, underline = t
                                             : content
                         }
                     </div>
-                    {children &&
-                    <FiMoreHorizontal size={18} className="FieldMore" onClick={() => setDisplayDetails(true)}/>}
+                    {children && hasRoles(authContext?.state?.roles, detailsRoles) &&
+                    <FiMoreHorizontal size={18} className="FieldMore" onClick={() => setDisplayDetails(true)}/>
+                    }
                 </div>
             </div>
             <FormDrawer
