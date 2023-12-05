@@ -14,7 +14,7 @@ export default function Properties({properties, show, exclude}) {
         if(typeof value === "undefined") {
             return "undefined";
         } else if(value === null) {
-            return "null";
+            return "none";
         } else if(empty(value)) {
             return "{}"
         } if(isString(value) && value === "") {

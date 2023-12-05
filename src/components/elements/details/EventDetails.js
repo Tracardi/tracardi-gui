@@ -22,7 +22,7 @@ export default function EventDetails({event, metadata, routing=true}) {
 
     const [tab, setTab] = React.useState(0);
 
-    const tabs = ["Event", "Routing", "Json", "Flow debug", "Logs"];
+    const tabs = ["Event", "Routing", "Flow debug", "Logs", "Json"];
 
     return <>
         <Tabs
@@ -33,7 +33,6 @@ export default function EventDetails({event, metadata, routing=true}) {
             onTabSelect={setTab}
             tabContentStyle={{overflow: "auto"}}
             tabsStyle={{
-                margin: 20,
                 display: "flex",
                 marginTop: 0,
                 marginBottom: 0,
@@ -72,13 +71,6 @@ export default function EventDetails({event, metadata, routing=true}) {
 
             </TabCase>
             <TabCase id={2}>
-                <TuiForm style={{margin: 20}}>
-                    <TuiFormGroup style={{overflow: "auto"}}>
-                        <JsonBrowser data={{event: event, _metadata: metadata}}/>
-                    </TuiFormGroup>
-                </TuiForm>
-            </TabCase>
-            <TabCase id={3}>
                 <TuiForm style={{margin: 20, height: "inherit"}}>
                     <TuiFormGroup style={{height: "inherit"}}>
                         <TuiFormGroupHeader header="Flow profiling"
@@ -89,7 +81,7 @@ export default function EventDetails({event, metadata, routing=true}) {
                     </TuiFormGroup>
                 </TuiForm>
             </TabCase>
-            <TabCase id={4}>
+            <TabCase id={3}>
                 <TuiForm style={{margin: 20, height: "inherit"}}>
                     <TuiFormGroup style={{height: "inherit"}}>
                         <TuiFormGroupHeader header="Logs"
@@ -97,6 +89,13 @@ export default function EventDetails({event, metadata, routing=true}) {
                         <TuiFormGroupContent style={{height: "100%"}}>
                             <EventLogDetails eventId={event?.id}/>
                         </TuiFormGroupContent>
+                    </TuiFormGroup>
+                </TuiForm>
+            </TabCase>
+            <TabCase id={4}>
+                <TuiForm style={{margin: 20}}>
+                    <TuiFormGroup style={{overflow: "auto"}}>
+                        <JsonBrowser data={{event: event, _metadata: metadata}}/>
                     </TuiFormGroup>
                 </TuiForm>
             </TabCase>

@@ -190,6 +190,33 @@ export const ProfileData = ({profile}) => {
                     </TabCase>
                 </Tabs>
             </div>
+            <div style={{borderRadius: 5, border: "solid 1px #ccc", marginTop: 20}}>
+                <Tabs tabs={["Job", "Loyalty", "Identifiers"]}
+                      tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
+                    <TabCase id={0}>
+                        <div style={{margin: 20}}>
+                            {!isEmptyObjectOrNull(profile?.data?.job)
+                                ? <Properties properties={profile?.data?.job}/>
+                                : <NoData header="No Job Data"/>}
+                        </div>
+                    </TabCase>
+                    <TabCase id={1}>
+                        <div style={{margin: 20}}>
+                            {!isEmptyObjectOrNull(profile?.data?.loyalty)
+                                ? <Properties properties={profile?.data?.identifier}/>
+                                : <NoData header="No Loyality Data"/>}
+                        </div>
+                    </TabCase>
+                    <TabCase id={2}>
+                        <div style={{margin: 20}}>
+                            {!isEmptyObjectOrNull(profile?.data?.identifier)
+                                ? <Properties properties={profile?.data?.identifier}/>
+                                : <NoData header="No Identifiers"/>}
+
+                        </div>
+                    </TabCase>
+                </Tabs>
+            </div>
         </Grid>
         <Grid item xs={6}>
             <fieldset style={{marginBottom: 20}}>
