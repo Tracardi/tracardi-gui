@@ -55,8 +55,10 @@ export const ProfileData = ({profile}) => {
                 <legend style={{fontSize: 13}}>Profile metadata</legend>
                 <PropertyField name="Id" content={<IdLabel label={profile.id}/>}/>
                 {profile?._meta?.index && <PropertyField name="Index" content={profile?._meta?.index}/>}
+                {profile?.metadata?.time?.create &&
+                <PropertyField name="Created" content={<DateValue date={profile?.metadata?.time?.create}/>}/>}
                 {profile?.metadata?.time?.insert &&
-                <PropertyField name="Created" content={<DateValue date={profile?.metadata?.time?.insert}/>}/>}
+                <PropertyField name="Inserted" content={<DateValue date={profile?.metadata?.time?.insert}/>}/>}
                 <PropertyField name="Updated" content={<DateValue date={profile?.metadata?.time?.update}/>}/>
                 {profile?.metadata?.time?.segmentation && <PropertyField name="Segmented" content={<DateValue date={profile?.metadata?.time?.segmentation}/>}/>}
                 {profile?.data?.devices?.last?.geo?.city && <PropertyField name="Last Visit Location" content={
