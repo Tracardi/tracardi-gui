@@ -1,9 +1,10 @@
 import TimeDifference from "../datepickers/TimeDifference";
 import React, {useState} from "react";
-import {formatDate, formatDateIso, makeUtcStringTzAware, makeUtcStringTzAwareIso} from "../../../misc/converters";
+import {makeTzAwareDate} from "../../../misc/converters";
 import {BsClock, BsGlobe} from "react-icons/bs";
+import {formatUTCDate} from "../../../misc/date";
 
-export default function DateValue({date, style}) {
+export default function DateValue({date: dateString, style}) {
 
     const [local, setLocal] = useState(true)
 
@@ -11,12 +12,22 @@ export default function DateValue({date, style}) {
         setLocal(!local)
     }
     let iso_date;
-    if(local) {
-        iso_date = formatDateIso(date)
-        date = makeUtcStringTzAware(date)
+    let date;
+
+    const dateTz = makeTzAwareDate(dateString)
+
+    if(dateTz !== null) {
+
+        iso_date = dateTz.toISOString()
+
+        if(local) {
+            date = dateTz.toLocaleString()
+        } else {
+            date = formatUTCDate(dateTz)
+        }
     } else {
-        iso_date = makeUtcStringTzAwareIso(date)
-        date = formatDate(date)
+        date = null
+        iso_date = null
     }
 
     return <span className="flexLine" style={{...style, cursor: "pointer"}} onClick={handleTimeChange}>

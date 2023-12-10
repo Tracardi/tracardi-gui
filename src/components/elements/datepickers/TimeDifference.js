@@ -1,4 +1,5 @@
 import React from "react";
+import {makeTzAwareDate} from "../../../misc/converters";
 
 const TimeDifference = ({ date }) => {
 
@@ -6,10 +7,10 @@ const TimeDifference = ({ date }) => {
     return ""
   }
 
-  const days = getTimeDifference(date);
+  const passedTime = getTimeDifference(date);
 
   const getSign = () => {
-    if(days.passed === "") {
+    if(passedTime.passed === "") {
       return "+"
     }
     return "-"
@@ -19,10 +20,10 @@ const TimeDifference = ({ date }) => {
     const sign = getSign()
 
     if (sign === '+') {
-      return `${sign} ${days.willHappen}`
+      return `${sign} ${passedTime.willHappen}`
     }
 
-    return `${sign} ${days.passed}`
+    return `${sign} ${passedTime.passed}`
   }
 
   return (
@@ -68,16 +69,18 @@ function getTimeDifference(date) {
     return "";
   }
 
+  date = makeTzAwareDate(date)
+
   const baseDate = new Date(date);
-  const utc_present = Date.now()
   const utc_base = Date.UTC(
-      baseDate.getFullYear(),
-      baseDate.getMonth(),
-      baseDate.getDate(),
-      baseDate.getHours(),
-      baseDate.getMinutes(),
-      baseDate.getSeconds()
+      baseDate.getUTCFullYear(),
+      baseDate.getUTCMonth(),
+      baseDate.getUTCDate(),
+      baseDate.getUTCHours(),
+      baseDate.getUTCMinutes(),
+      baseDate.getUTCSeconds()
   );
+  const utc_present = Date.now()
 
   const { 
     days, 

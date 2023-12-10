@@ -4,7 +4,7 @@ function intersect(a, b) {
 }
 
 export default function hasRoles(userRoles, requriedRoles) {
-    console.log(userRoles)
+
     if (requriedRoles === null) {
         return true
     }

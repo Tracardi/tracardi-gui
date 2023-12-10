@@ -53,11 +53,18 @@ export function abbreviateNumber(value) {
     return round(newValue, 3);
 }
 
+function ensureUTC(dateString) {
+    if (!dateString.endsWith('Z') && !dateString.match(/[\+\-]\d{2}:\d{2}$/)) {
+        dateString += 'Z';
+    }
+    return dateString;
+}
+
 export function makeUtcStringTzAware(utcString) {
     if(utcString === null) {
         return null
     }
-    let date = new Date(utcString + "Z");
+    const date = new Date(ensureUTC(utcString))
     return date.toLocaleString();
 }
 
@@ -69,12 +76,11 @@ export function formatDate(utcString) {
     return date.toLocaleString();
 }
 
-export function makeUtcStringTzAwareIso(utcString) {
+export function makeTzAwareDate(utcString) {
     if(!utcString) {
         return null
     }
-    let date = new Date(utcString + "Z");
-    return date.toISOString();
+    return new Date(ensureUTC(utcString))
 }
 
 export function formatDateIso(utcString) {

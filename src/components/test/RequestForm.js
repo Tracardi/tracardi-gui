@@ -17,6 +17,7 @@ import {TuiSelectEventSource} from "../elements/tui/TuiSelectEventSource";
 import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
 import {getEventTypePredefinedProps} from "../../remote_api/endpoints/event";
 import {useRequest} from "../../remote_api/requestClient";
+import {toUTCISOStringWithMilliseconds} from "../../misc/date";
 
 export const RequestForm = ({onError, onRequest, eventType: evType}) => {
 
@@ -48,13 +49,16 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
             }
 
             if(ctx !== null && props !== null) {
-
+                const currentDate = new Date()
                 let requestBody = {
                     context: ctx,
                     session: {id: session},
                     source: resource,
                     events: [
                         {
+                            time: {
+                              create:   toUTCISOStringWithMilliseconds(currentDate)
+                            },
                             type: eventType,
                             properties: props,
                             options: {

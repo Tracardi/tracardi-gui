@@ -16,10 +16,6 @@ export function getEventLogs(eventId) {
     }
 }
 
-export function getEventDebugLogs(eventId) {
-    return {url: `/event/debug/${eventId}`}
-}
-
 export function getEventsCount() {
     return {url: "/event/count"}
 }
