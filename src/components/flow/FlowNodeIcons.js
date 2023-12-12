@@ -100,7 +100,8 @@ import {
     SiZendesk,
     SiIntercom,
     SiJavascript,
-    SiOpenai
+    SiOpenai,
+    SiTelegram
 } from "react-icons/si";
 import {GrMysql} from "react-icons/gr";
 import {
@@ -278,8 +279,8 @@ export const icons = {
     "gear": (size) => <VscGear size={size}/>,
     "trigger": (size) => <BsPlayCircle size={size} />,
     "metric": (size) => <VscDashboard size={size}/>,
-    "chat": size => <BsChatSquare size={size}/>
-
+    "chat": (size) => <BsChatSquare size={size}/>,
+    "telegram": (size) => <SiTelegram size={size} />,
 }
 
 
