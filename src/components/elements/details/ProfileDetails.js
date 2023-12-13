@@ -197,7 +197,7 @@ export default function ProfileDetails({profile}) {
                 <TabCase id={3}>
                     <div className="Box10">
                         <NoData header="This feature will be implemented soon">
-                           This is a placeholder for the feature that will be implemented in minor version of 0.8.1.x.
+                           This is a placeholder for the feature that will be implemented in minor version of 0.9.1.x.
                         </NoData>
                     </div>
                 </TabCase>

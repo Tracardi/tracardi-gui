@@ -3,7 +3,7 @@ import {IoTextOutline, IoAt} from "react-icons/io5";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 
-export default function PathTextAdornment({value, onChange, lock=false, lockValue=null}) {
+export default function PathTextAdornment({value, onChange, lock=false, lockValue=null, disableSwitching=false}) {
 
     const sources = [
         {
@@ -96,11 +96,18 @@ export default function PathTextAdornment({value, onChange, lock=false, lockValu
         </div>
     }
 
+    function switching(path) {
+        if(!disableSwitching) {
+            return path ? <Path/> : <IoTextOutline size={20} title="Value" style={{color: "gray", marginRight: 10}}/>
+        }
+        return ""
+    }
+
     return <span
         style={{display: "flex", alignItems: "center", cursor: "pointer"}}
         onClick={handleIconClick}
         onMouseDown={handleMouseDown}
     >
-        {path ? <Path/> : <IoTextOutline size={20} title="Value" style={{color: "gray", marginRight: 10}}/>}
+        {switching(path)}
     </span>
 }

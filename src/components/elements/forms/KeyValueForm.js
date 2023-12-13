@@ -6,7 +6,15 @@ import DotAccessor from "./inputs/DotAccessor";
 import Button from "./Button";
 import AutoComplete from "./AutoComplete";
 
-const KeyValueForm = ({ value, onChange, values, endpoint, defaultKeySource, defaultValueSource, lockKeySource, availableValues = []}) => {
+const KeyValueForm = ({ value, onChange,
+                        values, endpoint,
+                        defaultKeySource,
+                        defaultValueSource,
+                        lockKeySource,
+                        availableValues = [],
+                        disableSwitching=false,
+                        disableCasting=false
+                      }) => {
 
   const [localValue, setLocalValue] = useState(value || {});
 
@@ -41,7 +49,14 @@ const KeyValueForm = ({ value, onChange, values, endpoint, defaultKeySource, def
 
   function switchInputs() {
     if (availableValues?.length === 0 ) {
-      return <DotAccessor label="Key" value={key.current} onChange={handleKeyChange} defaultSourceValue={defaultKeySource} lockSource={lockKeySource}/>
+      return <DotAccessor label="Key"
+                          value={key.current}
+                          onChange={handleKeyChange}
+                          defaultSourceValue={defaultKeySource}
+                          lockSource={lockKeySource}
+                          disableSwitching={disableSwitching}
+                          disableCasting={disableCasting}
+      />
     } else {
       return <AutoComplete
             onlyValueWithOptions={true}
@@ -62,7 +77,14 @@ const KeyValueForm = ({ value, onChange, values, endpoint, defaultKeySource, def
         <div style={{margin: 10}}>Key:</div>
         {switchInputs()}
         <div style={{margin: 10}}>Value:</div>
-        <DotAccessor label="Value" value={val.current} onChange={handleValueChange} defaultSourceValue={defaultValueSource}/>
+        <DotAccessor label="Value"
+                     value={val.current}
+                     onChange={handleValueChange}
+                     defaultSourceValue={defaultValueSource}
+                     forceMode={2}
+                     disableSwitching={disableSwitching}
+                     disableCasting={disableCasting}
+        />
 
       </div>
       <div style={{marginTop: 10, display: "flex"}}>

@@ -38,6 +38,7 @@ export function ValueInput({
             style={{minWidth: 270}}
             value={value}
             autoCastValue={cast}
+            disableCast={disableCast}
             onChange={(value, castValue) => handleChange(value, castValue)}/>
     } else {
         let url = `/storage/mapping/${source}/metadata`
@@ -65,7 +66,9 @@ export default function DotAccessor({
                                         onChange,
                                         error, errorMessage,
                                         forceMode = 2,
-                                        lockSource = false
+                                        lockSource = false,
+                                        disableSwitching=false,
+                                        disableCasting=false
                                     }) {
 
     const parseValue = useCallback((initValue) => {
@@ -145,12 +148,15 @@ export default function DotAccessor({
                          onChange={handleSourceChange}
                          lock={lockSource}
                          lockValue={defaultSourceValue}
+                         disableSwitching={disableSwitching}
             />
             <ValueInput
                 source={dataSource}
                 value={pathValue}
                 cast={castValue}
-                onChange={handleValueChange}/>
+                onChange={handleValueChange}
+                disableCast={disableCasting}
+            />
         </fieldset>
         {errorMessage && <div style={{paddingLeft: 10, paddingTop: 5, fontSize: 12, color: "#d81b60"}}>{errorMessage}</div>}
     </>
