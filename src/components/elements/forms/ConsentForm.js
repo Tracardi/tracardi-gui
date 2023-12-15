@@ -186,7 +186,7 @@ export default function ConsentForm({
                     />
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Can customer revoke this consent "
-                                   description="Most of the consents must should be revokable.">
+                                   description="Same of the consents may be revokable.">
                     <FormControlLabel
                         style={{marginLeft: 2}}
                         control={

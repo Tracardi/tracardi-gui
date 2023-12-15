@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function Tag({children, style, tip, backgroundColor="#ccc", color="#000"}) {
-    style = {...style, backgroundColor, color, display: "inline-flex", alignItems: "center", padding: "2px 10px", fontSize:"90%", borderRadius: 5, marginRight: 5, marginTop: 2}
+    style = {...style, backgroundColor, color, display: "inline-flex", alignItems: "center", padding: "2px 10px", fontSize:"90%", borderRadius: 5, marginRight: 5, marginTop: 2, whiteSpace: "nowrap"}
     if(tip) {
         style = {...style, cursor: "help"}
     }

@@ -250,12 +250,12 @@ const AppBox = () => {
                     <Suspense fallback={<CenteredCircularProgress/>}>
                         <TopBar>Identity Resolution and Consents</TopBar>
                         <PageTabs tabs={[
+                            new PrivateTab(["admin", "developer", "marketer"],
+                                <Consents/>, "/consents/type", "Consent types"),
                             new PrivateTab(["admin", "developer"],
                                 <IdentificationPoint/>, "/identification/point", <>
                                     <BsStar size={20} style={{marginRight: 5}}/>{"Identification points"}
                                 </>),
-                            new PrivateTab(["admin", "developer", "marketer"],
-                                <Consents/>, "/consents/type", "Consent types"),
                             new PrivateTab(["admin", "developer", "marketer"],
                                 <ConsentsDataCompliance/>, "/consents/compliance", <>
                                     <BsStar size={20}
