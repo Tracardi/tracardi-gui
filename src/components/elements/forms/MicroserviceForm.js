@@ -78,6 +78,7 @@ export default function MicroserviceForm({value, onServiceChange, onServiceClear
                         baseURL: state?.credentials?.url,
                         url: `/service/resource?service_id=${value.id}`
                     },
+                        false,
                         state?.credentials?.token)
 
                     setData(state)

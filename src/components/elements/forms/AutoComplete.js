@@ -51,7 +51,7 @@ const AutoComplete = ({
                 try {
                     setOpen(true)
                     setLoading(true)
-                    const response = await request(endpoint, token)
+                    const response = await request(endpoint, false, token)
                     if (response && mounted.current) {
                         let options = convertResponseToAutoCompleteOptions(response)
 

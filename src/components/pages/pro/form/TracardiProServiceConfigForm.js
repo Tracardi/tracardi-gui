@@ -31,7 +31,7 @@ function MicroserviceAndResourceForm({onSubmit}) {
                 url: '/service/resource/validate?service_id='+service?.service?.id,
                 method: "POST",
                 data: resource
-            }, service?.credentials?.token)
+            }, false, service?.credentials?.token)
 
             if (onSubmit instanceof Function) {
                 onSubmit(service, resource)

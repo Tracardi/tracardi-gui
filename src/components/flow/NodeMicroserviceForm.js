@@ -31,6 +31,7 @@ export default function NodeMicroserviceForm({node, onMicroserviceChange, onSubm
                     baseURL: endpoint.baseURL,
                     url: `/plugin/form?service_id=${serviceId}&action_id=${actionId}`
                 },
+                false,
                 token
             )
 
