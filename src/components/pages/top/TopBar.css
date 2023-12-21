@@ -13,7 +13,7 @@
     font-weight: 400;
     font-size: 220%;
     margin: 0;
-    color: #444;
+    opacity: 80%;
     display: flex;
     align-items: center;
 }

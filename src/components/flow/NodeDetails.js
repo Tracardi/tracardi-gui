@@ -14,11 +14,14 @@ import MdManual from "./actions/MdManual";
 import NodeLogDetails from "../elements/details/NodeLogDetails";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
 import Drawer from "@mui/material/Drawer";
+import {useTheme} from "@mui/material";
 
 export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicroserviceChange}) {
 
     const [tab, setTab] = useState(3);
     const [displayManual, setDisplayManual] = useState(false);
+
+    const theme = useTheme()
 
     useEffect(() => {
 
@@ -41,6 +44,8 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
         }
     }
 
+    const iconColor = {color: theme.palette.mode==="dark" ? theme.palette.common.black: null}
+
     return (
         <div style={{
             display: "flex",
@@ -52,7 +57,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                 <div className="NodeDetailsIcons" style={{width: 60, overflow: "auto"}}>
                     <div>
                         <IconButton label="Info" onClick={() => setTab(0)} selected={tab === 0} size="large">
-                            <BsInfoCircle size={22}/>
+                            <BsInfoCircle size={22} style={iconColor}/>
                         </IconButton>
 
                         {(node?.data?.spec?.form || node?.data?.metadata?.remote === true) && <IconButton
@@ -60,43 +65,43 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                             onClick={() => setTab(3)}
                             selected={tab === 3}
                             size="large">
-                            <VscSettings size={22}/>
+                            <VscSettings size={22} style={iconColor}/>
                         </IconButton>}
                         {node?.data?.spec?.init && <IconButton
                             label="Advanced JSON Configuration"
                             onClick={() => setTab(2)}
                             selected={tab === 2}
                             size="large">
-                            <VscJson size={22}/>
+                            <VscJson size={22} style={iconColor}/>
                         </IconButton>}
                         {node?.id && <IconButton
                             label="Node console log"
                             onClick={() => setTab(5)}
                             selected={tab === 5}
                             size="large">
-                            <VscRunErrors size={22}/>
+                            <VscRunErrors size={22} style={iconColor}/>
                         </IconButton>}
                         {node?.data?.metadata && <IconButton
                             label="Advanced Runtime Editor"
                             onClick={() => setTab(6)}
                             selected={tab === 6}
                             size="large">
-                            <VscGear size={22}/>
+                            <VscGear size={22} style={iconColor}/>
                         </IconButton>}
                         {(process.env.NODE_ENV && process.env.NODE_ENV === 'development') &&
                         <IconButton label="Raw" onClick={() => setTab(4)} selected={tab === 4} size="large">
-                            <VscDebugConsole size={22}/>
+                            <VscDebugConsole size={22} style={iconColor}/>
                         </IconButton>}
                     </div>
                     {node?.data?.spec?.manual && <div>
                         <IconButton label="Documentation" onClick={() => setDisplayManual(!displayManual)}
                                     selected={displayManual} size="large">
-                            <BsBook size={22}/>
+                            <BsBook size={22} style={iconColor}/>
                         </IconButton>
                     </div>}
 
                 </div>
-                <div className="NodeDetailsContent" style={{width: 580, backgroundColor: "rgba(235, 235, 235, 0.85)"}}>
+                <div className="NodeDetailsContent" style={{width: 580, backgroundColor: theme.palette.common.white}}>
                     <div className="Title">
                         <FilterTextField label="Node name"
                                          initValue={node?.data?.metadata?.name}
@@ -169,7 +174,7 @@ export function NodeDetails({node, onConfig, onRuntimeConfig, onLabelSet, onMicr
                             borderRadius: "15px",
                             margin: "10px",
                             height: "calc(100% - 20px)",
-                            backgroundColor: "aliceblue",
+                            backgroundColor: theme.palette.common.white,
                             boxShadow: "0px 0px 14px -6px rgba(66, 68, 90, 1)"
                         }
                     }}

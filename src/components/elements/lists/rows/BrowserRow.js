@@ -28,7 +28,7 @@ const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, childre
             >
 
                 <div style={{display: "flex", alignItems: "center", width: "auto"}}>
-                    <span style={{color: "#555", display: "flex", width: 30}}><FlowNodeIcons icon={data?.icon} size={22}/></span>
+                    <span style={{opacity: "60%", display: "flex", width: 30}}><FlowNodeIcons icon={data?.icon} size={22}/></span>
                     <div style={{display: "flex", flexDirection:"column", marginLeft: 10, gap: 5}}>
                         <div className="flexLine" style={{fontSize: 18, marginRight: 5, fontWeight: 500}}>{data.name}</div>
                         {description && <div className="flexLine">{description}</div>}

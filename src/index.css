@@ -31,7 +31,7 @@ html *::-webkit-scrollbar-thumb {
   background: #888;
 }
 html *::-webkit-scrollbar-thumb:window-inactive {
-  background: rgba(0, 109, 179, 20%); 
+  background: rgba(0, 109, 179, 0.2);
 }
 
 code {
@@ -47,7 +47,7 @@ H1.header {
   font-size: 185%;
   margin: 0 0 15px 0;
   font-weight: 400;
-  color: #444;
+  opacity: 80%;
   text-transform: none;
 }
 
@@ -55,7 +55,7 @@ H2.subHeader {
   font-size: 130%;
   margin: 0 0 15px 0;
   font-weight: 400;
-  color: #444;
+  opacity: 70%;
   text-transform: none;
 }
 
@@ -71,7 +71,7 @@ H2.subHeader {
 }
 
 .boxRowUnderlines > DIV:hover {
-  background-color: #f5f5f5;
+  background-color: rgba(200,200,200,0.2);
 }
 
 .boxRowUnderlines >DIV:last-child {

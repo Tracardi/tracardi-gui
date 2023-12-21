@@ -1,13 +1,12 @@
 .menuNode {
     padding: 8px;
     border: solid 2px transparent;
-    border-radius: 10px;
+    border-radius: 18px;
     margin: 4px 0;
-    color: inherit;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #f0f0f0;
+    background-color: rgba(200,200,200, 0.2);
     border: 1px solid #eee;
 
 }
@@ -23,16 +22,16 @@
 }
 
 .menuNode:hover {
-    background-color: #e0e0e0;
+    background-color: rgba(200,200,200, 0.3);
     border: 1px solid #e0e0e0;
-    color: black;
+    opacity: 100%;
     cursor: grab;
 }
 
 .FlowEditor > .WorkArea .SidebarSection {
     height: calc(100% - 20px);
     width: 300px;
-    background: rgba(255,255,255,0.85);
+    background: rgba(200,200,200, 0.1);
     border-radius: 15px;
     margin: 10px;
     border: solid 2px #ccc;
@@ -76,6 +75,6 @@
     font-weight: 500;
     text-transform: uppercase;
     border-bottom: solid 1px #444;
-    color: #444;
+    opacity: 70%;
     letter-spacing: 0.5px;
 }

@@ -5,41 +5,41 @@
     border-radius: 5px;
     user-select: text;
     border-radius: inherit;
-    color: #444;
 }
 .MdManual A {
-    color: rgb(0, 105, 192);
+    text-decoration: underline;
+    color: inherit;
 }
 
 .MdManual H1 {
     margin: 0;
     font-size: 20px;
     font-weight: normal;
-    color: black;
+    opacity: 100%;
 }
 
 .MdManual H2 {
     margin: 0;
     font-size: 18px;
     font-weight: normal;
-    color: black;
+    opacity: 100%;
 }
 
 .MdManual H3 {
     margin: 0;
     font-size: 17px;
     font-weight: normal;
-    color: black;
+    opacity: 100%;
 }
 
 .MdManual CODE {
-    background: #e1f5fe;
+    opacity: 80%;
     display: inline-flex;
     padding: 15px;
     margin-left: 10px;
     border-radius: 5px;
-    border: solid 2px #000;
-    color: black;
+    border: solid 2px rgba(200,200,200,.3);
+    background-color: rgba(200,200,200,.2);
     font-family: "IBM Plex Mono";
     width: 100%;
     overflow: auto;

@@ -14,6 +14,7 @@ import ErrorsBox from "../../errors/ErrorsBox";
 import LinearProgress from "@mui/material/LinearProgress";
 import MdManual from "../../flow/actions/MdManual";
 import {useRequest} from "../../../remote_api/requestClient";
+import {useTheme} from "@mui/material";
 
 
 function ServiceCreatedConfirmation({onConfirmed}) {
@@ -63,6 +64,7 @@ export default function ProServiceList() {
     const [error, setError] = useState(null);
 
     const {request} = useRequest()
+    const theme = useTheme()
 
     useEffect(() => {
         setLoading(true);
@@ -226,7 +228,7 @@ export default function ProServiceList() {
             open={selectedService !== null}>
             {selectedService?.metadata?.documentation
                 ? <div style={{display: "flex", minHeight: "100%"}}>
-                    <div style={{width: 450, backgroundColor: "aliceblue", borderRight: "solid 1px #ddd",}}>
+                    <div style={{width: 450, backgroundColor: theme.palette.common.white, borderRight: "solid 1px #ddd",}}>
                         <div style={{padding: 20, position: "sticky", top: 0}} ><MdManual
                             mdFile={selectedService?.metadata?.documentation?.file}
                             basePath={selectedService?.metadata?.documentation?.path}

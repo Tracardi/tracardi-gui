@@ -51,7 +51,6 @@ const App = ({alert, resource, close}) => {
         >
             <QueryClientProvider client={queryClient}>
                 <Installer>
-
                     <Router>
                         <KeyCloakAuthProvider enabled={false}>
                         <Routes>

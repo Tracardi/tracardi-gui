@@ -116,7 +116,7 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
             </div>
     }
 
-    const style = {backgroundColor: theme.palette.primary.main, color: theme.palette.common.white}
+    const style = {backgroundColor: theme.palette.primary.main, color: "#fff"}
 
     return <div style={style} className={collapsed ? "MainMenu CollapsedMainMenu": "MainMenu FullMainMenu"}>
         <div>

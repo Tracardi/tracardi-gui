@@ -10,7 +10,6 @@ export default function PaperBox({children}) {
                 flexDirection: "column",
                 alignItems: "center",
                 padding: 50,
-                backgroundColor: "white",
                 borderRadius: 10
             }}>
                 {children}

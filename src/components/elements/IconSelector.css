@@ -7,7 +7,6 @@
 }
 
 .IconList > .Icon {
-    color: #444;
     padding: 10px;
     cursor: pointer;
     display:grid;
@@ -15,7 +14,6 @@
 }
 
 .IconList > .Icon:hover {
-    background-color: #004A98;
-    color: white;
+    background-color: rgba(200,200,200,.2);
     border-radius: 4px;
 }

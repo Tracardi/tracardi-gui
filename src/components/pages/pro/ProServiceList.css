@@ -6,13 +6,10 @@
 }
 
 .Categories LI {
-    padding: 1px;
     cursor: pointer;
-    border-bottom: 1px solid white;
-    color: #555;
+    padding: 5px;
 }
 
 .Categories LI:hover {
-    border-bottom: 1px dotted #aaa;
-    color: #000;
+    background-color: rgba(200,200,200,.2);
 }

@@ -1,6 +1,5 @@
 .DateTimePicker {
     margin: 10px;
-    background-color: white;
     z-index: 10;
     right:5px;
     width:520px;
@@ -32,7 +31,6 @@
     flex-direction: row;
     justify-items: center;
     margin: 10px 0 20px 0;
-    color: rgb(0, 105, 192);
     font-size: 110%;
 }
 
@@ -56,7 +54,7 @@
     align-items: center;
 }
 .DateTimePicker .DateNow > DIV {
-    color: #333333;
+    opacity: 80%;
 }
 
 

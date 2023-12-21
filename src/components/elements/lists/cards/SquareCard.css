@@ -2,7 +2,7 @@
     display: inline-flex;
     align-items: center;
     border: solid rgba(225,225,225, 0.8) 1px;
-    background: rgba(225,225,225, 0.8);
+    background: rgba(200,200,200,0.2);
     cursor: pointer;
     width: 190px;
     height: 190px;
@@ -19,7 +19,7 @@
 
 .SquareCard:hover {
     border: solid #ccc 1px;
-    background: whitesmoke;
+    background: rgba(200,200,200,0.1);;
 }
 
 .SquareCard .name {
@@ -38,7 +38,7 @@
     font-size: 70%;
     text-align: center;
     max-height: 60px;
-    color: #444;
+    opacity: 80%;
 }
 
 .SquareCard .tags {
@@ -47,7 +47,7 @@
 
 .SquareCard .icon {
     margin: 10px;
-    color: #444;
+    opacity: 80%;
 }
 
 .SquareCard .enabled {

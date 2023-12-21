@@ -12,6 +12,7 @@ import MdManual from "./actions/MdManual";
 import {useDebounce} from "use-debounce";
 import HorizontalCircularProgress from "../elements/progress/HorizontalCircularProgress";
 import {useRequest} from "../../remote_api/requestClient";
+import useTheme from "@mui/material/styles/useTheme";
 
 function SidebarLeft({showAlert, onDebug, debugInProgress, flowType}) {
 
@@ -22,6 +23,7 @@ function SidebarLeft({showAlert, onDebug, debugInProgress, flowType}) {
     const [manual, setManual] = useState(null);
 
     const {request} = useRequest()
+    const theme = useTheme();
 
     useEffect(() => {
         let isSubscribed = true
@@ -95,7 +97,7 @@ function SidebarLeft({showAlert, onDebug, debugInProgress, flowType}) {
                             plugins?.total > 0 ?
                             Object.entries(plugins?.grouped).map(([category, plugs], index) => {
                                 return <div key={index}>
-                                    <p>{category}</p>
+                                    <p style={{color: theme.palette.common.black}}>{category}</p>
                                     {plugs.map((row, subIndex) => {
                                         return <FlowMenuNode key={index + "-" + subIndex}
                                                             row={row}

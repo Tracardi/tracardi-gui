@@ -94,7 +94,9 @@ export default function DataTimePicker({type, datetime, onDatetimeSelect}) {
             <div className="DateTimePicker">
                 <Tabs tabs={["Date & time", "Relative", "Now"]} defaultTab={tab} onTabSelect={setTab}>
                     <TabCase id={0}>
-                        <CalendarPicker onDateSelect={onDatetimeSelect} datetime={datetime}/>
+                        <div style={{backgroundColor: "white"}}>
+                            <CalendarPicker onDateSelect={onDatetimeSelect} datetime={datetime}/>
+                        </div>
                     </TabCase>
                     <TabCase id={1}>
                         <RelativePicker type={type} onDateSelect={onDatetimeSelect} datetime={datetime}/>

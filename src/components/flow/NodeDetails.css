@@ -9,7 +9,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 10px;
-    background-color: rgba(235, 235, 235, 0.85);
+    background-color: rgba(200,200,200,.2);
     border-radius: 15px 0 0 15px;
 }
 
@@ -30,8 +30,6 @@
     font-weight: 400;
     justify-content: space-between;
     padding: 13px;
-    color: #444;
-    background-color: white;
     height: 70px;
     border-bottom: solid 1px #ccc;
     z-index: 2;

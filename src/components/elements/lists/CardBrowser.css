@@ -5,6 +5,7 @@
     grid-template-rows: 55px calc(100% - 55px);
     width: inherit;
 }
+
 .CardBrowser > H3 {
     display: flex;
     align-content: center;
@@ -12,12 +13,11 @@
     text-transform: uppercase;
     margin: 0;
     font-weight: 600;
-    width:100%;
+    width: 100%;
     letter-spacing: 1px;
 }
 
-.CardBrowser > SECTION
-{
+.CardBrowser > SECTION {
     display: flex;
     justify-content: flex-start;
     flex-direction: row;
@@ -30,17 +30,18 @@
 .CardBrowser .CardGroup {
     display: flex;
     flex-direction: column;
-    margin:  10px;
+    margin: 10px;
     width: fit-content;
 }
 
-.CardBrowser .RowGroup  > HEADER  {
+.CardBrowser .RowGroup > HEADER {
     padding: 5px 10px 5px 10px;
     font-size: 120%;
     border-bottom: 2px #444 solid;
     margin-bottom: 10px;
     text-transform: capitalize;
 }
+
 .CardBrowser .CardGroup > HEADER {
     padding: 5px 10px 5px 10px;
     font-size: 120%;
@@ -59,7 +60,7 @@
 }
 
 .CardBrowser .RowGroup > DIV > DIV:hover {
-    background-color: #f5f5f5;
+    background-color: rgba(200, 200, 200, 0.2);
 }
 
 .CardBrowser .RowGroup > DIV {

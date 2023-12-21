@@ -103,7 +103,6 @@ export default function PluginForm({id}) {
                             tabContentStyle={{overflow: "initial"}}
                             tabsStyle={{
                                 display: "flex",
-                                backgroundColor: "white",
                                 marginTop: 0,
                                 marginBottom: 0,
                                 zIndex: 2

@@ -85,7 +85,7 @@ const ApiUrlSelector = ({children}) => {
 
     if (isValidAPIUrl() === false) {
         return <PaperBox>
-            <BsHddNetwork size={50} style={{color: "#666"}}/>
+            <BsHddNetwork size={50} style={{opacity: "70%"}}/>
             <h1 style={{fontWeight: 300}}>Select TRACARDI server</h1>
             <p>Type or select TRACARDI API Url.</p>
             <Grid container display="flex" justifyContent="center">
