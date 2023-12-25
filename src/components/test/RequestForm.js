@@ -131,7 +131,7 @@ export const RequestForm = ({onError, onRequest, eventType: evType}) => {
                     <BoolInput label="Async event storing" value={asyncTrack} onChange={setAsyncTrack}/>
                 </TuiFormGroupField>
 
-                <TuiFormGroupField header="Context" description="Context is the additional data describing event context.">
+                <TuiFormGroupField header="Context" description="Context is the additional data describing session context.">
                     <fieldset>
                         <legend>Context</legend>
                         <JsonEditor value={context} onChange={setContext} height="120px"/>
