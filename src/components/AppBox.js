@@ -1,4 +1,4 @@
-import React, {Suspense, useState, createContext} from "react";
+import React, {Suspense, useState, createContext, useEffect, useContext} from "react";
 import MainContent from "./MainContent";
 import {Navigate, Routes, Route} from "react-router-dom";
 import PrivateRoute from "./authentication/PrivateRoute";
@@ -61,7 +61,26 @@ export const DataContext = createContext(null);
 const AppBox = () => {
 
     const [production, setProduction] = useState(getDataContext(false))
-    const [darkMode, setDarkMode] = useState(getDataContext(false))
+    const [darkMode, setDarkMode] = useState(null)
+
+    // Load default mode from browser preferences
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+        const handleChange = (e) => {
+            setDarkMode(e.matches);
+        }
+
+        // Initial check
+        handleChange(mediaQuery);
+
+        // Listen for changes
+        mediaQuery.addEventListener('change', handleChange);
+
+        // Cleanup
+        return () => mediaQuery.removeEventListener('change', handleChange);
+    }, []);
+
 
     const handleContextChange = (context) => {
         setProduction(context);

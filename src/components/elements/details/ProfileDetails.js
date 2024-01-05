@@ -103,7 +103,7 @@ export default function ProfileDetails({profile}) {
                                 <Grid container spacing={2}>
                                     <Grid item xs={10}>
                                         <AreaChartDisplay endpoint={getProfileEventsHistogram(profile.id, "month")}
-                                                          barChartColors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}
+                                                          barChartColors={_theme.palette.charts.pie}
                                         />
                                     </Grid>
                                     <Grid item xs={2}>
@@ -111,7 +111,7 @@ export default function ProfileDetails({profile}) {
                                             paddingTop={0}
                                             loading={isLoadingEventsByType}
                                             data={eventsByType}
-                                            colors={['#0088FE', '#00C49F', '#FFBB28', '#FF8042']}/>
+                                            colors={_theme.palette.charts.pie}/>
                                     </Grid>
                                 </Grid>
                             </AccordionDetails>

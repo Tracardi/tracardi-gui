@@ -5,14 +5,17 @@ import "./Chart.css";
 import PropTypes from "prop-types";
 import {useFetch} from "../../../remote_api/remoteState";
 import {LocalDataContext} from "../../pages/DataAnalytics";
+import useTheme from "@mui/material/styles/useTheme";
 
 
 export default function AreaChartDisplay({endpoint, barChartColors}) {
 
     const [data, setData] = React.useState([]);
 
+    const theme = useTheme()
+
     const localContext = useContext(LocalDataContext)
-    const barColors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
+    const barColors = theme.palette.charts.pie
 
     const {isLoading} = useFetch(
         ["getChartData", [endpoint, localContext]],
@@ -40,7 +43,7 @@ export default function AreaChartDisplay({endpoint, barChartColors}) {
                 ? <CenteredCircularProgress/>
                 : <ResponsiveContainer>
                 <AreaChart data={data?.result} margin={{top: 15, right: 20, bottom: 5, left: 0}}>
-                    <CartesianGrid strokeDasharray="3 3"/>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,.3)"/>
                     <Tooltip isAnimationActive={false} content={<CustomTooltip/>}/>
                     {data?.buckets?.map((column, index) => {
                         return <Area key={index}

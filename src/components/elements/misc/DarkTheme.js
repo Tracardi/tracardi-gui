@@ -1,18 +1,19 @@
 import {BsMoon} from "react-icons/bs";
-import React, {useState} from "react";
+import React from "react";
 import IconButton from "./IconButton";
+import useTheme from "@mui/material/styles/useTheme";
 
 export default function DarkThemeButton({onDarkMode}) {
 
-    const [darkMode, setDarkMode] = useState(false)
+    const theme = useTheme();
 
     const handleModeChange  = () => {
-        const mode = !darkMode
-        setDarkMode(mode)
+        const mode = theme.palette.mode === 'dark' ? 'light' : 'dark'
+
         if(onDarkMode instanceof Function) {
-            onDarkMode(mode)
+            onDarkMode(mode === 'dark')
         }
     }
 
-    return <IconButton label="Need help?" selected={darkMode} onClick={handleModeChange}><BsMoon size={20}/></IconButton>
+    return <IconButton label="Need help?" selected={theme.palette.mode === 'dark'} onClick={handleModeChange}><BsMoon size={20}/></IconButton>
 }

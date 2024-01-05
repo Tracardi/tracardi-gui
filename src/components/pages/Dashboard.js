@@ -19,6 +19,7 @@ import {
     getSessionsByOsName, getSessionsByResolution
 } from "../../remote_api/endpoints/session";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
+import useTheme from "@mui/material/styles/useTheme";
 
 const Item = styled(Paper)(({theme, style}) => ({
     ...theme.typography.body2,
@@ -58,19 +59,8 @@ const ContainedItem = styled(Paper)(({theme, style}) => ({
 
 // function SessionsByApp() {
 //
-//     const colorsList = [
-//         "#7795FF",'#3B82F6',
-//         '#3d5afe',
-//         "#8bc34a",
-//         "#4caf50",
-//         "#f44336",
-//         "#ff9800",
-//         "#FFB178",
-//         "#FF78B1",
-//         "#FF3C8E",
-//         "#A0BBFF", "#EC77FF",
-//         "#A0F9FF",
-//     ]
+// const theme = useTheme()
+// const colorsList = theme.palette.charts.line
 //
 //     const {data, isLoading, error} = useFetch(
 //         ["sessionsByApp"],
@@ -91,19 +81,8 @@ const ContainedItem = styled(Paper)(({theme, style}) => ({
 
 function EventsByType() {
 
-    const colorsList = [
-        "#7795FF", '#3B82F6',
-        '#3d5afe',
-        "#8bc34a",
-        "#4caf50",
-        "#f44336",
-        "#ff9800",
-        "#FFB178",
-        "#FF78B1",
-        "#FF3C8E",
-        "#A0BBFF", "#EC77FF",
-        "#A0F9FF",
-    ]
+    const theme = useTheme()
+    const colorsList = theme.palette.charts.line
 
     const {data, isLoading, error} = useFetch(
         ["eventByType"],
@@ -127,20 +106,8 @@ function EventsByType() {
 
 function Charts1() {
 
-    const colorsList = [
-
-        '#3d5afe',
-        "#8bc34a",
-        "#4caf50",
-        "#f44336",
-        "#ff9800",
-        "#FFB178",
-        "#FF78B1",
-        "#FF3C8E",
-        "#A0F9FF",
-        "#A0BBFF", "#EC77FF", "#7795FF",'#3B82F6',
-
-    ]
+    const theme = useTheme()
+    const colorsList = theme.palette.charts.line
 
     const {data: byApp, isLoading: loadingByApp} = useFetch(
         ["sessionsByApp"],
@@ -198,20 +165,8 @@ function Charts1() {
 
 function Charts2() {
 
-    const colorsList = [
-
-        '#3d5afe',
-        "#8bc34a",
-        "#4caf50",
-        "#f44336",
-        "#ff9800",
-        "#FFB178",
-        "#FF78B1",
-        "#FF3C8E",
-        "#A0F9FF",
-        "#A0BBFF", "#EC77FF", "#7795FF",'#3B82F6',
-
-    ]
+    const theme = useTheme()
+    const colorsList = theme.palette.charts.line
 
 
     const {data: byGeoLocation, isLoading: loadingByGeoLocation} = useFetch(

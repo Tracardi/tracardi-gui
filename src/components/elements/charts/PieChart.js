@@ -67,6 +67,7 @@ export class TuiPieChart extends PureComponent {
             <ResponsiveContainer width="100%" height="100%">
                 <PieChart width={200} height={200}>
                     <Pie
+                        stroke="rgba(128,128,128, .4)"
                         activeIndex={this.state.activeIndex}
                         activeShape={renderActiveShape}
                         data={this.props.data}

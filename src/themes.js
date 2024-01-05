@@ -1,4 +1,4 @@
-import { createTheme} from '@mui/material/styles';
+import {createTheme} from '@mui/material/styles';
 
 export const stagingTheme = createTheme({
     typography: {
@@ -9,6 +9,7 @@ export const stagingTheme = createTheme({
         "fontWeightMedium": 500
     },
     palette: {
+        mode: "light",
         primary: {
             main: '#3B82F6',  // #1976d2
             light: '#e1f5fe'  // e1f5fe
@@ -27,7 +28,8 @@ export const stagingTheme = createTheme({
         },
         background: {
             default: 'whitesmoke',  // whitesmoke
-            paper: "white" // white
+            paper: "white", // white
+            light: "whitesmoke" // white
         },
         text: {
             primary: '#000',
@@ -36,6 +38,24 @@ export const stagingTheme = createTheme({
         common: {
             white: "white",
             black: "black"
+        },
+        charts: {
+            pie: ['#3B82F6', '#00C49F', '#FFBB28', '#FF8042'],
+            line: [
+                "#7795FF",
+                '#3B82F6',
+                '#3d5afe',
+                "#8bc34a",
+                "#4caf50",
+                "#f44336",
+                "#ff9800",
+                "#FFB178",
+                "#FF78B1",
+                "#FF3C8E",
+                "#A0BBFF",
+                "#EC77FF",
+                "#A0F9FF",
+            ]
         }
     },
 });
@@ -68,7 +88,8 @@ export const darkTheme = createTheme({
         },
         background: {
             default: '#222222',  // whitesmoke
-            paper: "#333333" // white
+            paper: "#333333", // white
+            light: "#444" // white
         },
         text: {
             primary: '#eee',
@@ -77,6 +98,24 @@ export const darkTheme = createTheme({
         common: {
             white: "#444",
             black: "#eee"
+        },
+        charts: {
+            pie: ['#805fcf', '#00C49F', '#FFBB28', '#FF8042'],
+            line: [
+                "#805fcf",
+                '#3B82F6',
+                '#3d5afe',
+                "#8bc34a",
+                "#4caf50",
+                "#f44336",
+                "#ff9800",
+                "#FFB178",
+                "#FF78B1",
+                "#FF3C8E",
+                "#A0BBFF",
+                "#EC77FF",
+                "#A0F9FF",
+            ]
         }
     },
     components: {
@@ -201,6 +240,7 @@ export const productionTheme = createTheme({
         "fontWeightMedium": 500
     },
     palette: {
+        mode: "light",
         primary: {
             main: '#ad1457',  // #1976d2
             light: '#f3e5f5'  // e1f5fe
@@ -219,7 +259,8 @@ export const productionTheme = createTheme({
         },
         background: {
             default: 'whitesmoke',  // whitesmoke
-            paper: "white" // white
+            paper: "white", // white
+            light: "whitesmoke" // white
         },
         text: {
             primary: '#000',
@@ -228,6 +269,24 @@ export const productionTheme = createTheme({
         common: {
             white: "white",
             black: "black"
+        },
+        charts: {
+            pie: ['#3B82F6', '#00C49F', '#FFBB28', '#FF8042'],
+            line: [
+                "#7795FF",
+                '#3B82F6',
+                '#3d5afe',
+                "#8bc34a",
+                "#4caf50",
+                "#f44336",
+                "#ff9800",
+                "#FFB178",
+                "#FF78B1",
+                "#FF3C8E",
+                "#A0BBFF",
+                "#EC77FF",
+                "#A0F9FF",
+            ]
         }
     },
 });
