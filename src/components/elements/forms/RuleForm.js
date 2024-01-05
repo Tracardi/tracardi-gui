@@ -22,7 +22,6 @@ import {
     validateYupSchema
 } from "../../../misc/validators";
 import AutoComplete from "./AutoComplete";
-import {BsStar} from "react-icons/bs";
 import {useRequest} from "../../../remote_api/requestClient";
 
 function SegmentTriggerForm({

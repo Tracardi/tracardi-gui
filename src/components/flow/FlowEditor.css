@@ -1,7 +1,6 @@
 
 .FlowPane .react-flow .react-flow__edge-path {
     stroke-width: 2;
-    stroke: #1565c0;
 }
 
 .FlowPane .react-flow__edge-default.selected .react-flow__edge-path {
@@ -17,7 +16,7 @@
 }
 
 .FlowPane .react-flow__edge-path-selector:hover + .react-flow__edge-path, .react-flow__edge-path:hover {
-    stroke: black;
+    stroke:  #1565c0;
     cursor: pointer;
 }
 
@@ -72,5 +71,6 @@
     overflow: auto;
     background-color: rgba(245, 245, 245, .8);
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid rgba(128, 128, 128, .5);
+    color: black
 }

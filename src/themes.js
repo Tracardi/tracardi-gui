@@ -51,7 +51,7 @@ export const darkTheme = createTheme({
     palette: {
         mode: "dark",
         primary: {
-            main: '#1976d2',  // #1976d2
+            main: '#805fcf',  // #1976d2
             light: '#444444'  // e1f5fe
         },
         secondary: {
@@ -72,11 +72,11 @@ export const darkTheme = createTheme({
         },
         text: {
             primary: '#eee',
-            secondary: '#ddd',
+            secondary: '#bbb',
         },
         common: {
             white: "#444",
-            black: "white"
+            black: "#eee"
         }
     },
     components: {

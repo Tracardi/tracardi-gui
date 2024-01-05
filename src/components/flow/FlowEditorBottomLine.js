@@ -11,7 +11,7 @@ export const FlowEditorBottomLine = ({onDebug, onEdit, onZoomIn, onZoomOut}) => 
     const theme = useTheme()
 
     const style = {
-        backgroundColor: theme.palette.primary.light
+        backgroundColor: theme.palette.common.white
     }
 
     return <div className="FlowEditorBottomLine" style={style}>

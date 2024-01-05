@@ -80,7 +80,7 @@ export function EventRow({row, filterFields}) {
 
         </ModalDialog>}
         <div style={{display: "flex"}}>
-            <div style={{flex: "1 1 0", minWidth: 560, borderRight: "solid 1px #ccc", paddingRight: 17}}>
+            <div style={{flex: "1 1 0", minWidth: 560, borderRight: "solid 1px rgba(128,128,128, 0.5)", paddingRight: 17}}>
                 <PropertyField labelWidth={labelWidth} name="id" content={<IdLabel label={row?.id}/>}/>
                 {displayCreateTime && row?.metadata?.time?.create &&
                 <PropertyField labelWidth={labelWidth} name="Created" content={<>

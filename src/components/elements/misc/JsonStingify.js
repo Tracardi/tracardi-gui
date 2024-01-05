@@ -3,10 +3,13 @@ import dot from "dot-object";
 import "./JsonStringify.css";
 import ToggleIcon from "../icons/ToggleIcon";
 import {isEmptyObject, isEmptyArray} from "../../../misc/typeChecking";
+import useTheme from "@mui/material/styles/useTheme";
 
 export default function JsonStringify({data, toggle: taggleValue=false, filterFields=[], disableToggle=false, style={}, disableEmpty=false}) {
 
     const [toggle, setToggle] = useState(taggleValue);
+
+    const theme = useTheme()
 
     function empty(obj) {
         return obj && Object.keys(obj).length === 0 && obj.constructor === Object

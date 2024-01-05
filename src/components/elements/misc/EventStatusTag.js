@@ -1,14 +1,17 @@
 import React from "react";
 import {isString} from "../../../misc/typeChecking";
 import "./HighlightedTag.css";
+import useTheme from "@mui/material/styles/useTheme";
 
 export default function EventStatusTag({label}) {
+
+    const theme = useTheme()
 
     const getColor = () => {
         if (label === 'processed') {
             return "#00c49f"
         }
-        return "#0088fe"
+        return theme.palette.primary.main
     }
 
     function capitalizeFirstLetter(string) {

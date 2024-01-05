@@ -13,8 +13,8 @@ function Dimension({value, unit = 'px', style}) {
 
 function BoxMeasures({
                          label = '',
-                         bgColor = 'aliceblue',
-                         outerBorder = 'dashed 1px #ccc',
+                         bgColor = 'rgba(128, 149, 196, 0.5)',
+                         outerBorder = 'dashed 1px rgba(128, 128, 128, 0.5)',
                          outerBorderRadius = 0,
                          border = 'solid 1px #ccc',
                          borderRadius = 0,

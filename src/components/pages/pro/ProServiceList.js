@@ -228,7 +228,7 @@ export default function ProServiceList() {
             open={selectedService !== null}>
             {selectedService?.metadata?.documentation
                 ? <div style={{display: "flex", minHeight: "100%"}}>
-                    <div style={{width: 450, backgroundColor: theme.palette.common.white, borderRight: "solid 1px #ddd",}}>
+                    <div style={{width: 450, backgroundColor: theme.palette.common.white, borderRight: "solid 1px rgba(128,128,128, 0.5)",}}>
                         <div style={{padding: 20, position: "sticky", top: 0}} ><MdManual
                             mdFile={selectedService?.metadata?.documentation?.file}
                             basePath={selectedService?.metadata?.documentation?.path}

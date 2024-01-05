@@ -10,6 +10,7 @@ export default function ReadOnlyInput({label, value, hint=null, onReset}) {
         required
         fullWidth
         label={label}
+        style={{marginTop: 8}}
         size="small"
         value={value}
         disabled={true}

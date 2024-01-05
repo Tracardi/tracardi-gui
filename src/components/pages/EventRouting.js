@@ -86,8 +86,7 @@ const EventTypesToRules = () => {
                     <div style={{
                         margin: 15,
                         padding: "40px 30px 30px 30px",
-                        backgroundColor: "#eee",
-                        backgroundImage: "radial-gradient(#ddd 1px, transparent 0)",
+                        backgroundColor: "rgba(128,128,128,0.1)",
                         backgroundSize: "20px 20px",
                         borderRadius: 15
                     }}>{data.map((event, index) => <EventTypeTree

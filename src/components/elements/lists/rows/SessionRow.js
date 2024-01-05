@@ -24,7 +24,7 @@ export default function SessionRow({session, filterFields}) {
                                      data={jsonData}
                                      onClose={() => setJsonData(null)}/>}
         <div style={{display: "flex"}}>
-            <div style={{flex: "1 1 0", minWidth: 540, borderRight: "solid 1px #ccc", paddingRight: 17}}>
+            <div style={{flex: "1 1 0", minWidth: 540, borderRight: "solid 1px rgba(128,128,128, 0.5)", paddingRight: 17}}>
                 <SessionRowCardInfo session={session} displayContext={false}/>
             </div>
             <div style={{flex: "2 1 0", width: "100%", paddingLeft: 15, display: "flex", flexDirection: "column", justifyContent: "space-between"}}>

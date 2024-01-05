@@ -10,7 +10,7 @@ const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, childre
     const description = children ? children : data.description
 
     return (
-        <div style={{display: "flex", flexDirection: "row", width: "100%", alignItems: "center", borderBottom: "solid 1px #ccc", padding: "0 10px"}}>
+        <div style={{display: "flex", flexDirection: "row", width: "100%", alignItems: "center", borderBottom: "solid 1px rgba(128,128,128,.3)", padding: "0 10px"}}>
             <div 
                 style={{
                     display: "flex",

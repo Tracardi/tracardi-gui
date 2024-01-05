@@ -87,7 +87,7 @@ const AccordionCard = ({addFormProps = {}, items, nodata, details, passData, sin
         >
             <AccordionSummary
                 expandIcon={<BsBoxArrowDown size={24}/>}
-                style={{backgroundColor: item.build_in ? "aliceblue" : "#fff"}}
+                style={{backgroundColor: item.build_in ? "rgba(128, 128, 128, 0.1)" : "rgba(255, 255, 255, 0.1)"}}
             >
                 <div className="flexLine">
                     <EnabledChip item={item}/>
@@ -97,7 +97,7 @@ const AccordionCard = ({addFormProps = {}, items, nodata, details, passData, sin
                 </div>
 
             </AccordionSummary>
-            <AccordionDetails style={{backgroundColor: item.build_in ? "aliceblue" : "#fff"}}>
+            <AccordionDetails style={{backgroundColor: item.build_in ? "rgba(128, 128, 128, 0.1)" : "rgba(255, 255, 255, 0.1)"}}>
                 {details && React.createElement(
                     details,
                     passData ? {

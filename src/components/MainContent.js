@@ -5,7 +5,10 @@ import useTheme from "@mui/material/styles/useTheme";
 
 export default function MainContent({children, style, onContextChange}) {
     const theme = useTheme();
-    style= {...style, backgroundColor: theme.palette.background.default}
+    style= {...style,
+        backgroundColor: theme.palette.background.default,
+        color: theme.palette.text.primary,
+    }
 
     return <div className="MainContent" style={style}>
         <MainMenu onContextChange={onContextChange}/>

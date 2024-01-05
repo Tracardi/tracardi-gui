@@ -140,6 +140,7 @@ export default function Migrations() {
                         schemas.map((schema, index) =>
                                 <FormControlLabel
                                     key={index}
+                                    style={{display: "block"}}
                                     control={
                                         <Checkbox
                                             size="medium"

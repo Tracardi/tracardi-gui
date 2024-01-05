@@ -1,9 +1,9 @@
-import Button from "../forms/Button";
 import React from "react";
 import "./NeedHelpButton.css";
 import {BsHeart} from "react-icons/bs";
 import {track} from "../../../remote_api/track";
 import version from "../../../misc/version";
+import IconButton from "./IconButton";
 
 export default function SponsorButton() {
 
@@ -25,13 +25,12 @@ export default function SponsorButton() {
         })
     }
 
-    return <div>
-        <Button label="Sponsor"
-                selected={true}
-                icon={<BsHeart size={20}/>}
-                style={{padding: "6px 14px", marginBottom: 10, marginRight: 5}}
-                onClick={handleClick}
-        ></Button>
-    </div>
+    return <IconButton
+            label="Sponsor"
+            selected={true}
+            style={{marginRight: 10}}
+            onClick={handleClick}>
+            <BsHeart size={20}/>
+        </IconButton>
 
 }

@@ -1,13 +1,13 @@
 .menuNode {
-    padding: 8px;
+    padding: 10px;
     border: solid 2px transparent;
-    border-radius: 18px;
+    border-radius: 10px;
     margin: 4px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     background-color: rgba(200,200,200, 0.2);
-    border: 1px solid #eee;
+    border: 1px solid rgba(128,128,128, 0.5);
 
 }
 
@@ -23,7 +23,7 @@
 
 .menuNode:hover {
     background-color: rgba(200,200,200, 0.3);
-    border: 1px solid #e0e0e0;
+    border: 1px solid rgba(200,200,200, 0.5);
     opacity: 100%;
     cursor: grab;
 }
@@ -52,7 +52,7 @@
 }
 
 .FlowEditor > .WorkArea .TaskNodes {
-    padding: 0 10px 15px 15px;
+    padding: 0 15px 15px 15px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;

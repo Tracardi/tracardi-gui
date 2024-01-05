@@ -90,7 +90,7 @@ export default function ProfileDetails({profile}) {
                     <ProfileSessionsDetails profileId={profile?.id}/>
                 </TabCase>
                 <TabCase id={2}>
-                    <div style={{backgroundColor: "#f5f5f5", margin: 0, padding: 20}}>
+                    <div style={{margin: 0, padding: 20}}>
                         <Accordion expanded={true} elevation={10}>
                             <AccordionSummary
                                 expandIcon={<BsBoxArrowDown size={24}/>}

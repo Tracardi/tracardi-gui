@@ -8,7 +8,7 @@ export default function PrivateRoute({children, location, roles, ...rest}) {
 
     const authContext = useContext(KeyCloakContext)
 
-    console.log(location, authContext)
+    // console.log(location, authContext)
 
     function intersect(a, b) {
         let setB = new Set(b);

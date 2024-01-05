@@ -8,11 +8,10 @@ export default function Counter({label, value, subValue, subValueSuffix = "", wi
             display: "flex",
             justifyContent: "center",
             fontSize: "250%",
-            fontWeight: 600,
-            color: "rgba(0,0,0,0.6)"
+            fontWeight: 600
         }}>{abbreviateNumber(value)}</div>
-        <div style={{textAlign: "center", color: "rgba(0,0,0,0.7)"}}>{subValue && round(subValue,3)} {subValueSuffix}</div>
-        {hint && <div style={{ textAlign: "center", color: "rgba(0,0,0,0.7)"}}>{hint}</div>}
+        <div style={{textAlign: "center"}}>{subValue && round(subValue,3)} {subValueSuffix}</div>
+        {hint && <div style={{ textAlign: "center"}}>{hint}</div>}
     </div>
 }
 
@@ -25,6 +24,6 @@ export function BigCounter({label, value, hint}) {
             fontSize: "500%",
             fontWeight: 600
         }}>{abbreviateNumber(value)}</div>
-        {hint && <div style={{ textAlign: "left", color: "rgba(255,255,255,0.8)"}}>{hint}</div>}
+        {hint && <div style={{ textAlign: "left"}}>{hint}</div>}
     </div>
 }

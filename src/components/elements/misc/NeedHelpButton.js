@@ -3,10 +3,11 @@ import PopupState, {bindPopover, bindTrigger} from "material-ui-popup-state";
 import Button from "../forms/Button";
 import React from "react";
 import "./NeedHelpButton.css";
-import {IoLogoYoutube, IoDocumentTextOutline, IoLogoTwitter, IoShareSocial} from "react-icons/io5";
+import {IoLogoYoutube, IoDocumentTextOutline, IoLogoTwitter} from "react-icons/io5";
 import {AiOutlineSlack} from "react-icons/ai";
-import {BsGithub} from "react-icons/bs";
+import {BsGithub, BsFillQuestionCircleFill} from "react-icons/bs";
 import useTheme from "@mui/material/styles/useTheme";
+import IconButton from "./IconButton";
 
 export default function NeedHelpButton() {
 
@@ -27,10 +28,12 @@ export default function NeedHelpButton() {
     return (
         <PopupState variant="popover" popupId="demo-popup-popover">
             {(popupState) => (
-                <div>
-                    <Button label="Need help?"
-                            icon={<IoShareSocial size={20}/>}
-                            style={{padding: "6px 14px", marginBottom: 9, marginLeft: 5}} {...bindTrigger(popupState)} />
+                <>
+                    <IconButton label="Need help?"
+                                {...bindTrigger(popupState)} >
+                        <BsFillQuestionCircleFill size={20}/>
+                    </IconButton>
+
                     <Popover
                         {...bindPopover(popupState)}
                         anchorOrigin={{
@@ -99,7 +102,7 @@ export default function NeedHelpButton() {
                         </div>
 
                     </Popover>
-                </div>
+                </>
             )}
         </PopupState>
     );

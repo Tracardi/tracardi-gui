@@ -4,7 +4,7 @@
     background-color: white !important;
     border-radius: 100% !important;
     position: unset !important;
-    border: 2px solid #1565c0;
+    border: 2px solid rgba(0, 105, 192, 1);
     transform: none !important;
     display: flex;
     align-items: center;
@@ -21,7 +21,7 @@
 .react-flow__node-default.selected .NodePanel {
     box-shadow: 0 0 0 0;
     cursor: grab;
-    background-color: rgb(0, 105, 192);
+    background-color: rgba(0, 105, 192, 1);
     color: white;
 }
 
@@ -38,9 +38,9 @@
 .react-flow__node-flowNode.selected .NodePanelPassValue,
 .react-flow__node-flowNode.selected:hover .NodePanel{
     cursor: grab;
-    background-color: rgb(0, 105, 192);
+    background-color: rgba(0, 105, 192, 1);
     color: white;
-    border: solid 2px rgb(0, 105, 192);
+    border: solid 2px rgba(0, 105, 192, 1);
 }
 
 DIV.NodePorts {
@@ -65,8 +65,8 @@ DIV.NodePorts DIV.NodePortContainer {
 }
 
 DIV.NodePortContainer .PortHint {
-    background-color: aliceblue;
-    color: #444;
+    background-color: rgba(128, 149, 196, 0.3);
+    color: rgba(0, 0, 0, .8);
     border-radius: 3px;
     padding: 3px 8px;
     font-size: 80%;
@@ -123,6 +123,7 @@ DIV.NodePanel {
     background-color: white;
     position: relative;
     color: #444444;
+    border-color: rgba(0,0,0, .5);
 }
 
 DIV.NodePanelPassValue {
@@ -159,7 +160,7 @@ DIV.CondContainer:hover DIV.CondTitle {
 }
 
 DIV.CondNode {
-    background: #fff;
+    background: rgba(255,255,255,.9);
     height: 40px;
     text-align: center;
     transform:rotate(-45deg);
@@ -179,7 +180,7 @@ DIV.RightPlaceholder {
 }
 
 DIV.CondTitle {
-    background-color: whitesmoke;
+    background-color: rgba(128,128,128,.2);
     padding: 0px 5px;
     border-radius: 6px;
     width: max-content;
@@ -255,7 +256,7 @@ DIV.NodeOutboundEvents SPAN.Event {
     color: #444;
     margin: 1px 0 1px 5px;
     padding: 1px 10px 1px 5px;
-    background-color: aliceblue;
+    background-color: rgba(128, 149, 196, 0.5);
     width: fit-content;
     cursor: pointer;
     white-space: nowrap;

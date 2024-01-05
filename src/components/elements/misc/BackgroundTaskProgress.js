@@ -17,7 +17,7 @@ export default function BackgroundTaskProgress({taskId, refreshInterval = 5}) {
             .then(response => {
                 setStatus(response.data);
                 setError(null);
-                if (response?.data?.status !== "PROGRESS") {
+                if (response?.data?.status !== "running" || response?.data?.status !== "pending") {
                     clearInterval(timer);
                 } else {
                     timer = setInterval(() => {
@@ -25,7 +25,7 @@ export default function BackgroundTaskProgress({taskId, refreshInterval = 5}) {
                             .then(response => {
                                 setStatus(response.data);
                                 setError(null);
-                                if (response?.data?.status !== "PROGRESS") {
+                                if (response?.data?.status !== "running" || response?.data?.status !== "pending") {
                                     clearInterval(timer);
                                 }
                             })
@@ -50,26 +50,25 @@ export default function BackgroundTaskProgress({taskId, refreshInterval = 5}) {
     }
 
     const normalizeProgress = () => {
-        let current = status?.progress?.current ? status.progress.current : 0;
-        let total = status?.progress?.total ? status.progress.total : 100;
-        return Math.floor(current * 1.0 / total * 100);
+        let current = status?.progress ? status.progress : 0;
+        return Math.floor(current);
     }
 
-    if (status?.progress?.current) {
+    if (status?.progress) {
 
         const progress = normalizeProgress();
 
         return <>
-            {status?.status}
+            {status?.status.toUpperCase()}
             <LinearProgress
             variant="determinate"
             value={progress}
         /></>
     }
 
-    if(status?.status === "SUCCESS") {
+    if(status?.status === "finished") {
         return <>
-            {status?.status}
+            {status?.status.toUpperCase()}
             <LinearProgress
                 variant="determinate"
                 value={100}
@@ -77,9 +76,9 @@ export default function BackgroundTaskProgress({taskId, refreshInterval = 5}) {
             /></>
     }
 
-    if(status?.status === "PENDING") {
+    if(status?.status === "pending") {
         return <>
-            {status?.status}
+            {status?.status.toUpperCase()}
             <LinearProgress
                 variant="determinate"
                 value={0}
@@ -87,6 +86,6 @@ export default function BackgroundTaskProgress({taskId, refreshInterval = 5}) {
             /></>
     }
 
-    return status?.status || <>Connecting...<LinearProgress color={"primary"}/></>
+    return status?.status.toUpperCase() || <>Connecting...<LinearProgress color={"primary"}/></>
 
 }

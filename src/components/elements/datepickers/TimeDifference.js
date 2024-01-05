@@ -27,7 +27,7 @@ const TimeDifference = ({ date }) => {
   }
 
   return (
-    <span style={{backgroundColor: 'aliceblue', color: 'black', padding: "1px 5px", borderRadius: 6}}>
+    <span style={{backgroundColor: 'rgba(128,149,196, 0.5)', color: 'rgba(0,0,0, 1)', padding: "1px 7px", borderRadius: 6}}>
       {render()}
     </span>
   );

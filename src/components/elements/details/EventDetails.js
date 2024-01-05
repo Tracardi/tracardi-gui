@@ -54,8 +54,7 @@ export default function EventDetails({event, metadata, routing=true}) {
                         <TuiFormGroupContent style={{padding: 0}}>
                             <div style={{
                                 padding: 20,
-                                backgroundColor: "#eee",
-                                backgroundImage: "radial-gradient(#ddd 1px, transparent 0)",
+                                backgroundColor: "rgba(200,200,200,.2)",
                                 backgroundSize: "20px 20px",
                                 borderRadius:0,
                                 borderBottomLeftRadius: "inherit",

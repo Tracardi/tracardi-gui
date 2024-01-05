@@ -9,7 +9,7 @@ export default function ProfileRow({profile, filterFields, displayDetails=true})
 
     return <>
         <div style={{display: "flex"}}>
-            <div style={{flex: "1 1 0", minWidth:760, borderRight: "solid 1px #ccc", paddingRight: 17}}>
+            <div style={{flex: "1 1 0", minWidth:760, borderRight: "solid 1px rgba(128,128,128, 0.5)", paddingRight: 17}}>
                 <ProfileCardInfo profile={profile} displayDetails={displayDetails}/>
             </div>
             <div style={{

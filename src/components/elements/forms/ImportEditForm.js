@@ -198,7 +198,7 @@ export default function ImportEditForm({onSubmit, importConfig}) {
                         /></div>
                     </TuiFormGroupField>
                     <TuiFormGroupField header="Event source" description="Select 'event source' the data will be sent
-                    through. Create separate event source for import is a good practice.">
+                    through. Create separate event source for import is a good practice. Import supports only webhook event sources.">
                         <div style={{width: 500}}>
                             <TuiSelectEventSource value={eventSource.current}
                                                   fullWidth={true}

@@ -37,7 +37,7 @@ const FlowEditor = () => {
     }
 
     return (
-        <div style={{height: "100%"}}>
+        <div style={{height: "calc(100% - 77px)"}}>
             <ReactFlowProvider>
                 <FlowEditorPane id={id}
                                 eventId={eventId}

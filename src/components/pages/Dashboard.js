@@ -21,7 +21,6 @@ import {
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 
 const Item = styled(Paper)(({theme, style}) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: 'center',
@@ -29,6 +28,7 @@ const Item = styled(Paper)(({theme, style}) => ({
     width: "calc(100% - 20px)",
     margin: 10,
     color: theme.palette.text.secondary,
+    backgroundColor: theme.palette.background.paper,
     ...style
 }));
 
@@ -45,7 +45,6 @@ const Item = styled(Paper)(({theme, style}) => ({
 // }));
 
 const ContainedItem = styled(Paper)(({theme, style}) => ({
-    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#3B82F6',
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: 'center',
@@ -53,6 +52,7 @@ const ContainedItem = styled(Paper)(({theme, style}) => ({
     width: "calc(100% - 20px)",
     margin: 10,
     color: "white",
+    backgroundColor: theme.palette.primary.main,
     ...style
 }));
 

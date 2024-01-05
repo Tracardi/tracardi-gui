@@ -16,7 +16,7 @@
     white-space: nowrap;
     width: 100%;
     padding-left: 10px;
-    border-bottom: solid 1px #ddd;
+    border-bottom: solid 1px rgba(128,128,128,.5);
 }
 
 .DetailKeyValue .DetailKey {
@@ -26,6 +26,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     padding-left: 10px;
-    border-bottom: solid 1px #ddd;
+    border-bottom: solid 1px rgba(128,128,128,.5);
 }
 

@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: aliceblue;
+    background-color: rgba(128, 149, 196, 0.5);
     margin-bottom: 5px;
     color: #444;
     text-decoration: underline;

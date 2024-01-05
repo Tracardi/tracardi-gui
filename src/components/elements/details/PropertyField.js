@@ -31,7 +31,7 @@ const PropertyField = ({
 
     return (
         <>
-            <div className="PropertyRow" style={{borderBottom: underline ? "1px dashed #bbb" : 0}}>
+            <div className="PropertyRow" style={{borderBottom: underline ? "1px dashed rgba(128,128,128,0.5)" : 0}}>
                 {name && <div className="FieldName" style={{width: labelWidth}}>
                     <span>{name}</span>
                 </div>}

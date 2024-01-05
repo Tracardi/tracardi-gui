@@ -133,11 +133,11 @@
 FIELDSET {
   border-radius: 5px;
   border-style: solid;
-  border-color: #cccccc;
+  border-color: rgba(128,128,128,.5);
   border-width: 1px;
 }
 
 FIELDSET LEGEND {
-  color: #999;
+  color: rgba(128,128,128,1);
   font-size: 11px;
 }

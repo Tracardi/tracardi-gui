@@ -1,7 +1,7 @@
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+// import ToggleButton from "@mui/material/ToggleButton";
+// import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import React, {useState} from "react";
-import {BsThreeDotsVertical} from "react-icons/bs";
+import {BsDatabaseGear} from "react-icons/bs";
 import {objectMapEntries} from "../../misc/mappers";
 import DropDownMenu from "../menu/DropDownMenu";
 import FormDrawer from "../elements/drawers/FormDrawer";
@@ -28,7 +28,7 @@ function Extensions({extensions}) {
     return <>
 
         {extensionOptions && <div className="flexLine" style={{marginLeft: 5, height: 33}}>
-            <DropDownMenu icon={<BsThreeDotsVertical size={18} style={{height: 21}}/>}
+            <DropDownMenu icon={<><BsDatabaseGear size={18} style={{height: 21, marginRight: 10}}/>Actions</>}
                           progress={false}
                           options={extensionOptions}/>
         </div>}
@@ -45,16 +45,16 @@ export default function ServerContextBar({context, extensions, onContextChange})
         : {}
 
     return <>
-        <ToggleButtonGroup
-            color="primary"
-            value={context ? "production" : "test"}
-            exclusive
-            onChange={onContextChange}
-        >
-            <ToggleButton value="test" size="small">Test</ToggleButton>
-            <ToggleButton value="production" size="small" style={style}>Production</ToggleButton>
+        {/*<ToggleButtonGroup*/}
+        {/*    color="primary"*/}
+        {/*    value={context ? "production" : "test"}*/}
+        {/*    exclusive*/}
+        {/*    onChange={onContextChange}*/}
+        {/*>*/}
+        {/*    <ToggleButton value="test" size="small">Test</ToggleButton>*/}
+        {/*    <ToggleButton value="production" size="small" style={style}>Production</ToggleButton>*/}
 
-        </ToggleButtonGroup>
+        {/*</ToggleButtonGroup>*/}
         {extensions && <Extensions extensions={extensions}/> }
     </>
 }

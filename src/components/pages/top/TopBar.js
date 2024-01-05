@@ -1,15 +1,14 @@
 import SponsorButton from "../../elements/misc/SponsorButton";
 import ReadOnlyInput from "../../elements/forms/ReadOnlyInput";
 import {getApiUrl, resetApiUrlConfig} from "../../../remote_api/entrypoint";
-import {track} from "../../../remote_api/track";
-import version from "../../../misc/version";
 import NeedHelpButton from "../../elements/misc/NeedHelpButton";
 import React, {useContext} from "react";
 import "./TopBar.css";
 import useTheme from "@mui/material/styles/useTheme";
 import {KeyCloakContext} from "../../context/KeyCloakContext";
+import DarkThemeButton from "../../elements/misc/DarkTheme";
 
-export default function TopBar({children}) {
+export default function TopBar({children, onDarkMode}) {
 
     const theme = useTheme();
     const authContext = useContext(KeyCloakContext)
@@ -33,14 +32,8 @@ export default function TopBar({children}) {
                     label="Tracardi API"
                     value={getApiUrl()}
                     onReset={handleEndpointReset}/>
-                <span onClick={() => {
-                    track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-need-help', {
-                        version: version()
-                    }).then(() => {
-                    })
-                }
-                }><NeedHelpButton/></span>
-            </span>
-
+                <NeedHelpButton/>
+            <DarkThemeButton onDarkMode={onDarkMode}/>
+        </span>
     </div>
 }

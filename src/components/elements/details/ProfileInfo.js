@@ -94,7 +94,7 @@ export const ProfileData = ({profile}) => {
                 />
             </fieldset>
 
-            <div style={{borderRadius: 5, border: "solid 1px #ccc"}}>
+            <div style={{borderRadius: 5, border: "solid 1px rgba(128,128,128,0.5)"}}>
                 <Tabs tabs={["PII", "Contacts", "Traits", "Last GEO", "Media", "Aux"]}
                       tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
                     <TabCase id={0}>
@@ -156,7 +156,7 @@ export const ProfileData = ({profile}) => {
                 </Tabs>
 
             </div>
-            <div style={{borderRadius: 5, border: "solid 1px #ccc", marginTop: 20}}>
+            <div style={{borderRadius: 5, border: "solid 1px rgba(128,128,128,0.5)", marginTop: 20}}>
                 <Tabs tabs={["Segments", "Interests", "Preferences", "Metrics"]}
                       tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
                     <TabCase id={0}>
@@ -192,7 +192,7 @@ export const ProfileData = ({profile}) => {
                     </TabCase>
                 </Tabs>
             </div>
-            <div style={{borderRadius: 5, border: "solid 1px #ccc", marginTop: 20}}>
+            <div style={{borderRadius: 5, border: "solid 1px rgba(128,128,128,0.5)", marginTop: 20}}>
                 <Tabs tabs={["Job", "Loyalty", "Identifiers"]}
                       tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
                     <TabCase id={0}>

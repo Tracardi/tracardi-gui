@@ -1,13 +1,13 @@
 .FlowEditorBottomLine {
     grid-area: debug;
-    background-color: aliceblue;
+    background-color: rgba(128, 128, 128, 0.5);
     border-top: #ccc 1px solid;
     height: 32px;
     user-select:none;
 }
 
 .FlowEditorBottomLine  > SPAN {
-    border-right: 1px solid #ccc;
+    border-right: 1px solid rgba(128, 128, 128, 0.5);
     padding: 4px 8px;
     cursor: pointer;
 }

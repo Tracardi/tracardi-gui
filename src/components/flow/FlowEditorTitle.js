@@ -25,7 +25,6 @@ import TestEditor from "../test/TestEditor";
 import DropDownMenu from "../menu/DropDownMenu";
 import {ReinstallButton} from "../pages/ActionPlugins";
 import EntityAnalytics from "../pages/EntityAnalytics";
-import useTheme from "@mui/material/styles/useTheme";
 import {useRequest} from "../../remote_api/requestClient";
 
 export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onDraftRestore, onDeploy, onSaveDraft}) {
@@ -41,7 +40,6 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
     const [deployProgress, setDeployProgress] = useState(false);
 
     const confirm = useConfirm();
-    const theme = useTheme();
     const {request} = useRequest()
 
     const handleDraftSave = useCallback((progress, deploy = false) => {
@@ -165,11 +163,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
         }).catch(()=>{})
     }
 
-    const style = {
-        backgroundColor: theme.palette.primary.light
-    }
-
-    return <aside className="FlowEditorTitle" style={style}>
+    return <aside className="FlowEditorTitle">
         <div>
             <span style={{marginLeft: 10}}>{flowMetaData?.name} <sup>({flowMetaData?.type})</sup></span>
         </div>
