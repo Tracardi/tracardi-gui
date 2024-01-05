@@ -278,7 +278,7 @@ export default function EventTimeLine() {
                             })}
 
                         </defs>
-                        <CartesianGrid strokeDasharray="3 3" vertical={true} color="#ccc"/>
+                        <CartesianGrid strokeDasharray="3 3" vertical={true} stroke="rgba(128,128,128,.3)"/>
                         <Tooltip isAnimationActive={false}/>
                         {data?.buckets?.map((column, index) => {
                             return <Area key={index}

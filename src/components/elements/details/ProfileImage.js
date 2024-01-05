@@ -1,5 +1,6 @@
 import React from "react";
 import {BsQuestionCircle} from "react-icons/bs";
+import useTheme from "@mui/material/styles/useTheme";
 
 function generateInitials(firstName, lastName) {
 
@@ -15,9 +16,11 @@ function generateInitials(firstName, lastName) {
 
 export function ProfileImage({profile}) {
 
+    const theme = useTheme()
+
     let style = {minWidth: 120, maxWidth: 120, minHeight: 120, maxHeight: 120, borderRadius: 25}
     const initials = generateInitials(profile?.data?.pii?.firstname, profile?.data?.pii?.lastname)
-    let bg = "rgb(84, 152, 246)"
+    let bg = theme.palette.primary.main
     if(typeof initials === 'string') {
         bg = "rgb(121, 126, 246)"
     }

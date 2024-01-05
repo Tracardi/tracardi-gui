@@ -31,6 +31,7 @@ import Properties from "./DetailProperties";
 import JsonBrowser from "../misc/JsonBrowser";
 import {useRequest} from "../../../remote_api/requestClient";
 import {getError} from "../../../remote_api/entrypoint";
+import useTheme from "@mui/material/styles/useTheme";
 
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
@@ -99,7 +100,7 @@ const JavascriptDetails = ({data}) => {
 
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Javascript example"
-                                    description="Plase the code on you web page. This code will send multiple events.
+                                    description="Please the code on you web page. This code will send multiple events.
                                 Please refer to Tracardi documentation on more complex configuration."/>
                 <TuiFormGroupContent>
                     <Suspense fallback={<CenteredCircularProgress/>}><TrackerUseScript/></Suspense>
@@ -250,6 +251,8 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
         const [error, setError] = React.useState(null);
         const mounted = React.useRef(false);
 
+        const theme = useTheme()
+
         React.useEffect(() => {
             mounted.current = true;
             if (mounted.current === true) setError(null);
@@ -287,7 +290,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                         justifyContent: "flex-end",
                         alignItems: "center",
                         margin: "0px 0px 40px",
-                        borderBottom: "solid 1px #ccc",
+                        borderBottom: "solid 1px rgba(128,128,128,.4)",
                         padding: 10
                     }}>
                         <header style={{marginRight: 10}}>Please select time range</header>
@@ -308,7 +311,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                             </header>
                             {groupedByType !== null ?
                                 Array.isArray(groupedByType) && groupedByType.length > 0 ?
-                                    <TuiPieChart data={groupedByType} fill="#1976d2"/>
+                                    <TuiPieChart data={groupedByType} fill={theme.palette.primary.main}/>
                                     :
                                     <div style={{marginTop: 50}}><NoData
                                         header="No data"/></div>
@@ -321,7 +324,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                             </header>
                             {groupedByTag !== null ?
                                 Array.isArray(groupedByTag) && groupedByTag.length > 0 ?
-                                    <TuiPieChart data={groupedByTag} fill="#1976d2"/>
+                                    <TuiPieChart data={groupedByTag} fill={theme.palette.primary.main}/>
                                     :
                                     <div style={{marginTop: 50}}><NoData
                                         header="No data"/></div>
@@ -349,7 +352,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                                 limit: 30,
                                 page: 0
                             }}
-                            barChartColors={{processed: "#00C49F", error: "#d81b60", collected: '#0088FE'}}
+                            barChartColors={{processed: "#00C49F", error: "#d81b60", collected: theme.palette.primary.main}}
                         />
                     </div>
                 </>

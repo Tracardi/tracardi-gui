@@ -5,18 +5,21 @@ import "./Chart.css";
 import PropTypes from "prop-types";
 import {useFetch} from "../../../remote_api/remoteState";
 import {LocalDataContext} from "../../pages/DataAnalytics";
+import useTheme from "@mui/material/styles/useTheme";
 
 
 // todo onLoadRequest is a misleading name - it is an object with information on endpoint to call
 // todo this needs to be refactored.
 export default function BarChartElement({onLoadRequest: endpoint, refreshInterval, barChartColors}) {
 
+    const theme = useTheme()
+
     const [refresh, setRefresh] = React.useState(0);
     const [refreshing, setRefreshing] = React.useState(false);
     const [data, setData] = React.useState([]);
 
     const localContext = useContext(LocalDataContext)
-    const barColors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
+    const barColors = [theme.palette.primary.main, '#00C49F', '#FFBB28', '#FF8042']
 
     const {isLoading} = useFetch(
         ["getChartData", [endpoint, refresh, localContext]],
@@ -72,7 +75,7 @@ export default function BarChartElement({onLoadRequest: endpoint, refreshInterva
                 ? <CenteredCircularProgress/>
                 : <ResponsiveContainer>
                 <BarChart data={data?.result} margin={{top: 15, right: 20, bottom: 5, left: 0}}>
-                    <CartesianGrid strokeDasharray="3 3"/>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,.5)"/>
                     <Tooltip isAnimationActive={false} content={<CustomTooltip/>}/>
                     {data?.buckets?.map((column, index)=> {
                         return <Bar key={index}

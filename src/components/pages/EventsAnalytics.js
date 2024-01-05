@@ -18,6 +18,7 @@ import PropertyField from "../elements/details/PropertyField";
 import {useFetch} from "../../remote_api/remoteState";
 import EventIndexMap from "../elements/forms/EventIndexMap";
 import {useRequest} from "../../remote_api/requestClient";
+import useTheme from "@mui/material/styles/useTheme";
 
 function CopyToProfileExtension({onClose}) {
 
@@ -181,6 +182,8 @@ function IndexEventPropertiesExtension({onClose}) {
 
 export default function EventsAnalytics({displayChart = true}) {
 
+    const theme = useTheme()
+
     const handleLoadDataRequest = (query) => {
         return {
             url: '/event/select/range',
@@ -234,7 +237,7 @@ export default function EventsAnalytics({displayChart = true}) {
         onLoadDetails={handleLoadDetails}
         detailsDrawerWidth={1050}
         displayChart={displayChart}
-        barChartColors={{processed: "#00C49F", error: "#d81b60", collected: '#0088FE'}}
+        barChartColors={{processed: "#00C49F", error: "#d81b60", collected: theme.palette.primary.main}}
         ExtensionDropDown={{
             'Copy event data to profile': CopyToProfileExtension,
             'Index event properties': IndexEventPropertiesExtension
