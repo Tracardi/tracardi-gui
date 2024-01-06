@@ -26,6 +26,12 @@ export const stagingTheme = createTheme({
         gray: {
             main: "#ccc"
         },
+        form: {
+            group: {
+                background: "white",
+                header: "whitesmoke"
+            }
+        },
         background: {
             default: 'whitesmoke',  // whitesmoke
             paper: "white", // white
@@ -58,6 +64,15 @@ export const stagingTheme = createTheme({
             ]
         }
     },
+    components: {
+        MuiPaper: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: 'rgba(245,245,245,.85)'
+                }
+            }
+        },
+    }
 });
 
 export const darkTheme = createTheme({
@@ -72,7 +87,7 @@ export const darkTheme = createTheme({
         mode: "dark",
         primary: {
             main: '#805fcf',  // #1976d2
-            light: '#444444'  // e1f5fe
+            light: '#666'  // e1f5fe
         },
         secondary: {
             main: '#EF6C00',
@@ -90,6 +105,12 @@ export const darkTheme = createTheme({
             default: '#222222',  // whitesmoke
             paper: "#333333", // white
             light: "#444" // white
+        },
+        form: {
+            group: {
+                header: '#444',
+                background: "#353535"
+            }
         },
         text: {
             primary: '#eee',
@@ -122,7 +143,7 @@ export const darkTheme = createTheme({
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    backgroundColor: '#111'
+                    backgroundColor: 'rgba(10,10,10,.85)'
                 }
             }
         },
@@ -257,6 +278,12 @@ export const productionTheme = createTheme({
         gray: {
             main: "#ccc"
         },
+        form: {
+            group: {
+                header: "whitesmoke",
+                background: "white"
+            }
+        },
         background: {
             default: 'whitesmoke',  // whitesmoke
             paper: "white", // white
@@ -289,6 +316,15 @@ export const productionTheme = createTheme({
             ]
         }
     },
+    components: {
+        MuiPaper: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: 'rgba(245,245,245,.85)'
+                }
+            }
+        },
+    }
 });
 
 export const signInTheme = createTheme({

@@ -2,19 +2,21 @@ import "ace-builds/src-noconflict/ace";
 import "ace-builds/src-noconflict/mode-json";
 import "ace-builds/src-noconflict/mode-text";
 import "ace-builds/src-noconflict/theme-tomorrow";
+import "ace-builds/src-noconflict/theme-github_dark";
 import "ace-builds/src-noconflict/ext-language_tools"
 import "./JsonEditor.css";
 
 import React, {Suspense, useEffect, useRef} from "react";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import ReferencedJsonMode from "./highlight/references";
-import {getValueIfExists} from "../../../misc/values";
+import useTheme from "@mui/material/styles/useTheme";
 
 const AceEditor = React.lazy(() => import('react-ace'))
 
 export default function JsonEditor({onChange, value, height, autocomplete = false}) {
 
     const aceEditor = useRef();
+    const theme = useTheme()
 
     useEffect(() => {
         if (aceEditor.current) {
@@ -49,7 +51,7 @@ export default function JsonEditor({onChange, value, height, autocomplete = fals
     return <Suspense fallback={<CenteredCircularProgress/>}>
         <AceEditor
             mode="json"
-            theme="tomorrow"
+            theme={theme.palette.mode === "dark" ? "github_dark" : "tomorrow"}
             ref={aceEditor}
             fontSize={16}
             // onLoad={(d)=>console.log(d)}

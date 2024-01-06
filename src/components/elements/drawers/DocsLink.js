@@ -14,7 +14,7 @@ export default function DocsLink({children, src, style, icon=false}) {
             cursor: "pointer",
             display: "inline-flex",
             alignItems: "center",
-            backgroundColor: "#eee",
+            backgroundColor: "rgba(200,200,200,.2)",
             padding: "1px 7px",
             ...style
         }}>{icon && <IoHelpOutline size={20} style={{marginRight: 5}}/>}{children}</span>

@@ -67,7 +67,7 @@ H2.subHeader {
 }
 
 .boxRowUnderlines > DIV {
-  border-bottom: solid #ccc 1px;
+  border-bottom: solid rgba(128,128,128,.3) 1px;
 }
 
 .boxRowUnderlines > DIV:hover {

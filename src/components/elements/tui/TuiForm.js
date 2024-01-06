@@ -52,7 +52,7 @@ export const TuiFormGroupHeader = ({className, style, header, description=null})
     }
 
     style = {
-        ...style, backgroundColor: theme.palette.background.light
+        ...style, backgroundColor: theme.palette.form.group.header
     }
 
     return <div className={baseClassName.join(" ")} style={style}>
@@ -77,7 +77,7 @@ export const TuiFormGroupContent = ({children, className, style, name, descripti
 
     baseStyle = {
         ...baseStyle,
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: theme.palette.form.group.background,
         color: theme.palette.common.black
     }
 

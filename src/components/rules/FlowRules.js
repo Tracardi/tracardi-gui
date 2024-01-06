@@ -56,7 +56,7 @@ export default function FlowRules({flowName, id, refresh}) {
 
     const RulesList = ({flow, rules}) => {
         return rules.map((rule, index) => {
-            return <RuleRow data={rule} flow={flow} key={index} onDelete={onDelete}/>
+            return <RuleRow data={rule} key={index} onDelete={onDelete}/>
         })
     }
 

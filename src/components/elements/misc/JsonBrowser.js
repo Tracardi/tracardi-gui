@@ -5,9 +5,12 @@ import 'react-json-pretty/themes/monikai.css';
 import JSONPretty from "react-json-pretty";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import JsonStringify from "./JsonStingify";
+import useTheme from "@mui/material/styles/useTheme";
 
 export default function JsonBrowser({data, tab: defaultTab = 1}) {
     const [tab, setTab] = useState(defaultTab)
+    const _theme = useTheme()
+
     return <>
         <Tabs
             tabs={["Tree", "Raw", "Flat"]}
@@ -25,10 +28,10 @@ export default function JsonBrowser({data, tab: defaultTab = 1}) {
             <TabCase id={1}>
                 <div style={{padding: 20}}>
                     <JSONPretty data={data} style={{fontSize: 13}}
-                                mainStyle="background-color:white; margin: 0;color: rgb(187, 187, 187);"
-                                keyStyle="color: #444"
-                                valueStyle="color: rgb(0, 170, 0)"
-                                stringStyle="color: rgb(0, 105, 192); white-space: normal"
+                                mainStyle={`background-color:transparent; margin: 0; color: ${_theme.palette.text.primary};`}
+                                keyStyle={`color: ${_theme.palette.text.secondary}`}
+                                valueStyle={`color: ${_theme.palette.primary.main}`}
+                                stringStyle={`color: ${_theme.palette.secondary.main}; white-space: normal`}
                     />
                 </div>
             </TabCase>
