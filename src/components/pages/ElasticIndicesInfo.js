@@ -102,7 +102,7 @@ function ElasticIndicesInfo({showAlert}) {
     }
 
     const IndexInfoComponent = ({name, index}) => <>
-        <div style={{display: "flex", flexDirection: "row", borderBottom: "1px solid lightgrey", padding: 3, fontSize: 16, justifyContent: "space-between", alignItems: "center"}}>
+        <div style={{display: "flex", flexDirection: "row", borderBottom: "1px solid rgba(128,128,128,.3)", padding: 3, fontSize: 16, justifyContent: "space-between", alignItems: "center"}}>
             <div style={{display: "flex", alignItems: "center"}}>
                 <div style={{marginRight: 10}}>{index?.settings?.index?.creation_date ? index.settings.index.creation_date : "Timestamp not provided"}</div>
                 <div>{name} </div>

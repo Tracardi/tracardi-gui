@@ -9,7 +9,7 @@
     padding: 10px;
     text-align: left;
     width: 100%;
-    border: 1px solid lightgrey;
+    border: 1px solid rgba(128,128,128,.3);
     border-radius: 7px;
     align-self: flex-start;
     display: flex;
