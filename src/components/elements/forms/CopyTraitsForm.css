@@ -37,13 +37,11 @@
 
 .CopyTraitsForm > FIELDSET {
   border-radius: 5px;
-  border-color: rgba(0, 0, 0, 0.26);
   border-width: 1px;
 }
 
 
 .CopyTraitsForm > FIELDSET > LEGEND{
-  color: rgba(0, 0, 0, 0.54);
   font-size: .8rem;
   font-weight: 400;
   line-height: 1;

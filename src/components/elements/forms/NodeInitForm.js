@@ -152,7 +152,7 @@ export function NodeRuntimeConfigForm({pluginId, value: initValue, onChange}) {
     }
 
     return <TuiForm>
-        <NotImplemented>Not all features are not fully implemented yet</NotImplemented>
+        <NotImplemented>Not all features are fully implemented yet</NotImplemented>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Advanced Runtime Configuration"/>
             <TuiFormGroupContent>

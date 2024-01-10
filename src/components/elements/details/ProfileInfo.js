@@ -23,6 +23,7 @@ import {ProfileImage} from "./ProfileImage";
 import {displayLocation} from "../../../misc/location";
 import Properties from "./DetailProperties";
 import {useRequest} from "../../../remote_api/requestClient";
+import EventStatusTag from "../misc/EventStatusTag";
 
 export const ProfileData = ({profile}) => {
 
@@ -88,10 +89,12 @@ export const ProfileData = ({profile}) => {
                                           icon={<VscLaw size={20} style={{marginRight: 5}}/>}/>
                                   </div>}/>}
 
-                <PropertyField name="Active" content={<ActiveTag active={profile?.active}/>
-                }
-
-                />
+                <PropertyField name="Status" content={<span className="flexLine">
+                    <ActiveTag active={profile?.active}/><EventStatusTag
+                    label={profile?.metadata?.system?.aux?.auto_merge ? "Merge pending" : "Merged"}
+                    defaultSuccessLabel="Merged"
+                    title="Merge status"
+                /></span> }/>
             </fieldset>
 
             <div style={{borderRadius: 5, border: "solid 1px rgba(128,128,128,0.5)"}}>

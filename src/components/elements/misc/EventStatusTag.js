@@ -3,12 +3,12 @@ import {isString} from "../../../misc/typeChecking";
 import "./HighlightedTag.css";
 import useTheme from "@mui/material/styles/useTheme";
 
-export default function EventStatusTag({label}) {
+export default function EventStatusTag({label, defaultSuccessLabel='processed', title="Status of the event."}) {
 
     const theme = useTheme()
 
     const getColor = () => {
-        if (label === 'processed') {
+        if (label === defaultSuccessLabel) {
             return "#00c49f"
         }
         return theme.palette.primary.main
@@ -23,7 +23,7 @@ export default function EventStatusTag({label}) {
     return <span
         style={{backgroundColor: getColor(), color: "white"}}
         className="HighlightTag"
-        title="Status of the event.">
+        title={title}>
         {capitalizeFirstLetter(label)}
         </span>
 }

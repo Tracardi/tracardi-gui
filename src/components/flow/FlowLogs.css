@@ -24,13 +24,13 @@
     display: flex;
     align-items: stretch;
     padding: 5px;
-    border-bottom: solid #ccc 1px;
+    border-bottom: solid rgba(128,128,128, .3) 1px;
     flex-direction: row;
     cursor: pointer;
 }
 
 .FlowLogRow:hover {
-    background-color: #e1f5fe;
+    background-color: rgba(128,128,128, .3);
 }
 
 .FlowLogRow .FlowLogMessage {
