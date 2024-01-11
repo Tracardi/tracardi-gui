@@ -5,9 +5,12 @@ import ThresholdIcon from "./ThresholdIcon";
 import {isObject} from "../../misc/typeChecking";
 import {ExecutionSeqNumber} from "./NodeAlerts";
 import FlowNodeIcons from "./FlowNodeIcons";
+import useTheme from "@mui/material/styles/useTheme";
 
 
 const StartNodeDynamic = ({data}) => {
+
+    const theme = useTheme()
 
     const InputPort = ({value, doc, style}) => {
 
@@ -94,14 +97,29 @@ const StartNodeDynamic = ({data}) => {
     }
 
     const nodeClass = (data?.metadata?.selected === true) ? "StartNode DebugNode" : "StartNode"
-    const nodeStyle = (data?.spec?.skip === true || data?.spec?.block_flow === true) ? {
-        borderColor: "#ccc",
-        color: "#999"
-    } : {}
-    const portStyle = (data?.spec?.skip === true || data?.spec?.block_flow === true) ? {borderColor: "#ccc"} : {
-        borderColor: "#1565c0",
-        borderWidth: 2
-    }
+
+    const portStyle = (data?.spec?.skip === true || data?.spec?.block_flow === true)
+        ? {
+            borderColor: "#ccc",
+            backgroundColor: theme.palette.common.white,
+        }
+        : {
+            backgroundColor: theme.palette.common.white,
+            borderColor: theme.palette.primary.main,
+            borderWidth: 2
+        }
+
+    const nodeStyle = (data?.spec?.skip === true || data?.spec?.block_flow === true)
+        ? {
+            borderColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground :  "#ccc",
+            color: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedColor : "#999",
+            backgroundColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground : theme.palette.wf.node.background,
+        }
+        : {
+            borderColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground : theme.palette.wf.node.border,
+            color: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedColor : theme.palette.wf.node.color,
+            backgroundColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground : theme.palette.wf.node.background,
+        }
 
     return (
         <div className="CondContainer">
@@ -114,7 +132,9 @@ const StartNodeDynamic = ({data}) => {
             </div>
             <div style={{display: "flex", alignItems: "center"}}>
                 <div>
-                    <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={portStyle}/>
+                    <Inputs spec={data?.spec}
+                            documentation={data?.metadata?.documentation?.inputs}
+                            style={portStyle}/>
 
                     <div className={nodeClass} style={nodeStyle}>
                         <ExecutionSeqNumber data={data} style={{top: 13, right: -9}}/>
@@ -122,7 +142,8 @@ const StartNodeDynamic = ({data}) => {
                             <FlowNodeIcons icon={data?.metadata?.icon} size={24}/>
                         </div>
                     </div>
-                    <Outputs spec={data?.spec} documentation={data?.metadata?.documentation?.outputs}
+                    <Outputs spec={data?.spec}
+                             documentation={data?.metadata?.documentation?.outputs}
                              style={portStyle}/>
                 </div>
             </div>

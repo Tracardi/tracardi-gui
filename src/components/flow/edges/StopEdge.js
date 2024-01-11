@@ -5,6 +5,7 @@ import {
     getMarkerEnd,
 } from 'reactflow';
 import {BiStopCircle} from "react-icons/bi";
+import useTheme from "@mui/material/styles/useTheme";
 
 const foreignObjectSize = 20;
 
@@ -30,6 +31,7 @@ const StopEdge = ({
         targetPosition,
     });
     const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
+    const theme = useTheme()
 
     return (
         <>
@@ -44,7 +46,9 @@ const StopEdge = ({
                 className="edgebutton-foreignobject"
                 requiredExtensions="http://www.w3.org/1999/xhtml"
             >
-                <BiStopCircle size={foreignObjectSize} style={{backgroundColor: "white", color: "#aaa", cursor: "pointer"}}/>
+                <BiStopCircle size={foreignObjectSize} style={{
+                    backgroundColor: theme.palette.common.white,
+                    color: "#aaa", cursor: "pointer", borderRadius: "50%"}}/>
             </foreignObject>
             {data?.name && <EdgeText
                 style={{cursor: "pointer"}}

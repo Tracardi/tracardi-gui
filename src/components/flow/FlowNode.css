@@ -1,7 +1,6 @@
 .react-flow__handle {
     width: 17px !important;
     height: 17px !important;
-    background-color: white !important;
     border-radius: 100% !important;
     position: unset !important;
     border: 2px solid rgba(0, 105, 192, 1);
@@ -120,10 +119,7 @@ DIV.NodePanel {
     border-style: solid;
     border-radius: 10px;
     border-width: 2px;
-    background-color: white;
     position: relative;
-    color: #444444;
-    border-color: rgba(0,0,0, .5);
 }
 
 DIV.NodePanelPassValue {
@@ -161,10 +157,10 @@ DIV.CondContainer:hover DIV.CondTitle {
 
 DIV.CondNode {
     background: rgba(255,255,255,.9);
-    height: 40px;
+    height: 45px;
     text-align: center;
     transform:rotate(-45deg);
-    width:40px;
+    width:45px;
     border-style: solid;
     border-width: 2px;
     position: relative;
@@ -195,7 +191,7 @@ DIV.CondTitle {
 }
 
 DIV.NodePadding {
-    padding: 5px;
+    padding: 7px;
     width: inherit;
     display: flex;
     align-items: center;
@@ -205,7 +201,7 @@ DIV.NodePro {
     display: flex;
     color: white;
     align-items: center;
-    background-color: #333;
+    background-color: rgba(0,0,0,.5);
     padding: 1px 10px;
     border-radius: 0 6px 6px 0;
 }

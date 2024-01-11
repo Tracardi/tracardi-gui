@@ -45,6 +45,16 @@ export const stagingTheme = createTheme({
             white: "white",
             black: "black"
         },
+        wf: {
+            dots: "#444",
+            node: {
+                background: "white",
+                color: "#444444",
+                border: "rgba(0,0,0, .5)",
+                selectedBackground: '#3B82F6',
+                selectedColor: "white"
+            }
+        },
         charts: {
             pie: ['#3B82F6', '#00C49F', '#FFBB28', '#FF8042'],
             line: [
@@ -119,6 +129,16 @@ export const darkTheme = createTheme({
         common: {
             white: "#444",
             black: "#eee"
+        },
+        wf: {
+            dots: "#888",
+            node: {
+                background: "#444",
+                color: "#eee",
+                border: "#eee",
+                selectedBackground: "#805fcf",
+                selectedColor: "white"
+            }
         },
         charts: {
             pie: ['#805fcf', '#00C49F', '#FFBB28', '#FF8042'],
@@ -296,6 +316,16 @@ export const productionTheme = createTheme({
         common: {
             white: "white",
             black: "black"
+        },
+        wf: {
+            dots: "#444",
+            node: {
+                background: "white",
+                color: "#444444",
+                border: "rgba(0,0,0, .5)",
+                selectedBackground: '#3B82F6',
+                selectedColor: "white"
+            }
         },
         charts: {
             pie: ['#3B82F6', '#00C49F', '#FFBB28', '#FF8042'],

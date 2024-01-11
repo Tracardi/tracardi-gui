@@ -1,7 +1,6 @@
 .AdvancedSquareCard {
     display: inline-flex;
-    border: solid rgba(225,225,225, 0.8) 1px;
-    background: rgba(225,225,225, 0.8);
+    border: solid rgba(128,128,128, 0.5) 1px;
     cursor: pointer;
     width: 190px;
     height: 190px;
@@ -16,8 +15,7 @@
 }
 
 .AdvancedSquareCard:hover {
-    border: solid #ccc 1px;
-    background: whitesmoke;
+    border: solid rgba(128,128,128,.3) 1px;
 }
 
 .AdvancedSquareCard > .Details {
@@ -65,7 +63,7 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
-    background-color: white;
+    background-color: rgba(128,128,128, 0.3);
     border-radius: 0 0 10px 10px;
 }
 
@@ -73,13 +71,12 @@
     display: flex;
     font-size: 14px;
     align-items: center;
-    color: #1565c0;
     width: 100%;
     justify-content: center;
     padding: 9px;
 }
 
 .AdvancedSquareCard .Buttons .Button:hover {
-    background-color: #1565c0;
+    background-color: rgba(128,128,128, 0.5);
     color: white;
 }

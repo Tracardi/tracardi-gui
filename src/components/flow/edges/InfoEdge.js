@@ -5,6 +5,7 @@ import {
     getMarkerEnd,
 } from 'reactflow';
 import {BiPlayCircle} from "react-icons/bi";
+import useTheme from "@mui/material/styles/useTheme";
 
 const foreignObjectSize = 20;
 
@@ -26,7 +27,7 @@ const InfoEdge = ({
                       markerEndId,
                       data
                   }) => {
-    const [edgePath, centerX, centerY]  = getBezierPath({
+    const [edgePath, centerX, centerY] = getBezierPath({
         sourceX,
         sourceY,
         sourcePosition,
@@ -35,6 +36,7 @@ const InfoEdge = ({
         targetPosition,
     });
     const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
+    const theme = useTheme()
 
     return (
         <>
@@ -50,7 +52,11 @@ const InfoEdge = ({
                 requiredExtensions="http://www.w3.org/1999/xhtml"
             >
                 <BiPlayCircle size={foreignObjectSize}
-                              style={{backgroundColor: "white", color: "green", cursor: "pointer"}}
+                              style={{
+                                  backgroundColor: theme.palette.common.white,
+                                  color: "green", cursor: "pointer",
+                                  borderRadius: "50%"
+                              }}
                               onClick={(event) => onEdgeClick(event, id)}/>
             </foreignObject>
             {data?.name && <EdgeText

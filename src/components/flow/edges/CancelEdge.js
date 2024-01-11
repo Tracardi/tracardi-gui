@@ -5,6 +5,7 @@ import {
     getMarkerEnd,
 } from 'reactflow';
 import {AiOutlineCloseCircle} from "react-icons/ai";
+import useTheme from "@mui/material/styles/useTheme";
 
 const foreignObjectSize = 19;
 
@@ -30,6 +31,7 @@ const CancelEdge = ({
         targetPosition,
     });
     const markerEnd = getMarkerEnd(arrowHeadType, markerEndId);
+    const theme = useTheme()
 
     return (
         <>
@@ -44,7 +46,11 @@ const CancelEdge = ({
                 className="edgebutton-foreignobject"
                 requiredExtensions="http://www.w3.org/1999/xhtml"
             >
-                <AiOutlineCloseCircle size={foreignObjectSize} style={{backgroundColor: "white", color: "#aaa", cursor: "pointer"}}/>
+                <AiOutlineCloseCircle size={foreignObjectSize} style={{
+                    backgroundColor: theme.palette.common.white,
+                    color: "#aaa",
+                    cursor: "pointer",
+                    borderRadius: "50%"}}/>
             </foreignObject>
             {data?.name && <EdgeText
                 style={{cursor: "pointer"}}

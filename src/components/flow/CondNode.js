@@ -5,9 +5,12 @@ import ThresholdIcon from "./ThresholdIcon";
 import {isObject} from "../../misc/typeChecking";
 import {ErrorNumber, ExecutionSeqNumber, WarningNumber} from "./NodeAlerts";
 import FlowNodeIcons from "./FlowNodeIcons";
+import useTheme from "@mui/material/styles/useTheme";
 
 
 const CondNodeDynamic = ({data}) => {
+
+    const theme = useTheme()
 
     const InputPort = ({value, doc, style}) => {
 
@@ -94,14 +97,25 @@ const CondNodeDynamic = ({data}) => {
     }
 
     const nodeClass = (data?.metadata?.selected === true) ? "CondNode DebugNode" : "CondNode"
-    const nodeStyle = (data?.spec?.skip === true || data?.spec?.block_flow === true) ? {
-        borderColor: "#ccc",
-        color: "#999"
-    } : {}
-    const portStyle = (data?.spec?.skip === true || data?.spec?.block_flow === true) ? {borderColor: "#ccc"} : {
-        borderColor: "#1565c0",
-        borderWidth: 2
-    }
+    const nodeStyle = (data?.spec?.skip === true || data?.spec?.block_flow === true)
+        ? {
+            borderColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground :  "#ccc",
+            color: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedColor : "#999",
+            backgroundColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground : theme.palette.wf.node.background,
+        }
+        : {
+            borderColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground : theme.palette.wf.node.border,
+            color: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedColor : theme.palette.wf.node.color,
+            backgroundColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground : theme.palette.wf.node.background,
+        }
+    const portStyle = (data?.spec?.skip === true || data?.spec?.block_flow === true)
+        ? {
+            borderColor: "#ccc"
+        } : {
+            backgroundColor: theme.palette.common.white,
+            borderColor: theme.palette.primary.main,
+            borderWidth: 2
+        }
 
     return (
         <div className="CondContainer" style={{gap: 10}}>
@@ -113,8 +127,9 @@ const CondNodeDynamic = ({data}) => {
                 </div>}
                 <div style={{position: "relative"}}>
                     {data?.debugging?.node?.warnings > 0 && data?.debugging?.node?.errors === 0 &&
-                    <WarningNumber data={data}/>}
-                    {data?.debugging?.node?.errors > 0 && <ErrorNumber data={data}/>}
+                    <WarningNumber data={data} style={{backgroundColor: theme.palette.background.default}}/>}
+                    {data?.debugging?.node?.errors > 0 && <ErrorNumber data={data}
+                                                                       style={{backgroundColor: theme.palette.background.default}}/>}
                     <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={portStyle}/>
                     <ExecutionSeqNumber data={data} style={{top: 21, right: -14, zIndex: 2}}/>
                     <div className={nodeClass} style={nodeStyle}>

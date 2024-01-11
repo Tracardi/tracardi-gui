@@ -390,11 +390,11 @@ export function FlowEditorPane(
         setNodes((nodes) => nodes.map((node) => {
             node.data = {
                 ...node.data,
-                metadata: {...node.data.metadata, selected: node.id === debugNodeId},
+                metadata: {...node.data.metadata, selected: node.id === debugNodeId, clicked: node.id === currentNode?.id},
             }
             return node
         }))
-    }, [setEdges, setNodes, animatedEdge, debugNodeId])
+    }, [setEdges, setNodes, animatedEdge, debugNodeId, currentNode])
 
     useEffect(() => {
         setNodes((nodes) => nodes.map((node) => {
@@ -720,7 +720,7 @@ export function FlowEditorPane(
 
                                         <StatusTag modified={modified} deployed={deployed}/>
 
-                                        <Background color="#444" gap={16}/>
+                                        <Background color={theme.palette.wf.dots} gap={16}/>
                                     </ReactFlow>
                                 </div>
                                 {displayElementDetails && currentNode && <div style={{
