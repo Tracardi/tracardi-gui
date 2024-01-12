@@ -442,7 +442,7 @@ const AppBox = () => {
                         <PageTabs tabs={[
                             new PrivateTab(["maintainer"],
                                 <ElasticClusterHealthInfo/>, "/maintenance/elastic-cluster", "Cluster"),
-                            window._env_ && window._env_?.MULTI_TENANT === "false" && new PrivateTab(["maintainer"],
+                            window._env_ && window._env_?.MULTI_TENANT === "no" && new PrivateTab(["maintainer"],
                                 <ElasticIndicesInfo/>, "/maintenance/elastic-indices", "Indices"),
                             new PrivateTab(["maintainer"], <Migrations/>, "/maintenance/migration", "Migration"),
                             new PrivateTab(["admin"],
