@@ -30,7 +30,7 @@ export default function EventToProfileForm({
     const [eventType, setEventType] = useState(_eventType || null);
     const [tags, setTags] = useState(_tags || []);
     const [copingSchema, setCopingSchema] = useState(_indexSchema || []);
-    const [enabled, setEnabled] = useState(_indexEnabled || false);
+    const [enabled, setEnabled] = useState(_indexEnabled || true);
     const [processing, setProcessing] = useState(false);
     const [config, setConfig] = useState(_config);
 
