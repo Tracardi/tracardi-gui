@@ -21,8 +21,6 @@ export default function DataBrowsingList(
         displayChart = true,
         refreshInterval = 0,
         rowDetails = null,
-        localContext,
-        onLocalContextChange,
         ExtensionDropDown
 
     }) {
@@ -31,9 +29,7 @@ export default function DataBrowsingList(
 
     return <section className="DataBrowsingList">
         <div style={{display: "flex", justifyContent: "center", position: "relative"}}>
-            {!globalProductionContext && <ServerContextBar context={localContext}
-                                                           onContextChange={onLocalContextChange}
-                                                           extensions={ExtensionDropDown}
+            {!globalProductionContext && <ServerContextBar extensions={ExtensionDropDown}
             />}
         </div>
 

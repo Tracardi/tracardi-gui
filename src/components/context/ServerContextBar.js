@@ -38,23 +38,8 @@ function Extensions({extensions}) {
     </>
 }
 
-export default function ServerContextBar({context, extensions, onContextChange}) {
-
-    const style = context
-        ? {background: "rgb(173, 20, 87)", color: "white"}
-        : {}
-
+export default function ServerContextBar({extensions}) {
     return <>
-        {/*<ToggleButtonGroup*/}
-        {/*    color="primary"*/}
-        {/*    value={context ? "production" : "test"}*/}
-        {/*    exclusive*/}
-        {/*    onChange={onContextChange}*/}
-        {/*>*/}
-        {/*    <ToggleButton value="test" size="small">Test</ToggleButton>*/}
-        {/*    <ToggleButton value="production" size="small" style={style}>Production</ToggleButton>*/}
-
-        {/*</ToggleButtonGroup>*/}
         {extensions && <Extensions extensions={extensions}/> }
     </>
 }

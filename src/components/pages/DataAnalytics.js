@@ -5,7 +5,6 @@ import moment from "moment";
 import DataBrowsingList from "./DataBrowsingList";
 import BarChartElement from "../elements/charts/BarChart";
 import {isString} from "../../misc/typeChecking";
-import {getLocalContext, localContextKey, setLocalContext} from "../../config";
 
 export const FilterContext = createContext(0);
 export const LocalDataContext = createContext(null);
@@ -24,17 +23,10 @@ export default function DataAnalytics({
                                           filterFields,
                                           displayChart = true,
                                           barChartColors = {},
-                                          ExtensionDropDown=null
+                                          ExtensionDropDown = null
                                       }) {
 
     const [filterNumber, setFilterNumber] = useState(0)
-    const [localProductionContext, setLocalProductionContext] = useState(getLocalContext(localContextKey))
-
-    const handleLocalContextChange = (event, state) => {
-        state = (state === "production")
-        setLocalProductionContext(state)
-        setLocalContext(localContextKey, state)
-    }
 
     const getQuery = (type, label) => {
         const key = type + label;
@@ -146,43 +138,39 @@ export default function DataAnalytics({
 
     return (
         <FilterContext.Provider value={filterNumber}>
-            <LocalDataContext.Provider value={localProductionContext}>
-                <div className="DataAnalytics">
-                    <ObjectFiltering
-                        type={type}
-                        initDate={query}
-                        initRefresh={refresh}
-                        onFilterClick={handleFilter}
-                        onRefreshChange={handleRefreshChange}
-                    />
-                    <div className="Data">
-                        <DataBrowsingList
-                            label={label}
-                            onLoadRequest={onLoadRequest}
-                            onLoadHistogramRequest={onLoadHistogramRequest}
-                            onLoadDetails={onLoadDetails}
-                            timeFieldLabel={timeFieldLabel}
-                            filterFields={filterFields}
-                            timeField={timeField}
-                            initQuery={query}
-                            displayDetails={displayDetails}
-                            detailsDrawerWidth={detailsDrawerWidth}
-                            displayChart={displayChart}
+            <div className="DataAnalytics">
+                <ObjectFiltering
+                    type={type}
+                    initDate={query}
+                    initRefresh={refresh}
+                    onFilterClick={handleFilter}
+                    onRefreshChange={handleRefreshChange}
+                />
+                <div className="Data">
+                    <DataBrowsingList
+                        label={label}
+                        onLoadRequest={onLoadRequest}
+                        onLoadHistogramRequest={onLoadHistogramRequest}
+                        onLoadDetails={onLoadDetails}
+                        timeFieldLabel={timeFieldLabel}
+                        filterFields={filterFields}
+                        timeField={timeField}
+                        initQuery={query}
+                        displayDetails={displayDetails}
+                        detailsDrawerWidth={detailsDrawerWidth}
+                        displayChart={displayChart}
+                        refreshInterval={refresh}
+                        rowDetails={rowDetails}
+                        ExtensionDropDown={ExtensionDropDown}
+                    >
+                        <BarChartElement
+                            onLoadRequest={onLoadHistogramRequest(query)}
                             refreshInterval={refresh}
-                            rowDetails={rowDetails}
-                            localContext={localProductionContext}
-                            onLocalContextChange={handleLocalContextChange}
-                            ExtensionDropDown={ExtensionDropDown}
-                        >
-                            <BarChartElement
-                                onLoadRequest={onLoadHistogramRequest(query)}
-                                refreshInterval={refresh}
-                                barChartColors={barChartColors}
-                            />
-                        </DataBrowsingList>
-                    </div>
+                            barChartColors={barChartColors}
+                        />
+                    </DataBrowsingList>
                 </div>
-            </LocalDataContext.Provider>
+            </div>
         </FilterContext.Provider>
     );
 }
