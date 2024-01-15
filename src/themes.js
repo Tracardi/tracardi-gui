@@ -52,7 +52,8 @@ export const stagingTheme = createTheme({
                 color: "#444444",
                 border: "rgba(0,0,0, .5)",
                 selectedBackground: '#3B82F6',
-                selectedColor: "white"
+                selectedColor: "white",
+                disabled: {borderColor: "#ccc", color: "#999", backgroundColor: "white"}
             }
         },
         charts: {
@@ -137,7 +138,8 @@ export const darkTheme = createTheme({
                 color: "#eee",
                 border: "#eee",
                 selectedBackground: "#805fcf",
-                selectedColor: "white"
+                selectedColor: "white",
+                disabled: {borderColor: "#555", color: "#666", backgroundColor: "#444"}
             }
         },
         charts: {
@@ -324,7 +326,8 @@ export const productionTheme = createTheme({
                 color: "#444444",
                 border: "rgba(0,0,0, .5)",
                 selectedBackground: '#3B82F6',
-                selectedColor: "white"
+                selectedColor: "white",
+                disabled: {borderColor: "#ccc", color: "#999", backgroundColor: "white"}
             }
         },
         charts: {

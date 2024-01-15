@@ -105,9 +105,9 @@ const FlowNodeDynamic = ({data}) => {
 
     const nodeStyle = (data?.spec?.skip === true || data?.spec?.block_flow === true)
         ? {
-            borderColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground :  "#ccc",
-            color: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedColor : "#999",
-            backgroundColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground : theme.palette.wf.node.background,
+            borderColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground :  theme.palette.wf.node.disabled.borderColor,
+            color: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedColor : theme.palette.wf.node.disabled.color,
+            backgroundColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground : theme.palette.wf.node.disabled.backgroundColor,
         }
         : {
             borderColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground : theme.palette.wf.node.border,
@@ -116,7 +116,7 @@ const FlowNodeDynamic = ({data}) => {
         }
     const portStyle = (data?.spec?.skip === true || data?.spec?.block_flow === true)
         ? {
-            borderColor: "#ccc",
+            borderColor: theme.palette.wf.node.disabled.borderColor,
             backgroundColor: theme.palette.common.white,
         }
         : {
