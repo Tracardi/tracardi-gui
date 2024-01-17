@@ -9,7 +9,7 @@ import Chip from "@mui/material/Chip";
 
 export default function SessionCardInfo({session, displayContext=true}) {
 
-    const labelWidth = 180
+    const labelWidth = 150
     const displayMoreContext = window?.CONFIG?.session?.display?.row?.moreContext
     const displayChannel = window?.CONFIG?.session?.display?.row?.channel
 

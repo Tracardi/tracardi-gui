@@ -45,7 +45,7 @@ export default function SessionDetails({data: session}) {
                                 </TabCase>
                                 <TabCase id={1}>
                                     <div className="Box10">
-                                        <DeviceLocationCard geo={session?.device?.geo} timezone={session?.context?.time?.tz} />
+                                        <DeviceLocationCard device={session?.device} timezone={session?.context?.time?.tz} />
                                     </div>
                                 </TabCase>
                             </Tabs>

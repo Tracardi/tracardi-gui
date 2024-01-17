@@ -41,14 +41,14 @@ export const ProfileData = ({profile}) => {
 
     return <Grid container spacing={2} style={{padding: 20}}>
         <Grid item xs={6}>
-            <div style={{display: "flex", gap: 30, padding: 20}}>
+            <div style={{display: "flex", gap: 20, padding: 20}}>
                 <ProfileImage profile={profile}/>
                 <div style={{width: "100%"}}>
-                    <PropertyField name="Name" content={<ProfileLabel label={profileFullName}
+                    <PropertyField name="Name" labelWidth={80} content={<ProfileLabel label={profileFullName}
                                                                          profileLess={profile === null}/>}/>
-                    <PropertyField name="Visits" content={profile?.metadata?.time?.visit?.count}/>
+                    <PropertyField name="Visits" labelWidth={80} content={profile?.metadata?.time?.visit?.count}/>
                     {profile?.metadata?.time?.visit?.current &&
-                    <PropertyField name="Last visit" content={<DateValue date={profile?.metadata.time.visit.current}/>}/>}
+                    <PropertyField name="Last visit" labelWidth={80} content={<DateValue date={profile?.metadata.time.visit.current}/>}/>}
                 </div>
 
             </div>

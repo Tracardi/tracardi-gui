@@ -19,5 +19,5 @@
 }
 
 .KeyValueList > li:nth-child(odd) {
-  background-color: rgb(245, 245, 245);
+  background-color: rgba(128, 128, 128, .2);
 }

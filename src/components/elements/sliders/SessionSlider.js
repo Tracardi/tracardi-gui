@@ -10,6 +10,7 @@ import FetchError from "../../errors/FetchError";
 import SessionDeviceCard from "../details/SessionDeviceCard";
 import SessionCardInfo from "../details/SessionCardInfo";
 import Tabs, {TabCase} from "../tabs/Tabs";
+import DeviceLocationCard from "../details/DeviceLocationCard";
 
 export default function SessionSlider({profileId, onEventSelect}) {
 
@@ -59,16 +60,22 @@ export default function SessionSlider({profileId, onEventSelect}) {
 
             {!isLoading && session !== null && <>
                 <div style={{width: "100%", borderRadius: 10, border: "solid 1px #ccc"}}>
-                    <Tabs tabs={["Metadata", "Location & Device"]}>
+                    <Tabs tabs={["Metadata", "Device", "Location"]}>
                         <TabCase id={0}>
-                            <div style={{padding: 20}}>
+                            <div className="Box10">
                                 <SessionCardInfo session={session}/>
                             </div>
 
                         </TabCase>
                         <TabCase id={1}>
-                            <div style={{padding: 20}}>
+                            <div className="Box10">
                                 <SessionDeviceCard session={session}/>
+                            </div>
+
+                        </TabCase>
+                        <TabCase id={2}>
+                            <div className="Box10">
+                                <DeviceLocationCard device={session?.device} timezone={session?.context?.time?.tz} />
                             </div>
                         </TabCase>
                     </Tabs>
