@@ -42,7 +42,7 @@ export default function SessionDeviceCard({session}) {
                 ? <LuFlipVertical size={20} style={{marginRight: 5}}/>
                 : <LuFlipHorizontal size={20} style={{marginRight: 5}}/>}
             {session?.device?.resolution}
-            {session?.device?.color_depth && <><VscSymbolColor size={20} style={{marginRight: 5, marginLeft: 15}}/> {session?.device?.color_depth}b colors</>}
+            {session?.device?.color_depth && <><VscSymbolColor size={20} style={{marginRight: 5, marginLeft: 15}}/> {session?.device?.color_depth}-bit colors</>}
             </>
             }/>}
 
