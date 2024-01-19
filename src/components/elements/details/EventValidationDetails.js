@@ -13,7 +13,7 @@ import {isEmptyObject} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import EventTypeMetadata from "./EventTypeMetadata";
 import Tag from "../misc/Tag";
-import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
+import {RestrictToContext} from "../../context/RestrictContext";
 import {useRequest} from "../../../remote_api/requestClient";
 
 export function EventValidationCard({data, onDeleteComplete, onEditComplete, displayMetadata = true}) {
@@ -84,7 +84,7 @@ export function EventValidationCard({data, onDeleteComplete, onEditComplete, dis
                 </TuiFormGroupContent>
             </TuiFormGroup> : <NoData header="No schema defined"/>}
         </TuiForm>
-        <RestrictToLocalStagingContext>
+        <RestrictToContext>
             <div style={{marginBottom: 20}}>
                 <Rows style={{marginTop: 20}}>
                     <Button onClick={handleEditClick}
@@ -99,7 +99,7 @@ export function EventValidationCard({data, onDeleteComplete, onEditComplete, dis
                     />}
                 </Rows>
             </div>
-        </RestrictToLocalStagingContext>
+        </RestrictToContext>
     </>
 
     return <div className="Box10" style={{height: "100%"}}>

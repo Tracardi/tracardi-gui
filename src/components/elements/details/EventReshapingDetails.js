@@ -15,7 +15,7 @@ import NoData from "../misc/NoData";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import EventTypeMetadata from "./EventTypeMetadata";
 import Tag from "../misc/Tag";
-import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
+import {RestrictToContext} from "../../context/RestrictContext";
 import {useRequest} from "../../../remote_api/requestClient";
 
 function Spanner({children}) {
@@ -101,7 +101,7 @@ export function EventReshapingCard({data, onDeleteComplete, onEditComplete, disp
                 </Tabs>
             </TuiFormGroup>
         </TuiForm>
-        <RestrictToLocalStagingContext>
+        <RestrictToContext>
             <div style={{marginBottom: 20}}>
                 <Rows style={{marginTop: 20}}>
                     <Button onClick={onEditClick}
@@ -116,7 +116,7 @@ export function EventReshapingCard({data, onDeleteComplete, onEditComplete, disp
                     />}
                 </Rows>
             </div>
-        </RestrictToLocalStagingContext>
+        </RestrictToContext>
 
     </>
 

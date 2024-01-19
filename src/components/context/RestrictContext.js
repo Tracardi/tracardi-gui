@@ -1,20 +1,23 @@
 import {useContext} from "react";
 import {LocalDataContext} from "../pages/DataAnalytics";
+import {DataContext} from "../AppBox";
+import Keycloak from "keycloak-js";
+import envs from "../../envs";
 
-export function RestrictToProductionContext({children}) {
-    const localContext = useContext(LocalDataContext)
+export function RestrictToContext({children, production=false}) {
+    const globalContext = useContext(DataContext)
 
-    if(localContext === true) {
+    if(globalContext === production) {
         return children
     }
 
     return ""
 }
 
-export function RestrictToLocalStagingContext({children}) {
-    const localContext = useContext(LocalDataContext)
-
-    if(localContext !== true) {
+export function RestrictToMode({children, mode = 'os'}) {
+    if (mode === 'os' && envs.commercial === false) {
+        return children
+    } else if (mode === 'commercial' && envs.commercial === true) {
         return children
     }
 

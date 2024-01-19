@@ -12,6 +12,7 @@ import {BsGrid, BsList} from "react-icons/bs";
 import IconButton from "../misc/IconButton";
 import {BsStar} from "react-icons/bs";
 import {useRequest} from "../../../remote_api/requestClient";
+import {RestrictToContext} from "../../context/RestrictContext";
 
 const CardBrowser = ({
                          label,
@@ -22,12 +23,14 @@ const CardBrowser = ({
                          buttonLabel = null,
                          buttonIcon,
                          drawerDetailsWidth = 600,
-                         detailsFunc = () => {},
+                         detailsFunc = () => {
+                         },
                          drawerAddWidth = 600,
-                         addFunc = () => {},
+                         addFunc = () => {
+                         },
                          className,
                          refresh: forceRefresh,
-                         defaultLayout="cards",
+                         defaultLayout = "cards",
                          noDataInfo,
                      }) => {
 
@@ -36,7 +39,7 @@ const CardBrowser = ({
         const [data, setData] = useState(null);
         const [loading, setLoading] = useState(false);
         const [errors, setErrors] = useState(null);
-        const [layoutVert, setLayoutVert] = useState(defaultLayout!=="cards");
+        const [layoutVert, setLayoutVert] = useState(defaultLayout !== "cards");
         const [noLicense, setNotLicense] = useState(false)
 
         const {request} = useRequest()
@@ -54,7 +57,7 @@ const CardBrowser = ({
                         }
                     })
                     .catch((e) => {
-                        if(e?.response?.status === 402) {
+                        if (e?.response?.status === 402) {
                             setNotLicense(true)
                         }
                         if (e && isSubscribed) {
@@ -94,17 +97,18 @@ const CardBrowser = ({
                     <TuiFormGroupHeader header={label} description={description}/>
                     <TuiFormGroupContent>
                         <TuiFormGroupField>
-                            {cardFunc && rowFunc && <div style={{display: "flex", justifyContent: "flex-end", color: "#333"}}>
-                                <IconButton onClick={()=>setLayoutVert(false)} selected={!layoutVert}>
+                            {cardFunc && rowFunc &&
+                            <div style={{display: "flex", justifyContent: "flex-end", color: "#333"}}>
+                                <IconButton onClick={() => setLayoutVert(false)} selected={!layoutVert}>
                                     <BsGrid size={20}/>
                                 </IconButton>
-                                <IconButton onClick={()=>setLayoutVert(true)} selected={layoutVert}>
+                                <IconButton onClick={() => setLayoutVert(true)} selected={layoutVert}>
                                     <BsList size={20}/>
                                 </IconButton>
                             </div>}
                             <section className={className} style={{display: "flex", flexWrap: "wrap", width: "100%"}}>
                                 {!layoutVert && data && cardFunc && cardFunc(data, onClick)}
-                                {layoutVert  && data && rowFunc && rowFunc(data, onClick)}
+                                {layoutVert && data && rowFunc && rowFunc(data, onClick)}
                                 {errors && <ErrorsBox errorList={errors}/>}
                             </section>
                         </TuiFormGroupField>

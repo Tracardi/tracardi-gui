@@ -1,4 +1,5 @@
 window._env_ = {
   PUBLIC_URL: "/",
-  MULTI_TENANT: "no"
+  MULTI_TENANT: "no",
+  MODE: "commercial"
 }

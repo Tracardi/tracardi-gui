@@ -13,7 +13,7 @@ import EventToProfileForm from "../forms/EventToProfileForm";
 import EventTypeMetadata from "./EventTypeMetadata";
 import MappingsObjectDetails from "./MappingsObjectDetails";
 import Tag from "../misc/Tag";
-import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
+import {RestrictToContext} from "../../context/RestrictContext";
 import {useRequest} from "../../../remote_api/requestClient";
 
 export function EventToProfileCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
@@ -92,7 +92,7 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
             </TuiFormGroup>
 
         </TuiForm>
-        {!data.build_in && <RestrictToLocalStagingContext>
+        {!data.build_in && <RestrictToContext>
             <div style={{marginBottom: 20, marginTop: 20}}>
                 <Rows>
                     <Button onClick={onEditClick}
@@ -106,7 +106,7 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
                         disabled={typeof data === "undefined"}/>
                 </Rows>
             </div>
-        </RestrictToLocalStagingContext>}
+        </RestrictToContext>}
     </>
 
     return <div className="Box10" style={{height: "100%"}}>

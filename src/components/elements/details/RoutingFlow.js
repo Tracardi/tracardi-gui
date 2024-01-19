@@ -30,7 +30,7 @@ import EventToProfileForm from "../forms/EventToProfileForm";
 import FlowDisplay from "../../flow/FlowDetails";
 import {useFetch} from "../../../remote_api/remoteState";
 import FetchError from "../../errors/FetchError";
-import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
+import {RestrictToContext} from "../../context/RestrictContext";
 import {RuleCard} from "./RuleDetails";
 import {TuiForm, TuiFormGroup, TuiFormGroupHeader} from "../tui/TuiForm";
 import Tag from "../misc/Tag";
@@ -124,13 +124,13 @@ const AccordionCard = ({addFormProps = {}, items, nodata, details, passData, sin
     }
 
     return <>
-        {add && <RestrictToLocalStagingContext>
+        {add && <RestrictToContext>
             <div style={{display: "flex", justifyContent: "end", marginBottom: 5}}>
                 <Button label={singleValue ? "Add or Replace " : "Add"}
                         onClick={() => setOpenAddDrawer(true)}
                         icon={<BsPlusCircleDotted size={20}/>}/>
             </div>
-        </RestrictToLocalStagingContext>}
+        </RestrictToContext>}
         {(!hasData(items)) ? displayNoData() : displayAccordion()}
         {add && <FormDrawer
             width={800}

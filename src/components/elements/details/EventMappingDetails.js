@@ -15,7 +15,7 @@ import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import ActiveTag from "../misc/ActiveTag";
-import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
+import {RestrictToContext} from "../../context/RestrictContext";
 import {objectMap} from "../../../misc/mappers";
 import AssignValueToKey from "./AssignValueToKey";
 import {useRequest} from "../../../remote_api/requestClient";
@@ -107,7 +107,7 @@ export function EventMappingCard({data, onDeleteComplete, onEditComplete, displa
                 }
             </TuiFormGroupContent>
         </TuiFormGroup>
-        {!data.build_in && <RestrictToLocalStagingContext>
+        {!data.build_in && <RestrictToContext>
             <Rows style={{marginTop: 20, marginBottom: 20}}>
                 <Button onClick={handleEdit}
                         icon={<VscEdit size={20}/>}
@@ -119,7 +119,7 @@ export function EventMappingCard({data, onDeleteComplete, onEditComplete, displa
                     label="Delete"
                     disabled={typeof data === "undefined"}/>
             </Rows>
-        </RestrictToLocalStagingContext>}
+        </RestrictToContext>}
     </TuiForm>
 
     return <div className="Box10" style={{height: "100%"}}>

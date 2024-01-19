@@ -67,7 +67,8 @@ export default function EventSources() {
                             icon: "source",
                             enabled: row?.enabled,
                             name: row?.name,
-                            description: row?.description
+                            description: row?.description,
+                            production: row.production
                         }
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}

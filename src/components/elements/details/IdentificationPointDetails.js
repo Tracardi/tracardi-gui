@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import IdentificationPointForm from "../forms/IdentifiactionPointForm";
 import EventTypeMetadata from "./EventTypeMetadata";
-import {RestrictToLocalStagingContext} from "../../context/RestrictContext";
+import {RestrictToContext} from "../../context/RestrictContext";
 import AssignValueToKey from "./AssignValueToKey";
 import Tag from "../misc/Tag";
 import {useRequest} from "../../../remote_api/requestClient";
@@ -74,7 +74,7 @@ export function IdentificationPointCard({data, onDeleteComplete, onEditComplete,
                 </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>
-        <RestrictToLocalStagingContext>
+        <RestrictToContext>
             <div>
                 <Rows style={{marginTop: 20}}>
                     <Button onClick={handleEdit}
@@ -89,7 +89,7 @@ export function IdentificationPointCard({data, onDeleteComplete, onEditComplete,
                     />}
                 </Rows>
             </div>
-        </RestrictToLocalStagingContext>
+        </RestrictToContext>
     </>
 
     return <div className="Box10" style={{height: "100%"}}>

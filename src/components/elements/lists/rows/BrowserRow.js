@@ -1,11 +1,16 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import FlowNodeIcons from "../../../flow/FlowNodeIcons";
 import {BsGear, BsTrash} from "react-icons/bs";
 import IconButton from "../../misc/IconButton";
 import TuiTags from "../../tui/TuiTags";
 import {StatusPoint} from "../../misc/StatusPoint";
+import Tag from "../../misc/Tag";
+import Button from "../../forms/Button";
+import {LocalDataContext} from "../../../pages/DataAnalytics";
+import {RestrictToContext, RestrictToMode} from "../../../context/RestrictContext";
+import envs from "../../../../envs";
 
-const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, children, status, lock}) => {
+const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, onDeploy, tags, children, status, lock}) => {
 
     const description = children ? children : data.description
 
@@ -41,6 +46,7 @@ const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, childre
                 </div>
 
             </div>
+
             {onSettingsClick instanceof Function && <IconButton label={"Settings"}
                                                                 style={{color:"black"}}
                                                                 onClick={() => onSettingsClick(id)}>
@@ -50,7 +56,16 @@ const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, tags, childre
                                                          style={{color:"black"}}
                                                          onClick={() => onDelete(id)}>
                 <BsTrash size={20}/>
+
             </IconButton>}
+
+            <RestrictToMode mode="commercial">
+                <RestrictToContext production={false && envs.commercial}>
+                    {data?.production === true
+                        ? <Button label="deployed" disabled={true} style={{width: 100}}></Button>
+                        : data?.production === false ? <Button label="deploy" style={{width: 100}}></Button> : <Button label="unknown" disabled={true} style={{width: 100}}></Button>}
+                </RestrictToContext>
+            </RestrictToMode>
         </div>
     );
 }
