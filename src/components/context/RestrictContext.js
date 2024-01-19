@@ -23,3 +23,19 @@ export function RestrictToMode({children, mode = 'os'}) {
 
     return ""
 }
+
+
+export function DisplayOnlyOnTestContext({children}) {
+    const productionContext = useContext(DataContext)
+
+    if(envs.freezeProduction !== true) {
+        return children
+    }
+
+    if (productionContext === false) {
+        return children
+    }
+
+    return ""
+}
+

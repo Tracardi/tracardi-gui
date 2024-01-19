@@ -32,6 +32,7 @@ import JsonBrowser from "../misc/JsonBrowser";
 import {useRequest} from "../../../remote_api/requestClient";
 import {getError} from "../../../remote_api/entrypoint";
 import useTheme from "@mui/material/styles/useTheme";
+import {DisplayOnlyOnTestContext} from "../../context/RestrictContext";
 
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
@@ -371,19 +372,20 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                         <h1 className="header"
                             style={{marginBottom: 0}}> {data.name} ({data.type})</h1>
                     </div>
-                    <div style={{display: "flex", alignItems: "start"}}>
-                        <Rows>
-                            {data?.locked !== true && <Button onClick={onEdit}
-                                                              icon={<VscEdit size={20}/>}
-                                                              label="Edit"
-                                                              disabled={typeof data === "undefined"}/>}
-                            <Button onClick={onDelete}
-                                    icon={<VscTrash size={20}/>}
-                                    label="Delete"
-                                    disabled={typeof data === "undefined"}/>
-                        </Rows>
-                    </div>
-
+                    <DisplayOnlyOnTestContext>
+                        <div style={{display: "flex", alignItems: "start"}}>
+                            <Rows>
+                                {data?.locked !== true && <Button onClick={onEdit}
+                                                                  icon={<VscEdit size={20}/>}
+                                                                  label="Edit"
+                                                                  disabled={typeof data === "undefined"}/>}
+                                <Button onClick={onDelete}
+                                        icon={<VscTrash size={20}/>}
+                                        label="Delete"
+                                        disabled={typeof data === "undefined"}/>
+                            </Rows>
+                        </div>
+                    </DisplayOnlyOnTestContext>
                 </div>
                 {data.description && <h2 className="subHeader">{data.description}</h2>}
                 <div style={{marginBottom: 10}}>

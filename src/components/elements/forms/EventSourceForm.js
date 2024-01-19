@@ -20,6 +20,7 @@ import {getBridge} from "../../../remote_api/endpoints/bridge";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import FetchError from "../../errors/FetchError";
 import {useRequest} from "../../../remote_api/requestClient";
+import {DisplayOnlyOnTestContext} from "../../context/RestrictContext";
 
 const BridgeForm = ({id, value = null, onChange}) => {
 
@@ -393,12 +394,15 @@ const EventSourceForm = ({value, style, onClose}) => {
 
             <div>
                 {errors && <ErrorsBox errorList={errors}/>}
-                <Button label="Save"
-                        error={errors !== null || errorNameMessage}
-                        onClick={handleSubmit}
-                        progress={processing}
-                        style={{justifyContent: "center"}}
-                />
+                <DisplayOnlyOnTestContext>
+                    <Button label="Save"
+                            error={errors !== null || errorNameMessage}
+                            onClick={handleSubmit}
+                            progress={processing}
+                            style={{justifyContent: "center"}}
+                    />
+                </DisplayOnlyOnTestContext>
+
             </div>
         </>
         }

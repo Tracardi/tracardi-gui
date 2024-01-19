@@ -1,14 +1,11 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import FlowNodeIcons from "../../../flow/FlowNodeIcons";
 import {BsGear, BsTrash} from "react-icons/bs";
 import IconButton from "../../misc/IconButton";
 import TuiTags from "../../tui/TuiTags";
 import {StatusPoint} from "../../misc/StatusPoint";
-import Tag from "../../misc/Tag";
 import Button from "../../forms/Button";
-import {LocalDataContext} from "../../../pages/DataAnalytics";
-import {RestrictToContext, RestrictToMode} from "../../../context/RestrictContext";
-import envs from "../../../../envs";
+import {DisplayOnlyOnTestContext, RestrictToMode} from "../../../context/RestrictContext";
 
 const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, onDeploy, tags, children, status, lock}) => {
 
@@ -60,11 +57,11 @@ const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, onDeploy, tag
             </IconButton>}
 
             <RestrictToMode mode="commercial">
-                <RestrictToContext production={false && envs.commercial}>
+                <DisplayOnlyOnTestContext>
                     {data?.production === true
                         ? <Button label="deployed" disabled={true} style={{width: 100}}></Button>
                         : data?.production === false ? <Button label="deploy" style={{width: 100}}></Button> : <Button label="unknown" disabled={true} style={{width: 100}}></Button>}
-                </RestrictToContext>
+                </DisplayOnlyOnTestContext>
             </RestrictToMode>
         </div>
     );
