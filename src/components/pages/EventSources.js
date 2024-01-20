@@ -36,6 +36,17 @@ export default function EventSources() {
             )
     }
 
+    const handleDeploy = async (id, deploy) => {
+        try {
+            await request({
+                url: deploy ? `/deploy/event_source/${id}` : `/undeploy/event_source/${id}`,
+                method: "get"
+            })
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
     const sources = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="CardGroup" key={index}>
@@ -68,7 +79,8 @@ export default function EventSources() {
                             enabled: row?.enabled,
                             name: row?.name,
                             description: row?.description,
-                            production: row.production
+                            production: row.production,
+                            running: row.running
                         }
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
@@ -77,6 +89,7 @@ export default function EventSources() {
                                            lock={row?.locked}
                                            onClick={() => onClick(row?.id)}
                                            onDelete={handleDelete}
+                                           deplomentTable='event_source'
                                            tags={[row.type]}
                         />
                     })}

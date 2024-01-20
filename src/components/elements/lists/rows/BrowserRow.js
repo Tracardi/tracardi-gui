@@ -4,10 +4,9 @@ import {BsGear, BsTrash} from "react-icons/bs";
 import IconButton from "../../misc/IconButton";
 import TuiTags from "../../tui/TuiTags";
 import {StatusPoint} from "../../misc/StatusPoint";
-import Button from "../../forms/Button";
-import {DisplayOnlyOnTestContext, RestrictToMode} from "../../../context/RestrictContext";
+import DeployButton from "../../forms/buttons/DeploymentButton";
 
-const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, onDeploy, tags, children, status, lock}) => {
+const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, deplomentTable="NONE", tags, children, status, lock}) => {
 
     const description = children ? children : data.description
 
@@ -49,6 +48,9 @@ const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, onDeploy, tag
                                                                 onClick={() => onSettingsClick(id)}>
                 <BsGear size={20}/>
             </IconButton>}
+
+            <DeployButton id={id} production={data?.production} running={data?.running} deplomentTable={deplomentTable}/>
+
             {onDelete instanceof Function && <IconButton label={"Delete"}
                                                          style={{color:"black"}}
                                                          onClick={() => onDelete(id)}>
@@ -56,13 +58,6 @@ const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, onDeploy, tag
 
             </IconButton>}
 
-            <RestrictToMode mode="commercial">
-                <DisplayOnlyOnTestContext>
-                    {data?.production === true
-                        ? <Button label="deployed" disabled={true} style={{width: 100}}></Button>
-                        : data?.production === false ? <Button label="deploy" style={{width: 100}}></Button> : <Button label="unknown" disabled={true} style={{width: 100}}></Button>}
-                </DisplayOnlyOnTestContext>
-            </RestrictToMode>
         </div>
     );
 }

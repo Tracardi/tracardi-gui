@@ -12,7 +12,6 @@ import {BsGrid, BsList} from "react-icons/bs";
 import IconButton from "../misc/IconButton";
 import {BsStar} from "react-icons/bs";
 import {useRequest} from "../../../remote_api/requestClient";
-import {RestrictToContext} from "../../context/RestrictContext";
 
 const CardBrowser = ({
                          label,
