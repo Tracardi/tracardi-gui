@@ -34,25 +34,6 @@ export default function LiveSegments() {
             )
     }
 
-    // const segmentsCards = (data, onClick) => {
-    //     return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-    //         return <div className="CardGroup" key={index}>
-    //             <header>{category}</header>
-    //             <div>
-    //                 {plugs.map((row, subIndex) => {
-    //                     return <SquareCard key={index + "-" + subIndex}
-    //                                        id={row?.id}
-    //                                        icon={<VscOrganization size={45}/>}
-    //                                        status={row?.enabled}
-    //                                        name={row?.name}
-    //                                        description={row?.description}
-    //                                        onClick={() => onClick(row?.id)}/>
-    //                 })}
-    //             </div>
-    //         </div>
-    //     })
-    // }
-
     const segmentsRows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="RowGroup" style={{width:"100%"}} key={index}>

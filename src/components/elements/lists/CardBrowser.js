@@ -79,7 +79,7 @@ const CardBrowser = ({
             return <CenteredCircularProgress/>
         }
 
-        if (!loading && isEmptyObjectOrNull(data?.grouped)) {
+        if (!loading && isEmptyObjectOrNull(data?.grouped) && data !== null) {
             if (noLicense === true) {
                 return <NoData header="This feature requires license." icon={<BsStar size={50}/>}>
                     <p>Please contact Tracardi for a license key.</p>
