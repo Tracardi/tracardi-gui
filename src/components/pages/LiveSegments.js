@@ -1,5 +1,4 @@
 import React, {useCallback, useState} from "react";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {VscOrganization} from "react-icons/vsc";
 import LiveSegmentDetails from "../elements/details/LiveSegmentDetails";
@@ -35,24 +34,24 @@ export default function LiveSegments() {
             )
     }
 
-    const segmentsCards = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<VscOrganization size={45}/>}
-                                           status={row?.enabled}
-                                           name={row?.name}
-                                           description={row?.description}
-                                           onClick={() => onClick(row?.id)}/>
-                    })}
-                </div>
-            </div>
-        })
-    }
+    // const segmentsCards = (data, onClick) => {
+    //     return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
+    //         return <div className="CardGroup" key={index}>
+    //             <header>{category}</header>
+    //             <div>
+    //                 {plugs.map((row, subIndex) => {
+    //                     return <SquareCard key={index + "-" + subIndex}
+    //                                        id={row?.id}
+    //                                        icon={<VscOrganization size={45}/>}
+    //                                        status={row?.enabled}
+    //                                        name={row?.name}
+    //                                        description={row?.description}
+    //                                        onClick={() => onClick(row?.id)}/>
+    //                 })}
+    //             </div>
+    //         </div>
+    //     })
+    // }
 
     const segmentsRows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
@@ -67,6 +66,7 @@ export default function LiveSegments() {
                                            data={{...row, icon: "segment"}}
                                            onClick={() => onClick(row?.id)}
                                            onDelete={handleDelete}
+                                           deplomentTable="workflow_segment"
                         >{row.description}</BrowserRow>
                     })}
                 </div>
@@ -80,7 +80,6 @@ export default function LiveSegments() {
         To make this happen, a separate worker process for segmentation needs to run in the background."
         urlFunc={urlFunc}
         defaultLayout="rows"
-        cardFunc={segmentsCards}
         rowFunc={segmentsRows}
         buttonLabel="New segmentation"
         buttonIcon={<VscOrganization size={20}/>}

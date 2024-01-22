@@ -292,7 +292,6 @@ const EventSourceForm = ({value, style, onClose}) => {
         id: (!value.id) ? uuid4() : value.id
     })
     const advanced = useRef({
-        enabled: value.enabled,
         synchronize_profiles: value.synchronize_profiles,
         returns_profile: value.returns_profile,
         requires_consent: value.requires_consent,
@@ -319,6 +318,11 @@ const EventSourceForm = ({value, style, onClose}) => {
         setProcessing(true);
 
         try {
+            console.log(1, metadata.current)
+            console.log(2, advanced.current)
+            console.log(3, {
+                ...metadata.current,
+                ...advanced.current})
             const response = await request({
                 url: '/event-source',
                 method: "POST",

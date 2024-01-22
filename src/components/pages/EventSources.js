@@ -1,5 +1,4 @@
 import React, {useCallback, useState} from "react";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import EventSourceDetails from "../elements/details/EventSourceDetails";
 import {BsBoxArrowInRight} from "react-icons/bs";
@@ -47,27 +46,6 @@ export default function EventSources() {
         }
     }
 
-    const sources = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<BsBoxArrowInRight size={45}/>}
-                                           status={row?.enabled}
-                                           name={row?.name}
-                                           description={row?.description}
-                                           onClick={() => onClick(row?.id)}
-                                           tags={[row.type]}
-                        />
-                    })}
-                </div>
-            </div>
-        })
-    }
-
     const sourcesRows = (data, onClick) => {
         return Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="CardGroup" style={{width: "100%"}} key={index}>
@@ -105,7 +83,7 @@ export default function EventSources() {
         see the Javascript snippet or API URL that you can use to collect data."
         urlFunc={urlFunc}
         rowFunc={sourcesRows}
-        cardFunc={sources}
+        // cardFunc={sources}
         buttonLabel="New event source"
         buttonIcon={<BsBoxArrowInRight size={20}/>}
         drawerDetailsWidth={900}

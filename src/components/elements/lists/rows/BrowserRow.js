@@ -1,6 +1,6 @@
 import React from 'react';
 import FlowNodeIcons from "../../../flow/FlowNodeIcons";
-import {BsGear, BsTrash} from "react-icons/bs";
+import {BsGear} from "react-icons/bs";
 import IconButton from "../../misc/IconButton";
 import TuiTags from "../../tui/TuiTags";
 import {StatusPoint} from "../../misc/StatusPoint";
@@ -49,14 +49,12 @@ const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, deplomentTabl
                 <BsGear size={20}/>
             </IconButton>}
 
-            <DeployButton id={id} production={data?.production} running={data?.running} deplomentTable={deplomentTable}/>
-
-            {onDelete instanceof Function && <IconButton label={"Delete"}
-                                                         style={{color:"black"}}
-                                                         onClick={() => onDelete(id)}>
-                <BsTrash size={20}/>
-
-            </IconButton>}
+            <DeployButton id={id}
+                          production={data?.production}
+                          running={data?.running}
+                          deplomentTable={deplomentTable}
+                          onDelete={onDelete}
+            />
 
         </div>
     );

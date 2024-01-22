@@ -4,7 +4,6 @@ import FlowForm from "../elements/forms/FlowForm";
 import FlowDetails from "../elements/details/FlowDetails";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
-import AdvancedSquareCard from "../elements/lists/cards/AdvancedSquareCard";
 import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import {useConfirm} from "material-ui-confirm";
@@ -55,26 +54,6 @@ export default function Flows({defaultLayout="rows", type="collection", label}) 
             )
     }
 
-    const flowCards = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <AdvancedSquareCard key={index + "-" + subIndex}
-                                                   id={row?.id}
-                                                   icon={<BsGear size={45}/>}
-                                                   name={row?.name}
-                                                   onClick={() => onClick(row?.id)}
-                                                   onEdit={handleFlowEdit}
-                                                   onDelete={handleDelete}
-                        />
-                    })}
-                </div>
-            </div>
-        })
-    }
-
     const flowRows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="RowGroup" style={{width:"100%"}} key={index}>
@@ -88,6 +67,7 @@ export default function Flows({defaultLayout="rows", type="collection", label}) 
                                            onDelete={handleDelete}
                                            onSettingsClick={onClick}
                                            tags={[row.type]}
+                                           deplomentTable="workflow"
                         >
                             {row.description && <span style={{marginRight: 5}}>{row.description}</span>} {row.deployed && <Chip
                             label="Deployed"
@@ -104,7 +84,6 @@ export default function Flows({defaultLayout="rows", type="collection", label}) 
         defaultLayout={defaultLayout}
         description="List of defined workflows. You may filter this list by workflow name in the upper search box."
         urlFunc={urlFunc}
-        cardFunc={flowCards}
         rowFunc={flowRows}
         buttonLabel="New workflow"
         buttonIcon={<BsGear size={20}/>}

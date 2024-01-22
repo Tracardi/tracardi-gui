@@ -38,25 +38,25 @@ export default function EventRedirect() {
                 }
             )
     }
-    const cards = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<IoArrowRedoOutline size={45}/>}
-                                           tags={[(row.enabled && "Validated")]}
-                                           name={row?.name}
-                                           description={row?.description}
-                                           onClick={() => onClick(row?.id)}
-                        />
-                    })}
-                </div>
-            </div>
-        })
-    }
+    // const cards = (data, onClick) => {
+    //     return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
+    //         return <div className="CardGroup" key={index}>
+    //             <header>{category}</header>
+    //             <div>
+    //                 {plugs.map((row, subIndex) => {
+    //                     return <SquareCard key={index + "-" + subIndex}
+    //                                        id={row?.id}
+    //                                        icon={<IoArrowRedoOutline size={45}/>}
+    //                                        tags={[(row.enabled && "Validated")]}
+    //                                        name={row?.name}
+    //                                        description={row?.description}
+    //                                        onClick={() => onClick(row?.id)}
+    //                     />
+    //                 })}
+    //             </div>
+    //         </div>
+    //     })
+    // }
 
     const rows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
@@ -70,6 +70,7 @@ export default function EventRedirect() {
                                            tags={row.tags}
                                            onClick={() => onClick(row?.id)}
                                            onDelete={handleDelete}
+                                            deplomentTable='event_redirect'
                         />
                     })}
                 </div>
@@ -82,7 +83,6 @@ export default function EventRedirect() {
         label="Event redirects"
         description="List of event redirects."
         urlFunc={urlFunc}
-        cardFunc={cards}
         rowFunc={rows}
         buttonLabel="New event redirect"
         buttonIcon={<IoArrowRedoOutline size={20}/>}

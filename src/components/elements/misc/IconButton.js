@@ -15,7 +15,7 @@ export default function IconButton({onClick, children, selected, label, progress
 
     if(selected) {
         style = {
-            ...style, backgroundColor: theme.palette.primary.main, color: theme.palette.common.white
+             backgroundColor: theme.palette.primary.main, color: theme.palette.common.white, ...style,
         }
     } else {
         style = {
