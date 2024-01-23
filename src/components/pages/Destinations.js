@@ -1,5 +1,4 @@
 import React, {useCallback, useState} from "react";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {BsBoxArrowRight} from "react-icons/bs";
 import DestinationForm from "../elements/forms/DestinationForm";
@@ -33,25 +32,6 @@ export default function Destinations() {
             ).catch(_=>{})
     }
 
-    const cards = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<BsBoxArrowRight size={45}/>}
-                                           status={row?.enabled}
-                                           name={row?.name}
-                                           description={row?.description}
-                                           onClick={() => onClick(row?.id)}/>
-                    })}
-                </div>
-            </div>
-        })
-    }
-
     const rows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="RowGroup" style={{width: "100%"}} key={index}>
@@ -64,6 +44,7 @@ export default function Destinations() {
                                            status={row?.enabled}
                                            onClick={onClick}
                                            onDelete={handleDelete}
+                                           deplomentTable="destination"
                         />
                     })}
                 </div>
@@ -75,7 +56,6 @@ export default function Destinations() {
         defaultLayout="row"
         label="Profile Destinations"
         urlFunc={urlFunc}
-        cardFunc={cards}
         rowFunc={rows}
         buttonLabel="New destination"
         buttonIcon={<BsBoxArrowRight size={20}/>}

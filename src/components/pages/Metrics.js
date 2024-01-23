@@ -1,5 +1,4 @@
 import React, {useCallback, useState} from "react";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {VscDashboard} from "react-icons/vsc";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
@@ -35,25 +34,6 @@ export default function Metrics() {
             ).catch(_=>{})
     }
 
-    const ruleCards = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<VscDashboard size={45}/>}
-                                           status={row?.enabled}
-                                           name={row?.name}
-                                           description={row?.description}
-                                           onClick={() => onClick(row?.id)}/>
-                    })}
-                </div>
-            </div>
-        })
-    }
-
     const ruleRows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="RowGroup" style={{width: "100%"}} key={index}>
@@ -78,7 +58,6 @@ export default function Metrics() {
         description="Profile metrics are calculated from event data whenever new events are added or changes are made to the profile, or on a regular basis."
         urlFunc={urlFunc}
         defaultLayout="rows"
-        cardFunc={ruleCards}
         rowFunc={ruleRows}
         buttonLabel="New metric"
         buttonIcon={<VscDashboard size={20}/>}

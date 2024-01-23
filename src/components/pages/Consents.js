@@ -1,7 +1,6 @@
 import React, {useCallback, useState} from "react";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import {VscLaw} from "react-icons/vsc";
 import ConsentDetails from "../elements/details/ConsentDetails";
 import ConsentForm from "../elements/forms/ConsentForm";
@@ -35,25 +34,6 @@ export default function  Consents() {
             ).catch(_=>{})
     }
 
-    const cards = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<VscLaw size={45}/>}
-                                           status={row?.enabled}
-                                           name={row?.name}
-                                           onClick={() => onClick(row?.id)}
-                        />
-                    })}
-                </div>
-            </div>
-        })
-    }
-
     const rows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="RowGroup" style={{width: "100%"}} key={index}>
@@ -66,6 +46,7 @@ export default function  Consents() {
                                            onClick={onClick}
                                            status={row?.enabled}
                                            onDelete={handleDelete}
+                                           deplomentTable="consent_type"
                         />
                     })}
                 </div>
@@ -80,7 +61,6 @@ export default function  Consents() {
         share their personal data. This is the list of defined consent types that you may require from your customers.
         You may filter this list by consent name in the upper search box."
         urlFunc={urlFunc}
-        cardFunc={cards}
         rowFunc={rows}
         buttonLabel="New consent type"
         buttonIcon={<VscLaw size={20}/>}

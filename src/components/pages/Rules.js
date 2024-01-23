@@ -1,5 +1,4 @@
 import React, {useCallback, useState} from "react";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {FaUncharted} from "react-icons/fa";
 import RuleForm from "../elements/forms/RuleForm";
@@ -35,25 +34,6 @@ export default function Rules() {
             ).catch(_=>{})
     }
 
-    const ruleCards = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<FaUncharted size={45}/>}
-                                           status={row?.enabled}
-                                           name={row?.name}
-                                           description={row?.description}
-                                           onClick={() => onClick(row?.id)}/>
-                    })}
-                </div>
-            </div>
-        })
-    }
-
     const ruleRows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="RowGroup" style={{width: "100%"}} key={index}>
@@ -67,6 +47,7 @@ export default function Rules() {
                                            onClick={() => onClick(row?.id)}
                                            onDelete={handleDelete}
                                            tags={[row.type]}
+                                           deplomentTable="trigger"
                         />
                     })}
                 </div>
@@ -81,7 +62,6 @@ export default function Rules() {
         and the other specifies the workflow. If the starting condition is met, the workflow begins."
         urlFunc={urlFunc}
         defaultLayout="rows"
-        cardFunc={ruleCards}
         rowFunc={ruleRows}
         buttonLabel="New trigger"
         buttonIcon={<FaUncharted size={20}/>}
