@@ -39,7 +39,7 @@ function UserCards({users, setUserToEdit, onDelete}) {
                         console.error(e);
                     }
                 }
-            )
+            ).catch(_=>{})
     }
 
     return (

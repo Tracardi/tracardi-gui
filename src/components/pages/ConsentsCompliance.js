@@ -1,7 +1,6 @@
 import React, {useCallback, useState} from "react";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import {VscLaw} from "react-icons/vsc";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {useConfirm} from "material-ui-confirm";
@@ -32,26 +31,7 @@ export default function  ConsentsDataCompliance() {
                         console.error(e)
                     }
                 }
-            )
-    }
-
-    const cards = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<VscLaw size={45}/>}
-                                           status={row?.enabled}
-                                           name={row?.name}
-                                           onClick={() => onClick(row?.id)}
-                        />
-                    })}
-                </div>
-            </div>
-        })
+            ).catch(_=>{})
     }
 
     const rows = (data, onClick) => {
@@ -66,6 +46,7 @@ export default function  ConsentsDataCompliance() {
                                            onClick={onClick}
                                            status={row?.enabled}
                                            onDelete={handleDelete}
+                                           deplomentTable="data_compliance"
                         />
                     })}
                 </div>
@@ -80,7 +61,6 @@ export default function  ConsentsDataCompliance() {
         to the handling, processing, and storing of data. This is the list of defined field level data compliances
         with customer consents."
         urlFunc={urlFunc}
-        cardFunc={cards}
         rowFunc={rows}
         buttonLabel="New compliance"
         buttonIcon={<VscLaw size={20}/>}

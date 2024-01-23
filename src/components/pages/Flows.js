@@ -51,7 +51,7 @@ export default function Flows({defaultLayout="rows", type="collection", label}) 
                         console.error(e)
                     }
                 }
-            )
+            ).catch(_=>{})
     }
 
     const flowRows = (data, onClick) => {

@@ -30,7 +30,7 @@ export default function Destinations() {
                         console.error(e)
                     }
                 }
-            )
+            ).catch(_=>{})
     }
 
     const cards = (data, onClick) => {

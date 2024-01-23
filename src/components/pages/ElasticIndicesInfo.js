@@ -98,7 +98,7 @@ function ElasticIndicesInfo({showAlert}) {
                     showAlert({type: "error", message: e.toString(), hideAfter: 3000})
                 }
             }
-        )
+        ).catch(_=>{})
     }
 
     const IndexInfoComponent = ({name, index}) => <>

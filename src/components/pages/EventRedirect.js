@@ -1,7 +1,6 @@
 import React, {useCallback, useState} from "react";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import {IoArrowRedoOutline} from "react-icons/io5";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import EventRedirectForm from "../elements/forms/EventRedirectForm";
@@ -36,27 +35,8 @@ export default function EventRedirect() {
                         console.error(e)
                     }
                 }
-            )
+            ).catch(_=>{})
     }
-    // const cards = (data, onClick) => {
-    //     return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-    //         return <div className="CardGroup" key={index}>
-    //             <header>{category}</header>
-    //             <div>
-    //                 {plugs.map((row, subIndex) => {
-    //                     return <SquareCard key={index + "-" + subIndex}
-    //                                        id={row?.id}
-    //                                        icon={<IoArrowRedoOutline size={45}/>}
-    //                                        tags={[(row.enabled && "Validated")]}
-    //                                        name={row?.name}
-    //                                        description={row?.description}
-    //                                        onClick={() => onClick(row?.id)}
-    //                     />
-    //                 })}
-    //             </div>
-    //         </div>
-    //     })
-    // }
 
     const rows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {

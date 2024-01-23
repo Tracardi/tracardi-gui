@@ -32,7 +32,7 @@ export default function Metrics() {
                         console.error(e)
                     }
                 }
-            )
+            ).catch(_=>{})
     }
 
     const ruleCards = (data, onClick) => {

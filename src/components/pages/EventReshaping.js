@@ -1,5 +1,4 @@
 import React, {useCallback, useState} from "react";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import EventReshapingDetails from "../elements/details/EventReshapingDetails";
@@ -32,26 +31,7 @@ export default function EventReshaping() {
                         console.error(e)
                     }
                 }
-            )
-    }
-
-    const cards = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<FlowNodeIcons icon="map-properties" size={45}/>}
-                                           status={row?.enabled}
-                                           name={row?.name}
-                                           description={row?.description}
-                                           onClick={() => onClick(row?.id)}/>
-                    })}
-                </div>
-            </div>
-        })
+            ).catch(_=>{})
     }
 
     const rows = (data, onClick) => {
@@ -65,7 +45,9 @@ export default function EventReshaping() {
                                            data={{...row, icon: "map-properties"}}
                                            onDelete={handleDelete}
                                            status={row?.enabled}
-                                           onClick={() => onClick(row?.id)}/>
+                                           onClick={() => onClick(row?.id)}
+                                           deplomentTable="event_reshaping"
+                        />
                     })}
                 </div>
             </div>
@@ -78,7 +60,6 @@ export default function EventReshaping() {
         description="Event reshaping allows the change of event payload before it reaches the database and workflow.
         Event reshaping is available in commercial version of Tracardi."
         urlFunc={urlFunc}
-        cardFunc={cards}
         rowFunc={rows}
         buttonLabel="New reshape"
         buttonIcon={<FlowNodeIcons icon="map-properties"/>}

@@ -1,5 +1,4 @@
 import React, {useCallback, useState} from "react";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import FlowNodeIcons from "../flow/FlowNodeIcons";
@@ -27,36 +26,17 @@ export default function EventValidation() {
                             url: '/event-validator/' + id,
                             method: "delete"
                         })
-                        setRefresh(refresh+1)
+                        setRefresh(refresh + 1)
                     } catch (e) {
                         console.error(e)
                     }
                 }
-            )
-    }
-
-    const cards = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<FlowNodeIcons icon="validator" size={45}/>}
-                                           status={row?.enabled}
-                                           name={row?.name}
-                                           description={row?.description}
-                                           onClick={() => onClick(row?.id)}/>
-                    })}
-                </div>
-            </div>
-        })
+            ).catch(_=>{})
     }
 
     const rows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="RowGroup" style={{width:"100%"}} key={index}>
+            return <div className="RowGroup" style={{width: "100%"}} key={index}>
                 <header>{category}</header>
                 <div>
                     {plugs.map((row, subIndex) => {
@@ -65,7 +45,9 @@ export default function EventValidation() {
                                            data={{...row, icon: "validator"}}
                                            onDelete={handleDelete}
                                            status={row?.enabled}
-                                           onClick={() => onClick(row?.id)}/>
+                                           onClick={() => onClick(row?.id)}
+                                           deplomentTable="event_validation"
+                        />
                     })}
                 </div>
             </div>
@@ -78,7 +60,6 @@ export default function EventValidation() {
         description="Event validation allows the check of event payload before it reaches the database and workflow.
         Event validation is available in commercial version of Tracardi."
         urlFunc={urlFunc}
-        cardFunc={cards}
         rowFunc={rows}
         buttonLabel="New validation"
         buttonIcon={<FlowNodeIcons icon="validator"/>}

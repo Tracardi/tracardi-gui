@@ -1,10 +1,8 @@
 import React, {useCallback, useState} from "react";
 import ResourceDetails from "../elements/details/ResourceDetails";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import ResourceForm from "../elements/forms/ResourceForm";
 import {AiOutlineCloudServer} from "react-icons/ai";
-import FlowNodeIcons from "../flow/FlowNodeIcons";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import {useConfirm} from "material-ui-confirm";
 import {useRequest} from "../../remote_api/requestClient";
@@ -32,26 +30,7 @@ export default function Resources({defaultLayout="rows"}) {
                         console.error(e)
                     }
                 }
-            )
-    }
-
-    const sourceCards = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<FlowNodeIcons icon={row?.icon} size={45} defaultIcon="resource"/>}
-                                           status={row?.enabled}
-                                           name={row?.name}
-                                           description={row?.description}
-                                           onClick={() => onClick(row?.id)}/>
-                    })}
-                </div>
-            </div>
-        })
+            ).catch(_=>{})
     }
 
     const sourceRows = (data, onClick) => {
@@ -66,6 +45,7 @@ export default function Resources({defaultLayout="rows"}) {
                                            status={row?.enabled}
                                            onClick={onClick}
                                            onDelete={handleDelete}
+                                           deplomentTable="resource"
                         />
                     })}
                 </div>
@@ -77,7 +57,6 @@ export default function Resources({defaultLayout="rows"}) {
         label="Resources"
         defaultLayout={defaultLayout}
         urlFunc={urlFunc}
-        cardFunc={sourceCards}
         rowFunc={sourceRows}
         buttonLabel="New resource"
         buttonIcon={<AiOutlineCloudServer size={20}/>}

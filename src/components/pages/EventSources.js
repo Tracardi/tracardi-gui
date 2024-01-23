@@ -32,7 +32,7 @@ export default function EventSources() {
                         console.error(e)
                     }
                 }
-            )
+            ).catch(_=>{})
     }
 
     const handleDeploy = async (id, deploy) => {

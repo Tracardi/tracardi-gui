@@ -32,7 +32,7 @@ export default function Scheduler() {
                         console.error(e)
                     }
                 }
-            )
+            ).catch(_=>{})
     }
 
     const cards = (data, onClick) => {

@@ -48,7 +48,7 @@ function Deployment({showAlert}) {
                         setProgress(false)
                     }
                 }
-            )
+            ).catch(_=>{})
     }
 
     const handleTest = () => {
@@ -75,7 +75,7 @@ function Deployment({showAlert}) {
                         setProgress(false)
                     }
                 }
-            )
+            ).catch(_=>{})
     }
 
     const handleRevert = () => {
@@ -100,7 +100,7 @@ function Deployment({showAlert}) {
                         setProgress(false)
                     }
                 }
-            )
+            ).catch(_=>{})
     }
 
     return <><TuiForm style={{margin: '20px'}}>

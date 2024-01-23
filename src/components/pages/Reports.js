@@ -46,7 +46,7 @@ export default function Reports() {
                         console.error(e)
                     }
                 }
-            )
+            ).catch(_=>{})
     }
 
     const reportCards = (data, onClick) => {

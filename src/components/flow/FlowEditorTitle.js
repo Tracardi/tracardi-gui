@@ -108,9 +108,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                 "This action can not be undone."
         }).then(
             () => handleDraftSave(setDeployProgress, true )
-        ).catch(() => {
-            // todo error
-        })
+        ).catch(() => {})
     }
 
     const restoreProduction = async (id) => {

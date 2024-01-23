@@ -31,7 +31,7 @@ export default function Segments() {
                         console.error(e)
                     }
                 }
-            )
+            ).catch(_=>{})
     }
 
     const segmentsRows = (data, onClick) => {

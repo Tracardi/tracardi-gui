@@ -1,5 +1,4 @@
 import React, {useCallback, useState} from "react";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import FlowNodeIcons from "../flow/FlowNodeIcons";
@@ -32,26 +31,7 @@ export default function IdentificationPoint() {
                         console.error(e)
                     }
                 }
-            )
-    }
-
-    const cards = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<FlowNodeIcons icon="identity" size={45}/>}
-                                           status={row?.enabled}
-                                           name={row?.name}
-                                           description={row?.description}
-                                           onClick={() => onClick(row?.id)}/>
-                    })}
-                </div>
-            </div>
-        })
+            ).catch(_=>{})
     }
 
     const rows = (data, onClick) => {
@@ -65,7 +45,9 @@ export default function IdentificationPoint() {
                                            data={{...row, icon: "identity"}}
                                            onDelete={handleDelete}
                                            status={row?.enabled}
-                                           onClick={() => onClick(row?.id)}/>
+                                           onClick={() => onClick(row?.id)}
+                                           deplomentTable="identification_point"
+                        />
                     })}
                 </div>
             </div>
@@ -77,7 +59,6 @@ export default function IdentificationPoint() {
         label="Identification point"
         description="Identification point is an event in the customer journey that allows you to identify customer. "
         urlFunc={urlFunc}
-        cardFunc={cards}
         rowFunc={rows}
         buttonLabel="New identification"
         buttonIcon={<FlowNodeIcons icon="identity"/>}

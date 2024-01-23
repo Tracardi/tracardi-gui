@@ -1,7 +1,6 @@
 import React, {useCallback, useState} from "react";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import EventMappingForm from "../elements/forms/EventMappingForm";
 import {BsFolderCheck} from "react-icons/bs";
 import EventMappingDetails from "../elements/details/EventMappingDetails";
@@ -34,28 +33,7 @@ export default function EventManagement() {
                         console.error(e)
                     }
                 }
-            )
-    }
-
-    const cards = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<BsFolderCheck size={45}/>}
-                                           tags={[(row.enabled && "Validated")]}
-                                           name={row?.name}
-                                           status={row?.enabled}
-                                           description={row?.description}
-                                           onClick={() => onClick(row?.id)}
-                        />
-                    })}
-                </div>
-            </div>
-        })
+            ).catch(_=>{})
     }
 
     const rows = (data, onClick) => {
@@ -71,6 +49,7 @@ export default function EventManagement() {
                                            status={row?.enabled}
                                            onClick={() => onClick(row?.id)}
                                            onDelete={handleDelete}
+                                           deplomentTable="event_mapping"
                         >
                             {row.journey && <EventJourneyTag>{row.journey}
                             </EventJourneyTag>} {row.description && <span style={{marginRight: 5}}>{row.description}</span>}
@@ -86,7 +65,6 @@ export default function EventManagement() {
         label="Event mapping and event metadata"
         description="List of event types."
         urlFunc={urlFunc}
-        cardFunc={cards}
         rowFunc={rows}
         buttonLabel="New mapping"
         buttonIcon={<BsFolderCheck size={20}/>}
