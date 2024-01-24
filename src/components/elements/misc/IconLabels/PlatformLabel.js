@@ -20,5 +20,5 @@ export default function PlatformIcon({platform, os}) {
         return <>{platforms[platform]} {os} {platform} </>
     }
 
-    return platform
+    return <>{os} {platform}</>
 }

@@ -74,6 +74,12 @@ const EventDevice = ({event}) => {
                                                           content={data[key]}/>)}</>
 }
 
+const EventApp = ({event}) => {
+    const data = object2dot(event?.app);
+    return <>{Object.keys(data).map(key => <PropertyField labelWidth={350} key={key} name={key}
+                                                          content={data[key]}/>)}</>
+}
+
 const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
 
     const _theme = useTheme()
@@ -178,7 +184,7 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
             </Tabs>
         </TuiFormGroup>
         <TuiFormGroup>
-            <Tabs tabs={["OS", "Device", "Context", "Request", "Config"]} tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
+            <Tabs tabs={["OS", "Application", "Device", "Context", "Request", "Config"]} tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
                 <TabCase id={0}>
                     <section style={{margin: 20}}>
                         {!isEmptyObjectOrNull(event?.os) && event?.os?.name ? <EventOs event={event}/> :
@@ -189,13 +195,21 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
                 </TabCase>
                 <TabCase id={1}>
                     <section style={{margin: 20}}>
+                        {!isEmptyObjectOrNull(event?.app)  ? <EventApp event={event}/> :
+                            <NoData header="No application data">
+                                This event does not have any information on used application.
+                            </NoData>}
+                    </section>
+                </TabCase>
+                <TabCase id={2}>
+                    <section style={{margin: 20}}>
                         {!isEmptyObjectOrNull(event?.device) && event?.device?.name ? <EventDevice event={event}/> :
                             <NoData header="No device data">
                                 This event does not have any information on used device.
                             </NoData>}
                     </section>
                 </TabCase>
-                <TabCase id={2}>
+                <TabCase id={3}>
                     <section style={{margin: 20}}>
                         {!isEmptyObjectOrNull(event?.context) ?<><ContextInfo event={event}/>
                                 <div style={{marginTop: 20}}>
@@ -206,7 +220,7 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
                             </NoData>}
                     </section>
                 </TabCase>
-                <TabCase id={3}>
+                <TabCase id={4}>
                     <section style={{margin: 20}}>
                         {!isEmptyObjectOrNull(event?.request) ? <EventRequest event={event}/> :
                             <NoData header="No request data">
@@ -214,7 +228,7 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
                             </NoData>}
                     </section>
                 </TabCase>
-                <TabCase id={4}>
+                <TabCase id={5}>
                     <section style={{margin: 20}}>
                         {!isEmptyObjectOrNull(event?.config) ? <EventConfig event={event}/> :
                             <NoData header="No config data">
