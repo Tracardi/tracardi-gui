@@ -46,6 +46,7 @@ export default function Metrics() {
                                            status={row?.enabled}
                                            onClick={() => onClick(row?.id)}
                                            onDelete={handleDelete}
+                                           deplomentTable="metrics"
                         />
                     })}
                 </div>

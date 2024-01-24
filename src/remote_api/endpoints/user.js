@@ -24,3 +24,10 @@ export function userLogIn(username, password) {
     }
 
 }
+
+export function getUser(id) {
+    return {
+        method: "get",
+        url: `/user/${id}`,
+    }
+}

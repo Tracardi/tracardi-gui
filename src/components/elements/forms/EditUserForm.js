@@ -6,46 +6,54 @@ import {Checkbox, FormControlLabel, Switch, TextField} from "@mui/material";
 import Button from "./Button";
 import ErrorLine from "../../errors/ErrorLine";
 import {useRequest} from "../../../remote_api/requestClient";
+import {useFetch} from "../../../remote_api/remoteState";
+import {getUser} from "../../../remote_api/endpoints/user";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 
-export default function EditUserForm({ user, onSubmit}) {
+export default function EditUserForm({ id, onSubmit}) {
+
+    const [user, setUser] = React.useState(null);
+    const [roles, setRoles] = React.useState([]);
+
+    const {isLoading} = useFetch(
+        ['systemUser'],
+        getUser(id),
+        data => {
+            setUser(data)
+            setRoles(data?.roles ? data.roles.split(',') : [])
+        }
+    )
 
     const [password, setPassword] = React.useState("");
     const [confirmPassword, setConfirmPassword] = React.useState("");
-    const [fullName, setFullName] = React.useState(user.fullName);
-    const [email, setEmail] = React.useState(user.email);
-    const [admin, setAdmin] = React.useState(user.roles.includes("admin"));
-    const [marketer, setMarketer] = React.useState(user.roles.includes("marketer"));
-    const [developer, setDeveloper] = React.useState(user.roles.includes("developer"));
-    const [dataAdmin, setDataAdmin] = React.useState(user.roles.includes("maintainer"))
-    const [enabled, setEnabled] = React.useState(!user.disabled);
+
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState(null);
-    const [expirationDate, setExpirationDate] = React.useState(user.expiration_timestamp ? new Date(user.expiration_timestamp * 1000).toISOString().slice(0, 10) : "");
+
     const mounted = React.useRef(false);
     const {request} = useRequest()
 
+    React.useEffect(() => {
+        mounted.current = true;
+        return () => mounted.current = false;
+    }, [])
+
     const handleSave = async () => {
-        if (password === confirmPassword && fullName && email) {
+        if (password === confirmPassword && user?.full_name && user?.email) {
             setErrorMessage(null);
             setLoading(true);
             setError(false);
             try {
-                let rolesToSend = [];
-                if (admin) rolesToSend.push("admin");
-                if (marketer) rolesToSend.push("marketer");
-                if (developer) rolesToSend.push("developer");
-                if (dataAdmin) rolesToSend.push("maintainer");
                 await request({
                     url: `/user/${user.id}`,
                     method: "POST",
                     data: {
                         password: password || user.password,
-                        full_name: fullName,
-                        email: email,
-                        roles: rolesToSend,
-                        disabled: !enabled,
-                        expiration_date: expirationDate ? expirationDate : null
+                        full_name: user?.full_name,
+                        email: user?.email,
+                        roles: roles,
+                        enabled: user?.enabled,
                     }
                 })
 
@@ -67,10 +75,22 @@ export default function EditUserForm({ user, onSubmit}) {
         }
     }
 
-    React.useEffect(() => {
-        mounted.current = true;
-        return () => mounted.current = false;
-    }, [])
+    const handleUserChange = (field, value) => {
+        setUser({...user, [field]: value})
+    }
+
+    const handleUserRoleChange = (role, flag) => {
+        if(flag) {
+            setRoles(roles.concat(role))
+        } else {
+            setRoles(roles.filter(item => item !== role))
+        }
+
+    }
+
+    if (isLoading) {
+        return <CenteredCircularProgress/>
+    }
 
     return (
         <TuiForm style={{ padding: 20 }}>
@@ -83,7 +103,7 @@ export default function EditUserForm({ user, onSubmit}) {
                             fullWidth
                             variant="outlined"
                             label="New password"
-                            value={password}
+                            value={password || ""}
                             onChange={event => setPassword(event.target.value)}
                             size="small"
                         />
@@ -105,11 +125,11 @@ export default function EditUserForm({ user, onSubmit}) {
                             fullWidth
                             variant="outlined"
                             label="Full name"
-                            value={fullName}
-                            onChange={event => setFullName(event.target.value)}
+                            value={user?.full_name || ""}
+                            onChange={event => handleUserChange('full_name', event.target.value)}
                             size="small"
-                            error={!fullName && error}
-                            helperText={!fullName && error && <ErrorLine>Full name cannot be empty</ErrorLine>}
+                            error={!user?.full_name && error}
+                            helperText={!user?.full_name && error && <ErrorLine>Full name cannot be empty</ErrorLine>}
                         />
                     </TuiFormGroupField>
                     <TuiFormGroupField header="E-mail">
@@ -117,11 +137,11 @@ export default function EditUserForm({ user, onSubmit}) {
                             fullWidth
                             variant="outlined"
                             label="E-mail"
-                            value={email}
-                            onChange={event => setEmail(event.target.value)}
+                            value={user?.email || ""}
+                            onChange={event => handleUserChange('email', event.target.value)}
                             size="small"
-                            error={!email && error}
-                            helperText={!email && error && <ErrorLine>E-mail address cannot be empty</ErrorLine>}
+                            error={!user?.email && error}
+                            helperText={!user?.email && error && <ErrorLine>E-mail address cannot be empty</ErrorLine>}
                         />
                     </TuiFormGroupField>
                 </TuiFormGroupContent>
@@ -129,32 +149,34 @@ export default function EditUserForm({ user, onSubmit}) {
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Roles in the system"/>
                 <TuiFormGroupField>
-                    <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={admin} onChange={() => setAdmin(!admin)}/>} label="Admin"/>
-                    <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={marketer} onChange={()=> setMarketer(!marketer)}/>} label="Marketer"/>
-                    <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={developer} onChange={() => setDeveloper(!developer)}/>} label="Developer"/>
-                    <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={dataAdmin} onChange={() => setDataAdmin(!dataAdmin)}/>} label="Maintainer"/>
+                    <FormControlLabel style={{marginLeft: 10}}
+                                      control={<Checkbox size="medium" checked={roles?.includes("admin")}
+                                                         onChange={e => handleUserRoleChange('admin', e.target.checked)}/>}
+                                      label="Admin"/>
+                    <FormControlLabel style={{marginLeft: 10}}
+                                      control={<Checkbox size="medium" checked={roles?.includes("marketer")}
+                                                         onChange={e => handleUserRoleChange('marketer', e.target.checked)}/>}
+                                      label="Marketer"/>
+                    <FormControlLabel style={{marginLeft: 10}}
+                                      control={<Checkbox size="medium" checked={roles?.includes("developer")}
+                                                         onChange={e => handleUserRoleChange('developer', e.target.checked)}/>}
+                                      label="Developer"/>
+                    <FormControlLabel style={{marginLeft: 10}}
+                                      control={<Checkbox size="medium"
+                                                         checked={roles?.includes("maintainer")}
+                                                         onChange={e => handleUserRoleChange('maintainer', e.target.checked)}/>}
+                                      label="Maintainer"/>
                 </TuiFormGroupField>
             </TuiFormGroup>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Active user account" description="User account can be turned off with this switch."/>
                 <TuiFormGroupField>
-                    <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Switch size="medium" checked={enabled} onChange={() => setEnabled(!enabled)}/>} label="Activate user account"/>
+                    <FormControlLabel style={{padding: 10, marginLeft: 10}}
+                                      control={<Switch size="medium"
+                                                       checked={user?.enabled}
+                                                       onChange={e=>handleUserChange('enabled', e.target.checked)}/>}
+                                      label="Activate user account"/>
                 </TuiFormGroupField>
-            </TuiFormGroup>
-            <TuiFormGroup>
-                <TuiFormGroupHeader header="Set account expiration date" description="You can optionally provide expiration date for this account. This date should be in format YYYY-MM-DD"/>
-                <TuiFormGroupContent>
-                    <TuiFormGroupField>
-                        <TextField
-                                fullWidth
-                                variant="outlined"
-                                label="Expiration date"
-                                value={expirationDate}
-                                onChange={event => setExpirationDate(event.target.value)}
-                                size="small"
-                            />
-                    </TuiFormGroupField>
-                </TuiFormGroupContent>
             </TuiFormGroup>
             <Button label="Save" onClick={handleSave} progress={loading} style={{justifyContent: "center"}} error={error}/>
         </TuiForm>

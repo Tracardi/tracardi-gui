@@ -3,18 +3,19 @@ import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {useConfirm} from "material-ui-confirm";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
-import ReportForm from "../elements/forms/ReportForm";
-import {BsBarChartFill} from "react-icons/bs";
+import {BsPerson} from "react-icons/bs";
 import {useRequest} from "../../remote_api/requestClient";
+import EditUserForm from "../elements/forms/EditUserForm";
+import NewUserForm from "../elements/forms/NewUserForm";
 
 
 export default function Reports() {
 
     const [refresh, setRefresh] = useState(0);
 
-    const urlFunc = useCallback((query) => ('/reports' + ((query) ? "?query=" + query : "")), []);
-    const addFunc = useCallback((close) => <ReportForm reportId={null} onComplete={close}/>, []);
-    const detailsFunc = useCallback((id, close) => <ReportForm reportId={id} onComplete={close}/>, [])
+    const urlFunc = useCallback((query) => ('/users' + ((query) ? "?query=" + query : "")), []);
+    const addFunc = useCallback((close) => <NewUserForm onSubmit={close}/>, []);
+    const detailsFunc = useCallback((id, close) => <EditUserForm id={id} onSubmit={close}/>, [])
 
     const confirm = useConfirm();
     const {request} = useRequest()
@@ -30,11 +31,11 @@ export default function Reports() {
     }, [])
 
     const handleDelete = async (id) => {
-        confirm({title: "Do you want to delete this report?", description: "This action can not be undone."})
+        confirm({title: "Do you want to delete this user?", description: "This action can not be undone."})
             .then(async () => {
                     try {
                         const response = await request({
-                            url: `/report/${id}`,
+                            url: `/user/${id}`,
                             method: "delete"
                         })
 
@@ -48,7 +49,7 @@ export default function Reports() {
             ).catch(_=>{})
     }
 
-    const reportRows = (data, onClick) => {
+    const rows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="RowGroup" style={{width:"100%"}} key={index}>
                 <header>{category}</header>
@@ -56,10 +57,10 @@ export default function Reports() {
                     {plugs.map((row, subIndex) => {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
-                                           data={{...row, icon: "report"}}
+                                           data={{...row, name: row.full_name, icon: "profile"}}
                                            onClick={() => onClick(row?.id)}
                                            onDelete={handleDelete}
-                                           deplomentTable="report"
+                                           status={row.enabled}
                         />
                     })}
                 </div>
@@ -68,15 +69,15 @@ export default function Reports() {
     }
 
     return <CardBrowser
-        label="Reports"
-        description="List of defined reports. You may filter this list by report name in the upper search box."
+        label="Users"
+        description="ist of users registered in the system."
         urlFunc={urlFunc}
-        rowFunc={reportRows}
-        buttonLabel="New report"
-        buttonIcon={<BsBarChartFill size={20}/>}
+        rowFunc={rows}
+        buttonLabel="New user"
+        buttonIcon={<BsPerson size={20}/>}
         drawerDetailsWidth={600}
         detailsFunc={detailsFunc}
-        drawerAddTitle="New report"
+        drawerAddTitle="New user"
         drawerAddWidth={600}
         addFunc={addFunc}
         refresh={refresh}
