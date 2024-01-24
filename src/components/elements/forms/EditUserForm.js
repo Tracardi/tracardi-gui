@@ -148,35 +148,41 @@ export default function EditUserForm({ id, onSubmit}) {
             </TuiFormGroup>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Roles in the system"/>
-                <TuiFormGroupField>
-                    <FormControlLabel style={{marginLeft: 10}}
-                                      control={<Checkbox size="medium" checked={roles?.includes("admin")}
-                                                         onChange={e => handleUserRoleChange('admin', e.target.checked)}/>}
-                                      label="Admin"/>
-                    <FormControlLabel style={{marginLeft: 10}}
-                                      control={<Checkbox size="medium" checked={roles?.includes("marketer")}
-                                                         onChange={e => handleUserRoleChange('marketer', e.target.checked)}/>}
-                                      label="Marketer"/>
-                    <FormControlLabel style={{marginLeft: 10}}
-                                      control={<Checkbox size="medium" checked={roles?.includes("developer")}
-                                                         onChange={e => handleUserRoleChange('developer', e.target.checked)}/>}
-                                      label="Developer"/>
-                    <FormControlLabel style={{marginLeft: 10}}
-                                      control={<Checkbox size="medium"
-                                                         checked={roles?.includes("maintainer")}
-                                                         onChange={e => handleUserRoleChange('maintainer', e.target.checked)}/>}
-                                      label="Maintainer"/>
-                </TuiFormGroupField>
+                <TuiFormGroupContent>
+
+                    <TuiFormGroupField>
+                        <FormControlLabel style={{marginLeft: 10}}
+                                          control={<Checkbox size="medium" checked={roles?.includes("admin")}
+                                                             onChange={e => handleUserRoleChange('admin', e.target.checked)}/>}
+                                          label="Admin"/>
+                        <FormControlLabel style={{marginLeft: 10}}
+                                          control={<Checkbox size="medium" checked={roles?.includes("marketer")}
+                                                             onChange={e => handleUserRoleChange('marketer', e.target.checked)}/>}
+                                          label="Marketer"/>
+                        <FormControlLabel style={{marginLeft: 10}}
+                                          control={<Checkbox size="medium" checked={roles?.includes("developer")}
+                                                             onChange={e => handleUserRoleChange('developer', e.target.checked)}/>}
+                                          label="Developer"/>
+                        <FormControlLabel style={{marginLeft: 10}}
+                                          control={<Checkbox size="medium"
+                                                             checked={roles?.includes("maintainer")}
+                                                             onChange={e => handleUserRoleChange('maintainer', e.target.checked)}/>}
+                                          label="Maintainer"/>
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
+
             </TuiFormGroup>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Active user account" description="User account can be turned off with this switch."/>
-                <TuiFormGroupField>
-                    <FormControlLabel style={{padding: 10, marginLeft: 10}}
-                                      control={<Switch size="medium"
-                                                       checked={user?.enabled}
-                                                       onChange={e=>handleUserChange('enabled', e.target.checked)}/>}
-                                      label="Activate user account"/>
-                </TuiFormGroupField>
+                <TuiFormGroupContent>
+                    <TuiFormGroupField>
+                        <FormControlLabel style={{padding: 10, marginLeft: 10}}
+                                          control={<Switch size="medium"
+                                                           checked={user?.enabled}
+                                                           onChange={e=>handleUserChange('enabled', e.target.checked)}/>}
+                                          label="Activate user account"/>
+                    </TuiFormGroupField>
+                </TuiFormGroupContent>
             </TuiFormGroup>
             <Button label="Save" onClick={handleSave} progress={loading} style={{justifyContent: "center"}} error={error}/>
         </TuiForm>

@@ -104,6 +104,7 @@ export default function ActionPlugins() {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
                                            data={data}
+                                           status={row?.settings?.enabled}
                                            onClick={() => onClick(row?.id)}
                                            onDelete={onDelete}>
                             {data.description} (v{data.version})
@@ -123,7 +124,7 @@ export default function ActionPlugins() {
         urlFunc={urlFunc}
         cardFunc={pluginsCards}
         rowFunc={pluginsRows}
-        defaultLayout="rows"
+        defaultLayout="cards"
         drawerDetailsWidth={800}
         detailsFunc={detailsFunc}
         refresh={refresh}

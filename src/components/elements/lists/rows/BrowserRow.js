@@ -6,7 +6,7 @@ import TuiTags from "../../tui/TuiTags";
 import {StatusPoint} from "../../misc/StatusPoint";
 import DeployButton from "../../forms/buttons/DeploymentButton";
 
-const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, deplomentTable="NONE", tags, children, status, lock}) => {
+const BrowserRow = ({id, data, onClick, onDelete, onSettingsClick, deplomentTable=null, tags, children, status, lock}) => {
 
     const description = children ? children : data.description
 

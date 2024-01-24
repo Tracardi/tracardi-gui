@@ -22,7 +22,6 @@ export default function NewUserForm({ onSubmit}) {
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState(null);
-    const [expirationDate, setExpirationDate] = React.useState("");
     const mounted = React.useRef(false);
     const {request} = useRequest()
 
@@ -43,10 +42,9 @@ export default function NewUserForm({ onSubmit}) {
                     data: {
                         password: password,
                         roles: rolesToSend,
-                        disabled: !enabled,
+                        enabled: enabled,
                         full_name: fullName,
                         email: email,
-                        expiration_date: expirationDate ? expirationDate : null
                     }
                 })
 
@@ -124,32 +122,21 @@ export default function NewUserForm({ onSubmit}) {
             </TuiFormGroup>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Roles in the system"/>
+                <TuiFormGroupContent>
                 <TuiFormGroupField>
                     <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={admin} onChange={() => setAdmin(!admin)}/>} label="Admin"/>
                     <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={marketer} onChange={()=> setMarketer(!marketer)}/>} label="Marketer"/>
                     <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={developer} onChange={() => setDeveloper(!developer)}/>} label="Developer"/>
                     <FormControlLabel style={{marginLeft: 10}} control={<Checkbox size="medium" checked={dataAdmin} onChange={() => setDataAdmin(!dataAdmin)}/>} label="Maintainer"/>
                 </TuiFormGroupField>
+                </TuiFormGroupContent>
             </TuiFormGroup>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Activate user account" description="User account can be turned off with this switch. The account information will not be erased."/>
-                <TuiFormGroupField>
-                    <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Switch size="medium" checked={enabled} onChange={() => setEnabled(!enabled)}/>} label="Activate user account"/>
-                </TuiFormGroupField>
-            </TuiFormGroup>
-            <TuiFormGroup>
-                <TuiFormGroupHeader header="Set account expiration date" description="You can optionally provide expiration date for this account. This date should be in format YYYY-MM-DD"/>
                 <TuiFormGroupContent>
-                    <TuiFormGroupField>
-                        <TextField
-                                fullWidth
-                                variant="outlined"
-                                label="Expiration date"
-                                value={expirationDate}
-                                onChange={event => setExpirationDate(event.target.value)}
-                                size="small"
-                            />
-                    </TuiFormGroupField>
+                <TuiFormGroupField>
+                    <FormControlLabel style={{padding: 10, marginLeft: 10}} control={<Switch size="medium" checked={enabled} onChange={() => setEnabled(enabled)}/>} label="Activate user account"/>
+                </TuiFormGroupField>
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <Button label="Save" onClick={handleSave} progress={loading} style={{justifyContent: "center"}} error={error || errorMessage}/>

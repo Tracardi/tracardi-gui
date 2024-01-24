@@ -19,6 +19,14 @@ function DeployButton({showAlert, id, production, running, deplomentTable, onDel
     const confirm = useConfirm();
 
     const handleDeploy = async (deploy) => {
+        if(deplomentTable === null) {
+            confirm({
+                title: "No deployment!",
+                description: "This action has no deployment process."
+            })
+                .then(() => {}).catch(_ => {})
+            return
+        }
         if (!deploy) {
             confirm({
                 title: "Do you want to delete this record from production!",
@@ -57,7 +65,7 @@ function DeployButton({showAlert, id, production, running, deplomentTable, onDel
                     ?
                     <Button label="deployed" style={{width: 100}} disabled={true} onClick={() => handleDeploy(false)}/>
                     : !deployed
-                        ? <Button label="deploy" style={{width: 100}} onClick={() => handleDeploy(true)}/>
+                        ? (deplomentTable === null) ? "" : <Button label="deploy" style={{width: 100}} onClick={() => handleDeploy(true)}/>
                         : <Button label="unknown" disabled={true} style={{width: 100}}></Button>}
 
                 {!deployed && onDelete instanceof Function && <IconButton label={"Delete"}
