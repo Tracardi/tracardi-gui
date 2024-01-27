@@ -398,14 +398,14 @@ const EventSourceForm = ({value, style, onClose}) => {
 
             <div>
                 {errors && <ErrorsBox errorList={errors}/>}
-                <DisplayOnlyOnTestContext>
+                {/*<DisplayOnlyOnTestContext>*/}
                     <Button label="Save"
                             error={errors !== null || errorNameMessage}
                             onClick={handleSubmit}
                             progress={processing}
                             style={{justifyContent: "center"}}
                     />
-                </DisplayOnlyOnTestContext>
+                {/*</DisplayOnlyOnTestContext>*/}
 
             </div>
         </>

@@ -372,7 +372,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                         <h1 className="header"
                             style={{marginBottom: 0}}> {data.name} ({data.type})</h1>
                     </div>
-                    <DisplayOnlyOnTestContext>
+                    {/*<DisplayOnlyOnTestContext>*/}
                         <div style={{display: "flex", alignItems: "start"}}>
                             <Rows>
                                 {data?.locked !== true && <Button onClick={onEdit}
@@ -385,7 +385,7 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                                         disabled={typeof data === "undefined"}/>
                             </Rows>
                         </div>
-                    </DisplayOnlyOnTestContext>
+                    {/*</DisplayOnlyOnTestContext>*/}
                 </div>
                 {data.description && <h2 className="subHeader">{data.description}</h2>}
                 <div style={{marginBottom: 10}}>

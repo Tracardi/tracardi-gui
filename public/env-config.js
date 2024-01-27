@@ -1,6 +1,6 @@
 window._env_ = {
   PUBLIC_URL: "/",
   MULTI_TENANT: "no",
-  MODE: "os",
+  MODE: "commercial",
   FREEZE_PRODUCTION: "true"
 }

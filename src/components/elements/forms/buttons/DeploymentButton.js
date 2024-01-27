@@ -1,103 +1,68 @@
 import {DisplayOnlyOnTestContext, RestrictToMode} from "../../../context/RestrictContext";
 import Button from "../Button";
-import React, {useState} from "react";
-import {useRequest} from "../../../../remote_api/requestClient";
+import React from "react";
 import {BsFillPlayCircleFill, BsTrash} from "react-icons/bs";
-import IconButton from "../../misc/IconButton";
-import Tag, {OnOverTag} from "../../misc/Tag";
-import useTheme from "@mui/material/styles/useTheme";
-import {useConfirm} from "material-ui-confirm";
+import {OnOverTag} from "../../misc/Tag";
 import {connect} from "react-redux";
 import {showAlert} from "../../../../redux/reducers/alertSlice";
-import {getError} from "../../../../remote_api/entrypoint";
+import {MdOutlineModeEditOutline} from "react-icons/md";
 
-function DeployButton({showAlert, id, production, running, deplomentTable, onDelete}) {
+function DeployButton({id, deployed, running, draft, onDelete, onUnDeploy, onDeploy}) {
 
-    const [deployed, setDeployed] = useState(production === true)
-    const [run, setRun] = useState(running)
-    const {request} = useRequest()
-    const confirm = useConfirm();
 
-    const handleDeploy = async (deploy) => {
-        if(deplomentTable === null) {
-            confirm({
-                title: "No deployment!",
-                description: "This action has no deployment process."
-            })
-                .then(() => {}).catch(_ => {})
-            return
+    const handleDelete = () => {
+        if (onDelete instanceof Function) {
+            onDelete(id)
         }
-        if (!deploy) {
-            confirm({
-                title: "Do you want to delete this record from production!",
-                description: "This action will delete this record from production and it can not be reverted."
-            })
-                .then(() => {
-                    request({
-                        url: `/undeploy/${deplomentTable}/${id}`,
-                        method: "GET"
-                    })
-                        .then((response) => {
-                            setDeployed(response.data);
-                            setRun(response.data)
-                        }).catch(e => {showAlert({type: "error", message: getError(e)[0].msg, hideAfter: 3000})})
-                }).catch(_ => {})
+    }
 
-        } else {
-            try {
-                const response = await request({
-                    url: `/deploy/${deplomentTable}/${id}`,
-                    method: "get"
-                })
-                setDeployed(response.data)
-                setRun(response.data)
-            } catch (e) {
-                showAlert({type: "error", message: getError(e)[0].msg, hideAfter: 3000})
-            }
+    const handleUndeploy = () => {
+        if(onUnDeploy instanceof Function) {
+            onUnDeploy()
+        }
+    }
+
+    const handleDeploy = () => {
+        if(onDeploy instanceof Function) {
+            onDeploy()
         }
     }
 
     return <RestrictToMode mode="commercial">
-        <DisplayOnlyOnTestContext>
-            <span style={{marginLeft: 5, flexWrap: "nowrap", display: "flex"}}>
+        {/*<DisplayOnlyOnTestContext>*/}
+            <span className="flexLine" style={{marginLeft: 5, flexWrap: "nowrap"}}>
+
+                {draft && <DraftTag size={20} onClick={handleDelete}/>}
 
                 {deployed
-                    ?
-                    <Button label="deployed" style={{width: 100}} disabled={true} onClick={() => handleDeploy(false)}/>
-                    : !deployed
-                        ? (deplomentTable === null) ? "" : <Button label="deploy" style={{width: 100}} onClick={() => handleDeploy(true)}/>
-                        : <Button label="unknown" disabled={true} style={{width: 100}}></Button>}
+                    ? <Button label="deployed" style={{width: 100}} disabled={true}/>
+                    : <Button label="deploy" style={{width: 100}} onClick={handleDeploy}/>}
 
-                {!deployed && onDelete instanceof Function && <IconButton label={"Delete"}
-                                                                          style={{color: "black"}}
-                                                                          onClick={() => onDelete(id)}>
-                    <BsTrash size={20}/>
+                {running && <RunningTag onClick={handleUndeploy}/>}
 
-                </IconButton>}
-                {!run ? "" : (deployed) ? <RunningTag onClick={() => handleDeploy(false)}/> : <VersionsRunningTag/>}
             </span>
 
-        </DisplayOnlyOnTestContext>
+        {/*</DisplayOnlyOnTestContext>*/}
     </RestrictToMode>
 }
 
 function RunningTag({onClick}) {
     return <OnOverTag
-        on={<BsTrash size={20}/>}
-        off={<BsFillPlayCircleFill size={20}/>}
+        on={<BsTrash size={20} style={{margin: 5}}/>}
+        off={<BsFillPlayCircleFill size={20} style={{margin: 5}}/>}
         onClick={onClick}
         style={{padding: "1px 9px", marginLeft: 5, backgroundColor: "rgb(0, 200, 83)", color: "white"}}>
     </OnOverTag>
 
 }
 
-
-function VersionsRunningTag() {
-    const theme = useTheme()
-    return <Tag
-        style={{padding: "1px 9px", marginLeft: 5, backgroundColor: theme.palette.primary.main, color: "white"}}>
-        <BsFillPlayCircleFill size={20}/>
-    </Tag>
+function DraftTag({onClick}) {
+    return <OnOverTag
+        on={<BsTrash size={20} style={{margin: 5}}/>}
+        off={<MdOutlineModeEditOutline size={20} style={{margin: 5}}/>}
+        onClick={onClick}
+        style={{padding: "1px 9px", marginLeft: 5, backgroundColor: "#EF6C00", color: "white"}}>
+    </OnOverTag>
 }
 
 

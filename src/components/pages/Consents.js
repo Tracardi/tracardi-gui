@@ -11,7 +11,7 @@ import {useRequest} from "../../remote_api/requestClient";
 
 export default function  Consents() {
 
-    const urlFunc= useCallback((query) => ('/consents/type/by_tag' + ((query) ? "?query=" + query : "")),[]);
+    const urlFunc= useCallback((query) => ('/consents/types' + ((query) ? "?query=" + query : "")),[]);
     const addFunc = useCallback((close) => <ConsentForm onSaveComplete={close}/>,[]);
     const detailsFunc= useCallback((id, close) => <ConsentDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
     const [refresh, setRefresh] = useState(0);

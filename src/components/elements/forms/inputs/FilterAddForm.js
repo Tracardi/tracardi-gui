@@ -17,7 +17,7 @@ export default function FilterAddForm({textFieldLabel, buttonLabel, buttonIcon, 
                                     onClick={onAdd}
                                     icon={buttonIcon}
                                     style={{height: 39}}
-                                    disabled={globalContext && envs.commercial}
+                                    // disabled={globalContext}
             />}
         </div>
     </div>
