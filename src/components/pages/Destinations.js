@@ -24,7 +24,7 @@ export default function Destinations() {
                                            onClick={onClick}
                                            deplomentTable="destination"
                                            deleteEndpoint='/destination/'
-                                           icon={}"destination"
+                                           icon="destination"
                         />
                     })}
                 </div>
