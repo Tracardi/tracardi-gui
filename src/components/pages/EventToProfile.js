@@ -21,12 +21,13 @@ export default function EventToProfile() {
                     {plugs.map((row, subIndex) => {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
-                                           data={{...row, icon: "copy"}}
+                                           data={row}
                                            tags={row.tags}
                                            status={row?.enabled}
                                            onClick={() => onClick(row?.id)}
                                            deplomentTable="event_to_profile_mapping"
                                            deleteEndpoint='/event-to-profile/'
+                                           icon="copy"
                         />
                     })}
                 </div>

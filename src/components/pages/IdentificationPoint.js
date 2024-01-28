@@ -1,38 +1,15 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback} from "react";
 import CardBrowser from "../elements/lists/CardBrowser";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import FlowNodeIcons from "../flow/FlowNodeIcons";
-import {useConfirm} from "material-ui-confirm";
 import IdentificationPointForm from "../elements/forms/IdentifiactionPointForm";
 import IdentificationPointDetails from "../elements/details/IdentificationPointDetails";
-import {useRequest} from "../../remote_api/requestClient";
 
 export default function IdentificationPoint() {
-
-    const [refresh, setRefresh] = useState(0);
-    const {request} = useRequest()
 
     const urlFunc = useCallback((query) => ('/identification/points' + ((query) ? "?query=" + query : "")), [])
     const addFunc = useCallback((close) => <IdentificationPointForm onSubmit={close}/>, [])
     const detailsFunc = useCallback((id, close) => <IdentificationPointDetails id={id} onDeleteComplete={close}/>, []);
-
-    const confirm = useConfirm();
-
-    const handleDelete = async (id) => {
-        confirm({title: "Do you want to delete this identification point?", description: "This action can not be undone."})
-            .then(async () => {
-                    try {
-                        await request({
-                            url: '/identification/point/' + id,
-                            method: "delete"
-                        })
-                        setRefresh(refresh+1)
-                    } catch (e) {
-                        console.error(e)
-                    }
-                }
-            ).catch(_=>{})
-    }
 
     const rows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
@@ -42,11 +19,12 @@ export default function IdentificationPoint() {
                     {plugs.map((row, subIndex) => {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
-                                           data={{...row, icon: "identity"}}
-                                           onDelete={handleDelete}
+                                           data={{...row, }}
                                            status={row?.enabled}
                                            onClick={() => onClick(row?.id)}
                                            deplomentTable="identification_point"
+                                           deleteEndpoint='/identification/point/'
+                                           icon="identity"
                         />
                     })}
                 </div>

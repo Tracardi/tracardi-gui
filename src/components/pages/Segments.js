@@ -1,38 +1,15 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback} from "react";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {VscOrganization} from "react-icons/vsc";
 import SegmentForm from "../elements/forms/SegmentForm";
 import SegmentDetails from "../elements/details/SegmentDetails";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
-import {useConfirm} from "material-ui-confirm";
-import {useRequest} from "../../remote_api/requestClient";
 
 export default function Segments() {
-
-    const [refresh, setRefresh] = useState(0);
 
     const urlFunc = useCallback((query) => ('/segments' + ((query) ? "?query=" + query : "")), [])
     const addFunc = useCallback((close) => <SegmentForm onSubmit={close}/>, [])
     const detailsFunc = useCallback((id, close) => <SegmentDetails id={id} onDeleteComplete={close}/>, []);
-
-    const confirm = useConfirm();
-    const {request} = useRequest()
-
-    const handleDelete = async (id) => {
-        confirm({title: "Do you want to delete this segmentation?", description: "This action can not be undone."})
-            .then(async () => {
-                    try {
-                        await request({
-                            url: '/segment/' + id,
-                            method: "delete"
-                        })
-                        setRefresh(refresh+1)
-                    } catch (e) {
-                        console.error(e)
-                    }
-                }
-            ).catch(_=>{})
-    }
 
     const segmentsRows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
@@ -45,8 +22,9 @@ export default function Segments() {
                                            status={row?.enabled}
                                            data={{...row, icon: "segment"}}
                                            onClick={() => onClick(row?.id)}
-                                           onDelete={handleDelete}
                                            deplomentTable="segment"
+                                           deleteEndpoint='/segment/'
+                                           icon="segment"
                         />
                     })}
                 </div>

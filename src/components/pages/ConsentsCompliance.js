@@ -1,12 +1,10 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback} from "react";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {VscLaw} from "react-icons/vsc";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
-import {useConfirm} from "material-ui-confirm";
 import DataComplianceForm from "../elements/forms/DataComplianceForm";
 import DataComplianceDetails from "../elements/details/DataComplianceDetails";
-import {useRequest} from "../../remote_api/requestClient";
 
 
 export default function  ConsentsDataCompliance() {
@@ -14,25 +12,6 @@ export default function  ConsentsDataCompliance() {
     const urlFunc= useCallback((query) => ('/consent/compliance/fields' + ((query) ? "?query=" + query : "")),[]);
     const addFunc = useCallback((close) => <DataComplianceForm onSaveComplete={close}/>,[]);
     const detailsFunc= useCallback((id, close) => <DataComplianceDetails id={id} onDeleteComplete={close} onEditComplete={close}/>, [])
-    const [refresh, setRefresh] = useState(0);
-    const confirm = useConfirm();
-    const {request} = useRequest()
-
-    const handleDelete = async (id) => {
-        confirm({title: "Do you want to delete this data compliance enforcement?", description: "This action can not be undone."})
-            .then(async () => {
-                    try {
-                        await request({
-                            url: '/consent/compliance/field/' + id,
-                            method: "delete"
-                        })
-                        setRefresh(refresh+1)
-                    } catch (e) {
-                        console.error(e)
-                    }
-                }
-            ).catch(_=>{})
-    }
 
     const rows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
@@ -42,11 +21,12 @@ export default function  ConsentsDataCompliance() {
                     {plugs.map((row, subIndex) => {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
-                                           data={{...row, icon: "consent"}}
+                                           data={row}
                                            onClick={onClick}
                                            status={row?.enabled}
-                                           onDelete={handleDelete}
                                            deplomentTable="data_compliance"
+                                           deleteEndpoint='/consent/compliance/field/'
+                                           icon="consent"
                         />
                     })}
                 </div>

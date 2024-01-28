@@ -1,38 +1,15 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback} from "react";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {VscDashboard} from "react-icons/vsc";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
-import {useConfirm} from "material-ui-confirm";
 import MetricForm from "../elements/forms/MetricsForm";
 import {MetricDetailsById} from "../elements/details/MetricDetails";
-import {useRequest} from "../../remote_api/requestClient";
 
 export default function Metrics() {
-
-    const [refresh, setRefresh] = useState(0);
-    const {request} = useRequest()
 
     const urlFunc = useCallback((query) => ('/settings/metric' + ((query) ? "?query=" + query : "")), [])
     const addFunc = useCallback((close) => <MetricForm onSubmit={close}/>, [])
     const detailsFunc = useCallback((id, close) => <MetricDetailsById id={id} onDeleteComplete={close} onEditComplete={close}/>, []);
-
-    const confirm = useConfirm();
-
-    const handleDelete = async (id) => {
-        confirm({title: "Do you want to delete this metric?", description: "This action can not be undone."})
-            .then(async () => {
-                    try {
-                        await request({
-                            url: '/setting/metric/' + id,
-                            method: "delete"
-                        })
-                        setRefresh(refresh+1)
-                    } catch (e) {
-                        console.error(e)
-                    }
-                }
-            ).catch(_=>{})
-    }
 
     const ruleRows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
@@ -45,8 +22,9 @@ export default function Metrics() {
                                            data={{...row, icon: "metric"}}
                                            status={row?.enabled}
                                            onClick={() => onClick(row?.id)}
-                                           onDelete={handleDelete}
                                            deplomentTable="metrics"
+                                           deleteEndpoint='/setting/metric/'
+                                           icon="metric"
                         />
                     })}
                 </div>

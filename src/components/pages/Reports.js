@@ -1,52 +1,16 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback} from "react";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
-import {useConfirm} from "material-ui-confirm";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
 import ReportForm from "../elements/forms/ReportForm";
 import {BsBarChartFill} from "react-icons/bs";
-import {useRequest} from "../../remote_api/requestClient";
 
 
 export default function Reports() {
 
-    const [refresh, setRefresh] = useState(0);
-
     const urlFunc = useCallback((query) => ('/reports' + ((query) ? "?query=" + query : "")), []);
     const addFunc = useCallback((close) => <ReportForm reportId={null} onComplete={close}/>, []);
     const detailsFunc = useCallback((id, close) => <ReportForm reportId={id} onComplete={close}/>, [])
-
-    const confirm = useConfirm();
-    const {request} = useRequest()
-
-    const mounted = useRef(false);
-
-    useEffect(() => {
-        mounted.current = true;
-
-        return () => {
-            mounted.current = false;
-        }
-    }, [])
-
-    const handleDelete = async (id) => {
-        confirm({title: "Do you want to delete this report?", description: "This action can not be undone."})
-            .then(async () => {
-                    try {
-                        const response = await request({
-                            url: `/report/${id}`,
-                            method: "delete"
-                        })
-
-                        if (response && mounted.current) {
-                            setRefresh(Math.random())
-                        }
-                    } catch (e) {
-                        console.error(e)
-                    }
-                }
-            ).catch(_=>{})
-    }
 
     const reportRows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
@@ -58,8 +22,9 @@ export default function Reports() {
                                            id={row?.id}
                                            data={{...row, icon: "report"}}
                                            onClick={() => onClick(row?.id)}
-                                           onDelete={handleDelete}
                                            deplomentTable="report"
+                                           deleteEndpoint="/report/"
+                                           icon="report"
                         />
                     })}
                 </div>
@@ -79,7 +44,6 @@ export default function Reports() {
         drawerAddTitle="New report"
         drawerAddWidth={600}
         addFunc={addFunc}
-        refresh={refresh}
         defaultLayout="rows"
     />
 }

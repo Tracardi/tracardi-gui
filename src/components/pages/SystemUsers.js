@@ -57,10 +57,11 @@ export default function Reports() {
                     {plugs.map((row, subIndex) => {
                         return <BrowserRow key={index + "-" + subIndex}
                                            id={row?.id}
-                                           data={{...row, name: row.full_name, icon: "profile"}}
+                                           data={{...row, name: row.full_name}}
                                            onClick={() => onClick(row?.id)}
                                            onDelete={handleDelete}
                                            status={row.enabled}
+                                           icon="profile"
                         />
                     })}
                 </div>
