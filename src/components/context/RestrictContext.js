@@ -14,10 +14,11 @@ export function RestrictToContext({children, production=false}) {
     return ""
 }
 
-export function RestrictToMode({children, mode = 'os'}) {
-    if (mode === 'os' && envs.commercial === false) {
-        return children
-    } else if (mode === 'commercial' && envs.commercial === true) {
+export function RestrictToMode({children, mode = 'no-deployment', forceMode}) {
+
+    const currentMode = forceMode || envs.withDeployment
+
+    if (currentMode === mode) {
         return children
     }
 

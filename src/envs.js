@@ -1,5 +1,5 @@
 const envs = {
-    commercial: window._env_.MODE === 'commercial',
+    withDeployment: window._env_.MODE,
     freezeProduction: window._env_.FREEZE_PRODUCTION === 'true',
 }
 

@@ -106,7 +106,10 @@ export default function ActionPlugins() {
                                            data={data}
                                            status={row?.settings?.enabled}
                                            onClick={() => onClick(row?.id)}
-                                           onDelete={onDelete}>
+                                           onDelete={onDelete}
+                                           forceMode='no-deployment'
+                                           deleteEndpoint='/flow/action/plugin/'
+                        >
                             {data.description} (v{data.version})
                         </BrowserRow>
                     })}

@@ -11,7 +11,7 @@ import {showAlert} from "../../../../redux/reducers/alertSlice";
 import {useConfirm} from "material-ui-confirm";
 import {useRequest} from "../../../../remote_api/requestClient";
 
-const BrowserRow = ({showAlert, id, data: _data, icon, onClick, deleteEndpoint, onSettingsClick, deplomentTable=null, tags, children, status, lock}) => {
+const BrowserRow = ({showAlert, id, data: _data, icon, onClick, deleteEndpoint, onSettingsClick, deplomentTable=null, tags, children, status, lock, forceMode}) => {
 
     const [data, setData] = useState({..._data, icon})
     const [display, setDisplay] = useState(true)
@@ -52,6 +52,7 @@ const BrowserRow = ({showAlert, id, data: _data, icon, onClick, deleteEndpoint, 
                         }
 
                     } catch (e) {
+                        showAlert({type: "error", message: getError(e)[0].msg, hideAfter: 3000})
                         console.error(e)
                     }
                 }
@@ -144,12 +145,14 @@ const BrowserRow = ({showAlert, id, data: _data, icon, onClick, deleteEndpoint, 
         </IconButton>}
 
         <DeployButton id={id}
+                      data={data}
                       draft={!deployed}
                       deployed={deployed}
                       running={run}
                       onDelete={handleDelete}
                       onUnDeploy={handleUnDeploy}
                       onDeploy={handleDeploy}
+                      forceMode={forceMode}
         />
 
     </div>

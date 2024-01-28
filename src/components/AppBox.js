@@ -50,7 +50,6 @@ const Metrics = React.lazy(() => import("./pages/Metrics"))
 const FlowReader = React.lazy(() => import("./flow/FlowReader"))
 const ActionPlugins = React.lazy(() => import("./pages/ActionPlugins"))
 const PredefinedEventTypes = React.lazy(() => import("./pages/PredefinedEventTypes"))
-const Deployment = React.lazy(() => import("./pages/Deployment"))
 const Settings = React.lazy(() => import("./pages/Settings"))
 const TestEditor = React.lazy(() => import("./pages/TestEditor"))
 // const Scheduler = React.lazy(() => import("./pages/Scheduler"))
@@ -445,8 +444,6 @@ const AppBox = () => {
                             window._env_ && window._env_?.MULTI_TENANT === "no" && new PrivateTab(["maintainer"],
                                 <ElasticIndicesInfo/>, "/maintenance/elastic-indices", "Indices"),
                             new PrivateTab(["maintainer"], <Migrations/>, "/maintenance/migration", "Migration"),
-                            new PrivateTab(["admin"],
-                                <Deployment/>, "/deployment", "Deployment"),
                             new PrivateTab(["admin"], <Users/>, "/maintenance/users", "Users"),
                             new PrivateTab(["admin", "developer"],
                                 <ActionPlugins/>, "/settings/plugins", "Action plug-ins"),

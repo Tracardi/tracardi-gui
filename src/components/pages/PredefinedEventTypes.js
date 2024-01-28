@@ -38,7 +38,6 @@ export default function BuildInEventTypes() {
                 <div>
                     {plugs.map((row, subIndex) => {
                         const data = {
-                            icon: "event",
                             name: row?.name,
                             description: row?.description
                         }
@@ -48,6 +47,8 @@ export default function BuildInEventTypes() {
                                            status={row?.enabled}
                                            lock={row?.locked}
                                            onClick={() => onClick(row?.id)}
+                                           forceMode="none"
+                                           icon="event"
                         />
                     })}
                 </div>
