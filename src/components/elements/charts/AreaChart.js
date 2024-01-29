@@ -1,10 +1,9 @@
 import {CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area} from 'recharts';
-import React, {useContext} from "react";
+import React from "react";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import "./Chart.css";
 import PropTypes from "prop-types";
 import {useFetch} from "../../../remote_api/remoteState";
-import {LocalDataContext} from "../../pages/DataAnalytics";
 import useTheme from "@mui/material/styles/useTheme";
 
 
@@ -14,11 +13,10 @@ export default function AreaChartDisplay({endpoint, barChartColors}) {
 
     const theme = useTheme()
 
-    const localContext = useContext(LocalDataContext)
     const barColors = theme.palette.charts.pie
 
     const {isLoading} = useFetch(
-        ["getChartData", [endpoint, localContext]],
+        ["getChartData", [endpoint]],
         endpoint,
         data => {
             setData(data)

@@ -7,7 +7,6 @@ import BarChartElement from "../elements/charts/BarChart";
 import {isString} from "../../misc/typeChecking";
 
 export const FilterContext = createContext(0);
-export const LocalDataContext = createContext(null);
 
 export default function DataAnalytics({
                                           type,
@@ -137,40 +136,38 @@ export default function DataAnalytics({
     }
 
     return (
-        <FilterContext.Provider value={filterNumber}>
-            <div className="DataAnalytics">
-                <ObjectFiltering
-                    type={type}
-                    initDate={query}
-                    initRefresh={refresh}
-                    onFilterClick={handleFilter}
-                    onRefreshChange={handleRefreshChange}
-                />
-                <div className="Data">
-                    <DataBrowsingList
-                        label={label}
-                        onLoadRequest={onLoadRequest}
-                        onLoadHistogramRequest={onLoadHistogramRequest}
-                        onLoadDetails={onLoadDetails}
-                        timeFieldLabel={timeFieldLabel}
-                        filterFields={filterFields}
-                        timeField={timeField}
-                        initQuery={query}
-                        displayDetails={displayDetails}
-                        detailsDrawerWidth={detailsDrawerWidth}
-                        displayChart={displayChart}
+        <div className="DataAnalytics">
+            <ObjectFiltering
+                type={type}
+                initDate={query}
+                initRefresh={refresh}
+                onFilterClick={handleFilter}
+                onRefreshChange={handleRefreshChange}
+            />
+            <div className="Data">
+                <DataBrowsingList
+                    label={label}
+                    onLoadRequest={onLoadRequest}
+                    onLoadHistogramRequest={onLoadHistogramRequest}
+                    onLoadDetails={onLoadDetails}
+                    timeFieldLabel={timeFieldLabel}
+                    filterFields={filterFields}
+                    timeField={timeField}
+                    initQuery={query}
+                    displayDetails={displayDetails}
+                    detailsDrawerWidth={detailsDrawerWidth}
+                    displayChart={displayChart}
+                    refreshInterval={refresh}
+                    rowDetails={rowDetails}
+                    ExtensionDropDown={ExtensionDropDown}
+                >
+                    <BarChartElement
+                        onLoadRequest={onLoadHistogramRequest(query)}
                         refreshInterval={refresh}
-                        rowDetails={rowDetails}
-                        ExtensionDropDown={ExtensionDropDown}
-                    >
-                        <BarChartElement
-                            onLoadRequest={onLoadHistogramRequest(query)}
-                            refreshInterval={refresh}
-                            barChartColors={barChartColors}
-                        />
-                    </DataBrowsingList>
-                </div>
+                        barChartColors={barChartColors}
+                    />
+                </DataBrowsingList>
             </div>
-        </FilterContext.Provider>
+        </div>
     );
 }

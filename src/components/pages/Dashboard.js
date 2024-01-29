@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import EventTimeLine from "../elements/charts/EventsTimeLine";
 import {LoadablePieChart} from "../elements/charts/PieChart";
 import Grid from "@mui/material/Grid";
@@ -20,6 +20,7 @@ import {
 } from "../../remote_api/endpoints/session";
 import CenteredCircularProgress from "../elements/progress/CenteredCircularProgress";
 import useTheme from "@mui/material/styles/useTheme";
+import {DataContext} from "../AppBox";
 
 const Item = styled(Paper)(({theme, style}) => ({
     ...theme.typography.body2,
@@ -83,9 +84,10 @@ function EventsByType() {
 
     const theme = useTheme()
     const colorsList = theme.palette.charts.line
+    const dataContext = useContext(DataContext)
 
     const {data, isLoading, error} = useFetch(
-        ["eventByType"],
+        ["eventByType", [dataContext]],
         getEventsByType(),
         data => data
     )
@@ -108,27 +110,28 @@ function Charts1() {
 
     const theme = useTheme()
     const colorsList = theme.palette.charts.line
+    const dataContext = useContext(DataContext)
 
     const {data: byApp, isLoading: loadingByApp} = useFetch(
-        ["sessionsByApp"],
+        ["sessionsByApp", [dataContext]],
         getSessionsByApp(20),
         data => data
     )
 
     const {data: byTag, isLoading: loadingByTag} = useFetch(
-        ["eventsByTag"],
+        ["eventsByTag", [dataContext]],
         getEventsByTag(),
         data => data
     )
 
     const {data: byStatus, isLoading: loadingByStatus} = useFetch(
-        ["eventsByStatus"],
+        ["eventsByStatus", [dataContext]],
         getEventsByStatus(),
         data => data
     )
 
     const {data: bySource, isLoading: loadingBySource} = useFetch(
-        ["eventsBySource"],
+        ["eventsBySource", [dataContext]],
         getEventsBySource(),
         data => data
     )
@@ -167,28 +170,28 @@ function Charts2() {
 
     const theme = useTheme()
     const colorsList = theme.palette.charts.line
-
+    const dataContext = useContext(DataContext)
 
     const {data: byGeoLocation, isLoading: loadingByGeoLocation} = useFetch(
-        ["sessionsByGeoLocation"],
+        ["sessionsByGeoLocation", [dataContext]],
         getSessionsByDeviceGeo(),
         data => data
     )
 
     const {data: byOsName, isLoading: loadingByOsName} = useFetch(
-        ["sessionsByOsName"],
+        ["sessionsByOsName", [dataContext]],
         getSessionsByOsName(),
         data => data
     )
 
     const {data: byChannel, isLoading: loadingByChannel} = useFetch(
-        ["sessionsByChannel"],
+        ["sessionsByChannel", [dataContext]],
         getSessionsByChannel(),
         data => data
     )
 
     const {data: byResolution, isLoading: loadingByResolution} = useFetch(
-        ["sessionsByResolution"],
+        ["sessionsByResolution", [dataContext]],
         getSessionsByResolution(),
         data => data
     )

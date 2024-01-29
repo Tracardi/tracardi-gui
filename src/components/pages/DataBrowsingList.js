@@ -1,9 +1,8 @@
-import React, {useContext} from "react";
+import React from "react";
 import "./DataAnalytics.css";
 import "./DataBrowsingList.css";
 import DetailsObjectList from "../elements/lists/DetailsObjectList";
 import ServerContextBar from "../context/ServerContextBar";
-import {DataContext} from "../AppBox";
 
 
 export default function DataBrowsingList(
@@ -25,12 +24,9 @@ export default function DataBrowsingList(
 
     }) {
 
-    const globalProductionContext = useContext(DataContext)
-
     return <section className="DataBrowsingList">
         <div style={{display: "flex", justifyContent: "center", position: "relative"}}>
-            {!globalProductionContext && <ServerContextBar extensions={ExtensionDropDown}
-            />}
+            <ServerContextBar extensions={ExtensionDropDown}/>
         </div>
 
         {displayChart === true && <div className="Chart">

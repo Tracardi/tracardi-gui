@@ -4,7 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import CircularProgress from "@mui/material/CircularProgress";
 import LinearProgress from "@mui/material/LinearProgress";
 import NoData from "../misc/NoData";
-import {FilterContext, LocalDataContext} from "../../pages/DataAnalytics";
+import {FilterContext} from "../../pages/DataAnalytics";
 import {DataContext} from "../../AppBox";
 import {useFetch} from "../../../remote_api/remoteState";
 
@@ -23,12 +23,9 @@ const AutoLoadObjectList = ({
 
     const filter = useContext(FilterContext);
     const context = useContext(DataContext);
-    const localContext = useContext(LocalDataContext);
 
     const page = useRef(0)
     const lastFilter = useRef(filter)
-    const lastContext = useRef(context)
-    const lastLocalContext = useRef(localContext)
 
     const [hasMore, setHasMode] = useState(false)
     const [total, setTotal] = useState(0)
@@ -57,20 +54,13 @@ const AutoLoadObjectList = ({
     }, [refreshInterval]);
 
      const {isLoading: loading, error} = useFetch(
-        ["getData", [refresh, filter, context, localContext]],
+        ["getData", [refresh, filter, context]],
         () => {
             if(filter !== lastFilter.current) {
                 lastFilter.current = filter
                 page.current = 0
             }
-            if(context !== lastContext.current) {
-                lastContext.current = context
-                page.current = 0
-            }
-            if(localContext !== lastLocalContext.current) {
-                lastLocalContext.current = localContext
-                page.current = 0
-            }
+
             return {...onLoadRequest, url: `${onLoadRequest.url}/page/${page.current}`}
         },
         data => {

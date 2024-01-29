@@ -1,10 +1,9 @@
 import {BarChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Bar} from 'recharts';
-import React, {useContext, useEffect} from "react";
+import React, {useEffect} from "react";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import "./Chart.css";
 import PropTypes from "prop-types";
 import {useFetch} from "../../../remote_api/remoteState";
-import {LocalDataContext} from "../../pages/DataAnalytics";
 import useTheme from "@mui/material/styles/useTheme";
 
 
@@ -18,11 +17,10 @@ export default function BarChartElement({onLoadRequest: endpoint, refreshInterva
     const [refreshing, setRefreshing] = React.useState(false);
     const [data, setData] = React.useState([]);
 
-    const localContext = useContext(LocalDataContext)
     const barColors = [theme.palette.primary.main, '#00C49F', '#FFBB28', '#FF8042']
 
     const {isLoading} = useFetch(
-        ["getChartData", [endpoint, refresh, localContext]],
+        ["getChartData", [endpoint, refresh]],
         endpoint,
         data => {
             setData(data)

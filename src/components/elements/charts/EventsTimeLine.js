@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis} from "recharts";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
@@ -11,6 +11,7 @@ import EntityCounter from "../metrics/EntityCounter";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import {useRequest} from "../../../remote_api/requestClient";
+import {DataContext} from "../../AppBox";
 
 export default function EventTimeLine() {
 
@@ -24,6 +25,7 @@ export default function EventTimeLine() {
     const [dataSelect, setDataSelect] = useState(1)
 
     const {request} = useRequest()
+    const dataContext = useContext(DataContext)
 
     const colorsList = [
         '#0088FE',
@@ -195,7 +197,7 @@ export default function EventTimeLine() {
         return () => isSubscribed = false;
     },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [period, grouping, dataSource])
+        [period, grouping, dataSource, dataContext])
 
     if (loading) {
         return <CenteredCircularProgress/>

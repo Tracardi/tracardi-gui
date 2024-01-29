@@ -1,21 +1,19 @@
-import {CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, Bar, LineChart, Line} from 'recharts';
-import React, {useContext} from "react";
+import {CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line} from 'recharts';
+import React from "react";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import "./Chart.css";
 import PropTypes from "prop-types";
 import {useFetch} from "../../../remote_api/remoteState";
-import {LocalDataContext} from "../../pages/DataAnalytics";
 
 
 export default function LineChartDisplay({endpoint, barChartColors}) {
 
     const [data, setData] = React.useState([]);
 
-    const localContext = useContext(LocalDataContext)
     const barColors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
 
     const {isLoading} = useFetch(
-        ["getChartData", [endpoint, localContext]],
+        ["getChartData", [endpoint]],
         endpoint,
         data => {
             setData(data)

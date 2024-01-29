@@ -1,15 +1,17 @@
-import React from "react";
+import React, {useContext} from "react";
 import Counter from "./Counter";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getEventsAvg, getEventsCount} from "../../../remote_api/endpoints/event";
 import storageValue from "../../../misc/localStorageDriver";
+import {DataContext} from "../../AppBox";
 
 export default function EventCounter({width=200}) {
+    const dataContext = useContext(DataContext)
 
     const {data: eventCount, isLoading, error} = useFetch(
-        ["eventCount"],
+        ["eventCount", [dataContext]],
         getEventsCount(),
         data => {
             new storageValue("events").save(data?.count)

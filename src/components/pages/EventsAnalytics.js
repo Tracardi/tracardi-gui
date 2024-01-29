@@ -1,6 +1,6 @@
-import React, {useContext, useState} from "react";
+import React, {useState} from "react";
 import "./DataAnalytics.css";
-import DataAnalytics, {LocalDataContext} from "./DataAnalytics";
+import DataAnalytics from "./DataAnalytics";
 import {EventRow} from "../elements/lists/rows/EventRow";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../elements/tui/TuiForm";
 import EventToProfileCopy from "../elements/forms/EventToProfileCopy";
@@ -13,7 +13,6 @@ import {
 import FetchError from "../errors/FetchError";
 import {BsDatabaseFillGear} from "react-icons/bs";
 import NoData from "../elements/misc/NoData";
-import Tag from "../elements/misc/Tag";
 import PropertyField from "../elements/details/PropertyField";
 import {useFetch} from "../../remote_api/remoteState";
 import EventIndexMap from "../elements/forms/EventIndexMap";
@@ -22,7 +21,6 @@ import useTheme from "@mui/material/styles/useTheme";
 
 function CopyToProfileExtension({onClose}) {
 
-    const localContext = useContext(LocalDataContext)
     const query = localStorage.getItem('eventQuery')
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
@@ -48,9 +46,6 @@ function CopyToProfileExtension({onClose}) {
             setSuccess(false)
             setError(null)
             let endpoint = getEventsToProfileCopy(settings)
-            endpoint.headers = {
-                'x-context': localContext === true ? 'production': 'staging'
-            }
             await request(endpoint)
             setSuccess(true)
         } catch (e) {
@@ -77,7 +72,6 @@ function CopyToProfileExtension({onClose}) {
                     description="The data will be narrowed down by the query defined in the search box. More details are provided below."
                 />
                 <TuiFormGroupContent>
-                    <PropertyField name="Environment" content={localContext ? <Tag backgroundColor="rgb(173, 20, 87)" color="white">production</Tag> : "Test"}/>
                     <PropertyField name="Used filter" content={query}/>
                     <PropertyField name="Total records" content={isLoading ? "counting..." : isError ? fetchError?.data?.detail : count } underline={false}/>
                 </TuiFormGroupContent>
@@ -102,7 +96,6 @@ function CopyToProfileExtension({onClose}) {
 
 function IndexEventPropertiesExtension({onClose}) {
 
-    const localContext = useContext(LocalDataContext)
     const query = localStorage.getItem('eventQuery')
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
@@ -127,11 +120,7 @@ function IndexEventPropertiesExtension({onClose}) {
         try {
             setSuccess(false)
             setError(null)
-            let endpoint = getEventsIndexingCopy(settings)
-            endpoint.headers = {
-                'x-context': localContext === true ? 'production': 'staging'
-            }
-            await request(endpoint)
+            await request(getEventsIndexingCopy(settings))
             setSuccess(true)
         } catch (e) {
             setError(e)
@@ -157,7 +146,6 @@ function IndexEventPropertiesExtension({onClose}) {
                     description="The data will be narrowed down by the query defined in the search box. Only the filtered events will be affected. More details are provided below."
                 />
                 <TuiFormGroupContent>
-                    <PropertyField name="Environment" content={localContext ? <Tag backgroundColor="rgb(173, 20, 87)" color="white">production</Tag> : "Test"}/>
                     <PropertyField name="Used filter" content={query}/>
                     <PropertyField name="Total records" content={isLoading ? "counting..." : isError ? fetchError?.data?.detail : count } underline={false}/>
                 </TuiFormGroupContent>
@@ -210,7 +198,7 @@ export default function EventsAnalytics({displayChart = true}) {
         }
     }
 
-    return <><DataAnalytics
+    return <DataAnalytics
         type="event"
         label="List of events"
         enableFiltering={true}
@@ -243,7 +231,6 @@ export default function EventsAnalytics({displayChart = true}) {
             'Index event properties': IndexEventPropertiesExtension
         }}
     />
-    </>
 
 
 }

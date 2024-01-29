@@ -1,15 +1,17 @@
-import React from "react";
+import React, {useContext} from "react";
 import {BigCounter} from "./Counter";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getOnlineSessions, getOnlineSessionsByLocation} from "../../../remote_api/endpoints/session";
 import PropertyField from "../details/PropertyField";
+import {DataContext} from "../../AppBox";
 
 export default function OnlineSessionCounter() {
+    const dataContext = useContext(DataContext)
 
     const {data: online, isLoading: isLoadingOnline, error: onlineError} = useFetch(
-        ["onlineSessions"],
+        ["onlineSessions", [dataContext]],
         getOnlineSessions(),
         data => data,
         {
@@ -18,7 +20,7 @@ export default function OnlineSessionCounter() {
     )
 
     const {data: details, isLoading: isLoadingDetails, error: detailsError} = useFetch(
-        ["onlineSessionsLocation"],
+        ["onlineSessionsLocation", [dataContext]],
         getOnlineSessionsByLocation(),
         data => data,
         {

@@ -1,15 +1,18 @@
-import React from "react";
+import React, {useContext} from "react";
 import Counter from "./Counter";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 import {useFetch} from "../../../remote_api/remoteState";
 import {getProfilesCount} from "../../../remote_api/endpoints/profile";
 import storageValue from "../../../misc/localStorageDriver";
+import {DataContext} from "../../AppBox";
 
 export default function ProfileCounter({width=200}) {
+    const dataContext = useContext(DataContext)
+
 
     const {data: count, isLoading, error} = useFetch(
-        ["profileCount"],
+        ["profileCount",[dataContext]],
         getProfilesCount(),
         data => {
             new storageValue("profiles").save(data.count)

@@ -1,14 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Counter from "./Counter";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import NoData from "../misc/NoData";
 import {useRequest} from "../../../remote_api/requestClient";
+import {DataContext} from "../../AppBox";
 
 export default function SessionCounter({width=200}) {
 
     const [value,setValue] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+
+    const dataContext = useContext(DataContext)
 
     const {request} = useRequest()
 
@@ -29,7 +32,7 @@ export default function SessionCounter({width=200}) {
         })
 
         return () => isSubscribed = false;
-    }, [])
+    }, [dataContext])
 
     if(error) {
         return <NoData header="Error">
