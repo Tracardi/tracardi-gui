@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from "react";
-import Button from "./Button";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import PropTypes from 'prop-types';
 import {getError} from "../../../remote_api/entrypoint";
@@ -11,6 +10,7 @@ import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 import EventToProfileFieldMapping from "./EventToProfileFieldMapping";
 import Switch from "@mui/material/Switch";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "./ProductionButton";
 
 export default function IdentificationPointForm({data: _data, onSubmit}) {
 
@@ -182,11 +182,11 @@ export default function IdentificationPointForm({data: _data, onSubmit}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         {error && <ErrorsBox errorList={error}/>}
-        <Button label="Save"
-                onClick={handleSave}
-                error={nameErrorMessage !== null}
-                progress={processing}
-                style={{justifyContent: "center"}}/>
+        <ProductionButton label="Save"
+                          onClick={handleSave}
+                          error={nameErrorMessage !== null}
+                          progress={processing}
+                          style={{justifyContent: "center"}}/>
     </TuiForm>
 }
 

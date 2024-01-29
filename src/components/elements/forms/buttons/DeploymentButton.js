@@ -1,4 +1,7 @@
-import {RestrictToMode} from "../../../context/RestrictContext";
+import {
+    DisplayOnlyIfUpdatesAllowedOnProduction,
+    RestrictToMode
+} from "../../../context/RestrictContext";
 import Button from "../Button";
 import React from "react";
 import {BsFillPlayCircleFill, BsTrash} from "react-icons/bs";
@@ -30,10 +33,10 @@ function DeployButton({id, deployed, data, running, draft, onDelete, onUnDeploy,
         }
     }
 
-    return <>
+    return <DisplayOnlyIfUpdatesAllowedOnProduction>
         {(process.env.NODE_ENV && process.env.NODE_ENV === 'development') && <DebugButton data={data}/>}
         <RestrictToMode mode="with-deployment" forceMode={forceMode}>
-            {/*<DisplayOnlyOnTestContext>*/}
+
             <span className="flexLine" style={{marginLeft: 5, flexWrap: "nowrap"}}>
 
                 {draft && <DraftTag size={20} onClick={handleDelete}/>}
@@ -46,12 +49,11 @@ function DeployButton({id, deployed, data, running, draft, onDelete, onUnDeploy,
 
             </span>
 
-            {/*</DisplayOnlyOnTestContext>*/}
         </RestrictToMode>
         <RestrictToMode mode="no-deployment" forceMode={forceMode}>
             <IconButton onClick={handleDelete}><BsTrash size={20} style={{margin: 5}}/></IconButton>
         </RestrictToMode>
-    </>
+    </DisplayOnlyIfUpdatesAllowedOnProduction>
 }
 
 function RunningTag({onClick}) {

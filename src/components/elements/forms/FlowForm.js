@@ -1,6 +1,5 @@
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useRef, useState} from "react";
-import Button from "./Button";
 import {v4 as uuid4} from 'uuid';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {connect} from "react-redux";
@@ -12,6 +11,7 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "./ProductionButton";
 
 function FlowForm({
                       id,
@@ -153,7 +153,11 @@ function FlowForm({
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
-        <Button label="Save" onClick={onSave} progress={processing} style={{justifyContent: "center"}}/>
+        <ProductionButton
+            label="Save"
+            onClick={onSave}
+            progress={processing}
+            style={{justifyContent: "center"}}/>
     </TuiForm>
 }
 

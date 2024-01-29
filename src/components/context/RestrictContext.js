@@ -1,13 +1,11 @@
 import {useContext} from "react";
-import {LocalDataContext} from "../pages/DataAnalytics";
 import {DataContext} from "../AppBox";
-import Keycloak from "keycloak-js";
 import envs from "../../envs";
 
-export function RestrictToContext({children, production=false}) {
+export function RestrictToContext({children, production = false}) {
     const globalContext = useContext(DataContext)
 
-    if(globalContext === production) {
+    if (globalContext === production) {
         return children
     }
 
@@ -26,14 +24,10 @@ export function RestrictToMode({children, mode = 'no-deployment', forceMode}) {
 }
 
 
-export function DisplayOnlyOnTestContext({children}) {
+export function DisplayOnlyIfUpdatesAllowedOnProduction({children}) {
     const productionContext = useContext(DataContext)
 
-    if(envs.freezeProduction !== true) {
-        return children
-    }
-
-    if (productionContext === false) {
+    if (envs.allowUpdatesOnProduction !== true && productionContext === false) {
         return children
     }
 

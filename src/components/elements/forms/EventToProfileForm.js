@@ -1,6 +1,5 @@
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useRef, useState} from "react";
-import Button from "./Button";
 import {v4 as uuid4} from 'uuid';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import PropTypes from 'prop-types';
@@ -12,6 +11,7 @@ import FetchError from "../../errors/FetchError";
 import EventToProfileCopy from "./EventToProfileCopy";
 import {useRequest} from "../../../remote_api/requestClient";
 import ShowHide from "../misc/ShowHide";
+import ProductionButton from "./ProductionButton";
 
 export default function EventToProfileForm({
                                                id,
@@ -209,11 +209,11 @@ export default function EventToProfileForm({
 
         {error && <FetchError error={error} style={{marginBottom: 10}}/>}
 
-        <Button label="Save"
-                onClick={onSave}
-                progress={processing}
-                style={{justifyContent: "center"}}
-                error={hasErrors()}
+        <ProductionButton label="Save"
+                          onClick={onSave}
+                          progress={processing}
+                          style={{justifyContent: "center"}}
+                          error={hasErrors()}
         />
     </TuiForm>
 }

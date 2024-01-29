@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from "react";
-import Button from "./Button";
 import TextField from "@mui/material/TextField";
 import {v4 as uuid4} from 'uuid';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
@@ -13,6 +12,7 @@ import TuiSelectEventType from "../tui/TuiSelectEventType";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 import {useRequest} from "../../../remote_api/requestClient";
 import ShowHide from "../misc/ShowHide";
+import ProductionButton from "./ProductionButton";
 
 export default function DestinationForm({onSubmit, value: initValue}) {
 
@@ -271,7 +271,7 @@ export default function DestinationForm({onSubmit, value: initValue}) {
         </TuiFormGroup>
         </ShowHide>
         {error && <ErrorsBox errorList={error} style={{borderRadius: 0}}/>}
-        <Button label="Save"
+        <ProductionButton label="Save"
                 onClick={handleSubmit}
                 style={{justifyContent: "center"}} p
                 rogress={processing}

@@ -13,6 +13,10 @@ export function DebugButton({data}) {
         {jsonData && <DataTreeDialog open={jsonData !== null}
                                      data={jsonData}
                                      onClose={() => setJsonData(null)}/>}
-        <Button label="Debug" variant="standard" icon={<VscDebug size={20}/>} onClick={() => handleJsonClick(data)}/>
+        <Button
+            label="Debug"
+            style={{marginLeft: 10}}
+            variant="standard"
+            icon={<VscDebug size={20}/>} onClick={() => handleJsonClick(data)}/>
         </>
 }

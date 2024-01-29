@@ -4,11 +4,10 @@ import FilterTextField from "./FilterTextField";
 import Button from "../Button";
 import PropTypes from 'prop-types';
 import {DataContext} from "../../../AppBox";
-import envs from "../../../../envs";
 
-export default function FilterAddForm({textFieldLabel, buttonLabel, buttonIcon, onFilter, onAdd, style}) {
+export default function FilterAddForm({textFieldLabel, buttonLabel, buttonIcon, onFilter, onAdd, style, disableNewButton}) {
 
-    const globalContext = useContext(DataContext)
+    const production = useContext(DataContext)
 
     return <div className='FilterAddForm' style={style}>
         <div className={!buttonLabel ? "FullGrid" : ""}>
@@ -17,7 +16,7 @@ export default function FilterAddForm({textFieldLabel, buttonLabel, buttonIcon, 
                                     onClick={onAdd}
                                     icon={buttonIcon}
                                     style={{height: 39}}
-                                    // disabled={globalContext}
+                                    disabled={production && disableNewButton}
             />}
         </div>
     </div>

@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from "react";
-import Button from "./Button";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import PropTypes from 'prop-types';
 import {getError} from "../../../remote_api/entrypoint";
@@ -11,6 +10,7 @@ import DataComplianceSettings from "./DataComplianceSettings";
 import ErrorBox from "../../errors/ErrorBox";
 import Switch from "@mui/material/Switch";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "./ProductionButton";
 
 export default function DataComplianceForm({data: _data, onSaveComplete}) {
 
@@ -161,11 +161,12 @@ export default function DataComplianceForm({data: _data, onSaveComplete}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         {error && <ErrorsBox errorList={error}/>}
-        <Button label="Save"
-                onClick={handleSave}
-                error={nameErrorMessage !== null || settingsErrorMessage!==null || eventTypeErrorMessage!==null}
-                progress={processing}
-                style={{justifyContent: "center"}}/>
+        <ProductionButton
+            label="Save"
+            onClick={handleSave}
+            error={nameErrorMessage !== null || settingsErrorMessage !== null || eventTypeErrorMessage !== null}
+            progress={processing}
+            style={{justifyContent: "center"}}/>
     </TuiForm>
 }
 

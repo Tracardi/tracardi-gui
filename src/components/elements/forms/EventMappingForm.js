@@ -1,6 +1,5 @@
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useRef, useState} from "react";
-import Button from "./Button";
 import {v4 as uuid4} from 'uuid';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import PropTypes from 'prop-types';
@@ -12,6 +11,7 @@ import JsonEditor from "../editors/JsonEditor";
 import Switch from "@mui/material/Switch";
 import {MenuItem} from "@mui/material";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "./ProductionButton";
 
 export default function EventMappingForm({
                                              id,
@@ -191,7 +191,11 @@ export default function EventMappingForm({
         </TuiFormGroup>
 
         {error && <ErrorsBox errorList={error}/>}
-        <Button label="Save" onClick={onSave} progress={processing} style={{justifyContent: "center"}}/>
+        <ProductionButton
+            label="Save"
+            onClick={onSave}
+            progress={processing}
+            style={{justifyContent: "center"}}/>
     </TuiForm>
 }
 

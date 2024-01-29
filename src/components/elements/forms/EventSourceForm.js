@@ -6,7 +6,6 @@ import DisabledInput from "./inputs/DisabledInput";
 import TextField from "@mui/material/TextField";
 import Switch from "@mui/material/Switch";
 import TuiTagger from "../tui/TuiTagger";
-import Button from "./Button";
 import PropTypes from "prop-types";
 import ErrorsBox from "../../errors/ErrorsBox";
 import Chip from "@mui/material/Chip";
@@ -20,7 +19,7 @@ import {getBridge} from "../../../remote_api/endpoints/bridge";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import FetchError from "../../errors/FetchError";
 import {useRequest} from "../../../remote_api/requestClient";
-import {DisplayOnlyOnTestContext} from "../../context/RestrictContext";
+import ProductionButton from "./ProductionButton";
 
 const BridgeForm = ({id, value = null, onChange}) => {
 
@@ -398,15 +397,12 @@ const EventSourceForm = ({value, style, onClose}) => {
 
             <div>
                 {errors && <ErrorsBox errorList={errors}/>}
-                {/*<DisplayOnlyOnTestContext>*/}
-                    <Button label="Save"
-                            error={errors !== null || errorNameMessage}
-                            onClick={handleSubmit}
-                            progress={processing}
-                            style={{justifyContent: "center"}}
-                    />
-                {/*</DisplayOnlyOnTestContext>*/}
-
+                <ProductionButton label="Save"
+                                  error={errors !== null || errorNameMessage}
+                                  onClick={handleSubmit}
+                                  progress={processing}
+                                  style={{justifyContent: "center"}}
+                />
             </div>
         </>
         }

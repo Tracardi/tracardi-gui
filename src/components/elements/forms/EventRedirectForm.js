@@ -1,6 +1,5 @@
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useRef, useState} from "react";
-import Button from "./Button";
 import {v4 as uuid4} from 'uuid';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import PropTypes from 'prop-types';
@@ -12,6 +11,7 @@ import DocsLink from "../drawers/DocsLink";
 import JsonEditor from "../editors/JsonEditor";
 import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "./ProductionButton";
 
 export default function EventRedirectForm({
                                               id,
@@ -212,11 +212,11 @@ export default function EventRedirectForm({
         </TuiFormGroup>
 
         {error && <ErrorsBox errorList={error}/>}
-        <Button label="Save"
-                error={urlErrorMessage || nameErrorMessage}
-                onClick={onSave}
-                progress={processing}
-                style={{justifyContent: "center"}}/>
+        <ProductionButton label="Save"
+                          error={urlErrorMessage || nameErrorMessage}
+                          onClick={onSave}
+                          progress={processing}
+                          style={{justifyContent: "center"}}/>
     </TuiForm>
 }
 

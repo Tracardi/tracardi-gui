@@ -2,7 +2,6 @@ import React, {Suspense, useEffect} from "react";
 import "../lists/cards/SourceCard.css";
 import "./ResourceDetails.css";
 import "./Details.css";
-import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
@@ -32,7 +31,7 @@ import JsonBrowser from "../misc/JsonBrowser";
 import {useRequest} from "../../../remote_api/requestClient";
 import {getError} from "../../../remote_api/entrypoint";
 import useTheme from "@mui/material/styles/useTheme";
-import {DisplayOnlyOnTestContext} from "../../context/RestrictContext";
+import ProductionButton from "../forms/ProductionButton";
 
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
@@ -375,14 +374,14 @@ export default function EventSourceDetails({id, onDeleteComplete}) {
                     {/*<DisplayOnlyOnTestContext>*/}
                         <div style={{display: "flex", alignItems: "start"}}>
                             <Rows>
-                                {data?.locked !== true && <Button onClick={onEdit}
-                                                                  icon={<VscEdit size={20}/>}
-                                                                  label="Edit"
-                                                                  disabled={typeof data === "undefined"}/>}
-                                <Button onClick={onDelete}
-                                        icon={<VscTrash size={20}/>}
-                                        label="Delete"
-                                        disabled={typeof data === "undefined"}/>
+                                {data?.locked !== true && <ProductionButton onClick={onEdit}
+                                                                            icon={<VscEdit size={20}/>}
+                                                                            label="Edit"
+                                                                            disabled={typeof data === "undefined"}/>}
+                                <ProductionButton onClick={onDelete}
+                                                  icon={<VscTrash size={20}/>}
+                                                  label="Delete"
+                                                  disabled={typeof data === "undefined"}/>
                             </Rows>
                         </div>
                     {/*</DisplayOnlyOnTestContext>*/}

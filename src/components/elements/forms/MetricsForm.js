@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import Button from "./Button";
 import TextField from "@mui/material/TextField";
 import {v4 as uuid4} from "uuid";
 import PropTypes from 'prop-types';
@@ -16,6 +15,7 @@ import RefInput from "./inputs/RefInput";
 import TimeTextField from "./inputs/TimeTextInput";
 import {BsXCircle, BsCheckCircle} from "react-icons/bs";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "./ProductionButton";
 
 
 export default function MetricForm({onSubmit, init}) {
@@ -40,7 +40,7 @@ export default function MetricForm({onSubmit, init}) {
                     }
                 },
                 field: "",
-                interval: 60*60*24  // 24h
+                interval: 60 * 60 * 24  // 24h
             }
         },
         // This is indexed
@@ -94,7 +94,7 @@ export default function MetricForm({onSubmit, init}) {
     const handleTest = async () => {
         try {
             setTestOk(false)
-            setTestError({error:false})
+            setTestError({error: false})
             const response = await request(testProfileMetric({
                 agg: setting.content.metric.aggregation.type,
                 field: setting.content.metric.aggregation.field,
@@ -103,7 +103,7 @@ export default function MetricForm({onSubmit, init}) {
             }))
 
             if (response.data) {
-                if(response.data?.error === true) {
+                if (response.data?.error === true) {
                     setTestError(response.data)
                 } else {
                     setTestOk(true)
@@ -207,7 +207,7 @@ export default function MetricForm({onSubmit, init}) {
             to create a metric. If you want to aggregate values regardless of the event type, leave this field empty.">
                     <TuiSelectEventType
                         value={setting.content?.metric?.event?.type}
-                        onSetValue={ (value) => {
+                        onSetValue={(value) => {
                             setData("content.metric.event.type", value)
                         }}
                     />
@@ -216,7 +216,8 @@ export default function MetricForm({onSubmit, init}) {
                 <TuiFormGroupField header="Limit data" description="Type the time duration for which the
                 metric will be computed. For instance, aggregate all purchases within a 30-day period. Leave this
                 field empty if you don't wish to impose any data limitations.">
-                    <div className="flexLine">Limit to data collected within: <TimeTextField value={setting.config?.metric?.span || 0} onChange={(v) => {
+                    <div className="flexLine">Limit to data collected within: <TimeTextField
+                        value={setting.config?.metric?.span || 0} onChange={(v) => {
                         setData("config.metric.span", v)
                     }}/></div>
 
@@ -246,7 +247,7 @@ export default function MetricForm({onSubmit, init}) {
                     </TextField>
                 </TuiFormGroupField>
                 <TuiFormGroupField header="Which event field should be aggregated"
-                description="CAUTION: When performing mathematical calculations such as SUM, AVERAGE, or any other computation,
+                                   description="CAUTION: When performing mathematical calculations such as SUM, AVERAGE, or any other computation,
                 except for counting, the field must exclusively contain numeric values."
                 >
                     <RefInput value={{value: setting.content.metric.aggregation.field}}
@@ -262,11 +263,12 @@ export default function MetricForm({onSubmit, init}) {
                 <TuiFormGroupField description="The system can assess whether the chosen field is suitable
                 for the selected type of aggregation. To do so click button below."
                 >
-                    <Button label="Test Metric Computation"
-                            icon={testError.error ? <BsXCircle size={20}/> : <BsCheckCircle size={20}/>}
-                            error={testError.error || false}
-                            confirmed={testOk}
-                            onClick={handleTest}/>
+                    <ProductionButton
+                        label="Test Metric Computation"
+                        icon={testError.error ? <BsXCircle size={20}/> : <BsCheckCircle size={20}/>}
+                        error={testError.error || false}
+                        confirmed={testOk}
+                        onClick={handleTest}/>
                 </TuiFormGroupField>
 
             </TuiFormGroupContent>
@@ -294,7 +296,6 @@ export default function MetricForm({onSubmit, init}) {
                 </TuiFormGroupField>
 
 
-
             </TuiFormGroupContent>
         </TuiFormGroup>
 
@@ -314,8 +315,12 @@ export default function MetricForm({onSubmit, init}) {
             </TuiFormGroupContent>
         </TuiFormGroup>}
 
-        <Button label="Save" error={apiError} onClick={handleSubmit} progress={processing}
-                style={{justifyContent: "center"}}/>
+        <ProductionButton
+            label="Save"
+            error={apiError}
+            onClick={handleSubmit}
+            progress={processing}
+            style={{justifyContent: "center"}}/>
     </TuiForm>
 }
 

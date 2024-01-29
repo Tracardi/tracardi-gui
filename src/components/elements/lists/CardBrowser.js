@@ -12,6 +12,7 @@ import {BsGrid, BsList} from "react-icons/bs";
 import IconButton from "../misc/IconButton";
 import {BsStar} from "react-icons/bs";
 import {useRequest} from "../../../remote_api/requestClient";
+import envs from "../../../envs";
 
 const CardBrowser = ({
                          label,
@@ -149,7 +150,9 @@ const CardBrowser = ({
                 buttonLabel={buttonLabel}
                 buttonIcon={buttonIcon}
                 onFilter={handleFilter}
-                onAdd={handleOpenAdd}/>
+                onAdd={handleOpenAdd}
+                disableNewButton={!envs.allowUpdatesOnProduction}
+            />
 
             <Content
                 query={query}

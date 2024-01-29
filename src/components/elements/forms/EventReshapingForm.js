@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import Button from "./Button";
 import TextField from "@mui/material/TextField";
 import {v4 as uuid4} from "uuid";
 import PropTypes from 'prop-types';
@@ -14,6 +13,7 @@ import {TuiSelectEventSource} from "../tui/TuiSelectEventSource";
 import FetchError from "../../errors/FetchError";
 import {useRequest} from "../../../remote_api/requestClient";
 import ShowHide from "../misc/ShowHide";
+import ProductionButton from "./ProductionButton";
 
 export default function EventReshapingForm({onSubmit, init}) {
 
@@ -221,7 +221,7 @@ export default function EventReshapingForm({onSubmit, init}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         {error && <FetchError error={error} style={{marginBottom: 10}}/>}
-        <Button label="Save" error={error || nameErrorMessage} onClick={handleSubmit} progress={processing}
+        <ProductionButton label="Save" error={error || nameErrorMessage} onClick={handleSubmit} progress={processing}
                 style={{justifyContent: "center"}}/>
     </TuiForm>
 }

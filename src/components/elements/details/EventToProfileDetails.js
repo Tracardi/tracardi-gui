@@ -13,7 +13,6 @@ import EventToProfileForm from "../forms/EventToProfileForm";
 import EventTypeMetadata from "./EventTypeMetadata";
 import MappingsObjectDetails from "./MappingsObjectDetails";
 import Tag from "../misc/Tag";
-import {RestrictToContext} from "../../context/RestrictContext";
 import {useRequest} from "../../../remote_api/requestClient";
 
 export function EventToProfileCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
@@ -92,9 +91,7 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
             </TuiFormGroup>
 
         </TuiForm>
-        {!data.build_in && <RestrictToContext>
-            <div style={{marginBottom: 20, marginTop: 20}}>
-                <Rows>
+        {!data.build_in && <Rows style={{marginBottom: 20, marginTop: 20}}>
                     <Button onClick={onEditClick}
                             icon={<VscEdit size={20}/>}
                             label="Edit" disabled={typeof data === "undefined"}/>
@@ -104,9 +101,7 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
                         onClick={onDelete}
                         label="Delete"
                         disabled={typeof data === "undefined"}/>
-                </Rows>
-            </div>
-        </RestrictToContext>}
+                </Rows>}
     </>
 
     return <div className="Box10" style={{height: "100%"}}>

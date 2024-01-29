@@ -1,5 +1,4 @@
 import React, {useEffect} from "react";
-import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
@@ -13,8 +12,8 @@ import {isEmptyObject} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import EventTypeMetadata from "./EventTypeMetadata";
 import Tag from "../misc/Tag";
-import {RestrictToContext} from "../../context/RestrictContext";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "../forms/ProductionButton";
 
 export function EventValidationCard({data, onDeleteComplete, onEditComplete, displayMetadata = true}) {
 
@@ -84,14 +83,13 @@ export function EventValidationCard({data, onDeleteComplete, onEditComplete, dis
                 </TuiFormGroupContent>
             </TuiFormGroup> : <NoData header="No schema defined"/>}
         </TuiForm>
-        <RestrictToContext>
             <div style={{marginBottom: 20}}>
                 <Rows style={{marginTop: 20}}>
-                    <Button onClick={handleEditClick}
+                    <ProductionButton onClick={handleEditClick}
                             icon={<VscEdit size={20}/>}
                             label="Edit"
                             disabled={typeof data === "undefined"}/>
-                    {onDeleteComplete && <Button
+                    {onDeleteComplete && <ProductionButton
                         icon={<VscTrash size={20}/>}
                         onClick={handleDelete}
                         label="Delete"
@@ -99,7 +97,6 @@ export function EventValidationCard({data, onDeleteComplete, onEditComplete, dis
                     />}
                 </Rows>
             </div>
-        </RestrictToContext>
     </>
 
     return <div className="Box10" style={{height: "100%"}}>

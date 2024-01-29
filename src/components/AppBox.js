@@ -55,7 +55,7 @@ const TestEditor = React.lazy(() => import("./pages/TestEditor"))
 // const Scheduler = React.lazy(() => import("./pages/Scheduler"))
 const ConsentsDataCompliance = React.lazy(() => import("./pages/ConsentsCompliance"))
 
-export const DataContext = createContext(null);
+export const DataContext = createContext(false);
 
 const AppBox = () => {
 
@@ -125,8 +125,9 @@ const AppBox = () => {
                         <TopBar onDarkMode={handleThemeChange}>Resources</TopBar>
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
-                                <Resources
-                                    defaultLayout={"rows"}/>, "/resources", "Resources"),
+                                <Resources defaultLayout={"rows"}/>,
+                                "/resources",
+                                "Resources"),
                             new PrivateTab(["admin", "developer"],
                                 <ProRouter/>,
                                 "/resources#pro",

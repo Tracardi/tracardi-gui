@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import Button from "./Button";
 import TextField from "@mui/material/TextField";
 import {v4 as uuid4} from "uuid";
 import {getError} from "../../../remote_api/entrypoint";
@@ -13,6 +12,7 @@ import Switch from "@mui/material/Switch";
 import DocsLink from "../drawers/DocsLink";
 import {useRequest} from "../../../remote_api/requestClient";
 import ShowHide from "../misc/ShowHide";
+import ProductionButton from "./ProductionButton";
 
 export default function EventValidationForm({onSubmit, init}) {
 
@@ -192,7 +192,12 @@ export default function EventValidationForm({onSubmit, init}) {
         </TuiFormGroup>
 
         {error && <ErrorsBox errorList={error}/>}
-        <Button label="Save" error={error || nameErrorMessage} onClick={handleSubmit} progress={processing} style={{justifyContent: "center"}}/>
+        <ProductionButton
+            label="Save"
+            error={error || nameErrorMessage}
+            onClick={handleSubmit}
+            progress={processing}
+            style={{justifyContent: "center"}}/>
     </TuiForm>
 }
 

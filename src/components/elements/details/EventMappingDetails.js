@@ -1,5 +1,4 @@
 import React, {useEffect} from "react";
-import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
@@ -15,10 +14,10 @@ import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import ActiveTag from "../misc/ActiveTag";
-import {RestrictToContext} from "../../context/RestrictContext";
 import {objectMap} from "../../../misc/mappers";
 import AssignValueToKey from "./AssignValueToKey";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "../forms/ProductionButton";
 
 export function EventMappingCard({data, onDeleteComplete, onEditComplete, displayMetadata = true}) {
 
@@ -107,19 +106,17 @@ export function EventMappingCard({data, onDeleteComplete, onEditComplete, displa
                 }
             </TuiFormGroupContent>
         </TuiFormGroup>
-        {!data.build_in && <RestrictToContext>
-            <Rows style={{marginTop: 20, marginBottom: 20}}>
-                <Button onClick={handleEdit}
+        {!data.build_in && <Rows style={{marginTop: 20, marginBottom: 20}}>
+                <ProductionButton onClick={handleEdit}
                         icon={<VscEdit size={20}/>}
                         label="Edit" disabled={typeof data === "undefined"}/>
-                <Button
+                <ProductionButton
                     progress={deleteProgress}
                     icon={<VscTrash size={20}/>}
                     onClick={handleDelete}
                     label="Delete"
                     disabled={typeof data === "undefined"}/>
-            </Rows>
-        </RestrictToContext>}
+            </Rows>}
     </TuiForm>
 
     return <div className="Box10" style={{height: "100%"}}>

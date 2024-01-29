@@ -1,6 +1,5 @@
 import TextField from "@mui/material/TextField";
 import React, {useEffect, useRef, useState} from "react";
-import Button from "./Button";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {v4 as uuid4} from 'uuid';
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
@@ -11,6 +10,7 @@ import TuiTagger from "../tui/TuiTagger";
 import MenuItem from "@mui/material/MenuItem";
 import Switch from "@mui/material/Switch";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "./ProductionButton";
 
 export default function ConsentForm({
                                         id,
@@ -219,7 +219,11 @@ export default function ConsentForm({
             </TuiFormGroupContent>
         </TuiFormGroup>
         {error && <ErrorsBox errorList={error}/>}
-        <Button label="Save" onClick={onSave} progress={processing} style={{justifyContent: "center"}}/>
+        <ProductionButton
+            label="Save"
+            onClick={onSave}
+            progress={processing}
+            style={{justifyContent: "center"}}/>
     </TuiForm>
 }
 

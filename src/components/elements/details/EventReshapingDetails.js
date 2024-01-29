@@ -1,6 +1,4 @@
 import React, {useEffect} from "react";
-import Properties from "./DetailProperties";
-import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
@@ -15,8 +13,8 @@ import NoData from "../misc/NoData";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import EventTypeMetadata from "./EventTypeMetadata";
 import Tag from "../misc/Tag";
-import {RestrictToContext} from "../../context/RestrictContext";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "../forms/ProductionButton";
 
 function Spanner({children}) {
     return <div style={{padding: 20}}>{children}</div>
@@ -101,14 +99,13 @@ export function EventReshapingCard({data, onDeleteComplete, onEditComplete, disp
                 </Tabs>
             </TuiFormGroup>
         </TuiForm>
-        <RestrictToContext>
             <div style={{marginBottom: 20}}>
                 <Rows style={{marginTop: 20}}>
-                    <Button onClick={onEditClick}
-                            icon={<VscEdit size={20}/>}
-                            label="Edit"
-                            disabled={typeof data === "undefined"}/>
-                    {onDeleteComplete && <Button
+                    <ProductionButton onClick={onEditClick}
+                                      icon={<VscEdit size={20}/>}
+                                      label="Edit"
+                                      disabled={typeof data === "undefined"}/>
+                    {onDeleteComplete && <ProductionButton
                         icon={<VscTrash size={20}/>}
                         onClick={onDelete}
                         label="Delete"
@@ -116,7 +113,6 @@ export function EventReshapingCard({data, onDeleteComplete, onEditComplete, disp
                     />}
                 </Rows>
             </div>
-        </RestrictToContext>
 
     </>
 

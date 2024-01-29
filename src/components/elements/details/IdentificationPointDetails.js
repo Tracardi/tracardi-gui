@@ -1,5 +1,4 @@
 import React, {useEffect} from "react";
-import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
@@ -9,10 +8,10 @@ import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import IdentificationPointForm from "../forms/IdentifiactionPointForm";
 import EventTypeMetadata from "./EventTypeMetadata";
-import {RestrictToContext} from "../../context/RestrictContext";
 import AssignValueToKey from "./AssignValueToKey";
 import Tag from "../misc/Tag";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "../forms/ProductionButton";
 
 export function IdentificationPointCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
 
@@ -74,22 +73,19 @@ export function IdentificationPointCard({data, onDeleteComplete, onEditComplete,
                 </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>
-        <RestrictToContext>
-            <div>
-                <Rows style={{marginTop: 20}}>
-                    <Button onClick={handleEdit}
-                            icon={<VscEdit size={20}/>}
-                            label="Edit"
-                            disabled={typeof data === "undefined"}/>
-                    {onDeleteComplete && <Button
-                        icon={<VscTrash size={20}/>}
-                        onClick={handleDelete}
-                        label="Delete"
-                        disabled={typeof data === "undefined"}
-                    />}
-                </Rows>
-            </div>
-        </RestrictToContext>
+        <Rows style={{marginTop: 20}}>
+            <ProductionButton
+                onClick={handleEdit}
+                icon={<VscEdit size={20}/>}
+                label="Edit"
+                disabled={typeof data === "undefined"}/>
+            {onDeleteComplete && <ProductionButton
+                icon={<VscTrash size={20}/>}
+                onClick={handleDelete}
+                label="Delete"
+                disabled={typeof data === "undefined"}
+            />}
+        </Rows>
     </>
 
     return <div className="Box10" style={{height: "100%"}}>

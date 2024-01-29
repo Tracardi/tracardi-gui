@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import Button from "./Button";
 import TextField from "@mui/material/TextField";
 import Switch from "@mui/material/Switch";
 import {v4 as uuid4} from 'uuid';
@@ -17,6 +16,7 @@ import MdManual from "../../flow/actions/MdManual";
 import {useRequest} from "../../../remote_api/requestClient";
 import ShowHide from "../misc/ShowHide";
 import {getError} from "../../../remote_api/entrypoint";
+import ProductionButton from "./ProductionButton";
 
 function ResourceForm({init, onClose, showAlert}) {
 
@@ -283,7 +283,7 @@ function ResourceForm({init, onClose, showAlert}) {
 
             </TuiFormGroupContent>
         </TuiFormGroup>
-        <Button label="Save"
+        <ProductionButton label="Save"
                 onClick={handleSubmit}
                 progress={processing}
                 style={{justifyContent: "center", width: "100%"}}
