@@ -49,7 +49,8 @@ export const track = async (sourceId, eventType, properties) => {
             event
         ],
         options: {
-            storage: true
+            storage: false,
+            location: true
         },
         context: {
             page:{url: ""}
