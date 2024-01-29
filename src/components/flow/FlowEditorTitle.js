@@ -1,6 +1,5 @@
 import React, {useCallback, useState} from "react";
 import {TiTickOutline} from "react-icons/ti";
-import {VscRocket} from "react-icons/vsc";
 import "./FlowEditorTitle.css";
 import FormDrawer from "../elements/drawers/FormDrawer";
 import Button from "../elements/forms/Button";
@@ -18,28 +17,21 @@ import {
 } from "../elements/tui/TuiForm";
 import RuleForm from "../elements/forms/RuleForm";
 import Drawer from "@mui/material/Drawer";
-import {BiReset} from "react-icons/bi";
 import {prepareFlowPayload, save} from "./FlowEditorOps";
-import {useConfirm} from "material-ui-confirm";
 import TestEditor from "../test/TestEditor";
-import DropDownMenu from "../menu/DropDownMenu";
 import {ReinstallButton} from "../pages/ActionPlugins";
 import EntityAnalytics from "../pages/EntityAnalytics";
 import {useRequest} from "../../remote_api/requestClient";
 
-export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onDraftRestore, onDeploy, onSaveDraft}) {
+export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onSaveDraft}) {
 
     const [testConsoleOpened, setTestConsoleOpened] = useState(false);
     const [eventsOpened, setEventsOpened] = useState(false);
     const [rulesOpened, setRulesOpened] = useState(false);
     const [openRuleForm, setOpenRuleForm] = useState(false);
     const [refresh, setRefresh] = useState(1);
-    const [productionRestoreProgress, setProductionRestoreProgress] = useState(false);
-    const [draftRestoreProgress, setDraftRestoreProgress] = useState(false);
     const [draftSaveProgress, setDraftSaveProgress] = useState(false);
-    const [deployProgress, setDeployProgress] = useState(false);
 
-    const confirm = useConfirm();
     const {request} = useRequest()
 
     const handleDraftSave = useCallback((progress, deploy = false) => {
@@ -56,20 +48,14 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                     if (onSaveDraft) {
                         onSaveDraft()
                     }
-                    if (deploy) {
-                        if (onDeploy) {
-                            onDeploy()
-                        }
-                    }
                 },
                 progress,
-                deploy,
                 request);
         } else {
             // todo error
             console.error("Can not save Editor not ready.");
         }
-    }, [flowMetaData, reactFlowInstance, flowId, onSaveDraft, onDeploy]);
+    }, [flowMetaData, reactFlowInstance, flowId, onSaveDraft]);
 
     const handleSave = () => {
         handleDraftSave(setDraftSaveProgress, false)
@@ -82,83 +68,19 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                 flowMetaData,
                 reactFlowInstance
             )
-            const response = await request({
+            await request({
                 url: `/flow/draft/nodes/rearrange`,
                 method: "POST",
                 data: payload
             })
 
-            if (onDraftRestore instanceof Function) {
-                onDraftRestore(response?.data)
-            }
-
         } catch (e) {
             if (e) {
-                // todo error
+                console.error(e)
             }
         } finally {
 
         }
-    }
-
-    const handleDeploy = () => {
-        confirm({
-            title: "Do you want to deploy this flow?",
-            description: "After deployment this flow will be used in production.\n" +
-                "This action can not be undone."
-        }).then(
-            () => handleDraftSave(setDeployProgress, true )
-        ).catch(() => {})
-    }
-
-    const restoreProduction = async (id) => {
-        confirm({
-            title: "Restore production from copy",
-            description: "Do you want to restore production workflow from last working copy?\n" +
-                "This action can not be undone."
-        }).then(
-            async () => {
-                setProductionRestoreProgress(true);
-                try {
-                    await request({
-                        url: `/flow/production/${id}/restore`
-                    })
-
-                } catch (e) {
-                    if (e) {
-                        // todo error
-                    }
-                } finally {
-                    setProductionRestoreProgress(false);
-                }
-            }
-        ).catch(() => {})
-    }
-
-    const restoreDraft = async (id) => {
-        confirm({
-            title: "Restore draft from copy",
-            description: "Do you want to restore workflow draft from last working copy?\n" +
-                "This action can not be undone."
-        }).then(async () => {
-            setDraftRestoreProgress(true);
-            try {
-                const response = await request({
-                    url: `/flow/draft/${id}/restore`
-                })
-
-                if (onDraftRestore instanceof Function) {
-                    onDraftRestore(response?.data)
-                }
-            } catch (e) {
-                if (e) {
-                    // todo error
-                    console.error(e)
-                }
-            } finally {
-                setDraftRestoreProgress(false);
-            }
-        }).catch(()=>{})
     }
 
     return <aside className="FlowEditorTitle">
@@ -171,21 +93,10 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                     icon={<TiTickOutline size={20}/>}
                     onClick={handleRearrange}
             />
-            <DropDownMenu label="Flow" icon={<BiReset size={20}/>}
-                          progress={draftRestoreProgress || productionRestoreProgress}
-                          options = {{
-                'Restore production flow': () => restoreProduction(flowId),
-                'Restore draft flow': () => restoreDraft(flowId)
-            }}/>
             <Button label="Save"
                     icon={<TiTickOutline size={20}/>}
                     onClick={handleSave}
                     progress={draftSaveProgress}
-            />
-            <Button label="Deploy"
-                    icon={<VscRocket size={20}/>}
-                    onClick={handleDeploy}
-                    progress={deployProgress}
             />
             {flowMetaData?.type !== 'segment' &&<Button label="Test"
                     icon={<BsClipboardCheck size={20}/>}

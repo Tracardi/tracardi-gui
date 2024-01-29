@@ -56,19 +56,7 @@ const ModifiedTag = () => {
     }}>not saved</span>
 }
 
-const DraftTag = () => {
-    return <span style={{
-        color: "white",
-        fontSize: 12,
-        fontWeight: 500,
-        padding: "3px 9px",
-        borderRadius: 15,
-        marginLeft: 5,
-        backgroundColor: "#ef6c00"
-    }}>This is a draft</span>
-}
-
-const StatusTag = ({modified, deployed}) => {
+const StatusTag = ({modified}) => {
     return <div style={{
         position: "absolute",
         top: 15,
@@ -76,7 +64,6 @@ const StatusTag = ({modified, deployed}) => {
         display: "flex",
     }}>
         {modified && <ModifiedTag/>}
-        {!deployed && <DraftTag/>}
     </div>
 }
 
@@ -220,7 +207,6 @@ export function FlowEditorPane(
         onEditorReady,
         onEdit,
         locked = false,
-        draft = true,
         schema,
         showAlert
     }) {
@@ -255,14 +241,11 @@ export function FlowEditorPane(
     const [clientX, setClientX] = useState(0);
     const [clientY, setClientY] = useState(0);
     const selectedNode = useRef({});
-    // const copiedNode = useRef(null);
-    // const nodePasted = useRef(false);
 
     const theme = useTheme()
     const {request} = useRequest()
 
     const [modified, setModified] = useState(false);
-    const [deployed, setDeployed] = useState(false);
 
     const updateFlow = useCallback((data) => {
         if (data) {
@@ -297,7 +280,7 @@ export function FlowEditorPane(
         }
     }, [setNodes, setEdges, showAlert, onFlowLoad]);
 
-    const handleDraftSave = useCallback((deploy = false) => {
+    const handleDraftSave = useCallback(() => {
         if (reactFlowInstance) {
             save(id,
                 flowMetaData,
@@ -307,13 +290,9 @@ export function FlowEditorPane(
                 },
                 () => {
                     setModified(false);
-                    if (deploy) {
-                        setDeployed(true);
-                    }
                 },
                 () => {
                 },
-                deploy,
                 request);
         } else {
             showAlert({message: "Can not save Editor not ready.", type: "warning", hideAfter: 2000});
@@ -324,7 +303,7 @@ export function FlowEditorPane(
         const timer = setInterval(
             () => {
                 if (modified === true) {
-                    handleDraftSave(false);
+                    handleDraftSave();
                 }
             },
             5000
@@ -343,7 +322,7 @@ export function FlowEditorPane(
         let isSubscribed = true;
 
         request({
-            url: ((draft) ? "/flow/draft/" : "/flow/production/") + id,
+            url: "/flow/draft/" + id,
         }).then((response) => {
             if (response && isSubscribed === true) {
                 updateFlow(response?.data);
@@ -365,7 +344,7 @@ export function FlowEditorPane(
             isSubscribed = false
         }
 
-    }, [id, draft, showAlert, updateFlow])
+    }, [id, showAlert, updateFlow])
 
 
     useEffect(() => {
@@ -416,61 +395,11 @@ export function FlowEditorPane(
 
     }, [refreshEdgeId, setEdges]);
 
-    // const handleCtrlVRelease = useCallback((event) => {
-    //     if ((event?.ctrlKey || event?.metaKey) || event?.keyCode === 86) {
-    //         console.log("handleCtrlVRelease")
-    //         nodePasted.current = false;
-    //     }
-    // }, [])
-    //
-    // const handleCopyPasteNode = useCallback(event => {
-    //     if ((event?.ctrlKey || event?.metaKey) && Object.keys(nodeTypes).includes(selectedNode.current?.type)) {
-    //         // Ctrl / Cmd + C
-    //         if (event?.keyCode === 67) {
-    //             copiedNode.current = selectedNode.current;
-    //         }
-    //         // Ctrl / Cmd + V
-    //         if (event?.keyCode === 86 && !nodePasted.current && selectedNode.current) {
-    //             try {
-    //                 nodePasted.current = true;
-    //                 const data = cloneDeep(copiedNode.current);
-    //                 const newNode = {
-    //                     ...data,
-    //                     id: uuid4(),
-    //                     position: {x: data.position.x - 100, y: data.position.y + 50},
-    //                 };
-    //                 setNodes(nodes.concat(newNode))
-    //                 handleUpdate();
-    //             } catch (e) {
-    //                 alert("Cannot paste node.");
-    //             }
-    //         }
-    //     }
-    // },
-    //     // nodeTypes never change
-    //     // eslint-disable-next-line
-    //     [setNodes])
-
-    // useEffect(() => {
-    //     const element = reactFlowWrapper.current;
-    //     element.tabIndex = "0";
-    //     element.addEventListener("keydown", handleCopyPasteNode);
-    //     element.addEventListener("keyup", handleCtrlVRelease);
-    //     return () => {
-    //         element.removeEventListener("keydown", handleCopyPasteNode);
-    //         element.removeEventListener("keyup", handleCtrlVRelease);
-    //         copiedNode.current = false;
-    //         selectedNode.current = null;
-    //     }
-    // }, [handleCopyPasteNode, handleCtrlVRelease])
-
     const handleUpdate = () => {
         setModified(true);
-        setDeployed(false);
     }
 
     const onInit = (reactFlowInstance) => {
-        // reactFlowInstance.fitView();
         onEditorReady(reactFlowInstance)
     };
 
@@ -629,10 +558,6 @@ export function FlowEditorPane(
             flowId={id}
             reactFlowInstance={reactFlowInstance}
             flowMetaData={flowMetaData}
-            onDraftRestore={(flowData) => {
-                updateFlow(flowData)
-            }}
-            onDeploy={() => setDeployed(true)}
             onSaveDraft={() => setModified(false)}
         />
         <div className="FlowEditor">
@@ -718,7 +643,7 @@ export function FlowEditorPane(
                                                       alignItems: "center"
                                                   }}/>
 
-                                        <StatusTag modified={modified} deployed={deployed}/>
+                                        <StatusTag modified={modified}/>
 
                                         <Background color={theme.palette.wf.dots} gap={16}/>
                                     </ReactFlow>
@@ -778,7 +703,6 @@ FlowEditorPane.propTypes = {
     onEdit: PropTypes.func.isRequired,
     reactFlowInstance: PropTypes.object,
     locked: PropTypes.bool,
-    draft: PropTypes.bool
 };
 
 const mapProps = (state) => {

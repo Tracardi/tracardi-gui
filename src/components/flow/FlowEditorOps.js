@@ -36,12 +36,12 @@ export function prepareFlowPayload(id, flowMetaData, reactFlowInstance) {
     }
 }
 
-export function save(id, flowMetaData, reactFlowInstance, onError, onReady, progress, deploy = false, request) {
+export function save(id, flowMetaData, reactFlowInstance, onError, onReady, progress, request) {
 
     const payload = prepareFlowPayload(id, flowMetaData, reactFlowInstance)
     progress(true);
     request({
-        url: (deploy === false) ? "/flow/draft" : "/flow/production",
+        url: "/flow/draft",
         method: "POST",
         data: payload
     }).then((response) => {

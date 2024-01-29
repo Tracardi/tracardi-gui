@@ -124,7 +124,8 @@ const BrowserRow = ({showAlert, id, data: _data, icon, onClick, deleteEndpoint, 
         >
 
             <div style={{display: "flex", alignItems: "center", width: "auto"}}>
-                <span style={{opacity: "60%", display: "flex", width: 30}}><FlowNodeIcons icon={data?.icon} size={22}/></span>
+                {typeof  status !== 'undefined'  && <StatusPoint status={status}/>}
+                <span style={{opacity: "60%", display: "flex", width: 30, marginLeft: 10}}><FlowNodeIcons icon={data?.icon} size={22}/></span>
                 <div style={{display: "flex", flexDirection:"column", marginLeft: 10, gap: 5}}>
                     <div className="flexLine" style={{fontSize: 18, marginRight: 5, fontWeight: 500}}>{data.name}</div>
                     {description && <div className="flexLine">{description}</div>}
@@ -133,7 +134,6 @@ const BrowserRow = ({showAlert, id, data: _data, icon, onClick, deleteEndpoint, 
             <div className="flexLine" style={{gap: 3}}>
                 {Array.isArray(tags) && <TuiTags tags={tags} size="small"/>}
                 {lock && <FlowNodeIcons icon="lock" size={22}/>}
-                {typeof  status !== 'undefined'  && <StatusPoint status={status}/>}
             </div>
 
         </div>

@@ -51,7 +51,7 @@ export function FlowDisplay({showAlert, id}) {
         setFlowLoading(true);
         let isSubscribed = true;
         request({
-            url: "/flow/production/" + id,
+            url: "/flow/draft/" + id,
         }).then(response => {
             if (response && isSubscribed === true) {
                 if (response?.data?.flowGraph) {

@@ -28,6 +28,10 @@ function SidebarLeft({showAlert, onDebug, debugInProgress, flowType}) {
     useEffect(() => {
         let isSubscribed = true
 
+        if(!flowType) {
+            return () => isSubscribed = false
+        }
+
         setPluginsLoading(true);
         request({
                 url: `/flow/action/plugins?flow_type=${flowType}&query=${debouncedFiltering}&rnd=${Math.random()}`

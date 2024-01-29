@@ -46,7 +46,6 @@ const FlowEditor = () => {
                                 reactFlowInstance={reactFlowInstance}
                                 onEditorReady={onEditorReady}
                                 onFlowLoad={onFlowLoad}
-                                draft={true}
                                 schema={flowMetaData?.wf_schema}
                 />
             </ReactFlowProvider>
