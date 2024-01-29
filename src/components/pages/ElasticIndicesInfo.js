@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import { TuiForm, TuiFormGroup, TuiFormGroupHeader, TuiFormGroupContent } from "../elements/tui/TuiForm";
 import ErrorsBox from "../errors/ErrorsBox";
 import { getError } from "../../remote_api/entrypoint";
@@ -18,6 +18,7 @@ import theme from "../../themes/inspector_light_theme";
 import JsonChip from "../elements/misc/JsonChip";
 import {objectMap} from "../../misc/mappers";
 import {useRequest} from "../../remote_api/requestClient";
+import {DataContext} from "../AppBox";
 
 function InconsistentMappingChips({mappingCheck}) {
     if(mappingCheck) {
@@ -37,8 +38,11 @@ function ElasticIndicesInfo({showAlert}) {
     const [inspected, setInspected] = React.useState(null);
     const [refresh, setRefresh] = React.useState(0);
     const mounted = React.useRef(false);
+
     const confirm = useConfirm();
     const {request} = useRequest()
+    const dataContext = useContext(DataContext)
+
 
     React.useEffect(() => {
         mounted.current = true;
@@ -80,7 +84,7 @@ function ElasticIndicesInfo({showAlert}) {
             })
 
         return () => mounted.current = false;
-    }, [refresh])
+    }, [refresh, dataContext])
 
     const handleDelete = name => {
         confirm({title: "Do you want to delete this index?", description: "This action can not be undone."})
