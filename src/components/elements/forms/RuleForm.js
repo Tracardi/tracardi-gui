@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from "react";
-import Button from "./Button";
 import TextField from "@mui/material/TextField";
 import {v4 as uuid4} from 'uuid';
 import PropTypes from 'prop-types';
@@ -23,6 +22,7 @@ import {
 } from "../../../misc/validators";
 import AutoComplete from "./AutoComplete";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "./ProductionButton";
 
 function SegmentTriggerForm({
                                 data: _data,
@@ -370,7 +370,7 @@ export default function RuleForm({onSubmit, data: _data}) {
         </ShowHide>
 
 
-        <Button label="Save" onClick={handleSubmit} style={{justifyContent: "center"}} progress={processing}
+        <ProductionButton label="Save" onClick={handleSubmit} style={{justifyContent: "center"}} progress={processing}
                 error={responseError}/>
     </TuiForm>
 }

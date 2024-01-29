@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import Properties from "./DetailProperties";
-import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
@@ -10,6 +9,7 @@ import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "../forms/ProductionButton";
 
 export default function SegmentDetails({id, onDeleteComplete}) {
 
@@ -80,11 +80,12 @@ export default function SegmentDetails({id, onDeleteComplete}) {
                 <TuiFormGroupField>
                     <Properties properties={data}/>
                     <Rows style={{marginTop: 20}}>
-                        <Button onClick={onEditClick}
-                                icon={<VscEdit size={20}/>}
-                                label="Edit"
-                                disabled={typeof data === "undefined"}/>
-                        {onDeleteComplete && <Button
+                        <ProductionButton
+                            onClick={onEditClick}
+                            icon={<VscEdit size={20}/>}
+                            label="Edit"
+                            disabled={typeof data === "undefined"}/>
+                        {onDeleteComplete && <ProductionButton
                             icon={<VscTrash size={20}/>}
                             onClick={onDelete}
                             label="Delete"

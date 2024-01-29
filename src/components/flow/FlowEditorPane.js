@@ -9,7 +9,7 @@ import {
     useEdgesState,
 } from 'reactflow';
 import "reactflow/dist/style.css"
-import React, {Suspense, useCallback, useEffect, useRef, useState} from "react";
+import React, {Suspense, useCallback, useContext, useEffect, useRef, useState} from "react";
 import PropTypes from 'prop-types';
 import FlowNode from "./FlowNode";
 import {v4 as uuid4} from "uuid";
@@ -41,6 +41,7 @@ import CondNode from "./CondNode";
 import {MdAdsClick} from "react-icons/md";
 import useTheme from "@mui/material/styles/useTheme";
 import {useRequest} from "../../remote_api/requestClient";
+import {DataContext} from "../AppBox";
 
 const ReactFlow = React.lazy(() => import('reactflow'))
 
@@ -244,6 +245,7 @@ export function FlowEditorPane(
 
     const theme = useTheme()
     const {request} = useRequest()
+    const dataContext = useContext(DataContext)
 
     const [modified, setModified] = useState(false);
 
@@ -269,6 +271,9 @@ export function FlowEditorPane(
             if (data?.flowGraph) {
                 setNodes(data.flowGraph.nodes)
                 setEdges(data.flowGraph.edges)
+            } else {
+                setNodes([])
+                setEdges([])
             }
         } else if (data === null) {
             // Missing flow
@@ -325,7 +330,16 @@ export function FlowEditorPane(
             url: "/flow/draft/" + id,
         }).then((response) => {
             if (response && isSubscribed === true) {
+                selectNode(null);
                 updateFlow(response?.data);
+                setDisplayDebugPane(false);
+                setDisplayDebugHeight({gridTemplateRows: "100%"})
+                setProfilingData({
+                    startTime: 0,
+                        endTime: 0,
+                    calls: []
+                })
+                setLogs([])
             }
         }).catch((e) => {
             if (e && isSubscribed === true) {
@@ -344,7 +358,7 @@ export function FlowEditorPane(
             isSubscribed = false
         }
 
-    }, [id, showAlert, updateFlow])
+    }, [id, showAlert, updateFlow, dataContext])
 
 
     useEffect(() => {

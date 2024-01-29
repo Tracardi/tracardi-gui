@@ -8,11 +8,11 @@ import Properties from "./DetailProperties";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import FormDrawer from "../drawers/FormDrawer";
 import Rows from "../misc/Rows";
-import Button from "../forms/Button";
 import {VscEdit, VscTrash} from "react-icons/vsc";
 import MetricsForm from "../forms/MetricsForm";
 import {useConfirm} from "material-ui-confirm";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "../forms/ProductionButton";
 
 export function MetricDetails({data:_data, onDeleteComplete, onEditComplete}) {
 
@@ -69,11 +69,12 @@ export function MetricDetails({data:_data, onDeleteComplete, onEditComplete}) {
             </TuiFormGroup>
             <div style={{marginBottom: 20}}>
                 <Rows style={{marginTop: 20}}>
-                    <Button onClick={handleEditClick}
-                            icon={<VscEdit size={20}/>}
-                            label="Edit"
-                            disabled={typeof data === "undefined"}/>
-                    {onDeleteComplete && <Button
+                    <ProductionButton
+                        onClick={handleEditClick}
+                        icon={<VscEdit size={20}/>}
+                        label="Edit"
+                        disabled={typeof data === "undefined"}/>
+                    {onDeleteComplete && <ProductionButton
                         icon={<VscTrash size={20}/>}
                         onClick={handleDelete}
                         label="Delete"

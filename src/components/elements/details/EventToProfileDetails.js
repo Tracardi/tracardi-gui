@@ -1,5 +1,4 @@
 import React, {useEffect} from "react";
-import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
@@ -14,8 +13,9 @@ import EventTypeMetadata from "./EventTypeMetadata";
 import MappingsObjectDetails from "./MappingsObjectDetails";
 import Tag from "../misc/Tag";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "../forms/ProductionButton";
 
-export function EventToProfileCard({data, onDeleteComplete, onEditComplete, displayMetadata=true}) {
+export function EventToProfileCard({data, onDeleteComplete, onEditComplete, displayMetadata = true}) {
 
     const [displayEdit, setDisplayEdit] = React.useState(false);
     const [deleteProgress, setDeleteProgress] = React.useState(false);
@@ -31,7 +31,7 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
 
     const handleEditComplete = (flowData) => {
         setDisplayEdit(false);
-        if(onEditComplete instanceof Function) onEditComplete(flowData);
+        if (onEditComplete instanceof Function) onEditComplete(flowData);
     }
 
     const onDelete = () => {
@@ -54,17 +54,22 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
                     }
                 }
             )
-            .catch(() => {})
-            .finally(() => {setDeleteProgress(false);})
+            .catch(() => {
+            })
+            .finally(() => {
+                setDeleteProgress(false);
+            })
     }
 
     const Details = () => <>
         <TuiForm>
             {displayMetadata && <EventTypeMetadata data={data}/>}
             <TuiFormGroup>
-                <TuiFormGroupHeader header="Trigger condition" description="Event data will be copied only if the below condition is met."/>
+                <TuiFormGroupHeader header="Trigger condition"
+                                    description="Event data will be copied only if the below condition is met."/>
                 <TuiFormGroupContent>
-                    <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black" color="white">when</Tag>event type <Tag>equals</Tag>{data?.event_type?.id}</div>
+                    <div style={{fontSize: 18, marginBottom: 5}}><Tag backgroundColor="black" color="white">when</Tag>event
+                        type <Tag>equals</Tag>{data?.event_type?.id}</div>
                     {data?.config?.condition && <div style={{fontSize: 18}}>
                         <fieldset style={{borderWidth: "1px 0 0 0", borderRadius: 0, marginTop: 8}}>
                             <legend style={{padding: "0 10px"}}>AND</legend>
@@ -92,16 +97,17 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
 
         </TuiForm>
         {!data.build_in && <Rows style={{marginBottom: 20, marginTop: 20}}>
-                    <Button onClick={onEditClick}
-                            icon={<VscEdit size={20}/>}
-                            label="Edit" disabled={typeof data === "undefined"}/>
-                    <Button
-                        progress={deleteProgress}
-                        icon={<VscTrash size={20}/>}
-                        onClick={onDelete}
-                        label="Delete"
-                        disabled={typeof data === "undefined"}/>
-                </Rows>}
+            <ProductionButton
+                onClick={onEditClick}
+                icon={<VscEdit size={20}/>}
+                label="Edit" disabled={typeof data === "undefined"}/>
+            <ProductionButton
+                progress={deleteProgress}
+                icon={<VscTrash size={20}/>}
+                onClick={onDelete}
+                label="Delete"
+                disabled={typeof data === "undefined"}/>
+        </Rows>}
     </>
 
     return <div className="Box10" style={{height: "100%"}}>
@@ -136,15 +142,17 @@ export default function EventToProfileDetails({id, onDeleteComplete, onEditCompl
                 method: "get"
             })
                 .then((result) => {
-                    if(isSubscribed) setData(result.data);
+                    if (isSubscribed) setData(result.data);
                 })
-                .catch((e)=> {
+                .catch((e) => {
                     console.log(e)
                 })
                 .finally(
-                    () => {if(isSubscribed) setLoading(false)}
+                    () => {
+                        if (isSubscribed) setLoading(false)
+                    }
                 )
-            return () => isSubscribed= false;
+            return () => isSubscribed = false;
         },
         [id])
 

@@ -22,6 +22,7 @@ import TestEditor from "../test/TestEditor";
 import {ReinstallButton} from "../pages/ActionPlugins";
 import EntityAnalytics from "../pages/EntityAnalytics";
 import {useRequest} from "../../remote_api/requestClient";
+import ProductionButton from "../elements/forms/ProductionButton";
 
 export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onSaveDraft}) {
 
@@ -89,28 +90,33 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
         </div>
         <div>
             <ReinstallButton/>
-            <Button label="Rearrange"
-                    icon={<TiTickOutline size={20}/>}
-                    onClick={handleRearrange}
+            <ProductionButton
+                label="Rearrange"
+                icon={<TiTickOutline size={20}/>}
+                onClick={handleRearrange}
             />
-            <Button label="Save"
-                    icon={<TiTickOutline size={20}/>}
-                    onClick={handleSave}
-                    progress={draftSaveProgress}
+            <ProductionButton
+                label="Save"
+                icon={<TiTickOutline size={20}/>}
+                onClick={handleSave}
+                progress={draftSaveProgress}
             />
-            {flowMetaData?.type !== 'segment' &&<Button label="Test"
-                    icon={<BsClipboardCheck size={20}/>}
-                    onClick={() => setTestConsoleOpened(true)}
+            {flowMetaData?.type !== 'segment' && <Button
+                label="Test"
+                icon={<BsClipboardCheck size={20}/>}
+                onClick={() => setTestConsoleOpened(true)}
             />}
-            <Button label="Data"
-                    icon={<BsFolder size={20}/>}
-                    onClick={() => setEventsOpened(true)}
+            <Button
+                label="Data"
+                icon={<BsFolder size={20}/>}
+                onClick={() => setEventsOpened(true)}
             />
             {flowMetaData?.type !== 'segment' &&
-            <Button label="Triggers"
+                <Button
+                    label="Triggers"
                     icon={<BsPlayCircle size={20}/>}
                     onClick={() => setRulesOpened(true)}
-            />}
+                />}
         </div>
 
         <FormDrawer
@@ -153,11 +159,12 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
             open={rulesOpened}>
             {rulesOpened && <div style={{padding: 15}}>
                 <div style={{padding: "10px 0", display: "flex", justifyContent: "flex-end"}}>
-                    <Button label="Add trigger"
-                            onClick={() => {
-                                setOpenRuleForm(true)
-                            }}
-                            icon={<BsPlayCircle size={20}/>}/>
+                    <ProductionButton
+                        label="Add trigger"
+                        onClick={() => {
+                            setOpenRuleForm(true)
+                        }}
+                        icon={<BsPlayCircle size={20}/>}/>
                 </div>
                 <TuiForm>
                     <TuiFormGroup>

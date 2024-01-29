@@ -3,7 +3,6 @@ import "../lists/cards/SourceCard.css";
 import "./ResourceDetails.css";
 import "./Details.css";
 import Properties from "./DetailProperties";
-import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
@@ -17,6 +16,7 @@ import FlowNodeIcons from "../../flow/FlowNodeIcons";
 import TuiTags from "../tui/TuiTags";
 import TimeDifference from "../datepickers/TimeDifference";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "../forms/ProductionButton";
 
 const TrackerUseScript = React.lazy(() => import('../tracker/TrackerUseScript'));
 const TrackerScript = React.lazy(() => import('../tracker/TrackerScript'));
@@ -87,7 +87,7 @@ export default function ResourceDetails({id, onDeleteComplete}) {
     const Details = () => <>
         <div style={{display: "flex", margin: "5px 20px 20px 20px", flexDirection: "column"}}>
 
-            <div style={{display: "flex",justifyContent: "space-between", alignItems: 'center', marginBottom: 10}}>
+            <div style={{display: "flex", justifyContent: "space-between", alignItems: 'center', marginBottom: 10}}>
                 <div style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>
                     <FlowNodeIcons icon={data.icon} size={30}/>
                     <h1 className="header"
@@ -95,14 +95,15 @@ export default function ResourceDetails({id, onDeleteComplete}) {
                 </div>
                 <div style={{display: "flex", alignItems: "start"}}>
                     <Rows>
-                        {data?.locked !== true && <Button onClick={onEdit}
-                                                          icon={<VscEdit size={20}/>}
-                                                          label="Edit"
-                                                          disabled={typeof data === "undefined"}/>}
-                        <Button onClick={onDelete}
-                                icon={<VscTrash size={20}/>}
-                                label="Delete"
-                                disabled={typeof data === "undefined"}/>
+                        {data?.locked !== true && <ProductionButton
+                            onClick={onEdit}
+                            icon={<VscEdit size={20}/>}
+                            label="Edit"
+                            disabled={typeof data === "undefined"}/>}
+                        <ProductionButton onClick={onDelete}
+                                          icon={<VscTrash size={20}/>}
+                                          label="Delete"
+                                          disabled={typeof data === "undefined"}/>
                     </Rows>
                 </div>
             </div>
@@ -125,13 +126,14 @@ export default function ResourceDetails({id, onDeleteComplete}) {
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Destination"/>
                 <TuiFormGroupContent header={"Data"}>
-                    {(data?.destination && <Properties properties={(data?.destination)}/>) || "This resource does not provide destination configuration."}
+                    {(data?.destination && <Properties
+                        properties={(data?.destination)}/>) || "This resource does not provide destination configuration."}
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Other details"/>
                 <TuiFormGroupContent header={"Data"}>
-                    <Properties properties={data} exclude={['tags', 'destination', 'name', 'description', ]}/>
+                    <Properties properties={data} exclude={['tags', 'destination', 'name', 'description',]}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
         </TuiForm>

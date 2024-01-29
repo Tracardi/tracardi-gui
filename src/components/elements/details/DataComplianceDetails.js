@@ -1,6 +1,5 @@
 import React, {useEffect, useRef} from "react";
 import Properties from "./DetailProperties";
-import Button from "../forms/Button";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
 import FormDrawer from "../drawers/FormDrawer";
@@ -9,6 +8,7 @@ import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import DataComplianceForm from "../forms/DataComplianceForm";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "../forms/ProductionButton";
 
 export default function DataComplianceDetails({id, onDeleteComplete, onEditComplete}) {
 
@@ -76,10 +76,11 @@ export default function DataComplianceDetails({id, onDeleteComplete, onEditCompl
 
     const Details = () => <>
         <div style={{margin: "20px 0", display: "flex", justifyContent: "flex-end"}}>
-            <Button onClick={handleEdit}
-                    icon={<VscEdit size={20}/>}
-                    label="Edit" disabled={typeof data === "undefined"}/>
-            <Button
+            <ProductionButton
+                onClick={handleEdit}
+                icon={<VscEdit size={20}/>}
+                label="Edit" disabled={typeof data === "undefined"}/>
+            <ProductionButton
                 progress={deleteProgress}
                 icon={<VscTrash size={20}/>}
                 onClick={onDelete}

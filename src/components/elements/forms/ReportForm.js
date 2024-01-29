@@ -11,6 +11,7 @@ import {JsonInput, SelectInput} from "./JsonFormComponents";
 import JsonBrowser from "../misc/JsonBrowser";
 import PropertyField from "../details/PropertyField";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "./ProductionButton";
 
 
 export default function ReportForm({reportId, onComplete}) {
@@ -228,7 +229,7 @@ export default function ReportForm({reportId, onComplete}) {
                     {error && <ErrorsBox errorList={error}/>}
                 </TuiFormGroupContent>
             </TuiFormGroup>
-            <Button
+            <ProductionButton
                 label="SAVE"
                 onClick={handleSave}
                 error={!!error}

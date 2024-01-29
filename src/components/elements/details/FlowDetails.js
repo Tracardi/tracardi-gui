@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import Properties from "./DetailProperties";
-import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import {BsGear} from "react-icons/bs";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
@@ -14,6 +13,7 @@ import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import FlowRules from "../../rules/FlowRules";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "../forms/ProductionButton";
 
 export default function FlowDetails({id, onDeleteComplete}) {
 
@@ -92,18 +92,21 @@ export default function FlowDetails({id, onDeleteComplete}) {
                 <TuiFormGroupField header="Data">
                     <Properties properties={data} show={["id", "timestamp", "deploy_timestamp", "name", "description", "type"]}/>
                     <Rows style={{marginTop: 20}}>
-                        <Button onClick={onEditClick}
-                                icon={<VscEdit size={20}/>}
-                                label="Edit" disabled={typeof data === "undefined"}/>
-                        <Button onClick={() => onGoToEditFlow(data.id, data.type)}
-                                icon={<BsGear size={20} style={{marginRight: 5}}/>}
-                                label="Edit FLOW"
-                                disabled={typeof data === "undefined"}/>
-                        <Button onClick={() => onGoToDeployedFlow(data.id)}
-                                icon={<BsGear size={20} style={{marginRight: 5}}/>}
-                                label="View Deployed FLOW"
-                                disabled={typeof data === "undefined"}/>
-                        {onDeleteComplete && <Button
+                        <ProductionButton
+                            onClick={onEditClick}
+                            icon={<VscEdit size={20}/>}
+                            label="Edit" disabled={typeof data === "undefined"}/>
+                        <ProductionButton
+                            onClick={() => onGoToEditFlow(data.id, data.type)}
+                            icon={<BsGear size={20} style={{marginRight: 5}}/>}
+                            label="Edit FLOW"
+                            disabled={typeof data === "undefined"}/>
+                        <ProductionButton
+                            onClick={() => onGoToDeployedFlow(data.id)}
+                            icon={<BsGear size={20} style={{marginRight: 5}}/>}
+                            label="View Deployed FLOW"
+                            disabled={typeof data === "undefined"}/>
+                        {onDeleteComplete && <ProductionButton
                             icon={<VscTrash size={20}/>}
                             onClick={onDelete}
                             label="Delete"

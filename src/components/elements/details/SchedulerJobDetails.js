@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import Properties from "./DetailProperties";
-import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {useConfirm} from "material-ui-confirm";
@@ -8,6 +7,7 @@ import {VscTrash} from "react-icons/vsc";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "../forms/ProductionButton";
 
 export default function SchedulerJobDetails({id, onDeleteComplete}) {
 
@@ -66,7 +66,7 @@ export default function SchedulerJobDetails({id, onDeleteComplete}) {
                 <TuiFormGroupField>
                     <Properties properties={data}/>
                     <Rows style={{marginTop: 20}}>
-                        {onDeleteComplete && <Button
+                        {onDeleteComplete && <ProductionButton
                             icon={<VscTrash size={20}/>}
                             onClick={onDelete}
                             label="Delete"

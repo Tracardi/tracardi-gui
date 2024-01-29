@@ -83,20 +83,19 @@ export function EventValidationCard({data, onDeleteComplete, onEditComplete, dis
                 </TuiFormGroupContent>
             </TuiFormGroup> : <NoData header="No schema defined"/>}
         </TuiForm>
-            <div style={{marginBottom: 20}}>
-                <Rows style={{marginTop: 20}}>
-                    <ProductionButton onClick={handleEditClick}
-                            icon={<VscEdit size={20}/>}
-                            label="Edit"
-                            disabled={typeof data === "undefined"}/>
-                    {onDeleteComplete && <ProductionButton
-                        icon={<VscTrash size={20}/>}
-                        onClick={handleDelete}
-                        label="Delete"
-                        disabled={typeof data === "undefined"}
-                    />}
-                </Rows>
-            </div>
+            <Rows style={{marginTop: 20, marginBottom: 20}}>
+                <ProductionButton
+                    onClick={handleEditClick}
+                    icon={<VscEdit size={20}/>}
+                    label="Edit"
+                    disabled={typeof data === "undefined"}/>
+                {onDeleteComplete && <ProductionButton
+                    icon={<VscTrash size={20}/>}
+                    onClick={handleDelete}
+                    label="Delete"
+                    disabled={typeof data === "undefined"}
+                />}
+            </Rows>
     </>
 
     return <div className="Box10" style={{height: "100%"}}>

@@ -1,7 +1,6 @@
 import React, {useEffect, useRef} from "react";
 import "./Details.css";
 import "./RuleDetails.css";
-import Button from "../forms/Button";
 import PropTypes from "prop-types";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import {useConfirm} from "material-ui-confirm";
@@ -11,6 +10,7 @@ import Properties from "./DetailProperties";
 import DestinationForm from "../forms/DestinationForm";
 import { VscEdit, VscTrash } from "react-icons/vsc";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "../forms/ProductionButton";
 
 
 function DestinationDetails({id, onDelete, onEdit}) {
@@ -96,8 +96,8 @@ function DestinationDetails({id, onDelete, onEdit}) {
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <div style={{display: "flex"}}>
-                <Button label="Edit" onClick={handleEdit} icon={<VscEdit size={20}/>}/>
-                <Button label="Delete" onClick={handleDelete} progress={deleteProgress} icon={<VscTrash size={20}/>}/>
+                <ProductionButton label="Edit" onClick={handleEdit} icon={<VscEdit size={20}/>}/>
+                <ProductionButton label="Delete" onClick={handleDelete} progress={deleteProgress} icon={<VscTrash size={20}/>}/>
             </div>
 
             <FormDrawer

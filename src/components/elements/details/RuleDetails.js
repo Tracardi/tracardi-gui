@@ -1,7 +1,6 @@
 import React, {useEffect} from "react";
 import "./Details.css";
 import "./RuleDetails.css";
-import Button from "../forms/Button";
 import Rows from "../misc/Rows";
 import {VscTrash, VscEdit} from "react-icons/vsc";
 import PropTypes from "prop-types";
@@ -19,6 +18,7 @@ import Tag from "../misc/Tag";
 import NoData from "../misc/NoData";
 import {isNotEmptyArray} from "../../../misc/typeChecking";
 import {useRequest} from "../../../remote_api/requestClient";
+import ProductionButton from "../forms/ProductionButton";
 
 function ConsentsTags({data}) {
     const tags = Array.isArray(data?.properties?.consents)
@@ -111,15 +111,17 @@ export function RuleCard({data, onDeleteComplete, onEditComplete, displayMetadat
             </TuiFormGroup>
             <div>
                 <Rows style={{marginTop: 20}}>
-                    {handleEdit && <Button onClick={handleEdit}
-                                           icon={<VscEdit size={20}/>}
-                                           label="Edit"
-                                           disabled={typeof data === "undefined"}/>}
-                    {handleDelete && <Button onClick={handleDelete}
-                                             progress={deleteProgress}
-                                             label="Delete"
-                                             icon={<VscTrash size={20} style={{marginRight: 5}}/>}
-                                             disabled={typeof data === "undefined"}/>}
+                    {handleEdit && <ProductionButton
+                        onClick={handleEdit}
+                        icon={<VscEdit size={20}/>}
+                        label="Edit"
+                        disabled={typeof data === "undefined"}/>}
+                    {handleDelete && <ProductionButton
+                        onClick={handleDelete}
+                        progress={deleteProgress}
+                        label="Delete"
+                        icon={<VscTrash size={20} style={{marginRight: 5}}/>}
+                        disabled={typeof data === "undefined"}/>}
                 </Rows>
             </div>
         </TuiForm>
