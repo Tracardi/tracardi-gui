@@ -113,7 +113,7 @@ const SignInForm = () => {
                 apiUrl,
                 platform: "Tracardi " + version(),
                 location: result
-            }).then(() => {})
+            }, false).then(() => {})
         })
 
         setProgress(true)

@@ -54,14 +54,16 @@
           return defaultValue
         }
       }
+
       window.tracker.track("tracardi-load", {
-        version: get("version", "0.9.0-dev"),
-        usage: {
-          events: get("events", -1),
-          profiles: get("profiles", -1),
-          avgEvents: get("avgEvents", -1)
-        }
-      });
+                version: get("version", "0.9.0-dev"),
+                usage: {
+                  events: get("events", -1),
+                  profiles: get("profiles", -1),
+                  avgEvents: get("avgEvents", -1)
+                }
+              },
+              {async: false});
     </script>
   </body>
 </html>
