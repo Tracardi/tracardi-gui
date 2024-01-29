@@ -30,7 +30,7 @@ function ErrorDetails({error}) {
             })
             : <tr>
                 <td valign="top">Details</td>
-                <td>{error?.response?.data?.detail}</td>
+                <td>{error?.response?.data?.detail || error?.data?.detail}</td>
             </tr>
         }
         </tbody>

@@ -4,6 +4,7 @@ import InstallerForm from "./InstallerForm";
 import {useFetch} from "../remote_api/remoteState";
 import {getInstallStatus} from "../remote_api/endpoints/system";
 import FetchError from "./errors/FetchError";
+import {resetApiUrlConfig} from "../remote_api/entrypoint";
 
 const Installer = ({children}) => {
 
@@ -26,6 +27,7 @@ const Installer = ({children}) => {
     }
 
     if (error) {
+        resetApiUrlConfig()
         return <FetchError error={error}/>
     }
 
