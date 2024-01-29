@@ -24,6 +24,7 @@ import {FaUncharted} from "react-icons/fa";
 import {DataContext} from "../AppBox";
 import {useRequest} from "../../remote_api/requestClient";
 import {KeyCloakContext} from "../context/KeyCloakContext";
+import {RestrictToMode} from "../context/RestrictContext";
 
 
 function MainMenu({app, showAlert, changeRoute, onContextChange}) {
@@ -107,11 +108,15 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
 
         return <div className="Branding">
                 <div className="Tracardi" onClick={handleVersionWindow}>TRACARDI</div>
-                <div className="Version">v. {version()} <Restrict roles={['admin']}>
-                    <Restrict roles={['maintainer']}>
-                        <span className="Context" style={{marginLeft: 5}}><ServerContextTag context={context} onContextChange={onContextChange}/></span>
-                    </Restrict>
-                </Restrict>
+                <div className="Version">v. {version()}
+                    <RestrictToMode mode="with-deployment">
+                        <Restrict roles={['admin']}>
+                            <Restrict roles={['maintainer']}>
+                            <span className="Context" style={{marginLeft: 5}}><ServerContextTag context={context}
+                                                                                                onContextChange={onContextChange}/></span>
+                            </Restrict>
+                        </Restrict>
+                    </RestrictToMode>
                 </div>
             </div>
     }
