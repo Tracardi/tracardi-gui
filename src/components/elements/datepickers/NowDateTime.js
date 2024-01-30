@@ -10,7 +10,10 @@ const NowDateTime = ({onDateSelect}) => {
             absolute: null,
             delta: null
         }
-        onDateSelect(date);
+        if(onDateSelect instanceof Function) {
+            onDateSelect(date);
+        }
+
     }
 
     return <div className="DateNow">

@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import PropTypes from "prop-types";
 
-export default function RelativePicker({type, onDateSelect, datetime}) {
+export default function RelativePicker({type, onChange, datetime}) {
 
     const defaultType = type==="FromDate" ? "minus" : "plus";
     const [periodType, setPeriodType] = useState((datetime?.delta?.type) ? datetime.delta.type : defaultType);
@@ -20,8 +20,16 @@ export default function RelativePicker({type, onDateSelect, datetime}) {
             },
             now: null
         }
-        onDateSelect(date);
-    }, [periodType, period, periodEntity, onDateSelect])
+        if(onChange instanceof Function) {
+            onChange(date);
+        }
+
+    }, [periodType, period, periodEntity])
+
+    const handelPeriodChange = (v) => {
+        console.log(v)
+        setPeriod(v)
+    }
 
     return <div className="PeriodPicker">
         <div className="PeriodHeader">
@@ -37,7 +45,7 @@ export default function RelativePicker({type, onDateSelect, datetime}) {
                 variant="outlined"
                 size="small"
                 value={period}
-                onChange={(ev) => setPeriod(ev.target.value)}
+                onChange={(ev) => handelPeriodChange(ev.target.value)}
                 InputLabelProps={{
                     shrink: true,
                 }}

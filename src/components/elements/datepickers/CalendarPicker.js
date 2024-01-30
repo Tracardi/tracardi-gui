@@ -8,7 +8,7 @@ const PickyDateTime = React.lazy(() => import('react-picky-date-time'))
 
 export default function CalendarPicker({onDateSelect, datetime}) {
 
-    if (datetime.absolute === null) {
+    if (datetime?.absolute === null) {
         const now = moment()
         datetime.absolute = {
             year: now.format("YYYY"),
@@ -43,7 +43,10 @@ export default function CalendarPicker({onDateSelect, datetime}) {
             delta: null,
             now: null
         }
-        onDateSelect(date);
+        if(onDateSelect instanceof Function) {
+            onDateSelect(date);
+        }
+
     }, [year, month, day, hour, minute, second, meridiem, onDateSelect])
 
     const onResetTime = (d) => {

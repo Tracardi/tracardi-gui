@@ -33,6 +33,9 @@ import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
 import QueryRuleGroup from "../elements/forms/QueryRuleGroup";
 import {FieldBox} from "../elements/forms/FieldBox";
 import {TimeSpanField} from "../elements/forms/TimeSpanField";
+import ObjectFiltering from "../elements/forms/ObjectFiltering";
+import KqlAutoCompleteRange from "../elements/forms/KqlAutoCompleteRange";
+import DataTimePickerNew from "../elements/datepickers/DateTimePickerNew";
 
 
 function AggregationOperation({value, label}) {
@@ -266,6 +269,10 @@ export default function TryOut() {
     //value={{value:"123", ref:true}} autocomplete="profile"
     return (
         <div>
+            <DataTimePickerNew type="FromDate"
+                               initValue={null}/>
+            <ObjectFiltering/>
+            <KqlAutoCompleteRange index="profile"/>
             <TimeSpanField onChange={console.log}/>
             <QueryBuilderRules onChange={v => console.log("rules", v)}/>
 
