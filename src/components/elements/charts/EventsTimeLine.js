@@ -126,21 +126,6 @@ export default function EventTimeLine() {
                     groupings: null,
                     colors: getColor
                 }
-            case "session":
-                groupConfig = getSessionGrouping(grouping)
-                return {
-                    source: getUrl('/session/select/histogram', groupConfig.group),
-                    groupings: <>
-                        <Button style={{width: 80}} label="zone" onClick={() => setGrouping("timezone")}
-                                selected={grouping === 'timezone'} variant="standard"/>
-                        <Button style={{width: 80}} label="browser" onClick={() => setGrouping("browser")}
-                                selected={grouping === 'browser'} variant="standard"/>
-                        <Button style={{width: 80}} label="platform" onClick={() => setGrouping("platform")}
-                                selected={grouping === 'platform'} variant="standard"/>
-
-                    </>,
-                    colors: groupConfig.colors
-                }
             default:
                 groupConfig = getEventGrouping(grouping)
                 return {
@@ -148,10 +133,6 @@ export default function EventTimeLine() {
                     groupings: <>
                         <Button style={{width: 80}} label="type" onClick={() => setGrouping("type")}
                                 selected={grouping === 'type'} variant="standard"/>
-                        <Button style={{width: 80}} label="status" onClick={() => setGrouping("status")}
-                                selected={grouping === 'status'} variant="standard"/>
-                        <Button style={{width: 80}} label="source" onClick={() => setGrouping("source")}
-                                selected={grouping === 'source'} variant="standard"/>
                         <Button style={{width: 80}} label="tag" onClick={() => setGrouping("tag")}
                                 selected={grouping === 'tag'} variant="standard"/>
                     </>,
@@ -235,17 +216,11 @@ export default function EventTimeLine() {
                                 setDataSource('profile');
                                 setGrouping(null);
                                 break;
-                            case 3:
-                                setDataSelect(3);
-                                setDataSource('session');
-                                setGrouping('browser');
-                                break;
                         }
                     }}
                 >
                     <MenuItem value={1}>Events time-line</MenuItem>
                     <MenuItem value={2}>Profiles time-line</MenuItem>
-                    {/*<MenuItem value={3}>Session time-line</MenuItem>*/}
                 </Select>
 
                 {dataSourceConfig.groupings}

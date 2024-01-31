@@ -1,0 +1,11 @@
+DIV.Xover:hover {
+    -webkit-box-shadow: inset 0px 0px 54px -16px rgba(66, 68, 90, 1);
+    -moz-box-shadow: inset 0px 0px 54px -16px rgba(66, 68, 90, 1);
+    box-shadow: inset 0px 0px 54px -16px rgba(66, 68, 90, 1);
+}
+
+DIV.Xover:hover > SPAN {
+    background-color: rgba(255,255,255, .8);
+    color: black;
+    border-radius: 50%;
+}

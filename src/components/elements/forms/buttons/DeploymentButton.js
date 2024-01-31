@@ -2,18 +2,16 @@ import {
     DisplayOnlyIfUpdatesAllowedOnProduction,
     RestrictToMode
 } from "../../../context/RestrictContext";
-import Button from "../Button";
 import React from "react";
-import {BsFillPlayCircleFill, BsTrash} from "react-icons/bs";
+import {BsTrash} from "react-icons/bs";
 import {OnOverTag} from "../../misc/Tag";
 import {connect} from "react-redux";
 import {showAlert} from "../../../../redux/reducers/alertSlice";
-import {MdOutlineModeEditOutline} from "react-icons/md";
 import IconButton from "../../misc/IconButton";
 import {DebugButton} from "../../misc/JsonButton";
+import useTheme from "@mui/material/styles/useTheme";
 
 function DeployButton({id, deployed, data, running, draft, onDelete, onUnDeploy, onDeploy, forceMode}) {
-
 
     const handleDelete = () => {
         if (onDelete instanceof Function) {
@@ -39,13 +37,9 @@ function DeployButton({id, deployed, data, running, draft, onDelete, onUnDeploy,
 
             <span className="flexLine" style={{marginLeft: 5, flexWrap: "nowrap"}}>
 
-                {draft && <DraftTag size={20} onClick={handleDelete}/>}
+                {draft && <DraftTag size={20} onClick={handleDeploy} onDeleteClick={handleDelete}/>}
 
-                {deployed
-                    ? <Button label="deployed" style={{width: 100}} disabled={true}/>
-                    : <Button label="deploy" style={{width: 100}} onClick={handleDeploy}/>}
-
-                {running && <RunningTag onClick={handleUndeploy}/>}
+                {running && <RunningTag onDeleteClick={handleUndeploy}/>}
 
             </span>
 
@@ -56,22 +50,27 @@ function DeployButton({id, deployed, data, running, draft, onDelete, onUnDeploy,
     </DisplayOnlyIfUpdatesAllowedOnProduction>
 }
 
-function RunningTag({onClick}) {
+function RunningTag({onClick,onDeleteClick}) {
     return <OnOverTag
-        on={<BsTrash size={20} style={{margin: 5}}/>}
-        off={<BsFillPlayCircleFill size={20} style={{margin: 5}}/>}
+        label="Running"
         onClick={onClick}
-        style={{padding: "1px 9px", marginLeft: 5, backgroundColor: "rgb(0, 200, 83)", color: "white"}}>
+        onDeleteClick={onDeleteClick}
+        backgroundColor="rgb(0, 200, 83)"
+        style={{padding: "1px 9px", marginLeft: 5, color: "white"}}>
     </OnOverTag>
 
 }
 
-function DraftTag({onClick}) {
+function DraftTag({onClick, onDeleteClick}) {
+
+    const theme = useTheme()
+
     return <OnOverTag
-        on={<BsTrash size={20} style={{margin: 5}}/>}
-        off={<MdOutlineModeEditOutline size={20} style={{margin: 5}}/>}
+        label="Deploy Draft"
         onClick={onClick}
-        style={{padding: "1px 9px", marginLeft: 5, backgroundColor: "#EF6C00", color: "white"}}>
+        onDeleteClick={onDeleteClick}
+        backgroundColor={theme.palette.primary.main}
+        style={{padding: "1px 9px", marginLeft: 5, color: "white"}}>
     </OnOverTag>
 }
 
