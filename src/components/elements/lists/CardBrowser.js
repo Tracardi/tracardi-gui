@@ -1,18 +1,17 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import './CardBrowser.css';
 import CenteredCircularProgress from "../../elements/progress/CenteredCircularProgress";
 import FormDrawer from "../../elements/drawers/FormDrawer";
 import FilterAddForm from "../../elements/forms/inputs/FilterAddForm";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import ErrorsBox from "../../errors/ErrorsBox";
-import {getError} from "../../../remote_api/entrypoint";
 import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import NoData from "../misc/NoData";
 import {BsGrid, BsList} from "react-icons/bs";
 import IconButton from "../misc/IconButton";
 import {BsStar} from "react-icons/bs";
-import {useRequest} from "../../../remote_api/requestClient";
 import envs from "../../../envs";
+import {useFetch} from "../../../remote_api/remoteState";
+import { BsEmojiFrownFill } from "react-icons/bs";
 
 const CardBrowser = ({
                          label,
@@ -23,11 +22,9 @@ const CardBrowser = ({
                          buttonLabel = null,
                          buttonIcon,
                          drawerDetailsWidth = 600,
-                         detailsFunc = () => {
-                         },
+                         detailsFunc = () => {},
                          drawerAddWidth = 600,
-                         addFunc = () => {
-                         },
+                         addFunc = () => {},
                          className,
                          refresh: forceRefresh,
                          defaultLayout = "cards",
@@ -36,62 +33,41 @@ const CardBrowser = ({
 
     const Content = ({query, onClick, urlFunc, refresh, forceRefresh}) => {
 
-        const [data, setData] = useState(null);
-        const [loading, setLoading] = useState(false);
-        const [errors, setErrors] = useState(null);
         const [layoutVert, setLayoutVert] = useState(defaultLayout !== "cards");
-        const [noLicense, setNotLicense] = useState(false)
 
-        const {request} = useRequest()
-
-        useEffect(() => {
-                setData(null);
-                const url = urlFunc(query)
-                setLoading(true);
-                setNotLicense(false)
-                let isSubscribed = true
-                request({url})
-                    .then((response) => {
-                        if (response && isSubscribed) {
-                            setData(response.data);
-                        }
-                    })
-                    .catch((e) => {
-                        if (e?.response?.status === 402) {
-                            setNotLicense(true)
-                        }
-                        if (e && isSubscribed) {
-                            setErrors(getError(e))
-                        }
-                    })
-                    .finally(() => {
-                            if (isSubscribed) {
-                                setLoading(false);
-                            }
-                        }
-                    )
-                return () => {
-                    isSubscribed = false
-                }
+        const {isLoading, data, error} = useFetch(
+            [label, [query, refresh, urlFunc, forceRefresh]],
+            {
+                url: urlFunc(query)
+            },
+            data => {
+                return data
             }
-            , [query, refresh, urlFunc, forceRefresh])
-
-        if (loading) {
+        )
+        console.log(isLoading)
+        if (isLoading) {
             return <CenteredCircularProgress/>
         }
 
-        if (!loading && isEmptyObjectOrNull(data?.grouped) && data !== null) {
-            if (noLicense === true) {
+        if(error) {
+            if(error.status === 404) {
+                return <NoData header="Endpoint not found." icon={<BsEmojiFrownFill size={50}/>}>
+                    <p>Please contact Tracardi Admin for help.</p>
+                </NoData>
+            } else if(error.status === 402) {
                 return <NoData header="This feature requires license." icon={<BsStar size={50}/>}>
                     <p>Please contact Tracardi for a license key.</p>
                 </NoData>
             }
+        }
+
+        if(!data) {
             return <NoData header="There is no data here.">
                 <p>{noDataInfo ? noDataInfo : "Please click create button in the upper right corner."}</p>
             </NoData>
         }
 
-        if (!loading && !isEmptyObjectOrNull(data?.grouped))
+        if (!isEmptyObjectOrNull(data?.grouped))
             return <TuiForm style={{margin: 20, marginTop: 0}}>
                 <TuiFormGroup fitHeight={true}>
                     <TuiFormGroupHeader header={label} description={description}/>
@@ -109,7 +85,6 @@ const CardBrowser = ({
                             <section className={className} style={{display: "flex", flexWrap: "wrap", width: "100%"}}>
                                 {!layoutVert && data && cardFunc && cardFunc(data, onClick)}
                                 {layoutVert && data && rowFunc && rowFunc(data, onClick)}
-                                {errors && <ErrorsBox errorList={errors}/>}
                             </section>
                         </TuiFormGroupField>
                     </TuiFormGroupContent>
