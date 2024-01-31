@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import useTheme from "@mui/material/styles/useTheme";
 
 export default function DataTimePickerNew({type, initValue, onChange}) {
-    console.log("render DataTimePickerNew")
+
     const theme = useTheme()
 
     const activeTab = (value) => {

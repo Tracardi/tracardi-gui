@@ -20,8 +20,6 @@ export default function KqlAutoCompleteRange({
                                                onRefreshChange
                                            }) {
 
-    console.log(initDate)
-
     const [query, setQuery] = useState({value: value || "", token: null})
     const [options, setOptions] = React.useState([]);
     const [progress, setProgress] = React.useState(false);
