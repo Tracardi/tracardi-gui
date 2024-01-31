@@ -44,7 +44,7 @@ const CardBrowser = ({
                 return data
             }
         )
-        console.log(isLoading)
+
         if (isLoading) {
             return <CenteredCircularProgress/>
         }
