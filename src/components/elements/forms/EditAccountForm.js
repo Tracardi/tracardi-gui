@@ -33,7 +33,7 @@ export default function EditAccountForm ({ user, closeForm, forceRefresh }) {
                     method: "POST",
                     data: {
                         password: userToSend.password || user.password,
-                        full_name: userToSend.full_name
+                        name: userToSend.name
                     }
                 })
                 closeForm();
@@ -60,8 +60,8 @@ export default function EditAccountForm ({ user, closeForm, forceRefresh }) {
                             fullWidth
                             variant="outlined"
                             label="Full name"
-                            value={userToSend.full_name}
-                            onChange={event => setUserToSend({...userToSend, full_name: event.target.value})}
+                            value={userToSend.name}
+                            onChange={event => setUserToSend({...userToSend, name: event.target.value})}
                             size="small"
                         />
                     </TuiFormGroupField>

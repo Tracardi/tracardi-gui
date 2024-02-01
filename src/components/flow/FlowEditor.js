@@ -58,8 +58,7 @@ const FlowEditor = () => {
                 <FlowForm id={id}
                           name={flowMetaData?.name}
                           description={flowMetaData?.description}
-                          projects={flowMetaData?.projects}
-                          draft={true}
+                          tags={flowMetaData?.tags}
                           type={flowMetaData?.type}
                           disableType={true}
                           onFlowSaveComplete={(payload) => {

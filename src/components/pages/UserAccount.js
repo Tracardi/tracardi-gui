@@ -89,7 +89,7 @@ export default function UserAccount () {
         <>
             <TuiForm style={{margin: 20}}>
                 <TuiFormGroup>
-                    <TuiFormGroupHeader header={`Hello ${user.full_name}`} description="Here you can see and edit your account."/>
+                    <TuiFormGroupHeader header={`Hello ${user.name}`} description="Here you can see and edit your account."/>
                     <TuiFormGroupField style={{margin: 20}}>
                         <div style={{display: "flex", flexDirection: "column" }}>
                             <div style={{
@@ -114,7 +114,7 @@ export default function UserAccount () {
                                             textTransform: "none"
                                         }}
                                     >
-                                        {user.full_name}
+                                        {user.name}
                                     </p>
                                     <h3 style={{margin: 0, marginTop: 20}}>Roles</h3>
                                     <div>{user?.roles && Array.isArray(user?.roles) && user?.roles.map(role => role.charAt(0).toUpperCase() + role.slice(1).replace("_", " ")).join(", ")}</div>

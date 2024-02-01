@@ -43,7 +43,7 @@ export default function NewUserForm({ onSubmit}) {
                         password: password,
                         roles: rolesToSend,
                         enabled: enabled,
-                        full_name: fullName,
+                        name: fullName,
                         email: email,
                     }
                 })

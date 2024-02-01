@@ -5,7 +5,7 @@ import Button from "../Button";
 import PropTypes from 'prop-types';
 import {DataContext} from "../../../AppBox";
 
-export default function FilterAddForm({textFieldLabel, buttonLabel, buttonIcon, onFilter, onAdd, style, disableNewButton}) {
+export default function FilterAddForm({textFieldLabel, buttonLabel=null, buttonIcon, onFilter, onAdd, style, disableNewButton}) {
 
     const production = useContext(DataContext)
 

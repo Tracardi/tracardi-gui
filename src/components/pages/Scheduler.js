@@ -1,8 +1,6 @@
 import React, {useCallback, useState} from "react";
-import SquareCard from "../elements/lists/cards/SquareCard";
 import CardBrowser from "../elements/lists/CardBrowser";
 import BrowserRow from "../elements/lists/rows/BrowserRow";
-import FlowNodeIcons from "../flow/FlowNodeIcons";
 import {useConfirm} from "material-ui-confirm";
 import SchedulerJobDetails from "../elements/details/SchedulerJobDetails";
 import {useRequest} from "../../remote_api/requestClient";
@@ -35,25 +33,6 @@ export default function Scheduler() {
             ).catch(_=>{})
     }
 
-    const cards = (data, onClick) => {
-        return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
-            return <div className="CardGroup" key={index}>
-                <header>{category}</header>
-                <div>
-                    {plugs.map((row, subIndex) => {
-                        return <SquareCard key={index + "-" + subIndex}
-                                           id={row?.id}
-                                           icon={<FlowNodeIcons icon="calendar" size={45}/>}
-                                           status={row?.enabled}
-                                           name={row?.name}
-                                           description={row?.description}
-                                           onClick={() => onClick(row?.id)}/>
-                    })}
-                </div>
-            </div>
-        })
-    }
-
     const rows = (data, onClick) => {
         return data?.grouped && Object.entries(data?.grouped).map(([category, plugs], index) => {
             return <div className="RowGroup" style={{width:"100%"}} key={index}>
@@ -78,7 +57,6 @@ export default function Scheduler() {
         label="Scheduler"
         description="Scheduler triggers event at defined time intervals. This is commercial feature. "
         urlFunc={urlFunc}
-        cardFunc={cards}
         rowFunc={rows}
         // buttonLabel="New schedule"
         // buttonIcon={<FlowNodeIcons icon="calendar"/>}

@@ -262,7 +262,7 @@ export function FlowEditorPane(
                     deploy_timestamp: data?.deploy_timestamp || null,
                     name: data?.name,
                     description: data?.description,
-                    projects: data?.projects,
+                    tags: data?.tags,
                     type: data?.type
                 }
                 onFlowLoad(payload);

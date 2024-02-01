@@ -140,7 +140,7 @@ export default function FlowDetails({id, onDeleteComplete}) {
                 id={data.id}
                 name={data.name}
                 description={data.description}
-                projects={data.projects}
+                tags={data.tags}
                 type={data.type}
             />}
         </FormDrawer>

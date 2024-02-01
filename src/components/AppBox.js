@@ -20,7 +20,7 @@ const PageTabs = React.lazy(() => import('./pages/groups/PageTabs'))
 const FlowEditor = React.lazy(() => import('./flow/FlowEditor'))
 const EventReshaping = React.lazy(() => import("./pages/EventReshaping"))
 const EventValidation = React.lazy(() => import("./pages/EventValidation"))
-const LiveSegments = React.lazy(() => import("./pages/LiveSegments"))
+const Segmentation = React.lazy(() => import("./pages/Segmentation"))
 const LogsAnalytics = React.lazy(() => import("./pages/LogsAnalytics"))
 const UserAccount = React.lazy(() => import("./pages/UserAccount"))
 const TryOut = React.lazy(() => import("./pages/TryOut"))
@@ -31,29 +31,29 @@ const Reports = React.lazy(() => import("./pages/Reports"))
 const BackgroundTasks = React.lazy(() => import("./pages/BackgroundTasks"))
 const EntityAnalytics = React.lazy(() => import("./pages/EntityAnalytics"))
 const EventSources = React.lazy(() => import("./pages/EventSources"))
-const Consents = React.lazy(() => import("./pages/Consents"))
+const Consents = React.lazy(() => import("./pages/ConsentTypes"))
 const ImportSources = React.lazy(() => import("./pages/ImportSources"))
 const ElasticClusterHealthInfo = React.lazy(() => import("./pages/ElasticClusterHealthInfo"))
 const ElasticIndicesInfo = React.lazy(() => import("./pages/ElasticIndicesInfo"))
 const Migrations = React.lazy(() => import("./pages/Migrations"))
-const EventManagement = React.lazy(() => import("./pages/EventManagement"))
+const EventMapping = React.lazy(() => import("./pages/EventMapping"))
 const EventToProfile = React.lazy(() => import("./pages/EventToProfile"))
 const EventRedirect = React.lazy(() => import('./pages/EventRedirect'))
 const Users = React.lazy(() => import("./pages/SystemUsers"))
 const Destinations = React.lazy(() => import("./pages/Destinations"))
 const UserLogs = React.lazy(() => import("./pages/UserLogs"))
 const Resources = React.lazy(() => import("./pages/Resources"))
-const Flows = React.lazy(() => import("./pages/Flows"))
-const Segments = React.lazy(() => import("./pages/Segments"))
-const Rules = React.lazy(() => import("./pages/Rules"))
+const Flows = React.lazy(() => import("./pages/Workflows"))
+const Segments = React.lazy(() => import("./pages/PostEventSegments"))
+const Rules = React.lazy(() => import("./pages/TriggerRules"))
 const Metrics = React.lazy(() => import("./pages/Metrics"))
 const FlowReader = React.lazy(() => import("./flow/FlowReader"))
 const ActionPlugins = React.lazy(() => import("./pages/ActionPlugins"))
-const PredefinedEventTypes = React.lazy(() => import("./pages/PredefinedEventTypes"))
+const PredefinedEventTypes = React.lazy(() => import("./pages/BuildInEventTypes"))
 const Settings = React.lazy(() => import("./pages/Settings"))
 const TestEditor = React.lazy(() => import("./pages/TestEditor"))
 // const Scheduler = React.lazy(() => import("./pages/Scheduler"))
-const ConsentsDataCompliance = React.lazy(() => import("./pages/ConsentsCompliance"))
+const ConsentsDataCompliance = React.lazy(() => import("./pages/EventDataCompliance"))
 
 export const DataContext = createContext(false);
 
@@ -254,7 +254,7 @@ const AppBox = () => {
                                     <BsStar size={20} style={{marginRight: 5}}/>{"Event reshaping"}
                                 </>),
                             new PrivateTab(["admin", "developer"],
-                                <EventManagement/>, "/inbound/event/management", <><BsStar size={20}
+                                <EventMapping/>, "/inbound/event/management", <><BsStar size={20}
                                                                                            style={{marginRight: 5}}/>{"Event mapping"}</>
                             ),
                             new PrivateTab(["admin", "developer"],
@@ -336,7 +336,7 @@ const AppBox = () => {
                         <TopBar onDarkMode={handleThemeChange}>Profile Segmentation</TopBar>
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "developer", "marketer"],
-                                <LiveSegments/>, "/processing/live/segments", <>
+                                <Segmentation/>, "/processing/live/segments", <>
                                     <BsStar size={20}
                                             style={{marginRight: 5}}/>{"Segmentation"}</>),
                             new PrivateTab(["admin", "developer"],

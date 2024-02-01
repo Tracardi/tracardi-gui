@@ -17,18 +17,16 @@ function FlowForm({
                       id,
                       name,
                       description,
-                      projects,
+                      tags,
                       onFlowSaveComplete,
                       showAlert,
-                      draft = false,
-                      refreshMetaData = true,
                       type = 'collection',
                       disableType = false
                   }) {
 
     const [flowName, setFlowName] = useState((name) ? name : "");
     const [flowDescription, setFlowDescription] = useState((description) ? description : "");
-    const [flowTags, setFlowTags] = useState(projects);
+    const [flowTags, setFlowTags] = useState(tags);
     const [flowType, setFlowType] = useState(type);
     const [processing, setProcessing] = useState(false);
     const [nameErrorMessage, setNameErrorMessage] = useState("");
@@ -62,12 +60,12 @@ function FlowForm({
                 id: (id) ? id : uuid4(),
                 name: flowName,
                 description: flowDescription,
-                projects: flowTags && Array.isArray(flowTags) && flowTags.length > 0 ? flowTags : ["General"],
+                tags: flowTags && Array.isArray(flowTags) && flowTags.length > 0 ? flowTags : ["General"],
                 type: flowType
             }
 
             const response = await request({
-                url: (draft) ? '/flow/draft/metadata' : '/flow/metadata',
+                url: '/flow/metadata',
                 method: 'post',
                 data: payload
             })
@@ -148,7 +146,7 @@ function FlowForm({
                     <TuiTagger
                         label="Flow tags"
                         onChange={setFlowTags}
-                        tags={projects}
+                        tags={tags}
                     />
                 </TuiFormGroupField>
             </TuiFormGroupContent>
@@ -167,10 +165,8 @@ FlowForm.propTypes = {
     description: PropTypes.string,
     type: PropTypes.string,
     disableType: PropTypes.bool,
-    projects: PropTypes.array,
-    onFlowSaveComplete: PropTypes.func,
-    draft: PropTypes.bool,
-    refreshMetaData: PropTypes.bool
+    tags: PropTypes.array,
+    onFlowSaveComplete: PropTypes.func
 }
 
 

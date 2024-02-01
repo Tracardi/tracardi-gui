@@ -40,7 +40,7 @@ export default function EditUserForm({ id, onSubmit}) {
     }, [])
 
     const handleSave = async () => {
-        if (password === confirmPassword && user?.full_name && user?.email) {
+        if (password === confirmPassword && user?.name && user?.email) {
             setErrorMessage(null);
             setLoading(true);
             setError(false);
@@ -50,7 +50,7 @@ export default function EditUserForm({ id, onSubmit}) {
                     method: "POST",
                     data: {
                         password: password || user.password,
-                        full_name: user?.full_name,
+                        name: user?.name,
                         email: user?.email,
                         roles: roles,
                         enabled: user?.enabled,
@@ -125,11 +125,11 @@ export default function EditUserForm({ id, onSubmit}) {
                             fullWidth
                             variant="outlined"
                             label="Full name"
-                            value={user?.full_name || ""}
-                            onChange={event => handleUserChange('full_name', event.target.value)}
+                            value={user?.name || ""}
+                            onChange={event => handleUserChange('name', event.target.value)}
                             size="small"
-                            error={!user?.full_name && error}
-                            helperText={!user?.full_name && error && <ErrorLine>Full name cannot be empty</ErrorLine>}
+                            error={!user?.name && error}
+                            helperText={!user?.name && error && <ErrorLine>Full name cannot be empty</ErrorLine>}
                         />
                     </TuiFormGroupField>
                     <TuiFormGroupField header="E-mail">

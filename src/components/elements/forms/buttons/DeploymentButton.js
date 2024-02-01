@@ -11,7 +11,7 @@ import IconButton from "../../misc/IconButton";
 import {DebugButton} from "../../misc/JsonButton";
 import useTheme from "@mui/material/styles/useTheme";
 
-function DeployButton({id, deployed, data, running, draft, onDelete, onUnDeploy, onDeploy, forceMode}) {
+function DeployButton({id, data, running, draft, onDelete, onUnDeploy, onDeploy, forceMode}) {
 
     const handleDelete = () => {
         if (onDelete instanceof Function) {
@@ -21,13 +21,13 @@ function DeployButton({id, deployed, data, running, draft, onDelete, onUnDeploy,
 
     const handleUndeploy = () => {
         if(onUnDeploy instanceof Function) {
-            onUnDeploy()
+            onUnDeploy(id)
         }
     }
 
     const handleDeploy = () => {
         if(onDeploy instanceof Function) {
-            onDeploy()
+            onDeploy(id)
         }
     }
 
