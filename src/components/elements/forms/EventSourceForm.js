@@ -317,11 +317,6 @@ const EventSourceForm = ({value, style, onClose}) => {
         setProcessing(true);
 
         try {
-            console.log(1, metadata.current)
-            console.log(2, advanced.current)
-            console.log(3, {
-                ...metadata.current,
-                ...advanced.current})
             const response = await request({
                 url: '/event-source',
                 method: "POST",

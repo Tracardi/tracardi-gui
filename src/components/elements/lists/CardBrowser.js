@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import './CardBrowser.css';
 import CenteredCircularProgress from "../../elements/progress/CenteredCircularProgress";
 import FormDrawer from "../../elements/drawers/FormDrawer";
@@ -12,6 +12,7 @@ import {BsStar} from "react-icons/bs";
 import envs from "../../../envs";
 import {useFetch} from "../../../remote_api/remoteState";
 import { BsEmojiFrownFill } from "react-icons/bs";
+import {DataContext} from "../../AppBox";
 
 const CardBrowser = ({
                          label,
@@ -34,14 +35,20 @@ const CardBrowser = ({
     const Content = ({query, onClick, urlFunc, refresh, forceRefresh}) => {
 
         const [layoutVert, setLayoutVert] = useState(defaultLayout !== "cards");
+        const context = useContext(DataContext)
+        const dataContext = `${label}-${context ? "production" : "test"}`
+
+        console.log(forceRefresh, dataContext)
 
         const {isLoading, data, error} = useFetch(
-            [label, [query, refresh, urlFunc, forceRefresh]],
+            [dataContext, [query, refresh, urlFunc, forceRefresh]],
             {
                 url: urlFunc(query)
             },
             data => {
                 return data
+            }, {
+                fetchPolicy: "no-cache"
             }
         )
 

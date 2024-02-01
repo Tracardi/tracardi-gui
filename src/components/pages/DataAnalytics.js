@@ -136,38 +136,40 @@ export default function DataAnalytics({
     }
 
     return (
-        <div className="DataAnalytics">
-            <ObjectFiltering
-                type={type}
-                initDate={query}
-                initRefresh={refresh}
-                onFilterClick={handleFilter}
-                onRefreshChange={handleRefreshChange}
-            />
-            <div className="Data">
-                <DataBrowsingList
-                    label={label}
-                    onLoadRequest={onLoadRequest}
-                    onLoadHistogramRequest={onLoadHistogramRequest}
-                    onLoadDetails={onLoadDetails}
-                    timeFieldLabel={timeFieldLabel}
-                    filterFields={filterFields}
-                    timeField={timeField}
-                    initQuery={query}
-                    displayDetails={displayDetails}
-                    detailsDrawerWidth={detailsDrawerWidth}
-                    displayChart={displayChart}
-                    refreshInterval={refresh}
-                    rowDetails={rowDetails}
-                    ExtensionDropDown={ExtensionDropDown}
-                >
-                    <BarChartElement
-                        onLoadRequest={onLoadHistogramRequest(query)}
+        <FilterContext.Provider value={filterNumber}>
+            <div className="DataAnalytics">
+                <ObjectFiltering
+                    type={type}
+                    initDate={query}
+                    initRefresh={refresh}
+                    onFilterClick={handleFilter}
+                    onRefreshChange={handleRefreshChange}
+                />
+                <div className="Data">
+                    <DataBrowsingList
+                        label={label}
+                        onLoadRequest={onLoadRequest}
+                        onLoadHistogramRequest={onLoadHistogramRequest}
+                        onLoadDetails={onLoadDetails}
+                        timeFieldLabel={timeFieldLabel}
+                        filterFields={filterFields}
+                        timeField={timeField}
+                        initQuery={query}
+                        displayDetails={displayDetails}
+                        detailsDrawerWidth={detailsDrawerWidth}
+                        displayChart={displayChart}
                         refreshInterval={refresh}
-                        barChartColors={barChartColors}
-                    />
-                </DataBrowsingList>
+                        rowDetails={rowDetails}
+                        ExtensionDropDown={ExtensionDropDown}
+                    >
+                        <BarChartElement
+                            onLoadRequest={onLoadHistogramRequest(query)}
+                            refreshInterval={refresh}
+                            barChartColors={barChartColors}
+                        />
+                    </DataBrowsingList>
+                </div>
             </div>
-        </div>
+        </FilterContext.Provider>
     );
 }
