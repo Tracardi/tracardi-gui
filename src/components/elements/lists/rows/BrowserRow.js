@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import FlowNodeIcons from "../../../flow/FlowNodeIcons";
 import {BsGear} from "react-icons/bs";
 import IconButton from "../../misc/IconButton";
@@ -11,12 +11,85 @@ import {showAlert} from "../../../../redux/reducers/alertSlice";
 import {useConfirm} from "material-ui-confirm";
 import {useRequest} from "../../../../remote_api/requestClient";
 
-const BrowserRow = ({showAlert, id, data: _data, icon, onClick, deleteEndpoint, onSettingsClick, deplomentTable=null, tags, children, status, lock, forceMode}) => {
+const BrowserRowData = ({id, description, data, deployed, onClick, run, onSettingsClick, onDelete, tags, status, lock, forceMode, onUnDeploy, onDeploy}) => {
 
-    const [data, setData] = useState({..._data, icon})
+    return <div style={{display: "flex", flexDirection: "row", width: "100%", alignItems: "center", borderBottom: "solid 1px rgba(128,128,128,.3)", padding: "0 10px"}}>
+        <div
+            style={{
+                display: "flex",
+                width: "100%",
+                cursor: "pointer",
+                fontSize: 14,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "10px 0"
+            }}
+            onClick={(ev) => {
+                onClick(id)
+            }}
+        >
+
+            <div style={{display: "flex", alignItems: "center", width: "auto"}}>
+                {typeof  status !== 'undefined'  && <StatusPoint status={status}/>}
+                <span style={{opacity: "60%", display: "flex", width: 30, marginLeft: 10}}><FlowNodeIcons icon={data?.icon} size={22}/></span>
+                <div style={{display: "flex", flexDirection:"column", marginLeft: 10, gap: 5}}>
+                    <div className="flexLine" style={{fontSize: 18, marginRight: 5, fontWeight: 500}}>{data.name}</div>
+                    {description && <div className="flexLine">{description}</div>}
+                </div>
+            </div>
+            <div className="flexLine" style={{gap: 3}}>
+                {Array.isArray(tags) && <TuiTags tags={tags} size="small"/>}
+                {lock && <FlowNodeIcons icon="lock" size={22}/>}
+            </div>
+
+        </div>
+
+        {onSettingsClick instanceof Function && <IconButton label={"Settings"}
+                                                            style={{color:"black"}}
+                                                            onClick={() => onSettingsClick(id)}>
+            <BsGear size={20}/>
+        </IconButton>}
+
+        <DeployButton id={id}
+                      data={data}
+                      draft={!deployed}
+                      deployed={deployed}
+                      running={run}
+                      onDelete={onDelete}
+                      onUnDeploy={onUnDeploy}
+                      onDeploy={onDeploy}
+                      forceMode={forceMode}
+        />
+
+    </div>
+
+}
+
+const BrowserRow = ({
+                        showAlert,
+                        id,
+                        data: initData,
+                        icon,
+                        onClick,
+                        deleteEndpoint,
+                        onSettingsClick,
+                        deplomentTable = null,
+                        tags,
+                        children,
+                        status,
+                        lock,
+                        forceMode
+                    }) => {
+
+    const [data, setData] = useState({...initData, icon})
     const [display, setDisplay] = useState(true)
     const [run, setRun] = useState(data?.running)
     const [deployed, setDeployed] = useState(data?.production === true)
+
+    useEffect(() => {
+        setData({...initData, icon})
+    }, [initData]);
 
     const description = children ? children : data.description
     const confirm = useConfirm();
@@ -106,58 +179,23 @@ const BrowserRow = ({showAlert, id, data: _data, icon, onClick, deleteEndpoint, 
         })
     }
 
-    const render = () => <div style={{display: "flex", flexDirection: "row", width: "100%", alignItems: "center", borderBottom: "solid 1px rgba(128,128,128,.3)", padding: "0 10px"}}>
-        <div
-            style={{
-                display: "flex",
-                width: "100%",
-                cursor: "pointer",
-                fontSize: 14,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "10px 0"
-            }}
-            onClick={(ev) => {
-                onClick(id)
-            }}
-        >
-
-            <div style={{display: "flex", alignItems: "center", width: "auto"}}>
-                {typeof  status !== 'undefined'  && <StatusPoint status={status}/>}
-                <span style={{opacity: "60%", display: "flex", width: 30, marginLeft: 10}}><FlowNodeIcons icon={data?.icon} size={22}/></span>
-                <div style={{display: "flex", flexDirection:"column", marginLeft: 10, gap: 5}}>
-                    <div className="flexLine" style={{fontSize: 18, marginRight: 5, fontWeight: 500}}>{data.name}</div>
-                    {description && <div className="flexLine">{description}</div>}
-                </div>
-            </div>
-            <div className="flexLine" style={{gap: 3}}>
-                {Array.isArray(tags) && <TuiTags tags={tags} size="small"/>}
-                {lock && <FlowNodeIcons icon="lock" size={22}/>}
-            </div>
-
-        </div>
-
-        {onSettingsClick instanceof Function && <IconButton label={"Settings"}
-                                                            style={{color:"black"}}
-                                                            onClick={() => onSettingsClick(id)}>
-            <BsGear size={20}/>
-        </IconButton>}
-
-        <DeployButton id={id}
-                      data={data}
-                      draft={!deployed}
-                      deployed={deployed}
-                      running={run}
-                      onDelete={handleDelete}
-                      onUnDeploy={handleUnDeploy}
-                      onDeploy={handleDeploy}
-                      forceMode={forceMode}
+    if (display)
+        return <BrowserRowData
+            id={id}
+            description={description}
+            data={data}
+            deployed={deployed}
+            onClick={onClick}
+            run={run}
+            onSettingsClick={onSettingsClick}
+            onDelete={handleDelete}
+            tags={tags}
+            status={status}
+            lock={lock}
+            forceMode={forceMode}
+            onUnDeploy={handleUnDeploy}
+            onDeploy={handleDeploy}
         />
-
-    </div>
-
-    return display && render()
 
 }
 
