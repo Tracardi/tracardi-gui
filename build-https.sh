@@ -1,3 +1,3 @@
 git rev-parse HEAD > public/revision.txt
-docker build . --rm -f https.Dockerfile --no-cache -t tracardi/tracardi-gui-https:0.8.2-dev
+docker build . --rm -f https.Dockerfile --no-cache -t tracardi/tracardi-gui-https:0.8.2.1
 
