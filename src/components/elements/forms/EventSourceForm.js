@@ -291,7 +291,6 @@ const EventSourceForm = ({value, style, onClose}) => {
         id: (!value.id) ? uuid4() : value.id
     })
     const advanced = useRef({
-        enabled: value.enabled,
         synchronize_profiles: value.synchronize_profiles,
         returns_profile: value.returns_profile,
         requires_consent: value.requires_consent,
