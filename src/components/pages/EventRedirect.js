@@ -7,7 +7,7 @@ import EventRedirectDetails from "../elements/details/EventRedirectDetails";
 
 export default function EventRedirect() {
 
-    const urlFunc = useCallback((query) => ('/event-redirects' + ((query) ? "?query=" + query : "")), []);
+    const urlFunc = useCallback((query) => ('/event-redirect' + ((query) ? "?query=" + query : "")), []);
     const addFunc = useCallback((close) => <EventRedirectForm
         onSaveComplete={close}/>, []);
     const detailsFunc = useCallback((id, close) => <EventRedirectDetails
