@@ -7,9 +7,16 @@ import {StatusPoint} from "../../misc/StatusPoint";
 import DeployButton from "../../forms/buttons/DeploymentButton";
 
 
-const BrowserRow = ({id, data, icon, onClick, onSettingsClick, onDelete, tags, status, lock, forceMode, onUnDeploy, onDeploy, descriptionFunc}) => {
+const BrowserRow = ({id, data, icon, onClick, onSettingsClick, onDelete, tags, status,
+                        lock, forceMode, onUnDeploy, onDeploy, descriptionFunc, actionFunc}) => {
 
     const description = descriptionFunc instanceof Function ? descriptionFunc(data) : data.description
+
+    const handleClick = (id) => {
+        if(onClick instanceof Function) {
+            onClick(id)
+        }
+    }
 
     return <div style={{
         display: "flex",
@@ -23,7 +30,7 @@ const BrowserRow = ({id, data, icon, onClick, onSettingsClick, onDelete, tags, s
             style={{
                 display: "flex",
                 width: "100%",
-                cursor: "pointer",
+                cursor: onClick instanceof Function ? "pointer" : "cursor",
                 fontSize: 14,
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -31,7 +38,7 @@ const BrowserRow = ({id, data, icon, onClick, onSettingsClick, onDelete, tags, s
                 padding: "10px 0"
             }}
             onClick={() => {
-                onClick(id)
+                handleClick(id)
             }}
         >
 
@@ -56,16 +63,18 @@ const BrowserRow = ({id, data, icon, onClick, onSettingsClick, onDelete, tags, s
                                                             onClick={() => onSettingsClick(id)}>
             <BsGear size={20}/>
         </IconButton>}
+        {actionFunc instanceof Function
+            ? actionFunc(id, data, onDelete)
+            : <DeployButton id={id}
+                            data={data}
+                            draft={data?.production !== true}
+                            running={data?.running}
+                            onDelete={onDelete}
+                            onUnDeploy={onUnDeploy}
+                            onDeploy={onDeploy}
+                            forceMode={forceMode}
+            />}
 
-        <DeployButton id={id}
-                      data={data}
-                      draft={data?.production !== true}
-                      running={data?.running}
-                      onDelete={onDelete}
-                      onUnDeploy={onUnDeploy}
-                      onDeploy={onDeploy}
-                      forceMode={forceMode}
-        />
 
     </div>
 

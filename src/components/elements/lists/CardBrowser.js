@@ -15,8 +15,7 @@ const CardBrowser = ({
                          buttonLabel = null,
                          buttonIcon,
                          drawerDetailsWidth = 600,
-                         detailsFunc = () => {
-                         },
+                         detailsFunc,
                          drawerAddWidth = 600,
                          addFunc,
                          className,
@@ -25,6 +24,7 @@ const CardBrowser = ({
                          deploymentTable,
                          icon,
                          descriptionFunc,
+                         actionFunc,
                          forceMode
                      }) => {
 
@@ -76,6 +76,7 @@ const CardBrowser = ({
                                 listRefresh={refresh}
                                 descriptionFunc={descriptionFunc}
                                 forceMode={forceMode}
+                                actionFunc={actionFunc}
                             />
                         </section>
                     </TuiFormGroupField>

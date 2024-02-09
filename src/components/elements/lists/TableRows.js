@@ -26,6 +26,7 @@ const TableRows = ({
                        detailsFunc,
                        listRefresh,
                        descriptionFunc,
+                       actionFunc,
                        forceMode
                    }
 ) => {
@@ -149,7 +150,7 @@ const TableRows = ({
                                                data={row}
                                                status={row?.enabled}
                                                lock={row?.locked}
-                                               onClick={handleOpenDetails}
+                                               onClick={detailsFunc ? handleOpenDetails : null}
                                                onDelete={handleDelete}
                                                onUnDeploy={handleUnDeploy}
                                                onDeploy={handleDeploy}
@@ -158,6 +159,7 @@ const TableRows = ({
                                                tags={row.tags}
                                                descriptionFunc={descriptionFunc}
                                                forceMode={forceMode}
+                                               actionFunc={actionFunc}
 
                             />
                         })}
