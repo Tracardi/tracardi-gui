@@ -41,7 +41,6 @@ const EventToProfile = React.lazy(() => import("./pages/EventToProfile"))
 const EventRedirect = React.lazy(() => import('./pages/EventRedirect'))
 const Users = React.lazy(() => import("./pages/SystemUsers"))
 const Destinations = React.lazy(() => import("./pages/Destinations"))
-const UserLogs = React.lazy(() => import("./pages/UserLogs"))
 const Resources = React.lazy(() => import("./pages/Resources"))
 const Flows = React.lazy(() => import("./pages/Workflows"))
 const Segments = React.lazy(() => import("./pages/PostEventSegments"))
@@ -414,8 +413,6 @@ const AppBox = () => {
                             // new PrivateTab(["admin", "developer"],
                             //     <Scheduler/>, "/scheduler/tasks", <><BsStar size={20}
                             //                                                    style={{marginRight: 5}}/>{"Scheduler tasks"}</>),
-                            new PrivateTab(["admin", "maintainer"],
-                                <UserLogs/>, "/monitoring/user-log", "User logs")
                         ]}
                         />
                     </Suspense>

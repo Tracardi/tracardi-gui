@@ -21,9 +21,9 @@ const Row = ({log}) => {
 
     const Icon = ({type}) => {
         let icon;
-        if(type === 'warning') {
+        if(type.toLowerCase() === 'warning') {
             icon = <FiAlertTriangle size={25} style={{color: 'orange', marginRight: 5}}/>
-        } else if (type === 'error') {
+        } else if (type.toLowerCase() === 'error') {
             icon = <VscError size={25} style={{color: 'red', marginRight: 5}}/>
         } else {
             icon = <AiOutlineCheckCircle size={25} style={{color: 'green', marginRight: 5}}/>
@@ -34,34 +34,35 @@ const Row = ({log}) => {
 
     return <div className="FlowLogRow">
         <div onClick={handleHide} style={{padding: 10, width: 45,display: "flex", flexDirection: "column", gap: 10}}>
-            <Icon type={log.type}/>
+            <Icon type={log?.level || log?.type}/>
             <span><ToggleIcon toggle={showDetails} size={24} /></span>
         </div>
         <div style={{width: "calc(100% - 60px)"}}>
-            <PropertyField name="Date" content={<DateValue date={log.metadata.timestamp}/>}  labelWidth={150}></PropertyField>
+            {log?.date && <PropertyField name="Date" content={<DateValue date={log?.date}/>}  labelWidth={150}></PropertyField>}
             {showDetails && <>
-                <PropertyField name="Origin" content={log.origin} labelWidth={150}></PropertyField>
-                <PropertyField name="Module" content={log.module}  labelWidth={150}></PropertyField>
-                <PropertyField name="Class" content={log.class_name} labelWidth={150}></PropertyField>
-                {log?.flow_id && <PropertyField name="Flow" content={log.flow_id} labelWidth={150}>
-                    <FlowDisplay id={log.flow_id}/>
+                <PropertyField name="Level" content={log?.level || log?.type} labelWidth={150}></PropertyField>
+                <PropertyField name="Origin" content={log?.origin} labelWidth={150}></PropertyField>
+                <PropertyField name="Module" content={log?.module}  labelWidth={150}></PropertyField>
+                <PropertyField name="Class" content={log?.class_name} labelWidth={150}></PropertyField>
+                {log?.flow_id && <PropertyField name="Flow" content={log?.flow_id} labelWidth={150}>
+                    <FlowDisplay id={log?.flow_id}/>
                 </PropertyField>}
-                {log?.event_id && <PropertyField name="Event" content={log.event_id} drawerSize={1350}  labelWidth={150}>
-                    <EventDetailsById id={log.event_id}/>
+                {log?.event_id && <PropertyField name="Event" content={log?.event_id} drawerSize={1350}  labelWidth={150}>
+                    <EventDetailsById id={log?.event_id}/>
                 </PropertyField>}
-                {log?.profile_id && <PropertyField name="Profile" content={log.profile_id} drawerSize={1350}  labelWidth={150}>
-                    <ProfileDetailsById id={log.profile_id}/>
+                {log?.profile_id && <PropertyField name="Profile" content={log?.profile_id} drawerSize={1350}  labelWidth={150}>
+                    <ProfileDetailsById id={log?.profile_id}/>
                 </PropertyField>}
             </>
             }
             <div className='flexLine' style={{padding: 10}}>
-                 {log.message}
+                 {log?.message}
             </div>
             {showDetails && <>
                 <div className="FlowLogDetails">
                     <fieldset style={{width: "100%", margin: 5, padding: 10, paddingBottom: 20}}>
                         <legend>Traceback</legend>
-                        <JsonStringify data={{module:log.module, class: log.class_name, traceback: log.traceback}} toggle={true}/>
+                        <JsonStringify data={{module:log?.module, class: log?.class_name, traceback: log?.traceback || []}} toggle={true}/>
                     </fieldset>
 
                 </div>
