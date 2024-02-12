@@ -5,8 +5,18 @@ import React, {useState} from "react";
 import {ValueInput} from "./DotAccessor";
 
 export default function RefInput({
-                                     fullWidth, style, value: _value = null, disabled, errorMessage = null, label,
-                                     onChange, defaultType = false, locked = false, autocomplete = null, filter=null
+                                     fullWidth,
+                                     style,
+                                     value: _value = null,
+                                     disabled,
+                                     errorMessage = null,
+                                     label,
+                                     onChange,
+                                     defaultType = false,
+                                     locked = false,
+                                     autocomplete = null,
+                                     filter = null,
+                                     width = "100%"
                                  }) {
 
     if (autocomplete) {
@@ -52,7 +62,7 @@ export default function RefInput({
     }
 
     if(fullWidth) {
-        fieldsetStyle = {...fieldsetStyle, width: "100%"}
+        fieldsetStyle = {...fieldsetStyle, width: width}
     }
 
     return <>

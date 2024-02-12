@@ -36,9 +36,19 @@ import {TimeSpanField} from "../elements/forms/TimeSpanField";
 import ObjectFiltering from "../elements/forms/ObjectFiltering";
 import KqlAutoCompleteRange from "../elements/forms/KqlAutoCompleteRange";
 import DataTimePickerNew from "../elements/datepickers/DateTimePickerNew";
+import AggregationForm from "../elements/forms/AggregationForm";
+import AudienceFilteringForm from "../elements/forms/AudienceFilteringForm";
+import BooleanAudienceForm from "../elements/forms/BooleanAudienceForm";
 
 
-function AggregationOperation({value, label}) {
+function AggregationOperation({value, label, onChange}) {
+
+    const handleChange = (ev) => {
+        if(onChange instanceof Function) {
+            onChange(ev.target.value)
+        }
+    }
+
     return  <TextField
         select
         variant="outlined"
@@ -46,7 +56,7 @@ function AggregationOperation({value, label}) {
         label={label || "Aggregation"}
         value={value || "sum"}
         style={{width: 150}}
-        onChange={(ev) => console.log(ev.target.value)}
+        onChange={handleChange}
     >
         <MenuItem value={"sum"} selected>Sum of</MenuItem>
         <MenuItem value={"avg"}>Average of</MenuItem>
@@ -55,7 +65,14 @@ function AggregationOperation({value, label}) {
     </TextField>
 }
 
-function ComparisonOperation({value, label}) {
+function ComparisonOperation({value, label, onChange}) {
+
+    const handleChange = (ev) => {
+        if(onChange instanceof Function) {
+            onChange(ev.target.value)
+        }
+    }
+
     return  <TextField
         select
         variant="outlined"
@@ -63,7 +80,7 @@ function ComparisonOperation({value, label}) {
         label={label || "Operation"}
         value={value || "equal"}
         style={{width: 150}}
-        onChange={(ev) => console.log(ev.target.value)}
+        onChange={handleChange}
     >
         <MenuItem value={"equal"} selected>Is Equal</MenuItem>
         <MenuItem value={"bigger"}>Is Bigger Then</MenuItem>
@@ -117,10 +134,11 @@ export function FieldRule() {
 }
 
 function QueryBuilderRules({onChange, value}) {
-    return <QueryRuleGroup form={FieldRule}
-                        defaultFormValue={{field: {value:"", ref: true}, value: "", op: "equals"}}
-                        value={value}
-                        onChange={onChange}/>
+    return <QueryRuleGroup
+        form={FieldRule}
+        defaultFormValue={{field: {value: "", ref: true}, value: "", op: "equals"}}
+        value={value}
+        onChange={onChange}/>
 }
 
 
@@ -262,39 +280,60 @@ export default function TryOut() {
     }
 
 
-
+    const av = {
+        filter: {
+            event_type: {id: "checkout-started", name: "Checkout Started"},
+            sec: 60
+        },
+        aggregations: [
+            {
+                aggr: "avg",
+                field: {
+                    ref: true,
+                    value: "app.language"
+                },
+                comp: ">",
+                field_value: "test1"
+            }
+        ]
+    }
 
 
 
     //value={{value:"123", ref:true}} autocomplete="profile"
     return (
         <div>
+            <BooleanAudienceForm/>
+            {/*<div className="flexLine" style={{marginBottom: 20}}>*/}
+            {/*    Where event type <FieldBox><TuiSelectEventType/></FieldBox> that occurred within*/}
+            {/*    last <TimeTextInput onChange={setSec} value={sec} label="Time"/>*/}
+            {/*</div>*/}
+            {/*<ListOfForms*/}
+            {/*    onChange={console.log}*/}
+            {/*    form={AggregationForm}*/}
+            {/*    defaultFormValue={{*/}
+            {/*        aggr: "sum",*/}
+            {/*        field: {value:"", ref: true},*/}
+            {/*        comp: "=",*/}
+            {/*        field_value: ""*/}
+            {/*    }}*/}
+            {/*/>*/}
+
+            <div style={{height: 100}}></div>
+            <QueryBuilderRules onChange={v => console.log("rules", v)}/>
+            <div className="flexLine">Mertic must be evaulated every <FieldBox>
+                <IntervalOperation/>
+
+            </FieldBox></div>
             <DataTimePickerNew type="FromDate"
                                initValue={null}/>
             <ObjectFiltering/>
             <KqlAutoCompleteRange index="profile"/>
             <TimeSpanField onChange={console.log}/>
-            <QueryBuilderRules onChange={v => console.log("rules", v)}/>
-
-            <div className="flexLine">Filter event type <FieldBox><TuiSelectEventType /></FieldBox> that occurred within last <TimeTextInput onChange={setSec} value={sec} label="Time"/></div>
-            <div className="flexLine">
-                AND <FieldBox><AggregationOperation /></FieldBox> event's <FieldBox>  <RefInput
-                                                                                          fullWidth={false}
-                                                                                          autocomplete="event"
-                                                                                          locked={true}
-                                                                                          defaultType={true}
-                                                                                          label="Event data"
-                                                                                          onChange={console.log}
-                                                                                          style={{width: "100%"}}/></FieldBox>
-                <ComparisonOperation /> <TextField size="small" variant="outlined" label="Value"/></div>
-            <div className="flexLine">Mertic must be evaulated every <FieldBox>
-                <IntervalOperation />
-
-            </FieldBox></div>
-        <Journey width={300} height={600}/>
+            <Journey width={300} height={600}/>
             <EventTypeFlowsAC eventType={"page-view"}/>
             <EventToProfileCopy onChange={v => console.log("fields", v)}/>
-            <RefInput label="sss" onChange={(v)=>console.log(v)} errorMessage="ssss" fullWidth/>
+            <RefInput label="sss" onChange={(v) => console.log(v)} errorMessage="ssss" fullWidth/>
             <DotAccessor label="xxx"/>
             <Routing/>
             <KqlAutoComplete onChange={(v) => console.log(v)}/>
@@ -302,7 +341,7 @@ export default function TryOut() {
             <div style={{width: 600}}>
                 <TrackerPayloadForm
                     // value={value}
-                             onChange={(v) => console.log(v)}/>
+                    onChange={(v) => console.log(v)}/>
             </div>
             {
                 React.createElement(

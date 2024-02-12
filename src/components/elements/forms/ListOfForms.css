@@ -1,0 +1,14 @@
+.FormRow {
+    padding: 10px;
+    border: 1px solid transparent;
+}
+.FormRow:hover {
+
+    border: 1px solid rgba(128,128,128, .8);
+    border-radius: 10px;
+}
+
+.FormFieldRow {
+    padding: 2px;
+}
+
