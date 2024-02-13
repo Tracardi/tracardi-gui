@@ -9,6 +9,8 @@ import TuiTagger from "../tui/TuiTagger";
 import KqlAutoComplete from "./KqlAutoComplete";
 import {external} from "../misc/linking";
 import Button from "./Button";
+import {useRequest} from "../../../remote_api/requestClient";
+import {addAudience} from "../../../remote_api/endpoints/audience";
 
 const ListOfAggregations = memo(function ({value, onChange}) {
     return <ListOfForms form={AudienceFilteringForm}
@@ -28,6 +30,8 @@ const ListOfAggregations = memo(function ({value, onChange}) {
 })
 
 export default function AudienceForm({audienceId, onComplete}) {
+
+    const {request} = useRequest()
 
     const [metadata, setMetaData] = useState({
         name: "",
@@ -51,13 +55,17 @@ export default function AudienceForm({audienceId, onComplete}) {
         setJoin(v)
     }
 
-    const handleSubmit = () => {
-        console.log(
-            {
-                metadata: metadata,
+    const handleSubmit = async () => {
+        try {
+            const payload = {
+                ...metadata,
                 join: join
             }
-        )
+            console.log(await request(addAudience(payload)))
+        } catch (e) {
+            console.error(e)
+        }
+
     }
 
     return <TuiForm style={{margin: 20}}>

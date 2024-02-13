@@ -6,6 +6,7 @@ import React from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import KqlAutoComplete from "./KqlAutoComplete";
+import useTheme from "@mui/material/styles/useTheme";
 
 
 function EntitySelect({value, onChange}) {
@@ -48,6 +49,8 @@ export default function AudienceFilteringForm({value, onChange}) {
     }
      */
 
+    const theme = useTheme();
+
     const handleChange = (k, v) => {
         value[k] = v
         if (onChange instanceof Function) {
@@ -63,7 +66,7 @@ export default function AudienceFilteringForm({value, onChange}) {
     }
 
     return <fieldset
-        style={{borderWidth: "2px 0 0", border: "2px solid white", borderRadius: 6, marginLeft: 5, marginBottom: 30}}>
+        style={{borderWidth: "2px 0 0", border: `2px solid ${theme.palette.common.black}`, borderRadius: 6, marginLeft: 5, marginBottom: 30}}>
         <legend>
             <EntitySelect value={value?.entity?.type || "event"} onChange={v => handleEntityChange("type", v)}/>
         </legend>
