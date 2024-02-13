@@ -205,7 +205,7 @@ export const ProfileData = ({profile}) => {
                     <TabCase id={1}>
                         <div style={{margin: 20}}>
                             {!isEmptyObjectOrNull(profile?.data?.loyalty)
-                                ? <Properties properties={profile?.data?.identifier}/>
+                                ? <Properties properties={profile?.data?.loyalty}/>
                                 : <NoData header="No Loyality Data"/>}
                         </div>
                     </TabCase>
