@@ -53,6 +53,8 @@ const Settings = React.lazy(() => import("./pages/Settings"))
 const TestEditor = React.lazy(() => import("./pages/TestEditor"))
 // const Scheduler = React.lazy(() => import("./pages/Scheduler"))
 const ConsentsDataCompliance = React.lazy(() => import("./pages/EventDataCompliance"))
+const Audience = React.lazy(() => import("./pages/Audience"))
+
 
 export const DataContext = createContext(false);
 
@@ -344,6 +346,21 @@ const AppBox = () => {
                                             style={{marginRight: 5}}/>{"Segmentation workflows"}</>),
                             new PrivateTab(["admin", "developer", "marketer"],
                                 <Segments/>, "/processing/segments", "Post event segmentation"),
+                        ]}
+                        />
+                    </Suspense>
+                </ErrorBoundary>
+            </PrivateRoute>
+
+            <PrivateRoute path={urlPrefix("/audience")} roles={["admin", "developer", "marketer"]}>
+                <ErrorBoundary>
+                    <Suspense fallback={<CenteredCircularProgress/>}>
+                        <TopBar onDarkMode={handleThemeChange}>Audiences and Activations</TopBar>
+                        <PageTabs tabs={[
+                            new PrivateTab(["admin", "developer", "marketer"],
+                                <Audience/>, "/audience", <>
+                                    <BsStar size={20}
+                                            style={{marginRight: 5}}/>{"Audiences"}</>)
                         ]}
                         />
                     </Suspense>

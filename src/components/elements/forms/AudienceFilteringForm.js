@@ -1,102 +1,115 @@
 import {FieldBox} from "./FieldBox";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
-import TimeTextInput from "./inputs/TimeTextInput";
 import ListOfForms from "./ListOfForms";
 import AggregationForm from "./AggregationForm";
-import React, {useRef, useState} from "react";
+import React from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
+import KqlAutoComplete from "./KqlAutoComplete";
 
 
-function BooleanSelect({value, onChange}) {
+function EntitySelect({value, onChange}) {
 
     const handleChange = (ev) => {
-        if(onChange instanceof Function) {
+        if (onChange instanceof Function) {
             onChange(ev.target.value)
         }
     }
 
-    return  <TextField
+    return <TextField
         select
         variant="outlined"
         size="small"
         value={value || "event"}
-        style={{width: 130}}
+        style={{width: 100}}
         onChange={handleChange}
     >
-        <MenuItem value={"event"} selected>has EVENT</MenuItem>
-        <MenuItem value={"entity"}>has ENTITY</MenuItem>
+        <MenuItem value={"event"} selected>EVENT</MenuItem>
     </TextField>
 }
 
-function FilterEvents({value: _value, onChange}) {
-    const [value, setValue] = useState(_value || {
-        type: "and",
-        event_type: "",
-        sec: 0,
-    })
+export default function AudienceFilteringForm({value, onChange}) {
 
-    const handleChange = (field, newValue) => {
-        const _value = {...value, [field]: newValue}
-        setValue(_value)
+    /*
+    value = {
+        entity: {
+            type: "event"
+            event_type: "",
+            where: ""
+        },
+        group_by:[
+            {
+                aggr: "sum",
+                by_field: {value: "", ref: true},
+                save_as: ""
+             }
+        ],
+        group_where: ""
+    }
+     */
+
+    const handleChange = (k, v) => {
+        value[k] = v
         if (onChange instanceof Function) {
-            onChange(_value)
+            onChange(value)
         }
     }
 
-    return <fieldset style={{borderWidth: "2px 0 0", borderTop: "2px solid white", borderRadius: 0, marginLeft: 5, marginTop: 30}}>
+    const handleEntityChange = (k, v) => {
+        value.entity[k] = v
+        if (onChange instanceof Function) {
+            onChange(value)
+        }
+    }
+
+    return <fieldset
+        style={{borderWidth: "2px 0 0", border: "2px solid white", borderRadius: 6, marginLeft: 5, marginBottom: 30}}>
         <legend>
-           <BooleanSelect value={value?.type || "and"} onChange={v => handleChange("type", v)}/>
+            <EntitySelect value={value?.entity?.type || "event"} onChange={v => handleEntityChange("type", v)}/>
         </legend>
         <div className="flexLine">
 
-        <FieldBox>
-            <TuiSelectEventType
-                value={value.event_type}
-                onSetValue={(v) => handleChange("event_type", v)}
-            />
-        </FieldBox> within
-        last <TimeTextInput onChange={(v) => handleChange("sec", v)}
-                            value={value.sec} label="Time"/>
-    </div></fieldset>
-}
-
-export default function AudienceFilteringForm({value: _value, onChange}) {
-
-    const handelChange = (k, v) => {
-        _value[k] = v
-        if(onChange instanceof Function) {
-            onChange(_value)
-        }
-    }
-
-    return <>
-        <FilterEvents
-            value={_value?.filter}
-            onChange={(v) => handelChange("filter", v)}
+            <FieldBox>
+                <TuiSelectEventType
+                    value={value.entity?.event_type}
+                    onSetValue={(v) => handleEntityChange("event_type", v)}
+                />
+            </FieldBox> <KqlAutoComplete value={value.entity?.where}
+                                         index={value?.entity?.type}
+                                         label="Meets condition"
+                                         fullWidth={false}
+                                         width={645}
+                                         onChange={(v) => handleEntityChange("where", v)}
         />
+        </div>
+
         <fieldset>
-            <legend>WHERE</legend>
+            <legend>And WHERE</legend>
             <div style={{marginLeft: 10}}>
                 <ListOfForms
-                    value={_value?.aggregations}
-                    onChange={(v) => handelChange("aggregations", v)}
+                    value={value?.group_by}
+                    onChange={(v) => handleChange("group_by", v)}
                     form={AggregationForm}
                     defaultFormValue={{
                         aggr: "sum",
-                        field: {value: "", ref: true},
-                        field_value: ""
+                        by_field: {value: "", ref: true},
+                        save_as: ""
                     }}
                     width="auto"
                     justify="start"
+                    align="right"
                 />
             </div>
 
-
+            <div style={{marginTop: 20}}>
+                <TextField
+                    value={value?.group_where || ""}
+                    onChange={(ev) => handleChange("group_where", ev.target.value)}
+                    label="Meets condition"
+                           fullWidth/>
+            </div>
         </fieldset>
-        <div style={{marginTop:20}}>
-            <TextField label="MEETS CONDITION" fullWidth/>
-        </div>
 
-    </>
+    </fieldset>
+
 }

@@ -98,6 +98,10 @@ const getConfig = () => {
                 name: "Outbound traffic",
                 disable: false
             },
+            audience: {
+                name: "Audience",
+                disable: false
+            },
             resources: {
                 name: "Resources",
                 disable: false

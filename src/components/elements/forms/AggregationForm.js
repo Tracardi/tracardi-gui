@@ -57,12 +57,10 @@ function ComparisonOperation({value, label, onChange}) {
 
 export default function AggregationForm({value: _value, onChange}) {
 
-    console.log("rerender", _value)
-
     const [value, setValue] = useState(_value || {
         aggr: "sum",
-        field: {value:"", ref: true},
-        field_value: ""
+        by_field: {value:"", ref: true},
+        save_as: ""
     })
 
     const handleChange = (field, newValue) =>{
@@ -80,10 +78,10 @@ export default function AggregationForm({value: _value, onChange}) {
                 fullWidth={true}
                 autocomplete="event"
                 locked={true}
-                value={value.field}
+                value={value.by_field}
                 defaultType={true}
                 label="Event data"
-                onChange={(v) => handleChange("field", v)}
+                onChange={(v) => handleChange("by_field", v)}
                 width={"250px"}
             />
         </span>
@@ -91,8 +89,8 @@ export default function AggregationForm({value: _value, onChange}) {
             <TextField size="small"
                        variant="outlined"
                        label="Value"
-                       value={value.field_value || ""}
-                       onChange={(ev) => handleChange("field_value", ev.target.value)}
+                       value={value.save_as || ""}
+                       onChange={(ev) => handleChange("save_as", ev.target.value)}
                        style={{width: 300}}
             />
     </div>

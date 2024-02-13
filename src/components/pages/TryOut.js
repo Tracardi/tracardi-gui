@@ -36,9 +36,7 @@ import {TimeSpanField} from "../elements/forms/TimeSpanField";
 import ObjectFiltering from "../elements/forms/ObjectFiltering";
 import KqlAutoCompleteRange from "../elements/forms/KqlAutoCompleteRange";
 import DataTimePickerNew from "../elements/datepickers/DateTimePickerNew";
-import AggregationForm from "../elements/forms/AggregationForm";
-import AudienceFilteringForm from "../elements/forms/AudienceFilteringForm";
-import BooleanAudienceForm from "../elements/forms/BooleanAudienceForm";
+
 
 
 function AggregationOperation({value, label, onChange}) {
@@ -285,7 +283,7 @@ export default function TryOut() {
             event_type: {id: "checkout-started", name: "Checkout Started"},
             sec: 60
         },
-        aggregations: [
+        group_by: [
             {
                 aggr: "avg",
                 field: {
@@ -303,7 +301,6 @@ export default function TryOut() {
     //value={{value:"123", ref:true}} autocomplete="profile"
     return (
         <div>
-            <BooleanAudienceForm/>
             {/*<div className="flexLine" style={{marginBottom: 20}}>*/}
             {/*    Where event type <FieldBox><TuiSelectEventType/></FieldBox> that occurred within*/}
             {/*    last <TimeTextInput onChange={setSec} value={sec} label="Time"/>*/}

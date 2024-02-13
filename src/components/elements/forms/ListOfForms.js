@@ -16,29 +16,31 @@ const ListOfForms = ({
                          justify = "space-between",
                          width,
                          align = "left",
-                         separator = false
+                         separator = false,
+                         initEmpty=false
                      }
 ) => {
 
     let initCurrentRow
-    const buttonMargin = (align === 'left') ? {marginRight: 10} : {marginLeft: 10}
-    align = (align === 'left')
-        ? "row"
+    const buttonMargin = (align === 'left') ? {marginLeft: 10} : {marginRight: 10}
+    const alignButtons = (align === 'left')
+        ? "row-reverse"
         : (align === "right")
-            ? "row-reverse"
+            ? "row"
             : (align === "top")
                 ? "column"
                 : "column-reverse"
 
     const alignDelete = (align === 'left')
-        ? "row"
+        ? "row-reverse"
         : (align === "right")
-            ? "row-reverse"
+            ? "row"
             : (align === "top")
-                ? "row"
-                : "row-reverse"
-
-    if (!_value) {
+                ? "row-reveres"
+                : "row"
+    if(initEmpty) {
+        _value = {}
+    } else if (!_value) {
         initCurrentRow = uuid4()
         _value = {[initCurrentRow]: defaultFormValue}
     } else {
@@ -104,7 +106,7 @@ const ListOfForms = ({
         marginBottom: separator ? 10 : 0,
         ...style
     }
-    return <div style={{width: "100%", display: "flex", marginBottom: 10, flexDirection: align}} className="FormRow">
+    return <div style={{width: "100%", display: "flex", marginBottom: 10, flexDirection: alignButtons}} className="FormRow">
         {onChange instanceof Function && <div style={{display: "flex", ...buttonMargin}}>
             <Button label={label} onClick={handleRowAdd}/>
         </div>}

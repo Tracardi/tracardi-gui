@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import {useDebounce} from "use-debounce";
 import {useRequest} from "../../../remote_api/requestClient";
 
-export default function KqlAutoComplete({index, label, value, onChange, onKeyPressCapture}) {
+export default function KqlAutoComplete({index, label, value, onChange, onKeyPressCapture, fullWidth=true, width=645}) {
 
     const [query, setQuery] = useState({value: value || "", token: null})
     const [options, setOptions] = React.useState([]);
@@ -126,7 +126,7 @@ export default function KqlAutoComplete({index, label, value, onChange, onKeyPre
             id="autocomplete"
             autoComplete={false}
             freeSolo
-            fullWidth={true}
+            fullWidth={fullWidth}
             filterSelectedOptions={true}
             filterOptions={(options) => options}
             onInputChange={handleTyping}
@@ -136,6 +136,7 @@ export default function KqlAutoComplete({index, label, value, onChange, onKeyPre
             getOptionLabel={(option) => {
                 return option?.value || ""
             }}
+            style={{width: fullWidth ? "100%" : width}}
             renderOption={(props, option, state) => {
                 return <div {...props} style={{display: "flex"}}>
                     <span style={{display: "flex", width: 100, justifyContent: "left"}}>
