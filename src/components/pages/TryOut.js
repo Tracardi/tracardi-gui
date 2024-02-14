@@ -36,6 +36,9 @@ import {TimeSpanField} from "../elements/forms/TimeSpanField";
 import ObjectFiltering from "../elements/forms/ObjectFiltering";
 import KqlAutoCompleteRange from "../elements/forms/KqlAutoCompleteRange";
 import DataTimePickerNew from "../elements/datepickers/DateTimePickerNew";
+import PopOverButton from "../elements/forms/buttons/PopOverButton";
+import CommitFrom from "../elements/forms/CommitForm";
+import DrawerButton from "../elements/forms/buttons/DrawerButton";
 
 
 
@@ -301,6 +304,13 @@ export default function TryOut() {
     //value={{value:"123", ref:true}} autocomplete="profile"
     return (
         <div>
+            <div style={{display: "flex", alignItems: "end"}}><PopOverButton label="Try">
+                <CommitFrom onSubmit={console.log}/>
+            </PopOverButton>
+                <DrawerButton label="drawer">
+                    <CommitFrom onSubmit={console.log}/>
+                </DrawerButton>
+            </div>
             {/*<div className="flexLine" style={{marginBottom: 20}}>*/}
             {/*    Where event type <FieldBox><TuiSelectEventType/></FieldBox> that occurred within*/}
             {/*    last <TimeTextInput onChange={setSec} value={sec} label="Time"/>*/}
