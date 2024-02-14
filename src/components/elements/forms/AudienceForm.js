@@ -1,16 +1,18 @@
 import React, {memo, useState} from "react";
 import ListOfForms from "./ListOfForms";
 import AudienceFilteringForm from "./AudienceFilteringForm";
-import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
-import TextField from "@mui/material/TextField";
-import Switch from "@mui/material/Switch";
-import ShowHide from "../misc/ShowHide";
-import TuiTagger from "../tui/TuiTagger";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import KqlAutoComplete from "./KqlAutoComplete";
 import {external} from "../misc/linking";
 import Button from "./Button";
 import {useRequest} from "../../../remote_api/requestClient";
 import {addAudience} from "../../../remote_api/endpoints/audience";
+import MetaDataFrom from "./MetadataForm";
+import {v4 as uuid4} from 'uuid';
+import {useFetch} from "../../../remote_api/remoteState";
+import {getSubscription} from "../../../remote_api/endpoints/subscription";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import {submit} from "../../../remote_api/submit";
 
 const ListOfAggregations = memo(function ({value, onChange}) {
     return <ListOfForms form={AudienceFilteringForm}
@@ -31,97 +33,64 @@ const ListOfAggregations = memo(function ({value, onChange}) {
 
 export default function AudienceForm({audienceId, onComplete}) {
 
-    const {request} = useRequest()
-
-    const [metadata, setMetaData] = useState({
+    const [errors, setErrors] = useState({})
+    const [audience, setAudience] = useState({
         name: "",
         description: "",
         enabled: true,
-        tags: []
+        tags: [],
+        filter: "",
+        join: []
     })
 
-    const [join, setJoin] = useState([{
-        entity: null,
-        group_by: [],
-        group_where: ""
-    }])
+    const {request} = useRequest()
+    const {isLoading, data, error} = useFetch(
+        ["audience", [audienceId]],
+        getSubscription(audienceId),
+        data => {
+            setAudience(data)
+        },
+        {
+            enabled: !!audienceId,
+        }
+    )
 
-    const handleMetaChange = (k, v) => {
-        const _value = {...metadata, [k]: v}
-        setMetaData(_value)
-    }
-
-    const handleQueryChange = (v) => {
-        setJoin(v)
+    const handleChange = (v) => {
+        setAudience({...audience, ...v})
     }
 
     const handleSubmit = async () => {
         try {
             const payload = {
-                ...metadata,
-                join: join
+                id: uuid4(),
+                ...audience
             }
-            console.log(await request(addAudience(payload)))
+            const response = await submit(request, addAudience(payload))
+            if(response.status === 422) {
+                setErrors(response.errors)
+            } else {
+                setErrors({})
+                if(onComplete instanceof Function) onComplete()
+            }
+
         } catch (e) {
             console.error(e)
         }
-
     }
 
-    return <TuiForm style={{margin: 20}}>
-        <TuiFormGroup>
-            <TuiFormGroupContent>
-                <TuiFormGroupField header="Name">
-                    <TextField
-                        label="Name"
-                        // error={(typeof nameErrorMessage !== "undefined" && nameErrorMessage !== '' && nameErrorMessage !== null)}
-                        // helperText={nameErrorMessage}
-                        value={metadata?.name || ""}
-                        onChange={(ev) => {
-                            handleMetaChange("name", ev.target.value)
-                        }}
-                        size="small"
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-                <TuiFormGroupField header={<span>Description <sup>(Optional)</sup></span>}
-                                   description="Description will help you to understand when the event reshaping is applied.">
-                    <TextField
-                        label={"Description"}
-                        value={metadata?.description || ""}
-                        multiline
-                        rows={3}
-                        onChange={(ev) => {
-                            handleMetaChange("description", ev.target.value)
-                        }}
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-                <TuiFormGroupField header="Active" description="Enable/disable reshaping.">
-                    <div style={{display: "flex", alignItems: "center"}}>
-                        <Switch
-                            checked={metadata?.enabled}
-                            onChange={(ev) => handleMetaChange("enabled", ev.target.checked)}
-                        />
-                    </div>
-                </TuiFormGroupField>
+    if(isLoading) {
+        return <CenteredCircularProgress/>
+    }
 
-                <ShowHide label="Tags">
-                    <TuiFormGroupField header="Tags" description="Tags help with data organisation.">
-                        <TuiTagger tags={metadata?.tags} onChange={v=> handleMetaChange("tags", v)}/>
-                    </TuiFormGroupField>
-                </ShowHide>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
+    return <><MetaDataFrom name="audience" value={audience} onChange={handleChange} errors={errors}/>
+    <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
             <TuiFormGroupHeader
                 header="Audience selection"
                 description="Please define how to filter out the audience from your database."
             />
             <TuiFormGroupContent>
-                <KqlAutoComplete index="profile" label="Filter by profile attributes"/>
+                <KqlAutoComplete index="profile" label="Filter by profile attributes" value={audience?.filter || ""}/>
                 <div style={{fontSize: 12}}>Do not know how to filter. Click <span
                     style={{textDecoration: "underline", cursor: "pointer"}}
                     onClick={external("http://docs.tracardi.com/running/filtering/", true)}>here</span> for information.
@@ -131,11 +100,11 @@ export default function AudienceForm({audienceId, onComplete}) {
                 <fieldset>
                     <legend>Profiles must have</legend>
                     <ListOfAggregations
-                        value={join}
-                        onChange={handleQueryChange}/>
+                        value={audience?.join || []}
+                        onChange={(v) => handleChange({join: v})}/>
                 </fieldset>
             </TuiFormGroupContent>
         </TuiFormGroup>
         <Button label="Save" onClick={handleSubmit}/>
-    </TuiForm>
+    </TuiForm></>
 }

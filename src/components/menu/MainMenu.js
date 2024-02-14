@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import "./MainMenu.css";
-import {BsBarChartFill, BsFolder, BsHouse} from "react-icons/bs";
+import {BsBarChartFill, BsFolder, BsHouse, BsPersonLinesFill} from "react-icons/bs";
 import { useNavigate, useLocation } from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import version from '../../misc/version';
@@ -145,6 +145,8 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
                 {!window?.CONFIG?.menu?.routing?.disable && <MenuRow icon={<FaUncharted size={20}/>} label="Routing" collapsed={collapsed} onClick={go("/routing")} route="/routing" roles={["admin", "developer"]} style={{marginTop: 20}}/>}
                 {!window?.CONFIG?.menu?.metrics?.disable && <MenuRow icon={<VscDashboard size={20}/>} label="Metrics" collapsed={collapsed} onClick={go("/metrics")} route="/metrics" roles={["admin", "developer"]} />}
                 {!window?.CONFIG?.menu?.reporting?.disable && <MenuRow icon={<BsBarChartFill size={20}/>} label="Reporting" collapsed={collapsed} onClick={go("/reporting")} route="/reporting" roles={["admin", "developer", "marketer"]} />}
+                {!window?.CONFIG?.menu?.subscription?.disable && <MenuRow icon={<BsPersonLinesFill size={20}/>} label="Subscriptions" collapsed={collapsed} onClick={go("/subscription")} route="/subscription" roles={["admin", "developer", "marketer"]} />}
+
                 {!window?.CONFIG?.menu?.resources?.disable && <MenuRow icon={<IoServerOutline size={20}/>} label="Resources" collapsed={collapsed} onClick={go("/resources")} route="/resources" roles={["admin", "developer"]} />}
 
                 {!window?.CONFIG?.menu?.test?.disable && <MenuRow icon={<BsClipboardCheck size={20}/>} label="Test" collapsed={collapsed} onClick={go("/test/form")} route="/test/form" roles={["admin", "developer"]} style={{marginTop: 20}}/>}

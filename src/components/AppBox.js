@@ -54,7 +54,7 @@ const TestEditor = React.lazy(() => import("./pages/TestEditor"))
 // const Scheduler = React.lazy(() => import("./pages/Scheduler"))
 const ConsentsDataCompliance = React.lazy(() => import("./pages/EventDataCompliance"))
 const Audience = React.lazy(() => import("./pages/Audience"))
-
+const Subscription = React.lazy(() => import("./pages/Subscription"))
 
 export const DataContext = createContext(false);
 
@@ -361,6 +361,21 @@ const AppBox = () => {
                                 <Audience/>, "/audience", <>
                                     <BsStar size={20}
                                             style={{marginRight: 5}}/>{"Audiences"}</>)
+                        ]}
+                        />
+                    </Suspense>
+                </ErrorBoundary>
+            </PrivateRoute>
+
+            <PrivateRoute path={urlPrefix("/subscription")} roles={["admin", "developer", "marketer"]}>
+                <ErrorBoundary>
+                    <Suspense fallback={<CenteredCircularProgress/>}>
+                        <TopBar onDarkMode={handleThemeChange}>Subscriptions</TopBar>
+                        <PageTabs tabs={[
+                            new PrivateTab(["admin", "developer", "marketer"],
+                                <Subscription/>, "/subscription", <>
+                                    <BsStar size={20}
+                                            style={{marginRight: 5}}/>{"Subscriptions"}</>)
                         ]}
                         />
                     </Suspense>
