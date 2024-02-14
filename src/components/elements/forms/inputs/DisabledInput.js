@@ -5,12 +5,10 @@ import {VscLock, VscUnlock} from "react-icons/vsc";
 
 export default function DisabledInput({value, label, onChange}) {
 
-    const [inputValue, setInputValue] = useState(value);
     const [disabled, setDisabled] = useState(true);
 
     const handleChange = (value) => {
-        setInputValue((value));
-        if(onChange) {
+        if(onChange instanceof Function) {
             onChange(value)
         }
     }
@@ -18,7 +16,7 @@ export default function DisabledInput({value, label, onChange}) {
     return <div style={{display:"flex"}}>
             <TextField
                 label={label}
-                value={inputValue}
+                value={value}
                 onChange={(ev) => {
                     handleChange(ev.target.value)
                 }}
@@ -27,8 +25,8 @@ export default function DisabledInput({value, label, onChange}) {
                 variant="outlined"
                 fullWidth
             />
-            <Button label={disabled ? "Unlock": "Lock"} onClick={()=>setDisabled(!disabled)} style={{width: 120}}
+        {onChange instanceof Function && <Button label={disabled ? "Unlock": "Lock"} onClick={()=>setDisabled(!disabled)} style={{width: 120}}
             icon={disabled ? <VscUnlock size={20}/> : <VscLock size={20}/>}
-            />
+            />}
         </div>
 }

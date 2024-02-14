@@ -1,18 +1,21 @@
 import React, {useState} from "react";
-import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
+import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGroupHeader} from "../tui/TuiForm";
 import Button from "./Button";
 import {useRequest} from "../../../remote_api/requestClient";
 import MetaDataFrom from "./MetadataForm";
 import {v4 as uuid4} from 'uuid';
-import TextField from "@mui/material/TextField";
 import {addSubscription, getSubscription} from "../../../remote_api/endpoints/subscription";
 import {useFetch} from "../../../remote_api/remoteState";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {submit} from "../../../remote_api/submit";
+import DisabledInput from "./inputs/DisabledInput";
 
 export default function SubscriptionForm({subscriptionId, onComplete}) {
 
-    const [subscription, setSubscription] = useState({})
+    const [subscription, setSubscription] = useState({
+        token: uuid4(),
+        topic: uuid4()
+    })
     const [errors, setErrors] = useState({})
 
     const {request} = useRequest()
@@ -36,7 +39,7 @@ export default function SubscriptionForm({subscriptionId, onComplete}) {
             id: uuid4(),
             ...subscription,
         }
-        console.log(payload)
+
         const response = await submit(request, addSubscription(payload))
         if(response?.status === 422) {
             setErrors(response.errors)
@@ -55,21 +58,22 @@ export default function SubscriptionForm({subscriptionId, onComplete}) {
         <TuiFormGroup>
             <TuiFormGroupHeader
                 header="Subscription topic"
-                description="Please define the topic of the subscription, e.g. new-products."
             />
             <TuiFormGroupContent>
-                <TextField
-                    label="Topic"
-                    value={subscription?.topic || ""}
-                    onChange={(ev) => {
-                        handleChange({"topic": ev.target.value})
-                    }}
-                    error={"body.topic" in errors}
-                    helperText={errors["body.topic"] || ""}
-                    size="small"
-                    variant="outlined"
-                    fullWidth
-                />
+                <TuiFormGroupField header="Topic ID"
+                                   description="Topic id is auto-generated. In most cases you do not have to change it,
+                                   just leave it like it is. In rare cases when you would like to create a topic
+                                   with user defined value, then unlock the field and change the id. Topic is used
+                                   to send messages to subscribers.">
+                    <DisabledInput label={"Topic id"}
+                                   value={subscription?.topic || uuid4()}
+                                   onChange={(v) => handleChange({topic: v})}/>
+                </TuiFormGroupField>
+                <TuiFormGroupField header="Token"
+                                   description="Topic id is auto-generated. It is required to authenticate triggering the subscription list.">
+                    <DisabledInput label={"Token"}
+                                   value={subscription?.token || uuid4()} />
+                </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
         <Button label="Save" onClick={handleSubmit}/>
