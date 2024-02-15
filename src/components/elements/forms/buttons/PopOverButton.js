@@ -3,7 +3,7 @@ import Popover from "@mui/material/Popover";
 import Button from "../Button";
 import Paper from "@mui/material/Paper";
 
-export default function PopOverButton({children, label, icon, variant = "outlined"}) {
+export default function PopOverButton({children, label, icon, style, variant = "outlined", size='standard'}) {
 
     const [selected, setSelected] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -25,16 +25,11 @@ export default function PopOverButton({children, label, icon, variant = "outline
     return <div>
         <Button
             icon={icon}
-            style={
-                {
-                    margin: 0,
-                    marginLeft: 5
-                }
-            }
+            style={style}
             label={label}
             onClick={handleDisplay}
             variant={variant}
-            size="small"
+            size={size}
             selected={selected}
         />
         <Popover
@@ -51,10 +46,7 @@ export default function PopOverButton({children, label, icon, variant = "outline
                 horizontal: 'right',
             }}
         >
-            <Paper>
-                {children}
-            </Paper>
-
+          {children}
         </Popover>
     </div>
 

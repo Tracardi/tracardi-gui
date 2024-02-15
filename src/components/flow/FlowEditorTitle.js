@@ -23,6 +23,8 @@ import EntityAnalytics from "../pages/EntityAnalytics";
 import {useRequest} from "../../remote_api/requestClient";
 import ProductionButton from "../elements/forms/ProductionButton";
 import TestTrackForm from "../elements/forms/TestTrackForm";
+import PopOverButton from "../elements/forms/buttons/PopOverButton";
+import CommitFrom from "../elements/forms/CommitForm";
 
 export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onSaveDraft}) {
 
@@ -90,6 +92,9 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
         </div>
         <div>
             <ReinstallButton/>
+            <PopOverButton label="Commit">
+                <CommitFrom />
+            </PopOverButton>
             <ProductionButton
                 label="Rearrange"
                 icon={<TiTickOutline size={20}/>}
@@ -125,7 +130,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
                 setTestConsoleOpened(false)
             }}
             open={testConsoleOpened}>
-            {testConsoleOpened && <div style={{margin: 20}}><TestTrackForm eventType="page-view" sxOnly={true}/></div>}
+            {testConsoleOpened && <div style={{margin: 20}}><TestTrackForm sxOnly={true} onSave={()=>setTestConsoleOpened(false)}/></div>}
         </FormDrawer>
 
         <FormDrawer

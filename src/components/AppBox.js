@@ -13,6 +13,7 @@ import {getDataContext, setDataContext} from "../config";
 import {stagingTheme, productionTheme, darkTheme} from "../themes";
 import {ThemeProvider} from "@mui/material/styles";
 import EventTypesToRules from "./pages/EventRouting";
+import ConfigurationPage from "./pages/ConfigurationPage";
 
 const ProRouter = React.lazy(() => import('./pages/pro/ProRouter'))
 const Dashboard = React.lazy(() => import('./pages/Dashboard'))
@@ -473,6 +474,7 @@ const AppBox = () => {
                                 <ElasticClusterHealthInfo/>, "/maintenance/elastic-cluster", "Cluster"),
                             window._env_ && window._env_?.MULTI_TENANT === "no" && new PrivateTab(["maintainer"],
                                 <ElasticIndicesInfo/>, "/maintenance/elastic-indices", "Indices"),
+                            new PrivateTab(["admin", "developer", "maintainer"], <ConfigurationPage/>, "/configuration", "Configuration"),
                             new PrivateTab(["maintainer"], <Migrations/>, "/maintenance/migration", "Migration"),
                             new PrivateTab(["admin"], <Users/>, "/maintenance/users", "Users"),
                             new PrivateTab(["admin", "developer"],

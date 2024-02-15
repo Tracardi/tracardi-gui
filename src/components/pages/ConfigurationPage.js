@@ -5,9 +5,9 @@ import {BsClipboardCheck} from "react-icons/bs";
 import TestTrackForm from "../elements/forms/TestTrackForm";
 
 
-export default function TestEditorPage() {
+export default function ConfigurationPage() {
 
-    const urlFunc = useCallback((query) => ('/test' + ((query) ? "?query=" + query : "")), []);
+    const urlFunc = useCallback((query) => ('/configuration' + ((query) ? "?query=" + query : "")), []);
     const addFunc = useCallback((close) => <div style={{padding: "0 20px"}}><TestTrackForm onSave={close}/>
     </div>, []);
     const detailsFunc = useCallback((id, close) => <div style={{padding: "0 20px"}}><TestTrackForm testId={id}
@@ -16,19 +16,18 @@ export default function TestEditorPage() {
         [])
 
     return <CardBrowser
-        label="Tests"
-        description="List of registered tests."
+        label="Configuration"
         urlFunc={urlFunc}
-        buttonLabel="New test"
+        buttonLabel="New configuration"
         buttonIcon={<BsClipboardCheck size={20}/>}
         drawerDetailsWidth={1200}
         detailsFunc={detailsFunc}
-        drawerAddTitle="New test"
+        drawerAddTitle="New configuration"
         drawerAddWidth={1200}
         addFunc={addFunc}
         defaultLayout="rows"
         icon="profile"
-        deleteEndpoint='/test/'
+        deleteEndpoint='/configuration/'
         forceMode='no-deployment'
     />
 }

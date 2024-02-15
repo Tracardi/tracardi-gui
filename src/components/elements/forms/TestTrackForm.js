@@ -15,8 +15,12 @@ import JsonEditor from "../editors/JsonEditor";
 import InputAdornment from "@mui/material/InputAdornment";
 import Tag from "../misc/Tag";
 import Grid from "@mui/material/Grid";
+import {useFetch} from "../../../remote_api/remoteState";
+import {addTest, getTest} from "../../../remote_api/endpoints/test";
+import {submit} from "../../../remote_api/submit";
+import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 
-export default function TestTrackForm({eventType, onSubmit, sxOnly = false}) {
+export default function TestTrackForm({testId, onSave, sxOnly = false}) {
 
     const defaultRequest = {
         "source": {
@@ -31,7 +35,7 @@ export default function TestTrackForm({eventType, onSubmit, sxOnly = false}) {
         "events": [
             {
                 "options": {"async": true},
-                "type": eventType || "",
+                "type": "",
                 "properties": {}
             }
         ],
@@ -102,10 +106,10 @@ export default function TestTrackForm({eventType, onSubmit, sxOnly = false}) {
 
     const [data, setData] = useState({
         name: "",
-        session: "",
-        profile: "",
-        source: {id: "", name: ""},
-        event_type: {id: eventType||"", name: eventType||""},
+        session_id: "",
+        profile_id: "",
+        event_source: {id: "", name: ""},
+        event_type: {id: "", name: ""},
         properties: "{}",
         async: true,
         context: "{}",
@@ -124,13 +128,13 @@ export default function TestTrackForm({eventType, onSubmit, sxOnly = false}) {
     const getRequest = (init) => {
         return {
             "source": {
-                "id": init?.source?.id || ""
+                "id": init?.event_source?.id || ""
             },
             "profile": {
-                "id": init?.profile || ""
+                "id": init?.profile_id || ""
             },
             "session": {
-                "id": init?.session || ""
+                "id": init?.session_id || ""
             },
             "events": [
                 {
@@ -145,6 +149,24 @@ export default function TestTrackForm({eventType, onSubmit, sxOnly = false}) {
     const {request} = useRequest()
     const theme = useTheme()
 
+    const [errors, setErrors] = useState({})
+
+    const {isLoading} = useFetch(
+        ["test_id", [testId]],
+        getTest(testId),
+        data => {
+            data.context = JSON.stringify(data?.context, null, " ")
+            data.properties = JSON.stringify(data?.properties, null, " ")
+            data.async = data.asynchronous
+            data.request = JSON.stringify(getRequest(data), null, " ")
+
+            setData(data)
+        },
+        {
+            enabled: !!testId,
+        }
+    )
+
     const handleChange = (v) => {
         const init ={...data, ...v}
         const request = getRequest(init)
@@ -154,7 +176,7 @@ export default function TestTrackForm({eventType, onSubmit, sxOnly = false}) {
     const handleGetProperties = async (eventType) => {
         try {
             const data = await request(getEventTypePredefinedProps(eventType), true)
-            console.log(data)
+
             if (data && 'properties' in data) {
                 handleChange({properties: JSON.stringify(data['properties'], null, " ")})
             }
@@ -183,11 +205,37 @@ export default function TestTrackForm({eventType, onSubmit, sxOnly = false}) {
         }
     }
 
-    const handleSave = () => {
-        console.log(data)
-        if(onSubmit instanceof Function) {
-            onSubmit()
+    const handleSave = async () => {
+        try {
+
+            const payload = {
+                id: data.id,
+                name: data.name,
+                session_id: data.session_id,
+                profile_id: data?.profile_id || null,
+                event_source: data?.event_source,
+                event_type: data.event_type,
+                properties: parse(data.properties),
+                asynchronous: data.async,
+                context: parse(data.context)
+            }
+
+            const response = await submit(request, addTest(payload))
+            if (response?.status === 422) {
+                setErrors(response.errors)
+            } else {
+                setErrors({})
+                if (onSave instanceof Function) onSave()
+            }
+        } catch (e) {
+        } finally {
         }
+
+
+    }
+
+    if(isLoading) {
+        return <CenteredCircularProgress/>
     }
 
     return <Grid container spacing={2}>
@@ -198,6 +246,8 @@ export default function TestTrackForm({eventType, onSubmit, sxOnly = false}) {
                         <div style={{display: "flex"}}>
                             <TextField label="Name"
                                        value={data?.name}
+                                       error={"body.name" in errors}
+                                       helperText={errors["body.name"] || ""}
                                        variant="outlined"
                                        size="small"
                                        fullWidth
@@ -214,8 +264,8 @@ export default function TestTrackForm({eventType, onSubmit, sxOnly = false}) {
                             <TuiColumnsFlex width={250}>
                                 <TuiTopHeaderWrapper>
                                     <TuiSelectEventSource
-                                        value={data?.source}
-                                        onSetValue={v=>handleChange({source: v})}
+                                        value={data?.event_source}
+                                        onSetValue={v=>handleChange({event_source: v})}
                                         type="rest"
                                         width={250}
                                     />
@@ -235,29 +285,29 @@ export default function TestTrackForm({eventType, onSubmit, sxOnly = false}) {
                         <TuiFormGroupField>
                             <TuiColumnsFlex width={250}>
                                 <TuiTopHeaderWrapper>
-                                    <TextField label="Session"
-                                               value={data?.session}
+                                    <TextField label="Session ID"
+                                               value={data?.session_id}
                                                variant="outlined"
                                                size="small"
                                                fullWidth
                                                helperText="If you know profile id leave session empty. Random session will be generated."
-                                               onChange={(e) => handleChange({session: e.target.value})}/>
+                                               onChange={(e) => handleChange({session_id: e.target.value})}/>
                                 </TuiTopHeaderWrapper>
                                 <TuiTopHeaderWrapper>
-                                    <TextField label="Profile"
-                                               value={data?.profile}
+                                    <TextField label="Profile ID"
+                                               value={data?.profile_id}
                                                variant="outlined"
                                                size="small"
                                                fullWidth
                                                helperText="Profile must match session, if you do now know profile id leave it empty"
-                                               onChange={(e) => handleChange({profile: e.target.value})}
+                                               onChange={(e) => handleChange({profile_id: e.target.value})}
                                     />
                                 </TuiTopHeaderWrapper>
                             </TuiColumnsFlex>
                         </TuiFormGroupField>
 
                         <TuiFormGroupField>
-                            <BoolInput label="Async event storing" value={data?.sync}
+                            <BoolInput label="Async event storing" value={data?.async}
                                        onChange={v => handleChange({async: v})}/>
                         </TuiFormGroupField>
 
