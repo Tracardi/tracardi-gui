@@ -14,7 +14,7 @@ export default function SystemUsers() {
 
     return <CardBrowser
         label="Users"
-        description="ist of users registered in the system."
+        description="List of users registered in the system."
         urlFunc={urlFunc}
         buttonLabel="New user"
         buttonIcon={<BsPerson size={20}/>}

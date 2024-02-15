@@ -16,7 +16,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Tag from "../misc/Tag";
 import Grid from "@mui/material/Grid";
 
-export default function TestTrackForm({eventType, sxOnly = false}) {
+export default function TestTrackForm({eventType, onSubmit, sxOnly = false}) {
 
     const defaultRequest = {
         "source": {
@@ -185,6 +185,9 @@ export default function TestTrackForm({eventType, sxOnly = false}) {
 
     const handleSave = () => {
         console.log(data)
+        if(onSubmit instanceof Function) {
+            onSubmit()
+        }
     }
 
     return <Grid container spacing={2}>
@@ -199,7 +202,7 @@ export default function TestTrackForm({eventType, sxOnly = false}) {
                                        size="small"
                                        fullWidth
                                        onChange={(e) => handleChange({name: e.target.value})}
-                            /><Button label="Save"/>
+                            /><Button style={{width: 180}} label="Save & Close" onClick={handleSave}/>
                         </div>
                     </TuiFormGroupContent>
                 </TuiFormGroup>
@@ -331,7 +334,7 @@ export default function TestTrackForm({eventType, sxOnly = false}) {
                             <TabCase id={1}>
                                 <fieldset style={{marginTop: 20}}>
                                     <legend>Response</legend>
-                                    <JsonEditor value={data?.response} onChange={v => handleChange({response: v})}
+                                    <JsonEditor value={data?.response}
                                                 height="700px"/>
                                 </fieldset>
                             </TabCase>
