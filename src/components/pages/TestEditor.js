@@ -3,5 +3,5 @@ import TestTrackForm from "../elements/forms/TestTrackForm";
 
 
 export default function TestEditorPage() {
-    return <TestTrackForm />
+    return <div style={{padding:"0 20px"}}><TestTrackForm /></div>
 }

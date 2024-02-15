@@ -1,6 +1,0 @@
-.RequestResponse {
-    display: grid;
-    grid-template-rows: 370px calc(100% - 390px);
-    grid-row-gap: 10px;
-    height: 100%;
-}
