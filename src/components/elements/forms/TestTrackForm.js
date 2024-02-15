@@ -19,6 +19,7 @@ import {useFetch} from "../../../remote_api/remoteState";
 import {addTest, getTest} from "../../../remote_api/endpoints/test";
 import {submit} from "../../../remote_api/submit";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
+import {parse} from "../../../misc/json";
 
 export default function TestTrackForm({testId, onSave, sxOnly = false}) {
 
@@ -116,14 +117,6 @@ export default function TestTrackForm({testId, onSave, sxOnly = false}) {
         request: JSON.stringify(defaultRequest, null, " "),
         response: ""
     })
-
-    const parse = (data) => {
-        try {
-            return JSON.parse(data)
-        } catch (e) {
-            return null
-        }
-    }
 
     const getRequest = (init) => {
         return {

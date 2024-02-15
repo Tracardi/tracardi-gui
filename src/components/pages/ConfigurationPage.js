@@ -2,15 +2,15 @@ import React, {useCallback} from "react";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {BsClipboardCheck} from "react-icons/bs";
-import TestTrackForm from "../elements/forms/TestTrackForm";
+import ConfigurationForm from "../elements/forms/ConfigurationForm";
 
 
 export default function ConfigurationPage() {
 
     const urlFunc = useCallback((query) => ('/configuration' + ((query) ? "?query=" + query : "")), []);
-    const addFunc = useCallback((close) => <div style={{padding: "0 20px"}}><TestTrackForm onSave={close}/>
+    const addFunc = useCallback((close) => <div style={{padding: "0 20px"}}><ConfigurationForm onSave={close}/>
     </div>, []);
-    const detailsFunc = useCallback((id, close) => <div style={{padding: "0 20px"}}><TestTrackForm testId={id}
+    const detailsFunc = useCallback((id, close) => <div style={{padding: "0 20px"}}><ConfigurationForm configId={id}
                                                                                                    onSave={close}/>
         </div>,
         [])
