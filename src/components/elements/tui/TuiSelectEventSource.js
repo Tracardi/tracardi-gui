@@ -9,7 +9,8 @@ export function TuiSelectEventSource({
                                          onSetValue = null,
                                          fullWidth = false,
                                          onlyValueWithOptions = true,
-                                         type = null
+                                         type = null,
+                                        width=300
                                      }) {
 
     const handleValueSet = (value) => {
@@ -38,6 +39,7 @@ export function TuiSelectEventSource({
                       initValue={value}
                       error={errorMessage}
                       fullWidth={fullWidth}
+                      width={width}
                       {...changeProp}
         />
     </div>

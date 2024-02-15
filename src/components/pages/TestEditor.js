@@ -1,7 +1,7 @@
 import React from "react";
-import TestEditor from "../test/TestEditor";
+import TestTrackForm from "../elements/forms/TestTrackForm";
 
 
 export default function TestEditorPage() {
-    return <TestEditor style={{display: "flex"}} />
+    return <TestTrackForm />
 }

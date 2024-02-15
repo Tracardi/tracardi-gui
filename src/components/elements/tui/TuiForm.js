@@ -88,12 +88,12 @@ export const TuiFormGroupContent = ({children, className, style, name, descripti
     </section>
 }
 
-export const TuiFormGroupField = ({children, header=null, description=null}) => {
-    return <>
+export const TuiFormGroupField = ({children, header=null, description=null, style}) => {
+    return <div style={style}>
         {header && <h3>{header}</h3>}
         {description && <p className="flexLine" style={{flexWrap: "wrap"}}>{description}</p>}
         {children}
-    </>
+    </div>
 }
 
 

@@ -18,11 +18,11 @@ import {
 import RuleForm from "../elements/forms/RuleForm";
 import Drawer from "@mui/material/Drawer";
 import {prepareFlowPayload, save} from "./FlowEditorOps";
-import TestEditor from "../test/TestEditor";
 import {ReinstallButton} from "../pages/ActionPlugins";
 import EntityAnalytics from "../pages/EntityAnalytics";
 import {useRequest} from "../../remote_api/requestClient";
 import ProductionButton from "../elements/forms/ProductionButton";
+import TestTrackForm from "../elements/forms/TestTrackForm";
 
 export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onSaveDraft}) {
 
@@ -120,12 +120,12 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
         </div>
 
         <FormDrawer
-            width={750}
+            width={610}
             onClose={() => {
                 setTestConsoleOpened(false)
             }}
             open={testConsoleOpened}>
-            {testConsoleOpened && <div style={{margin: 20}}><TestEditor eventType="page-view" sxOnly={true}/></div>}
+            {testConsoleOpened && <div style={{margin: 20}}><TestTrackForm eventType="page-view" sxOnly={true}/></div>}
         </FormDrawer>
 
         <FormDrawer

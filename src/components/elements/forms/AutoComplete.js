@@ -11,7 +11,7 @@ import {useRequest} from "../../../remote_api/requestClient";
 const AutoComplete = ({
                           placeholder, error: _error = null, endpoint, token=null, defaultValueSet, initValue, value = null, onSetValue,
                           onChange, onlyValueWithOptions = false, disabled, fullWidth = false,
-                          renderOption, noOptionsText = "No options"
+                          renderOption, noOptionsText = "No options", width=300
                       }) => {
 
     const getValue = (initValue) => {
@@ -127,7 +127,7 @@ const AutoComplete = ({
             freeSolo={!onlyValueWithOptions}
             multiple={false}
             fullWidth={fullWidth}
-            style={fullWidth ? {width: "100%"} : {width: 300}}
+            style={fullWidth ? {width: "100%"} : {width: width}}
             open={open}
             onOpen={handleLoading}
             onClose={() => {

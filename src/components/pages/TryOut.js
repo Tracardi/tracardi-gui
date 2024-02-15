@@ -26,7 +26,6 @@ import NoData from "../elements/misc/NoData";
 import EventToProfileCopy from "../elements/forms/EventToProfileCopy";
 import {EventTypeFlowsAC} from "../elements/forms/inputs/EventTypeFlowsAC";
 import Funnel from "../elements/charts/Funnel";
-import TimeTextInput from "../elements/forms/inputs/TimeTextInput";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
@@ -39,18 +38,36 @@ import DataTimePickerNew from "../elements/datepickers/DateTimePickerNew";
 import PopOverButton from "../elements/forms/buttons/PopOverButton";
 import CommitFrom from "../elements/forms/CommitForm";
 import DrawerButton from "../elements/forms/buttons/DrawerButton";
-
+import {
+    TuiForm,
+    TuiFormGroup,
+    TuiFormGroupContent,
+    TuiFormGroupField,
+    TuiFormGroupHeader
+} from "../elements/tui/TuiForm";
+import TuiColumnsFlex from "../elements/tui/TuiColumnsFlex";
+import TuiTopHeaderWrapper from "../elements/tui/TuiTopHeaderWrapper";
+import BoolInput from "../elements/forms/BoolInput";
+import JsonEditor from "../elements/editors/JsonEditor";
+import {TuiSelectEventSource} from "../elements/tui/TuiSelectEventSource";
+import {getEventTypePredefinedProps} from "../../remote_api/endpoints/event";
+import {useRequest} from "../../remote_api/requestClient";
+import Tabs, {TabCase} from "../elements/tabs/Tabs";
+import useTheme from "@mui/material/styles/useTheme";
+import InputAdornment from "@mui/material/InputAdornment";
+import Tag from "../elements/misc/Tag";
+import TestTrackForm from "../elements/forms/TestTrackForm";
 
 
 function AggregationOperation({value, label, onChange}) {
 
     const handleChange = (ev) => {
-        if(onChange instanceof Function) {
+        if (onChange instanceof Function) {
             onChange(ev.target.value)
         }
     }
 
-    return  <TextField
+    return <TextField
         select
         variant="outlined"
         size="small"
@@ -69,12 +86,12 @@ function AggregationOperation({value, label, onChange}) {
 function ComparisonOperation({value, label, onChange}) {
 
     const handleChange = (ev) => {
-        if(onChange instanceof Function) {
+        if (onChange instanceof Function) {
             onChange(ev.target.value)
         }
     }
 
-    return  <TextField
+    return <TextField
         select
         variant="outlined"
         size="small"
@@ -93,7 +110,7 @@ function ComparisonOperation({value, label, onChange}) {
 }
 
 function IntervalOperation({value, label}) {
-    return  <TextField
+    return <TextField
         select
         variant="outlined"
         size="small"
@@ -104,13 +121,13 @@ function IntervalOperation({value, label}) {
     >
         <MenuItem value={30} selected>30 minutes</MenuItem>
         <MenuItem value={60}>1 hour</MenuItem>
-        <MenuItem value={60*6}>6 hours</MenuItem>
-        <MenuItem value={60*12}>12 hours</MenuItem>
-        <MenuItem value={60*24}>1 day</MenuItem>
-        <MenuItem value={60*24*3}>3 days</MenuItem>
-        <MenuItem value={60*24*7}>7 days</MenuItem>
-        <MenuItem value={60*24*14}>14 days</MenuItem>
-        <MenuItem value={60*24*30}>30 days</MenuItem>
+        <MenuItem value={60 * 6}>6 hours</MenuItem>
+        <MenuItem value={60 * 12}>12 hours</MenuItem>
+        <MenuItem value={60 * 24}>1 day</MenuItem>
+        <MenuItem value={60 * 24 * 3}>3 days</MenuItem>
+        <MenuItem value={60 * 24 * 7}>7 days</MenuItem>
+        <MenuItem value={60 * 24 * 14}>14 days</MenuItem>
+        <MenuItem value={60 * 24 * 30}>30 days</MenuItem>
     </TextField>
 }
 
@@ -147,7 +164,8 @@ function Journey({width, height}) {
     return <div style={{padding: 10}}>
         <div style={{display: "flex"}}>
             <Funnel width={width} height={height}/>
-            <div style={{display: "flex",
+            <div style={{
+                display: "flex",
                 flexDirection: "column",
                 alignItems: "start",
                 flex: "1 1",
@@ -156,22 +174,47 @@ function Journey({width, height}) {
                 height: height
             }}>
                 <div style={{display: "flex", width: "100%", height: "100%", borderBottom: "1px dashed #999"}}>
-                    <div style={{color: "gray", display: "flex", width:200, textAlign: "center", fontSize: 12}}>Customers become aware of your company and its offerings as they seek solutions to their problems or needs.</div>
+                    <div style={{
+                        color: "gray",
+                        display: "flex",
+                        width: 200,
+                        textAlign: "center",
+                        fontSize: 12
+                    }}>Customers become aware of your company and its offerings as they seek solutions to their problems
+                        or needs.
+                    </div>
                     <div></div>
                 </div>
                 <div style={{display: "flex", width: "100%", height: "100%", borderBottom: "1px dashed #999"}}>
-                    <div style={{color: "gray", display: "flex", width:200, textAlign: "center", fontSize: 12}}>Customers evaluate your company against competitors, seeking deeper understanding and proof points to determine the best choice.</div>
+                    <div style={{
+                        color: "gray",
+                        display: "flex",
+                        width: 200,
+                        textAlign: "center",
+                        fontSize: 12
+                    }}>Customers evaluate your company against competitors, seeking deeper understanding and proof
+                        points to determine the best choice.
+                    </div>
                     <div></div>
                 </div>
                 <div style={{display: "flex", width: "100%", height: "100%", borderBottom: "1px dashed #999"}}>
-                    <div style={{color: "gray", display: "flex", width:200, textAlign: "center", fontSize: 12}}>Customers decide to purchase your product or service, and you must simplify the process for them with a user-friendly website, clear pricing, and multiple payment options.</div>
+                    <div style={{
+                        color: "gray",
+                        display: "flex",
+                        width: 200,
+                        textAlign: "center",
+                        fontSize: 12
+                    }}>Customers decide to purchase your product or service, and you must simplify the process for them
+                        with a user-friendly website, clear pricing, and multiple payment options.
+                    </div>
                     <div>
 
                     </div>
                 </div>
                 <div style={{display: "flex", width: "100%", height: "100%", borderBottom: "1px dashed #999"}}>
-                    <div style={{color: "gray", display: "flex", width:200, textAlign: "center", fontSize: 12}}>
-                        Nurture strong relationships with customers through exceptional service, personalized offers, and ongoing engagement for repeat business.
+                    <div style={{color: "gray", display: "flex", width: 200, textAlign: "center", fontSize: 12}}>
+                        Nurture strong relationships with customers through exceptional service, personalized offers,
+                        and ongoing engagement for repeat business.
                     </div>
                     <div>
 
@@ -179,7 +222,10 @@ function Journey({width, height}) {
 
                 </div>
                 <div style={{display: "flex", width: "100%", height: "100%"}}>
-                    <div style={{color: "gray", width:200, textAlign: "center", fontSize: 12}}>Loyalty turns into advocacy as satisfied customers become brand advocates, spreading positive word-of-mouth and attracting new customers.</div>
+                    <div style={{color: "gray", width: 200, textAlign: "center", fontSize: 12}}>Loyalty turns into
+                        advocacy as satisfied customers become brand advocates, spreading positive word-of-mouth and
+                        attracting new customers.
+                    </div>
                     <div></div>
                 </div>
             </div>
@@ -197,11 +243,12 @@ export default function TryOut() {
 
         function chips(consents) {
             return consents.map((consent, key) => {
-                return <Chip key={key}  size="small" label={consent.name} />
+                return <Chip key={key} size="small" label={consent.name}/>
             })
         }
 
-        return <div style={{padding: "10px 7px"}} className="flexLine">{value.action} FILED "{value.field.value}" IF NO CONSENTS <span className="flexLine" style={{marginLeft: 10, gap: 3}}>{chips(value.consents)}</span></div>
+        return <div style={{padding: "10px 7px"}} className="flexLine">{value.action} FILED "{value.field.value}" IF NO
+            CONSENTS <span className="flexLine" style={{marginLeft: 10, gap: 3}}>{chips(value.consents)}</span></div>
     }
 
 
@@ -214,27 +261,28 @@ export default function TryOut() {
             setValue(e.target.checked)
             onChange(e.target.checked)
         }
+
         return <>
             <Checkbox checked={value} onChange={handleChange}/>
             <Switch checked={value} onChange={handleChange}/>
-            </>
+        </>
     }
 
     const Routing = () => {
         return (
-            <Box sx={{ maxWidth: 400 }}>
+            <Box sx={{maxWidth: 400}}>
                 <Stepper orientation="vertical">
                     <Step key={"event-source"} active={true}>
-                            <StepLabel optional="Collected from event source">Event source</StepLabel>
-                            <StepContent>
-                                <Paper style={{padding: 20}}>
-                                    <h3>Desc</h3>
-                                    <Box sx={{ mb: 2 }}>
-                                        sss
-                                    </Box>
-                                </Paper>
+                        <StepLabel optional="Collected from event source">Event source</StepLabel>
+                        <StepContent>
+                            <Paper style={{padding: 20}}>
+                                <h3>Desc</h3>
+                                <Box sx={{mb: 2}}>
+                                    sss
+                                </Box>
+                            </Paper>
 
-                            </StepContent>
+                        </StepContent>
                     </Step>
                     <Step key={"validation"} active={true}>
                         <StepLabel optional="Event data validation">
@@ -300,10 +348,10 @@ export default function TryOut() {
     }
 
 
-
     //value={{value:"123", ref:true}} autocomplete="profile"
     return (
         <div>
+            <TestTrackForm/>
             <div style={{display: "flex", alignItems: "end"}}><PopOverButton label="Try">
                 <CommitFrom onSubmit={console.log}/>
             </PopOverButton>
