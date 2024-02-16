@@ -31,6 +31,7 @@ const CardBrowser = ({
     const [displayAddForm, setDisplayAddForm] = useState(false);
     const [query, setQuery] = useState(null);
     const [refresh, setRefresh] = useState(0);
+
     const context = useContext(DataContext);
 
     const handleFilter = (query) => {

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {v4 as uuid4} from 'uuid';
 import {SlClose} from "react-icons/sl";
 import Button from "./Button";
@@ -11,7 +11,7 @@ const ListOfForms = ({
                          form,
                          details,
                          style,
-                         value: _value,
+                         value: _values,
                          defaultFormValue = {},
                          justify = "space-between",
                          width,
@@ -39,24 +39,24 @@ const ListOfForms = ({
                 ? "row-reveres"
                 : "row"
     if(initEmpty) {
-        _value = {}
-    } else if (!_value) {
+        _values = {}
+    } else if (!_values) {
         initCurrentRow = uuid4()
-        _value = {[initCurrentRow]: defaultFormValue}
+        _values = {[initCurrentRow]: defaultFormValue}
     } else {
-        if (Array.isArray(_value)) {
+        if (Array.isArray(_values)) {
             const valueObj = {};
-            for (const item of _value) {
+            for (const item of _values) {
                 initCurrentRow = uuid4()
                 valueObj[initCurrentRow] = item;
             }
 
-            _value = valueObj
+            _values = valueObj
         }
 
     }
 
-    const [list, setList] = useState(_value)
+    const [listOfValues, setListOfValues] = useState(_values)
     const [currentRow, setCurrentRow] = useState(initCurrentRow)
 
     const handleChange = (list) => {
@@ -73,15 +73,15 @@ const ListOfForms = ({
 
     const handleRowAdd = () => {
         const _currentRow = uuid4()
-        const _list = {...list, [_currentRow]: defaultFormValue}
-        setList(_list)
+        const _list = {...listOfValues, [_currentRow]: defaultFormValue}
+        setListOfValues(_list)
         setCurrentRow(_currentRow)
         handleChange(_list)
     }
 
     const handleRowChange = (key, value) => {
-        const _list = {...list, [key]: value}
-        setList(_list)
+        const _list = {...listOfValues, [key]: value}
+        setListOfValues(_list)
         handleChange(_list)
     }
 
@@ -90,8 +90,8 @@ const ListOfForms = ({
             const {[key]: undefined, ...list} = current;
             return list;
         }
-        const _list = deleteItem(key, list)
-        setList(_list)
+        const _list = deleteItem(key, listOfValues)
+        setListOfValues(_list)
         handleChange(_list)
     }
 
@@ -106,13 +106,14 @@ const ListOfForms = ({
         marginBottom: separator ? 10 : 0,
         ...style
     }
+
     return <div style={{width: "100%", display: "flex", marginBottom: 10, flexDirection: alignButtons}} className="FormRow">
         {onChange instanceof Function && <div style={{display: "flex", ...buttonMargin}}>
             <Button label={label} onClick={handleRowAdd}/>
         </div>}
         <div style={{width: "100%"}}>
             {
-                objectMap(list, (key, formValue) => {
+                objectMap(listOfValues, (key, formValue) => {
                     return <div key={key} style={style} className="FormFieldRow">
                         <span style={{width: width || "100%"}} onClick={(e) => handleSetCurrent(e, key)}>
                         {

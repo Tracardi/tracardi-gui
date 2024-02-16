@@ -1,16 +1,15 @@
 import React, {useCallback} from "react";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
-import ReportForm from "../elements/forms/ReportForm";
 import {VscOrganization} from "react-icons/vsc";
-import AudienceForm from "../elements/forms/AudienceForm";
+import AudienceFormById from "../elements/forms/AudienceForm";
 
 
 export default function Audience() {
 
     const urlFunc = useCallback((query) => ('/audience' + ((query) ? "?query=" + query : "")), []);
-    const addFunc = useCallback((close) => <AudienceForm audienceId={null} onComplete={close}/>, []);
-    const detailsFunc = useCallback((id, close) => <ReportForm reportId={id} onComplete={close}/>, [])
+    const addFunc = useCallback((close) => <AudienceFormById onSubmit={close}/>, []);
+    const detailsFunc = useCallback((id, close) => <AudienceFormById audienceId={id} onSubmit={close}/>, [])
 
     return <CardBrowser
         label="Audience"

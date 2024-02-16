@@ -91,7 +91,7 @@ export default function AggregationForm({value: _value, onChange}) {
                        label="Value"
                        value={value.save_as || ""}
                        onChange={(ev) => handleChange("save_as", ev.target.value)}
-                       style={{width: 300}}
+                       style={{width: 200}}
             />
     </div>
 }

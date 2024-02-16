@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import Popover from "@mui/material/Popover";
 import Button from "../Button";
-import Paper from "@mui/material/Paper";
 
 export default function PopOverButton({children, label, icon, style, variant = "outlined", size='standard'}) {
 
