@@ -57,6 +57,7 @@ import useTheme from "@mui/material/styles/useTheme";
 import InputAdornment from "@mui/material/InputAdornment";
 import Tag from "../elements/misc/Tag";
 import TestTrackForm from "../elements/forms/TestTrackForm";
+import MetaDataFrom from "../elements/forms/MetadataForm";
 
 
 function AggregationOperation({value, label, onChange}) {
@@ -238,7 +239,9 @@ export default function TryOut() {
     const [value, setValue] = React.useState("test");
     const [token, setToken] = useState(null)
     const [sec, setSec] = useState(0)
-
+    const [meta, setMeta] = useState({
+        name: "test"
+    })
     const ComplianceRuleDetails = ({value}) => {
 
         function chips(consents) {
@@ -348,9 +351,13 @@ export default function TryOut() {
     }
 
 
+
     //value={{value:"123", ref:true}} autocomplete="profile"
     return (
         <div>
+            <Button onClick={()=>setMeta({name: "xxx"})} label="xxx"/>
+            <MetaDataFrom value={meta} name={"test"} onChange={console.log}/>
+
             <TestTrackForm/>
             <div style={{display: "flex", alignItems: "end"}}><PopOverButton label="Try">
                 <CommitFrom onSubmit={console.log}/>

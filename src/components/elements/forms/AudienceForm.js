@@ -1,4 +1,4 @@
-import React, {memo, useState} from "react";
+import React, {memo, useEffect, useState} from "react";
 import ListOfForms from "./ListOfForms";
 import AudienceFilteringForm from "./AudienceFilteringForm";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
@@ -12,7 +12,7 @@ import {v4 as uuid4} from 'uuid';
 import {useFetch} from "../../../remote_api/remoteState";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {submit} from "../../../remote_api/submit";
-import {useSyncState} from "../../../misc/useSyncState";
+import {useObjectState} from "../../../misc/useSyncState";
 
 const ListOfAggregations = memo(function ({value, onChange}) {
     return <ListOfForms form={AudienceFilteringForm}
@@ -30,22 +30,17 @@ const ListOfAggregations = memo(function ({value, onChange}) {
                         align="bottom"/>
 })
 
-function AudienceForm({value: _value, errors, onSubmit}) {
+function AudienceForm({value, errors, onSubmit}) {
 
-    const [value, setValue] = useSyncState(_value || {})
-    console.log(_value.name, value.name)
-
-    const handleChange = (v) => {
-        setValue({...value, ...v})
-    }
+    const {set, get} = useObjectState(value)
 
     const handleSubmit = () => {
         if(onSubmit instanceof Function) {
-            onSubmit(value)
+            onSubmit(get())
         }
     }
 
-    return <><MetaDataFrom name="audience" value={value} onChange={handleChange} errors={errors}/>
+    return <><MetaDataFrom name="audience" value={get()} onChange={set} errors={errors}/>
         <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader
@@ -53,7 +48,7 @@ function AudienceForm({value: _value, errors, onSubmit}) {
                     description="Please define how to filter out the audience from your database."
                 />
                 <TuiFormGroupContent>
-                    <KqlAutoComplete index="profile" label="Filter by profile attributes" value={value?.filter || ""}/>
+                    <KqlAutoComplete index="profile" label="Filter by profile attributes" value={get()?.filter || ""}/>
                     <div style={{fontSize: 12}}>Do not know how to filter. Click <span
                         style={{textDecoration: "underline", cursor: "pointer"}}
                         onClick={external("http://docs.tracardi.com/running/filtering/", true)}>here</span> for information.
@@ -63,8 +58,8 @@ function AudienceForm({value: _value, errors, onSubmit}) {
                     <fieldset>
                         <legend>Profiles must have</legend>
                         <ListOfAggregations
-                            value={value?.join || []}
-                            onChange={(v) => handleChange({join: v})}
+                            value={get()?.join || []}
+                            onChange={(v) => set({join: v})}
                         />
                     </fieldset>
                 </TuiFormGroupContent>
@@ -111,7 +106,7 @@ function AudienceFormById({audienceId, onSubmit}) {
             console.error(e)
         }
     }
-
+    console.log('AudienceForm', data)
     return <AudienceForm value={data} onSubmit={handleSubmit} errors={errors}/>
 }
 

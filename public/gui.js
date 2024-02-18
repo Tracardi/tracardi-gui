@@ -100,7 +100,7 @@ const getConfig = () => {
             },
             audience: {
                 name: "Audience",
-                disable: true
+                disable: false
             },
             subscription: {
                 name: "Subscription",

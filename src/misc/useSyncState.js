@@ -1,11 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-export function useSyncState(initialValue) {
-    const [value, setValue] = useState(initialValue);
+export function useObjectState(initialValue, onChange) {
+    const [data, setData] = useState(null);
 
-    useEffect(() => {
-        setValue(initialValue);
-    }, [initialValue]);
+    const set = (newState) => {
+        let value;
+        if(data === null) {
+            value = {...initialValue, ...newState}
+        } else {
+            value = {...data, ...newState}
+        }
+        setData(value)
+        if(onChange instanceof Function) {
+            onChange(value)
+        }
+    }
 
-    return [value, setValue];
+    const get = () => {
+        return data||initialValue
+    }
+
+    return {set, get}
 }
