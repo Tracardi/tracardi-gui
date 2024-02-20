@@ -13,7 +13,7 @@ export default function FormDrawer(
         variant="temporary"
     }) {
 
-    let style={width: (width) ? width : 1200, overflowX: "hidden"}
+    let style={width: (width) ? width : 1200, overflowX: "hidden", height: "inherit"}
 
     return <Drawer anchor={anchor}
                    hideBackdrop={!backdrop}

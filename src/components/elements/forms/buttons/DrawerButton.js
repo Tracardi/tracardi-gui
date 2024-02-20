@@ -1,17 +1,21 @@
 import React, {useState} from "react";
-import Popover from "@mui/material/Popover";
 import Button from "../Button";
-import Paper from "@mui/material/Paper";
-import Drawer from "@mui/material/Drawer";
+import FormDrawer from "../../drawers/FormDrawer";
 
-export default function DrawerButton({children, label, icon, variant = "outlined", anchor="right"}) {
+export default function DrawerButton({children, size, label, icon, variant = "outlined", anchor="right", onClick}) {
 
     const [selected, setSelected] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleDisplay = (event) => {
-        setAnchorEl(event.currentTarget);
-        setSelected(true)
+        let result = true
+        if(onClick instanceof Function) {
+            result = onClick()
+        }
+        if(result === true) {
+            setAnchorEl(event.currentTarget);
+            setSelected(true)
+        }
     };
 
     const handleClose = () => {
@@ -23,7 +27,7 @@ export default function DrawerButton({children, label, icon, variant = "outlined
     const open = Boolean(anchorEl);
     const id = open ? 'datetime-popover' : undefined;
 
-    return <div>
+    return <>
         <Button
             icon={icon}
             style={
@@ -35,17 +39,18 @@ export default function DrawerButton({children, label, icon, variant = "outlined
             label={label}
             onClick={handleDisplay}
             variant={variant}
-            size="small"
+            size={size}
             selected={selected}
         />
-        <Drawer
+        <FormDrawer
             id={id}
+            width={500}
             open={open}
             anchor={anchor}
             onClose={handleClose}
         >
             {children}
-        </Drawer>
-    </div>
+        </FormDrawer>
+    </>
 
 }

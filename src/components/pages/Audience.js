@@ -17,10 +17,10 @@ export default function Audience() {
         urlFunc={urlFunc}
         buttonLabel="New audience"
         buttonIcon={<VscOrganization size={20}/>}
-        drawerDetailsWidth={1200}
+        drawerDetailsWidth={1100}
         detailsFunc={detailsFunc}
         drawerAddTitle="New audience"
-        drawerAddWidth={1250}
+        drawerAddWidth={1100}
         addFunc={addFunc}
         deploymentTable="audience"
         deleteEndpoint="/audience/"

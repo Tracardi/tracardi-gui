@@ -81,7 +81,7 @@ export default function AudienceFilteringForm({value, onChange}) {
                                          index={value?.entity?.type}
                                          label="Meets condition"
                                          fullWidth={false}
-                                         width={645}
+                                         width={565}
                                          onChange={(v) => handleEntityChange("where", v)}
         />
         </div>

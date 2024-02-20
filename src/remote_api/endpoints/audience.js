@@ -19,3 +19,19 @@ export function getAudience(audienceId) {
         method: 'get',
     }
 }
+
+export function computeAudienceById(audienceId) {
+    return {
+        url: `/audience/compute/${audienceId}`,
+        method: 'get',
+    }
+}
+
+
+export function computeAudience(audience) {
+    return {
+        url: "/audience/compute",
+        method: 'post',
+        data: audience
+    }
+}

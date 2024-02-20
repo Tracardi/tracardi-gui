@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useState} from "react";
+import React, {memo, useState} from "react";
 import ListOfForms from "./ListOfForms";
 import AudienceFilteringForm from "./AudienceFilteringForm";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
@@ -13,6 +13,9 @@ import {useFetch} from "../../../remote_api/remoteState";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {submit} from "../../../remote_api/submit";
 import {useObjectState} from "../../../misc/useSyncState";
+import AudienceDetails from "../details/AudienceDetails";
+import DrawerButton from "./buttons/DrawerButton";
+import FetchError from "../../errors/FetchError";
 
 const ListOfAggregations = memo(function ({value, onChange}) {
     return <ListOfForms form={AudienceFilteringForm}
@@ -32,7 +35,12 @@ const ListOfAggregations = memo(function ({value, onChange}) {
 
 function AudienceForm({value, errors, onSubmit}) {
 
-    const {set, get} = useObjectState(value)
+    const {set, get} = useObjectState(value || {
+        name: "",
+        description: "",
+        join: []
+    })
+    const [audience, setAudience] = useState(null)
 
     const handleSubmit = () => {
         if(onSubmit instanceof Function) {
@@ -40,7 +48,15 @@ function AudienceForm({value, errors, onSubmit}) {
         }
     }
 
-    return <><MetaDataFrom name="audience" value={get()} onChange={set} errors={errors}/>
+    const handleEstimate = () => {
+        const _audience = {...get(), id: uuid4()}
+        console.log(1, _audience)
+        setAudience(_audience)
+        return true
+    }
+
+    return <>
+        <MetaDataFrom name="audience" value={get()} onChange={set} errors={errors}/>
         <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader
@@ -48,7 +64,11 @@ function AudienceForm({value, errors, onSubmit}) {
                     description="Please define how to filter out the audience from your database."
                 />
                 <TuiFormGroupContent>
-                    <KqlAutoComplete index="profile" label="Filter by profile attributes" value={get()?.filter || ""}/>
+                    <KqlAutoComplete
+                        index="profile"
+                        label="Filter by profile attributes"
+                        value={get()?.filter || ""}
+                    />
                     <div style={{fontSize: 12}}>Do not know how to filter. Click <span
                         style={{textDecoration: "underline", cursor: "pointer"}}
                         onClick={external("http://docs.tracardi.com/running/filtering/", true)}>here</span> for information.
@@ -65,7 +85,11 @@ function AudienceForm({value, errors, onSubmit}) {
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <Button label="Save" onClick={handleSubmit}/>
-        </TuiForm></>
+            <DrawerButton label="Estimate" onClick={handleEstimate}>
+                <AudienceDetails audience={audience}/>
+            </DrawerButton>
+        </TuiForm>
+        </>
 }
 
 function AudienceFormById({audienceId, onSubmit}) {
@@ -88,6 +112,10 @@ function AudienceFormById({audienceId, onSubmit}) {
         return <CenteredCircularProgress/>
     }
 
+    if(error) {
+        return <FetchError error={error}/>
+    }
+
     const handleSubmit = async (data) => {
         try {
             const payload = {
@@ -106,7 +134,6 @@ function AudienceFormById({audienceId, onSubmit}) {
             console.error(e)
         }
     }
-    console.log('AudienceForm', data)
     return <AudienceForm value={data} onSubmit={handleSubmit} errors={errors}/>
 }
 

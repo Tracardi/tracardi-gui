@@ -1,4 +1,3 @@
-import {FieldBox} from "./FieldBox";
 import RefInput from "./inputs/RefInput";
 import TextField from "@mui/material/TextField";
 import React, {useState} from "react";
@@ -19,39 +18,14 @@ function AggregationOperation({value, label, onChange}) {
         size="small"
         label={label || "Aggregation"}
         value={value || "sum"}
-        style={{width: 180}}
+        style={{width: 130}}
         onChange={handleChange}
     >
+        <MenuItem value={"value_count"}>Count of</MenuItem>
         <MenuItem value={"sum"} selected>Sum of</MenuItem>
         <MenuItem value={"avg"}>Average of</MenuItem>
-        <MenuItem value={"max"}>Maximum value of</MenuItem>
-        <MenuItem value={"min"}>Minimum value of</MenuItem>
-    </TextField>
-}
-
-function ComparisonOperation({value, label, onChange}) {
-
-    const handleChange = (ev) => {
-        if(onChange instanceof Function) {
-            onChange(ev.target.value)
-        }
-    }
-
-    return  <TextField
-        select
-        variant="outlined"
-        size="small"
-        label={label || "Operation"}
-        value={value || "="}
-        style={{width: 200}}
-        onChange={handleChange}
-    >
-        <MenuItem value={"="} selected>Is Equal</MenuItem>
-        <MenuItem value={">"}>Is Bigger Then</MenuItem>
-        <MenuItem value={">="}> Is Equal or Bigger Then</MenuItem>
-        <MenuItem value={"<"}>Is Less Then</MenuItem>
-        <MenuItem value={"<"}>Is Equal or Less Then</MenuItem>
-        <MenuItem value={"!="}>Is Not Equal</MenuItem>
+        <MenuItem value={"max"}>Maximum of</MenuItem>
+        <MenuItem value={"min"}>Minimum of</MenuItem>
     </TextField>
 }
 
@@ -91,7 +65,7 @@ export default function AggregationForm({value: _value, onChange}) {
                        label="Value"
                        value={value.save_as || ""}
                        onChange={(ev) => handleChange("save_as", ev.target.value)}
-                       style={{width: 200}}
+                       style={{width: 180}}
             />
     </div>
 }
