@@ -2,14 +2,14 @@ import React, {useCallback} from "react";
 import "../elements/lists/CardBrowser.css";
 import CardBrowser from "../elements/lists/CardBrowser";
 import {MdOutlineSendTimeExtension} from "react-icons/md";
-import ActivationForm from "../elements/forms/ActivationForm";
+import ActivationFormById from "../elements/forms/ActivationForm";
 
 
 export default function Activation() {
 
     const urlFunc = useCallback((query) => ('/activation' + ((query) ? "?query=" + query : "")), []);
-    const addFunc = useCallback((close) => <ActivationForm onSubmit={close}/>, []);
-    const detailsFunc = useCallback((id, close) => <ActivationForm activationId={id} onSubmit={close}/>, [])
+    const addFunc = useCallback((close) => <ActivationFormById onSubmit={close}/>, []);
+    const detailsFunc = useCallback((id, close) => <ActivationFormById activationId={id} onSubmit={close}/>, [])
 
     return <CardBrowser
         label="Audience Activations"

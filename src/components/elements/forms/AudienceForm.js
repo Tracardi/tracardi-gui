@@ -35,28 +35,22 @@ const ListOfAggregations = memo(function ({value, onChange}) {
 
 function AudienceForm({value, errors, onSubmit}) {
 
-    const {set, get} = useObjectState(value || {
+    const {get, update, submit, reset} = useObjectState(value || {
         name: "",
         description: "",
         join: []
-    })
-    const [audience, setAudience] = useState(null)
+    }, null, onSubmit)
 
-    const handleSubmit = () => {
-        if(onSubmit instanceof Function) {
-            onSubmit(get())
-        }
-    }
+    const [audience, setAudience] = useState(null)
 
     const handleEstimate = () => {
         const _audience = {...get(), id: uuid4()}
-        console.log(1, _audience)
         setAudience(_audience)
         return true
     }
 
     return <>
-        <MetaDataFrom name="audience" value={get()} onChange={set} errors={errors}/>
+        <MetaDataFrom name="audience" value={get()} onChange={update} errors={errors}/>
         <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader
@@ -79,12 +73,13 @@ function AudienceForm({value, errors, onSubmit}) {
                         <legend>Profiles must have</legend>
                         <ListOfAggregations
                             value={get()?.join || []}
-                            onChange={(v) => set({join: v})}
+                            onChange={(v) => update({join: v})}
                         />
                     </fieldset>
                 </TuiFormGroupContent>
             </TuiFormGroup>
-            <Button label="Save" onClick={handleSubmit}/>
+            <Button label="Save" onClick={submit}/>
+            <Button label="Reset" onClick={reset}/>
             <DrawerButton label="Estimate" onClick={handleEstimate}>
                 <AudienceDetails audience={audience}/>
             </DrawerButton>

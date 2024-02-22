@@ -8,7 +8,7 @@ import {useObjectState} from "../../../misc/useSyncState";
 
 export default function MetaDataFrom({name, value, onChange, errors}) {
 
-    const {get, set} = useObjectState(value, onChange)
+    const {get, update} = useObjectState(value, onChange)
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
@@ -20,7 +20,7 @@ export default function MetaDataFrom({name, value, onChange, errors}) {
                         helperText={errors && errors["body.name"] || ""}
                         value={get()?.name || ""}
                         onChange={(ev) => {
-                            set({name: ev.target.value})
+                            update({name: ev.target.value})
                         }}
                         size="small"
                         variant="outlined"
@@ -35,7 +35,7 @@ export default function MetaDataFrom({name, value, onChange, errors}) {
                         multiline
                         rows={3}
                         onChange={(ev) => {
-                            set({description: ev.target.value})
+                            update({description: ev.target.value})
                         }}
                         variant="outlined"
                         fullWidth
@@ -45,14 +45,14 @@ export default function MetaDataFrom({name, value, onChange, errors}) {
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Switch
                             checked={get()?.enabled || false}
-                            onChange={(ev) => set({enabled: ev.target.checked})}
+                            onChange={(ev) => update({enabled: ev.target.checked})}
                         />
                     </div>
                 </TuiFormGroupField>
 
                 <ShowHide label="Tags">
                     <TuiFormGroupField header="Tags" description="Tags help with data organisation.">
-                        <TuiTagger tags={get()?.tags} onChange={v=> set({tags: v})}/>
+                        <TuiTagger tags={get()?.tags} onChange={v=> update({tags: v})}/>
                     </TuiFormGroupField>
                 </ShowHide>
             </TuiFormGroupContent>

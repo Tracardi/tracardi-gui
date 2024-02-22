@@ -23,6 +23,7 @@ import {userLogIn} from "../../remote_api/endpoints/user";
 import {useRequest} from "../../remote_api/requestClient";
 import {KeyCloakContext} from "../context/KeyCloakContext";
 import ErrorBox from "../errors/ErrorBox";
+import envs from "../../envs";
 
 function Copyright() {
     return (
@@ -108,12 +109,15 @@ const SignInForm = () => {
         event.preventDefault();
 
         getLocation().then(result => {
-            track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-login', {
-                email,
-                apiUrl,
-                platform: "Tracardi " + version(),
-                location: result
-            }, false).then(() => {})
+            if(envs.license === 'open-source'){
+                track("9d9230c3-def2-451a-9b52-c554686f3e27", 'tracardi-login', {
+                    email,
+                    apiUrl,
+                    platform: "Tracardi " + version(),
+                    location: result
+                }, false).then(() => {})
+            }
+
         })
 
         setProgress(true)

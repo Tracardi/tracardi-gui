@@ -9,7 +9,7 @@ import {isEmptyObjectOrNull} from "../../../misc/typeChecking";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 import {getError} from "../../../remote_api/entrypoint";
-import {useState} from "react";
+import React, {useState} from "react";
 import FormDrawer from "../drawers/FormDrawer";
 import NoData from "../misc/NoData";
 
@@ -145,6 +145,9 @@ const TableRows = ({
                     <header>{category}</header>
                     <div>
                         {plugs.map((row, subIndex) => {
+                            if(!row) {
+                                return null
+                            }
                             return <BrowserRow key={index + "-" + subIndex}
                                                id={row?.id}
                                                data={row}
@@ -156,13 +159,13 @@ const TableRows = ({
                                                onDeploy={handleDeploy}
                                                deleteEndpoint={deleteEndpoint}
                                                icon={icon}
-                                               tags={row.tags}
+                                               tags={row?.tags}
                                                descriptionFunc={descriptionFunc}
                                                forceMode={forceMode}
                                                actionFunc={actionFunc}
 
                             />
-                        })}
+                        }).filter(row => row !== null)}
                     </div>
                 </div>
             })

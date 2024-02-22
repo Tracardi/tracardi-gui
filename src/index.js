@@ -12,8 +12,9 @@ import {ConfirmProvider} from "material-ui-confirm";
 import ApiUrlSelector from "./components/ApiUrlSelector";
 import * as Sentry from "@sentry/react";
 import {Integrations} from "@sentry/tracing";
+import envs from "./envs";
 
-if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'development') {
+if (envs.license === 'open-source' && (!process.env.NODE_ENV || process.env.NODE_ENV !== 'development')) {
     Sentry.init({
         dsn: "https://2721a09bf1144c10930117609a67f4d5@o1093519.ingest.sentry.io/6112822",
         integrations: [new Integrations.BrowserTracing(), new Sentry.Replay()],
