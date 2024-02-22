@@ -4,8 +4,14 @@ import EvalAutoComplete from "../EvalAutoComplete";
 import {isString} from "../../../../misc/typeChecking";
 
 export function ValueInput({
-                               source, value: initValue, cast: initCast, onChange, disableCast = false,
-                               fullWidth = false, filter=null
+                               source,
+                               value: initValue,
+                               cast: initCast,
+                               onChange,
+                                disabled = false,
+                               disableCast = false,
+                               fullWidth = false,
+                               filter=null
                            }) {
 
     const [value, setValue] = React.useState(initValue || "");
@@ -38,6 +44,7 @@ export function ValueInput({
             style={{minWidth: 270}}
             value={value}
             autoCastValue={cast}
+            disabled={disabled}
             disableCast={disableCast}
             onChange={(value, castValue) => handleChange(value, castValue)}/>
     } else {
@@ -48,7 +55,7 @@ export function ValueInput({
             solo={true}
             autoCastValue={cast}
             fullWidth={fullWidth}
-            disabled={false}
+            disabled={disabled}
             url={url}
             initValue={value}
             disableCast={disableCast}
@@ -64,7 +71,8 @@ export default function DotAccessor({
                                         defaultSourceValue,
                                         defaultPathValue,
                                         onChange,
-                                        error, errorMessage,
+                                        error,
+                                        errorMessage,
                                         forceMode = 2,
                                         lockSource = false,
                                         disableSwitching=false,

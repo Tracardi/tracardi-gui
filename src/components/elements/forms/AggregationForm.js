@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import React, {useState} from "react";
 import MenuItem from "@mui/material/MenuItem";
 import Tag from "../misc/Tag";
+import {useObjectState} from "../../../misc/useSyncState";
 
 function AggregationOperation({value, label, onChange}) {
 
@@ -31,40 +32,45 @@ function AggregationOperation({value, label, onChange}) {
 
 export default function AggregationForm({value: _value, onChange}) {
 
-    const [value, setValue] = useState(_value || {
+    const [disabled, setDisabled] = useState(_value?.aggr === 'value_count')
+
+    const {get, set} = useObjectState(_value || {
         aggr: "sum",
         by_field: {value:"", ref: true},
         save_as: ""
-    })
+    }, onChange)
 
-    const handleChange = (field, newValue) =>{
-        const _value = {...value, [field]: newValue}
-        setValue(_value)
-        if(onChange instanceof Function){
-            onChange(_value)
+    const handleAggrChange = (value) => {
+        set("aggr", value)
+        if(value === 'value_count') {
+            setDisabled(true)
+            set("by_field", {value:"type", ref: true})
+        } else {
+            setDisabled(false)
         }
     }
 
     return <div className="flexLine">
-        <AggregationOperation value={value.aggr} onChange={(v) => handleChange("aggr", v)}/>
+        <AggregationOperation value={get().aggr} onChange={handleAggrChange}/>
         <span style={{marginLeft: 10}}>
             <RefInput
                 fullWidth={true}
                 autocomplete="event"
                 locked={true}
-                value={value.by_field}
+                disabled={disabled}
+                value={get().by_field}
                 defaultType={true}
                 label="Event data"
-                onChange={(v) => handleChange("by_field", v)}
+                onChange={(v) => set("by_field", v)}
                 width={"250px"}
             />
         </span>
         <Tag style={{margin: 10}}>as</Tag>
             <TextField size="small"
                        variant="outlined"
-                       label="Value"
-                       value={value.save_as || ""}
-                       onChange={(ev) => handleChange("save_as", ev.target.value)}
+                       label="Aggregation Name"
+                       value={get().save_as || ""}
+                       onChange={(ev) => set("save_as", ev.target.value)}
                        style={{width: 180}}
             />
     </div>

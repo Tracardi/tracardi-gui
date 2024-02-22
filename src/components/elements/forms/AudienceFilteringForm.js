@@ -29,8 +29,7 @@ function EntitySelect({value, onChange}) {
     </TextField>
 }
 
-export default function AudienceFilteringForm({value, onChange}) {
-
+export default function AudienceFilteringForm({value, onChange, errors}) {
     /*
     value = {
         entity: {
@@ -101,6 +100,7 @@ export default function AudienceFilteringForm({value, onChange}) {
                     width="auto"
                     justify="start"
                     align="right"
+                    errors={errors}
                 />
             </div>
 
@@ -108,7 +108,7 @@ export default function AudienceFilteringForm({value, onChange}) {
                 <TextField
                     value={value?.group_where || ""}
                     onChange={(ev) => handleChange("group_where", ev.target.value)}
-                    label="Meets condition"
+                    label="Meets Aggregation Condition"
                            fullWidth/>
             </div>
         </fieldset>

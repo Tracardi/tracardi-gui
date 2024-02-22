@@ -81,6 +81,7 @@ export default function RefInput({
                         value={value.value}
                         fullWidth={fullWidth}
                         cast={false}
+                        disabled={disabled}
                         disableCast={true}
                         onChange={(v,c) => handleValueChange(v)}/>
                     : <TextField

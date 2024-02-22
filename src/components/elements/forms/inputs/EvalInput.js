@@ -12,7 +12,7 @@ export function SourceInput({value, onChange, lock=true, lockValue=null, disable
                               disableSwitching={disableSwitching}
     />
 }
-export function EvalInput({label, value: initValue, onChange, fullWidth = false, error, helperText, style,
+export function EvalInput({label, value: initValue, onChange, disabled, fullWidth = false, error, helperText, style,
                               required,
                               autoCastValue,
                               disableCast=false
@@ -60,5 +60,6 @@ export function EvalInput({label, value: initValue, onChange, fullWidth = false,
         helperText={helperText}
         InputProps={showCasingIcon()}
         label={label}
+        disabled={disabled}
     />
 }

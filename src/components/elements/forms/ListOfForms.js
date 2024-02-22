@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {v4 as uuid4} from 'uuid';
 import {SlClose} from "react-icons/sl";
 import Button from "./Button";
@@ -17,7 +17,8 @@ const ListOfForms = ({
                          width,
                          align = "left",
                          separator = false,
-                         initEmpty=false
+                         initEmpty=false,
+                         errors
                      }
 ) => {
 
@@ -119,11 +120,11 @@ const ListOfForms = ({
                         {
                             (currentRow !== key && details) ? <span style={{cursor: "pointer"}}>{React.createElement(
                                 details,
-                                {value: formValue},
+                                {value: formValue, errors: errors},
                                 null
                             )}</span> : React.createElement(
                                 form,
-                                {value: formValue, onChange: (value) => handleRowChange(key, value)},
+                                {value: formValue, errors: errors, onChange: (value) => handleRowChange(key, value)},
                                 null
                             )
                         }

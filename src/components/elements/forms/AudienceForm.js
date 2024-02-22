@@ -16,8 +16,9 @@ import {useObjectState} from "../../../misc/useSyncState";
 import AudienceDetails from "../details/AudienceDetails";
 import DrawerButton from "./buttons/DrawerButton";
 import FetchError from "../../errors/FetchError";
+import ValidationErrorSummary from "../../errors/ValidationErrorSummary";
 
-const ListOfAggregations = memo(function ({value, onChange}) {
+const ListOfAggregations = memo(function ({value, onChange, errors}) {
     return <ListOfForms form={AudienceFilteringForm}
                         value={value}
                         defaultFormValue={{
@@ -30,6 +31,7 @@ const ListOfAggregations = memo(function ({value, onChange}) {
                             group_where: ""
                         }}
                         onChange={onChange}
+                        errors={errors}
                         align="bottom"/>
 })
 
@@ -74,8 +76,10 @@ function AudienceForm({value, errors, onSubmit}) {
                         <ListOfAggregations
                             value={get()?.join || []}
                             onChange={(v) => update({join: v})}
+                            errors={errors}
                         />
                     </fieldset>
+                    {errors && <ValidationErrorSummary errors={errors}/>}
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <Button label="Save" onClick={submit}/>
