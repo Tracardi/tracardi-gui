@@ -56,6 +56,7 @@ const TestEditor = React.lazy(() => import("./pages/TestEditor"))
 const ConsentsDataCompliance = React.lazy(() => import("./pages/EventDataCompliance"))
 const Audience = React.lazy(() => import("./pages/Audience"))
 const Subscription = React.lazy(() => import("./pages/Subscription"))
+const Activation = React.lazy(() => import("./pages/Activation"))
 
 export const DataContext = createContext(false);
 
@@ -361,7 +362,11 @@ const AppBox = () => {
                             new PrivateTab(["admin", "developer", "marketer"],
                                 <Audience/>, "/audience", <>
                                     <BsStar size={20}
-                                            style={{marginRight: 5}}/>{"Audiences"}</>)
+                                            style={{marginRight: 5}}/>{"Audiences"}</>),
+                            new PrivateTab(["admin", "developer", "marketer"],
+                                <Activation/>, "/activation", <>
+                                    <BsStar size={20}
+                                            style={{marginRight: 5}}/>{"Activations"}</>)
                         ]}
                         />
                     </Suspense>

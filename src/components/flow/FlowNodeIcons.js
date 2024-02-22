@@ -7,7 +7,8 @@ import {
     BsHddNetwork, BsQuestionDiamond, BsArrowBarLeft, BsHash,
     BsBoxArrowInRight, BsFillRecordFill, BsFillBarChartFill, BsCreditCard, BsSortAlphaDown,
     BsFolderCheck, BsClock, BsBoxArrowRight, BsGithub, BsPersonX, BsClockHistory, BsListCheck,
-    BsTag, BsDatabase,BsDatabaseX, BsDatabaseCheck,BsDatabaseAdd, BsPlayCircle, BsGear,BsPersonLinesFill
+    BsTag, BsDatabase,BsDatabaseX, BsDatabaseCheck,BsDatabaseAdd, BsPlayCircle,
+    BsGear,BsPersonLinesFill
 } from "react-icons/bs";
 import {AiOutlineSisternode, AiOutlineAlert, AiOutlineWhatsApp} from "react-icons/ai";
 import {TiTimes, TiFlowSwitch} from "react-icons/ti";
@@ -73,7 +74,8 @@ import {
     MdTimelapse,
     MdTransform,
     MdCallSplit,
-    MdFingerprint
+    MdFingerprint,
+    MdOutlineSendTimeExtension
 } from "react-icons/md";
 import {GoBrowser} from "react-icons/go";
 import {ReactComponent as MauticLogo} from "../../svg/mautic.svg";
@@ -282,6 +284,7 @@ export const icons = {
     "chat": (size) => <BsChatSquare size={size}/>,
     "telegram": (size) => <SiTelegram size={size} />,
     "subscription": (size) => <BsPersonLinesFill size={size}/>,
+    "activate": (size) => <MdOutlineSendTimeExtension size={size}/>,
 }
 
 
