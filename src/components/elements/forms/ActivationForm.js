@@ -39,7 +39,7 @@ function ActivationForm({value, onSubmit, errors}) {
                     label="Audience selection"
                     size="small"
                     error={errors && "body.audience_query" in errors}
-                    helperText={errors && errors["body.audience_query"] || ""}
+                    helperText={(errors && errors["body.audience_query"]) || ""}
                     fullWidth
                     onChange={ev => update({audience_query: ev.target.value})}
                 />
@@ -57,7 +57,7 @@ function ActivationForm({value, onSubmit, errors}) {
                         size="small"
                         style={{width: 250}}
                         error={errors && "body.activation_class" in errors}
-                        helperText={errors && errors["body.activation_class"] || ""}
+                        helperText={(errors && errors["body.activation_class"]) || ""}
                         onChange={ev => update({activation_class: ev.target.value})}
                         select
                     >

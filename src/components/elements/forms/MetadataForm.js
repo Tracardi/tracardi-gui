@@ -17,7 +17,7 @@ export default function MetaDataFrom({name, value, onChange, errors}) {
                     <TextField
                         label="Name"
                         error={errors && "body.name" in errors}
-                        helperText={errors && errors["body.name"] || ""}
+                        helperText={(errors && errors["body.name"]) || ""}
                         value={get()?.name || ""}
                         onChange={(ev) => {
                             update({name: ev.target.value})

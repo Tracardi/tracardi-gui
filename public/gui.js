@@ -68,7 +68,7 @@ const getConfig = () => {
             },
             segmentation: {
                 name: "Segmentation",
-                disable: false
+                disable: true
             },
             routing: {
                 name: "Routing",
@@ -80,7 +80,7 @@ const getConfig = () => {
             },
             metrics: {
                 name: "Metrics",
-                disable: false
+                disable: true
             },
             transformations: {
                 name: "Collection",
