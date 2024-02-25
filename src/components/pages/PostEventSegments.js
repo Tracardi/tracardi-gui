@@ -11,9 +11,9 @@ export default function PostEventSegments() {
     const detailsFunc = useCallback((id, close) => <SegmentDetails id={id} onDeleteComplete={close}/>, []);
 
     return <CardBrowser
-        label="Segments"
-        description="Segmentation is triggered every time the profile is updated. It evalutes the segment condition and
-        if it is met then the profile is assigned to defined segment. Segments can be added dynamically inside the workflow."
+        label="Segments Tagging"
+        description="Segmentation tagging is triggered every time the profile is updated. It evaluates the segment tagging condition and
+        if it is met then the profile is tagged with defined segment name. Segment tags can be added dynamically inside the workflow."
         urlFunc={urlFunc}
         buttonLabel="New segment"
         buttonIcon={<VscOrganization size={20}/>}

@@ -27,6 +27,8 @@ function AggregationOperation({value, label, onChange}) {
         <MenuItem value={"avg"}>Average of</MenuItem>
         <MenuItem value={"max"}>Maximum of</MenuItem>
         <MenuItem value={"min"}>Minimum of</MenuItem>
+        <MenuItem value={"median"}>Median of</MenuItem>
+        {/*<MenuItem value={"cardinality"}>Cardinality of</MenuItem>*/}
     </TextField>
 }
 

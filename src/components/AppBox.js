@@ -325,7 +325,9 @@ const AppBox = () => {
                         <PageTabs tabs={[
                             new PrivateTab(["admin", "developer"],
                                 <Flows type="collection"
-                                       label="Automation Workflows"/>, "/processing/workflows", "Automation Workflows")
+                                       label="Automation Workflows"/>, "/processing/workflows", "Automation Workflows"),
+                            new PrivateTab(["admin", "developer", "marketer"],
+                                <Segments/>, "/processing/segments", "Post event tagging"),
                         ]}
                         />
                     </Suspense>
@@ -346,8 +348,6 @@ const AppBox = () => {
                                 <Flows type="segmentation" label="Segmentation Workflows"/>, "/processing/workflows", <>
                                     <BsStar size={20}
                                             style={{marginRight: 5}}/>{"Segmentation workflows"}</>),
-                            new PrivateTab(["admin", "developer", "marketer"],
-                                <Segments/>, "/processing/segments", "Post event segmentation"),
                         ]}
                         />
                     </Suspense>
