@@ -37,7 +37,7 @@ const ListOfAggregations = memo(function ({value, onChange, errors}) {
 
 function AudienceForm({value, errors, onSubmit}) {
 
-    const {get, update, submit, reset} = useObjectState(value || {
+    const {get, update, submit} = useObjectState(value || {
         name: "",
         description: "",
         join: []
@@ -83,7 +83,6 @@ function AudienceForm({value, errors, onSubmit}) {
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <Button label="Save" onClick={submit}/>
-            <Button label="Reset" onClick={reset}/>
             <DrawerButton label="Estimate" onClick={handleEstimate}>
                 <AudienceDetails audience={audience}/>
             </DrawerButton>

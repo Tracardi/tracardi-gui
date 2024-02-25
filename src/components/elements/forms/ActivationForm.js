@@ -11,7 +11,7 @@ import {addActivation, getActivation} from "../../../remote_api/endpoints/activa
 import Button from "./Button";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
+import {TuiSelectActivationTypeMemo} from "../tui/TuiSelectActivationType";
 
 function ActivationForm({value, onSubmit, errors}) {
 
@@ -19,7 +19,7 @@ function ActivationForm({value, onSubmit, errors}) {
         name: "",
         description: "",
         audience_query: "",
-        activation_class: "",
+        activation_type: {id:"", name: ""},
         tags: []
     }, null, onSubmit)
 
@@ -51,19 +51,10 @@ function ActivationForm({value, onSubmit, errors}) {
                     description="Please select what type of actvation you would like to perform."
                 />
                 <TuiFormGroupContent>
-                    <TextField
-                        value={get()?.activation_class || ""}
-                        label="Activation Type"
-                        size="small"
-                        style={{width: 250}}
-                        error={errors && "body.activation_class" in errors}
-                        helperText={(errors && errors["body.activation_class"]) || ""}
-                        onChange={ev => update({activation_class: ev.target.value})}
-                        select
-                    >
-                        <MenuItem value="kafka">Publish To Kafka Topic</MenuItem>
-                        <MenuItem value="pulsar">Publish To Pulsar Topic</MenuItem>
-                    </TextField>
+                    <TuiSelectActivationTypeMemo
+                        initValue={get()?.activation_type}
+                        onChange={v => update({activation_type: v})}
+                        errorMessage={(errors && errors["body.activation_type"]) || ""}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <Button label="Save" onClick={submit}/>
