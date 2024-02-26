@@ -8,7 +8,11 @@ import {useObjectState} from "../../../misc/useSyncState";
 
 export default function MetaDataFrom({name, value, onChange, errors}) {
 
-    const {get, update} = useObjectState(value, onChange)
+    const {get, update} = useObjectState({
+        name: "meta",
+        value,
+        onChange
+    })
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>

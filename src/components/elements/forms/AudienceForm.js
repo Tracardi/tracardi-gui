@@ -37,11 +37,15 @@ const ListOfAggregations = memo(function ({value, onChange, errors}) {
 
 function AudienceForm({value, errors, onSubmit}) {
 
-    const {get, update, submit} = useObjectState(value || {
-        name: "",
-        description: "",
-        join: []
-    }, null, onSubmit)
+    const {get, update, submit} = useObjectState({
+        value,
+        defaultValue: {
+            name: "",
+            description: "",
+            join: []
+        },
+        onSubmit
+    })
 
     const [audience, setAudience] = useState(null)
 

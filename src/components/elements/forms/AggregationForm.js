@@ -36,11 +36,15 @@ export default function AggregationForm({value: _value, onChange}) {
 
     const [disabled, setDisabled] = useState(_value?.aggr === 'value_count')
 
-    const {get, set} = useObjectState(_value || {
-        aggr: "sum",
-        by_field: {value:"", ref: true},
-        save_as: ""
-    }, onChange)
+    const {get, set} = useObjectState({
+        value: _value,
+        defaultValue: {
+            aggr: "sum",
+            by_field: {value: "", ref: true},
+            save_as: ""
+        },
+        onChange
+    })
 
     const handleAggrChange = (value) => {
         set("aggr", value)

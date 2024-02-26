@@ -1,4 +1,4 @@
-import React, {memo, useState} from "react";
+import React, {useRef, useState} from "react";
 import {useRequest} from "../../../remote_api/requestClient";
 import MetaDataFrom from "./MetadataForm";
 import {v4 as uuid4} from 'uuid';
@@ -10,23 +10,68 @@ import FetchError from "../../errors/FetchError";
 import {addActivation, getActivation} from "../../../remote_api/endpoints/activation";
 import Button from "./Button";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
-import TextField from "@mui/material/TextField";
-import {TuiSelectActivationTypeMemo} from "../tui/TuiSelectActivationType";
+import {TuiSelectActivationType} from "../tui/TuiSelectActivationType";
+import JsonForm from "./JsonForm";
+import AudienceFetcherQuery from "./inputs/AudienceFetcherQuery";
 
 function ActivationForm({value, onSubmit, errors}) {
+    const {update, get, set, submit} = useObjectState(
+        {
+            name: "ActivationForm",
+            value,
+            defaultValue: {
+                name: "",
+                description: "",
+                audience_query: "",
+                activation_type: {id: "", name: ""},
+                tags: [],
+                config: {}
+            },
+            onSubmit
+        }
+    )
 
-    const {update, get, submit} = useObjectState(value || {
-        name: "",
-        description: "",
-        audience_query: "",
-        activation_type: {id:"", name: ""},
-        tags: []
-    }, null, onSubmit)
+    const {request} = useRequest()
+    const config = useRef(value?.config)
+    console.log('config.current', config.current)
+    const handleConfigChange = (value) => {
+        config.current = value
+    };
 
-    console.log(get())
+    const handleTypeChange = async (value) => {
+        try {
+          const response = await request({
+              url: `/activation-type/${value.id}`
+          }, true)
+            let data = {}
+            data.activation_type = value
+
+            data.config = {}
+            data.configFormSchema = response
+            update(data)
+
+            value.config = {}
+            config.current = {}
+
+        } catch (e) {
+            console.error(e)
+        }
+    };
+
+    const handleSubmit = () => {
+        const data = set("config", config.current)
+        submit(data)
+    }
+
+    const handleSubmitAndActivate = () => {
+        update({config: config.current})
+    }
 
     return <>
-        <MetaDataFrom name="activation" value={get()} onChange={update} errors={errors}/>
+        <MetaDataFrom name="activation"
+                      value={get()}
+                      onChange={update}
+                      errors={errors}/>
         <TuiForm style={{margin: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader
@@ -34,15 +79,10 @@ function ActivationForm({value, onSubmit, errors}) {
                     description="Please define the audience which you would like to activate. You can join multiple audiences together."
                 />
                 <TuiFormGroupContent>
-                    <TextField
-                    value={get()?.audience_query || ""}
-                    label="Audience selection"
-                    size="small"
-                    error={errors && "body.audience_query" in errors}
-                    helperText={(errors && errors["body.audience_query"]) || ""}
-                    fullWidth
-                    onChange={ev => update({audience_query: ev.target.value})}
-                />
+                    <AudienceFetcherQuery value={get()}
+                                          onChange={update}
+                                          error={(errors && errors["body.audience_query"]) || ""}
+                    />
                 </TuiFormGroupContent>
             </TuiFormGroup>
             <TuiFormGroup>
@@ -51,14 +91,19 @@ function ActivationForm({value, onSubmit, errors}) {
                     description="Please select what type of actvation you would like to perform."
                 />
                 <TuiFormGroupContent>
-                    <TuiSelectActivationTypeMemo
+                    <TuiSelectActivationType
                         initValue={get()?.activation_type}
-                        onChange={v => update({activation_type: v})}
+                        onChange={handleTypeChange}
                         errorMessage={(errors && errors["body.activation_type"]) || ""}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
-            <Button label="Save" onClick={submit}/>
-            <Button label="Save & Activate" onClick={submit}/>
+            {get()?.configFormSchema?.form && <TuiFormGroup>
+                <JsonForm schema={get()?.configFormSchema?.form}
+                          values={config.current}
+                          onChange={handleConfigChange}/>
+            </TuiFormGroup>}
+            <Button label="Save" onClick={handleSubmit}/>
+            <Button label="Save & Activate" onClick={handleSubmitAndActivate}/>
         </TuiForm>
 
     </>
@@ -71,11 +116,19 @@ function ActivationFormById({activationId, onSubmit}) {
     const {isLoading, data, error} = useFetch(
         ["activationById", [activationId]],
         getActivation(activationId),
-        data => {
+        async (data) => {
+            try {
+                data.configFormSchema = await request({
+                    url: `/activation-type/${data?.activation_type?.id}`
+                }, true)
+            } catch (e) {
+
+            }
             return data
         },
         {
             enabled: !!activationId,
+            cache: 0
         }
     )
 
@@ -109,4 +162,4 @@ function ActivationFormById({activationId, onSubmit}) {
     return <ActivationForm value={data} onSubmit={handleSubmit} errors={errors}/>
 }
 
-export default memo(ActivationFormById)
+export default ActivationFormById

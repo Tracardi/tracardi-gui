@@ -1,38 +1,61 @@
 import { useState } from 'react';
+import {isEmptyObjectOrNull} from "./typeChecking";
 
-export function useObjectState(initialValue, onChange, onSubmit) {
+export function useObjectState({name, value, defaultValue, onChange, onSubmit}) {
+
     const [data, setData] = useState(null);
-
-    const update = (newState) => {
-        let value;
+    const update = (changedValue) => {
+        let newValue;
         if(data === null) {
-            value = {...initialValue, ...newState}
+            if(value) {
+                newValue = {...value, ...changedValue}
+            } else {
+                newValue = {...defaultValue, ...changedValue}
+            }
         } else {
-            value = {...data, ...newState}
+            newValue = {...data, ...changedValue}
         }
-        setData(value)
+        setData(newValue)
+
         if(onChange instanceof Function) {
-            onChange(value)
+            onChange(newValue)
         }
+
+        return newValue
     }
 
     const get = () => {
-        return data||initialValue
+        return data||value||defaultValue
     }
 
-    const set = (key, newValue) => {
-        let value = get();
-        value[key] = newValue
-        setData(value)
+    const set = (key, changedValue) => {
+
+        let newValue;
+        if(data === null) {
+            if(value) {
+                newValue = {...value, [key]:changedValue}
+            } else {
+                newValue = {...defaultValue, [key]:changedValue}
+            }
+        } else {
+            newValue = {...data, [key]:changedValue}
+        }
+        setData(newValue)
 
         if(onChange instanceof Function) {
-            onChange(value)
+            onChange(newValue)
         }
+
+        return newValue
     }
 
-    const submit = () => {
+    const submit = (data) => {
         if(onSubmit instanceof Function) {
-            onSubmit(get())
+            if(isEmptyObjectOrNull(data)) {
+                onSubmit(get())
+            } else {
+                onSubmit(data)
+            }
         }
     }
 
