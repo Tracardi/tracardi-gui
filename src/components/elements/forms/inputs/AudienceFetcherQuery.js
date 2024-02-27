@@ -1,26 +1,22 @@
-import TextField from "@mui/material/TextField";
-import React, {useState} from "react";
+import React from "react";
 import {useObjectState} from "../../../../misc/useSyncState";
+import {TuiSelectAudience} from "../../tui/TuiSelectAudience";
 
 export default function AudienceFetcherQuery({value, onChange, error}) {
 
     const {get, update} = useObjectState({
-            name: "query",
+            name:"AudienceFetcherQuery",
             value,
             defaultValue: {
-                audience_query: ""
+                audience: {id:"", name:""}
             },
             onChange
         }
     )
 
-    return <TextField
-        value={get()?.audience_query}
-        label="Audience selection"
-        size="small"
-        error={error}
-        helperText={error || ""}
-        fullWidth
-        onChange={(ev) => update({audience_query: ev.target.value})}
+    return <TuiSelectAudience
+        initValue={get()?.audience}
+        errorMessage={error}
+        onChange={v => update({audience: v})}
     />
 }

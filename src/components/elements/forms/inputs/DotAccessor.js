@@ -8,10 +8,10 @@ export function ValueInput({
                                value: initValue,
                                cast: initCast,
                                onChange,
-                                disabled = false,
+                               disabled = false,
                                disableCast = false,
                                fullWidth = false,
-                               filter=null
+                               filter = null
                            }) {
 
     const [value, setValue] = React.useState(initValue || "");

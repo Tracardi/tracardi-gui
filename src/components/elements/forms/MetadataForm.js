@@ -4,15 +4,14 @@ import Switch from "@mui/material/Switch";
 import ShowHide from "../misc/ShowHide";
 import TuiTagger from "../tui/TuiTagger";
 import React from "react";
-import {useObjectState} from "../../../misc/useSyncState";
 
 export default function MetaDataFrom({name, value, onChange, errors}) {
 
-    const {get, update} = useObjectState({
-        name: "meta",
-        value,
-        onChange
-    })
+    const handleChange = (v) => {
+        if(onChange instanceof Function) {
+            onChange(v)
+        }
+    }
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
@@ -22,9 +21,9 @@ export default function MetaDataFrom({name, value, onChange, errors}) {
                         label="Name"
                         error={errors && "body.name" in errors}
                         helperText={(errors && errors["body.name"]) || ""}
-                        value={get()?.name || ""}
+                        value={value?.name || ""}
                         onChange={(ev) => {
-                            update({name: ev.target.value})
+                            handleChange({name: ev.target.value})
                         }}
                         size="small"
                         variant="outlined"
@@ -35,11 +34,11 @@ export default function MetaDataFrom({name, value, onChange, errors}) {
                                    description={`Description will help you to understand when the ${name} is used.`}>
                     <TextField
                         label={"Description"}
-                        value={get()?.description || ""}
+                        value={value?.description || ""}
                         multiline
                         rows={3}
                         onChange={(ev) => {
-                            update({description: ev.target.value})
+                            handleChange({description: ev.target.value})
                         }}
                         variant="outlined"
                         fullWidth
@@ -48,15 +47,15 @@ export default function MetaDataFrom({name, value, onChange, errors}) {
                 <TuiFormGroupField header="Active" description={`Enable/disable ${name}.`}>
                     <div style={{display: "flex", alignItems: "center"}}>
                         <Switch
-                            checked={get()?.enabled || false}
-                            onChange={(ev) => update({enabled: ev.target.checked})}
+                            checked={value?.enabled || false}
+                            onChange={(ev) => handleChange({enabled: ev.target.checked})}
                         />
                     </div>
                 </TuiFormGroupField>
 
                 <ShowHide label="Tags">
                     <TuiFormGroupField header="Tags" description="Tags help with data organisation.">
-                        <TuiTagger tags={get()?.tags} onChange={v=> update({tags: v})}/>
+                        <TuiTagger tags={value?.tags} onChange={v=> handleChange({tags: v})}/>
                     </TuiFormGroupField>
                 </ShowHide>
             </TuiFormGroupContent>

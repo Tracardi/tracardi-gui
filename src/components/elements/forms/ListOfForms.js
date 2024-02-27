@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {v4 as uuid4} from 'uuid';
 import {SlClose} from "react-icons/sl";
 import Button from "./Button";
@@ -7,7 +7,8 @@ import "./ListOfForms.css";
 
 
 const ListOfForms = ({
-                         onChange, label = "Add",
+                         onChange,
+                         label = "Add",
                          form,
                          details,
                          style,
@@ -56,9 +57,21 @@ const ListOfForms = ({
         }
 
     }
-
-    const [listOfValues, setListOfValues] = useState(_values)
+    const [listOfValues, setListOfValues] = useState(null)
     const [currentRow, setCurrentRow] = useState(initCurrentRow)
+
+    useEffect(() => {
+        // State must be cleared as when new object is generated state is not automatically cleared
+        return () => {
+            setListOfValues(null)
+        };
+    }, []);
+
+    const getListOfValues = () => {
+        // First check the state hen properties. When component is created its state should be null
+        // so the properties are returned.
+        return listOfValues || _values
+    }
 
     const handleChange = (list) => {
         if (onChange instanceof Function) {
@@ -74,14 +87,14 @@ const ListOfForms = ({
 
     const handleRowAdd = () => {
         const _currentRow = uuid4()
-        const _list = {...listOfValues, [_currentRow]: defaultFormValue}
+        const _list = {...getListOfValues(), [_currentRow]: defaultFormValue}
         setListOfValues(_list)
         setCurrentRow(_currentRow)
         handleChange(_list)
     }
 
     const handleRowChange = (key, value) => {
-        const _list = {...listOfValues, [key]: value}
+        const _list = {...getListOfValues(), [key]: value}
         setListOfValues(_list)
         handleChange(_list)
     }
@@ -91,7 +104,7 @@ const ListOfForms = ({
             const {[key]: undefined, ...list} = current;
             return list;
         }
-        const _list = deleteItem(key, listOfValues)
+        const _list = deleteItem(key, getListOfValues())
         setListOfValues(_list)
         handleChange(_list)
     }
@@ -114,7 +127,7 @@ const ListOfForms = ({
         </div>}
         <div style={{width: "100%"}}>
             {
-                objectMap(listOfValues, (key, formValue) => {
+                objectMap(getListOfValues(), (key, formValue) => {
                     return <div key={key} style={style} className="FormFieldRow">
                         <span style={{width: width || "100%"}} onClick={(e) => handleSetCurrent(e, key)}>
                         {

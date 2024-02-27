@@ -36,7 +36,8 @@ export default function AggregationForm({value: _value, onChange}) {
 
     const [disabled, setDisabled] = useState(_value?.aggr === 'value_count')
 
-    const {get, set} = useObjectState({
+    const {get, update, set} = useObjectState({
+        name: "AggregationForm",
         value: _value,
         defaultValue: {
             aggr: "sum",
@@ -47,27 +48,31 @@ export default function AggregationForm({value: _value, onChange}) {
     })
 
     const handleAggrChange = (value) => {
-        set("aggr", value)
+        const changeData = {aggr: value}
         if(value === 'value_count') {
             setDisabled(true)
-            set("by_field", {value:"type", ref: true})
+            changeData.by_field = {value:"type", ref: true}
         } else {
             setDisabled(false)
         }
+
+        update(changeData)
     }
 
     return <div className="flexLine">
-        <AggregationOperation value={get().aggr} onChange={handleAggrChange}/>
+        <AggregationOperation
+            value={get()?.aggr}
+            onChange={handleAggrChange}/>
         <span style={{marginLeft: 10}}>
             <RefInput
                 fullWidth={true}
                 autocomplete="event"
                 locked={true}
                 disabled={disabled}
-                value={get().by_field}
+                value={get()?.by_field}
                 defaultType={true}
                 label="Event data"
-                onChange={(v) => set("by_field", v)}
+                onChange={v => set("by_field", v)}
                 width={"250px"}
             />
         </span>
@@ -75,7 +80,7 @@ export default function AggregationForm({value: _value, onChange}) {
             <TextField size="small"
                        variant="outlined"
                        label="Aggregation Name"
-                       value={get().save_as || ""}
+                       value={get()?.save_as || ""}
                        onChange={(ev) => set("save_as", ev.target.value)}
                        style={{width: 180}}
             />

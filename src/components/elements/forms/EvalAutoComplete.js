@@ -12,8 +12,19 @@ import EvalAdornment from "./inputs/EvalAdornment";
 import {InputAdornment} from "@mui/material";
 import {useRequest} from "../../../remote_api/requestClient";
 
-const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChange, solo = true,
-                              disabled, fullWidth = false, autoCastValue: initCast, disableCast=false}) => {
+const EvalAutoComplete = ({
+                              showAlert,
+                              error,
+                              url,
+                              initValue,
+                              onSetValue,
+                              onChange,
+                              solo = true,
+                              disabled,
+                              fullWidth = false,
+                              autoCastValue: initCast,
+                              disableCast = false
+                          }) => {
 
     const getValue = (initValue) => {
         if (!initValue) {
@@ -84,14 +95,15 @@ const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChang
         }
     }
 
-    const handleInputChange = (value) => {
+    const handleInputChange = (ev, value) => {
         if (typeof value === "string") {
             value = {id: value, name: value}
         }
 
         setValue(value)
 
-        if (onChange) {
+        // OnChange only when typing
+        if (onChange && ev?.type === "change") {
             onChange(value, autoCastValue);
         }
     }
@@ -128,7 +140,7 @@ const EvalAutoComplete = ({showAlert, error, url, initValue, onSetValue, onChang
                 handleValueSet(value);
             }}
             onInputChange={(ev, value, reason) => {
-                handleInputChange(value)
+                handleInputChange(ev, value)
             }}
             renderInput={(params) => (
                 <TextField

@@ -13,16 +13,19 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "..
 import {TuiSelectActivationType} from "../tui/TuiSelectActivationType";
 import JsonForm from "./JsonForm";
 import AudienceFetcherQuery from "./inputs/AudienceFetcherQuery";
+import {connect} from "react-redux";
+import {showAlert} from "../../../redux/reducers/alertSlice";
 
-function ActivationForm({value, onSubmit, errors}) {
-    const {update, get, set, submit} = useObjectState(
+function ActivationForm({value, onSubmit, onActivate, errors}) {
+
+    const {update, get, submit} = useObjectState(
         {
             name: "ActivationForm",
             value,
             defaultValue: {
                 name: "",
                 description: "",
-                audience_query: "",
+                audience: {id: "", name: ""},
                 activation_type: {id: "", name: ""},
                 tags: [],
                 config: {}
@@ -33,21 +36,22 @@ function ActivationForm({value, onSubmit, errors}) {
 
     const {request} = useRequest()
     const config = useRef(value?.config)
-    console.log('config.current', config.current)
+
     const handleConfigChange = (value) => {
         config.current = value
     };
 
     const handleTypeChange = async (value) => {
         try {
-          const response = await request({
-              url: `/activation-type/${value.id}`
-          }, true)
+            const response = await request({
+                url: `/activation-type/${value.id}`
+            }, true)
+
             let data = {}
             data.activation_type = value
-
             data.config = {}
             data.configFormSchema = response
+
             update(data)
 
             value.config = {}
@@ -59,12 +63,15 @@ function ActivationForm({value, onSubmit, errors}) {
     };
 
     const handleSubmit = () => {
-        const data = set("config", config.current)
+        const data = {...get(), config: config.current}
         submit(data)
     }
 
     const handleSubmitAndActivate = () => {
-        update({config: config.current})
+        if (onActivate instanceof Function) {
+            const data = {...get(), config: config.current}
+            onActivate(data)
+        }
     }
 
     return <>
@@ -76,12 +83,12 @@ function ActivationForm({value, onSubmit, errors}) {
             <TuiFormGroup>
                 <TuiFormGroupHeader
                     header="Audience selection"
-                    description="Please define the audience which you would like to activate. You can join multiple audiences together."
+                    description="Please select the audience you would like to activate."
                 />
                 <TuiFormGroupContent>
                     <AudienceFetcherQuery value={get()}
                                           onChange={update}
-                                          error={(errors && errors["body.audience_query"]) || ""}
+                                          error={(errors && errors["body.audience"]) || ""}
                     />
                 </TuiFormGroupContent>
             </TuiFormGroup>
@@ -97,19 +104,21 @@ function ActivationForm({value, onSubmit, errors}) {
                         errorMessage={(errors && errors["body.activation_type"]) || ""}/>
                 </TuiFormGroupContent>
             </TuiFormGroup>
-            {get()?.configFormSchema?.form && <TuiFormGroup>
-                <JsonForm schema={get()?.configFormSchema?.form}
-                          values={config.current}
-                          onChange={handleConfigChange}/>
-            </TuiFormGroup>}
-            <Button label="Save" onClick={handleSubmit}/>
-            <Button label="Save & Activate" onClick={handleSubmitAndActivate}/>
         </TuiForm>
+        <div style={{margin: 20}}>
+        {get()?.configFormSchema?.form &&
+            <JsonForm schema={get()?.configFormSchema?.form}
+                      values={config.current}
+                      onChange={handleConfigChange}/>
 
+        }
+        <Button label="Save" onClick={handleSubmit}/>
+        <Button label="Save & Activate" onClick={handleSubmitAndActivate}/>
+        </div>
     </>
 }
 
-function ActivationFormById({activationId, onSubmit}) {
+function ActivationFormById({activationId, onSubmit, showAlert}) {
 
     const [errors, setErrors] = useState({})
     const {request} = useRequest()
@@ -128,7 +137,9 @@ function ActivationFormById({activationId, onSubmit}) {
         },
         {
             enabled: !!activationId,
-            cache: 0
+            cacheTime: 0,
+            refetchOnMount: true,
+            refetchOnWindowFocus: false
         }
     )
 
@@ -159,7 +170,52 @@ function ActivationFormById({activationId, onSubmit}) {
         }
     }
 
-    return <ActivationForm value={data} onSubmit={handleSubmit} errors={errors}/>
+    const handleSubmitAndActivate = async (data) => {
+        try {
+            let response;
+
+            // Save
+
+            const payload = {
+                id: uuid4(),
+                ...data
+            }
+            response = await submit(request, addActivation(payload))
+            if (response.status === 422) {
+                setErrors(response.errors)
+                showAlert({message: "Form not filled correctly", type: "error", hideAfter: 4000});
+            } else {
+                setErrors({})
+
+                // Activate
+
+                response = await request({
+                    url: '/activation/trigger',
+                    method: 'post',
+                    data: payload
+                }, true)
+
+                console.log(response)
+
+                // if (onSubmit instanceof Function) onSubmit(data)
+
+            }
+        } catch (e) {
+
+        }
+
+
+    }
+
+    return <ActivationForm value={data} onSubmit={handleSubmit} onActivate={handleSubmitAndActivate} errors={errors}/>
 }
 
-export default ActivationFormById
+const mapProps = (state) => {
+    return {
+        notification: state.notificationReducer,
+    }
+};
+export default connect(
+    mapProps,
+    {showAlert}
+)(ActivationFormById)

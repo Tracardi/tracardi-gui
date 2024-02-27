@@ -28,7 +28,6 @@ import {EventTypeFlowsAC} from "../elements/forms/inputs/EventTypeFlowsAC";
 import Funnel from "../elements/charts/Funnel";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
-import TuiSelectEventType from "../elements/tui/TuiSelectEventType";
 import QueryRuleGroup from "../elements/forms/QueryRuleGroup";
 import {FieldBox} from "../elements/forms/FieldBox";
 import {TimeSpanField} from "../elements/forms/TimeSpanField";
@@ -38,51 +37,8 @@ import DataTimePickerNew from "../elements/datepickers/DateTimePickerNew";
 import PopOverButton from "../elements/forms/buttons/PopOverButton";
 import CommitFrom from "../elements/forms/CommitForm";
 import DrawerButton from "../elements/forms/buttons/DrawerButton";
-import {
-    TuiForm,
-    TuiFormGroup,
-    TuiFormGroupContent,
-    TuiFormGroupField,
-    TuiFormGroupHeader
-} from "../elements/tui/TuiForm";
-import TuiColumnsFlex from "../elements/tui/TuiColumnsFlex";
-import TuiTopHeaderWrapper from "../elements/tui/TuiTopHeaderWrapper";
-import BoolInput from "../elements/forms/BoolInput";
-import JsonEditor from "../elements/editors/JsonEditor";
-import {TuiSelectEventSource} from "../elements/tui/TuiSelectEventSource";
-import {getEventTypePredefinedProps} from "../../remote_api/endpoints/event";
-import {useRequest} from "../../remote_api/requestClient";
-import Tabs, {TabCase} from "../elements/tabs/Tabs";
-import useTheme from "@mui/material/styles/useTheme";
-import InputAdornment from "@mui/material/InputAdornment";
-import Tag from "../elements/misc/Tag";
 import TestTrackForm from "../elements/forms/TestTrackForm";
 import MetaDataFrom from "../elements/forms/MetadataForm";
-
-
-function AggregationOperation({value, label, onChange}) {
-
-    const handleChange = (ev) => {
-        if (onChange instanceof Function) {
-            onChange(ev.target.value)
-        }
-    }
-
-    return <TextField
-        select
-        variant="outlined"
-        size="small"
-        label={label || "Aggregation"}
-        value={value || "sum"}
-        style={{width: 150}}
-        onChange={handleChange}
-    >
-        <MenuItem value={"sum"} selected>Sum of</MenuItem>
-        <MenuItem value={"avg"}>Average of</MenuItem>
-        <MenuItem value={"max"}>Maximum value of</MenuItem>
-        <MenuItem value={"min"}>Minimum value of</MenuItem>
-    </TextField>
-}
 
 function ComparisonOperation({value, label, onChange}) {
 
@@ -350,12 +306,20 @@ export default function TryOut() {
         ]
     }
 
+    const [x, setX] = useState("xxx")
 
 
     //value={{value:"123", ref:true}} autocomplete="profile"
     return (
         <div>
-            <Button onClick={()=>setMeta({name: "xxx"})} label="xxx"/>
+            <TextField size="small"
+                       variant="outlined"
+                       label="Aggregation Name"
+                       value={x}
+                       onChange={(e)=>{console.log("xxx"); setX(e.target.value)}}
+                       style={{width: 180}}
+            />
+            <Button onClick={()=>setX("yyyy")} label="xxx"/>
             <MetaDataFrom value={meta} name={"test"} onChange={console.log}/>
 
             <TestTrackForm/>

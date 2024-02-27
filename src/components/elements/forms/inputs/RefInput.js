@@ -31,7 +31,11 @@ export default function RefInput({
         }
     }
 
-    const [value, setValue] = useState(_value)
+    const [data, setData] = useState(_value)
+
+    function getData() {
+        return data || _value
+    }
 
     function handleChange(value) {
         if (onChange instanceof Function) {
@@ -40,15 +44,15 @@ export default function RefInput({
     }
 
     function handleValueChange(v) {
-        const _value = {...value, value: v}
-        setValue(_value)
+        const _value = {...data, value: v}
+        setData(_value)
         handleChange(_value)
     }
 
     function handleTypeChange(v) {
         if (!locked) {
-            const _value = {...value, ref: v}
-            setValue(_value)
+            const _value = {...data, ref: v}
+            setData(_value)
             handleChange(_value)
         }
     }
@@ -70,7 +74,7 @@ export default function RefInput({
             <legend style={textStyle}>{label}</legend>
             <div className="flexLine" style={{cursor: "pointer", width: "inherit", flexWrap: "nowrap"}}>
                 {
-                    value.ref
+                    getData()?.ref
                         ? <VscLink size={20} onClick={() => handleTypeChange(false)} style={{color: "gray", marginRight: 5}}/>
                         : <IoTextOutline size={20} onClick={() => handleTypeChange(true)} style={{color: "gray", marginRight: 5}}/>
                 }
@@ -78,17 +82,17 @@ export default function RefInput({
                     ? <ValueInput
                         source={autocomplete}
                         filter={filter}
-                        value={value.value}
+                        value={getData()?.value}
                         fullWidth={fullWidth}
                         cast={false}
                         disabled={disabled}
                         disableCast={true}
-                        onChange={(v,c) => handleValueChange(v)}/>
+                        onChange={(v) => handleValueChange(v)}/>
                     : <TextField
                         fullWidth={fullWidth}
                         size="small"
                         style={style}
-                        value={value.value}
+                        value={getData()?.value}
                         onChange={(e) => handleValueChange(e.target.value)}
                         disabled={disabled}
                         variant="standard"

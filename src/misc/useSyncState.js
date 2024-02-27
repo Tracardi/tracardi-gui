@@ -1,9 +1,23 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import {isEmptyObjectOrNull} from "./typeChecking";
 
 export function useObjectState({name, value, defaultValue, onChange, onSubmit}) {
 
     const [data, setData] = useState(null);
+
+    useEffect(() => {
+        return () => {
+            setData(null)
+        }
+    }, [])
+
+    const handleStateChange = (newState) => {
+        setData(newState)
+        if(onChange instanceof Function) {
+            onChange(newState)
+        }
+    }
+
     const update = (changedValue) => {
         let newValue;
         if(data === null) {
@@ -15,12 +29,7 @@ export function useObjectState({name, value, defaultValue, onChange, onSubmit}) 
         } else {
             newValue = {...data, ...changedValue}
         }
-        setData(newValue)
-
-        if(onChange instanceof Function) {
-            onChange(newValue)
-        }
-
+        handleStateChange(newValue)
         return newValue
     }
 
@@ -40,11 +49,8 @@ export function useObjectState({name, value, defaultValue, onChange, onSubmit}) 
         } else {
             newValue = {...data, [key]:changedValue}
         }
-        setData(newValue)
 
-        if(onChange instanceof Function) {
-            onChange(newValue)
-        }
+        handleStateChange(newValue)
 
         return newValue
     }
@@ -64,7 +70,7 @@ export function useObjectState({name, value, defaultValue, onChange, onSubmit}) 
     }
 
     const reset = () => {
-        setData(null)
+        handleStateChange(null)
     }
 
     return {set, get, update, del, submit, reset}

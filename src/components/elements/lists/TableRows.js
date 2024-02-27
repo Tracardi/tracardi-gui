@@ -43,6 +43,11 @@ const TableRows = ({
         },
         data => {
             return data
+        },
+        {
+            cacheTime:0,
+            refetchOnMount: true,
+            refetchOnWindowFocus: false
         }
     )
 

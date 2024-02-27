@@ -11,14 +11,16 @@ import MetaDataFrom from "./MetadataForm";
 import {v4 as uuid4} from 'uuid';
 import {useFetch} from "../../../remote_api/remoteState";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
-import {submit} from "../../../remote_api/submit";
+import {submit as submitForm} from "../../../remote_api/submit";
 import {useObjectState} from "../../../misc/useSyncState";
 import AudienceDetails from "../details/AudienceDetails";
 import DrawerButton from "./buttons/DrawerButton";
 import FetchError from "../../errors/FetchError";
 import ValidationErrorSummary from "../../errors/ValidationErrorSummary";
+import {connect} from "react-redux";
+import {showAlert} from "../../../redux/reducers/alertSlice";
 
-const ListOfAggregations = memo(function ({value, onChange, errors}) {
+const ListOfAggregations = function ({value, onChange, errors}) {
     return <ListOfForms form={AudienceFilteringForm}
                         value={value}
                         defaultFormValue={{
@@ -33,11 +35,12 @@ const ListOfAggregations = memo(function ({value, onChange, errors}) {
                         onChange={onChange}
                         errors={errors}
                         align="bottom"/>
-})
+}
 
 function AudienceForm({value, errors, onSubmit}) {
 
     const {get, update, submit} = useObjectState({
+        name: "Audience Form",
         value,
         defaultValue: {
             name: "",
@@ -86,15 +89,16 @@ function AudienceForm({value, errors, onSubmit}) {
                     {errors && <ValidationErrorSummary errors={errors}/>}
                 </TuiFormGroupContent>
             </TuiFormGroup>
-            <Button label="Save" onClick={submit}/>
+            <Button label="Save" onClick={() => submit()}/>
             <DrawerButton label="Estimate" onClick={handleEstimate}>
                 <AudienceDetails audience={audience}/>
             </DrawerButton>
+            <Button label="Debug" onClick={() => console.log(get())}/>
         </TuiForm>
         </>
 }
 
-function AudienceFormById({audienceId, onSubmit}) {
+function AudienceFormById({audienceId, onSubmit, showAlert}) {
 
     const [errors, setErrors] = useState({})
 
@@ -107,6 +111,9 @@ function AudienceFormById({audienceId, onSubmit}) {
         },
         {
             enabled: !!audienceId,
+            cacheTime: 0,
+            refetchOnMount: true,
+            refetchOnWindowFocus: false
         }
     )
 
@@ -124,9 +131,13 @@ function AudienceFormById({audienceId, onSubmit}) {
                 id: uuid4(),
                 ...data
             }
-            const response = await submit(request, addAudience(payload))
-            if(response.status === 422) {
+
+            const response = await submitForm(request, addAudience(payload))
+
+            if(response?.status === 422) {
                 setErrors(response.errors)
+            } else if (!response) {
+                showAlert({message:"No connection to API", type: "error", hideAfter: 4000});
             } else {
                 setErrors({})
                 if(onSubmit instanceof Function) onSubmit()
@@ -136,7 +147,17 @@ function AudienceFormById({audienceId, onSubmit}) {
             console.error(e)
         }
     }
+
     return <AudienceForm value={data} onSubmit={handleSubmit} errors={errors}/>
 }
 
-export default memo(AudienceFormById)
+const mapProps = (state) => {
+    return {
+        notification: state.notificationReducer,
+    }
+};
+export default connect(
+    mapProps,
+    {showAlert}
+)(memo(AudienceFormById))
+

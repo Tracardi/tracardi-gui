@@ -322,9 +322,8 @@ const Title = ({title}) => {
 }
 
 const JsonForm = ({spec = null, schema, values = {}, errorMessages = {}, serverSideError, onSubmit, onChange, processing = false, confirmed = false}) => {
-    console.log("JsonForm", values)
+
     const keyValueMapOfComponentValues = object2dot(values)
-    console.log("JsonForm", keyValueMapOfComponentValues)
     const hasErrors = errorMessages && Object.keys(errorMessages).length
 
     const handleSubmit = () => {
