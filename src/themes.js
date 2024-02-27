@@ -79,7 +79,7 @@ export const stagingTheme = createTheme({
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    backgroundColor: 'rgba(245,245,245,.85)'
+                    backgroundColor: 'rgba(235,235,235)'
                 }
             }
         },
@@ -165,7 +165,7 @@ export const darkTheme = createTheme({
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    backgroundColor: 'rgba(10,10,10,.85)'
+                    backgroundColor: 'rgba(10,10,10)'
                 }
             }
         },
@@ -353,7 +353,7 @@ export const productionTheme = createTheme({
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    backgroundColor: 'rgba(245,245,245,.85)'
+                    backgroundColor: 'rgba(235,235,235)'
                 }
             }
         },

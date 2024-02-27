@@ -7,19 +7,24 @@ import PropertyField from "./PropertyField";
 import Counter, {BigCounter} from "../metrics/Counter";
 import {ProfileDetailsById} from "./ProfileDetails";
 import {isNotEmptyArray} from "../../../misc/typeChecking";
+import JsonBrowser from "../misc/JsonBrowser";
+import Tabs, {TabCase} from "../tabs/Tabs";
+import {Paper} from "@mui/material";
 
 export function AudienceDetailsById({audienceId}) {
     const {isLoading, data, error} = useFetch(
         [`ComputeAudience-${audienceId}`, [audienceId]],
         computeAudienceById(audienceId),
-        data => {return data},
+        data => {
+            return data
+        },
         {retry: 0})
 
-    if(isLoading) {
+    if (isLoading) {
         return <CenteredCircularProgress/>
     }
 
-    if(error) {
+    if (error) {
         return <FetchError error={error}/>
     }
 
@@ -44,37 +49,48 @@ export default function AudienceDetails({audience}) {
     const {isLoading, data, error} = useFetch(
         [`ComputeAudience-${audience?.name}`, [audience]],
         computeAudience(audience),
-        data => {return data},
-        {retry: 0})
+        data => {
+            return data
+        },
+        {retry: 0, refetchOnWindowFocus: false})
 
-    if(isLoading) {
+    if (isLoading) {
         return <CenteredCircularProgress label="Please Wait. Audience number is estimated."/>
     }
 
-    if(error) {
+    if (error) {
         return <FetchError error={error}/>
     }
 
-    return <div style={{padding: 30}}>
-        <Counter label="Audience Count"
-                 width={200}
-                 margin={0}
-                 value={data?.total}
-                 hint={<span>3% from 4.7M</span>}
-        />
-        {isNotEmptyArray(data?.result) && <div style={{marginTop: 30}}>
-            <div style={{padding:"0 0 10px 10px"}}>Sample Audience Profiles</div>
-            <div style={{backgroundColor: "rgba(128,128,128,.3", borderRadius: 10, padding: 10}}>
-                {data?.result.map((id, index) => {
-                    return <PropertyField key={index}
-                                          drawerSize={1200}
-                                          content={id}>
-                        <ProfileDetailsById id={id}/>
-                    </PropertyField>
-                })}
-            </div>
-        </div>}
-
-
-    </div>
+    return <>
+        <div style={{padding: 30}}>
+            <Counter label="Audience Count"
+                     width={200}
+                     margin={0}
+                     value={data?.total}
+                     hint={<span>3% from 4.7M</span>}
+            />
+        </div>
+        <Tabs tabs={["Audience Sample", "Queries"]}>
+            <TabCase id={0}>
+                {isNotEmptyArray(data?.result) && <div style={{margin: 20}}>
+                    <div style={{padding: "0 0 10px 10px"}}>Sample Audience Profiles</div>
+                    <div style={{backgroundColor: "rgba(128,128,128,.3", borderRadius: 10, padding: 10}}>
+                        {data?.result.map((id, index) => {
+                            return <PropertyField key={index}
+                                                  drawerSize={1200}
+                                                  content={id}>
+                                <ProfileDetailsById id={id}/>
+                            </PropertyField>
+                        })}
+                    </div>
+                </div>}
+            </TabCase>
+            <TabCase id={1}>
+                <Paper style={{margin: 20}}>
+                <JsonBrowser data={data?.queries}/>
+                </Paper>
+            </TabCase>
+        </Tabs>
+    </>
 }
