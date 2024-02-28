@@ -20,8 +20,8 @@ import ValidationErrorSummary from "../../errors/ValidationErrorSummary";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 
-const ListOfAggregations = function ({value, onChange, errors}) {
-    return <ListOfForms form={AudienceFilteringForm}
+const ListOfAggregations = memo(({value, onChange}) => {
+    return <ListOfForms form={memo(AudienceFilteringForm, ()=>true)}
                         value={value}
                         defaultFormValue={{
                             entity: {
@@ -33,9 +33,43 @@ const ListOfAggregations = function ({value, onChange, errors}) {
                             group_where: ""
                         }}
                         onChange={onChange}
-                        errors={errors}
                         align="bottom"/>
+}, ()=>true)
+
+function AudienceDetailsForm({data, errors, onUpdate}) {
+    return <TuiForm style={{margin: 20}}>
+        <TuiFormGroup>
+            <TuiFormGroupHeader
+                header="Audience selection"
+                description="Please define how to filter out the audience from your database."
+            />
+            <TuiFormGroupContent>
+                <KqlAutoComplete
+                    index="profile"
+                    label="Filter by profile attributes"
+                    value={data?.filter || ""}
+                    onChange={v => onUpdate({filter: v})}
+                />
+                <div style={{fontSize: 12}}>Do not know how to filter. Click <span
+                    style={{textDecoration: "underline", cursor: "pointer"}}
+                    onClick={external("http://docs.tracardi.com/running/filtering/", true)}>here</span> for information.
+                </div>
+            </TuiFormGroupContent>
+            <TuiFormGroupContent description="Add required events" style={{paddingTop:0}}>
+                <fieldset>
+                    <legend>Profiles must have</legend>
+                    <ListOfAggregations
+                        value={data?.join || []}
+                        onChange={(v) => onUpdate({join: v})}
+                    />
+                </fieldset>
+                {errors && <ValidationErrorSummary errors={errors}/>}
+            </TuiFormGroupContent>
+        </TuiFormGroup>
+    </TuiForm>
 }
+// Never rerender. The component has its own state and reports the changes
+const AudienceDetailsFormMemo = memo(AudienceDetailsForm, (prevProps, nextProps)=>prevProps.errors===nextProps.errors)
 
 function AudienceForm({value, errors, onSubmit}) {
 
@@ -60,41 +94,14 @@ function AudienceForm({value, errors, onSubmit}) {
 
     return <>
         <MetaDataFrom name="audience" value={get()} onChange={update} errors={errors}/>
-        <TuiForm style={{margin: 20}}>
-            <TuiFormGroup>
-                <TuiFormGroupHeader
-                    header="Audience selection"
-                    description="Please define how to filter out the audience from your database."
-                />
-                <TuiFormGroupContent>
-                    <KqlAutoComplete
-                        index="profile"
-                        label="Filter by profile attributes"
-                        value={get()?.filter || ""}
-                    />
-                    <div style={{fontSize: 12}}>Do not know how to filter. Click <span
-                        style={{textDecoration: "underline", cursor: "pointer"}}
-                        onClick={external("http://docs.tracardi.com/running/filtering/", true)}>here</span> for information.
-                    </div>
-                </TuiFormGroupContent>
-                <TuiFormGroupContent description="Add required events" style={{paddingTop:0}}>
-                    <fieldset>
-                        <legend>Profiles must have</legend>
-                        <ListOfAggregations
-                            value={get()?.join || []}
-                            onChange={(v) => update({join: v})}
-                            errors={errors}
-                        />
-                    </fieldset>
-                    {errors && <ValidationErrorSummary errors={errors}/>}
-                </TuiFormGroupContent>
-            </TuiFormGroup>
+        <AudienceDetailsFormMemo data={get()} errors={errors} onUpdate={update}/>
+        <div style={{margin:20}}>
             <Button label="Save" onClick={() => submit()}/>
             <DrawerButton label="Estimate" onClick={handleEstimate}>
                 <AudienceDetails audience={audience}/>
             </DrawerButton>
             <Button label="Debug" onClick={() => console.log(get())}/>
-        </TuiForm>
+        </div>
         </>
 }
 

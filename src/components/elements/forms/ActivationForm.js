@@ -11,7 +11,7 @@ import {addActivation, getActivation} from "../../../remote_api/endpoints/activa
 import Button from "./Button";
 import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "../tui/TuiForm";
 import {TuiSelectActivationType} from "../tui/TuiSelectActivationType";
-import JsonForm from "./JsonForm";
+import {JsonFormMemo} from "./JsonForm";
 import AudienceFetcherQuery from "./inputs/AudienceFetcherQuery";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
@@ -106,14 +106,15 @@ function ActivationForm({value, onSubmit, onActivate, errors}) {
             </TuiFormGroup>
         </TuiForm>
         <div style={{margin: 20}}>
-        {get()?.configFormSchema?.form &&
-            <JsonForm schema={get()?.configFormSchema?.form}
-                      values={config.current}
-                      onChange={handleConfigChange}/>
+            {get()?.configFormSchema?.form &&
+            <JsonFormMemo
+                schema={get()?.configFormSchema?.form}
+                values={config.current}
+                onChange={handleConfigChange}/>
 
-        }
-        <Button label="Save" onClick={handleSubmit}/>
-        <Button label="Save & Activate" onClick={handleSubmitAndActivate}/>
+            }
+            <Button label="Save" onClick={handleSubmit}/>
+            <Button label="Save & Activate" onClick={handleSubmitAndActivate}/>
         </div>
     </>
 }

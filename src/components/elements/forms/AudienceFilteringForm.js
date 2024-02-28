@@ -2,7 +2,7 @@ import {FieldBox} from "./FieldBox";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import ListOfForms from "./ListOfForms";
 import AggregationForm from "./AggregationForm";
-import React from "react";
+import React, {memo} from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import KqlAutoComplete from "./KqlAutoComplete";
@@ -47,7 +47,7 @@ export default function AudienceFilteringForm({value, onChange, errors}) {
         group_where: ""
     }
      */
-
+    console.log("AudienceFilteringForm rr")
     const theme = useTheme();
 
     const handleChange = (k, v) => {

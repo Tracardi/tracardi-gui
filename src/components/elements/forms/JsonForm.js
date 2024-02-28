@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React, {memo, useCallback} from "react";
 import Button from "./Button";
 import {dot2object, object2dot} from "../../../misc/dottedObject";
 import AlertBox from "../../errors/AlertBox";
@@ -368,5 +368,5 @@ const JsonForm = ({spec = null, schema, values = {}, errorMessages = {}, serverS
     return ""
 
 }
-
+export const JsonFormMemo = memo(JsonForm, ()=> true)
 export default JsonForm;

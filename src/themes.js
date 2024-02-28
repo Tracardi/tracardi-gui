@@ -162,10 +162,18 @@ export const darkTheme = createTheme({
         }
     },
     components: {
+        MuiAutocomplete: {
+            styleOverrides: {
+                paper: {
+                    backgroundColor: "rgba(30,30,30)"
+                },
+            },
+        },
         MuiPaper: {
             styleOverrides: {
                 root: {
-                    backgroundColor: 'rgba(10,10,10)'
+                    backgroundColor: "rgba(10,10,10, .5)",
+                    backdropFilter: "blur(20px)"
                 }
             }
         },
