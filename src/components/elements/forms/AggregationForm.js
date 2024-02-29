@@ -33,7 +33,7 @@ function AggregationOperation({value, label, onChange}) {
 }
 
 export default function AggregationForm({value: _value, onChange}) {
-
+    console.log("AggregationForm rr")
     const [disabled, setDisabled] = useState(_value?.aggr === 'value_count')
 
     const {get, update, set} = useObjectState({

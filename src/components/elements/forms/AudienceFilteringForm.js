@@ -51,21 +51,27 @@ export default function AudienceFilteringForm({value, onChange, errors}) {
     const theme = useTheme();
 
     const handleChange = (k, v) => {
-        value[k] = v
+        value = {...value, [k]: v}
         if (onChange instanceof Function) {
             onChange(value)
         }
     }
 
     const handleEntityChange = (k, v) => {
-        value.entity[k] = v
+        value.entity = {...value.entity, [k]: v}
         if (onChange instanceof Function) {
             onChange(value)
         }
     }
 
     return <fieldset
-        style={{borderWidth: "2px 0 0", border: `2px solid ${theme.palette.common.black}`, borderRadius: 6, marginLeft: 5, marginBottom: 30}}>
+        style={{
+            borderWidth: "2px 0 0",
+            border: `2px solid ${theme.palette.common.black}`,
+            borderRadius: 6,
+            marginLeft: 5,
+            marginBottom: 30
+        }}>
         <legend>
             <EntitySelect value={value?.entity?.type || "event"} onChange={v => handleEntityChange("type", v)}/>
         </legend>
@@ -76,13 +82,14 @@ export default function AudienceFilteringForm({value, onChange, errors}) {
                     value={value.entity?.event_type}
                     onSetValue={(v) => handleEntityChange("event_type", v)}
                 />
-            </FieldBox> <KqlAutoComplete value={value.entity?.where}
-                                         index={value?.entity?.type}
-                                         label="Meets condition"
-                                         fullWidth={false}
-                                         width={565}
-                                         onChange={(v) => handleEntityChange("where", v)}
-        />
+            </FieldBox>
+            <KqlAutoComplete value={value.entity?.where}
+                             index={value?.entity?.type}
+                             label="Meets condition"
+                             fullWidth={false}
+                             width={565}
+                             onChange={(v) => handleEntityChange("where", v)}
+            />
         </div>
 
         <fieldset>
@@ -107,9 +114,9 @@ export default function AudienceFilteringForm({value, onChange, errors}) {
             <div style={{marginTop: 20}}>
                 <TextField
                     value={value?.group_where || ""}
-                    onChange={(ev) => handleChange("group_where", ev.target.value)}
+                    onChange={(v) => handleChange("group_where", v.target.value)}
                     label="Meets Aggregation Condition"
-                           fullWidth/>
+                    fullWidth/>
             </div>
         </fieldset>
 

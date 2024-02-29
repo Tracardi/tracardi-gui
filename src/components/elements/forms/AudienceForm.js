@@ -20,8 +20,8 @@ import ValidationErrorSummary from "../../errors/ValidationErrorSummary";
 import {connect} from "react-redux";
 import {showAlert} from "../../../redux/reducers/alertSlice";
 
-const ListOfAggregations = memo(({value, onChange}) => {
-    return <ListOfForms form={memo(AudienceFilteringForm, ()=>true)}
+const ListOfAggregations = ({value, onChange}) => {
+    return <ListOfForms form={AudienceFilteringForm}
                         value={value}
                         defaultFormValue={{
                             entity: {
@@ -34,7 +34,7 @@ const ListOfAggregations = memo(({value, onChange}) => {
                         }}
                         onChange={onChange}
                         align="bottom"/>
-}, ()=>true)
+}
 
 function AudienceDetailsForm({data, errors, onUpdate}) {
     return <TuiForm style={{margin: 20}}>
