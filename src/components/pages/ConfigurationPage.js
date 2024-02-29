@@ -8,10 +8,10 @@ import ConfigurationForm from "../elements/forms/ConfigurationForm";
 export default function ConfigurationPage() {
 
     const urlFunc = useCallback((query) => ('/configuration' + ((query) ? "?query=" + query : "")), []);
-    const addFunc = useCallback((close) => <div style={{padding: "0 20px"}}><ConfigurationForm onSave={close}/>
+    const addFunc = useCallback((close) => <div style={{padding: "0 20px"}}><ConfigurationForm onSubmit={close}/>
     </div>, []);
     const detailsFunc = useCallback((id, close) => <div style={{padding: "0 20px"}}><ConfigurationForm configId={id}
-                                                                                                   onSave={close}/>
+                                                                                                       onSubmit={close}/>
         </div>,
         [])
 

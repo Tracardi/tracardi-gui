@@ -253,6 +253,7 @@ export function FlowEditorPane(
         if (data) {
             if (onFlowLoad) {
                 const payload = {
+                    id: data?.id,
                     wf_schema: {
                         uri: data?.wf_schema?.uri,
                         version: data?.wf_schema?.version,
@@ -263,7 +264,8 @@ export function FlowEditorPane(
                     name: data?.name,
                     description: data?.description,
                     tags: data?.tags,
-                    type: data?.type
+                    type: data?.type,
+                    file_name: data?.file_name
                 }
                 onFlowLoad(payload);
             }

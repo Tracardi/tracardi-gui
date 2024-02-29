@@ -2,7 +2,7 @@ export const submit = async (request, endpoint) => {
     try {
         return await request(endpoint)
     } catch (e) {
-        if(e.status === 422) {
+        if (e.status === 422) {
             return {
                 status: 422,
                 errors: e.response?.data?.detail.reduce((acc, curr) => {
@@ -11,6 +11,8 @@ export const submit = async (request, endpoint) => {
                     return acc;
                 }, {})
             }
+        } else {
+            return e
         }
     }
 }

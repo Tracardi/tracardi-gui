@@ -10,8 +10,9 @@ import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {submit} from "../../../remote_api/submit";
 import JsonEditor from "../editors/JsonEditor";
 import {parse} from "../../../misc/json";
+import {TuiSelectConfigurationTypeMemo} from "../tui/TuiSelectConfigurationType";
 
-export default function ConfigurationForm({configId, onComplete}) {
+export default function ConfigurationForm({configId, onSubmit}) {
 
     const [configuration, setConfiguration] = useState({
         name: "",
@@ -32,6 +33,7 @@ export default function ConfigurationForm({configId, onComplete}) {
         },
         {
             enabled: !!configId,
+            refetchOnWindowFocus: false
         }
     )
 
@@ -53,7 +55,11 @@ export default function ConfigurationForm({configId, onComplete}) {
                 description: configuration.description || "",
                 enabled: configuration.enabled,
                 tags: configuration?.tags || [],
-                config: config || {}
+                config: config || {},
+                type: {
+                    id: "",
+                    name: ""
+                }
             }
 
             const response = await submit(request, addConfiguration(payload))
@@ -61,9 +67,17 @@ export default function ConfigurationForm({configId, onComplete}) {
                 setErrors(response.errors)
             } else {
                 setErrors({})
-                if(onComplete instanceof Function) onComplete()
+                if(onSubmit instanceof Function) onSubmit()
             }
         }
+    }
+
+    const handleTypeChange = (configuration) => {
+        const newConfigurationType = {
+            ...configuration,
+            config:JSON.stringify(configuration.config, null, '  ')
+        }
+        setConfiguration(newConfigurationType)
     }
 
     if(isLoading) {
@@ -76,6 +90,11 @@ export default function ConfigurationForm({configId, onComplete}) {
             <TuiFormGroupHeader
                 header="Configuration"
             />
+            <TuiFormGroupContent>
+                <TuiFormGroupField header="Select Configuration Type">
+                    <TuiSelectConfigurationTypeMemo initValue={configuration} onSetValue={handleTypeChange}/>
+                </TuiFormGroupField>
+            </TuiFormGroupContent>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="Configuration JSON">
                     <fieldset style={{marginTop: 10}}>

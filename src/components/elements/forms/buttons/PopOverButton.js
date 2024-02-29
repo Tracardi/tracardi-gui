@@ -21,6 +21,16 @@ export default function PopOverButton({children, label, icon, style, variant = "
     const open = Boolean(anchorEl);
     const id = open ? 'datetime-popover' : undefined;
 
+    const addPropToChildren = (children, additionalProps) => {
+        return React.Children.map(children, child => {
+            // Make sure to not add props to text nodes or boolean values
+            if (React.isValidElement(child)) {
+                return React.cloneElement(child, { ...additionalProps });
+            }
+            return child;
+        });
+    };
+
     return <div>
         <Button
             icon={icon}
@@ -45,7 +55,7 @@ export default function PopOverButton({children, label, icon, style, variant = "
                 horizontal: 'right',
             }}
         >
-          {children}
+          {addPropToChildren(children, {onClose: handleClose})}
         </Popover>
     </div>
 

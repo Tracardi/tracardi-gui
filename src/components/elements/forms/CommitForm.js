@@ -2,21 +2,65 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import TextField from "@mui/material/TextField";
 import React, {useState} from "react";
 import Button from "./Button";
+import {saveWorkflowInGitHub} from "../../../remote_api/endpoints/github";
+import {useRequest} from "../../../remote_api/requestClient";
+import {submit} from "../../../remote_api/submit";
+import FetchError from "../../errors/FetchError";
 
-export default function CommitFrom({value, onSubmit, errors}) {
+export default function CommitFrom({value, onClose}) {
 
-    const [data, setData] = useState(value || {
-        "file_name": "",
-        "message": ""
-    })
+    const [metadata, setMetaData] = useState(value)
+    const [message, setMessage] = useState("")
+    const [errors, setErrors] = useState({})
 
-    const handleChange = (k, v) => {
-        setData({...data, [k]: v})
+    const [error, setError] = useState("")
+
+    const [progress, setProgress] = useState(false)
+
+    const {request} = useRequest()
+
+    function sanitizeString(str) {
+        return str
+            // Remove all non-alphanumeric characters except spaces
+            .replace(/[^a-zA-Z0-9 ]/g, '')
+            .trim()
+            // Replace spaces with hyphens
+            .replace(/\s+/g, '-')
+            // Convert to lowercase
+            .toLowerCase();
     }
 
-    const handleSubmit = () => {
-        if (onSubmit instanceof Function) {
-            onSubmit(data)
+    const getFileName = () => {
+
+        if(metadata?.file_name) {
+            return metadata?.file_name
+        }
+
+        if(metadata?.name) {
+            return "workflows/" + sanitizeString(metadata.name) + ".tracardi"
+        }
+
+        return "workflows/please-type-name.tracardi"
+    }
+
+    const handleChange = (k, v) => {
+        setMetaData({...metadata, [k]: v})
+    }
+
+    const handleSubmit = async () => {
+        setProgress(true)
+        const response = await submit(request, saveWorkflowInGitHub(metadata?.id, getFileName(), message))
+        if (response?.status === 422) {
+            setErrors(response.errors)
+        } else if(response?.status === 200) {
+            setErrors({})
+            if (onClose instanceof Function) {
+                setProgress(false)
+                onClose()
+            }
+        } else {
+            setProgress(false)
+            setError(response)
         }
     }
 
@@ -29,7 +73,7 @@ export default function CommitFrom({value, onSubmit, errors}) {
                         label="File Name"
                         error={errors && "body.file_name" in errors}
                         helperText={errors && errors["body.file_name"] || ""}
-                        value={data?.file_name || ""}
+                        value={getFileName()}
                         onChange={(ev) => {
                             handleChange("file_name", ev.target.value)
                         }}
@@ -42,11 +86,11 @@ export default function CommitFrom({value, onSubmit, errors}) {
                                    description={`Commit description will help you to understand what have been changed in this commit.`}>
                     <TextField
                         label={"Message"}
-                        value={data?.massage || ""}
+                        value={message}
                         multiline
                         rows={3}
                         onChange={(ev) => {
-                            handleChange("massage", ev.target.value)
+                            setMessage(ev.target.value)
                         }}
                         variant="outlined"
                         fullWidth
@@ -54,6 +98,7 @@ export default function CommitFrom({value, onSubmit, errors}) {
                 </TuiFormGroupField>
             </TuiFormGroupContent>
         </TuiFormGroup>
-            <Button label="Submit" onClick={handleSubmit}/>
+        {error && <FetchError error={error} />}
+            <Button label="Submit" progress={progress} onClick={handleSubmit}/>
         </TuiForm>
 }

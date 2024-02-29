@@ -26,6 +26,7 @@ import TestTrackForm from "../elements/forms/TestTrackForm";
 import PopOverButton from "../elements/forms/buttons/PopOverButton";
 import CommitFrom from "../elements/forms/CommitForm";
 
+
 export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onSaveDraft}) {
 
     const [testConsoleOpened, setTestConsoleOpened] = useState(false);
@@ -93,7 +94,9 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
         <div>
             <ReinstallButton/>
             <PopOverButton label="Commit">
-                <CommitFrom />
+                <CommitFrom
+                    value={flowMetaData}
+                />
             </PopOverButton>
             <ProductionButton
                 label="Rearrange"
