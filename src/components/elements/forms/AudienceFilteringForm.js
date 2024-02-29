@@ -2,7 +2,7 @@ import {FieldBox} from "./FieldBox";
 import TuiSelectEventType from "../tui/TuiSelectEventType";
 import ListOfForms from "./ListOfForms";
 import AggregationForm from "./AggregationForm";
-import React, {memo} from "react";
+import React from "react";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import KqlAutoComplete from "./KqlAutoComplete";
