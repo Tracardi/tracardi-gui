@@ -7,6 +7,38 @@ import {useRequest} from "../../../remote_api/requestClient";
 import {submit} from "../../../remote_api/submit";
 import FetchError from "../../errors/FetchError";
 
+
+function SubmitButton({label, closeLabel="Close", errorLabel="Error", progress, onClose, onSubmit}) {
+
+    const [confirmation, setConfirmation] = useState(null)
+
+    const handleSubmit = () => {
+        console.log(typeof onSubmit)
+        if(typeof onSubmit  === 'function') {
+            Promise.resolve(onSubmit())
+                .then(result => {
+                    // Handle the result here
+                    setConfirmation(result)
+                })
+                .catch(error => {
+                    // Handle any errors here
+                    setConfirmation(false)
+                });
+        }
+    }
+
+    if(confirmation === null) {
+        return <Button label={label} progress={progress} onClick={handleSubmit}/>
+    }
+
+    if(confirmation) {
+        return <Button label={closeLabel} onClick={onClose} selected={true}/>
+    }
+    // Error
+    return  <Button label={errorLabel} onClick={onClose} error={true}/>
+
+}
+
 export default function CommitFrom({value, onClose}) {
 
     const [metadata, setMetaData] = useState(value)
@@ -16,6 +48,7 @@ export default function CommitFrom({value, onClose}) {
     const [error, setError] = useState("")
 
     const [progress, setProgress] = useState(false)
+
 
     const {request} = useRequest()
 
@@ -52,17 +85,18 @@ export default function CommitFrom({value, onClose}) {
         const response = await submit(request, saveWorkflowInGitHub(metadata?.id, getFileName(), message))
         if (response?.status === 422) {
             setErrors(response.errors)
+            return false
         } else if(response?.status === 200) {
             setErrors({})
-            if (onClose instanceof Function) {
-                setProgress(false)
-                onClose()
-            }
+            setProgress(false)
+            return true
         } else {
             setProgress(false)
             setError(response)
+            return false
         }
     }
+
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
@@ -99,6 +133,11 @@ export default function CommitFrom({value, onClose}) {
             </TuiFormGroupContent>
         </TuiFormGroup>
         {error && <FetchError error={error} />}
-            <Button label="Submit" progress={progress} onClick={handleSubmit}/>
+            <SubmitButton
+                label="Submit"
+                closeLabel="Data Pushed - Close"
+                progress={progress}
+                onSubmit={handleSubmit}
+                onClose={onClose}/>
         </TuiForm>
 }
