@@ -113,7 +113,7 @@ export function EventToProfileCard({data, onDeleteComplete, onEditComplete, disp
     return <div className="Box10" style={{height: "100%"}}>
         {data && <Details/>}
         <FormDrawer
-            width={800}
+            width={1000}
             onClose={() => {
                 setDisplayEdit(false)
             }}

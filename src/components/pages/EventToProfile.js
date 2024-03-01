@@ -21,7 +21,7 @@ export default function EventToProfile() {
         drawerDetailsWidth={900}
         detailsFunc={detailsFunc}
         drawerAddTitle="New mapping"
-        drawerAddWidth={950}
+        drawerAddWidth={1000}
         addFunc={addFunc}
         deploymentTable="event_to_profile_mapping"
         deleteEndpoint='/event-to-profile/'

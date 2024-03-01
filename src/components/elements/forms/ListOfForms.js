@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import {v4 as uuid4} from 'uuid';
 import {SlClose} from "react-icons/sl";
 import Button from "./Button";
@@ -118,12 +118,16 @@ const ListOfForms = ({
                 objectMap(listOfValues, (key, formValue) => {
                     return <div key={key} style={style} className="FormFieldRow">
                         <span style={{width: width || "100%"}} onClick={(e) => handleSetCurrent(e, key)}>
-                            <> {key} {React.createElement(
-                                form,
-                                {value: formValue, errors: errors, onChange: (value) => handleRowChange(key, value)},
-                                null
+                            {
+                                React.createElement(
+                                    form,
+                                    {
+                                        value: formValue,
+                                        errors: errors,
+                                        onChange: (value) => handleRowChange(key, value)
+                                    },
+                                    null
                                 )}
-                                </>
                         </span>
                         {onChange instanceof Function &&
                             <SlClose size={24} style={{cursor: "pointer"}} onClick={() => handleDelete(key)}/>}

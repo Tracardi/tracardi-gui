@@ -196,7 +196,7 @@ export const ProfileData = ({profile}) => {
                 </Tabs>
             </div>
             <div style={{borderRadius: 5, border: "solid 1px rgba(128,128,128,0.5)", marginTop: 20}}>
-                <Tabs tabs={["Job", "Loyalty", "Identifiers"]}
+                <Tabs tabs={["Job", "Loyalty", "Identifiers", "AnonIds"]}
                       tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
                     <TabCase id={0}>
                         <div style={{margin: 20}}>
@@ -209,7 +209,7 @@ export const ProfileData = ({profile}) => {
                         <div style={{margin: 20}}>
                             {!isEmptyObjectOrNull(profile?.data?.loyalty)
                                 ? <Properties properties={profile?.data?.loyalty}/>
-                                : <NoData header="No Loyality Data"/>}
+                                : <NoData header="No Loyalty Data"/>}
                         </div>
                     </TabCase>
                     <TabCase id={2}>
@@ -218,6 +218,11 @@ export const ProfileData = ({profile}) => {
                                 ? <Properties properties={profile?.data?.identifier}/>
                                 : <NoData header="No Identifiers"/>}
 
+                        </div>
+                    </TabCase>
+                    <TabCase id={3}>
+                        <div style={{margin: 20}}>
+                            <TuiTags tags={profile?.ids} style={{margin: 2}}/>
                         </div>
                     </TabCase>
                 </Tabs>

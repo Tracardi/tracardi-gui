@@ -19,8 +19,11 @@ export default function Properties({properties, show, exclude}) {
             return "{}"
         } if(isString(value) && value === "") {
             return "<empty string>";
-        } else if(Array.isArray(value) &&  value.length === 0) {
-            return "[]"
+        } else if(Array.isArray(value)) {
+            if(value.length === 0) {
+                return "[]"
+            }
+            return value.toString()
         } else {
             return value.toString();
         }
