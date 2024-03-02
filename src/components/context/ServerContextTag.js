@@ -12,7 +12,7 @@ const ServerContextTag = ({style, context, onContextChange,
 
     function display() {
         return <span style={context ? productionStyle : stagingStyle}
-                     onClick={() => handleOnClick(!context)}>{context ? "production" : "test"}</span>
+                     onClick={() => handleOnClick(!context)}>{context ? "production" : "sand-box"}</span>
     }
 
 

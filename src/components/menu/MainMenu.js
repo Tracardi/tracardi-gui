@@ -81,16 +81,14 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
                 <b>Frontend Version:</b> {version()}<br/>
                 <b>Backend Version: </b> {response?.data?.version}.{response?.data?.name}<br/>
                 <b>DB Version: </b> {response?.data?.db_version}<br/>
-                <b>API context: </b> {response?.data?.production ? "production": "staging"}<br/>
-                <b>GUI context: </b> {getDataContextHeader("unknown")}<br/>
+                <b>API context: </b> {response?.data?.production ? "public": "private"}<br/>
+                <b>GUI and DATA context: </b> {getDataContextHeader("unknown")} <br/>
                 <b>API instance ID: </b> {response?.data?.instance}<br/><br />
 
 
                 <b>Owner: </b> {response?.data?.owner}<br/>
                 <b>Licenses: </b>{response?.data?.licenses.join(", ")}<br/>
                 <b>Expires: </b>{response?.data?.expires}<br/><br />
-                <b>Backend Upgrades: </b>{(Array.isArray(response?.data?.upgrades) && response?.data?.upgrades.length>0) ? response?.data?.upgrades.join() : "None"}<br />
-                <b>Previous Backend Version: </b>{response?.data?.prev_version ? `${response?.data?.prev_version?.version}.${response?.data?.prev_version?.name}` : "None"}<br/>
             </>
 
             confirm({title: "TRACARDI Version Information", description: message}).then(() => {}).catch(() => {})
