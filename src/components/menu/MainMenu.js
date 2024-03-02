@@ -25,6 +25,7 @@ import {DataContext} from "../AppBox";
 import {useRequest} from "../../remote_api/requestClient";
 import {KeyCloakContext} from "../context/KeyCloakContext";
 import {RestrictToMode} from "../context/RestrictContext";
+import envs from "../../envs";
 
 
 function MainMenu({app, showAlert, changeRoute, onContextChange}) {
@@ -82,9 +83,9 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
                 <b>Backend Version: </b> {response?.data?.version}.{response?.data?.name}<br/>
                 <b>DB Version: </b> {response?.data?.db_version}<br/>
                 <b>API context: </b> {response?.data?.production ? "public": "private"}<br/>
-                <b>GUI and DATA context: </b> {getDataContextHeader("unknown")} <br/>
-                <b>API instance ID: </b> {response?.data?.instance}<br/><br />
-
+                <b>API instance ID: </b> {response?.data?.instance}<br/>
+                <b>DATA context: </b> {getDataContextHeader("unknown")} <br/>
+                <b>GUI: </b> mode: {envs.withDeployment}, updates on production: {envs.allowUpdatesOnProduction ? "yes" : "no"}<br/><br />
 
                 <b>Owner: </b> {response?.data?.owner}<br/>
                 <b>Licenses: </b>{response?.data?.licenses.join(", ")}<br/>
