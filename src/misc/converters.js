@@ -90,3 +90,9 @@ export function formatDateIso(utcString) {
     let date = new Date(utcString);
     return date.toISOString();
 }
+
+export function convertSecToMinSec(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes} min ${remainingSeconds} sec`;
+}

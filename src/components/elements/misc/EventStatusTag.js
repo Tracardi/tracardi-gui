@@ -24,6 +24,6 @@ export default function EventStatusTag({label, defaultSuccessLabel='processed', 
         style={{backgroundColor: getColor(), color: "white"}}
         className="HighlightTag"
         title={title}>
-        {capitalizeFirstLetter(label)}
+        {label instanceof String ? capitalizeFirstLetter(label) : label}
         </span>
 }

@@ -23,7 +23,9 @@ import {ProfileImage} from "./ProfileImage";
 import {displayLocation} from "../../../misc/location";
 import Properties from "./DetailProperties";
 import {useRequest} from "../../../remote_api/requestClient";
-import EventStatusTag from "../misc/EventStatusTag";
+import Tag from "../misc/Tag";
+import ProfileCacheDetails from "./ProfileCacheDetails";
+import ProfileMergeDetails from "./ProfileMergeDetails";
 
 export const ProfileData = ({profile}) => {
 
@@ -54,7 +56,8 @@ export const ProfileData = ({profile}) => {
             </div>
             <fieldset style={{marginBottom: 20}}>
                 <legend style={{fontSize: 13}}>Profile metadata</legend>
-                <PropertyField name="Id" content={<IdLabel label={profile.id}/>}/>
+                <PropertyField name="Primary Id" content={<IdLabel label={profile?.primary_id || <Tag>None</Tag>}/>}/>
+                <PropertyField name="Anonymous Id" content={<IdLabel label={profile.id}/>}/>
                 {profile?._meta?.index && <PropertyField name="Index" content={profile?._meta?.index}/>}
                 {profile?.metadata?.time?.create &&
                 <PropertyField name="Created" content={<DateValue date={profile?.metadata?.time?.create}/>}/>}
@@ -88,13 +91,10 @@ export const ProfileData = ({profile}) => {
                                               tags={Object.getOwnPropertyNames(profile?.consents)}/>}
                                           icon={<VscLaw size={20} style={{marginRight: 5}}/>}/>
                                   </div>}/>}
-
                 <PropertyField name="Status" content={<span className="flexLine">
-                    <ActiveTag active={profile?.active}/><EventStatusTag
-                    label={profile?.metadata?.system?.aux?.auto_merge ? "Merge pending" : "Merged"}
-                    defaultSuccessLabel="Merged"
-                    title="Merge status"
-                /></span> }/>
+                    <ActiveTag active={profile?.active} trueLabel="Active" falseLabel="Inactive"/>
+                    <ProfileMergeDetails profile={profile}/></span> }/>
+                <PropertyField name="Cache TTL" content={<ProfileCacheDetails id={profile?.id}/>}/>
             </fieldset>
 
             <div style={{borderRadius: 5, border: "solid 1px rgba(128,128,128,0.5)"}}>

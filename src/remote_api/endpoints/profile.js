@@ -75,3 +75,9 @@ export function getProfileEventsHistogram(profileId, period) {
         }
     }
 }
+
+export function getProfileMergeCount(profileId) {
+    return {
+        url: `/profile/duplicates/count?id=${profileId}`
+    }
+}
