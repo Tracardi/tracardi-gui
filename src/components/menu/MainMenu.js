@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
 import version from '../../misc/version';
 import {BiChevronLeftCircle, BiChevronRightCircle} from "react-icons/bi";
-import {BsPersonCircle, BsFileEarmarkArrowUp, BsGear} from "react-icons/bs";
+import {BsFileEarmarkArrowUp, BsGear} from "react-icons/bs";
 import {VscPulse, VscTools, VscOrganization} from "react-icons/vsc";
 import {IoServerOutline} from "react-icons/io5";
 import {VscDashboard} from "react-icons/vsc";
@@ -136,10 +136,10 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
                 {!window?.CONFIG?.menu?.outbound?.disable && <MenuRow icon={<BsBoxArrowRight size={20}/>} label="Outbound Traffic" collapsed={collapsed} onClick={go("/outbound")} route="/outbound" roles={["admin", "developer"]}/>}
 
                 {!window?.CONFIG?.menu?.audience?.disable && <MenuRow icon={<VscOrganization size={20}/>} label="Audience" collapsed={collapsed} onClick={go("/audience")} route="/audience" roles={["admin", "developer", "marketer"]} style={{marginTop: 20}}/>}
-                {!window?.CONFIG?.menu?.triggers?.disable && <MenuRow icon={<BsPlayCircle size={20}/>} label="Triggers" collapsed={collapsed} onClick={go("/triggers")} route="/triggers" roles={["admin", "developer"]} />}
-
-                {!window?.CONFIG?.menu?.segmentation?.disable && <MenuRow icon={<VscOrganization size={20}/>} label="Segmentation" collapsed={collapsed} onClick={go("/segmentation")} route="/segmentation" roles={["admin", "developer", "marketer"]} />}
                 {!window?.CONFIG?.menu?.integration?.disable && <MenuRow icon={<BsGear size={20}/>} label="Automation" collapsed={collapsed} onClick={go("/processing")} route="/processing" roles={["admin", "developer"]}/>}
+                {!window?.CONFIG?.menu?.triggers?.disable && <MenuRow icon={<BsPlayCircle size={20}/>} label="Triggers" collapsed={collapsed} onClick={go("/triggers")} route="/triggers" roles={["admin", "developer"]} />}
+                {!window?.CONFIG?.menu?.segmentation?.disable && <MenuRow icon={<VscOrganization size={20}/>} label="Segmentation" collapsed={collapsed} onClick={go("/segmentation")} route="/segmentation" roles={["admin", "developer", "marketer"]} />}
+
 
                 {!window?.CONFIG?.menu?.routing?.disable && <MenuRow icon={<FaUncharted size={20}/>} label="Routing" collapsed={collapsed} onClick={go("/routing")} route="/routing" roles={["admin", "developer"]} style={{marginTop: 20}}/>}
                 {!window?.CONFIG?.menu?.metrics?.disable && <MenuRow icon={<VscDashboard size={20}/>} label="Metrics" collapsed={collapsed} onClick={go("/metrics")} route="/metrics" roles={["admin", "developer"]} />}
@@ -154,13 +154,6 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
             </div>
         </div>
         <div>
-            <MenuRow icon={<BsPersonCircle size={20}/>}
-                label="My account"
-                collapsed={collapsed}
-                onClick={go("/my-account")}
-                route="/my-account"
-                alwaysDisplay={true}
-                />
             {!window?.CONFIG?.menu?.monitoring?.disable && <MenuRow icon={<VscPulse size={20}/>}
                      label="Monitoring"
                      collapsed={collapsed}

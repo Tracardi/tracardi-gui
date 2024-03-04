@@ -1,6 +1,12 @@
 import React, {useContext} from "react";
 import { isEmptyObjectOrNull } from "../../misc/typeChecking";
-import { TuiForm, TuiFormGroup, TuiFormGroupField, TuiFormGroupHeader} from "../elements/tui/TuiForm";
+import {
+    TuiForm,
+    TuiFormGroup,
+    TuiFormGroupContent,
+    TuiFormGroupField,
+    TuiFormGroupHeader
+} from "../elements/tui/TuiForm";
 import { CircularProgress } from "@mui/material";
 import { getError } from "../../remote_api/entrypoint";
 import ErrorsBox from "../errors/ErrorsBox";
@@ -11,7 +17,6 @@ import { AiOutlinePoweroff } from "react-icons/ai";
 import Button from "../elements/forms/Button";
 import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../misc/UrlPrefix";
-import FormDrawer from "../elements/drawers/FormDrawer";
 import EditAccountForm from "../elements/forms/EditAccountForm";
 import {useRequest} from "../../remote_api/requestClient";
 import {KeyCloakContext} from "../context/KeyCloakContext";
@@ -85,11 +90,16 @@ export default function UserAccount () {
         return <ErrorsBox errorList={error} />;
     }
 
+    if(edit) {
+        return <EditAccountForm user={user} closeForm={() => setEdit(false)} forceRefresh={() => setRefresh(refresh + 1)}/>
+    }
+
     return (
         <>
             <TuiForm style={{margin: 20}}>
                 <TuiFormGroup>
                     <TuiFormGroupHeader header={`Hello ${user.name}`} description="Here you can see and edit your account."/>
+                    <TuiFormGroupContent>
                     <TuiFormGroupField style={{margin: 20}}>
                         <div style={{display: "flex", flexDirection: "column" }}>
                             <div style={{
@@ -128,15 +138,9 @@ export default function UserAccount () {
                             </div>
                         </div>
                     </TuiFormGroupField>
+                    </TuiFormGroupContent>
                 </TuiFormGroup>
             </TuiForm>
-            <FormDrawer
-                open={edit}
-                width={600}
-                onClose={() => setEdit(false)}
-            >
-                {edit && <EditAccountForm user={user} closeForm={() => setEdit(false)} forceRefresh={() => setRefresh(refresh + 1)}/>}
-            </FormDrawer>
             {logoutError && <ErrorsBox errorList={logoutError}/>}
         </>
     );

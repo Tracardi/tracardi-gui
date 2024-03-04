@@ -90,8 +90,9 @@ export default function EditAccountForm ({ user, closeForm, forceRefresh }) {
                         />
                     </TuiFormGroupField>
                 </TuiFormGroupContent>
-                <Button label="SAVE" style={{display: "flex", alignItems: "center", justifyContent: "center"}} error={errors || error} onClick={handleSave} progress={loading}/>
-            </TuiFormGroup>
+                </TuiFormGroup>
+            <Button label="SAVE" style={{display: "flex", alignItems: "center", justifyContent: "center"}} error={errors || error} onClick={handleSave} progress={loading}/>
+
         </TuiForm>
     );
 }

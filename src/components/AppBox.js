@@ -23,7 +23,6 @@ const EventReshaping = React.lazy(() => import("./pages/EventReshaping"))
 const EventValidation = React.lazy(() => import("./pages/EventValidation"))
 const Segmentation = React.lazy(() => import("./pages/Segmentation"))
 const LogsAnalytics = React.lazy(() => import("./pages/LogsAnalytics"))
-const UserAccount = React.lazy(() => import("./pages/UserAccount"))
 const TryOut = React.lazy(() => import("./pages/TryOut"))
 const EventsAnalytics = React.lazy(() => import("./pages/EventsAnalytics"))
 const ProfilesAnalytics = React.lazy(() => import("./pages/ProfilesAnalytics"))
@@ -492,18 +491,6 @@ const AppBox = () => {
                         />
                     </Suspense>
                 </ErrorBoundary>
-            </PrivateRoute>
-
-            {/*Current user account info*/}
-
-            <PrivateRoute exact path={urlPrefix("/my-account")}
-                          roles={["admin", "developer", "marketer", "maintainer"]}>
-                <TopBar onDarkMode={handleThemeChange}>My account</TopBar>
-                <PageTabs tabs={[
-                    new PrivateTab(["admin", "developer", "marketer", "maintainer"],
-                        <UserAccount/>, "/my-account", "Account")
-                ]}
-                />
             </PrivateRoute>
 
             {/*Other*/}
