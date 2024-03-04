@@ -82,7 +82,7 @@ export default function Migrations() {
 
             try {
                 await request({
-                    url: "/migration",
+                    url: "/migration/elasticsearch",
                     method: "POST",
                     data: {
                         from_version: selectedMigration,
