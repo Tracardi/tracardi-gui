@@ -25,6 +25,7 @@ import ProductionButton from "../elements/forms/ProductionButton";
 import TestTrackForm from "../elements/forms/TestTrackForm";
 import PopOverButton from "../elements/forms/buttons/PopOverButton";
 import CommitFrom from "../elements/forms/CommitForm";
+import {VscGithub} from "react-icons/vsc";
 
 
 export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onSaveDraft}) {
@@ -93,7 +94,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
         </div>
         <div>
             <ReinstallButton/>
-            <PopOverButton label="Commit">
+            <PopOverButton label="Github" icon={<VscGithub size={20}/>}>
                 <CommitFrom
                     value={flowMetaData}
                 />

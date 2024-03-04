@@ -100,7 +100,7 @@ export default function CommitFrom({value, onClose}) {
 
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
-            <TuiFormGroupHeader header="Commit to GitHub"/>
+            <TuiFormGroupHeader header="Push to GitHub"/>
             <TuiFormGroupContent>
                 <TuiFormGroupField header="File Name">
                     <TextField
