@@ -2,12 +2,16 @@ import React, {useState} from 'react';
 import {Handle} from 'reactflow';
 import './FlowNode.css';
 import FlowNodeIcons from "./FlowNodeIcons";
-import {ExecutionSeqNumber} from "./NodeAlerts";
+import {ErrorNumber, ExecutionSeqNumber, WarningNumber} from "./NodeAlerts";
 import {isObject} from '../../misc/typeChecking';
 import {objectMap} from "../../misc/mappers";
+import useTheme from "@mui/material/styles/useTheme";
+import ThresholdIcon from "./ThresholdIcon";
 
 
 const FlowNodeWithEventsDynamic = ({data}) => {
+
+    const theme = useTheme()
 
     const InputPort = ({value, doc, style}) => {
 
@@ -84,14 +88,38 @@ const FlowNodeWithEventsDynamic = ({data}) => {
     }
 
     const nodeClass = (data?.metadata?.selected === true) ? "NodePanel DebugNode" : "NodePanel"
-    const nodeStyle = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {borderColor: "#ccc", color: "#999"} : {}
-    const portStyle = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {borderColor: "#ccc"} : {borderColor: "#1565c0", borderWidth: 2}
+    const nodeStyle = (data?.spec?.skip === true || data?.spec?.block_flow === true)
+        ? {
+            borderColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground :  theme.palette.wf.node.disabled.borderColor,
+            color: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedColor : theme.palette.wf.node.disabled.color,
+            backgroundColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground : theme.palette.wf.node.disabled.backgroundColor,
+        }
+        : {
+            borderColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground : theme.palette.wf.node.border,
+            color: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedColor : theme.palette.wf.node.color,
+            backgroundColor: (data?.metadata?.clicked === true) ? theme.palette.wf.node.selectedBackground : theme.palette.wf.node.background,
+        }
+    const portStyle = (data?.spec?.skip === true || data?.spec?.block_flow === true)
+        ? {
+            borderColor: theme.palette.wf.node.disabled.borderColor,
+            backgroundColor: theme.palette.common.white,
+        }
+        : {
+            borderColor: theme.palette.primary.main,
+            backgroundColor: theme.palette.common.white,
+            borderWidth: 2
+        }
     const backgroundStyle = (data?.spec?.skip===true || data?.spec?.block_flow===true) ? {backgroundColor: "#aaa"} : {}
 
     return (
         <div style={{position: "relative"}}>
             <div style={{display: "flex", alignItems: "center"}}>
                 <div>
+                    {data?.spec?.run_once?.enabled && <ThresholdIcon style={{width: "100%"}}/>}
+                    {data?.debugging?.node?.warnings > 0 && data?.debugging?.node?.errors === 0 && <WarningNumber
+                        data={data} style={{backgroundColor: theme.palette.background.default}}/>}
+                    {data?.debugging?.node?.errors > 0 && <ErrorNumber data={data}
+                                                                       style={{backgroundColor: theme.palette.background.default}}/>}
                     <Inputs spec={data?.spec} documentation={data?.metadata?.documentation?.inputs} style={portStyle}/>
                     <div className={nodeClass} style={nodeStyle}>
                         <ExecutionSeqNumber data={data}/>
