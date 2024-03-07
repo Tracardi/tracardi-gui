@@ -226,10 +226,10 @@ export default function EventsAnalytics({displayChart = true}) {
         detailsDrawerWidth={1050}
         displayChart={displayChart}
         barChartColors={{processed: "#00C49F", error: "#d81b60", collected: theme.palette.primary.main}}
-        ExtensionDropDown={{
-            'Copy event data to profile': CopyToProfileExtension,
-            'Index event properties': IndexEventPropertiesExtension
-        }}
+        // ExtensionDropDown={{
+        //     'Copy event data to profile': CopyToProfileExtension,
+        //     'Index event properties': IndexEventPropertiesExtension
+        // }}
     />
 
 
