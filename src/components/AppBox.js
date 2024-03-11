@@ -21,7 +21,7 @@ const PageTabs = React.lazy(() => import('./pages/groups/PageTabs'))
 const FlowEditor = React.lazy(() => import('./flow/FlowEditor'))
 const EventReshaping = React.lazy(() => import("./pages/EventReshaping"))
 const EventValidation = React.lazy(() => import("./pages/EventValidation"))
-const Segmentation = React.lazy(() => import("./pages/Segmentation"))
+// const Segmentation = React.lazy(() => import("./pages/Segmentation"))
 const LogsAnalytics = React.lazy(() => import("./pages/LogsAnalytics"))
 const TryOut = React.lazy(() => import("./pages/TryOut"))
 const EventsAnalytics = React.lazy(() => import("./pages/EventsAnalytics"))
@@ -43,7 +43,7 @@ const Users = React.lazy(() => import("./pages/SystemUsers"))
 const Destinations = React.lazy(() => import("./pages/Destinations"))
 const Resources = React.lazy(() => import("./pages/Resources"))
 const Flows = React.lazy(() => import("./pages/Workflows"))
-const Segments = React.lazy(() => import("./pages/PostEventSegments"))
+// const Segments = React.lazy(() => import("./pages/PostEventSegments"))
 const Rules = React.lazy(() => import("./pages/TriggerRules"))
 const Metrics = React.lazy(() => import("./pages/Metrics"))
 const FlowReader = React.lazy(() => import("./flow/FlowReader"))
@@ -325,8 +325,8 @@ const AppBox = () => {
                             new PrivateTab(["admin", "developer"],
                                 <Flows type="collection"
                                        label="Automation Workflows"/>, "/processing/workflows", "Automation Workflows"),
-                            new PrivateTab(["admin", "developer", "marketer"],
-                                <Segments/>, "/processing/segments", "Post event tagging"),
+                            // new PrivateTab(["admin", "developer", "marketer"],
+                            //     <Segments/>, "/processing/segments", "Post event tagging"),
                         ]}
                         />
                     </Suspense>
@@ -334,24 +334,24 @@ const AppBox = () => {
             </PrivateRoute>
 
 
-            <PrivateRoute path={urlPrefix("/segmentation")} roles={["admin", "developer", "marketer"]}>
-                <ErrorBoundary>
-                    <Suspense fallback={<CenteredCircularProgress/>}>
-                        <TopBar onDarkMode={handleThemeChange}>Profile Segmentation</TopBar>
-                        <PageTabs tabs={[
-                            new PrivateTab(["admin", "developer", "marketer"],
-                                <Segmentation/>, "/processing/live/segments", <>
-                                    <BsStar size={20}
-                                            style={{marginRight: 5}}/>{"Segmentation"}</>),
-                            new PrivateTab(["admin", "developer"],
-                                <Flows type="segmentation" label="Segmentation Workflows"/>, "/processing/workflows", <>
-                                    <BsStar size={20}
-                                            style={{marginRight: 5}}/>{"Segmentation workflows"}</>),
-                        ]}
-                        />
-                    </Suspense>
-                </ErrorBoundary>
-            </PrivateRoute>
+            {/*<PrivateRoute path={urlPrefix("/segmentation")} roles={["admin", "developer", "marketer"]}>*/}
+            {/*    <ErrorBoundary>*/}
+            {/*        <Suspense fallback={<CenteredCircularProgress/>}>*/}
+            {/*            <TopBar onDarkMode={handleThemeChange}>Profile Segmentation</TopBar>*/}
+            {/*            <PageTabs tabs={[*/}
+            {/*                new PrivateTab(["admin", "developer", "marketer"],*/}
+            {/*                    <Segmentation/>, "/processing/live/segments", <>*/}
+            {/*                        <BsStar size={20}*/}
+            {/*                                style={{marginRight: 5}}/>{"Segmentation"}</>),*/}
+            {/*                new PrivateTab(["admin", "developer"],*/}
+            {/*                    <Flows type="segmentation" label="Segmentation Workflows"/>, "/processing/workflows", <>*/}
+            {/*                        <BsStar size={20}*/}
+            {/*                                style={{marginRight: 5}}/>{"Segmentation workflows"}</>),*/}
+            {/*            ]}*/}
+            {/*            />*/}
+            {/*        </Suspense>*/}
+            {/*    </ErrorBoundary>*/}
+            {/*</PrivateRoute>*/}
 
             <PrivateRoute path={urlPrefix("/audience")} roles={["admin", "developer", "marketer"]}>
                 <ErrorBoundary>

@@ -20,61 +20,8 @@ import {
     getRequiredStringSchema,
     validateYupSchema
 } from "../../../misc/validators";
-import AutoComplete from "./AutoComplete";
 import {useRequest} from "../../../remote_api/requestClient";
 import ProductionButton from "./ProductionButton";
-
-function SegmentTriggerForm({
-                                data: _data,
-                                properties: _properties,
-                                errors,
-                                onChange
-                            }) {
-
-    const [data, setData] = useState(_data)
-
-    function setValue(key, value) {
-        const d = {
-            ...data,
-            [key]: value
-        }
-        setData(d)
-        if (onChange instanceof Function) {
-            onChange(d)
-        }
-    }
-
-    return <TuiFormGroupContent>
-        <TuiFormGroupField header="Segment name"
-                           description="Type segment name which will trigger the workflow when added.">
-
-            <AutoComplete
-                endpoint={{
-                    url: '/segments/metadata'
-                }}
-                placeholder="Segment"
-                value={data?.segment || {}}
-                onlyValueWithOptions={false}
-                initValue={data?.segment || {}}
-                onSetValue={(value) => setValue('segment', value)}
-                onChange={(value) => setValue('segment', value)}
-                error={getValueIfExists(errors, 'segment.name')}
-            />
-
-        </TuiFormGroupField>
-        <TuiFormGroupField header="Workflow"
-                           description="Select existing workflow. If there is none create it on workflow page.">
-            <div className="SearchInput">
-                <TuiSelectFlow value={data?.flow}
-                               errorMessage={getValueIfExists(errors, 'flow.name')}
-                               onSetValue={value => setValue('flow', value)}
-                               type="collection"
-                />
-            </div>
-        </TuiFormGroupField>
-    </TuiFormGroupContent>
-}
-
 
 
 function EventTriggerForm({
@@ -205,7 +152,7 @@ export default function RuleForm({onSubmit, data: _data}) {
                 setResponseError(getError(e));
             }
         } finally {
-            if(mounted.current) {
+            if (mounted.current) {
                 setProcessing(false)
             }
         }
@@ -216,7 +163,7 @@ export default function RuleForm({onSubmit, data: _data}) {
         const entitySchema = getRequiredEntityNameSchema()
         const requiredString = getRequiredStringSchema()
 
-        if(trigger.type === 'event-collect') {
+        if (trigger.type === 'event-collect') {
 
             const schema = yup.object().shape({
                 flow: entitySchema,
@@ -273,8 +220,8 @@ export default function RuleForm({onSubmit, data: _data}) {
                     tags: trigger.tags,
                     id: (!trigger?.id) ? uuid4() : trigger.id,
 
-                    event_type:  {id: "", name: ""},
-                    source:  {id: "", name: ""},
+                    event_type: {id: "", name: ""},
+                    source: {id: "", name: ""},
                     properties: {},
                 };
 
@@ -291,24 +238,18 @@ export default function RuleForm({onSubmit, data: _data}) {
     return <TuiForm style={{margin: 20}}>
 
         <TuiFormGroup>
-            {trigger.type === "event-collect"
-                ? <EventTriggerForm
-                    data={{
-                        flow: trigger?.flow,
-                        event_type: trigger.event_type,
-                        source: trigger.source
-                    }}
-                    properties={trigger?.properties || {}}
-                    errors={errors}
-                    onChange={handleDataChange}
-                />
-                : <SegmentTriggerForm
-                    data={{flow: trigger?.flow || {}, segment: trigger?.segment || {}}}
-                    errors={errors}
-                    onChange={handleDataChange}
-                />}
+            <EventTriggerForm
+                data={{
+                    flow: trigger?.flow,
+                    event_type: trigger.event_type,
+                    source: trigger.source
+                }}
+                properties={trigger?.properties || {}}
+                errors={errors}
+                onChange={handleDataChange}
+            />
         </TuiFormGroup>
-        <ShowHide label="Advanced Settings" style={{marginBottom:20}}>
+        <ShowHide label="Advanced Settings" style={{marginBottom: 20}}>
             <TuiFormGroup>
                 <TuiFormGroupHeader header="Trigger settings"/>
                 {responseError && <ErrorsBox errorList={responseError} style={{borderRadius: 0}}/>}
@@ -371,7 +312,7 @@ export default function RuleForm({onSubmit, data: _data}) {
 
 
         <ProductionButton label="Save" onClick={handleSubmit} style={{justifyContent: "center"}} progress={processing}
-                error={responseError}/>
+                          error={responseError}/>
     </TuiForm>
 }
 
