@@ -20,6 +20,7 @@ import EventTypeTag from "../misc/EventTypeTag";
 import EventJourneyTag from "../misc/EventJourneyTag";
 import MergingAlert from "../misc/MergingAlert";
 import ShowHide from "../misc/ShowHide";
+import Tag from "../misc/Tag";
 
 const ContextInfo = ({event}) => {
     const context = object2dot(event?.context);
@@ -83,7 +84,7 @@ const EventApp = ({event}) => {
 const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
 
     const _theme = useTheme()
-
+    console.log(event, metadata)
     return <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
             <TuiFormGroupHeader header="Event details"/>
@@ -134,14 +135,14 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
                                    content={Array.isArray(event?.tags?.values) &&
                                    <TuiTags tags={event.tags.values} size="small"/>}
                     />
-                    {routing && Array.isArray(event?.metadata?.processed_by?.rules) && <PropertyField name="Routed by rules"
-                                                                                                      content={<TuiTags
-                                                                                                          tags={event.metadata?.processed_by?.rules}
-                                                                                                          size="small"/>}/>}
-                    {Array.isArray(event?.metadata?.processed_by?.flows) && <PropertyField
-                        name="Processed by flow"
-                        content={<TuiWorkflowTags tags={event.metadata?.processed_by?.flows} size="small" />}/>}
-                    {metadata?.index && <PropertyField name="Index" content={metadata.index}/>}
+                    {/*{routing && Array.isArray(event?.metadata?.processed_by?.rules) && <PropertyField name="Routed by rules"*/}
+                    {/*                                                                                  content={<TuiTags*/}
+                    {/*                                                                                      tags={event.metadata?.processed_by?.rules}*/}
+                    {/*                                                                                      size="small"/>}/>}*/}
+                    {/*{Array.isArray(event?.metadata?.processed_by?.flows) && <PropertyField*/}
+                    {/*    name="Processed by flow"*/}
+                    {/*    content={<TuiWorkflowTags tags={event.metadata?.processed_by?.flows} size="small" />}/>}*/}
+                    {metadata?.index && <PropertyField name="Index" content={<>{metadata?.index} <Tag style={{marginLeft: 5}} tip="How the event was stored">{event?.config?.async ? "ASYNC" : "SYNC"}</Tag></>}/>}
 
                 </TuiFormGroupContent>
             </TuiFormGroup>
