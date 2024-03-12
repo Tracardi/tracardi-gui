@@ -27,7 +27,6 @@ function FlowForm({
     const [flowName, setFlowName] = useState((name) ? name : "");
     const [flowDescription, setFlowDescription] = useState((description) ? description : "");
     const [flowTags, setFlowTags] = useState(tags);
-    const [flowType, setFlowType] = useState(type);
     const [processing, setProcessing] = useState(false);
     const [nameErrorMessage, setNameErrorMessage] = useState("");
 
@@ -61,7 +60,7 @@ function FlowForm({
                 name: flowName,
                 description: flowDescription,
                 tags: flowTags && Array.isArray(flowTags) && flowTags.length > 0 ? flowTags : ["General"],
-                type: flowType
+                type: 'collection'
             }
 
             const response = await request({
@@ -119,23 +118,6 @@ function FlowForm({
                                size="small"
                     />
                 </TuiFormGroupField>
-                {!disableType && <TuiFormGroupField header="Type" description="Flow type. Flows can be used to collect or segment data.">
-                    <FormControl sx={{m: 1, minWidth: 120}} size="small">
-                        <InputLabel id="flow-type">Flow type</InputLabel>
-                        <Select
-                            defaultValue="collection"
-                            labelId="flow-type"
-                            variant="outlined"
-                            size="small"
-                            value={flowType}
-                            label="Flow type"
-                            onChange={(e) => setFlowType(e.target.value)}
-                        >
-                            <MenuItem value={"collection"}>Collection</MenuItem>
-                            <MenuItem value={"segmentation"}>Segmentation</MenuItem>
-                        </Select>
-                    </FormControl>
-                </TuiFormGroupField>}
             </TuiFormGroupContent>
         </TuiFormGroup>
         <TuiFormGroup>
