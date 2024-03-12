@@ -46,11 +46,10 @@ export const ProfileData = ({profile}) => {
             <div style={{display: "flex", gap: 20, padding: 20}}>
                 <ProfileImage profile={profile}/>
                 <div style={{width: "100%"}}>
-                    <PropertyField name="Name" labelWidth={80} content={<ProfileLabel label={profileFullName}
+                    <PropertyField name="Name" labelWidth={60} content={<ProfileLabel label={profileFullName}
                                                                          profileLess={profile === null}/>}/>
-                    <PropertyField name="Visits" labelWidth={80} content={profile?.metadata?.time?.visit?.count}/>
                     {profile?.metadata?.time?.visit?.current &&
-                    <PropertyField name="Last visit" labelWidth={80} content={<DateValue date={profile?.metadata.time.visit.current}/>}/>}
+                    <PropertyField name="Last visit" labelWidth={60} content={<DateValue date={profile?.metadata.time.visit.current}/>}/>}
                 </div>
 
             </div>
@@ -58,7 +57,6 @@ export const ProfileData = ({profile}) => {
                 <legend style={{fontSize: 13}}>Profile metadata</legend>
                 <PropertyField name="Primary Id" content={<IdLabel label={profile?.primary_id || <Tag>None</Tag>}/>}/>
                 <PropertyField name="Anonymous Id" content={<IdLabel label={profile.id}/>}/>
-                {profile?._meta?.index && <PropertyField name="Index" content={profile?._meta?.index}/>}
                 {profile?.metadata?.time?.create &&
                 <PropertyField name="Created" content={<DateValue date={profile?.metadata?.time?.create}/>}/>}
                 {profile?.metadata?.time?.insert &&
@@ -94,7 +92,10 @@ export const ProfileData = ({profile}) => {
                 <PropertyField name="Status" content={<span className="flexLine">
                     <ActiveTag active={profile?.active} trueLabel="Active" falseLabel="Inactive"/>
                     <ProfileMergeDetails profile={profile}/></span> }/>
-                <PropertyField name="Cache TTL" content={<ProfileCacheDetails id={profile?.id}/>}/>
+                <PropertyField name="Index & TTL" content={<span className="flexLine">
+                    {profile?._meta?.index &&<Tag style={{marginRight: 10}}> {profile?._meta?.index}</Tag>}
+                    <ProfileCacheDetails id={profile?.id}/>
+                </span>}/>
             </fieldset>
 
             <div style={{borderRadius: 5, border: "solid 1px rgba(128,128,128,0.5)"}}>

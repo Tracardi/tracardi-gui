@@ -72,8 +72,6 @@ export default function ProfileCardInfo({profile, displayDetails=false}) {
                         value={displayLocation(profile?.data?.devices?.last?.geo)}
                         icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
                     />}/>}
-                <PropertyField labelWidth={labelWidth} name="All visits"
-                               content={profile?.metadata?.time?.visit.count}/>
             </div>
 
         </div>

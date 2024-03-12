@@ -12,7 +12,6 @@ export default function Tag({children, style, tip, backgroundColor = "#ccc", col
         fontSize: "90%",
         borderRadius: 5,
         marginRight: 5,
-        marginTop: 2,
         whiteSpace: "nowrap", ...style
     }
     if (tip) {
