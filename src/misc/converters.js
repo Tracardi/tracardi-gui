@@ -96,3 +96,7 @@ export function convertSecToMinSec(seconds) {
     const remainingSeconds = seconds % 60;
     return `${minutes} min ${remainingSeconds} sec`;
 }
+
+export function toPercentage(num) {
+    return (num * 100).toFixed(2) + '%';
+}

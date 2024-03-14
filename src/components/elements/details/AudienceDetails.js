@@ -10,6 +10,35 @@ import {isNotEmptyArray} from "../../../misc/typeChecking";
 import JsonBrowser from "../misc/JsonBrowser";
 import Tabs, {TabCase} from "../tabs/Tabs";
 import {Paper} from "@mui/material";
+import {getEventsCount} from "../../../remote_api/endpoints/event";
+import {abbreviateNumber, toPercentage} from "../../../misc/converters";
+
+function AudienceCounter({total}) {
+    const {isLoading, data: eventCount, error} = useFetch(
+        ['eventCount', []],
+        getEventsCount(),
+        data => {
+            return data?.count
+        },
+        {retry: 0})
+
+    if(isLoading) {
+        return <Counter label="Audience Count"
+                        width={200}
+                        margin={0}
+                        value={total ? total : "unknown"}
+                        hint={"Loading..."}
+        />
+    }
+
+    return <Counter label="Audience Count"
+                    width={200}
+                    margin={0}
+                    value={total}
+                    hint={<span>{toPercentage(total/eventCount)} from {abbreviateNumber(eventCount)}</span>}
+    />
+}
+
 
 export function AudienceDetailsById({audienceId}) {
     const {isLoading, data, error} = useFetch(
@@ -64,12 +93,7 @@ export default function AudienceDetails({audience}) {
 
     return <>
         <div style={{padding: 30}}>
-            <Counter label="Audience Count"
-                     width={200}
-                     margin={0}
-                     value={data?.total}
-                     hint={<span>3% from 4.7M</span>}
-            />
+            <AudienceCounter total={data?.total}/>
         </div>
         <Tabs tabs={["Audience Sample", "Queries"]}>
             <TabCase id={0}>
