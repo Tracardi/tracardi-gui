@@ -19,6 +19,7 @@ export default function EditUserForm({ id, onSubmit}) {
         ['systemUser'],
         getUser(id),
         data => {
+            data.password = null
             setUser(data)
             setRoles(data?.roles ? data.roles.split(',') : [])
         }
