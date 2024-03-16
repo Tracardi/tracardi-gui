@@ -166,14 +166,14 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
                      onClick={go("/maintenance")}
                      route="/maintenance"
                      roles={["admin", "maintainer"]}/>}
-            {!window?.CONFIG?.menu?.import?.disable && <MenuRow icon={<BsFileEarmarkArrowUp size={20}/>}
-                                                                label="Import"
-                                                                collapsed={collapsed}
-                                                                onClick={go("/import")}
-                                                                route="/import"
-                                                                roles={["admin", "developer"]}
-                                                                style={{marginBottom: 20}}
-            />}
+            {/*{!window?.CONFIG?.menu?.import?.disable && <MenuRow icon={<BsFileEarmarkArrowUp size={20}/>}*/}
+            {/*                                                    label="Import"*/}
+            {/*                                                    collapsed={collapsed}*/}
+            {/*                                                    onClick={go("/import")}*/}
+            {/*                                                    route="/import"*/}
+            {/*                                                    roles={["admin", "developer"]}*/}
+            {/*                                                    style={{marginBottom: 20}}*/}
+            {/*/>}*/}
 
             <MenuRow icon={collapsed ? <BiChevronRightCircle size={20}/> : <BiChevronLeftCircle size={20}/>}
                      collapsed={collapsed}
