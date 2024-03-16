@@ -155,17 +155,19 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
         </div>
         <div>
             {!window?.CONFIG?.menu?.monitoring?.disable && <MenuRow icon={<VscPulse size={20}/>}
-                     label="Monitoring"
-                     collapsed={collapsed}
-                     onClick={go("/monitoring")}
-                     route="/monitoring"
-                     roles={["admin"]}/>}
+                                                                    label="Monitoring"
+                                                                    collapsed={collapsed}
+                                                                    onClick={go("/monitoring")}
+                                                                    route="/monitoring"
+                                                                    roles={["admin"]}/>}
             {!window?.CONFIG?.menu?.maintenance?.disable && <MenuRow icon={<VscTools size={20}/>}
-                     label="Maintenance"
-                     collapsed={collapsed}
-                     onClick={go("/maintenance")}
-                     route="/maintenance"
-                     roles={["admin", "maintainer"]}/>}
+                                                                     label="Maintenance"
+                                                                     collapsed={collapsed}
+                                                                     onClick={go("/maintenance")}
+                                                                     route="/maintenance"
+                                                                     roles={["admin", "maintainer"]}
+                                                                     style={{marginBottom: 20}}
+            />}
             {/*{!window?.CONFIG?.menu?.import?.disable && <MenuRow icon={<BsFileEarmarkArrowUp size={20}/>}*/}
             {/*                                                    label="Import"*/}
             {/*                                                    collapsed={collapsed}*/}
