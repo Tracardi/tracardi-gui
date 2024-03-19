@@ -325,6 +325,8 @@ const AppBox = () => {
                             new PrivateTab(["admin", "developer"],
                                 <Flows type="collection"
                                        label="Automation Workflows"/>, "/processing/workflows", "Automation Workflows"),
+                            new PrivateTab(["admin", "developer"],
+                                <Rules/>, "/processing/routing", "Automation Trigger Rules"),
                             // new PrivateTab(["admin", "developer", "marketer"],
                             //     <Segments/>, "/processing/segments", "Post event tagging"),
                         ]}

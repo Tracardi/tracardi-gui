@@ -137,7 +137,7 @@ function MainMenu({app, showAlert, changeRoute, onContextChange}) {
 
                 {!window?.CONFIG?.menu?.audience?.disable && <MenuRow icon={<VscOrganization size={20}/>} label="Audience" collapsed={collapsed} onClick={go("/audience")} route="/audience" roles={["admin", "developer", "marketer"]} style={{marginTop: 20}}/>}
                 {!window?.CONFIG?.menu?.integration?.disable && <MenuRow icon={<BsGear size={20}/>} label="Automation" collapsed={collapsed} onClick={go("/processing")} route="/processing" roles={["admin", "developer"]}/>}
-                {!window?.CONFIG?.menu?.triggers?.disable && <MenuRow icon={<BsPlayCircle size={20}/>} label="Triggers" collapsed={collapsed} onClick={go("/triggers")} route="/triggers" roles={["admin", "developer"]} />}
+                {/*{!window?.CONFIG?.menu?.triggers?.disable && <MenuRow icon={<BsPlayCircle size={20}/>} label="Triggers" collapsed={collapsed} onClick={go("/triggers")} route="/triggers" roles={["admin", "developer"]} />}*/}
                 {/*{!window?.CONFIG?.menu?.segmentation?.disable && <MenuRow icon={<VscOrganization size={20}/>} label="Segmentation" collapsed={collapsed} onClick={go("/segmentation")} route="/segmentation" roles={["admin", "developer", "marketer"]} />}*/}
 
                 {/*{!window?.CONFIG?.menu?.routing?.disable && <MenuRow icon={<FaUncharted size={20}/>} label="Routing" collapsed={collapsed} onClick={go("/routing")} route="/routing" roles={["admin", "developer"]} style={{marginTop: 20}}/>}*/}
