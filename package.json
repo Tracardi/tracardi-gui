@@ -102,7 +102,7 @@
       "last 1 safari version"
     ]
   },
-  "main": "index.js",
+  "main": "index.jsx",
   "repository": "https://github.com/tracardi/tracardi-gui.git",
   "author": "Tracardi <office@tracardi.com>",
   "license": "MIT + Common Clause"
