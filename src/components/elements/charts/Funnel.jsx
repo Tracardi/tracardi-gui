@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from "react";
-import FunnelGraph from "funnel-graph-js";
+// import FunnelGraph from "funnel-graph-js";
 import './Funnel.css';
 
 function InnerFunnelGraph({width, height}) {

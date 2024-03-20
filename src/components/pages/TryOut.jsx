@@ -25,7 +25,7 @@ import Paper from "@mui/material/Paper";
 import NoData from "../elements/misc/NoData";
 import EventToProfileCopy from "../elements/forms/EventToProfileCopy";
 import {EventTypeFlowsAC} from "../elements/forms/inputs/EventTypeFlowsAC";
-import Funnel from "../elements/charts/Funnel";
+// import Funnel from "../elements/charts/Funnel";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import QueryRuleGroup from "../elements/forms/QueryRuleGroup";
@@ -120,7 +120,7 @@ function QueryBuilderRules({onChange, value}) {
 function Journey({width, height}) {
     return <div style={{padding: 10}}>
         <div style={{display: "flex"}}>
-            <Funnel width={width} height={height}/>
+            {/*<Funnel width={width} height={height}/>*/}
             <div style={{
                 display: "flex",
                 flexDirection: "column",
