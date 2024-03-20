@@ -1,5 +1,3 @@
-// import {asyncRemote} from "../remote_api/entrypoint";
-
 export default class FormSchema {
 
     constructor(schema) {
