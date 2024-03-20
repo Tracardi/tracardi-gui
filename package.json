@@ -65,7 +65,6 @@
     "react-query": "^3.39.3",
     "react-redux": "8.0.5",
     "react-router-dom": "6.7.0",
-    "react-scripts": "^5.0.1",
     "react-transition-group": "^4.4.2",
     "reactflow": "11.10.1",
     "recharts": "2.3.2",
