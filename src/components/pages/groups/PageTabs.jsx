@@ -9,10 +9,10 @@ import {KeyCloakContext} from "../../context/KeyCloakContext";
 export default function PageTabs({tabs = {}}) {
 
     const authContext = useContext(KeyCloakContext)
+    const location = useLocation();
+    const theme = useTheme()
 
     const filteredTabs = tabs.filter((tab) => tab instanceof PrivateTab && tab.isAuth(authContext?.state?.roles))
-    const theme = useTheme()
-    const location = useLocation();
 
     let defaultTab = 0
     if(location?.hash) {

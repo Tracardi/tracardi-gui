@@ -1,5 +1,5 @@
 export default function urlPrefix(url) {
-    let _prefix = process.env.PUBLIC_URL
+    let _prefix = import.meta.env.PUBLIC_URL
 
     if(!_prefix) {
         _prefix = "/"

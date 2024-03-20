@@ -78,11 +78,11 @@ import {
     MdOutlineSendTimeExtension
 } from "react-icons/md";
 import {GoBrowser} from "react-icons/go";
-import {ReactComponent as MauticLogo} from "../../svg/mautic.svg";
-import {ReactComponent as Amplitude} from "../../svg/amplitude-icon.svg";
-import {ReactComponent as Mixpanel} from "../../svg/mixpanel.svg";
-import {ReactComponent as ActiveCampaign} from "../../svg/active-campaign.svg";
-import {ReactComponent as Stripe} from "../../svg/stripe.svg";
+import MauticLogo from "../../svg/mautic.svg";
+import Amplitude from "../../svg/amplitude-icon.svg";
+import Mixpanel from "../../svg/mixpanel.svg";
+import ActiveCampaign from "../../svg/active-campaign.svg";
+import Stripe from "../../svg/stripe.svg";
 import {
     SiRabbitmq,
     SiMongodb,

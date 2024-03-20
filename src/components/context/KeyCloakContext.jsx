@@ -19,7 +19,6 @@ export const KeyCloakContext = createContext({state: null, setState: null, logou
 export default function KeyCloakAuthProvider({children, enabled = false}) {
 
     const isRun = useRef(false)
-
     const [state, setState] = useState({token: null, isAuthenticated: false, roles: [], keyClock: enabled})
 
     const isLogged = state.isAuthenticated && state.token;

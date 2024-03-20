@@ -9,7 +9,7 @@ import {
 import TuiSelectResource from "../elements/tui/TuiSelectResource";
 import AutoComplete from "../elements/forms/AutoComplete";
 import Properties from "../elements/details/DetailProperties";
-import {ReactComponent as Connected} from "../../svg/connected.svg";
+import Connected from "../../svg/connected.svg";
 import HorizontalCircularProgress from "../elements/progress/HorizontalCircularProgress";
 import {useRequest} from "../../remote_api/requestClient";
 

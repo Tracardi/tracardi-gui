@@ -19,7 +19,7 @@ TabCases.propTypes = {
 }
 
 export function TabCase({children, id}) {
-    return children;
+    return children || "";
 }
 
 TabCase.propTypes = {
