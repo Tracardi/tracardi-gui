@@ -8,9 +8,10 @@ import {getProfileEvents} from "../../../remote_api/endpoints/profile";
 import EventDetailsDialog from "../dialog/EventDetailsDialog";
 import {capitalizeString} from "../misc/EventTypeTag";
 import {BsGear} from "react-icons/bs";
+import NoData from "../misc/NoData";
 
 const stepIconComponent = event => {
-    if(event?.source?.id.startsWith("@internal")) {
+    if (event?.source?.id.startsWith("@internal")) {
         return <BsGear size={12} style={{marginRight: 10}}/>
     }
     return <div className="EventIcon" style={{
@@ -43,25 +44,31 @@ function EventStream({events}) {
                 orientation="vertical"
                 connector={<div className="EventConnector"/>}
             >
-                {events.map(event => (
-                    <Step
-                        completed={true}
-                        key={event.id}
-                    >
-                        <div style={{
-                            alignSelf: "center",
-                            paddingLeft: 8,
-                            paddingRight: 8,
-                            width: 320
-                        }}><DateValue date={event?.metadata?.time?.insert}/></div>
-                        <StepLabel
-                            StepIconComponent={() => stepIconComponent(event)}
-                            onClick={() => handleDetails(event)}
-                        >
-                            {event?.name || capitalizeString(event?.type)}
-                        </StepLabel>
-                    </Step>
-                ))}
+                {
+                    Array.isArray(events) && events.length > 0
+                        ? events.map(event => (
+                            <Step
+                                completed={true}
+                                key={event.id}
+                            >
+                                <div style={{
+                                    alignSelf: "center",
+                                    paddingLeft: 8,
+                                    paddingRight: 8,
+                                    width: 320
+                                }}><DateValue date={event?.metadata?.time?.insert}/></div>
+                                <StepLabel
+                                    StepIconComponent={() => stepIconComponent(event)}
+                                    onClick={() => handleDetails(event)}
+                                >
+                                    {event?.name || capitalizeString(event?.type)}
+                                </StepLabel>
+                            </Step>
+
+                        ))
+                        : <NoData header="No events"><div align="center">Events are stored in batches, which means they will be visible after sometime the profile has been saved.</div></NoData>
+                }
+
             </Stepper>
         </div>
     </>
@@ -73,9 +80,9 @@ export default function ProfileEvents({profileId}) {
         ["profileEvents", profileId],
         getProfileEvents(profileId),
         (data) => data
-        )
+    )
 
-    if(isLoading) {
+    if (isLoading) {
         return <CenteredCircularProgress/>
     }
 
