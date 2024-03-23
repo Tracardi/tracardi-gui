@@ -32,7 +32,7 @@ export default function Tabs({tabs, children, defaultTab = 0, onTabSelect, class
     const [tabId, setTabId] = useState((defaultTab) ? defaultTab : 0);
 
     useEffect(() => {
-        setTabId((defaultTab))
+        setTabId(defaultTab)
     }, [defaultTab])
 
     const onTabClick = (id) => {

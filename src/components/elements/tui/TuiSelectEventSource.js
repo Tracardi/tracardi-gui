@@ -36,7 +36,7 @@ export function TuiSelectEventSource({
                       onlyValueWithOptions={onlyValueWithOptions}
                       placeholder="Event source"
                       endpoint={{url: url(type)}}
-                      initValue={value}
+                      value={value}
                       error={errorMessage}
                       fullWidth={fullWidth}
                       width={width}

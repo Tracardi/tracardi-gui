@@ -2,7 +2,8 @@ import AutoComplete from "../forms/AutoComplete";
 import React from "react";
 
 export default function TuiSelectEventType({
-                                               initValue, value,
+                                               initValue,
+                                               value,
                                                label = "Event type",
                                                errorMessage = null, onSetValue = null,
                                                multiple = false, fullWidth = false,

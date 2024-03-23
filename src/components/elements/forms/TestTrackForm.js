@@ -20,6 +20,9 @@ import {addTest, getTest} from "../../../remote_api/endpoints/test";
 import {submit} from "../../../remote_api/submit";
 import CenteredCircularProgress from "../progress/CenteredCircularProgress";
 import {parse} from "../../../misc/json";
+import {ProfileDetailsById} from "../details/ProfileDetails";
+import FormDrawer from "../drawers/FormDrawer";
+
 
 export default function TestTrackForm({testId, onSave, sxOnly = false}) {
 
@@ -105,6 +108,9 @@ export default function TestTrackForm({testId, onSave, sxOnly = false}) {
         }
     }
 
+    const [profile, setProfile] = useState(null)
+    const [openProfileData, setOpenProfileData] = useState(false)
+    const [tab, setTab] = useState(0)
     const [data, setData] = useState({
         name: "",
         session_id: "",
@@ -161,9 +167,10 @@ export default function TestTrackForm({testId, onSave, sxOnly = false}) {
     )
 
     const handleChange = (v) => {
-        const init ={...data, ...v}
+        setTab(0)
+        const init = {...data, ...v}
         const request = getRequest(init)
-        setData({...data, ...v, request: JSON.stringify(request, null, " ") })
+        setData({...data, ...v, request: JSON.stringify(request, null, " ")})
     }
 
     const handleGetProperties = async (eventType) => {
@@ -181,7 +188,7 @@ export default function TestTrackForm({testId, onSave, sxOnly = false}) {
 
     const handleRequest = async () => {
         try {
-
+            setTab(1)
             const response = await request({
                     url: '/track',
                     method: 'post',
@@ -191,8 +198,11 @@ export default function TestTrackForm({testId, onSave, sxOnly = false}) {
 
             if (response) {
                 setData({...data, response: JSON.stringify(response, null, " ")})
+                setProfile(response?.profile?.id || null)
+                setTab(1)
             }
         } catch (e) {
+            setProfile(null)
             setData({...data, response: JSON.stringify(e?.response?.data, null, " ")})
         } finally {
         }
@@ -218,7 +228,6 @@ export default function TestTrackForm({testId, onSave, sxOnly = false}) {
                 setErrors(response.errors)
             } else {
                 setErrors({})
-                if (onSave instanceof Function) onSave()
             }
         } catch (e) {
         } finally {
@@ -227,166 +236,182 @@ export default function TestTrackForm({testId, onSave, sxOnly = false}) {
 
     }
 
-    if(isLoading) {
+    const handleShowProfile = () => {
+        setOpenProfileData(true)
+    }
+
+    if (isLoading) {
         return <CenteredCircularProgress/>
     }
 
-    return <Grid container spacing={2}>
-        <Grid item xs={12} lg={sxOnly ? 12 : 6}>
-            <TuiForm style={{margin: "20px 0 20px 0"}}>
-                <TuiFormGroup>
-                    <TuiFormGroupContent>
-                        <div style={{display: "flex"}}>
-                            <TextField label="Name"
-                                       value={data?.name}
-                                       error={"body.name" in errors}
-                                       helperText={errors["body.name"] || ""}
-                                       variant="outlined"
-                                       size="small"
-                                       fullWidth
-                                       onChange={(e) => handleChange({name: e.target.value})}
-                            /><Button style={{width: 180}} label="Save & Close" onClick={handleSave}/>
-                        </div>
-                    </TuiFormGroupContent>
-                </TuiFormGroup>
-                <TuiFormGroup>
-                    <TuiFormGroupHeader description="Only REST API can be testes with this tool."/>
-                    <TuiFormGroupContent>
-
-                        <TuiFormGroupField style={{marginBottom: 20}}>
-                            <TuiColumnsFlex width={250}>
-                                <TuiTopHeaderWrapper>
-                                    <TuiSelectEventSource
-                                        value={data?.event_source}
-                                        onSetValue={v=>handleChange({event_source: v})}
-                                        type="rest"
-                                        width={250}
-                                    />
-                                </TuiTopHeaderWrapper>
-                                <TuiTopHeaderWrapper>
-                                    <TuiSelectEventType
-                                        value={data?.event_type}
-                                        label="Event type"
-                                        onlyValueWithOptions={false}
-                                        onSetValue={v=>handleChange({event_type: v})}
-                                        width={250}
-                                    />
-                                </TuiTopHeaderWrapper>
-                            </TuiColumnsFlex>
-                        </TuiFormGroupField>
-
-                        <TuiFormGroupField>
-                            <TuiColumnsFlex width={250}>
-                                <TuiTopHeaderWrapper>
-                                    <TextField label="Session ID"
-                                               value={data?.session_id}
-                                               variant="outlined"
-                                               size="small"
-                                               fullWidth
-                                               helperText="If you know profile id leave session empty. Random session will be generated."
-                                               onChange={(e) => handleChange({session_id: e.target.value})}/>
-                                </TuiTopHeaderWrapper>
-                                <TuiTopHeaderWrapper>
-                                    <TextField label="Profile ID"
-                                               value={data?.profile_id}
-                                               variant="outlined"
-                                               size="small"
-                                               fullWidth
-                                               helperText="Profile must match session, if you do now know profile id leave it empty"
-                                               onChange={(e) => handleChange({profile_id: e.target.value})}
-                                    />
-                                </TuiTopHeaderWrapper>
-                            </TuiColumnsFlex>
-                        </TuiFormGroupField>
-
-                        <TuiFormGroupField>
-                            <BoolInput label="Async event storing" value={data?.async}
-                                       onChange={v => handleChange({async: v})}/>
-                        </TuiFormGroupField>
-
+    return <>
+        {profile && <FormDrawer
+            width={1200}
+            open={openProfileData}
+            onClose={() => setOpenProfileData(false)}>
+            <ProfileDetailsById id={profile}/>
+        </FormDrawer>}
+        <Grid container spacing={2}>
+            <Grid item xs={12} lg={sxOnly ? 12 : 6}>
+                <TuiForm style={{margin: "20px 0 20px 0"}}>
+                    <TuiFormGroup>
                         <TuiFormGroupContent>
+                            <div style={{display: "flex"}}>
+                                <TextField label="Name"
+                                           value={data?.name}
+                                           error={"body.name" in errors}
+                                           helperText={errors["body.name"] || ""}
+                                           variant="outlined"
+                                           size="small"
+                                           fullWidth
+                                           onChange={(e) => handleChange({name: e.target.value})}
+                                />
+                                <Button style={{width: 150}} label="Save" onClick={handleSave}/>
+                            </div>
+                        </TuiFormGroupContent>
+                    </TuiFormGroup>
+                    <TuiFormGroup>
+                        <TuiFormGroupHeader description="Only REST API can be testes with this tool."/>
+                        <TuiFormGroupContent>
+
+                            <TuiFormGroupField style={{marginBottom: 20}}>
+                                <TuiColumnsFlex width={250}>
+                                    <TuiTopHeaderWrapper>
+                                        <TuiSelectEventSource
+                                            value={data?.event_source}
+                                            onSetValue={v => handleChange({event_source: v})}
+                                            type="rest"
+                                            width={250}
+                                        />
+                                    </TuiTopHeaderWrapper>
+                                    <TuiTopHeaderWrapper>
+                                        <TuiSelectEventType
+                                            value={data?.event_type}
+                                            label="Event type"
+                                            onlyValueWithOptions={false}
+                                            onSetValue={v => handleChange({event_type: v})}
+                                            width={250}
+                                        />
+                                    </TuiTopHeaderWrapper>
+                                </TuiColumnsFlex>
+                            </TuiFormGroupField>
+
+                            <TuiFormGroupField>
+                                <TuiColumnsFlex width={250}>
+                                    <TuiTopHeaderWrapper>
+                                        <TextField label="Session ID"
+                                                   value={data?.session_id}
+                                                   variant="outlined"
+                                                   size="small"
+                                                   fullWidth
+                                                   helperText="If you know profile id leave session empty. Random session will be generated."
+                                                   onChange={(e) => handleChange({session_id: e.target.value})}/>
+                                    </TuiTopHeaderWrapper>
+                                    <TuiTopHeaderWrapper>
+                                        <TextField label="Profile ID"
+                                                   value={data?.profile_id}
+                                                   variant="outlined"
+                                                   size="small"
+                                                   fullWidth
+                                                   helperText="Profile must match session, if you do now know profile id leave it empty"
+                                                   onChange={(e) => handleChange({profile_id: e.target.value})}
+                                        />
+                                    </TuiTopHeaderWrapper>
+                                </TuiColumnsFlex>
+                            </TuiFormGroupField>
+
+                            <TuiFormGroupField>
+                                <BoolInput label="Async event storing" value={data?.async}
+                                           onChange={v => handleChange({async: v})}/>
+                            </TuiFormGroupField>
+
+                            <TuiFormGroupContent>
+                                <Tabs
+                                    tabs={["Properties", "Context"]}
+                                    tabsStyle={{backgroundColor: theme.palette.background.paper, marginTop: 20}}
+                                >
+                                    <TabCase id={0}>
+                                        <fieldset style={{marginTop: 10}}>
+                                            <legend>Properties</legend>
+                                            <JsonEditor value={data?.properties}
+                                                        onChange={v => handleChange({properties: v})}
+                                                        height="350px"/>
+                                            <Button label="Get predefined properties"
+                                                    size="small"
+                                                    onClick={() => handleGetProperties(data?.event_type?.id)}/>
+                                            <Button label="Clean properties"
+                                                    size="small"
+                                                    onClick={() => handleChange({properties: JSON.stringify({}, null, " ")})}/>
+                                        </fieldset>
+                                    </TabCase>
+                                    <TabCase id={1}>
+                                        <fieldset style={{marginTop: 10}}>
+                                            <legend>Context</legend>
+                                            <JsonEditor value={data?.context} onChange={v => handleChange({context: v})}
+                                                        height="350px"/>
+                                            <Button label="Get example context"
+                                                    size="small"
+                                                    onClick={() => handleChange({context: JSON.stringify(exampleContext, null, " ")})}/>
+                                            <Button label="Clean context"
+                                                    size="small"
+                                                    onClick={() => handleChange({context: JSON.stringify({}, null, " ")})}/>
+                                        </fieldset>
+                                    </TabCase>
+                                </Tabs>
+                            </TuiFormGroupContent>
+                        </TuiFormGroupContent>
+                    </TuiFormGroup>
+                </TuiForm>
+            </Grid>
+            <Grid item xs={12} lg={sxOnly ? 12 : 6}>
+                <TuiForm style={{margin: "20px 0 20px 0"}}>
+                    <TuiFormGroup>
+                        <TuiFormGroupContent>
+                            <div style={{display: "flex"}}>
+                                <TextField
+                                    value="/track"
+                                    label="API Endpoint"
+                                    disabled={true}
+                                    fullWidth
+                                    size="small"
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <Tag>POST</Tag>
+                                            </InputAdornment>
+                                        )
+                                    }}
+                                />
+                                <Button label="Profile" style={{width: 150}} disabled={profile === null}
+                                        onClick={handleShowProfile}/>
+                                <Button label="Request" style={{width: 150}} onClick={handleRequest}/>
+                            </div>
                             <Tabs
-                                tabs={["Properties", "Context"]}
+                                defaultTab={tab}
+                                tabs={["Request", "Response"]}
                                 tabsStyle={{backgroundColor: theme.palette.background.paper, marginTop: 20}}
                             >
                                 <TabCase id={0}>
-                                    <fieldset style={{marginTop: 10}}>
-                                        <legend>Properties</legend>
-                                        <JsonEditor value={data?.properties}
-                                                    onChange={v => handleChange({properties: v})}
-                                                    height="350px"/>
-                                        <Button label="Get predefined properties"
-                                                size="small"
-                                                onClick={() => handleGetProperties(data?.event_type?.id)}/>
-                                        <Button label="Clean properties"
-                                                size="small"
-                                                onClick={()=>handleChange({properties: JSON.stringify({}, null, " ")})}/>
+                                    <fieldset style={{marginTop: 20}}>
+                                        <legend>Request</legend>
+                                        <JsonEditor value={data?.request} onChange={v => handleChange({request: v})}
+                                                    height="700px"/>
                                     </fieldset>
                                 </TabCase>
                                 <TabCase id={1}>
-                                    <fieldset style={{marginTop: 10}}>
-                                        <legend>Context</legend>
-                                        <JsonEditor value={data?.context} onChange={v => handleChange({context: v})}
-                                                    height="350px"/>
-                                        <Button label="Get example context"
-                                                size="small"
-                                                onClick={()=>handleChange({context: JSON.stringify(exampleContext, null, " ")})}/>
-                                        <Button label="Clean context"
-                                                size="small"
-                                                onClick={()=>handleChange({context: JSON.stringify({}, null, " ")})}/>
+                                    <fieldset style={{marginTop: 20}}>
+                                        <legend>Response</legend>
+                                        <JsonEditor value={data?.response}
+                                                    height="700px"/>
                                     </fieldset>
                                 </TabCase>
+
                             </Tabs>
                         </TuiFormGroupContent>
-                    </TuiFormGroupContent>
-                </TuiFormGroup>
-            </TuiForm>
-        </Grid>
-        <Grid item xs={12} lg={sxOnly ? 12 : 6}>
-            <TuiForm style={{margin: "20px 0 20px 0"}}>
-                <TuiFormGroup>
-                    <TuiFormGroupContent>
-                        <div style={{display: "flex"}}>
-                            <TextField
-                                value="/track"
-                                label="API Endpoint"
-                                disabled={true}
-                                fullWidth
-                                size="small"
-                                InputProps={{
-                                    startAdornment: (
-                                        <InputAdornment position="start">
-                                            <Tag>POST</Tag>
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                            <Button label="Request" onClick={handleRequest}/>
-                        </div>
-                        <Tabs
-                            tabs={["Request", "Response"]}
-                            tabsStyle={{backgroundColor: theme.palette.background.paper, marginTop: 20}}
-                        >
-                            <TabCase id={0}>
-                                <fieldset style={{marginTop: 20}}>
-                                    <legend>Request</legend>
-                                    <JsonEditor value={data?.request} onChange={v => handleChange({request: v})}
-                                                height="700px"/>
-                                </fieldset>
-                            </TabCase>
-                            <TabCase id={1}>
-                                <fieldset style={{marginTop: 20}}>
-                                    <legend>Response</legend>
-                                    <JsonEditor value={data?.response}
-                                                height="700px"/>
-                                </fieldset>
-                            </TabCase>
+                    </TuiFormGroup>
 
-                        </Tabs>
-                    </TuiFormGroupContent>
-                </TuiFormGroup>
-
-            </TuiForm>
+                </TuiForm>
+            </Grid>
         </Grid>
-    </Grid>
+    </>
 }

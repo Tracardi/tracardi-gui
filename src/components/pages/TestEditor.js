@@ -21,10 +21,10 @@ export default function TestEditorPage() {
         urlFunc={urlFunc}
         buttonLabel="New test"
         buttonIcon={<BsClipboardCheck size={20}/>}
-        drawerDetailsWidth={1200}
+        drawerDetailsWidth={1250}
         detailsFunc={detailsFunc}
         drawerAddTitle="New test"
-        drawerAddWidth={1200}
+        drawerAddWidth={1250}
         addFunc={addFunc}
         defaultLayout="rows"
         icon="profile"
