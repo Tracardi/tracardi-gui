@@ -1,0 +1,7 @@
+.ProfileInfoTab {
+    animation-name: moveUpAndOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-out;
+    animation-duration: .3s;
+    margin: 20px;
+}

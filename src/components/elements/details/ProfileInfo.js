@@ -26,6 +26,7 @@ import {useRequest} from "../../../remote_api/requestClient";
 import Tag from "../misc/Tag";
 import ProfileCacheDetails from "./ProfileCacheDetails";
 import ProfileMergeDetails from "./ProfileMergeDetails";
+import "./ProfileInfo.css"
 
 export const ProfileData = ({profile}) => {
 
@@ -102,7 +103,7 @@ export const ProfileData = ({profile}) => {
                 <Tabs tabs={["PII", "Contacts", "Traits", "Last GEO", "Media", "Aux"]}
                       tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
                     <TabCase id={0}>
-                        <div style={{margin: 20}}>
+                        <div className="ProfileInfoTab">
                             {displayPii && pii ? Object.keys(pii).map(key => <PropertyField key={key}
                                                                                             name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
                                                                                             content={pii[key]}/>)
@@ -112,7 +113,7 @@ export const ProfileData = ({profile}) => {
 
                     </TabCase>
                     <TabCase id={1}>
-                        <div style={{margin: 20}}>
+                        <div className="ProfileInfoTab">
                             {displayPii && contact ? Object.keys(contact).map(key => <PropertyField key={key}
                                                                                                     name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
                                                                                                     content={contact[key]}/>)
@@ -121,7 +122,7 @@ export const ProfileData = ({profile}) => {
                         </div>
                     </TabCase>
                     <TabCase id={2}>
-                        <div style={{margin: 20}}>
+                        <div className="ProfileInfoTab">
                             {traits && !isEmptyObjectOrNull(traits)
                                 ? Object.keys(traits).map(key => <PropertyField key={key}
                                                                                    name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
@@ -131,7 +132,7 @@ export const ProfileData = ({profile}) => {
                         </div>
                     </TabCase>
                     <TabCase id={3}>
-                        <div style={{margin: 20}}>
+                        <div className="ProfileInfoTab">
                             {geo && !isEmptyObjectOrNull(geo)
                                 ? geo && Object.keys(geo).map(key => <PropertyField key={key}
                                                                                         name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
@@ -140,7 +141,7 @@ export const ProfileData = ({profile}) => {
                         </div>
                     </TabCase>
                     <TabCase id={4}>
-                        <div style={{margin: 20}}>
+                        <div className="ProfileInfoTab">
                             {media && !isEmptyObjectOrNull(media)
                                 ? media && Object.keys(media).map(key => <PropertyField key={key}
                                                                                     name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
@@ -149,7 +150,7 @@ export const ProfileData = ({profile}) => {
                         </div>
                     </TabCase>
                     <TabCase id={5}>
-                        <div style={{margin: 20}}>
+                        <div className="ProfileInfoTab">
                             {aux && !isEmptyObjectOrNull(aux)
                                 ? aux && Object.keys(aux).map(key => <PropertyField key={key}
                                                                                     name={(key.charAt(0).toUpperCase() + key.slice(1)).replace("_", " ")}
@@ -164,14 +165,14 @@ export const ProfileData = ({profile}) => {
                 <Tabs tabs={["Segments", "Interests", "Preferences", "Metrics"]}
                       tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
                     <TabCase id={0}>
-                        <div style={{margin: 20}}>
+                        <div className="ProfileInfoTab">
                             {isNotEmptyArray(profile?.segments)
                                 ? <div className="flexLine" style={{gap: 5}}><TuiTags tags={profile?.segments}/></div>
                                 : <NoData header="No Segments"/>}
                         </div>
                     </TabCase>
                     <TabCase id={1}>
-                        <div style={{margin: 20}}>
+                        <div className="ProfileInfoTab">
                             {!isEmptyObjectOrNull(profile?.interests)
                                 ? Object.keys(profile?.interests).map(key => <PropertyField key={key}
                                                                                             name={key}
@@ -180,7 +181,7 @@ export const ProfileData = ({profile}) => {
                         </div>
                     </TabCase>
                     <TabCase id={2}>
-                        <div style={{margin: 20}}>
+                        <div className="ProfileInfoTab">
                             {!isEmptyObjectOrNull(profile?.data?.preferences)
                                 ? Object.keys(profile?.data?.preferences).map(key => <PropertyField key={key}
                                                                                                     name={key}
@@ -190,7 +191,7 @@ export const ProfileData = ({profile}) => {
                         </div>
                     </TabCase>
                     <TabCase id={3}>
-                        <div style={{margin: 20}}>
+                        <div className="ProfileInfoTab">
                             <Properties properties={profile?.data?.metrics}/>
                         </div>
                     </TabCase>
@@ -200,21 +201,21 @@ export const ProfileData = ({profile}) => {
                 <Tabs tabs={["Job", "Loyalty", "Identifiers", "AnonIds"]}
                       tabsStyle={{backgroundColor: _theme.palette.background.paper}}>
                     <TabCase id={0}>
-                        <div style={{margin: 20}}>
+                        <div className="ProfileInfoTab">
                             {!isEmptyObjectOrNull(profile?.data?.job)
                                 ? <Properties properties={profile?.data?.job}/>
                                 : <NoData header="No Job Data"/>}
                         </div>
                     </TabCase>
                     <TabCase id={1}>
-                        <div style={{margin: 20}}>
+                        <div className="ProfileInfoTab">
                             {!isEmptyObjectOrNull(profile?.data?.loyalty)
                                 ? <Properties properties={profile?.data?.loyalty}/>
                                 : <NoData header="No Loyalty Data"/>}
                         </div>
                     </TabCase>
                     <TabCase id={2}>
-                        <div style={{margin: 20}}>
+                        <div className="ProfileInfoTab">
                             {!isEmptyObjectOrNull(profile?.data?.identifier)
                                 ? <Properties properties={profile?.data?.identifier}/>
                                 : <NoData header="No Identifiers"/>}
@@ -222,7 +223,7 @@ export const ProfileData = ({profile}) => {
                         </div>
                     </TabCase>
                     <TabCase id={3}>
-                        <div style={{margin: 20}}>
+                        <div className="ProfileInfoTab">
                             <TuiTags tags={profile?.ids} style={{margin: 2}}/>
                         </div>
                     </TabCase>

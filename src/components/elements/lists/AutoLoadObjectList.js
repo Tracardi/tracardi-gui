@@ -53,8 +53,6 @@ const AutoLoadObjectList = ({
         };
     }, [refreshInterval]);
 
-    console.log('filter', filter)
-
      const {isLoading: loading, error} = useFetch(
         ["getData", [refresh, filter, context]],
         () => {

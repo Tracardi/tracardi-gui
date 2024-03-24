@@ -12,6 +12,7 @@ import {getError} from "../../../remote_api/entrypoint";
 import React, {useState} from "react";
 import FormDrawer from "../drawers/FormDrawer";
 import NoData from "../misc/NoData";
+import RevealContent from "../misc/RevealContent";
 
 
 const TableRows = ({
@@ -45,33 +46,13 @@ const TableRows = ({
             return data
         },
         {
-            cacheTime:0,
+            cacheTime: 0,
             refetchOnMount: true,
             refetchOnWindowFocus: false
         }
     )
 
-    if (isLoading) {
-        return <CenteredCircularProgress/>
-    }
 
-    if (error) {
-        if (error.status === 404) {
-            return <NoData header="Endpoint not found." icon={<BsEmojiFrownFill size={50}/>}>
-                <p>Please contact Tracardi Admin for help.</p>
-            </NoData>
-        } else if (error.status === 402) {
-            return <NoData header="This feature requires license." icon={<BsStar size={50}/>}>
-                <p>Please contact Tracardi for a license key.</p>
-            </NoData>
-        }
-    }
-
-    if (!data) {
-        return <NoData header="There is no data here.">
-            <p>{noDataInfo ? noDataInfo : "Please click create button in the upper right corner."}</p>
-        </NoData>
-    }
 
     const handleDelete = async (id) => {
         confirm({title: "Do you want to delete this record?", description: "This action can not be undone."})
@@ -120,9 +101,8 @@ const TableRows = ({
             title: "Do you want to delete this record from production!",
             description: "This action will delete this record from production and it can not be reverted."
         })
-            .then( async () => {
+            .then(async () => {
                 try {
-
                     await request({
                         url: `/undeploy/${deploymentTable}/${id}`,
                         method: "GET"
@@ -131,7 +111,8 @@ const TableRows = ({
                 } catch (e) {
                     showAlert({type: "error", message: getError(e)[0].msg, hideAfter: 3000})
                 }
-            }).catch(_ => {})
+            }).catch(_ => {
+        })
     }
 
     const handleCloseDetails = () => {
@@ -150,7 +131,7 @@ const TableRows = ({
                     <header>{category}</header>
                     <div>
                         {plugs.map((row, subIndex) => {
-                            if(!row) {
+                            if (!row) {
                                 return null
                             }
                             return <BrowserRow key={index + "-" + subIndex}
@@ -176,8 +157,34 @@ const TableRows = ({
             })
     }
 
+    if (isLoading) {
+        return <RevealContent key={1}>
+            <CenteredCircularProgress/>
+        </RevealContent>
+    }
+
+    if (error) {
+        if (error.status === 404) {
+            return <RevealContent key={2}><NoData header="Endpoint not found." icon={<BsEmojiFrownFill size={50}/>}>
+                <p>Please contact Tracardi Admin for help.</p>
+            </NoData></RevealContent>
+        } else if (error.status === 402) {
+            return <RevealContent key={3}><NoData header="This feature requires license." icon={<BsStar size={50}/>}>
+                <p>Please contact Tracardi for a license key.</p>
+            </NoData></RevealContent>
+        }
+    }
+
+    if (data?.total === 0) {
+        return <RevealContent key={4}>
+            <NoData header="There is no data here.">
+                {noDataInfo ? noDataInfo : "Please click create button in the upper right corner."}
+            </NoData>
+        </RevealContent>
+    }
+
     return <>
-        {render()}
+        <RevealContent key={5}>{render()}</RevealContent>
         <FormDrawer
             width={drawerDetailsWidth}
             onClose={handleCloseDetails}

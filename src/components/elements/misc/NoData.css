@@ -1,0 +1,10 @@
+.NoData {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    width: 100%;
+    animation-name: fadeInOpacity;
+    animation-timing-function: ease-out;
+    animation-duration: .5s;
+}
