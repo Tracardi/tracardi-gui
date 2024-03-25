@@ -8,3 +8,17 @@ export function saveWorkflowInGitHub(id, fileName, message) {
         }
     }
 }
+
+export function listGitHubFiles(path=null) {
+    return {
+        url: path ? "/github/list?path=" + path : "/github/list",
+        method: "get"
+    }
+}
+
+export function loadGitHubFile(path=null) {
+    return {
+        url: "/github/load?path="+path,
+        method: "get"
+    }
+}

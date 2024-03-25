@@ -2,10 +2,12 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupField, TuiFormGr
 import TextField from "@mui/material/TextField";
 import React, {useState} from "react";
 import Button from "./Button";
-import {saveWorkflowInGitHub} from "../../../remote_api/endpoints/github";
+import {loadGitHubFile, saveWorkflowInGitHub} from "../../../remote_api/endpoints/github";
 import {useRequest} from "../../../remote_api/requestClient";
 import {submit} from "../../../remote_api/submit";
 import FetchError from "../../errors/FetchError";
+import Tabs, {TabCase} from "../tabs/Tabs";
+import GitHubFileList from "../lists/GitHubFileList";
 
 
 function SubmitButton({label, closeLabel="Close", errorLabel="Error", progress, onClose, onSubmit}) {
@@ -39,16 +41,13 @@ function SubmitButton({label, closeLabel="Close", errorLabel="Error", progress, 
 
 }
 
-export default function CommitFrom({value, onClose}) {
+export default function CommitFrom({value, onClose, onLoad}) {
 
     const [metadata, setMetaData] = useState(value)
     const [message, setMessage] = useState("")
     const [errors, setErrors] = useState({})
-
     const [error, setError] = useState("")
-
     const [progress, setProgress] = useState(false)
-
 
     const {request} = useRequest()
 
@@ -97,47 +96,67 @@ export default function CommitFrom({value, onClose}) {
         }
     }
 
+    const handleSelect = async (row) => {
+        try {
+            const response = await request(loadGitHubFile(row.path))
+            if(onLoad instanceof Function) {
+                onLoad(response.data)
+            }
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
-    return <TuiForm style={{margin: 20}}>
-        <TuiFormGroup>
-            <TuiFormGroupHeader header="Push to GitHub"/>
-            <TuiFormGroupContent>
-                <TuiFormGroupField header="File Name">
-                    <TextField
-                        label="File Name"
-                        error={errors && "body.file_name" in errors}
-                        helperText={errors && errors["body.file_name"] || ""}
-                        value={getFileName()}
-                        onChange={(ev) => {
-                            handleChange("file_name", ev.target.value)
-                        }}
-                        size="small"
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-                <TuiFormGroupField header={<span>Message<sup>(Optional)</sup></span>}
-                                   description={`Commit description will help you to understand what have been changed in this commit.`}>
-                    <TextField
-                        label={"Message"}
-                        value={message}
-                        multiline
-                        rows={3}
-                        onChange={(ev) => {
-                            setMessage(ev.target.value)
-                        }}
-                        variant="outlined"
-                        fullWidth
-                    />
-                </TuiFormGroupField>
-            </TuiFormGroupContent>
-        </TuiFormGroup>
-        {error && <FetchError error={error} />}
-            <SubmitButton
-                label="Submit"
-                closeLabel="Data Pushed - Close"
-                progress={progress}
-                onSubmit={handleSubmit}
-                onClose={onClose}/>
-        </TuiForm>
+    return <Tabs tabs={["Push", "Pull"]}>
+        <TabCase id={0}>
+            <TuiForm style={{margin: 20, width: 500}}>
+                <TuiFormGroup>
+                    <TuiFormGroupContent>
+                        <TuiFormGroupField header="File Name">
+                            <TextField
+                                label="File Name"
+                                error={errors && "body.file_name" in errors}
+                                helperText={errors && errors["body.file_name"] || ""}
+                                value={getFileName()}
+                                onChange={(ev) => {
+                                    handleChange("file_name", ev.target.value)
+                                }}
+                                size="small"
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </TuiFormGroupField>
+                        <TuiFormGroupField header={<span>Message<sup>(Optional)</sup></span>}
+                                           description={`Commit description will help you to understand what have been changed in this commit.`}>
+                            <TextField
+                                label={"Message"}
+                                value={message}
+                                multiline
+                                rows={3}
+                                onChange={(ev) => {
+                                    setMessage(ev.target.value)
+                                }}
+                                variant="outlined"
+                                fullWidth
+                            />
+                        </TuiFormGroupField>
+                    </TuiFormGroupContent>
+                </TuiFormGroup>
+                {error && <FetchError error={error} />}
+                <SubmitButton
+                    label="Submit"
+                    closeLabel="Data Pushed - Close"
+                    progress={progress}
+                    onSubmit={handleSubmit}
+                    onClose={onClose}/>
+            </TuiForm>
+        </TabCase>
+        <TabCase id={1}>
+            <TuiForm style={{margin: 20, width: 500}}>
+                <TuiFormGroup style={{padding: 20, maxHeight: 320, overflowY: "auto"}}>
+                    <GitHubFileList onSelect={handleSelect}/>
+                </TuiFormGroup>
+            </TuiForm>
+        </TabCase>
+    </Tabs>
 }

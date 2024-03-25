@@ -28,7 +28,7 @@ import CommitFrom from "../elements/forms/CommitForm";
 import {VscGithub} from "react-icons/vsc";
 
 
-export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onSaveDraft}) {
+export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData, onSaveDraft, onWorkflowLoad}) {
 
     const [testConsoleOpened, setTestConsoleOpened] = useState(false);
     const [eventsOpened, setEventsOpened] = useState(false);
@@ -66,6 +66,12 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
         handleDraftSave(setDraftSaveProgress, false)
     }
 
+    const handleWorkflowLoad = (workflow) => {
+        if(onWorkflowLoad instanceof Function) {
+            onWorkflowLoad(workflow)
+        }
+    }
+
     const handleRearrange = async () => {
         try {
             const payload = prepareFlowPayload(
@@ -97,6 +103,7 @@ export default function FlowEditorTitle({flowId, reactFlowInstance, flowMetaData
             <PopOverButton label="Github" icon={<VscGithub size={20}/>}>
                 <CommitFrom
                     value={flowMetaData}
+                    onLoad={handleWorkflowLoad}
                 />
             </PopOverButton>
             <ProductionButton

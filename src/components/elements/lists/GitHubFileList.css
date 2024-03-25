@@ -1,0 +1,10 @@
+.FileRow {
+    padding: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.FileRow:hover {
+    background-color: rgba(128,128,128, .3);
+}

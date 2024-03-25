@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { Collapse } from '@mui/material';
 
-export default function RevealContent({children, after=200}) {
+export default function RevealContent({children, after=0}) {
 
     const [open, setOpen] = useState(false);
 

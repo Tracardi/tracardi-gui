@@ -569,12 +569,21 @@ export function FlowEditorPane(
         }
     }
 
+    const handleWorkflowLoad = (workflow) => {
+        if(workflow?.draft) {
+            workflow.draft.id = id
+            updateFlow(workflow?.draft)
+            setModified(true)
+        }
+    }
+
     return <div style={{display: "flex", alignItems: "stretch", flexDirection: "column", height: "100%"}}>
         <FlowEditorTitle
             flowId={id}
             reactFlowInstance={reactFlowInstance}
             flowMetaData={flowMetaData}
             onSaveDraft={() => setModified(false)}
+            onWorkflowLoad={handleWorkflowLoad}
         />
         <div className="FlowEditor">
             <div className="WorkArea">

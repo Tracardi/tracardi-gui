@@ -11,6 +11,8 @@ import {submit} from "../../../remote_api/submit";
 import JsonEditor from "../editors/JsonEditor";
 import {parse} from "../../../misc/json";
 import {TuiSelectConfigurationTypeMemo} from "../tui/TuiSelectConfigurationType";
+import ErrorLine from "../../errors/ErrorLine";
+import ErrorBox from "../../errors/ErrorBox";
 
 export default function ConfigurationForm({configId, onSubmit}) {
 
@@ -83,8 +85,9 @@ export default function ConfigurationForm({configId, onSubmit}) {
     if(isLoading) {
         return <CenteredCircularProgress/>
     }
-
-    return <><MetaDataFrom name="configuration" value={configuration} onChange={handleChange} errors={errors}/>
+    console.log(1, errors?.body)
+    return <>
+        <MetaDataFrom name="configuration" value={configuration} onChange={handleChange} errors={errors}/>
     <TuiForm style={{margin: 20}}>
         <TuiFormGroup>
             <TuiFormGroupHeader
@@ -102,6 +105,7 @@ export default function ConfigurationForm({configId, onSubmit}) {
                         <JsonEditor value={configuration?.config}
                                     onChange={v => handleChange({config: v})}
                                     height="350px"/>
+                        {errors['body.config'] ? <ErrorBox>Invalid JSON</ErrorBox> : "" }
                     </fieldset>
 
                 </TuiFormGroupField>
