@@ -6,6 +6,7 @@ import {useFetch} from "../../../remote_api/remoteState";
 import {getOnlineSessions, getOnlineSessionsByLocation} from "../../../remote_api/endpoints/session";
 import PropertyField from "../details/PropertyField";
 import {DataContext} from "../../AppBox";
+import {isNotEmptyArray} from "../../../misc/typeChecking";
 
 export default function OnlineSessionCounter() {
     const dataContext = useContext(DataContext)
@@ -38,25 +39,18 @@ export default function OnlineSessionCounter() {
         return <CenteredCircularProgress />
     }
 
-    return <>
-        <div>
+    return <div style={{display: "flex"}}>
+        <div style={{minWidth: 265}}>
             <BigCounter label="Online Sessions"
                         value={online.sessions}
                         hint={<span>Calculated from <b>{online.events}</b> online events</span>}
             />
         </div>
-        <div style={{padding: 20}}>
-        <PropertyField name="Time Zones" content="No of events" valueAlign="flex-end"/>
-        {details.tz.map((item, index) => {
-            return <PropertyField key={`tz-${index}`} name={item.name} content={item.count} valueAlign="flex-end"/>
-        })}
-        <div style={{paddingTop: 30}}>
-            <PropertyField name="Devices" content="No of events" valueAlign="flex-end"/>
-            {details.country.map((item, index) => {
-                return <PropertyField key={`dv-${index}`} name={item.name} content={item.count} valueAlign="flex-end"/>
+        <div style={{padding: 15, width: "100%"}}>
+            {isNotEmptyArray(details.tz) && <PropertyField name="Time Zones" content="No of events in 15m" valueAlign="flex-end"/>}
+            {details.tz.map((item, index) => {
+                return <PropertyField key={`tz-${index}`} name={item.name} content={item.count} valueAlign="flex-end"/>
             })}
-        </div>
-
     </div>
-        </>
+        </div>
 }

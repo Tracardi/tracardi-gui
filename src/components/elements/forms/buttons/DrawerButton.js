@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import Button from "../Button";
 import FormDrawer from "../../drawers/FormDrawer";
 
-export default function DrawerButton({children, size, label, icon, variant = "outlined", anchor="right", onClick}) {
+export default function DrawerButton({children, size, width=500, label, icon, variant = "outlined", anchor="right", onClick}) {
 
     const [selected, setSelected] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -44,7 +44,7 @@ export default function DrawerButton({children, size, label, icon, variant = "ou
         />
         <FormDrawer
             id={id}
-            width={500}
+            width={width}
             open={open}
             anchor={anchor}
             onClose={handleClose}

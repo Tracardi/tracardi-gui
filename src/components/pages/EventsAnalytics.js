@@ -6,6 +6,8 @@ import {TuiForm, TuiFormGroup, TuiFormGroupContent, TuiFormGroupHeader} from "..
 import EventToProfileCopy from "../elements/forms/EventToProfileCopy";
 import Button from "../elements/forms/Button";
 import {
+    getEventById, getEventHistogram,
+    getEvents,
     getEventsIndexingCopy,
     getEventsToProfileCopy,
     getEventsTotalRecords
@@ -173,29 +175,15 @@ export default function EventsAnalytics({displayChart = true}) {
     const theme = useTheme()
 
     const handleLoadDataRequest = (query) => {
-        return {
-            url: '/event/select/range',
-            method: "post",
-            data: query,
-            limit: 30,
-            page: 0
-        }
+        return getEvents(query, 0, 30)
     }
 
     const handleLoadHistogramRequest = (query) => {
-        return {
-            url: '/event/select/histogram?group_by=metadata.status',
-            method: "post",
-            data: query,
-            limit: 30,
-            page: 0
-        }
+        return getEventHistogram(query, 0, 30)
     }
 
     const handleLoadDetails = (id) => {
-        return {
-            url: "/event/" + id, method: "get"
-        }
+        return getEventById(id)
     }
 
     return <DataAnalytics

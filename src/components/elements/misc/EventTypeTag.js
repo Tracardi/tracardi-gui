@@ -1,6 +1,7 @@
 import React from "react";
 import {BsPersonX} from "react-icons/bs";
 import "./HighlightedTag.css";
+import useTheme from "@mui/material/styles/useTheme";
 
 export function capitalizeString(str) {
     // Split the string by the dash ("-")
@@ -19,13 +20,13 @@ export function capitalizeString(str) {
     return transformedString;
 }
 
-export default function EventTypeTag({event}) {
-
+export default function EventTypeTag({event, short=false}) {
+    const theme = useTheme()
     const eventType =  event?.name || capitalizeString(event?.type)
 
-    return <span className="HighlightTag" style={{backgroundColor: "rgba(0, 0, 0, 0.08)"}} title="Event type">
+    return <span className="HighlightTag" style={{backgroundColor: theme.palette.primary.main, color: "white", marginRight: 5}} title="Event type">
         {(!event.profile?.id || event.profile?.id === null) && <BsPersonX size={18} style={{marginRight: 8}}/>}
-        {eventType} ({event?.type})
+        {short ? eventType : `${eventType} (${event?.type})`}
     </span>
 }
 

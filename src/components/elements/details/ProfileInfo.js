@@ -28,6 +28,25 @@ import ProfileCacheDetails from "./ProfileCacheDetails";
 import ProfileMergeDetails from "./ProfileMergeDetails";
 import "./ProfileInfo.css"
 
+export const ProfileCard = ({profile}) => {
+    const profileFullName = profileName(profile)
+
+    return <div style={{display: "flex", gap: 20, padding: 20}}>
+        <ProfileImage profile={profile}/>
+        <div style={{width: "100%"}}>
+            <PropertyField name="Name" labelWidth={60} content={<ProfileLabel label={profileFullName}
+                                                                              profileLess={profile === null}/>}/>
+            {profile?.metadata?.time?.visit?.current &&
+            <PropertyField name="Last visit" labelWidth={60} content={<DateValue date={profile?.metadata.time.visit.current}/>}/>}
+            {profile?.data?.devices?.last?.geo?.city && <PropertyField labelWidth={60} name="Location" content={
+                <IconLabel
+                    value={displayLocation(profile?.data?.devices?.last?.geo)}
+                    icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
+                />}/>}
+        </div>
+    </div>
+}
+
 export const ProfileData = ({profile}) => {
 
     const _theme = useTheme()
@@ -40,20 +59,10 @@ export const ProfileData = ({profile}) => {
     const media = object2dot(profile?.data?.media, true)
     const geo = object2dot(profile?.data?.devices?.last?.geo, true)
     const contact = object2dot(profile?.data?.contact, true);
-    const profileFullName = profileName(profile)
 
     return <Grid container spacing={2} style={{padding: 20}}>
         <Grid item xs={6}>
-            <div style={{display: "flex", gap: 20, padding: 20}}>
-                <ProfileImage profile={profile}/>
-                <div style={{width: "100%"}}>
-                    <PropertyField name="Name" labelWidth={60} content={<ProfileLabel label={profileFullName}
-                                                                         profileLess={profile === null}/>}/>
-                    {profile?.metadata?.time?.visit?.current &&
-                    <PropertyField name="Last visit" labelWidth={60} content={<DateValue date={profile?.metadata.time.visit.current}/>}/>}
-                </div>
-
-            </div>
+            <ProfileCard profile={profile}/>
             <fieldset style={{marginBottom: 20}}>
                 <legend style={{fontSize: 13}}>Profile metadata</legend>
                 <PropertyField name="Primary Id" content={<IdLabel label={profile?.primary_id || <Tag>None</Tag>}/>}/>
@@ -64,11 +73,6 @@ export const ProfileData = ({profile}) => {
                 <PropertyField name="Inserted" content={<DateValue date={profile?.metadata?.time?.insert}/>}/>}
                 <PropertyField name="Updated" content={<DateValue date={profile?.metadata?.time?.update}/>}/>
                 {profile?.metadata?.time?.segmentation && <PropertyField name="Segmented" content={<DateValue date={profile?.metadata?.time?.segmentation}/>}/>}
-                {profile?.data?.devices?.last?.geo?.city && <PropertyField name="Last Visit Location" content={
-                    <IconLabel
-                        value={displayLocation(profile?.data?.devices?.last?.geo)}
-                        icon={<BsGlobe size={20} style={{marginRight: 5}}/>}
-                    />}/>}
                 {profile?.metadata?.time?.visit?.last &&
                 <PropertyField name="Previous Visit" content={<DateValue date={profile?.metadata.time.visit.last}/>}/>}
 

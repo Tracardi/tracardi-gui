@@ -100,3 +100,38 @@ export function getEventsByResolution() {
         url: "/events/by_resolution"
     }
 }
+
+export function getEvents(query, page = 0, limit = 30) {
+    return {
+        url: '/event/select/range',
+        method: "post",
+        data: query || "",
+        limit: limit,
+        page: page
+    }
+}
+
+export function getEventHistogram(query, page = 0, limit = 30) {
+    return {
+        url: '/event/select/histogram?group_by=metadata.status',
+        method: "post",
+        data: query,
+        limit: limit,
+        page: page
+    }
+}
+
+export function getTopEvents() {
+    return {
+        url: '/event/select/range/page/0',
+        method: "post",
+        data: {
+            minDate: {"absolute": null, "delta": {"type": "minus", "value": -29, "entity": "day"}},
+            maxDate: {"absolute": null, "delta": null},
+            where: "",
+            limit: 10,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            rand: Math.random().toString()
+        }
+    }
+}

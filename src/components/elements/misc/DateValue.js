@@ -4,13 +4,8 @@ import {makeTzAwareDate} from "../../../misc/converters";
 import {BsClock, BsGlobe} from "react-icons/bs";
 import {formatUTCDate} from "../../../misc/date";
 
-export default function DateValue({date: dateString, style}) {
+function getDate(local, dateString) {
 
-    const [local, setLocal] = useState(true)
-
-    const handleTimeChange = () => {
-        setLocal(!local)
-    }
     let iso_date;
     let date;
 
@@ -30,8 +25,25 @@ export default function DateValue({date: dateString, style}) {
         iso_date = null
     }
 
+    return {date, isoDate: iso_date}
+}
+
+export default function DateValue({date: dateString, style}) {
+
+    const [local, setLocal] = useState(true)
+
+    const handleTimeChange = () => {
+        setLocal(!local)
+    }
+    const date = getDate(local, dateString)
+
     return <span className="flexLine" style={{...style, cursor: "pointer"}} onClick={handleTimeChange}>
         {local ? <BsClock size={20}/> : <BsGlobe size={20}/>}
-        <span style={{margin: 5, marginRight: 10}}>{date || '<empty>'}</span> <TimeDifference date={iso_date}/>
+        <span style={{margin: 5, marginRight: 10}}>{date.date || '<empty>'}</span> <TimeDifference date={date.isoDate}/>
         </span>
+}
+
+export function DateTimeDifference({date: dateString}) {
+    const date = getDate(true, dateString)
+    return <TimeDifference date={date.isoDate}/>
 }

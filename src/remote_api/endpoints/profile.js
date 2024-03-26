@@ -81,3 +81,10 @@ export function getProfileMergeCount(profileId) {
         url: `/profile/duplicates/count?id=${profileId}`
     }
 }
+
+export function getTopProfiles(limit=20) {
+    return {
+        url: '/profiles/top/modified?limit='+limit,
+        method: "get"
+    }
+}

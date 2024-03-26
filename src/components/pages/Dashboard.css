@@ -1,0 +1,14 @@
+.BoxH1 {
+    font-weight: 400;
+    font-size: 170%;
+    margin: 5px 10px;
+    padding: 0
+}
+
+.EventCard {
+    cursor: pointer;
+}
+
+.EventCard:hover {
+    background-color: rgba(200,200,200,.2);
+}

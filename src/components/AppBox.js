@@ -16,7 +16,7 @@ import EventTypesToRules from "./pages/EventRouting";
 import ConfigurationPage from "./pages/ConfigurationPage";
 
 const ProRouter = React.lazy(() => import('./pages/pro/ProRouter'))
-const Dashboard = React.lazy(() => import('./pages/Dashboard'))
+const Dashboard = React.lazy(() => import('./pages/Dashboard1'))
 const PageTabs = React.lazy(() => import('./pages/groups/PageTabs'))
 const FlowEditor = React.lazy(() => import('./flow/FlowEditor'))
 const EventReshaping = React.lazy(() => import("./pages/EventReshaping"))
