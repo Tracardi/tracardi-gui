@@ -32,7 +32,6 @@ import QueryRuleGroup from "../elements/forms/QueryRuleGroup";
 import {FieldBox} from "../elements/forms/FieldBox";
 import {TimeSpanField} from "../elements/forms/TimeSpanField";
 import KqlAutoCompleteRange from "../elements/forms/KqlAutoCompleteRange";
-import DataTimePickerNew from "../elements/datepickers/DateTimePickerNew";
 import PopOverButton from "../elements/forms/buttons/PopOverButton";
 import CommitFrom from "../elements/forms/CommitForm";
 import DrawerButton from "../elements/forms/buttons/DrawerButton";
@@ -350,8 +349,6 @@ export default function TryOut() {
                 <IntervalOperation/>
 
             </FieldBox></div>
-            <DataTimePickerNew type="FromDate"
-                               initValue={null}/>
             <KqlAutoCompleteRange index="profile"/>
             <TimeSpanField onChange={console.log}/>
             <Journey width={300} height={600}/>

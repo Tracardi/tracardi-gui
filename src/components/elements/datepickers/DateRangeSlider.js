@@ -3,8 +3,17 @@ import Slider from '@mui/material/Slider';
 import Stack from "@mui/material/Stack";
 import Tag from "../misc/Tag";
 
-function valuetext(value) {
-    return `${value}°C`;
+const max = 364+24+60
+function valueLabelFormat(value, index) {
+    if (value === max) {
+        return "now";
+    } else if (value >= 364 + 24 && value < max) {
+        return `-${(max - value)} minutes`
+    } else if (value >= 364 && value < 364 + 24) {
+        return `-${(max - value - 60)} hours`
+    } else {
+        return `-${(max - value - 60 - 24)} day`
+    }
 }
 
 const minDistance = 1;
@@ -41,7 +50,7 @@ const marks = [
 ];
 
 export default function DateRangeSlider({value: _value, onChange}) {
-    const max = 364+24+60
+
     const [value, setValue] = React.useState(_value || [364, max]);
 
     const handleChange = (event, newValue, activeThumb) => {
@@ -77,7 +86,7 @@ export default function DateRangeSlider({value: _value, onChange}) {
                 value={value}
                 onChange={handleChange}
                 valueLabelDisplay="auto"
-                getAriaValueText={valuetext}
+                valueLabelFormat={valueLabelFormat}
                 onChangeCommitted={handleCommit}
                 disableSwap
                 color="primary"

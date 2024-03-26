@@ -16,7 +16,6 @@ export default function BarChartElement({onLoadRequest: endpoint, refreshInterva
     const theme = useTheme()
 
     const [refresh, setRefresh] = React.useState(0);
-    const [refreshing, setRefreshing] = React.useState(false);
     const [data, setData] = React.useState([]);
 
     const barColors = [theme.palette.primary.main, '#00C49F', '#FFBB28', '#FF8042']
@@ -34,7 +33,6 @@ export default function BarChartElement({onLoadRequest: endpoint, refreshInterva
         let timer;
         let isSubscribed = true
         if (refreshInterval > 0) {
-            setRefreshing(true)
             if (timer) {
                 clearInterval(timer);
             }
@@ -50,7 +48,6 @@ export default function BarChartElement({onLoadRequest: endpoint, refreshInterva
         return () => {
             if (timer) {
                 clearInterval(timer);
-                setRefreshing(false)
             }
             isSubscribed = false;
         };
@@ -71,28 +68,26 @@ export default function BarChartElement({onLoadRequest: endpoint, refreshInterva
 
     return (
         <div style={{height: 250, paddingTop: 20, width: '100%'}}>
-            {(!refreshing && isLoading === true)
-                ? <CenteredCircularProgress/>
-                : <div style={{width: "100%", height: 160}}>
-                    <ResponsiveContainer>
-                        <BarChart data={data?.result} margin={{top: 20, right: 80, bottom: 0, left: 0}}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,.5)"/>
-                            <Tooltip isAnimationActive={false} content={<CustomTooltip/>}/>
-                            {data?.buckets?.map((column, index) => {
-                                return <Bar key={index}
-                                            stackId="stack"
-                                            dataKey={column}
-                                            fill={barChartColors[column] ? barChartColors[column] : barColors[Math.floor(index % 4)]}
+            <div style={{width: "100%", height: 160}}>
+                <ResponsiveContainer>
+                    <BarChart data={data?.result} margin={{top: 20, right: 80, bottom: 0, left: 0}}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(128,128,128,.5)"/>
+                        <Tooltip isAnimationActive={false} content={<CustomTooltip/>}/>
+                        {data?.buckets?.map((column, index) => {
+                            return <Bar key={index}
+                                        stackId="stack"
+                                        dataKey={column}
+                                        fill={barChartColors[column] ? barChartColors[column] : barColors[Math.floor(index % 4)]}
 
-                                />
-                            })}
-                            <XAxis dataKey="date" style={{fontSize: "80%"}}/>
-                            <YAxis style={{fontSize: "90%"}}/>
+                            />
+                        })}
+                        <XAxis dataKey="date" style={{fontSize: "80%"}}/>
+                        <YAxis style={{fontSize: "90%"}}/>
 
-                        </BarChart>
-                    </ResponsiveContainer>
-                    <DateRangeSlider value={rangeValue} onChange={onRangeChange}/>
-                </div>}
+                    </BarChart>
+                </ResponsiveContainer>
+                <DateRangeSlider value={rangeValue} onChange={onRangeChange}/>
+            </div>
         </div>
     );
 }

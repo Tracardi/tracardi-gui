@@ -4,7 +4,6 @@ import Autocomplete from '@mui/material/Autocomplete';
 import CircularProgress from '@mui/material/CircularProgress';
 import {useDebounce} from "use-debounce";
 import {useRequest} from "../../../remote_api/requestClient";
-import DataTimePickerNew from "../datepickers/DateTimePickerNew";
 import RefreshSelector from "../datepickers/RefreshSelector";
 
 export default function KqlAutoCompleteRange({
