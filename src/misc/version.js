@@ -1,3 +1,3 @@
 export default function version() {
-    return "0.9.0-rc4";
+    return "0.9.0-rc5";
 }
