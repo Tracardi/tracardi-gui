@@ -83,6 +83,38 @@ export const stagingTheme = createTheme({
                 }
             }
         },
+        MuiSlider: {
+            styleOverrides: {
+                markLabel: {
+                    fontSize: '14px', // Adjust font size as needed
+                },
+                thumb: {
+                    color:"#3B82F6",
+                },
+                track: {
+                    color:"#3B82F6",
+                    borderColor: "#3B82F6", // Example border color for the track
+                    borderWidth: 0,
+                    borderStyle: 'solid',
+                    boxShadow: `0 0 0 2px #3B82F6`, // Simulating border with shadow
+                },
+                rail: {
+                    color: 'rgba(128,128,128,.3)', // Example border color for the rail
+                    // borderWidth: '2px',
+                    // borderStyle: 'solid',
+                    // boxShadow: `0 0 0 2px red`, // Simulating border with shadow
+                },
+                // Targeting the marks
+                mark: {
+                    backgroundColor: '#3B82F6', // Example color for the marks
+                    width: '4px',
+                    height: '4px',
+                    '&.MuiSlider-markActive': {
+                        backgroundColor: '#eee', // Example color for active marks
+                    },
+                },
+            },
+        },
     }
 });
 
@@ -162,6 +194,38 @@ export const darkTheme = createTheme({
         }
     },
     components: {
+        MuiSlider: {
+            styleOverrides: {
+                markLabel: {
+                    fontSize: '14px', // Adjust font size as needed
+                },
+                thumb: {
+                    color:"#805fcf",
+                },
+                track: {
+                    color:"#805fcf",
+                    borderColor: "#805fcf", // Example border color for the track
+                    borderWidth: 0,
+                    borderStyle: 'solid',
+                    boxShadow: `0 0 0 2px #805fcf`, // Simulating border with shadow
+                },
+                rail: {
+                    color: 'rgba(128,128,128,.3)', // Example border color for the rail
+                    // borderWidth: '2px',
+                    // borderStyle: 'solid',
+                    // boxShadow: `0 0 0 2px red`, // Simulating border with shadow
+                },
+                // Targeting the marks
+                mark: {
+                    backgroundColor: '#805fcf', // Example color for the marks
+                    width: '4px',
+                    height: '4px',
+                    '&.MuiSlider-markActive': {
+                        backgroundColor: '#eee', // Example color for active marks
+                    },
+                },
+            },
+        },
         MuiAutocomplete: {
             styleOverrides: {
                 paper: {
@@ -364,6 +428,38 @@ export const productionTheme = createTheme({
                     backgroundColor: 'rgba(235,235,235)'
                 }
             }
+        },
+        MuiSlider: {
+            styleOverrides: {
+                markLabel: {
+                    fontSize: '14px', // Adjust font size as needed
+                },
+                thumb: {
+                    color:"#ad1457",
+                },
+                track: {
+                    color:"#ad1457",
+                    borderColor: "#3Bad145782F6", // Example border color for the track
+                    borderWidth: 0,
+                    borderStyle: 'solid',
+                    boxShadow: `0 0 0 2px #ad1457`, // Simulating border with shadow
+                },
+                rail: {
+                    color: 'rgba(128,128,128,.3)', // Example border color for the rail
+                    // borderWidth: '2px',
+                    // borderStyle: 'solid',
+                    // boxShadow: `0 0 0 2px red`, // Simulating border with shadow
+                },
+                // Targeting the marks
+                mark: {
+                    backgroundColor: '#ad1457', // Example color for the marks
+                    width: '4px',
+                    height: '4px',
+                    '&.MuiSlider-markActive': {
+                        backgroundColor: '#eee', // Example color for active marks
+                    },
+                },
+            },
         },
     }
 });

@@ -31,7 +31,6 @@ import MenuItem from "@mui/material/MenuItem";
 import QueryRuleGroup from "../elements/forms/QueryRuleGroup";
 import {FieldBox} from "../elements/forms/FieldBox";
 import {TimeSpanField} from "../elements/forms/TimeSpanField";
-import ObjectFiltering from "../elements/forms/ObjectFiltering";
 import KqlAutoCompleteRange from "../elements/forms/KqlAutoCompleteRange";
 import DataTimePickerNew from "../elements/datepickers/DateTimePickerNew";
 import PopOverButton from "../elements/forms/buttons/PopOverButton";
@@ -353,7 +352,6 @@ export default function TryOut() {
             </FieldBox></div>
             <DataTimePickerNew type="FromDate"
                                initValue={null}/>
-            <ObjectFiltering/>
             <KqlAutoCompleteRange index="profile"/>
             <TimeSpanField onChange={console.log}/>
             <Journey width={300} height={600}/>

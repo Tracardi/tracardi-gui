@@ -9,14 +9,11 @@ import RefreshSelector from "../datepickers/RefreshSelector";
 
 export default function KqlAutoCompleteRange({
                                                index,
-                                               initDate,
                                                refreshInterval,
                                                label,
                                                value,
                                                onChange,
                                                onKeyPressCapture,
-                                               onSetDateFrom,
-                                               onSetDateTo,
                                                onRefreshChange
                                            }) {
 
@@ -29,19 +26,6 @@ export default function KqlAutoCompleteRange({
 
     const isFocused = useRef(false);
     const {request} = useRequest()
-
-    const handleDateFromChange = (date) => {
-        console.log(111, date)
-        if (onSetDateFrom instanceof Function) {
-            onSetDateFrom(date)
-        }
-    }
-
-    const handleDateToChange = (date) => {
-        if (onSetDateTo instanceof Function) {
-            onSetDateTo(date)
-        }
-    }
 
     const handleRefreshChange = (value) => {
         if (onRefreshChange instanceof Function) {
@@ -202,19 +186,11 @@ export default function KqlAutoCompleteRange({
                                                         ),
                                                         endAdornment: (
                                                             <>
-                                                                {progress
-                                                                    ? <CircularProgress color="inherit" size={20}
+                                                                {progress && <CircularProgress color="inherit" size={20}
                                                                                         style={{marginRight: 30}}
                                                                     />
-                                                                    : <div style={{marginRight: 30}}/>
                                                                 }
                                                                 {params.InputProps.endAdornment}
-                                                                <DataTimePickerNew type="FromDate"
-                                                                                   initValue={initDate?.minDate}
-                                                                                   onChange={handleDateFromChange}/>
-                                                                <DataTimePickerNew type="ToDate"
-                                                                                   initValue={initDate?.maxDate}
-                                                                                   onChange={handleDateToChange}/>
                                                             </>
                                                         ),
                                                     }}

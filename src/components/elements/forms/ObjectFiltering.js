@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, {useState} from "react";
 import {useDispatch} from "react-redux";
 import {resetPage} from '../../../redux/reducers/pagingSlice'
 import Button from "./Button";
@@ -8,23 +8,11 @@ import PropTypes from 'prop-types';
 import {external} from "../misc/linking"
 import KqlAutoCompleteRange from "./KqlAutoCompleteRange";
 
-export default function ObjectFiltering({type, initDate, onFilterClick, initRefresh, onRefreshChange}) {
+export default function ObjectFiltering({type, where, onFilterClick, initRefresh, onRefreshChange}) {
 
-    const [fromDate, setFromDate] = useState(initDate?.minDate);
-    const [toDate, setToDate] = useState(initDate?.maxDate);
-    const [query, setQuery] = useState(initDate?.where);
+    const [query, setQuery] = useState(where);
 
     const dispatch = useDispatch();
-
-    const onSetDateFrom = useCallback((date) => {
-        localStorage.setItem(type + "DateFrom", JSON.stringify(date));
-        setFromDate(date);
-    }, [type])
-
-    const onSetDateTo = useCallback((date) => {
-        localStorage.setItem(type + "DateTo", JSON.stringify(date));
-        setToDate(date)
-    }, [type]);
 
     function handleQueryChange(value) {
         setQuery(value);
@@ -37,30 +25,17 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
     }
 
     function handleReady() {
-        console.log({
-            from: fromDate,
-            to: toDate,
-            where: query,
-        })
-        localStorage.setItem(type + "Query", query);
         dispatch(resetPage());
-        onFilterClick({
-            from: fromDate,
-            to: toDate,
-            where: query,
-        })
+        onFilterClick(query)
     }
 
     return <section className="ObjectFiltering">
         <div className="Input">
             <KqlAutoCompleteRange index={type}
                                   value={query}
-                                  initDate={initDate}
                                   refreshInterval={initRefresh}
                                   onChange={handleQueryChange}
                                   onKeyPressCapture={handleEnterPressed}
-                                  onSetDateFrom={onSetDateFrom}
-                                  onSetDateTo={onSetDateTo}
                                   onRefreshChange={onRefreshChange}
 
             />
@@ -78,7 +53,7 @@ export default function ObjectFiltering({type, initDate, onFilterClick, initRefr
 
 ObjectFiltering.propTypes = {
     type: PropTypes.string,
-    initDate: PropTypes.object,
+    where: PropTypes.string,
     onFilterClick: PropTypes.func,
     initRefresh: PropTypes.number,
     onRefreshChange: PropTypes.func

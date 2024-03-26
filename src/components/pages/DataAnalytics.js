@@ -1,12 +1,12 @@
 import React, {useState, createContext} from "react";
 import "./DataAnalytics.css";
 import ObjectFiltering from "../elements/forms/ObjectFiltering";
-import moment from "moment";
 import DataBrowsingList from "./DataBrowsingList";
 import BarChartElement from "../elements/charts/BarChart";
 import {isString} from "../../misc/typeChecking";
 
 export const FilterContext = createContext(0);
+const max = 364 + 24 + 60
 
 export default function DataAnalytics({
                                           type,
@@ -27,18 +27,6 @@ export default function DataAnalytics({
 
     const [filterNumber, setFilterNumber] = useState(0)
 
-    const getQuery = (type, label) => {
-        const key = type + label;
-        let storedData;
-        storedData = localStorage.getItem(key);
-        if (typeof storedData === "undefined" || storedData === "undefined" || !storedData) {
-            storedData = "";
-            localStorage.setItem(key, storedData);
-        }
-
-        return storedData;
-    };
-
     const getSavedData = (type, label) => {
         const key = type + label;
         let storedData;
@@ -47,48 +35,27 @@ export default function DataAnalytics({
         } catch (SyntaxError) {
             storedData = null;
         }
-
-        if (!storedData) {
-            const now = moment();
-
-            const initDate = {
-                absolute: {
-                    year: now.format("YYYY"),
-                    month: now.format("MM"),
-                    meridiem: now.format("a"),
-                    date: now.format("DD"),
-                    hour: now.format("hh"),
-                    minute: now.format("mm"),
-                    second: now.format("ss"),
-                },
-                delta: {
-                    type: null,
-                    value: null,
-                    entity: null,
-                },
-                now: null,
-            };
-
-            if (label === "DateTo") {
-                initDate.absolute = null;
-                initDate.delta = null;
-            }
-
-            if (label === "DateFrom") {
-                initDate.delta = {
-                    type: "minus",
-                    value: -15,
-                    entity: "day",
-                };
-            }
-
-            localStorage.setItem(key, JSON.stringify(initDate));
-            storedData = initDate;
-        }
         return storedData;
     };
 
-    const encodeParams = (init) => {
+    const savedData = (type, label, value) => {
+        const key = type + label;
+        localStorage.setItem(key, JSON.stringify(value));
+    };
+
+    const convertSliderValue = (value) => {
+        if (value === max) {
+            return null;
+        } else if (value >= 364 + 24 && value < max) {
+            return {type: "minus", value: -(max - value), entity: "minute"}
+        } else if (value >= 364 && value < 364 + 24) {
+            return {type: "minus", value: -(max - value - 60), entity: "hour"}
+        } else {
+            return {type: "minus", value: -(max - value - 60 - 24), entity: "day"}
+        }
+    }
+
+    const addTimeZone = (init) => {
         return {
             ...init,
             timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -96,28 +63,65 @@ export default function DataAnalytics({
         };
     };
 
+    const _range = () => getSavedData(type, "Range") || [364, max]
+    const _minDate = () => getSavedData(type, "DateFrom") || convertSliderValue(_range[0])
+    const _maxDate = () => getSavedData(type, "DateTo") || convertSliderValue(_range[1])
+
     const [refresh, setRefresh] = useState(getRefreshRate());
+    const [range, setRange] = useState(_range())
     const [query, setQuery] = useState(
-        encodeParams({
-            minDate: getSavedData(type, "DateFrom"),
-            maxDate: getSavedData(type, "DateTo"),
-            where: getQuery(type, "Query"),
+        addTimeZone({
+            minDate: _minDate(),
+            maxDate: _maxDate(),
+            where: getSavedData(type, "Query") || "",
             limit: 30,
-            random: Math.random()
         })
     );
 
-    const handleFilter = ({to, from, where}) => {
-        const _query = encodeParams({
-            minDate: from,
-            maxDate: to,
+    const handleFilter = (where) => {
+        savedData(type, "Query", where);
+        setFilterNumber(filterNumber + 1)
+        setQuery(addTimeZone({
+            minDate: _minDate(),
+            maxDate: _maxDate(),
             where: where,
             limit: 30,
-            random: Math.random()
-        })
-        setFilterNumber(filterNumber + 1)
-        setQuery(_query);
+        }));
     };
+
+
+    const handleRangeChange = (range) => {
+        setRange(range)
+
+        const maxDate = convertSliderValue(range[1])
+        const minDate = convertSliderValue(range[0])
+
+        setQuery(addTimeZone({
+            minDate: {
+                absolute: null,
+                delta: minDate
+            },
+            maxDate: {
+                absolute: null,
+                delta: maxDate
+            },
+            where: query.where,
+            limit: 30,
+        }));
+
+        savedData(type ,"DateTo", {
+            absolute: null,
+            delta: maxDate
+        });
+        savedData(type, "DateFrom", {
+            absolute: null,
+            delta: minDate
+        });
+        savedData(type ,"Range", range);
+
+        setFilterNumber(filterNumber + 1)
+
+    }
 
     const handleRefreshChange = (rate) => {
         localStorage.setItem(type + "RefreshRate", rate);
@@ -140,7 +144,7 @@ export default function DataAnalytics({
             <div className="DataAnalytics">
                 <ObjectFiltering
                     type={type}
-                    initDate={query}
+                    where={query?.where}
                     initRefresh={refresh}
                     onFilterClick={handleFilter}
                     onRefreshChange={handleRefreshChange}
@@ -166,6 +170,8 @@ export default function DataAnalytics({
                             onLoadRequest={onLoadHistogramRequest(query)}
                             refreshInterval={refresh}
                             barChartColors={barChartColors}
+                            rangeValue={range}
+                            onRangeChange={handleRangeChange}
                         />
                     </DataBrowsingList>
                 </div>
