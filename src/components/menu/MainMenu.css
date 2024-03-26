@@ -84,7 +84,7 @@
     display: inline-flex;
     align-items: center;
 }
-
+.MainMenu .MenuCollapsedRow,
 .MainMenu .MenuRow {
     display: flex;
     flex-wrap: nowrap;
@@ -107,29 +107,43 @@
         opacity: 1;
     }
 }
-
-
+.MainMenu .MenuCollapsedRow.active,
+.MainMenu .MenuCollapsedRow:hover,
 .MainMenu .MenuRow.active,
 .MainMenu .MenuRow:hover {
     color: white;
-    animation-name: fadeInMenu;
-    animation-iteration-count: 1;
-    animation-timing-function: ease-out;
-    animation-duration: 0.4s;
     background-color: #ef6c00;
+    z-index: 20
 }
-
+.MainMenu .MenuCollapsedRow > SPAN.Icon,
 .MainMenu .MenuRow > SPAN.Icon {
     width: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
+.MainMenu .MenuCollapsedRow > SPAN.Label,
 .MainMenu .MenuRow > SPAN.Label {
     display: flex;
     margin-left: 10px;
     align-items: center;
     font-size: 14px;
+}
+
+.MainMenu .MenuCollapsedRow > SPAN.Label {
+    display: none;
+    border-radius: 4px;
+    padding: 6px 15px;
+}
+.MainMenu .MenuCollapsedRow:hover > SPAN.Label {
+    display: flex;
+    position: absolute;
+    left: 65px;
+    background-color: rgba(128, 128, 128, .4);
+    backdrop-filter: blur(20px);
+    margin-left: 10px;
+    align-items: center;
+    font-size: 14px;
+    z-index: 20;
 }
 

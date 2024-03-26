@@ -40,7 +40,7 @@ const MenuRow = ({app, label, icon, route = null, onClick, style, collapsed=fals
 
     return (
         isAllowed() || alwaysDisplay ?
-            <div className={`MenuRow ${app.currentRoute === route ? "active" : ""}`} onClick={onClick} style={style}><span className="Icon">{icon}</span>{!collapsed && <span className="Label">{label}</span>}</div>
+            <div className={`${collapsed ? "MenuCollapsedRow" : "MenuRow"} ${app.currentRoute === route ? "active" : ""}`} onClick={onClick} style={style}><span className="Icon">{icon}</span>{!collapsed ? <span className="Label">{label}</span> : <span className="Label">{label}</span>}</div>
             :
             null
     )
