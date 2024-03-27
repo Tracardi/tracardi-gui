@@ -29,6 +29,7 @@ import {useNavigate} from "react-router-dom";
 import urlPrefix from "../../../../misc/UrlPrefix";
 import EventJourneyTag from "../../misc/EventJourneyTag";
 import MergingAlert from "../../misc/MergingAlert";
+import EventAsyncTag from "../../misc/EventAsyncTag";
 
 export function EventRow({row, filterFields}) {
 
@@ -166,6 +167,7 @@ export function EventRow({row, filterFields}) {
                                            <MergingAlert eventMetaData={row?.metadata}/>
                                            <EventWarnings eventMetaData={row?.metadata}/>
                                            <EventErrorTag eventMetaData={row?.metadata}/>
+                                           <EventAsyncTag event={row} />
                                            {row.journey?.state && <EventJourneyTag>{row.journey.state}</EventJourneyTag>}
                                            {row?.hit?.name &&
                                            <span title={row?.hit?.url} style={{cursor: "help"}}>{row?.hit?.name}</span>}

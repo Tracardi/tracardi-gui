@@ -21,6 +21,7 @@ import EventJourneyTag from "../misc/EventJourneyTag";
 import MergingAlert from "../misc/MergingAlert";
 import ShowHide from "../misc/ShowHide";
 import Tag from "../misc/Tag";
+import EventAsyncTag from "../misc/EventAsyncTag";
 
 const ContextInfo = ({event}) => {
     const context = object2dot(event?.context);
@@ -90,7 +91,7 @@ const EventData = ({event, metadata, allowedDetails = [], routing=true}) => {
             <TuiFormGroupHeader header="Event details"/>
             <TuiFormGroupContent style={{display: "flex", flexDirection: "column"}}>
                 <PropertyField name="Type"
-                               content={<EventTypeTag event={event}/>}/>
+                               content={<><EventTypeTag event={event}/> <EventAsyncTag event={event} /></>}/>
                 {event?.metadata?.time?.create && <PropertyField name="Create time"
                                content={<DateValue date={event?.metadata?.time?.create}/>}
                 />}
